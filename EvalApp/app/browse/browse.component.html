@@ -9,7 +9,7 @@
     <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()"
         ios.position="left">
     </ActionItem>
-    <Label class="action-bar-title" text="Browse"></Label>
+    <Label class="action-bar-title" text="Videos"></Label>
 </ActionBar>
 
 <!--
@@ -30,8 +30,45 @@ it shouldn't have any other siblings other than the <ActionBar> component.
     <!--
     Use the tkMainContent directive to display the content of the page when you have an app drawer.
     -->
-    <GridLayout class="page page-content" tkMainContent>
-        <Label class="page-icon fa" text="&#xf1ea;"></Label>
-        <Label class="page-placeholder" text="<!-- Page content goes here -->"></Label>
-    </GridLayout>
+  
+<GridLayout padding="0" margin="0" rows="auto, *" colomns="*"   tkMainContent>
+
+        <!-- <StackLayout height="300" padding="0" margin="0" row="0" col="0" orientation="horizontal"> -->
+                <VideoPlayer 
+                padding="0" margin="0" row="0" col="0" 
+                src="~/videos/small.mp4"
+                autoplay="true" 
+                height="231">
+        </VideoPlayer> 
+             <!-- </StackLayout> -->
+             <StackLayout row="1" col="0" orientation="vertical">
+                    <ListView  class="list-group" [items]="videos" (itemTap ="onItemTapThirdList($event)" >
+                            <ng-template let-video="item">
+                                        <StackLayout orientation="horizontal" class="list-group-item">
+                                            <Label row="0" col="0" rowSpan="2" height="108" width="108"  [text]="video.Image" ></Label>
+                                            <GridLayout class="list-group-item" rows="auto *" columns="*">
+                                                <Label row="0" col="0" [text]="video.Title" class="list-group-item-heading"></Label>
+                                                <Label row="1" col="0" class="list-group-item-text" [text]="video.Description "></Label>   
+                                            </GridLayout>
+                                        </StackLayout>
+                                    </ng-template>
+                                </ListView> 
+                 </StackLayout>
+
+
+
+
+
+
+
+            </GridLayout>
+
+ 
+     
+                
+                
+    
+
+
+
 </RadSideDrawer>

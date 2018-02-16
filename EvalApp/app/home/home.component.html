@@ -31,7 +31,18 @@ it shouldn't have any other siblings other than the <ActionBar> component.
     Use the tkMainContent directive to display the content of the page when you have an app drawer.
     -->
     <GridLayout class="page page-content" tkMainContent>
-        <Label class="page-icon fa" text="&#xf015;"></Label>
-        <Label class="page-placeholder" text="<!-- Page content goes here -->"></Label>
+
+            <ListView class="list-group" [items]="titles" (itemTap)="onItemTapThirdList($event)" >
+                    <ng-template let-title="item">
+                        <StackLayout orientation="horizontal" class="list-group-item">
+                            <Label row="0" col="0" rowSpan="2" height="108" width="108"  [text]="title.Image" ></Label>
+                            <GridLayout class="list-group-item" rows="auto *" columns="*">
+                                <Label row="0" col="0" [text]="title.Title" class="list-group-item-heading"></Label>
+                                <Label row="1" col="0" class="list-group-item-text" [text]="title.Description "></Label>   
+                            </GridLayout>
+                        </StackLayout>
+                    </ng-template>
+                </ListView>
+
     </GridLayout>
 </RadSideDrawer>

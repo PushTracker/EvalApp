@@ -5,7 +5,41 @@ import { RadSideDrawerComponent } from "nativescript-pro-ui/sidedrawer/angular";
 @Component({
     selector: "Search",
     moduleId: module.id,
-    templateUrl: "./search.component.html"
+    templateUrl: "./search.component.html",
+    styles: [`
+
+      Image {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
+        height: auto;
+    }
+
+
+      .slide-indicator-inactive{
+          background-color: #fff;
+          opacity : 0.4;
+          width : 10;
+          height : 10;
+          margin-left : 2.5;
+          margin-right : 2.5;
+          margin-top : 0;
+          border-radius : 5;
+      }
+
+      .slide-indicator-active{
+          background-color: #fff;
+          opacity : 0.9;
+          width : 10;
+          height : 10;
+          margin-left : 2.5;
+          margin-right : 2.5;
+          margin-top : 0;
+          border-radius : 5;
+      }
+
+    `]
 })
 export class SearchComponent implements OnInit {
     /* ***********************************************************

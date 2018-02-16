@@ -3,26 +3,92 @@
 // Font icon class
 .fa {
     font-family: "FontAwesome";
- }
- // Common page class
- .page-content {
-     .page-placeholder {
-         color: $page-icon-color;
-         font-size: $page-content-placeholder-font-size;
-         vertical-align: center;
-         horizontal-align: center;
-     }
- 
-     .page-icon {
-         font-size: 72;
-         vertical-align: top;
-         horizontal-align: center;
-         color: $page-icon-color;
-         margin-top: 20%;
-     }
- }
- 
- //Action bar
- ActionBar .action-bar-title {
-     horizontal-align: center;
- }
+}
+
+Button{
+    color: $blue-light;
+    font: $openSans;
+}
+
+//Branding
+.logo{
+    margin: 30, 50, 0, 50;
+}
+
+.pushTracker{
+    font: italic bold 25%, $openSans; 
+    color: slategray;
+    margin: 0, 50, 0, 50;
+}
+
+.account-icon {
+    color: $blue-light;
+    font-size: 60;
+    text-align: center;
+    margin: 75, 10, 10, 10;
+}
+
+Label{
+    font-family: $openSans;
+}
+
+.firmWareCheckButton{
+    margin: 30,50,50,50;
+}
+
+// Common page class
+.page-content {
+    .page-placeholder {
+        color: $page-icon-color;
+        font-size: $page-content-placeholder-font-size;
+        vertical-align: center;
+    }
+    .page-icon {
+        font-size: 50;
+        color: $page-icon-color;
+        margin-top: 20%;
+    }
+}
+
+//Action bar
+ActionBar .action-bar-title {
+    font: $openSans;
+}
+
+.slideLowerLabel{
+    text-align: center;
+    width: 100%;
+    font-size: 35;
+    margin-top: 35;
+      color: #fff;
+  }
+
+.topSlide{
+    background-color: #fff;
+  }
+
+  .lowerSlide{
+    background-color: #5089B6;
+  }
+
+.slide-indicator-inactive{
+    background-color: #fff;
+    opacity : 0.4;
+    width : 10;
+    height : 10;
+    margin-left : 2.5;
+    margin-right : 2.5;
+    margin-top : 0;
+    border-radius : 5;
+}
+
+.slide-indicator-active{
+    background-color: #fff;
+    opacity : 0.9;
+    width : 10;
+    height : 10;
+    margin-left : 2.5;
+    margin-right : 2.5;
+    margin-top : 0;
+    border-radius : 5;
+}

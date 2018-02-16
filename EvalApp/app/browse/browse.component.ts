@@ -2,16 +2,25 @@ import { Component, OnInit, ViewChild } from "@angular/core";
 import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-pro-ui/sidedrawer";
 import { RadSideDrawerComponent } from "nativescript-pro-ui/sidedrawer/angular";
 
+import { registerElement } from "nativescript-angular/element-registry";
+registerElement("VideoPlayer", () => require("nativescript-videoplayer").Video);
+
 @Component({
     selector: "Browse",
     moduleId: module.id,
-    templateUrl: "./browse.component.html"
+    templateUrl: "./browse.component.html",
+    styleUrls: ["./browse.component.css"]
 })
 export class BrowseComponent implements OnInit {
-    /* ***********************************************************
-    * Use the @ViewChild decorator to get a reference to the drawer component.
-    * It is used in the "onDrawerButtonTap" function below to manipulate the drawer.
-    *************************************************************/
+    videos = [
+        {Title: "Lesson 1", Image: "&#xf05a;", Description: "SmartDrive MX2+ Overview"},
+        {Title: "Lesson 2", Image: "&#xf008;", Description: "How to do a proper tap gesture"},
+        {Title: "Lesson 3", Image: "&#xf0ae;", Description: "How to do a Smart Drive Eval"},
+        {Title: "Lesson 4", Image: "&#xf019;", Description: "How to do Over the Air Firmware Updates"},
+        {Title: "Lesson 5", Image: "&#xf02a;", Description: "How to adjust setings"},
+        {Title: "Lesson 6", Image: "&#xf059;", Description: "PushTracker Overview"}
+    ];
+
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
 
     private _sideDrawerTransition: DrawerTransitionBase;
@@ -33,5 +42,9 @@ export class BrowseComponent implements OnInit {
     *************************************************************/
     onDrawerButtonTap(): void {
         this.drawerComponent.sideDrawer.showDrawer();
+    }
+
+    onItemTapThirdList(args) {
+        console.log(args.index);
     }
 }

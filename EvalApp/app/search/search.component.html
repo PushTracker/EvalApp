@@ -9,7 +9,7 @@
     <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()"
         ios.position="left">
     </ActionItem>
-    <Label class="action-bar-title" text="Search"></Label>
+    <Label class="action-bar-title" text="Eval"></Label>
 </ActionBar>
 
 <!--
@@ -30,8 +30,62 @@ it shouldn't have any other siblings other than the <ActionBar> component.
     <!--
     Use the tkMainContent directive to display the content of the page when you have an app drawer.
     -->
-    <GridLayout class="page page-content" tkMainContent>
-        <Label class="page-icon fa" text="&#xf002;"></Label>
-        <Label class="page-placeholder" text="<!-- Page content goes here -->"></Label>
+    <GridLayout columns= "*" rows="*,*" class="page page-content" tkMainContent>
+
+                <StackLayout col="0" row="0">
+                        <slides [pageIndicators]="true">
+                                <slide class=[topSlide]>
+                                        <Image src="~/images/PowerOn.jpg" stretch="aspectFit"></Image>
+                                    </slide>
+                                <slide class="topSlide">
+                                    <Image src="~/images/BandPower.jpg" stretch="aspectFit"></Image>
+                                </slide>
+                                <slide class="topSlide">
+                                    <Image src="~/images/Tapping.jpg" stretch="aspectFit"></Image>
+                                </slide>
+                                <slide class="slide-4">
+                                    <Image src="~/images/Steer.jpg" stretch="aspectFit"></Image>
+                                </slide>
+                                <slide class="topSlide">
+                                    <Image src="~/images/turn.jpg" stretch="aspectFit"></Image>
+                                </slide>
+                                <slide class="topSlide">
+                                    <Image src="~/images/Stop.jpg" stretch="aspectFit"></Image>
+                                </slide>
+                                <slide class="topSlide">
+                                        <Image src="~/images/Stop2.jpg" stretch="aspectFit"></Image>
+                                    </slide>
+                            </slides>
+
+                </StackLayout>
+                <StackLayout col="0" row="1">
+                    <slides loop="true" [pageIndicators]="true">
+                        <slide class="lowerSlide">
+                            <StackLayout orientation="vertical" horizontalAlignment="center">
+                                    <Label text="Tap Gesture" class="slideLowerLabel" textWrap="true"></Label>
+                                    <Label text="It is important to learn how to do a proper tapping technique." font-size="13" text-align="center" margin="20" textWrap="true"></Label>
+
+                            </StackLayout>
+                            <StackLayout orientation="horizontal" horizontalAlignment="center">
+                                    <Button margin="10,0,10,30" text="<- Last"></Button >
+                                    <Button margin="10,30, 10, 0" text="Next ->"></Button>
+                                    
+                                    
+                                  </StackLayout>
+                            
+                            
+                        </slide>
+                        <slide class="lowerSlide">
+                            <Label text="Slide 2" class="slideLowerLabel"  textWrap="true"></Label>
+                        </slide>
+                        <slide class="lowerSlide">
+                            <Label text="Slide 3" class="slideLowerLabel"  textWrap="true"></Label>
+                        </slide>
+                    </slides>
+                </StackLayout>
+
+
+
     </GridLayout>
+
 </RadSideDrawer>
