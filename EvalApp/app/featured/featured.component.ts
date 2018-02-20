@@ -40,7 +40,7 @@ export class FeaturedComponent implements OnInit {
             this.sdMpProgressValue += 5;
             this.ptBtProgressValue += 10;
 
-            this.onValueChanged(5);
+            // this.onValueChanged(5);
 
         }, 2300);
     }

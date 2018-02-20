@@ -1,13 +1,8 @@
+// Custom common variables
 @import '../app-variables';
-
-.fa {
-    width: 20;
-    margin-right: 10;
-}
 
 .icon{
 
-    font-family: $fa;
     height: 108;
     width: 108;
     color: $permobil-ocean;
@@ -15,18 +10,18 @@
 
 .heading{
 
-    font-family: $openSans-SemiBold;
-    text-align: center;
+    font-family: "OpenSans-SemiBold", sans-serif;
+    text-align: left;
     font-size: 20;
-    padding: 20,0,15,0;
+    padding: 5;
     color: $permobil-charcoal;
 }
 
 .description{
 
-    font-family: $openSans-Light;
+    font-family: "OpenSans-Light", sans-serif;
     color: $permobil-charcoal;
     background: #fff;
-    padding: 5,15,15,15;
+    padding: 0;
 
 }
