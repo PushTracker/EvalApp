@@ -1,8 +1,13 @@
-// Custom common variables
 @import '../app-variables';
+
+.fa {
+    width: $sidedrawer-list-icon-size;
+    margin-right: $sidedrawer-list-icon-offset;
+}
 
 .icon{
 
+    font-family: $fa;
     height: 108;
     width: 108;
     color: $permobil-ocean;

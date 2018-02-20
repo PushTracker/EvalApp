@@ -5,11 +5,15 @@ import { SharedModule } from "../shared/shared.module";
 import { FeaturedRoutingModule } from "./featured-routing.module";
 import { FeaturedComponent } from "./featured.component";
 
+import { HttpClientModule } from "@angular/common/http";
+
 @NgModule({
     imports: [
         NativeScriptCommonModule,
         FeaturedRoutingModule,
-        SharedModule
+        SharedModule,
+        HttpClientModule
+
     ],
     declarations: [
         FeaturedComponent

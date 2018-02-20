@@ -4,6 +4,14 @@ import { NativeScriptModule } from "nativescript-angular/nativescript.module";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 
+import { NgProgressModule } from "ngx-progressbar";
+
+import { HttpClient, HttpClientModule } from "@angular/common/http";
+
+// import { NativeScriptUIListViewModule } from "nativescript-pro-ui/listview/angular";
+
+// import { TNSFrescoModule } from "nativescript-fresco/angular";
+
 @NgModule({
     bootstrap: [
         AppComponent

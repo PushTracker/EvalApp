@@ -6,7 +6,7 @@
 }
 
 Button{
-    color: $blue-light;
+    color: $permobil-ocean;
     font: $openSans;
 }
 
@@ -22,7 +22,7 @@ Button{
 }
 
 .account-icon {
-    color: $blue-light;
+    color: $permobil-ocean;
     font-size: 60;
     text-align: center;
     margin: 75, 10, 10, 10;
@@ -67,8 +67,8 @@ ActionBar .action-bar-title {
     background-color: #fff;
   }
 
-  .lowerSlide{
-    background-color: #5089B6;
+.lowerSlide{
+    background-color: $permobil-hero;
   }
 
 .slide-indicator-inactive{

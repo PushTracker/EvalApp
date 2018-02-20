@@ -6,10 +6,9 @@
     <!-- 
     Use the ActionItem for IOS with position set to left. Using the NavigationButton as a side-drawer button in iOS is not possible, because its function is to always navigate back in the application.
     -->
-    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()"
-        ios.position="left">
+    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left">
     </ActionItem>
-    <Label class="action-bar-title" text="Evaluataion"></Label>
+    <Label class="action-bar-title" text="OTA Update"></Label>
 </ActionBar>
 
 <!--
@@ -26,12 +25,47 @@ it shouldn't have any other siblings other than the <ActionBar> component.
     <StackLayout tkDrawerContent>
         <MyDrawer [selectedPage]="'Featured'"></MyDrawer>
     </StackLayout>
-    
+
     <!--
     Use the tkMainContent directive to display the content of the page when you have an app drawer.
     -->
-    <GridLayout class="page page-content" tkMainContent>
-        <Label class="page-icon fa" text="&#xf005;"></Label>
-        <Label class="page-placeholder" text="<!-- Page content goes here -->"></Label>
-    </GridLayout>
+    <GridLayout columns="*" rows="auto,auto,auto, *" class="page page-content" tkMainContent>
+
+            <StackLayout col="0" row="0" orientation="vertical" horizontalAlignment="center" padding="10" >
+
+                    <DockLayout>
+                            <Label class="title" text="Firmware Update 2.0" dock="top" stretchLastChild="true"></Label>
+        
+                    </DockLayout>
+        
+                </StackLayout>
+
+        <StackLayout col="0" row="1" orientation="vertical" horizontalAlignment="center" padding="10" >
+
+            <TextView editable="false" textWrap="true" class="description" text="Performance enhancements and minor bug fixes. Performance enhancements and minor bug fixes. Performance enhancements and minor bug fixes."></TextView>
+
+        </StackLayout>
+
+        <StackLayout col="0" row="2"  padding="5" orientation="vertical">
+                <Label class="percentagLabel" text="15%" ></Label>
+                <Progress [value]="sdBtProgressValue" (valueChanged)="onValueChanged($event)" maxValue="100" class="progress" ></Progress>
+                <Label class="otaLabel" text="SmartDrive Bluetooth" ></Label>
+    
+                <Label class="percentagLabel" text="15%" ></Label>
+                <Progress [value]="sdMpProgressValue" (valueChanged)="onValueChanged($event)" maxValue="100" class="progress" ></Progress>
+                <Label class="otaLabel" text="SmartDrive Microprocessor" ></Label>
+    
+                <Label class="percentagLabel" text="15%" ></Label>
+                <Progress [value]="ptBtProgressValue" (valueChanged)="onValueChanged($event)" maxValue="100" class=" progress" ></Progress>
+                <Label class="otaLabel" text="PushTracker" ></Label>
+        </StackLayout>
+
+        <StackLayout class="featuresLayout" col="0" row="3"  padding="5" orientation="vertical">
+
+                <TextView class="features" editable="false" textWrap="true"  text="EZ-ON is a cool new feature in this update. Here's how it works-"></TextView>
+
+        </StackLayout>
+
+
+        </GridLayout>
 </RadSideDrawer>

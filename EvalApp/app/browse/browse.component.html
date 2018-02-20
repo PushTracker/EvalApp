@@ -6,8 +6,7 @@
     <!-- 
     Use the ActionItem for IOS with position set to left. Using the NavigationButton as a side-drawer button in iOS is not possible, because its function is to always navigate back in the application.
     -->
-    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()"
-        ios.position="left">
+    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left">
     </ActionItem>
     <Label class="action-bar-title" text="Videos"></Label>
 </ActionBar>
@@ -26,34 +25,38 @@ it shouldn't have any other siblings other than the <ActionBar> component.
     <StackLayout tkDrawerContent>
         <MyDrawer [selectedPage]="'Browse'"></MyDrawer>
     </StackLayout>
-    
+
     <!--
     Use the tkMainContent directive to display the content of the page when you have an app drawer.
     -->
-  
-<GridLayout padding="0" margin="0" rows="auto, *" colomns="*"   tkMainContent>
+
+    <GridLayout padding="0" margin="0" rows="auto, *" colomns="*" tkMainContent>
 
         <!-- <StackLayout height="300" padding="0" margin="0" row="0" col="0" orientation="horizontal"> -->
-                <VideoPlayer 
-                padding="0" margin="0" row="0" col="0" 
-                src="~/videos/small.mp4"
-                autoplay="true" 
-                height="231">
-        </VideoPlayer> 
-             <!-- </StackLayout> -->
-             <StackLayout row="1" col="0" orientation="vertical">
-                    <ListView  class="list-group" [items]="videos" (itemTap ="onItemTapThirdList($event)" >
-                            <ng-template let-video="item">
-                                        <StackLayout orientation="horizontal" class="list-group-item">
-                                            <Label row="0" col="0" rowSpan="2" height="108" width="108"  [text]="video.Image" ></Label>
-                                            <GridLayout class="list-group-item" rows="auto *" columns="*">
-                                                <Label row="0" col="0" [text]="video.Title" class="list-group-item-heading"></Label>
-                                                <Label row="1" col="0" class="list-group-item-text" [text]="video.Description "></Label>   
-                                            </GridLayout>
-                                        </StackLayout>
-                                    </ng-template>
-                                </ListView> 
-                 </StackLayout>
+        <VideoPlayer  row="0" col="0" src="~/videos/small.mp4" autoplay="true" height="231">
+        </VideoPlayer>
+        <!-- </StackLayout> -->
+        <StackLayout row="1" col="0" orientation="vertical">
+
+            <ListView class="list-group" [items]="videos" (itemTap="onItemTapThirdList($event)">
+
+                <ng-template let-video="item">
+
+                    <StackLayout orientation="horizontal" class="list-group-item">
+
+                        <Label row="0" col="0" rowSpan="2" height="108" width="108" [text]="video.Image"></Label>
+
+                        <GridLayout class="list-group-item" rows="auto *" columns="*">
+
+                            <Label row="0" col="0" [text]="video.Title" class="list-group-item-heading heading"></Label>
+
+                            <Label row="1" col="0" class="description" [text]="video.Description "></Label>
+
+                        </GridLayout>
+                    </StackLayout>
+                </ng-template>
+            </ListView>
+        </StackLayout>
 
 
 
@@ -61,13 +64,13 @@ it shouldn't have any other siblings other than the <ActionBar> component.
 
 
 
-            </GridLayout>
+    </GridLayout>
 
- 
-     
-                
-                
-    
+
+
+
+
+
 
 
 
