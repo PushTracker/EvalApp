@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "246955533823",
+    "firebase_url": "https://pushtracker-e0792.firebaseio.com",
+    "project_id": "pushtracker-e0792",
+    "storage_bucket": "pushtracker-e0792.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:246955533823:android:00fa7b543ea6c835",
+        "android_client_info": {
+          "package_name": "org.nativescript.nspushtrackertest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "246955533823-k6j1mctdbt5p5qsk8egnmv3j7ko1v51j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVOyTRsnx87HuSX-GpZmwMFmRBbrQjhNU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
