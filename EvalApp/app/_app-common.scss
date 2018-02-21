@@ -7,7 +7,7 @@
 
 Button{
     color: $permobil-ocean;
-    font: $openSans;
+    font: $os;
 }
 
 //Branding
@@ -16,7 +16,7 @@ Button{
 }
 
 .pushTracker{
-    font: italic bold 25%, $openSans; 
+    font: italic bold 25%, $os; 
     color: slategray;
     margin: 0, 50, 0, 50;
 }
@@ -29,7 +29,7 @@ Button{
 }
 
 Label{
-    font-family: $openSans;
+    font-family: $os-Light;
 }
 
 .firmWareCheckButton{
@@ -52,7 +52,7 @@ Label{
 
 //Action bar
 ActionBar .action-bar-title {
-    font: $openSans;
+    font: $os;
 }
 
 .slideLowerLabel{

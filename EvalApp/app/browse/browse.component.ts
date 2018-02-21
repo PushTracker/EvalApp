@@ -5,6 +5,8 @@ import { RadSideDrawerComponent } from "nativescript-pro-ui/sidedrawer/angular";
 import { registerElement } from "nativescript-angular/element-registry";
 registerElement("VideoPlayer", () => require("nativescript-videoplayer").Video);
 
+import { LoadEventData, WebView } from "ui/web-view";
+
 @Component({
     selector: "Browse",
     moduleId: module.id,
@@ -20,6 +22,9 @@ export class BrowseComponent implements OnInit {
         {Title: "Lesson 5", Image: "&#xf02a;", Description: "How to adjust setings"},
         {Title: "Lesson 6", Image: "&#xf059;", Description: "PushTracker Overview"}
     ];
+
+    // tslint:disable-next-line:max-line-length
+    videoHtmlString = '<iframe src="https://www.youtube.com/embed/6_M1J8HZXIk" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
 
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
 

@@ -3,25 +3,27 @@
 
 .icon{
 
-    height: 108;
-    width: 108;
+    
+    font-size: 75em;
+    padding: 15, 0, 0 ,15;
     color: $permobil-ocean;
+    text-shadow: 5px, 5px, 5px, $permobil-icon-shadow-orange;
 }
 
 .heading{
 
-    font-family: $openSans-SemiBold;
-    text-align: center;
+    font-family: $os-SemiBold;
+    text-align: left;
     font-size: 20;
-    padding: 20,0,15,0;
+    padding: 5;
     color: $permobil-charcoal;
 }
 
 .description{
 
-    font-family: $openSans-Light;
+    font-family: $os-Light;
     color: $permobil-charcoal;
     background: #fff;
-    padding: 5,15,15,15;
+    padding: 0;
 
 }

@@ -18,12 +18,13 @@ export class HomeComponent implements OnInit {
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
 
     titles = [
-        {Title: "Intro", Image: "&#xf05a;", Description: "Learn about SmartDrive"},
-        {Title: "Videos", Image: "&#xf008;", Description: "Training videos and Lessons"},
-        {Title: "Eval", Image: "&#xf0ae;", Description: "Walk through an evaluation and generate an LMN."},
-        {Title: "OTA", Image: "&#xf019;", Description: "Over the Air Firmware Updates"},
-        {Title: "Demos", Image: "&#xf02a;", Description: "Fleet management and Tracking."},
-        {Title: "FAQ", Image: "&#xf059;", Description: "Common SmartDrive Questions"}
+        {Title: "Intro", Image: String.fromCharCode(0xf05a), Description: "Learn about SmartDrive"},
+        {Title: "Videos", Image: String.fromCharCode(0xf008), Description: "Training videos and Lessons"},
+        // tslint:disable-next-line:max-line-length
+        {Title: "Eval", Image: String.fromCharCode(0xf0ae), Description: "Walkthrough an evaluation and generate an LMN."},
+        {Title: "OTA", Image: String.fromCharCode(0xf019), Description: "Over the Air Firmware Updates"},
+        {Title: "Demos", Image: String.fromCharCode(0xf02a), Description: "Fleet management and Tracking."},
+        {Title: "FAQ", Image: String.fromCharCode(0xf059), Description: "Common SmartDrive Questions"}
     ];
 
     private _sideDrawerTransition: DrawerTransitionBase;

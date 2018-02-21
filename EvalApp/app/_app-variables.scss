@@ -5,10 +5,10 @@
 
 //Fonts
 $fa: "FontAwesome";
-$openSans: "OpenSans-Regular", sans-serif;
-$openSans-Light: "OpenSans-Light", sans-serif;
-$openSans-SemiBold: "OpenSans-SemiBold", sans-serif;
-$openSans-SemiBold-Italic: "OpenSans-SemiBoldItalic", sans-serif;
+$os: "OpenSans-Regular", "OpenSans";
+$os-Light: "OpenSans-Light", "OpenSans";
+$os-SemiBold: "OpenSans-SemiBold", "Open Sans SemiBold";
+$os-SemiBold-Italic: "OpenSans-SemiBoldItalic, Open Sans SemiBold Italic";
 
 // Custom colors
 $background-dark: #F8F8F8 !default;
@@ -21,6 +21,9 @@ $permobil-steel: rgb(167,169,162)!default;
 $blue-50: rgba($permobil-hero, 0.5) !default;
 $blue-20: rgba($permobil-hero, 0.2) !default;
 $blue-10: rgba($permobil-hero, 0.1) !default;
+
+//accents
+$permobil-icon-shadow-orange: rgba(255,103,31,0.6);
 
 $accent-dark: rgb(41,104,161)!default;
 $accent-light: rgb(80,137,182)!default;
