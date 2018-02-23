@@ -34,7 +34,10 @@
 
     <Carousel indicatorColor="#66ccff" indicatorColorUnselected="#cceeff">
       <CarouselItem  *ngFor="let slide of slides">
-	<GridLayout rows="*" cols="*">
+	<GridLayout rows="auto, *" cols="*">
+	  <StackLayout row="0" class="topSlide" orientation="vertical" horizontalAlignment="center">
+	    <Image [src]="slide.Image" stretch="aspectFit"></Image>
+	  </StackLayout>
           <StackLayout row="1" class="lowerSlide" orientation="vertical" horizontalAlignment="center">
             <Label [text]="slide.Label" class="slideLowerLabel" textWrap="true"></Label>
             <Label [text]="slide.Description" class="slideDescription" textWrap="true"></Label>
@@ -43,60 +46,6 @@
       </CarouselItem>
     </Carousel>
 
-
   </StackLayout>
 
-    <!--
-    <StackLayout col="0" row="0">
-      <slides [pageIndicators]="true">
-        <slide class=[topSlide]>
-          <Image src="~/images/PowerOn.jpg" stretch="aspectFit"></Image>
-        </slide>
-        <slide class="topSlide">
-          <Image src="~/images/BandPower.jpg" stretch="aspectFit"></Image>
-        </slide>
-        <slide class="topSlide">
-          <Image src="~/images/Tapping.jpg" stretch="aspectFit"></Image>
-        </slide>
-        <slide class="slide-4">
-          <Image src="~/images/Steer.jpg" stretch="aspectFit"></Image>
-        </slide>
-        <slide class="topSlide">
-          <Image src="~/images/turn.jpg" stretch="aspectFit"></Image>
-        </slide>
-        <slide class="topSlide">
-          <Image src="~/images/Stop.jpg" stretch="aspectFit"></Image>
-        </slide>
-        <slide class="topSlide">
-          <Image src="~/images/Stop2.jpg" stretch="aspectFit"></Image>
-        </slide>
-      </slides>
-    </StackLayout>
-    <StackLayout col="0" row="1">
-      <slides loop="true" [pageIndicators]="true">
-        <slide class="lowerSlide">
-          <StackLayout orientation="vertical" horizontalAlignment="center">
-            <Label text="Tap Gesture" class="slideLowerLabel" textWrap="true"></Label>
-            <Label text="It is important to learn how to do a proper tapping technique." font-size="13" text-align="center" margin="20" textWrap="true"></Label>
-
-          </StackLayout>
-          <StackLayout orientation="horizontal" horizontalAlignment="center">
-            <Button margin="10,0,10,30" text="<- Last"></Button >
-            <Button margin="10,30, 10, 0" text="Next ->"></Button>
-            
-            
-          </StackLayout>
-          
-          
-        </slide>
-        <slide class="lowerSlide">
-          <Label text="Slide 2" class="slideLowerLabel"  textWrap="true"></Label>
-        </slide>
-        <slide class="lowerSlide">
-          <Label text="Slide 3" class="slideLowerLabel"  textWrap="true"></Label>
-        </slide>
-      </slides>
-    </StackLayout>
-
-    -->
 </RadSideDrawer>
