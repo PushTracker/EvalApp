@@ -54,9 +54,6 @@ export class HomeComponent implements OnInit {
     }
 
     onItemTapThirdList(args) {
-        console.log(args.index);
-	console.log('hello world');
-        console.log(this.titles[args.index].Route);
         this.routerExtensions.navigate([this.titles[args.index].Route], {
             transition: {
                 name: "fade"
