@@ -4,9 +4,9 @@ Feel free to customize layouts and components to change how your app drawer look
 -->
 <GridLayout rows="auto, *" class="sidedrawer sidedrawer-left">
     <StackLayout row="0" class="sidedrawer-header">
-        <Label class="sidedrawer-header-image" text="&#xf2bd;"></Label>
-        <Label class="sidedrawer-header-brand" text="User Name"></Label>
-        <Label class="footnote" text="username@mail.com"></Label>
+        <Label class="sidedrawer-header-image fa" text="&#xf2bd;"></Label>
+        <Label *ngIf="config.user.loggedIn" class="sidedrawer-header-brand" [text]="config.user.name"></Label>
+        <Label *ngIf="config.user.loggedIn" class="footnote" [text]="config.user.email"></Label>
     </StackLayout>
 
     <ScrollView row="1">
