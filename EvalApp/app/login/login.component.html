@@ -1,0 +1,65 @@
+<ScrollView tkMainContent>
+  <GridLayout 
+    rows="auto, auto, auto, auto, auto, auto, auto, auto, auto"
+    columns="*, *"
+    class="page page-content"
+    verticalAlign="center">
+    <Image 
+      row="0"
+      colSpan="2"
+      src="https://permobilus.com/wp-content/uploads/2016/08/permobil.png"
+      class="logo">
+    </Image>	
+    <Label 
+      row="1"
+      colSpan="2"
+      class="evalApp">
+      <FormattedString>
+	<Span text="Evaluation" textDecoration="underline"></Span>
+	<Span text="App"></Span>
+      </FormattedString>
+    </Label>
+    <Label 
+      row="2"
+      colSpan="2"
+      class="account-icon fa"
+      text="&#xf2be;">
+    </Label>
+    <TextField #email
+	       [(ngModel)]="user.email"
+	       row="3"
+	       colSpan="2"
+	       class="selectedTextField"
+	       [hint]="'LOGIN.EMAIL' | translate"
+	       keyboardType="email"
+	       autocorrect="false"
+	       autocapitalizationType="none">
+    </TextField>
+    <TextField #password
+	       [(ngModel)]="user.password"
+	       row="4"
+	       colSpan="2"
+	       hint="Password"
+	       secure="true">
+    </TextField>
+    <Button 
+      row="5"
+      colSpan="2"
+      [text]="isLoggingIn ? 'Sign in' : 'Sign up'"
+      class="submit-button"
+      (tap)="submit()">
+    </Button>
+    <Button 
+      row="6"
+      colSpan="2"
+      [text]="isLoggingIn ? 'Sign up' : 'Back to login'"
+      (tap)="toggleDisplay()">
+    </Button>
+    <Button 
+      row="7"
+      colSpan="2"
+      text="Cancel"
+      (tap)="cancel()">
+    </Button>
+  </GridLayout>
+</ScrollView>

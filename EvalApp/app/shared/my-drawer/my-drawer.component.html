@@ -28,6 +28,11 @@ Feel free to customize layouts and components to change how your app drawer look
 
             <MyDrawerItem title="Settings" route="/settings" icon="&#xf013;" [isSelected]="isPageSelected('Settings')">
             </MyDrawerItem>
+
+            <MyDrawerItem *ngIf="config.user.loggedIn" title="Account" route="/account" icon="&#xf2bd;" [isSelected]="isPageSelected('Account')">
+            </MyDrawerItem>
+            <MyDrawerItem *ngIf="!config.user.loggedIn" title="Login" route="/login" icon="&#xf2bd;">
+            </MyDrawerItem>
         </StackLayout>
     </ScrollView>
 </GridLayout>

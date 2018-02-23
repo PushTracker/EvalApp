@@ -1,0 +1,27 @@
+// Custom common variables
+@import '../app-variables';
+
+GridLayout {
+    margin: 40, 30, 0, 30;
+}
+
+Button, TextField {
+  margin-left: 16;
+  margin-right: 16;
+  margin-bottom: 10;  
+}
+.submit-button {
+  background-color: $permobil-ocean;
+  color: white;
+  padding: 10;
+  margin-top: 20;
+  border-radius: 2;
+}
+TextField{
+  background-color: rgba(80,135,180,0.05);
+  padding: 7;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #b1b1b1;
+  border-radius: 2;
+}
