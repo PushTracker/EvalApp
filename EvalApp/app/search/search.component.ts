@@ -51,12 +51,12 @@ export class SearchComponent implements OnInit {
     public slides = [
 	{
 	"Image": "~/images/PowerOn.jpg",
-	"Label": "Tap Gesture",
+	"Label": "Powering SmartDrive",
 	"Description": "It is important to learn how to do a proper tapping technique."
     },
 	{
 	"Image": "~/images/BandPower.jpg",
-	"Label": "Tap Gesture",
+	"Label": "Powering PushTracker",
 	"Description": "It is important to learn how to do a proper tapping technique."
     },
 	{
@@ -66,22 +66,22 @@ export class SearchComponent implements OnInit {
     },
 	{
 	"Image": "~/images/Steer.jpg",
-	"Label": "Tap Gesture",
+	"Label": "Steering",
 	"Description": "It is important to learn how to do a proper tapping technique."
     },
 	{
 	"Image": "~/images/turn.jpg",
-	"Label": "Tap Gesture",
+	"Label": "Turning",
 	"Description": "It is important to learn how to do a proper tapping technique."
     },
 	{
 	"Image": "~/images/Stop.jpg",
-	"Label": "Tap Gesture",
+	"Label": "Stopping",
 	"Description": "It is important to learn how to do a proper tapping technique."
     },
 	{
 	"Image": "~/images/Stop2.jpg",
-	"Label": "Tap Gesture",
+	"Label": "More Stopping",
 	"Description": "It is important to learn how to do a proper tapping technique."
     },
     ];
