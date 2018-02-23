@@ -35,14 +35,16 @@
     <Carousel indicatorColor="#66ccff" indicatorColorUnselected="#cceeff">
       <CarouselItem  *ngFor="let slide of slides">
 	<GridLayout rows="*" cols="*">
-	  <Image row="0" class="topSlide" [src]="slide.Image"></Image>
           <StackLayout row="1" class="lowerSlide" orientation="vertical" horizontalAlignment="center">
-            <Label text="Tap Gesture" class="slideLowerLabel" textWrap="true"></Label>
-            <Label text="It is important to learn how to do a proper tapping technique." font-size="13" text-align="center" margin="20" textWrap="true"></Label>
+            <Label [text]="slide.Label" class="slideLowerLabel" textWrap="true"></Label>
+            <Label [text]="slide.Description" class="slideDescription" textWrap="true"></Label>
           </StackLayout>
 	</GridLayout>
       </CarouselItem>
     </Carousel>
+
+
+  </StackLayout>
 
     <!--
     <StackLayout col="0" row="0">
@@ -97,7 +99,4 @@
     </StackLayout>
 
     -->
-
-  </StackLayout>
-
 </RadSideDrawer>

@@ -51,24 +51,38 @@ export class SearchComponent implements OnInit {
     public slides = [
 	{
 	"Image": "~/images/PowerOn.jpg",
+	"Label": "Tap Gesture",
+	"Description": "It is important to learn how to do a proper tapping technique."
     },
 	{
 	"Image": "~/images/BandPower.jpg",
+	"Label": "Tap Gesture",
+	"Description": "It is important to learn how to do a proper tapping technique."
     },
 	{
 	"Image": "~/images/Tapping.jpg",
+	"Label": "Tap Gesture",
+	"Description": "It is important to learn how to do a proper tapping technique."
     },
 	{
 	"Image": "~/images/Steer.jpg",
+	"Label": "Tap Gesture",
+	"Description": "It is important to learn how to do a proper tapping technique."
     },
 	{
 	"Image": "~/images/turn.jpg",
+	"Label": "Tap Gesture",
+	"Description": "It is important to learn how to do a proper tapping technique."
     },
 	{
 	"Image": "~/images/Stop.jpg",
+	"Label": "Tap Gesture",
+	"Description": "It is important to learn how to do a proper tapping technique."
     },
 	{
 	"Image": "~/images/Stop2.jpg",
+	"Label": "Tap Gesture",
+	"Description": "It is important to learn how to do a proper tapping technique."
     },
     ];
 
