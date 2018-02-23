@@ -5,9 +5,11 @@ import { NativeScriptRouterModule } from "nativescript-angular/router";
 const routes: Routes = [
     { path: "", redirectTo: "/home", pathMatch: "full" },
     { path: "home", loadChildren: "./home/home.module#HomeModule" },
-    { path: "browse", loadChildren: "./browse/browse.module#BrowseModule" },
-    { path: "search", loadChildren: "./search/search.module#SearchModule" },
-    { path: "featured", loadChildren: "./featured/featured.module#FeaturedModule" },
+    { path: "videos", loadChildren: "./browse/browse.module#BrowseModule" },
+    { path: "eval", loadChildren: "./search/search.module#SearchModule" },
+    { path: "ota", loadChildren: "./featured/featured.module#FeaturedModule" },
+    { path: "demos", loadChildren: "./demos/demos.module#DemosModule" },
+    { path: "faq", loadChildren: "./faq/faq.module#FAQModule" },
     { path: "settings", loadChildren: "./settings/settings.module#SettingsModule" }
 ];
 
