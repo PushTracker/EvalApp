@@ -30,6 +30,9 @@ export class HomeComponent implements OnInit {
 
     private _sideDrawerTransition: DrawerTransitionBase;
 
+    constructor(private routerExtensions: RouterExtensions) {
+    }
+
     /* ***********************************************************
     * Use the sideDrawerTransition property to change the open/close animation of the drawer.
     *************************************************************/
