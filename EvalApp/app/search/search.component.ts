@@ -48,6 +48,30 @@ export class SearchComponent implements OnInit {
     *************************************************************/
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
 
+    public slides = [
+	{
+	"Image": "~/images/PowerOn.jpg",
+    },
+	{
+	"Image": "~/images/BandPower.jpg",
+    },
+	{
+	"Image": "~/images/Tapping.jpg",
+    },
+	{
+	"Image": "~/images/Steer.jpg",
+    },
+	{
+	"Image": "~/images/turn.jpg",
+    },
+	{
+	"Image": "~/images/Stop.jpg",
+    },
+	{
+	"Image": "~/images/Stop2.jpg",
+    },
+    ];
+
     private _sideDrawerTransition: DrawerTransitionBase;
 
     /* ***********************************************************

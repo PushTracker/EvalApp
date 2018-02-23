@@ -1,91 +1,103 @@
 <ActionBar class="action-bar">
-    <!-- 
-    Use the NavigationButton as a side-drawer button in Android because ActionItems are shown on the right side of the ActionBar
+  <!-- 
+       Use the NavigationButton as a side-drawer button in Android because ActionItems are shown on the right side of the ActionBar
     -->
-    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
-    <!-- 
-    Use the ActionItem for IOS with position set to left. Using the NavigationButton as a side-drawer button in iOS is not possible, because its function is to always navigate back in the application.
+  <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+  <!-- 
+       Use the ActionItem for IOS with position set to left. Using the NavigationButton as a side-drawer button in iOS is not possible, because its function is to always navigate back in the application.
     -->
-    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()"
-        ios.position="left">
-    </ActionItem>
-    <Label class="action-bar-title" text="Eval"></Label>
+  <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()"
+              ios.position="left">
+  </ActionItem>
+  <Label class="action-bar-title" text="Eval"></Label>
 </ActionBar>
 
 <!--
-RadSideDrawer is a UI component part of the Progress NativeScript UI set of components.
-Learn more about the RadSideDrawer UI component and how it can be customized in this documentation article:
-http://docs.telerik.com/devtools/nativescript-ui/Controls/Angular/SideDrawer/getting-started
-The RadSideDrawer component is designed to be used as a root element and
-it shouldn't have any other siblings other than the <ActionBar> component.
--->
+    RadSideDrawer is a UI component part of the Progress NativeScript UI set of components.
+    Learn more about the RadSideDrawer UI component and how it can be customized in this documentation article:
+    http://docs.telerik.com/devtools/nativescript-ui/Controls/Angular/SideDrawer/getting-started
+    The RadSideDrawer component is designed to be used as a root element and
+    it shouldn't have any other siblings other than the <ActionBar> component.
+  -->
 <RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
-    <!--
-    Use the tkDrawerContent directive to display the content of the app drawer on this page.
+  <!--
+      Use the tkDrawerContent directive to display the content of the app drawer on this page.
     -->
-    <StackLayout tkDrawerContent>
-        <MyDrawer [selectedPage]="'Evaluation'"></MyDrawer>
+  <StackLayout tkDrawerContent>
+    <MyDrawer [selectedPage]="'Evaluation'"></MyDrawer>
+  </StackLayout>
+  
+  <!--
+      Use the tkMainContent directive to display the content of the page when you have an app drawer.
+    -->
+  <StackLayout class="page page-content" tkMainContent>
+
+    <Carousel indicatorColor="#66ccff" indicatorColorUnselected="#cceeff">
+      <CarouselItem  *ngFor="let slide of slides">
+	<GridLayout rows="*" cols="*">
+	  <Image row="0" class="topSlide" [src]="slide.Image"></Image>
+          <StackLayout row="1" class="lowerSlide" orientation="vertical" horizontalAlignment="center">
+            <Label text="Tap Gesture" class="slideLowerLabel" textWrap="true"></Label>
+            <Label text="It is important to learn how to do a proper tapping technique." font-size="13" text-align="center" margin="20" textWrap="true"></Label>
+          </StackLayout>
+	</GridLayout>
+      </CarouselItem>
+    </Carousel>
+
+    <!--
+    <StackLayout col="0" row="0">
+      <slides [pageIndicators]="true">
+        <slide class=[topSlide]>
+          <Image src="~/images/PowerOn.jpg" stretch="aspectFit"></Image>
+        </slide>
+        <slide class="topSlide">
+          <Image src="~/images/BandPower.jpg" stretch="aspectFit"></Image>
+        </slide>
+        <slide class="topSlide">
+          <Image src="~/images/Tapping.jpg" stretch="aspectFit"></Image>
+        </slide>
+        <slide class="slide-4">
+          <Image src="~/images/Steer.jpg" stretch="aspectFit"></Image>
+        </slide>
+        <slide class="topSlide">
+          <Image src="~/images/turn.jpg" stretch="aspectFit"></Image>
+        </slide>
+        <slide class="topSlide">
+          <Image src="~/images/Stop.jpg" stretch="aspectFit"></Image>
+        </slide>
+        <slide class="topSlide">
+          <Image src="~/images/Stop2.jpg" stretch="aspectFit"></Image>
+        </slide>
+      </slides>
     </StackLayout>
-    
-    <!--
-    Use the tkMainContent directive to display the content of the page when you have an app drawer.
+    <StackLayout col="0" row="1">
+      <slides loop="true" [pageIndicators]="true">
+        <slide class="lowerSlide">
+          <StackLayout orientation="vertical" horizontalAlignment="center">
+            <Label text="Tap Gesture" class="slideLowerLabel" textWrap="true"></Label>
+            <Label text="It is important to learn how to do a proper tapping technique." font-size="13" text-align="center" margin="20" textWrap="true"></Label>
+
+          </StackLayout>
+          <StackLayout orientation="horizontal" horizontalAlignment="center">
+            <Button margin="10,0,10,30" text="<- Last"></Button >
+            <Button margin="10,30, 10, 0" text="Next ->"></Button>
+            
+            
+          </StackLayout>
+          
+          
+        </slide>
+        <slide class="lowerSlide">
+          <Label text="Slide 2" class="slideLowerLabel"  textWrap="true"></Label>
+        </slide>
+        <slide class="lowerSlide">
+          <Label text="Slide 3" class="slideLowerLabel"  textWrap="true"></Label>
+        </slide>
+      </slides>
+    </StackLayout>
+
     -->
-    <GridLayout columns= "*" rows="*,*" class="page page-content" tkMainContent>
 
-                <StackLayout col="0" row="0">
-                        <slides [pageIndicators]="true">
-                                <slide class=[topSlide]>
-                                        <Image src="~/images/PowerOn.jpg" stretch="aspectFit"></Image>
-                                    </slide>
-                                <slide class="topSlide">
-                                    <Image src="~/images/BandPower.jpg" stretch="aspectFit"></Image>
-                                </slide>
-                                <slide class="topSlide">
-                                    <Image src="~/images/Tapping.jpg" stretch="aspectFit"></Image>
-                                </slide>
-                                <slide class="slide-4">
-                                    <Image src="~/images/Steer.jpg" stretch="aspectFit"></Image>
-                                </slide>
-                                <slide class="topSlide">
-                                    <Image src="~/images/turn.jpg" stretch="aspectFit"></Image>
-                                </slide>
-                                <slide class="topSlide">
-                                    <Image src="~/images/Stop.jpg" stretch="aspectFit"></Image>
-                                </slide>
-                                <slide class="topSlide">
-                                        <Image src="~/images/Stop2.jpg" stretch="aspectFit"></Image>
-                                    </slide>
-                            </slides>
-
-                </StackLayout>
-                <StackLayout col="0" row="1">
-                    <slides loop="true" [pageIndicators]="true">
-                        <slide class="lowerSlide">
-                            <StackLayout orientation="vertical" horizontalAlignment="center">
-                                    <Label text="Tap Gesture" class="slideLowerLabel" textWrap="true"></Label>
-                                    <Label text="It is important to learn how to do a proper tapping technique." font-size="13" text-align="center" margin="20" textWrap="true"></Label>
-
-                            </StackLayout>
-                            <StackLayout orientation="horizontal" horizontalAlignment="center">
-                                    <Button margin="10,0,10,30" text="<- Last"></Button >
-                                    <Button margin="10,30, 10, 0" text="Next ->"></Button>
-                                    
-                                    
-                                  </StackLayout>
-                            
-                            
-                        </slide>
-                        <slide class="lowerSlide">
-                            <Label text="Slide 2" class="slideLowerLabel"  textWrap="true"></Label>
-                        </slide>
-                        <slide class="lowerSlide">
-                            <Label text="Slide 3" class="slideLowerLabel"  textWrap="true"></Label>
-                        </slide>
-                    </slides>
-                </StackLayout>
-
-
-
-    </GridLayout>
+  </StackLayout>
 
 </RadSideDrawer>
