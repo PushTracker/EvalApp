@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from "@angular/core";
 import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-pro-ui/sidedrawer";
 import { RadSideDrawerComponent } from "nativescript-pro-ui/sidedrawer/angular";
+
 import { RouterExtensions } from "nativescript-angular/router";
 
 @Component({
@@ -20,10 +21,12 @@ export class HomeComponent implements OnInit {
 
     titles = [
         {Title: "Intro", Image: String.fromCharCode(0xf05a), Description: "Learn about SmartDrive", Route: "/home"},
+        // tslint:disable-next-line:max-line-length
         {Title: "Videos", Image: String.fromCharCode(0xf008), Description: "Training videos and Lessons", Route: "/videos"},
         // tslint:disable-next-line:max-line-length
-        {Title: "Eval", Image: String.fromCharCode(0xf0ae), Description: "Walkthrough an evaluation and generate an LMN.", Route: "/eval"},
+        {Title: "Eval", Image: String.fromCharCode(0xf0ae), Description: "Walkthrough an evaluation and generate an LMN.", Route: "/app-eval-entry"},
         {Title: "OTA", Image: String.fromCharCode(0xf019), Description: "Over the Air Firmware Updates", Route: "/ota"},
+        // tslint:disable-next-line:max-line-length
         {Title: "Demos", Image: String.fromCharCode(0xf02a), Description: "Fleet management and Tracking.", Route: "/demos"},
         {Title: "FAQ", Image: String.fromCharCode(0xf059), Description: "Common SmartDrive Questions", Route: "/faq"}
     ];
@@ -56,7 +59,7 @@ export class HomeComponent implements OnInit {
     onItemTapThirdList(args) {
         this.routerExtensions.navigate([this.titles[args.index].Route], {
             transition: {
-                name: "fade"
+                name: "slide"
             }
         });
     }

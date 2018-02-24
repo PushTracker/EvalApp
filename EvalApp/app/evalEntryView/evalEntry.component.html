@@ -1,0 +1,89 @@
+<ActionBar class="action-bar">
+    <!-- 
+    Use the NavigationButton as a side-drawer button in Android because ActionItems are shown on the right side of the ActionBar
+    -->
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <!-- 
+    Use the ActionItem for IOS with position set to left. Using the NavigationButton as a side-drawer button in iOS is not possible, because its function is to always navigate back in the application.
+    -->
+    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()"
+        ios.position="left">
+    </ActionItem>
+    <Label class="action-bar-title" text="Evaluation"></Label>
+</ActionBar>
+
+<!--
+RadSideDrawer is a UI component part of the Progress NativeScript UI set of components.
+Learn more about the RadSideDrawer UI component and how it can be customized in this documentation article:
+http://docs.telerik.com/devtools/nativescript-ui/Controls/Angular/SideDrawer/getting-started
+The RadSideDrawer component is designed to be used as a root element and
+it shouldn't have any other siblings other than the <ActionBar> component.
+-->
+<RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
+    <!--
+    Use the tkDrawerContent directive to display the content of the app drawer on this page.
+    -->
+    <StackLayout tkDrawerContent>
+        <MyDrawer [selectedPage]="'EvalEntry'"></MyDrawer>
+    </StackLayout>
+    
+    <!--
+    Use the tkMainContent directive to display the content of the page when you have an app drawer.
+    -->
+
+        <StackLayout tkDrawerContent>
+            <MyDrawer [selectedPage]="'EvalEntry'"></MyDrawer>
+          </StackLayout>
+          
+          <!--
+              Use the tkMainContent directive to display the content of the page when you have an app drawer.
+            -->
+          <ScrollView class="page page-content" orientation="vertical" tkMainContent>
+            <StackLayout>
+              <DockLayout stretchLastChild="false">
+                  <Label text="User states pain from pushing:" class="settings-item" dock="left"></Label>
+                  <SegmentedBar [items]="ControlModes" [selectedIndex]="getControlModeIndex()" class="settings-segmentedBar" dock="right" (selectedIndexChanged)="onControlModeChange($event)"></SegmentedBar>
+              </DockLayout>
+              <DockLayout stretchLastChild="false">
+                  <Label text="User States x/10 pain:" class="settings-item" ></Label>
+                  <Label verticalAlignment="center" dock="right" class="settings-slider-value-label" style="min-width: 50" [text]="settings.acceleration.toFixed(0)+'%'" row="0" col="1"></Label>
+              </DockLayout>
+              <GridLayout rows="auto" columns="*, auto">
+                  <Slider verticalAlignment="center" class="settings-slider" [value]="settings.acceleration" (valueChange)="onSliderUpdate('acceleration', $event)" row="0" col="0"></Slider>
+              </GridLayout>
+
+              <DockLayout stretchLastChild="false">
+                <Label text="User states fatigue from pushing:" class="settings-item" dock="left"></Label>
+                <SegmentedBar [items]="ControlModes" [selectedIndex]="getControlModeIndex()" class="settings-segmentedBar" dock="right" (selectedIndexChanged)="onControlModeChange($event)"></SegmentedBar>
+            </DockLayout>
+            <DockLayout stretchLastChild="false">
+                <Label text="User States x/10 fatigue:" class="settings-item" ></Label>
+                <Label verticalAlignment="center" dock="right" class="settings-slider-value-label" style="min-width: 50" [text]="settings.acceleration.toFixed(0)+'%'" row="0" col="1"></Label>
+            </DockLayout>
+            <GridLayout rows="auto" columns="*, auto">
+                <Slider verticalAlignment="center" class="settings-slider" [value]="settings.acceleration" (valueChange)="onSliderUpdate('acceleration', $event)" row="0" col="0"></Slider>
+            </GridLayout>
+
+            <DockLayout stretchLastChild="false">
+                <Label text="User States impact on independence:" class="settings-item" ></Label>
+                <Label verticalAlignment="center" dock="right" class="settings-slider-value-label" style="min-width: 50" [text]="settings.acceleration.toFixed(0)+'%'" row="0" col="1"></Label>
+            </DockLayout>
+            <GridLayout rows="auto" columns="*, auto">
+                <Slider verticalAlignment="center" class="settings-slider" [value]="settings.acceleration" (valueChange)="onSliderUpdate('acceleration', $event)" row="0" col="0"></Slider>
+            </GridLayout>
+
+
+         <Button (tap)="onOTACheck()" text="Play SmartDrive Overview" class="firmWareCheckButton"></Button>
+
+         <Button (tap)="onOTACheck()" text="Next" class="firmWareCheckButton"></Button>
+
+         <GridLayout rows="auto" columns="*, auto">
+
+            <VideoPlayer   src="~/videos/small.mp4" autoplay="true" height="231">
+            </VideoPlayer>
+        </GridLayout>
+
+        
+            </StackLayout>
+          </ScrollView>
+</RadSideDrawer>
