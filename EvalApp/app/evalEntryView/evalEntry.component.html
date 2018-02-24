@@ -46,10 +46,10 @@
       </DockLayout>
       <DockLayout stretchLastChild="false">
         <Label text="User States x/10 pain:" class="settings-item" ></Label>
-        <Label verticalAlignment="center" dock="right" class="settings-slider-value-label" style="min-width: 50" [text]="settings.acceleration.toFixed(0)+'%'" row="0" col="1"></Label>
+        <Label verticalAlignment="center" dock="right" class="settings-slider-value-label" style="min-width: 50" [text]="settings.pain.toFixed(0)+'%'" row="0" col="1"></Label>
       </DockLayout>
       <GridLayout rows="auto" columns="*, auto">
-        <Slider verticalAlignment="center" class="settings-slider" [value]="settings.acceleration" (valueChange)="onSliderUpdate('acceleration', $event)" row="0" col="0"></Slider>
+        <Slider verticalAlignment="center" class="settings-slider" [value]="settings.pain" (valueChange)="onSliderUpdate('pain', $event)" row="0" col="0"></Slider>
       </GridLayout>
 
       <DockLayout stretchLastChild="false">
@@ -58,32 +58,28 @@
       </DockLayout>
       <DockLayout stretchLastChild="false">
         <Label text="User States x/10 fatigue:" class="settings-item" ></Label>
-        <Label verticalAlignment="center" dock="right" class="settings-slider-value-label" style="min-width: 50" [text]="settings.acceleration.toFixed(0)+'%'" row="0" col="1"></Label>
+        <Label verticalAlignment="center" dock="right" class="settings-slider-value-label" style="min-width: 50" [text]="settings.fatigue.toFixed(0)+'%'" row="0" col="1"></Label>
       </DockLayout>
       <GridLayout rows="auto" columns="*, auto">
-        <Slider verticalAlignment="center" class="settings-slider" [value]="settings.acceleration" (valueChange)="onSliderUpdate('acceleration', $event)" row="0" col="0"></Slider>
+        <Slider verticalAlignment="center" class="settings-slider" [value]="settings.fatigue" (valueChange)="onSliderUpdate('fatigue', $event)" row="0" col="0"></Slider>
       </GridLayout>
 
       <DockLayout stretchLastChild="false">
         <Label text="User States impact on independence:" class="settings-item" ></Label>
-        <Label verticalAlignment="center" dock="right" class="settings-slider-value-label" style="min-width: 50" [text]="settings.acceleration.toFixed(0)+'%'" row="0" col="1"></Label>
+        <Label verticalAlignment="center" dock="right" class="settings-slider-value-label" style="min-width: 50" [text]="settings.independence.toFixed(0)+'%'" row="0" col="1"></Label>
       </DockLayout>
       <GridLayout rows="auto" columns="*, auto">
-        <Slider verticalAlignment="center" class="settings-slider" [value]="settings.acceleration" (valueChange)="onSliderUpdate('acceleration', $event)" row="0" col="0"></Slider>
+        <Slider verticalAlignment="center" class="settings-slider" [value]="settings.independence" (valueChange)="onSliderUpdate('independence', $event)" row="0" col="0"></Slider>
       </GridLayout>
 
 
-      <Button (tap)="onOTACheck()" text="Play SmartDrive Overview" class="firmWareCheckButton"></Button>
-
-      <Button (tap)="onOTACheck()" text="Next" class="firmWareCheckButton"></Button>
-
       <GridLayout rows="auto" columns="*, auto">
-
-        <VideoPlayer   src="~/videos/small.mp4" autoplay="true" height="231">
+        <VideoPlayer   src="~/videos/small.mp4" autoplay="false" height="231">
         </VideoPlayer>
       </GridLayout>
 
-      
+      <Button (tap)="onNext()" text="Next" class="firmWareCheckButton"></Button>
+
     </StackLayout>
   </ScrollView>
 </RadSideDrawer>

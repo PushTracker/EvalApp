@@ -1,3 +1,5 @@
+import application = require("application");
+
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-pro-ui/sidedrawer";
 import { RadSideDrawerComponent } from "nativescript-pro-ui/sidedrawer/angular";
@@ -9,12 +11,8 @@ import { confirm } from "ui/dialogs";
 
 import { EvaluationService } from "../shared/evaluation.service";
 
-import { knownFolders, File } from "file-system";
-
 import { registerElement } from "nativescript-angular/element-registry";
 registerElement("VideoPlayer", () => require("nativescript-videoplayer").Video);
-
-let currentApp = knownFolders.currentApp();
 
 @Component({
     selector: "EvalEntry",
@@ -38,8 +36,8 @@ export class EvalEntryComponent implements OnInit {
     
     // private members
     private _sideDrawerTransition: DrawerTransitionBase;
-    private pains = [ "None", "Low", "Medium", "High" ];
-    private fatigues = [ "None", "Low", "Medium", "High" ];
+    private pains = [ "Yes", "No" ];
+    private fatigues = [ "Yes", "No" ];
 
     constructor() {
 	this.pains.map((o) => {
@@ -54,31 +52,12 @@ export class EvalEntryComponent implements OnInit {
 	});
     }
 
-    public onOTACheck(): void {
-	confirm({
-	    title: "Check for Firmware Updates?",
-	    message: "Would you like to see if there are newer firmwares for the PushTracker, SmartDrive Microcontroller, and SmartDrive Bluetooth?",
-	    okButtonText: "Yes",
-	    cancelButtonText: "No"
-	})
-	    .then((result) => {
-		if (result) {
-		    return this.performSmartDriveOTA()
-			.then(() => {
-			    this.performSmartDriveBluetoothOTA();
-			})
-			.then(() => {
-			    this.performPushTrackerOTA();
-			});
-		}
-	    })
-	    .catch((err) => {
-		console.log(err);
-	    });
-    }
-
     public onSliderUpdate(key, args) {
 	this.settings.set(key, args.object.value);
+    }
+
+    // button events
+    public onNext(): void {
     }
 
     // pushing pain
@@ -121,64 +100,11 @@ export class EvalEntryComponent implements OnInit {
 	return EvaluationService.settings;
     }
 
-    private loadFile(fileName: string): Promise<any> {
-	const f = currentApp.getFile(fileName);
-	return new Promise((resolve, reject) => {
-	    let data = null;
-	    let source = f.readSync((e) => {
-		console.log("couldn't read file:");
-		console.log(e);
-		reject();
-	    });
-	    if (this.isIOS) {
-		let arr = new ArrayBuffer(source.length);
-		source.getBytes(arr);
-		data = new Uint8Array(arr);
-	    } else if (this.isAndroid) {
-		data = new Uint8Array(source);
-	    }
-	    resolve(data);
-	});
-    }
-
-    private performSmartDriveOTA(): Promise<any> {
-	const fname = "/shared/ota/MX2+.14.ota";
-	return this.loadFile(fname)
-	    .then((otaData) => {
-		console.log(`got MX2+ OTA, version: 0x${Number(otaData[0]).toString(16)}`);
-	    });
-    }
-
-    private performSmartDriveBluetoothOTA(): Promise<any> {
-	const fname = "/shared/ota/SmartDriveBluetooth.14.ota";
-	return this.loadFile(fname)
-	    .then((otaData) => {
-		console.log("got SDBT OTA");
-	    });
-    }
-
-    private performPushTrackerOTA(): Promise<any> {
-	const fname = "/shared/ota/PushTracker.14.ota";
-	return this.loadFile(fname)
-	    .then((otaData) => {
-		console.log("got PT OTA");
-	    });
-    }
-
     /* ***********************************************************
     * According to guidelines, if you have a drawer on your page, you should always
     * have a button that opens it. Use the showDrawer() function to open the app drawer section.
     *************************************************************/
     onDrawerButtonTap(): void {
         this.drawerComponent.sideDrawer.showDrawer();
-    }
-
-    onSaveSettingsTap(): void {
-		confirm({
-            title: "Save Settings?",
-            message: "Send these settings to the PushTracker?",
-            okButtonText: "Yes",
-            cancelButtonText: "No"
-		});
     }
 }

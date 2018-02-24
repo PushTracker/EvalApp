@@ -4,10 +4,12 @@ import { Observable, fromObject } from "data/observable";
 
 export class Settings {
     // public members
-    public ezOn: boolean = false;
-    public acceleration: number = 30;
-    public maxSpeed: number = 70;
-    public tapSensitivity: number = 100;
+    public PushingPain: string = "Yes";
+    public PushingFatigue: string = "Yes";
+
+    public pain: number = 30;
+    public fatigue: number = 70;
+    public independence: number = 100;
 
     // private members
 
@@ -20,10 +22,12 @@ export class Settings {
     }
 
     public fromObject(obj: any): void {
-	this.ezOn = obj && obj.ezOn || false;
-	this.acceleration = obj && obj.acceleration || 30;
-	this.maxSpeed = obj && obj.maxSpeed || 70;
-	this.tapSensitivity = obj && obj.tapSensitivity || 100;
+	this.PushingPain = obj && obj.PushingPain || "Yes";
+	this.PushingFatigue = obj && obj.PushingFatigue || "Yes";
+
+	this.pain = obj && obj.pain || 30;
+	this.fatigue = obj && obj.fatigue || 70;
+	this.independence = obj && obj.independence || 100;
     }
 }
 
