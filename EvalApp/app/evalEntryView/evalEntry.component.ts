@@ -4,8 +4,17 @@ import { RadSideDrawerComponent } from "nativescript-pro-ui/sidedrawer/angular";
 
 import { SegmentedBar, SegmentedBarItem } from "ui/segmented-bar";
 
+import { Observable } from "data/observable";
+import { confirm } from "ui/dialogs";
+
+import { EvaluationService } from "../shared/evaluation.service";
+
+import { knownFolders, File } from "file-system";
+
 import { registerElement } from "nativescript-angular/element-registry";
 registerElement("VideoPlayer", () => require("nativescript-videoplayer").Video);
+
+let currentApp = knownFolders.currentApp();
 
 @Component({
     selector: "EvalEntry",
@@ -21,28 +30,27 @@ export class EvalEntryComponent implements OnInit {
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
 
     public yesNo: Array<SegmentedBarItem> = [];
-    public Units: Array<SegmentedBarItem> = [];
+    public PushingPain: Array<SegmentedBarItem> = [];
+    public PushingFatigue: Array<SegmentedBarItem> = [];
 
     public isIOS: boolean = false;
     public isAndroid: boolean = false;
     
     // private members
     private _sideDrawerTransition: DrawerTransitionBase;
-    private picker: ColorPicker = new ColorPicker();
+    private pains = [ "None", "Low", "Medium", "High" ];
+    private fatigues = [ "None", "Low", "Medium", "High" ];
 
     constructor() {
-		new PerformanceMonitor().start({
-			// options
-		  });
-	ControlMode.Options.map((o) => {
+	this.pains.map((o) => {
 	    const item = new SegmentedBarItem();
 	    item.title = o;
-	    this.ControlModes.push(item);
+	    this.PushingPain.push(item);
 	});
-	Units.Options.map((o) => {
+	this.fatigues.map((o) => {
 	    const item = new SegmentedBarItem();
 	    item.title = o;
-	    this.Units.push(item);
+	    this.PushingFatigue.push(item);
 	});
     }
 
@@ -69,42 +77,28 @@ export class EvalEntryComponent implements OnInit {
 	    });
     }
 
-    public onControlModeChange(args): void {
-	let segmentedBar = <SegmentedBar>args.object;
-	this.settings.set("controlMode", ControlMode.Options[segmentedBar.selectedIndex]);
-    }
-
-    public getControlModeIndex(): number {
-	return ControlMode.Options.indexOf(this.settings.get("controlMode"));
-    }
-
-    public onUnitsChange(args): void {
-	let segmentedBar = <SegmentedBar>args.object;
-	this.settings.set("units", Units.Options[segmentedBar.selectedIndex]);
-    }
-
-    public getUnitsIndex(): number {
-	return Units.Options.indexOf(this.settings.get("units"));
-    }
-
     public onSliderUpdate(key, args) {
 	this.settings.set(key, args.object.value);
     }
 
-    public onPickColor() {
-	this.picker.show(this.settings.get("ledColor").hex, "RGB").then((result: string) => {
-	    if (result !== null && result !== undefined) {
-		let newColor = null;
-		if (typeof result === "string" && result.indexOf(',') > -1) {
-		    let [r,g,b] = result.split(',').map((res) => { return parseInt(res); });
-		    newColor = new Color(255, r, g, b);
-		}
-		else {
-		    newColor = new Color(result);
-		}
-		this.settings.set("ledColor", newColor);
-	    }
-	});
+    // pushing pain
+    public getPushingPainIndex(): number {
+	return this.pains.indexOf(this.settings.get("PushingPain"));
+    }
+
+    public onPushingPainIndexChange(args): void {
+	let segmentedBar = <SegmentedBar>args.object;
+	this.settings.set("PushingPain", this.pains[segmentedBar.selectedIndex]);
+    }
+
+    // pushing fatigue
+    public getPushingFatigueIndex(): number {
+	return this.fatigues.indexOf(this.settings.get("PushingFatigue"));
+    }
+
+    public onPushingFatigueIndexChange(args): void {
+	let segmentedBar = <SegmentedBar>args.object;
+	this.settings.set("PushingFatigue", this.fatigues[segmentedBar.selectedIndex]);
     }
 
     /* ***********************************************************
@@ -124,7 +118,7 @@ export class EvalEntryComponent implements OnInit {
     }
 
     get settings(): Observable {
-	return SettingsService.settings;
+	return EvaluationService.settings;
     }
 
     private loadFile(fileName: string): Promise<any> {
