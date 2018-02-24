@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild } from "@angular/core";
 import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-pro-ui/sidedrawer";
 import { RadSideDrawerComponent } from "nativescript-pro-ui/sidedrawer/angular";
 
+import { RouterExtensions } from "nativescript-angular/router";
+
 @Component({
     selector: "Trial",
     moduleId: module.id,
@@ -87,6 +89,26 @@ export class TrialComponent implements OnInit {
     ];
 
     private _sideDrawerTransition: DrawerTransitionBase;
+
+    constructor(private routerExtensions: RouterExtensions) {
+    }
+
+    // button events
+    public onNext(): void {
+        this.routerExtensions.navigate(["/summary"], {
+            transition: {
+                name: "slide"
+            }
+        });
+    }
+
+    public onBack(): void {
+        this.routerExtensions.navigate(["/training"], {
+            transition: {
+                name: "slideRight"
+            }
+        });
+    }
 
     /* ***********************************************************
     * Use the sideDrawerTransition property to change the open/close animation of the drawer.

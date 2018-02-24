@@ -102,6 +102,14 @@ export class TrainingComponent implements OnInit {
         });
     }
 
+    public onBack(): void {
+        this.routerExtensions.navigate(["/evalEntry"], {
+            transition: {
+                name: "slideRight"
+            }
+        });
+    }
+
     /* ***********************************************************
     * Use the sideDrawerTransition property to change the open/close animation of the drawer.
     *************************************************************/

@@ -6,7 +6,7 @@
 
   <Carousel indicatorColor="#66ccff" indicatorColorUnselected="#cceeff">
     <CarouselItem  *ngFor="let slide of slides">
-      <GridLayout rows="auto, *" cols="*">
+      <GridLayout rows="auto, *, auto" cols="*">
 	<StackLayout row="0" class="topSlide" orientation="vertical" horizontalAlignment="center">
 	  <Image [src]="slide.Image" stretch="aspectFit"></Image>
 	</StackLayout>
@@ -14,6 +14,8 @@
           <Label [text]="slide.Label" class="slideLowerLabel" textWrap="true"></Label>
           <Label [text]="slide.Description" class="slideDescription" textWrap="true"></Label>
         </StackLayout>
+	<Button row="2" *ngIf="slides.indexOf(slide) == (slides.length-1)" text="Next" (tap)="onNext()"></Button>
+	<Button row="2" *ngIf="slides.indexOf(slide) == 0" text="Back" (tap)="onBack()"></Button>
       </GridLayout>
     </CarouselItem>
   </Carousel>
