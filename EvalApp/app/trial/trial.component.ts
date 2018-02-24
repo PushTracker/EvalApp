@@ -2,12 +2,10 @@ import { Component, OnInit, ViewChild } from "@angular/core";
 import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-pro-ui/sidedrawer";
 import { RadSideDrawerComponent } from "nativescript-pro-ui/sidedrawer/angular";
 
-import { RouterExtensions } from "nativescript-angular/router";
-
 @Component({
-    selector: "Training",
+    selector: "Trial",
     moduleId: module.id,
-    templateUrl: "./training.component.html",
+    templateUrl: "./trial.component.html",
     styles: [`
 
       Image {
@@ -43,7 +41,7 @@ import { RouterExtensions } from "nativescript-angular/router";
 
     `]
 })
-export class TrainingComponent implements OnInit {
+export class TrialComponent implements OnInit {
     /* ***********************************************************
     * Use the @ViewChild decorator to get a reference to the drawer component.
     * It is used in the "onDrawerButtonTap" function below to manipulate the drawer.
@@ -89,18 +87,6 @@ export class TrainingComponent implements OnInit {
     ];
 
     private _sideDrawerTransition: DrawerTransitionBase;
-
-    constructor(private routerExtensions: RouterExtensions) {
-    }
-
-    // button events
-    public onNext(): void {
-        this.routerExtensions.navigate(["/trial"], {
-            transition: {
-                name: "slide"
-            }
-        });
-    }
 
     /* ***********************************************************
     * Use the sideDrawerTransition property to change the open/close animation of the drawer.
