@@ -14,6 +14,8 @@ import { EvaluationService } from "../shared/evaluation.service";
 import { registerElement } from "nativescript-angular/element-registry";
 registerElement("VideoPlayer", () => require("nativescript-videoplayer").Video);
 
+import { RouterExtensions } from "nativescript-angular/router";
+
 @Component({
     selector: "EvalEntry",
     moduleId: module.id,
@@ -39,7 +41,7 @@ export class EvalEntryComponent implements OnInit {
     private pains = [ "Yes", "No" ];
     private fatigues = [ "Yes", "No" ];
 
-    constructor() {
+    constructor(private routerExtensions: RouterExtensions) {
 	this.pains.map((o) => {
 	    const item = new SegmentedBarItem();
 	    item.title = o;
@@ -58,6 +60,11 @@ export class EvalEntryComponent implements OnInit {
 
     // button events
     public onNext(): void {
+        this.routerExtensions.navigate(["/training"], {
+            transition: {
+                name: "slide"
+            }
+        });
     }
 
     // pushing pain

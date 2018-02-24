@@ -9,7 +9,7 @@ const routes: Routes = [
     { path: "home", loadChildren: "./home/home.module#HomeModule" },
     { path: "videos", loadChildren: "./browse/browse.module#BrowseModule" },
     { path: "eval", loadChildren: "./search/search.module#SearchModule" },
-    { path: "eval", loadChildren: "./search/search.module#SearchModule" },
+    { path: "training", loadChildren: "./training/training.module#TrainingModule" },
     { path: "evalEntry", loadChildren: "./evalEntryView/evalEntry.module#EvalEntryModule" },
     { path: "ota", loadChildren: "./featured/featured.module#FeaturedModule" },
     { path: "demos", loadChildren: "./demos/demos.module#DemosModule" },
