@@ -1,0 +1,73 @@
+// Custom common variables
+@import '../app-variables';
+
+.settings-stack-layout{
+margin: 20, 0, 20, 0;
+}
+
+#DockLayout{
+    margin: 30, 0 ,30, 0;
+    padding: 20,10,20,10;
+}
+
+.action-item {
+    color: white;
+    font-size: 18;
+    text-transform: none;
+}
+
+.settings-item {
+    vertical-align: center;
+    text-overflow: none;
+    word-wrap: normal;
+    color: $permobil-ocean;
+    font-weight: 500;
+    margin: 10, 10, 10, 10;
+}
+
+.settings-slider-label {
+    color: $permobil-ocean;
+    font-weight: 500;
+    margin: 10, 10, 10, 20;
+}
+
+.settings-slider-value-label {
+    color: $permobil-ocean;
+    font-weight: 500;
+    margin: 10, 0, 10, 20;
+}
+
+.settings-slider {
+    margin: 0, 10, 0, 10;
+    color: $permobil-ocean;
+    background-color: $permobil-ocean;
+}
+
+.settings-segmentedBar{
+    selected-background-color: $permobil-ocean;
+    margin: 10, 10, 10, 10;
+    color: $permobil-ocean;
+}
+
+.debug-label {
+    border-bottom-width: 2;
+    border-bottom-color: gray;
+    margin: 20;
+    font-weight: bold;
+}
+
+.colorButton{
+    width: 250;
+    height: 25;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #b6b6b6;
+    border-radius: 10;
+    margin: 0, 10, 0, 10;
+}
+
+.colorOption-dock-layout{
+    margin: 10, 0, 0, 0;
+}
+
+

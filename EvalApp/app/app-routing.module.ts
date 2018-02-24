@@ -12,6 +12,7 @@ const routes: Routes = [
     { path: "training", loadChildren: "./training/training.module#TrainingModule" },
     { path: "trial", loadChildren: "./trial/trial.module#TrialModule" },
     { path: "evalEntry", loadChildren: "./evalEntryView/evalEntry.module#EvalEntryModule" },
+    { path: "summary", loadChildren: "./summary/summary.module#SummaryModule" },
     { path: "ota", loadChildren: "./featured/featured.module#FeaturedModule" },
     { path: "demos", loadChildren: "./demos/demos.module#DemosModule" },
     { path: "faq", loadChildren: "./faq/faq.module#FAQModule" },

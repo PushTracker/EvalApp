@@ -1,0 +1,16 @@
+<ActionBar class="action-bar">
+  <Label class="action-bar-title" text="Summary"></Label>
+</ActionBar>
+
+<ScrollView class="page page-content" orientation="vertical" tkMainContent>
+  <StackLayout>
+    <Label text="Post-Trial Questions"></Label>
+    <Label text="Congratulations, you're done!"></Label>
+
+    <StackLayout orientation="horizontal">
+      <Button (tap)="onBack()" text="Back" class="firmWareCheckButton"></Button>
+      <Button (tap)="onNext()" text="Finish" class="firmWareCheckButton"></Button>
+    </StackLayout>
+
+  </StackLayout>
+</ScrollView>
