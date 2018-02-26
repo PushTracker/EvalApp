@@ -4,7 +4,7 @@
 
 <StackLayout class="page page-content" tkMainContent>
 
-  <Carousel indicatorColor="#66ccff" indicatorColorUnselected="#cceeff">
+  <Carousel ios:indicatorOffset="0,10" indicatorColor="#66ccff" indicatorColorUnselected="#cceeff">
     <CarouselItem  *ngFor="let slide of slides">
       <GridLayout rows="auto, *, auto" cols="*">
 	<StackLayout row="0" class="topSlide" orientation="vertical" horizontalAlignment="center">

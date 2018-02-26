@@ -8,40 +8,7 @@ import { RouterExtensions } from "nativescript-angular/router";
     selector: "Training",
     moduleId: module.id,
     templateUrl: "./training.component.html",
-    styles: [`
-
-      Image {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        width: 50%;
-        height: auto;
-    }
-
-
-      .slide-indicator-inactive{
-          background-color: #fff;
-          opacity : 0.4;
-          width : 10;
-          height : 10;
-          margin-left : 2.5;
-          margin-right : 2.5;
-          margin-top : 0;
-          border-radius : 5;
-      }
-
-      .slide-indicator-active{
-          background-color: #fff;
-          opacity : 0.9;
-          width : 10;
-          height : 10;
-          margin-left : 2.5;
-          margin-right : 2.5;
-          margin-top : 0;
-          border-radius : 5;
-      }
-
-    `]
+    styleUrls: ["./training.component.css"]
 })
 export class TrainingComponent implements OnInit {
     /* ***********************************************************
