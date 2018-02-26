@@ -11,9 +11,6 @@ import { confirm } from "ui/dialogs";
 
 import { EvaluationService } from "../shared/evaluation.service";
 
-import { registerElement } from "nativescript-angular/element-registry";
-registerElement("VideoPlayer", () => require("nativescript-videoplayer").Video);
-
 import { RouterExtensions } from "nativescript-angular/router";
 
 @Component({

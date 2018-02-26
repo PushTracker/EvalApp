@@ -21,18 +21,11 @@
   -->
 <RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
   <!--
-      Use the tkDrawerContent directive to display the content of the app drawer on this page.
-    -->
-  <StackLayout tkDrawerContent>
-    <MyDrawer [selectedPage]="'EvalEntry'"></MyDrawer>
-  </StackLayout>
-  
-  <!--
       Use the tkMainContent directive to display the content of the page when you have an app drawer.
     -->
 
   <StackLayout tkDrawerContent>
-    <MyDrawer [selectedPage]="'EvalEntry'"></MyDrawer>
+    <MyDrawer [selectedPage]="'Evaluation'"></MyDrawer>
   </StackLayout>
   
   <!--

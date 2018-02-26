@@ -2,9 +2,6 @@ import { Component, OnInit, ViewChild } from "@angular/core";
 import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-pro-ui/sidedrawer";
 import { RadSideDrawerComponent } from "nativescript-pro-ui/sidedrawer/angular";
 
-import { registerElement } from "nativescript-angular/element-registry";
-registerElement("VideoPlayer", () => require("nativescript-videoplayer").Video);
-
 import { LoadEventData, WebView } from "ui/web-view";
 
 @Component({
