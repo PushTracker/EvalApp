@@ -2,23 +2,48 @@
   <Label class="action-bar-title" text="Trial"></Label>
 </ActionBar>
 
-<StackLayout class="page page-content" tkMainContent>
+<StackLayout class="page page-content hero" tkMainContent>
 
-  <Carousel ios:indicatorOffset="0,10" indicatorColor="#66ccff" indicatorColorUnselected="#cceeff">
-    <CarouselItem  *ngFor="let slide of slides">
-      <GridLayout rows="auto, *, auto" cols="*">
-	<StackLayout row="0" class="topSlide" orientation="vertical" horizontalAlignment="center">
-	  <Image [src]="slide.Image" stretch="aspectFit"></Image>
-	</StackLayout>
-        <StackLayout row="1" class="lowerSlide" orientation="vertical" horizontalAlignment="center">
-          <Label [text]="slide.Label" class="slideLowerLabel" textWrap="true"></Label>
-          <Label [text]="slide.Description" class="slideDescription" textWrap="true"></Label>
+  <Carousel ios:indicatorOffset="0,-10" indicatorColor="#66ccff" indicatorColorUnselected="#cceeff">
+    <CarouselItem *ngFor="let slide of slides">
+      <GridLayout background="#fff" rows="auto, *, auto" cols="*">
+        <StackLayout row="0" class="topSlide" orientation="horizontal" horizontalAlignment="center">
+          <Image [src]="slide.Image" stretch="aspectFit"></Image>
         </StackLayout>
-	<Button row="2" *ngIf="slides.indexOf(slide) == (slides.length-1)" text="Next" (tap)="onNext()"></Button>
-	<Button row="2" *ngIf="slides.indexOf(slide) == 0" text="Back" (tap)="onBack()"></Button>
+        <StackLayout class="hero" row="1" class="lowerSlide" orientation="vertical" horizontalAlignment="center">
+          <Label [text]="slide.Label" class="slideLowerLabel" textWrap="true"></Label>
+
+          <Label [text]="slide.Description" class="slideDescription" textWrap="true"></Label>
+
+
+          <button row="0" col="1" text="Start" class="start-button"></button>
+
+
+
+          <GridLayout background="darkgray" rows="auto, auto" columns="auto, *, auto, *">
+            <Label row="0" col="0" text="Pushes:" class="value-label-left" textWrap="true"></Label>
+            <Label row="0" col="1" text="300" class="value-left" textWrap="true"></Label>
+            <Label row="0" col="2" text="Coast Time:" class="value-label-right" textWrap="true"></Label>
+            <Label row="0" col="3" text=" 0.0" class="value-right" textWrap="true"></Label>
+          </GridLayout>
+
+          <GridLayout background="darkgray" rows="auto, auto" columns="auto, *, auto, *">
+              <Label row="0" col="0" text="Time:" class="value-label-left" textWrap="true"></Label>
+              <Label row="0" col="1" text="5min" class="value-left" textWrap="true"></Label>
+              <Label row="0" col="2" text="Distance:" class="value-label-right" textWrap="true"></Label>
+              <Label row="0" col="3" text=" 0.0m" class="value-right" textWrap="true"></Label>
+            </GridLayout>
+
+
+
+
+
+          <Button row="2" *ngIf="slides.indexOf(slide) == (slides.length-1)" text="Next" (tap)="onNext()"></Button>
+          <Button row="2" *ngIf="slides.indexOf(slide) == 0" text="Back" (tap)="onBack()"></Button>
+        </StackLayout>
+
       </GridLayout>
     </CarouselItem>
   </Carousel>
 
 </StackLayout>
-

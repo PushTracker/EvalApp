@@ -58,15 +58,17 @@ ActionBar .action-bar-title {
 .slideLowerLabel{
     text-align: center;
     width: 100%;
+    font-family: $os-Light;
     font-size: 35;
-    margin-top: 35;
-      color: #fff;
+    margin-top: 20;
+    color: #fff;
 }
 .slideDescription {
       color: #fff;
-      font-size:13;
+      font-family: $os-SemiBold;
+      font-size:15;
       text-align:center;
-      margin:20
+      margin:20,20, 10, 20;
 }
 
 .topSlide{

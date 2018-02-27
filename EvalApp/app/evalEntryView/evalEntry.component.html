@@ -32,46 +32,60 @@
       Use the tkMainContent directive to display the content of the page when you have an app drawer.
     -->
   <ScrollView class="page page-content" orientation="vertical" tkMainContent>
-    <StackLayout>
-      <DockLayout stretchLastChild="false">
-        <Label text="User states pain from pushing:" class="settings-item" dock="left"></Label>
-        <SegmentedBar [items]="PushingPain" [selectedIndex]="getPushingPainIndex()" class="settings-segmentedBar" dock="right" (selectedIndexChanged)="onPushingPainIndexChange($event)"></SegmentedBar>
+    <StackLayout class="eval-stack-layout">
+      <DockLayout stretchLastChild="false" >
+        <Label text="User states pain from pushing:" class="eval-item" dock="left"></Label>
+        <SegmentedBar [items]="PushingPain" [selectedIndex]="getPushingPainIndex()" class="eval-segmentedBar" dock="right" (selectedIndexChanged)="onPushingPainIndexChange($event)"></SegmentedBar>
       </DockLayout>
       <DockLayout stretchLastChild="false">
-        <Label text="User States x/10 pain:" class="settings-item" ></Label>
-        <Label verticalAlignment="center" dock="right" class="settings-slider-value-label" style="min-width: 50" [text]="settings.pain.toFixed(0)+'%'" row="0" col="1"></Label>
+        <Label text="User States x/10 pain:" class="eval-item" ></Label>
+        <Label verticalAlignment="center" dock="right" class="eval-slider-value-label" style="min-width: 50" [text]="settings.pain.toFixed(0)+'%'" row="0" col="1"></Label>
       </DockLayout>
       <GridLayout rows="auto" columns="*, auto">
-        <Slider verticalAlignment="center" class="settings-slider" [value]="settings.pain" (valueChange)="onSliderUpdate('pain', $event)" row="0" col="0"></Slider>
+        <Slider verticalAlignment="center" class="eval-slider" [value]="settings.pain" (valueChange)="onSliderUpdate('pain', $event)" row="0" col="0"></Slider>
       </GridLayout>
 
-      <DockLayout stretchLastChild="false">
-        <Label text="User states fatigue from pushing:" class="settings-item" dock="left"></Label>
-        <SegmentedBar [items]="PushingFatigue" [selectedIndex]="getPushingFatigueIndex()" class="settings-segmentedBar" dock="right" (selectedIndexChanged)="onPushingFatigueIndexChange($event)"></SegmentedBar>
+      <DockLayout stretchLastChild="false" padding="30,0,0,0">
+        <Label text="User states fatigue from pushing:" class="eval-item" dock="left"></Label>
+        <SegmentedBar [items]="PushingFatigue" [selectedIndex]="getPushingFatigueIndex()" class="eval-segmentedBar" dock="right" (selectedIndexChanged)="onPushingFatigueIndexChange($event)"></SegmentedBar>
       </DockLayout>
       <DockLayout stretchLastChild="false">
-        <Label text="User States x/10 fatigue:" class="settings-item" ></Label>
-        <Label verticalAlignment="center" dock="right" class="settings-slider-value-label" style="min-width: 50" [text]="settings.fatigue.toFixed(0)+'%'" row="0" col="1"></Label>
+        <Label text="User states x/10 fatigue:" class="eval-item" ></Label>
+        <Label verticalAlignment="center" dock="right" class="eval-slider-value-label" style="min-width: 50" [text]="settings.fatigue.toFixed(0)+'%'" row="0" col="1"></Label>
       </DockLayout>
       <GridLayout rows="auto" columns="*, auto">
-        <Slider verticalAlignment="center" class="settings-slider" [value]="settings.fatigue" (valueChange)="onSliderUpdate('fatigue', $event)" row="0" col="0"></Slider>
+        <Slider verticalAlignment="center" class="eval-slider" [value]="settings.fatigue" (valueChange)="onSliderUpdate('fatigue', $event)" row="0" col="0"></Slider>
       </GridLayout>
 
-      <DockLayout stretchLastChild="false">
-        <Label text="User States impact on independence:" class="settings-item" ></Label>
-        <Label verticalAlignment="center" dock="right" class="settings-slider-value-label" style="min-width: 50" [text]="settings.independence.toFixed(0)+'%'" row="0" col="1"></Label>
+      <DockLayout stretchLastChild="false" padding="30,0,0,0">
+        <Label text="User states impact on independence:" class="eval-item" ></Label>
+        <Label verticalAlignment="center" dock="right" class="eval-slider-value-label" style="min-width: 50" [text]="settings.independence.toFixed(0)+'%'" row="0" col="1"></Label>
       </DockLayout>
       <GridLayout rows="auto" columns="*, auto">
-        <Slider verticalAlignment="center" class="settings-slider" [value]="settings.independence" (valueChange)="onSliderUpdate('independence', $event)" row="0" col="0"></Slider>
+        <Slider verticalAlignment="center" class="eval-slider" [value]="settings.independence" (valueChange)="onSliderUpdate('independence', $event)" row="0" col="0"></Slider>
       </GridLayout>
 
+      <DockLayout stretchLastChild="false" padding="30,0,0,0">
+        <Label text="Years in manual chair:" class="eval-item" ></Label>
+        <Label verticalAlignment="center" text="Select" dock="right" class="eval-slider-value-label" style="min-width: 50" row="0" col="1"></Label>
+        <!-- <ListPicker [items]="timeFrames" selectedIndex="0" (selectedIndexChange)="selectedIndexChanged($event)" class="p-15"></ListPicker> -->
 
-      <GridLayout rows="auto" columns="*, auto">
-        <VideoPlayer   src="~/videos/small.mp4" autoplay="false" height="231">
+      </DockLayout>
+
+      <DockLayout stretchLastChild="false" padding="30,0,0,0">
+        <Label text="Type of chair:" class="eval-item" ></Label>
+        <Label verticalAlignment="center" text="Select" dock="right" class="eval-slider-value-label" style="min-width: 50" row="0" col="1"></Label>
+        <!-- <ListPicker [items]="timeFrames" selectedIndex="0" (selectedIndexChange)="selectedIndexChanged($event)" class="p-15"></ListPicker> -->
+
+      </DockLayout>
+
+
+      <GridLayout rows="auto" columns="*, auto" >
+        <VideoPlayer class="videoPlayer"  src="~/videos/Lesson_small.mov" autoplay="false" height="231" width="auto">
         </VideoPlayer>
       </GridLayout>
 
-      <Button (tap)="onNext()" text="Next" class="firmWareCheckButton"></Button>
+      <Button (tap)="onNext()" text="Next" class="nextButton"></Button>
 
     </StackLayout>
   </ScrollView>

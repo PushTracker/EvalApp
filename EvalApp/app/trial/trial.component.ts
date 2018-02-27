@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-pro-ui/sidedrawer";
 import { RadSideDrawerComponent } from "nativescript-pro-ui/sidedrawer/angular";
+import { SegmentedBar, SegmentedBarItem } from "ui/segmented-bar";
 
 import { RouterExtensions } from "nativescript-angular/router";
 
@@ -8,7 +9,7 @@ import { RouterExtensions } from "nativescript-angular/router";
     selector: "Trial",
     moduleId: module.id,
     templateUrl: "./trial.component.html",
-    styleUrls: ["./trial.component.css"],
+    styleUrls: ["./trial.component.css"]
 })
 export class TrialComponent implements OnInit {
     /* ***********************************************************
@@ -17,42 +18,27 @@ export class TrialComponent implements OnInit {
     *************************************************************/
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
 
-    public slides = [
-	{
-	"Image": "~/images/PowerOn.jpg",
-	"Label": "Powering SmartDrive",
-	"Description": "It is important to learn how to do a proper tapping technique."
-    },
-	{
-	"Image": "~/images/BandPower.jpg",
-	"Label": "Powering PushTracker",
-	"Description": "It is important to learn how to do a proper tapping technique."
-    },
-	{
-	"Image": "~/images/Tapping.jpg",
-	"Label": "Tap Gesture",
-	"Description": "It is important to learn how to do a proper tapping technique."
-    },
-	{
-	"Image": "~/images/Steer.jpg",
-	"Label": "Steering",
-	"Description": "It is important to learn how to do a proper tapping technique."
-    },
-	{
-	"Image": "~/images/turn.jpg",
-	"Label": "Turning",
-	"Description": "It is important to learn how to do a proper tapping technique."
-    },
-	{
-	"Image": "~/images/Stop.jpg",
-	"Label": "Stopping",
-	"Description": "It is important to learn how to do a proper tapping technique."
-    },
-	{
-	"Image": "~/images/Stop2.jpg",
-	"Label": "More Stopping",
-	"Description": "It is important to learn how to do a proper tapping technique."
-    },
+    slides = [
+        {
+            Image: "~/images/stopwatch.jpg",
+            Label: "Flat Surface",
+            Description: "User will push 300 meters without SmartDrive."
+        },
+        {
+            Image: "~/images/stopwatch.jpg",
+            Label: "Ramp",
+            Description: "User will push up a ramp."
+        },
+        {
+            Image: "~/images/stopwatch.jpg",
+            Label: "Carpet",
+            Description: "Fill in:."
+        },
+        {
+            Image: "~/images/stopwatch.jpg",
+            Label: "Other",
+            Description: "Fill in:."
+        }
     ];
 
     private _sideDrawerTransition: DrawerTransitionBase;
@@ -61,7 +47,7 @@ export class TrialComponent implements OnInit {
     }
 
     // button events
-    public onNext(): void {
+    onNext(): void {
         this.routerExtensions.navigate(["/summary"], {
             transition: {
                 name: "slide"
@@ -69,7 +55,7 @@ export class TrialComponent implements OnInit {
         });
     }
 
-    public onBack(): void {
+    onBack(): void {
         this.routerExtensions.navigate(["/training"], {
             transition: {
                 name: "slideRight"

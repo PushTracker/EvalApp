@@ -17,42 +17,54 @@ export class TrainingComponent implements OnInit {
     *************************************************************/
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
 
-    public slides = [
-	{
-	"Image": "~/images/PowerOn.jpg",
-	"Label": "Powering SmartDrive",
-	"Description": "It is important to learn how to do a proper tapping technique."
-    },
-	{
-	"Image": "~/images/BandPower.jpg",
-	"Label": "Powering PushTracker",
-	"Description": "It is important to learn how to do a proper tapping technique."
-    },
-	{
-	"Image": "~/images/Tapping.jpg",
-	"Label": "Tap Gesture",
-	"Description": "It is important to learn how to do a proper tapping technique."
-    },
-	{
-	"Image": "~/images/Steer.jpg",
-	"Label": "Steering",
-	"Description": "It is important to learn how to do a proper tapping technique."
-    },
-	{
-	"Image": "~/images/turn.jpg",
-	"Label": "Turning",
-	"Description": "It is important to learn how to do a proper tapping technique."
-    },
-	{
-	"Image": "~/images/Stop.jpg",
-	"Label": "Stopping",
-	"Description": "It is important to learn how to do a proper tapping technique."
-    },
-	{
-	"Image": "~/images/Stop2.jpg",
-	"Label": "More Stopping",
-	"Description": "It is important to learn how to do a proper tapping technique."
-    },
+    slides = [
+        {
+            Image: "~/images/PowerOn.jpg",
+            Label: "Powering SmartDrive",
+            Description: "Press back on the rocker switch to power on the SmartDrive, and forward to power off."
+        },
+        {
+            Image: "~/images/BandPower.jpg",
+            Label: "Powering PushTracker",
+            // tslint:disable-next-line:max-line-length
+            Description: "Press the left raised button on the PushTracker to power on. Press and hold for 3 secconds to enter sleep mode 'zzz' and pwer off."
+        },
+        {
+            Image: "~/images/Tapping.jpg",
+            Label: "Tap Gesture",
+            Description: "It is important to learn how to do a proper tapping technique.",
+            // tslint:disable-next-line:max-line-length
+            Bullet_1: "Keeping your wrist straight, make contact on the pushrim with the palm of your hand. A red light will alluminate upon succesful tap.",
+            Bullet_2: "Double-tap to initiate the SmartDrive. It will then begin to accellerate.",
+            Bullet_3: "Then, single-tap to set your desired speed.",
+            Bullet_4: "Tip: You don't need to make contact with the PushTracker band.",
+            // tslint:disable-next-line:max-line-length
+            Bullet_5: "Tip: Avoid moving your hand in a 'fishtail' like motion. This will lead to inconsistant tap recognition."
+        },
+        {
+            Image: "~/images/Steer.jpg",
+            Label: "Steering",
+            Description: "To steer, gently grip the pushrim of the direction you want to go.",
+            Bullet_1: "Light grip will allow you to veer.",
+            Bullet_2: "Allow the pushrim to slide through your hands."
+        },
+        {
+            Image: "~/images/turn.jpg",
+            Label: "Turning",
+            Description: "To turn, firmly grip the pushrim of the direction you want to go.",
+            Bullet_1: "Firm grip will allow you to turn.",
+            Bullet_2: "The tighter you grip, the sharper you will turn.",
+            // tslint:disable-next-line:max-line-length
+            Bullet_3: "Tip: An optimal center of gravity position of the reer wheels will reduce the grip needed to make sharp turns."
+        },
+        {
+            Image: "~/images/Stop.jpg",
+            Label: "Stopping",
+            Description: "Double-tap to disengage the SmartDrive.",
+            Bullet_1: "Then coast and break with your hands.",
+            Bullet_2: "Tip: To stop quickly, perform a single tap, then grip the pushrims. (needs work)"
+        }
+
     ];
 
     private _sideDrawerTransition: DrawerTransitionBase;
@@ -61,7 +73,7 @@ export class TrainingComponent implements OnInit {
     }
 
     // button events
-    public onNext(): void {
+    onNext(): void {
         this.routerExtensions.navigate(["/trial"], {
             transition: {
                 name: "slide"
@@ -69,7 +81,7 @@ export class TrainingComponent implements OnInit {
         });
     }
 
-    public onBack(): void {
+    onBack(): void {
         this.routerExtensions.navigate(["/evalEntry"], {
             transition: {
                 name: "slideRight"

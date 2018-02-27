@@ -1,13 +1,8 @@
 // Custom common variables
 @import '../app-variables';
 
-.settings-stack-layout{
-margin: 20, 0, 20, 0;
-}
-
-#DockLayout{
-    margin: 30, 0 ,30, 0;
-    padding: 20,10,20,10;
+.eval-stack-layout{
+margin: 25, 10, 50, 10;
 }
 
 .action-item {
@@ -16,36 +11,36 @@ margin: 20, 0, 20, 0;
     text-transform: none;
 }
 
-.settings-item {
+.eval-item {
     vertical-align: center;
     text-overflow: none;
     word-wrap: normal;
     color: $permobil-ocean;
-    font-weight: 500;
-    margin: 10, 10, 10, 10;
+    font-family: $os-Light;
+    margin: 5, 0, 5, 0;
 }
 
-.settings-slider-label {
+.eval-slider-label {
     color: $permobil-ocean;
-    font-weight: 500;
-    margin: 10, 10, 10, 20;
+    font-family: $os-Light;
+    margin: 5, 0, 5, 0;
 }
 
-.settings-slider-value-label {
+.eval-slider-value-label {
     color: $permobil-ocean;
-    font-weight: 500;
-    margin: 10, 0, 10, 20;
+    font-family: $os-Light;
+    margin: 5, 0, 5, 0;
 }
 
-.settings-slider {
-    margin: 0, 10, 0, 10;
+.eval-slider {
+    margin: 0;
     color: $permobil-ocean;
     background-color: $permobil-ocean;
 }
 
-.settings-segmentedBar{
+.eval-segmentedBar{
     selected-background-color: $permobil-ocean;
-    margin: 10, 10, 10, 10;
+    margin: 5, 0, 5, 0;
     color: $permobil-ocean;
 }
 
@@ -56,18 +51,19 @@ margin: 20, 0, 20, 0;
     font-weight: bold;
 }
 
-.colorButton{
-    width: 250;
-    height: 25;
-    border-style: solid;
-    border-width: 2px;
-    border-color: #b6b6b6;
-    border-radius: 10;
-    margin: 0, 10, 0, 10;
+.nextButton{
+    width: 150;
+    height: 40; 
+    color: #fff;
+    background-color: $permobil-ocean;
+    border-radius: 2;
+    margin: 50, 10, 0, 10;
 }
 
-.colorOption-dock-layout{
-    margin: 10, 0, 0, 0;
+.videoPlayer{
+    background: $permobil-charcoal;
+    margin: 30, 0, 0, 0;
+    border-radius: 5;
 }
 
 

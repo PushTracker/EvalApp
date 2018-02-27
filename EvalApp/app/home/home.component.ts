@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit {
         // tslint:disable-next-line:max-line-length
         {Title: "Videos", Image: String.fromCharCode(0xf008), Description: "Training videos and Lessons", Route: "/videos"},
         // tslint:disable-next-line:max-line-length
-        {Title: "Eval", Image: String.fromCharCode(0xf0ae), Description: "Walkthrough an evaluation and generate an LMN.", Route: "/evalEntry"},
+        {Title: "Eval", Image: String.fromCharCode(0xf0ae), Description: "Walk-through evaluation and generate an LMN", Route: "/evalEntry"},
         {Title: "OTA", Image: String.fromCharCode(0xf019), Description: "Over the Air Firmware Updates", Route: "/ota"},
         // tslint:disable-next-line:max-line-length
         {Title: "Demos", Image: String.fromCharCode(0xf02a), Description: "Fleet management and Tracking.", Route: "/demos"},

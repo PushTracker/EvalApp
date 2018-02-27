@@ -1,17 +1,31 @@
 // Custom common variables
 @import '../app-variables';
 
+.hero{
+    background-color: $permobil-hero;
+}
+
+.hero{
+    background-color: $permobil-hero;
+}
+
+.top{
+
+    background: #fff;
+}
+
 Button, TextField {
   margin-left: 16;
   margin-right: 16;
   margin-bottom: 10;  
 }
-.submit-button {
-  background-color: $permobil-ocean;
-  color: white;
-  padding: 10;
-  margin-top: 20;
-  border-radius: 2;
+.start-button{
+    width: 150;
+    height: 40; 
+    color: #fff;
+    background-color: $permobil-ocean;
+    border-radius: 2;
+    margin: 50, 10, 10, 10;
 }
 
 Image {
@@ -21,6 +35,62 @@ Image {
     width: 50%;
     height: auto;
 }
+
+.icon{
+    font-size: 30em;
+    padding: 10;
+    color: $permobil-ocean;
+    text-shadow: 5px, 5px, 5px, $permobil-icon-shadow-orange;
+}
+
+.bullet{
+    color: #fff;
+    font-family: $os-Light;
+    font-size:13;
+    text-align:left;
+    margin:10, 20, 0, 20;
+}
+
+.value-label-left{
+    background: black;
+    text-align: left;
+    font-family: $os-Light;
+    font-size: 20;
+    margin: 10, 10, 10, 15;
+    color: #fff;
+}
+
+.value-left{
+
+    background: black;
+    text-align: left;
+    width: 100%;
+    font-family: $os-Light;
+    font-size: 20;
+    margin: 10, 20, 10, 10;
+    color: #fff;
+}
+
+.value-label-right{
+    background: black;
+    text-align: left;
+    font-family: $os-Light;
+    font-size: 20;
+    margin: 10, 10, 10, 15;
+    color: #fff;
+}
+
+.value-right{
+
+    background: black;
+    text-align: left;
+    width: 100%;
+    font-family: $os-Light;
+    font-size: 20;
+    margin: 10, 20, 10, 10;
+    color: #fff;
+}
+
 
 .slide-indicator-inactive{
     background-color: #fff;

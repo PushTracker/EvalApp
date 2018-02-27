@@ -6,12 +6,17 @@ import { RadSideDrawerComponent } from "nativescript-pro-ui/sidedrawer/angular";
 
 import { SegmentedBar, SegmentedBarItem } from "ui/segmented-bar";
 
+import { ListPicker } from "ui/list-picker";
+
 import { Observable } from "data/observable";
 import { confirm } from "ui/dialogs";
 
 import { EvaluationService } from "../shared/evaluation.service";
 
 import { RouterExtensions } from "nativescript-angular/router";
+
+let timeInChair = ["1", "2", "3", "4", "5+",
+    "10+", "20+", "30+"];
 
 @Component({
     selector: "EvalEntry",
@@ -32,6 +37,9 @@ export class EvalEntryComponent implements OnInit {
 
     public isIOS: boolean = false;
     public isAndroid: boolean = false;
+
+    public timeFrames: Array<string>;
+    public picked: string;
     
     // private members
     private _sideDrawerTransition: DrawerTransitionBase;
@@ -48,7 +56,13 @@ export class EvalEntryComponent implements OnInit {
 	    const item = new SegmentedBarItem();
 	    item.title = o;
 	    this.PushingFatigue.push(item);
-	});
+    });
+    
+    this.timeFrames = [];
+
+        for (let i = 0; i < timeInChair.length; i++) {
+            this.timeFrames.push(timeInChair[i]);
+        }
     }
 
     public onSliderUpdate(key, args) {
@@ -62,6 +76,14 @@ export class EvalEntryComponent implements OnInit {
                 name: "slide"
             }
         });
+    }
+
+    //listPicker events
+    public selectedIndexChanged(args) {
+        let picker = <ListPicker>args.object;
+        console.log("picker selection: " + picker.selectedIndex);
+
+        this.picked = this.timeFrames[picker.selectedIndex];
     }
 
     // pushing pain
