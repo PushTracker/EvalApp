@@ -33,19 +33,12 @@
   <GridLayout class="page page-content" tkMainContent>
     <ListView class="list-group" [items]="demos" (itemTap)="onDemoTap($event)">
       <ng-template let-item="item">
-        <StackLayout orientation="horizontal" class="list-group-item">
+	<GridLayout columns="auto, auto, *" rows="auto, 25">
           <Image row="0" col="0" rowSpan="2" height="108" width="108" ios:src="~/images/SmartDrive.JPG" android:src="~/images/SmartDrive.jpg" stretch="aspectFit"></Image>
-          <GridLayout class="list-group-item" rows="auto *" columns="*">
-	    <StackLayout row="0" col="0" orientation="horizontal">
-              <Label text="Serial Number:" class="list-group-item-heading heading"></Label>
-              <Label [text]="item.SerialNumber" class="list-group-item-heading heading"></Label>
-	    </StackLayout>
-	    <StackLayout row="1" col="0" orientation="horizontal">
-              <Label text="Last Used:" class="features description" textWrap="true"></Label>
-              <Label [text]="item.LastUsed" class="features description" textWrap="true"></Label>
-	    </StackLayout>
-          </GridLayout>
-        </StackLayout>
+	  <Label text="S/N:" textWrap="true" row="0" col="1" fontSize="20"></Label>
+	  <Label [text]="item.SerialNumber" row="0" col="2" fontSize="24" horizontalAlignment="right" verticalAlignment="center"></Label>
+	  <Label [text]="item.LastUsed" row="1" col="2" color="#10C2B0" fontSize="14" verticalAlignment="bottom" margin="3"></Label>
+	</GridLayout>	
       </ng-template>
     </ListView>
   </GridLayout>

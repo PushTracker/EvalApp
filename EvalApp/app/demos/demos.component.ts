@@ -16,7 +16,7 @@ export class DemosComponent implements OnInit {
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
 
     public demos = [
-	{ SerialNumber: "11000", LastUsed: new Date(1988, 11, 23) },
+	{ SerialNumber: "11000", LastUsed: new Date(1988, 10, 23) },
 	{ SerialNumber: "11001", LastUsed: new Date() },
 	{ SerialNumber: "11002", LastUsed: new Date() },
 	{ SerialNumber: "11003", LastUsed: new Date() },
