@@ -11,32 +11,44 @@
           <Image [src]="slide.Image" stretch="aspectFit"></Image>
         </StackLayout>
         <StackLayout class="hero" row="1" class="lowerSlide" orientation="vertical" horizontalAlignment="center">
+          //Heading and description
           <Label [text]="slide.Label" class="slideLowerLabel" textWrap="true"></Label>
-
           <Label [text]="slide.Description" class="slideDescription" textWrap="true"></Label>
 
+          //Trial Name
+          <StackLayout class="input-field">
+            <TextField hint="Enter trial name" autocorrect="false" (textChange)="onTextChange($event)" (returnPress)="onReturn($event)"
+              class="trial-name-textfield"></TextField>
+          </StackLayout>
 
-          <button row="0" col="1" text="Start" class="start-button"></button>
+          //Trial options
+          <StackLayout class="trial-stack-layout">
+            <DockLayout class="dockLayout-options" stretchLastChild="false">
+              <Label text="Flat Surfaces" class="trial-item" dock="left"></Label>
+              <Switch dock="right"></Switch>
+            </DockLayout>
+            <DockLayout stretchLastChild="false">
+              <Label text="Ramp" class="trial-item" dock="left"></Label>
+              <Switch dock="right"></Switch>
+            </DockLayout>
+            <DockLayout stretchLastChild="false">
+              <Label text="Inclines" class="trial-item" dock="left"></Label>
+              <Switch dock="right"></Switch>
+            </DockLayout>
+            <DockLayout stretchLastChild="false">
+              <Label text="Other" class="trial-item" dock="left"></Label>
+              <Switch dock="right"></Switch>
+            </DockLayout>
+            <!-- <DockLayout stretchLastChild="false">
+                <Label text="User States x/10 pain:" class="eval-item" ></Label>
+                <Label verticalAlignment="center" dock="right" class="eval-slider-value-label" style="min-width: 50" [text]="settings.pain.toFixed(0)+'%'" row="0" col="1"></Label>
+              </DockLayout>
+              <GridLayout rows="auto" columns="*, auto">
+                <Slider verticalAlignment="center" class="eval-slider" [value]="settings.pain" (valueChange)="onSliderUpdate('pain', $event)" row="0" col="0"></Slider>
+              </GridLayout> -->
+          </StackLayout>
 
-
-
-          <GridLayout background="darkgray" rows="auto, auto" columns="auto, *, auto, *">
-            <Label row="0" col="0" text="Pushes:" class="value-label-left" textWrap="true"></Label>
-            <Label row="0" col="1" text="300" class="value-left" textWrap="true"></Label>
-            <Label row="0" col="2" text="Coast Time:" class="value-label-right" textWrap="true"></Label>
-            <Label row="0" col="3" text=" 0.0" class="value-right" textWrap="true"></Label>
-          </GridLayout>
-
-          <GridLayout background="darkgray" rows="auto, auto" columns="auto, *, auto, *">
-              <Label row="0" col="0" text="Time:" class="value-label-left" textWrap="true"></Label>
-              <Label row="0" col="1" text="5min" class="value-left" textWrap="true"></Label>
-              <Label row="0" col="2" text="Distance:" class="value-label-right" textWrap="true"></Label>
-              <Label row="0" col="3" text=" 0.0m" class="value-right" textWrap="true"></Label>
-            </GridLayout>
-
-
-
-
+          <button row="0" col="1" text="Begin" class="start-button"></button>
 
           <Button row="2" *ngIf="slides.indexOf(slide) == (slides.length-1)" text="Next" (tap)="onNext()"></Button>
           <Button row="2" *ngIf="slides.indexOf(slide) == 0" text="Back" (tap)="onBack()"></Button>

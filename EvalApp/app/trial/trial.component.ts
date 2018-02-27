@@ -3,6 +3,10 @@ import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-pro-u
 import { RadSideDrawerComponent } from "nativescript-pro-ui/sidedrawer/angular";
 import { SegmentedBar, SegmentedBarItem } from "ui/segmented-bar";
 
+import { TextField } from "ui/text-field";
+
+import * as switchModule from "tns-core-modules/ui/switch";
+
 import { RouterExtensions } from "nativescript-angular/router";
 
 @Component({
@@ -21,8 +25,8 @@ export class TrialComponent implements OnInit {
     slides = [
         {
             Image: "~/images/stopwatch.jpg",
-            Label: "Flat Surface",
-            Description: "User will push 300 meters without SmartDrive."
+            Label: "Trial Set-up",
+            Description: "Select options and settings for SmartDrive trial."
         },
         {
             Image: "~/images/stopwatch.jpg",
@@ -41,12 +45,14 @@ export class TrialComponent implements OnInit {
         }
     ];
 
+    trialName: string = "";
+
     private _sideDrawerTransition: DrawerTransitionBase;
 
     constructor(private routerExtensions: RouterExtensions) {
     }
 
-    // button events
+    // button events    
     onNext(): void {
         this.routerExtensions.navigate(["/summary"], {
             transition: {
@@ -61,6 +67,27 @@ export class TrialComponent implements OnInit {
                 name: "slideRight"
             }
         });
+    }
+    onTextChange(args) {
+        const textField = <TextField>args.object;
+
+        console.log("onTextChange");
+        this.trialName = textField.text;
+    }
+
+    onReturn(args) {
+        const textField = <TextField>args.object;
+
+        console.log("onReturn");
+        this.trialName = textField.text;
+    }
+
+    showAlert(result) {
+        alert("Text: " + result);
+    }
+
+    submit(result) {
+        alert("Text: " + result);
     }
 
     /* ***********************************************************
