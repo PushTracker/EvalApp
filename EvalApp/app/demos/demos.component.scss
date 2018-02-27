@@ -1,0 +1,30 @@
+// Custom common variables
+@import '../app-variables';
+
+.icon{
+    font-size: 75em;
+    padding: 15, 0, 0 ,15;
+    color: $permobil-ocean;
+    text-shadow: 5px, 5px, 5px, $permobil-icon-shadow-orange;
+}
+
+.heading{
+    font-family: $os-SemiBold;
+    text-align: left;
+    font-size: 20;
+    padding: 5;
+    color: $permobil-charcoal;
+}
+
+.description{
+    font-family: $os-Light;
+    color: $permobil-charcoal;
+    background: #fff;
+    padding: 0;
+}
+
+NavigationButton{
+    width: 35;
+    height: 35;
+    padding: 15, 0, 0 ,15;
+}

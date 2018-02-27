@@ -5,7 +5,8 @@ import { RadSideDrawerComponent } from "nativescript-pro-ui/sidedrawer/angular";
 @Component({
     selector: "Demos",
     moduleId: module.id,
-    templateUrl: "./demos.component.html"
+    templateUrl: "./demos.component.html",
+    styleUrls: ["./demos.component.css"]
 })
 export class DemosComponent implements OnInit {
     /* ***********************************************************
@@ -14,7 +15,20 @@ export class DemosComponent implements OnInit {
     *************************************************************/
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
 
+    public demos = [
+	{ SerialNumber: "11000", LastUsed: new Date(1988, 11, 23) },
+	{ SerialNumber: "11001", LastUsed: new Date() },
+	{ SerialNumber: "11002", LastUsed: new Date() },
+	{ SerialNumber: "11003", LastUsed: new Date() },
+    ];
+
     private _sideDrawerTransition: DrawerTransitionBase;
+
+    // functions
+
+    public onDemoTap(args): void {
+	
+    }
 
     /* ***********************************************************
     * Use the sideDrawerTransition property to change the open/close animation of the drawer.
