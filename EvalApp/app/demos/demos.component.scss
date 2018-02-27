@@ -2,10 +2,17 @@
 @import '../app-variables';
 
 .icon{
-    font-size: 75em;
-    padding: 15, 0, 0 ,15;
+    font-size: 20em;
+    padding: 0, 0, 0, 15;
     color: $permobil-ocean;
-    text-shadow: 5px, 5px, 5px, $permobil-icon-shadow-orange;
+    horizontal-align: center;
+}
+
+.info{
+    font-family: $os-SemiBold;
+    padding: 0, 0, 0, 15;
+    color: $permobil-charcoal;
+    font-size: 20em;
 }
 
 .heading{
