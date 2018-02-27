@@ -34,7 +34,7 @@
     <ListView class="list-group" [items]="demos" (itemTap)="onDemoTap($event)">
       <ng-template let-item="item">
         <StackLayout orientation="horizontal" class="list-group-item">
-          <Image row="0" col="0" rowSpan="2" height="108" width="108" src="~/images/SmartDrive.JPG" stretch="aspectFit"></Image>
+          <Image row="0" col="0" rowSpan="2" height="108" width="108" ios:src="~/images/SmartDrive.JPG" android:src="~/images/SmartDrive.jpg" stretch="aspectFit"></Image>
           <GridLayout class="list-group-item" rows="auto *" columns="*">
 	    <StackLayout row="0" col="0" orientation="horizontal">
               <Label text="Serial Number:" class="list-group-item-heading heading"></Label>
