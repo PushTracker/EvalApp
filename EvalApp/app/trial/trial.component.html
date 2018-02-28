@@ -8,7 +8,7 @@
     <CarouselItem *ngFor="let slide of slides">
       <GridLayout background="#fff" rows="auto, *, auto" cols="*">
         <StackLayout row="0" class="topSlide" orientation="horizontal" horizontalAlignment="center">
-          <Image [src]="slide.Image" stretch="aspectFit"></Image>
+          <Image [src]="slide.Image" stretch="aspectFit" width="100" height="100" margin="25"></Image>
         </StackLayout>
 
         //First Page: Configure Trial
@@ -107,11 +107,93 @@
                     </GridLayout>
             </StackLayout>
           </StackLayout>
-
-
-
-
         </ScrollView>
+
+          //Page 3 Without SmartDrive
+        <ScrollView row="1" *ngIf="slides.indexOf(slide) == 2">
+          <StackLayout class="hero" class="lowerSlide" orientation="vertical" horizontalAlignment="center">
+
+            //Heading and description
+            <Label [text]="slide.Label" class="slideLowerLabel" textWrap="true"></Label>
+            <Label [text]="slide.Label_2" class="slideLowerLabel_2" textWrap="true"></Label>
+            <Label [text]="slide.Description" class="slideDescription" textWrap="true"></Label>
+
+
+            <StackLayout class="input-field">
+
+                <button row="2"  text="Start" class="start-button" (tap)="onStartTrial()"></button>
+
+                //Data Fields
+                <GridLayout  rows="auto, auto" columns="auto, *, auto, *">
+                    <Label row="0" col="0" text="Pushes:" class="value-label-left" textWrap="true"></Label>
+                    <Label row="0" col="1" text="0" class="value-left" textWrap="true"></Label>
+                    <Label row="0" col="2" text="Coast Time:" class="value-label-right" textWrap="true"></Label>
+                    <Label row="0" col="3" text=" 0.0s" class="value-right" textWrap="true"></Label>
+                  </GridLayout>
+        
+                  <GridLayout  rows="auto, auto" columns="auto, *, auto, *">
+                      <Label row="0" col="0" text="Time:" class="value-label-left" textWrap="true"></Label>
+                      <Label row="0" col="1" text="0 min" class="value-left" textWrap="true"></Label>
+                      <Label row="0" col="2" text="Distance:" class="value-label-right" textWrap="true"></Label>
+                      <Label row="0" col="3" text=" 0.0m" class="value-right" textWrap="true"></Label>
+                    </GridLayout>
+            </StackLayout>
+          </StackLayout>
+        </ScrollView>
+
+        //Page 3 Without SmartDrive
+        <ScrollView row="1" *ngIf="slides.indexOf(slide) == 3">
+          <StackLayout class="hero" class="lowerSlide" orientation="vertical" horizontalAlignment="center">
+
+            //Heading and description
+            <Label [text]="slide.Label" class="slideLowerLabel" textWrap="true" ></Label>
+            <Label [text]="slide.Label_2" class="slideLowerLabel_2" textWrap="true"></Label>
+            <Label [text]="slide.Description" class="slideDescription" textWrap="true"></Label>
+
+
+            <StackLayout class="input-field">
+
+                //Data Fields with SmartDrive
+                <Label text="With SmartDrive" class="slideLowerLabel_2" textWrap="true" margin="20,0,0,0"></Label>
+                <GridLayout  rows="auto, auto" columns="auto, *, auto, *">
+                    <Label row="0" col="0" text="Pushes:" class="value-label-left" textWrap="true"></Label>
+                    <Label row="0" col="1" text="0" class="value-left" textWrap="true"></Label>
+                    <Label row="0" col="2" text="Coast Time:" class="value-label-right" textWrap="true"></Label>
+                    <Label row="0" col="3" text=" 0.0s" class="value-right" textWrap="true"></Label>
+                  </GridLayout>
+        
+
+                  <GridLayout  rows="auto, auto" columns="auto, *, auto, *" margin="0,0,30,0">
+                      <Label row="0" col="0" text="Time:" class="value-label-left" textWrap="true"></Label>
+                      <Label row="0" col="1" text="0 min" class="value-left" textWrap="true"></Label>
+                      <Label row="0" col="2" text="Distance:" class="value-label-right" textWrap="true"></Label>
+                      <Label row="0" col="3" text=" 0.0m" class="value-right" textWrap="true"></Label>
+                    </GridLayout>
+
+                    //Data Fields without SmartDrive
+                    <Label text="Without SmartDrive" class="slideLowerLabel_2" textWrap="true"></Label>
+                    <GridLayout  rows="auto, auto" columns="auto, *, auto, *">
+                        <Label row="0" col="0" text="Pushes:" class="value-label-left" textWrap="true"></Label>
+                        <Label row="0" col="1" text="0" class="value-left" textWrap="true"></Label>
+                        <Label row="0" col="2" text="Coast Time:" class="value-label-right" textWrap="true"></Label>
+                        <Label row="0" col="3" text=" 0.0s" class="value-right" textWrap="true"></Label>
+                      </GridLayout>
+            
+                      <GridLayout  rows="auto, auto" columns="auto, *, auto, *">
+                          <Label row="0" col="0" text="Time:" class="value-label-left" textWrap="true"></Label>
+                          <Label row="0" col="1" text="0 min" class="value-left" textWrap="true"></Label>
+                          <Label row="0" col="2" text="Distance:" class="value-label-right" textWrap="true"></Label>
+                          <Label row="0" col="3" text=" 0.0m" class="value-right" textWrap="true"></Label>
+                        </GridLayout>
+
+                        <button row="2"  text="Summary" class="start-button" (tap)="onNext()"></button>
+            </StackLayout>
+          </StackLayout>
+        </ScrollView>
+
+
+
+        
       </GridLayout>
     </CarouselItem>
   </Carousel>

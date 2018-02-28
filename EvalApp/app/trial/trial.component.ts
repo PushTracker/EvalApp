@@ -30,7 +30,7 @@ export class TrialComponent implements OnInit {
 
     slides = [
         {
-            Image: "~/images/stopwatch.jpg",
+            Image: "~/images/controls-4.png",
             Label: "Trial Set-Up",
             Description: "Select options and settings for SmartDrive trial.",
             Key: "setUp"
@@ -44,14 +44,15 @@ export class TrialComponent implements OnInit {
         },
         {
             Image: "~/images/stopwatch.jpg",
-            Label: "Carpet",
-            Description: "Fill in:.",
+            Label: "Phase 2",
+            Label_2: "Without SmartDrive",
+            Description: "Now perform the same course without Smart Drive.",
             Key: "end"
         },
         {
-            Image: "~/images/stopwatch.jpg",
-            Label: "Other",
-            Description: "Fill in:.",
+            Image: "~/images/checked-1.png",
+            Label: "Trial Complete",
+            Description: "Nice work!",
             Key: "summary"
         }
     ];
@@ -88,9 +89,8 @@ export class TrialComponent implements OnInit {
             okButtonText: "Connect",
             cancelButtonText: "Cancel"
         })
+            // tslint:disable-next-line:no-empty
             .then((result) => {
-            
-
 
             });
         }

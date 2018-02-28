@@ -14,6 +14,14 @@ export class Settings {
     maxSpeed: number = 50;
     accelerationRate: number = 30;
 
+    pushCount: number = 0;
+    coastTime: number = 0.0;
+    trialDistance: number = 0.0;
+    trialTime: number = 0.0;
+    pushesPercentDifference: number = 0.0;
+    coastPercentDifference: number = 0.0;
+
+
     // private members
 
     // functions
