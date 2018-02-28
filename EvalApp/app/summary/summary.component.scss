@@ -1,73 +1,160 @@
 // Custom common variables
 @import '../app-variables';
 
-.settings-stack-layout{
-margin: 20, 0, 20, 0;
+.hero{
+    background-color: $permobil-hero;
 }
 
-#DockLayout{
-    margin: 30, 0 ,30, 0;
-    padding: 20,10,20,10;
+.top{
+
+    background: #fff;
 }
 
-.action-item {
-    color: white;
-    font-size: 18;
-    text-transform: none;
+Button, TextField {
+  margin: 15, 15, 75, 15; 
 }
 
-.settings-item {
+.trial-stack-layout{
+    margin: 15, 10, 10, 10;
+    }
+
+.docklayout-options{
+    padding:5;
+}
+
+.trial-item {
     vertical-align: center;
     text-overflow: none;
     word-wrap: normal;
-    color: $permobil-ocean;
-    font-weight: 500;
-    margin: 10, 10, 10, 10;
+    color: #fff;
+    font-family: $os-Light;
+    margin: 5, 5, 5, 5;
+    padding: 10, 15, 10, 0;
 }
 
-.settings-slider-label {
+.trial-slider-label {
     color: $permobil-ocean;
-    font-weight: 500;
-    margin: 10, 10, 10, 20;
+    font-family: $os-Light;
+    margin: 5, 0, 0, 5;
 }
 
-.settings-slider-value-label {
-    color: $permobil-ocean;
-    font-weight: 500;
-    margin: 10, 0, 10, 20;
+.trial-slider-value-label {
+    color: #fff;
+    font-family: $os-Light;
+    margin: 5, 0, 5, 0;
 }
 
-.settings-slider {
-    margin: 0, 10, 0, 10;
+.trial-slider {
+    margin: 0, 5, 0, 5;
     color: $permobil-ocean;
     background-color: $permobil-ocean;
 }
 
-.settings-segmentedBar{
-    selected-background-color: $permobil-ocean;
-    margin: 10, 10, 10, 10;
-    color: $permobil-ocean;
-}
+.trial-name-textfield{
 
-.debug-label {
-    border-bottom-width: 2;
-    border-bottom-color: gray;
-    margin: 20;
-    font-weight: bold;
-}
-
-.colorButton{
-    width: 250;
-    height: 25;
+    background-color: rgba(80,135,180,0.1);
+    padding: 7;
+    margin: 10,20,10,20;
     border-style: solid;
     border-width: 2px;
-    border-color: #b6b6b6;
-    border-radius: 10;
-    margin: 0, 10, 0, 10;
+    border-color: #b1b1b1;
+    border-radius: 2;
+    color: #fff;
+    placeholder-color: lightgray;
+
+}
+.start-button{
+    width: 150;
+    height: 40; 
+    color: #fff;
+    background-color: $permobil-ocean;
+    border-radius: 2;
+    margin: 25, 10, 30, 10;
 }
 
-.colorOption-dock-layout{
-    margin: 10, 0, 0, 0;
+Image {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    height: auto;
 }
 
+.icon{
+    font-size: 30em;
+    padding: 10;
+    color: $permobil-ocean;
+    text-shadow: 5px, 5px, 5px, $permobil-icon-shadow-orange;
+}
+
+.bullet{
+    color: #fff;
+    font-family: $os-Light;
+    font-size:13;
+    text-align:left;
+    margin:10, 20, 0, 20;
+}
+
+.value-label-left{
+    // background: black;
+    text-align: left;
+    font-family: $os-Light;
+    font-size: 20;
+    margin: 10, 10, 10, 15;
+    color: #fff;
+}
+
+.value-left{
+
+    // background: black;
+    text-align: left;
+    width: 100%;
+    font-family: $os-Light;
+    font-size: 20;
+    margin: 10, 20, 10, 10;
+    color: #fff;
+}
+
+.value-label-right{
+    // background: black;
+    text-align: left;
+    font-family: $os-Light;
+    font-size: 20;
+    margin: 10, 10, 10, 15;
+    color: #fff;
+}
+
+.value-right{
+
+    // background: black;
+    text-align: left;
+    width: 100%;
+    font-family: $os-Light;
+    font-size: 20;
+    margin: 10, 20, 10, 10;
+    color: #fff;
+}
+
+
+.slide-indicator-inactive{
+    background-color: #fff;
+    opacity : 0.4;
+    width : 10;
+    height : 10;
+    margin-left : 2.5;
+    margin-right : 2.5;
+    margin-top : 0;
+    border-radius : 5;
+}
+
+.slide-indicator-active{
+    background-color: #fff;
+    opacity : 0.9;
+    width : 10;
+    height : 10;
+    margin-left : 2.5;
+    margin-right : 2.5;
+    margin-top : 0;
+    border-radius : 5;
+}
 

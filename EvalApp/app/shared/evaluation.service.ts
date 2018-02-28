@@ -21,6 +21,9 @@ export class Settings {
     pushesPercentDifference: number = 0.0;
     coastPercentDifference: number = 0.0;
 
+    rampDifficulty: number = 0.0;
+    flatDifficulty: number = 0.0;
+
 
     // private members
 
@@ -40,8 +43,10 @@ export class Settings {
         this.fatigue = obj && obj.fatigue || 70;
         this.independence = obj && obj.independence || 100;
 
-        this.maxSpeed = obj && obj.pain || 50;
-        this.accelerationRate = obj && obj.fatigue || 30;
+        this.maxSpeed = obj && obj.maxSpeed || 50;
+        this.accelerationRate = obj && obj.accelerationRate || 30;
+        this.rampDifficulty = obj && obj.rampDifficulty || 0;
+        this.flatDifficulty = obj && obj.flatDifficulty || 0;
     }
 }
 
