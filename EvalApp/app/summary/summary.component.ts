@@ -18,22 +18,22 @@ export class SummaryComponent implements OnInit {
 
     // button events
     public onNext(): void {
-	confirm({
-	    title: "Complete Evaluation?",
-	    message: "Are you sure you're done with the evaluation?",
-	    okButtonText: "Yes",
-	    cancelButtonText: "No"
-	})
-	    .then((result) => {
-		if (result) {
-		    this.routerExtensions.navigate(["/home"], {
-			clearHistory: true,
-			transition: {
-			    name: "fade"
-			}
-		    });
-		}
-	    });
+        confirm({
+            title: "Complete Evaluation?",
+            message: "Are you sure you're done with the evaluation?",
+            okButtonText: "Yes",
+            cancelButtonText: "No"
+        })
+            .then((result) => {
+                if (result) {
+                    this.routerExtensions.navigate(["/home"], {
+                        clearHistory: true,
+                        transition: {
+                            name: "fade"
+                        }
+                    });
+                }
+            });
     }
 
     public onBack(): void {

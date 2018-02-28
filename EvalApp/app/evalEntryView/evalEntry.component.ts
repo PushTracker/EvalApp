@@ -15,7 +15,7 @@ import { EvaluationService } from "../shared/evaluation.service";
 
 import { RouterExtensions } from "nativescript-angular/router";
 
-let timeInChair = ["1", "2", "3", "4", "5+",
+const timeInChair = ["1", "2", "3", "4", "5+",
     "10+", "20+", "30+"];
 
 @Component({
@@ -31,46 +31,47 @@ export class EvalEntryComponent implements OnInit {
     *************************************************************/
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
 
-    public yesNo: Array<SegmentedBarItem> = [];
-    public PushingPain: Array<SegmentedBarItem> = [];
-    public PushingFatigue: Array<SegmentedBarItem> = [];
+    yesNo: Array<SegmentedBarItem> = [];
+    PushingPain: Array<SegmentedBarItem> = [];
+    PushingFatigue: Array<SegmentedBarItem> = [];
 
-    public isIOS: boolean = false;
-    public isAndroid: boolean = false;
+    isIOS: boolean = false;
+    isAndroid: boolean = false;
 
-    public timeFrames: Array<string>;
-    public picked: string;
-    
+    timeFrames: Array<string>;
+    picked: string;
+
     // private members
     private _sideDrawerTransition: DrawerTransitionBase;
-    private pains = [ "Yes", "No" ];
-    private fatigues = [ "Yes", "No" ];
+    private pains = ["Yes", "No"];
+    private fatigues = ["Yes", "No"];
 
     constructor(private routerExtensions: RouterExtensions) {
-	this.pains.map((o) => {
-	    const item = new SegmentedBarItem();
-	    item.title = o;
-	    this.PushingPain.push(item);
-	});
-	this.fatigues.map((o) => {
-	    const item = new SegmentedBarItem();
-	    item.title = o;
-	    this.PushingFatigue.push(item);
-    });
-    
-    this.timeFrames = [];
+        this.pains.map((o) => {
+            const item = new SegmentedBarItem();
+            item.title = o;
+            this.PushingPain.push(item);
+        });
+        this.fatigues.map((o) => {
+            const item = new SegmentedBarItem();
+            item.title = o;
+            this.PushingFatigue.push(item);
+        });
 
+        this.timeFrames = [];
+
+        // tslint:disable-next-line:prefer-for-of
         for (let i = 0; i < timeInChair.length; i++) {
             this.timeFrames.push(timeInChair[i]);
         }
     }
 
-    public onSliderUpdate(key, args) {
-	this.settings.set(key, args.object.value);
+    onSliderUpdate(key, args) {
+        this.settings.set(key, args.object.value);
     }
 
     // button events
-    public onNext(): void {
+    onNext(): void {
         this.routerExtensions.navigate(["/training"], {
             transition: {
                 name: "slide"
@@ -78,32 +79,32 @@ export class EvalEntryComponent implements OnInit {
         });
     }
 
-    //listPicker events
-    public selectedIndexChanged(args) {
-        let picker = <ListPicker>args.object;
+    // listPicker events
+    selectedIndexChanged(args) {
+        const picker = <ListPicker>args.object;
         console.log("picker selection: " + picker.selectedIndex);
 
         this.picked = this.timeFrames[picker.selectedIndex];
     }
 
     // pushing pain
-    public getPushingPainIndex(): number {
-	return this.pains.indexOf(this.settings.get("PushingPain"));
+    getPushingPainIndex(): number {
+        return this.pains.indexOf(this.settings.get("PushingPain"));
     }
 
-    public onPushingPainIndexChange(args): void {
-	let segmentedBar = <SegmentedBar>args.object;
-	this.settings.set("PushingPain", this.pains[segmentedBar.selectedIndex]);
+    onPushingPainIndexChange(args): void {
+        const segmentedBar = <SegmentedBar>args.object;
+        this.settings.set("PushingPain", this.pains[segmentedBar.selectedIndex]);
     }
 
     // pushing fatigue
-    public getPushingFatigueIndex(): number {
-	return this.fatigues.indexOf(this.settings.get("PushingFatigue"));
+    getPushingFatigueIndex(): number {
+        return this.fatigues.indexOf(this.settings.get("PushingFatigue"));
     }
 
-    public onPushingFatigueIndexChange(args): void {
-	let segmentedBar = <SegmentedBar>args.object;
-	this.settings.set("PushingFatigue", this.fatigues[segmentedBar.selectedIndex]);
+    onPushingFatigueIndexChange(args): void {
+        const segmentedBar = <SegmentedBar>args.object;
+        this.settings.set("PushingFatigue", this.fatigues[segmentedBar.selectedIndex]);
     }
 
     /* ***********************************************************
@@ -111,11 +112,11 @@ export class EvalEntryComponent implements OnInit {
     *************************************************************/
     ngOnInit(): void {
         this._sideDrawerTransition = new SlideInOnTopTransition();
-	if (application.ios) {
-	    this.isIOS = true;
-	} else if (application.android) {
-	    this.isAndroid = true;
-	}
+        if (application.ios) {
+            this.isIOS = true;
+        } else if (application.android) {
+            this.isAndroid = true;
+        }
     }
 
     get sideDrawerTransition(): DrawerTransitionBase {
@@ -123,7 +124,7 @@ export class EvalEntryComponent implements OnInit {
     }
 
     get settings(): Observable {
-	return EvaluationService.settings;
+        return EvaluationService.settings;
     }
 
     /* ***********************************************************

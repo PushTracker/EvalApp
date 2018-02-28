@@ -5,7 +5,13 @@ import { SegmentedBar, SegmentedBarItem } from "ui/segmented-bar";
 
 import { TextField } from "ui/text-field";
 
+import { confirm } from "ui/dialogs";
+
 import * as switchModule from "tns-core-modules/ui/switch";
+
+import { EvaluationService } from "../shared/evaluation.service";
+
+import { Observable } from "data/observable";
 
 import { RouterExtensions } from "nativescript-angular/router";
 
@@ -25,23 +31,28 @@ export class TrialComponent implements OnInit {
     slides = [
         {
             Image: "~/images/stopwatch.jpg",
-            Label: "Trial Set-up",
-            Description: "Select options and settings for SmartDrive trial."
+            Label: "Trial Set-Up",
+            Description: "Select options and settings for SmartDrive trial.",
+            Key: "setUp"
         },
         {
             Image: "~/images/stopwatch.jpg",
-            Label: "Ramp",
-            Description: "User will push up a ramp."
+            Label: "Phase 1",
+            Label_2: "With SmartDrive",
+            Description: "Please enter a name for the trial and press Start to begin.",
+            Key: "start"
         },
         {
             Image: "~/images/stopwatch.jpg",
             Label: "Carpet",
-            Description: "Fill in:."
+            Description: "Fill in:.",
+            Key: "end"
         },
         {
             Image: "~/images/stopwatch.jpg",
             Label: "Other",
-            Description: "Fill in:."
+            Description: "Fill in:.",
+            Key: "summary"
         }
     ];
 
@@ -52,7 +63,7 @@ export class TrialComponent implements OnInit {
     constructor(private routerExtensions: RouterExtensions) {
     }
 
-    // button events    
+    // button events
     onNext(): void {
         this.routerExtensions.navigate(["/summary"], {
             transition: {
@@ -68,6 +79,22 @@ export class TrialComponent implements OnInit {
             }
         });
     }
+
+    // tslint:disable-next-line:adjacent-overload-signatures
+    onStartTrial(): void {
+        confirm({
+            title: "Connect to SmartDrive",
+            message: "Please connect to SmartDrive to begin trial",
+            okButtonText: "Connect",
+            cancelButtonText: "Cancel"
+        })
+            .then((result) => {
+            
+
+
+            });
+        }
+
     onTextChange(args) {
         const textField = <TextField>args.object;
 
@@ -90,6 +117,10 @@ export class TrialComponent implements OnInit {
         alert("Text: " + result);
     }
 
+    onSliderUpdate(key, args) {
+        this.settings.set(key, args.object.value);
+        }
+
     /* ***********************************************************
     * Use the sideDrawerTransition property to change the open/close animation of the drawer.
     *************************************************************/
@@ -99,6 +130,10 @@ export class TrialComponent implements OnInit {
 
     get sideDrawerTransition(): DrawerTransitionBase {
         return this._sideDrawerTransition;
+    }
+
+    get settings(): Observable {
+        return EvaluationService.settings;
     }
 
     /* ***********************************************************

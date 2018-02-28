@@ -1,40 +1,46 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 
-import { Observable, fromObject } from "data/observable";
+import { fromObject, Observable } from "data/observable";
 
 export class Settings {
     // public members
-    public PushingPain: string = "Yes";
-    public PushingFatigue: string = "Yes";
+    PushingPain: string = "Yes";
+    PushingFatigue: string = "Yes";
 
-    public pain: number = 30;
-    public fatigue: number = 70;
-    public independence: number = 100;
+    pain: number = 30;
+    fatigue: number = 70;
+    independence: number = 100;
+
+    maxSpeed: number = 50;
+    accelerationRate: number = 30;
 
     // private members
 
     // functions
 
     constructor(obj?: any) {
-	if (obj !== null && obj !== undefined) {
-	    this.fromObject(obj);
-	}
+        if (obj !== null && obj !== undefined) {
+            this.fromObject(obj);
+        }
     }
 
-    public fromObject(obj: any): void {
-	this.PushingPain = obj && obj.PushingPain || "Yes";
-	this.PushingFatigue = obj && obj.PushingFatigue || "Yes";
+    fromObject(obj: any): void {
+        this.PushingPain = obj && obj.PushingPain || "Yes";
+        this.PushingFatigue = obj && obj.PushingFatigue || "Yes";
 
-	this.pain = obj && obj.pain || 30;
-	this.fatigue = obj && obj.fatigue || 70;
-	this.independence = obj && obj.independence || 100;
+        this.pain = obj && obj.pain || 30;
+        this.fatigue = obj && obj.fatigue || 70;
+        this.independence = obj && obj.independence || 100;
+
+        this.maxSpeed = obj && obj.pain || 50;
+        this.accelerationRate = obj && obj.fatigue || 30;
     }
 }
 
 @Injectable()
 export class EvaluationService {
 
-    public static settings: Observable = fromObject(new Settings());
+    static settings: Observable = fromObject(new Settings());
 
     constructor() { }
 
