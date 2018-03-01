@@ -5,7 +5,8 @@ import { RadSideDrawerComponent } from "nativescript-pro-ui/sidedrawer/angular";
 @Component({
     selector: "FAQ",
     moduleId: module.id,
-    templateUrl: "./faq.component.html"
+    templateUrl: "./faq.component.html",
+    styleUrls: [ "./faq.component.css" ]
 })
 export class FAQComponent implements OnInit {
     /* ***********************************************************
@@ -13,6 +14,19 @@ export class FAQComponent implements OnInit {
     * It is used in the "onDrawerButtonTap" function below to manipulate the drawer.
     *************************************************************/
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
+
+    faqs = [
+	{ question: "What is a SmartDrive?",
+	  answer: "Why you no know?! >:[" },
+	{ question: "What's a Goku?",
+	  answer: "Kamehameha" },
+	{ question: "How far away is Yoda?",
+	  answer: "Not far, yoda not far." },
+	{ question: "Will it take me long to get there?",
+	  answer: "Patience, soon you will be with him." },
+	{ question: "The Wheel of Time turns...",
+	  answer: "...and ages come and pass - leaving memories that fade to legend. Legend fades to myth and even myth is long forgotten when the age that gave it birth comes round again.  In one age - called the third age by some - an age yet to come, an age long past, a wind arose in the mountains of mist." }
+    ];
 
     private _sideDrawerTransition: DrawerTransitionBase;
 
