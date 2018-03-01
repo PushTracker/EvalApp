@@ -70,7 +70,15 @@ Button, TextField {
     color: #fff;
     background-color: $permobil-ocean;
     border-radius: 2;
-    margin: 25, 10, 30, 10;
+    margin: 25, 10, 50, 10;
+}
+.back-button{
+    width: 150;
+    height: 40; 
+    color: $permobil-charcoal;
+    background-color: $permobil-steel;
+    border-radius: 2;
+    margin: 25, 10, 50, 10;
 }
 
 Image {
