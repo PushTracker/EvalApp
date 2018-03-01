@@ -30,16 +30,24 @@ export class TrainingComponent implements OnInit {
             Description: "Press the left raised button on the PushTracker to power on. Press and hold for 3 secconds to enter sleep mode 'zzz' and pwer off."
         },
         {
-            Image: "~/images/Tapping.jpg",
+            Image: "~/images/Stop.jpg",
             Label: "Tap Gesture",
-            Description: "It is important to learn how to do a proper tapping technique.",
+            Description: "Proper tapping technique.",
             // tslint:disable-next-line:max-line-length
             Bullet_1: "Keeping your wrist straight, make contact on the pushrim with the palm of your hand. A red light will alluminate upon succesful tap.",
-            Bullet_2: "Double-tap to initiate the SmartDrive. It will then begin to accellerate.",
-            Bullet_3: "Then, single-tap to set your desired speed.",
-            Bullet_4: "Tip: You don't need to make contact with the PushTracker band.",
+            Bullet_2: "Tip: You don't need to make contact with the PushTracker band.",
             // tslint:disable-next-line:max-line-length
-            Bullet_5: "Tip: Avoid moving your hand in a 'fishtail' like motion. This will lead to inconsistant tap recognition."
+            Bullet_3: "Tip: Avoid moving your hand in a 'fishtail' like motion. This will lead to inconsistant tap recognition."
+        },
+        {
+            Image: "~/images/Tapping.jpg",
+            Label: "Starting SmartDrive",
+            Description: "Starting & Setting Speed",
+            // tslint:disable-next-line:max-line-length
+            Bullet_1: "Keeping your wrist straight, make contact on the pushrim with the palm of your hand. A red light will alluminate upon succesful tap.",
+            Bullet_2: "Double-tap to initiate the SmartDrive. It will then begin to accelerate.",
+            Bullet_3: "Then, single-tap to set your desired speed.",
+            Bullet_4: "To increase speed, give a faster push and then single tap to set your desired speed."
         },
         {
             Image: "~/images/Steer.jpg",

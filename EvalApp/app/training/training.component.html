@@ -6,11 +6,14 @@
 
   <Carousel ios:indicatorOffset="0,-10" indicatorColor="#66ccff" indicatorColorUnselected="#cceeff">
     <CarouselItem  *ngFor="let slide of slides">
-      <ScrollView>
-	<GridLayout background="#fff" rows="auto, *, auto" cols="*">
-	  <StackLayout row="0" class="topSlide" orientation="vertical" horizontalAlignment="center">
+      
+	<GridLayout background="#fff" rows="auto, *, auto" cols="*" class="hero">
+      
+	  <StackLayout  class="topSlide" orientation="vertical" horizontalAlignment="center">
 	    <Image [src]="slide.Image" stretch="aspectFit"></Image>
-	  </StackLayout>
+    </StackLayout>
+
+    <ScrollView row="1" class="hero">
           <StackLayout class="hero" row="1" class="lowerSlide" orientation="vertical" horizontalAlignment="center">
             <Label [text]="slide.Label" class="slideLowerLabel" textWrap="true"></Label>
             <Label [text]="slide.Description" class="slideDescription" textWrap="true"></Label>
@@ -24,8 +27,9 @@
             <Button row="2" *ngIf="slides.indexOf(slide) == (slides.length-1)" class="start-button" text="Next" (tap)="onNext()"></Button>
             <Button row="2" *ngIf="slides.indexOf(slide) == 0" class="back-button" text="Back" (tap)="onBack()"></Button>
           </StackLayout>
+        </ScrollView>
 	</GridLayout>
-      </ScrollView>
+      
     </CarouselItem>
   </Carousel>
 
