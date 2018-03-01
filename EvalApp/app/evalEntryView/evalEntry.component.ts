@@ -73,6 +73,7 @@ export class EvalEntryComponent implements OnInit {
     // button events
     onNext(): void {
         this.routerExtensions.navigate(["/training"], {
+	    clearHistory: true,
             transition: {
                 name: "slide"
             }
