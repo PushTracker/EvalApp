@@ -15,6 +15,8 @@ import { Observable } from "data/observable";
 
 import { RouterExtensions } from "nativescript-angular/router";
 
+import { SnackBar, SnackBarOptions } from "nativescript-snackbar";
+
 @Component({
     selector: "Trial",
     moduleId: module.id,
@@ -59,6 +61,8 @@ export class TrialComponent implements OnInit {
 
     trialName: string = "";
 
+    snackbar = new SnackBar();
+
     private _sideDrawerTransition: DrawerTransitionBase;
 
     constructor(private routerExtensions: RouterExtensions) {
@@ -82,17 +86,40 @@ export class TrialComponent implements OnInit {
     }
 
     // tslint:disable-next-line:adjacent-overload-signatures
-    onStartTrial(): void {
-        confirm({
-            title: "Connect to SmartDrive",
-            message: "Please connect to SmartDrive to begin trial",
-            okButtonText: "Connect",
-            cancelButtonText: "Cancel"
-        })
-            // tslint:disable-next-line:no-empty
-            .then((result) => {
+    onStartTrial() {
 
-            });
+        const options: SnackBarOptions = {
+            actionText: "Connect",
+            snackText: "Please connect to SmartDrive",
+            hideDelay: 10000
+          };
+
+        this.snackbar.action(options).then((args) => {
+            if (args.command === "Action") {
+                confirm({
+                    title: "Connecting...",
+                    message: "Please make sure SmartDrive is on.",
+                    okButtonText: "It Is",
+                    cancelButtonText: "Whoops"
+                })
+                .then((result) => {
+                    if (result) {
+                        // tslint:disable-next-line:no-shadowed-variable
+                        this.snackbar.simple("Connecting to SmartDrive.", "red", "#fff").then((args) => {
+                        // connect()
+                      });
+                    } else {
+                        // tslint:disable-next-line:no-shadowed-variable
+                        this.snackbar.simple("Connecting to SmartDrive", "red", "#fff").then((args) => {
+                            // connect()
+                          });
+                      }
+                });
+            } else {
+              // dismiss
+            }
+          });
+
         }
 
     onTextChange(args) {

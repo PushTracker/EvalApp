@@ -14,6 +14,8 @@ import { Observable } from "data/observable";
 
 import { RouterExtensions } from "nativescript-angular/router";
 
+import { SnackBar, SnackBarOptions } from "nativescript-snackbar";
+
 @Component({
     selector: "Summary",
     moduleId: module.id,
@@ -24,6 +26,8 @@ export class SummaryComponent implements OnInit {
 
     // public members
     trialName: string = "";
+
+    snackbar = new SnackBar();
 
     // private members
 

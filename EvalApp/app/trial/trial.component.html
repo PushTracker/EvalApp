@@ -5,7 +5,7 @@
 <StackLayout class="page page-content hero" tkMainContent>
 
   <Carousel ios:indicatorOffset="0,-10" indicatorColor="#66ccff" indicatorColorUnselected="#cceeff">
-    <CarouselItem *ngFor="let slide of slides">
+    <CarouselItem *ngFor="let slide of slides" class="hero">
       <GridLayout background="#fff" rows="auto, *, auto" cols="*">
         <StackLayout row="0" class="topSlide" orientation="horizontal" horizontalAlignment="center">
           <Image [src]="slide.Image" stretch="aspectFit" width="100" height="100" margin="25"></Image>
@@ -19,12 +19,16 @@
             <Label [text]="slide.Label" class="slideLowerLabel" textWrap="true"></Label>
             <Label [text]="slide.Description" class="slideDescription" textWrap="true"></Label>
 
+            //Trial Name
+            <TextField hint="Enter trial name" autocorrect="false" (textChange)="onTextChange($event)" (returnPress)="onReturn($event)"
+            class="trial-name-textfield"></TextField>
+
             //Trial options
             <StackLayout class="trial-stack-layout">
               //Terrain Options
               <DockLayout class="dockLayout-options" stretchLastChild="false">
                 <Label text="Flat Surfaces" class="trial-item" dock="left"></Label>
-                <Switch dock="right" class="trial-item"></Switch>
+                <Switch dock="right" class="trial-item switch switch"></Switch>
               </DockLayout>
               <DockLayout stretchLastChild="false">
                 <Label text="Ramp" class="trial-item" dock="left"></Label>
@@ -35,7 +39,7 @@
                 <Switch dock="right" class="trial-item"></Switch>
               </DockLayout>
               <DockLayout stretchLastChild="false">
-                <Label text="Other" class="trial-item" dock="left"></Label>
+                <Label text="Other" class="trial-item switch" dock="left"></Label>
                 <Switch dock="right" class="trial-item"></Switch>
               </DockLayout>
 
@@ -86,8 +90,6 @@
 
             //Trial Name
             <StackLayout class="input-field">
-              <TextField hint="Enter trial name" autocorrect="false" (textChange)="onTextChange($event)" (returnPress)="onReturn($event)"
-                class="trial-name-textfield"></TextField>
 
                 <button row="2"  text="Start" class="start-button" (tap)="onStartTrial()"></button>
 

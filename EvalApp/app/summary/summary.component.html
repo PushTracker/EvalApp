@@ -65,13 +65,10 @@
 
 
             <button row="2"  text="Complete" class="start-button" (tap)="onNext()"></button>
-            
 
-            <Button row="2" *ngIf="slides.indexOf(slide) == (slides.length-1)" text="Next" (tap)="onNext()"></Button>
-            <Button row="2" *ngIf="slides.indexOf(slide) == 0" text="Back" (tap)="onBack()"></Button>
 
 
           </StackLayout>
         </ScrollView>
-    </GridLayout>
+        </GridLayout>
       </StackLayout>
