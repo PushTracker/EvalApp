@@ -19,6 +19,22 @@ Button, TextField {
   margin-right: 16;
   margin-bottom: 10;  
 }
+.start-button{
+    width: 150;
+    height: 40; 
+    color: #fff;
+    background-color: $permobil-ocean;
+    border-radius: 2;
+    margin: 25, 10, 50, 10;
+}
+.back-button{
+    width: 150;
+    height: 40; 
+    color: $permobil-charcoal;
+    background-color: $permobil-steel;
+    border-radius: 2;
+    margin: 25, 10, 50, 10;
+}
 .submit-button {
   background-color: $permobil-ocean;
   color: white;
