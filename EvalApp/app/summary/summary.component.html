@@ -3,75 +3,71 @@
 </ActionBar>
 
 <StackLayout class="page page-content hero" tkMainContent>
-    <GridLayout background="#fff" rows="auto, *, auto" cols="*">
-        <StackLayout row="0" class="topSlide" orientation="horizontal" horizontalAlignment="center">
-          <Image src="~/images/notebook-5" stretch="aspectFit" width="100" height="100" margin="25"></Image>
+  <GridLayout background="#fff" rows="auto, *, auto" cols="*">
+    <StackLayout row="0" class="topSlide" orientation="horizontal" horizontalAlignment="center">
+      <Image src="~/images/notebook-5" stretch="aspectFit" width="100" height="100" margin="25"></Image>
+    </StackLayout>
+
+    //First Page: Configure Trial
+    <ScrollView row="1">
+      <StackLayout class="hero" class="lowerSlide" orientation="vertical" horizontalAlignment="center">
+
+        //Heading and description
+        <Label text="Summary" class="slideLowerLabel" textWrap="true"></Label>
+        <Label text="Tell us how it went." class="slideDescription" textWrap="true"></Label>
+
+        //Trial options
+        <StackLayout class="trial-stack-layout">
+          //Terrain Options
+          <DockLayout class="dockLayout-options" stretchLastChild="false">
+            <Label text="Difficulty with ramp?" class="trial-item" dock="left"></Label>
+            <Switch dock="right" class="trial-item"></Switch>
+          </DockLayout>
+          <DockLayout stretchLastChild="false">
+            <Label text="Difficulty on Flat Surface?" class="trial-item" dock="left"></Label>
+            <Switch dock="right" class="trial-item"></Switch>
+          </DockLayout>
+
+
+          <!-- <DockLayout stretchLastChild="false">
+               <Label text="Inclines" class="trial-item" dock="left"></Label>
+               <Switch dock="right" class="trial-item"></Switch>
+          </DockLayout>
+          <DockLayout stretchLastChild="false">
+            <Label text="Other" class="trial-item" dock="left"></Label>
+            <Switch dock="right" class="trial-item"></Switch>
+          </DockLayout> -->
+
+          //SmartDrive Settings 
+          //Flat Difficulty
+          <DockLayout stretchLastChild="false">
+            <Label text="Flat Surface Difficulty" class="trial-item"></Label>
+            <Label verticalAlignment="center" dock="right" class="trial-slider-value-label" style="min-width: 50" [text]="settings.flatDifficulty.toFixed(0)"
+                   row="0" col="1"></Label>
+          </DockLayout>
+          <GridLayout rows="auto" columns="*, auto">
+            <Slider verticalAlignment="center" class="trial-slider" [value]="settings.flatDifficulty" (valueChange)="onSliderUpdate('flatDifficulty', $event)"
+                    row="0" col="0"></Slider>
+          </GridLayout>
+
+          //Ramp Difficulty
+          <DockLayout stretchLastChild="false">
+            <Label text="Ramp Difficulty" class="trial-item"></Label>
+            <Label verticalAlignment="center" dock="right" class="trial-slider-value-label" style="min-width: 50" [text]="settings.rampDifficulty.toFixed(0)"
+                   row="0" col="1"></Label>
+          </DockLayout>
+          <GridLayout rows="auto" columns="*, auto">
+            <Slider verticalAlignment="center" class="trial-slider" [value]="settings.rampDifficulty" (valueChange)="onSliderUpdate('rampDifficulty', $event)"
+                    row="0" col="0"></Slider>
+          </GridLayout>
+
         </StackLayout>
 
-        //First Page: Configure Trial
-        <ScrollView row="1">
-          <StackLayout class="hero" class="lowerSlide" orientation="vertical" horizontalAlignment="center">
-
-            //Heading and description
-            <Label text="Summary" class="slideLowerLabel" textWrap="true"></Label>
-            <Label text="Tell us how it went." class="slideDescription" textWrap="true"></Label>
-
-            //Trial options
-            <StackLayout class="trial-stack-layout">
-              //Terrain Options
-              <DockLayout class="dockLayout-options" stretchLastChild="false">
-                <Label text="Difficulty with ramp?" class="trial-item" dock="left"></Label>
-                <Switch dock="right" class="trial-item"></Switch>
-              </DockLayout>
-              <DockLayout stretchLastChild="false">
-                <Label text="Difficulty on Flat Surface?" class="trial-item" dock="left"></Label>
-                <Switch dock="right" class="trial-item"></Switch>
-              </DockLayout>
-
-
-              <!-- <DockLayout stretchLastChild="false">
-                <Label text="Inclines" class="trial-item" dock="left"></Label>
-                <Switch dock="right" class="trial-item"></Switch>
-              </DockLayout>
-              <DockLayout stretchLastChild="false">
-                <Label text="Other" class="trial-item" dock="left"></Label>
-                <Switch dock="right" class="trial-item"></Switch>
-              </DockLayout> -->
-
-              //SmartDrive Settings 
-              //Flat Difficulty
-              <DockLayout stretchLastChild="false">
-                <Label text="Flat Surface Difficulty" class="trial-item"></Label>
-                <Label verticalAlignment="center" dock="right" class="trial-slider-value-label" style="min-width: 50" [text]="settings.flatDifficulty.toFixed(0)"
-                  row="0" col="1"></Label>
-              </DockLayout>
-              <GridLayout rows="auto" columns="*, auto">
-                <Slider verticalAlignment="center" class="trial-slider" [value]="settings.flatDifficulty" (valueChange)="onSliderUpdate('flatDifficulty', $event)"
-                  row="0" col="0"></Slider>
-              </GridLayout>
-
-              //Ramp Difficulty
-              <DockLayout stretchLastChild="false">
-                <Label text="Ramp Difficulty" class="trial-item"></Label>
-                <Label verticalAlignment="center" dock="right" class="trial-slider-value-label" style="min-width: 50" [text]="settings.rampDifficulty.toFixed(0)"
-                  row="0" col="1"></Label>
-              </DockLayout>
-              <GridLayout rows="auto" columns="*, auto">
-                <Slider verticalAlignment="center" class="trial-slider" [value]="settings.rampDifficulty" (valueChange)="onSliderUpdate('rampDifficulty', $event)"
-                  row="0" col="0"></Slider>
-              </GridLayout>
-
-            </StackLayout>
-
-
-            <button row="2"  text="Complete" class="start-button" (tap)="onNext()"></button>
-            
-
-            <Button row="2" *ngIf="slides.indexOf(slide) == (slides.length-1)" text="Next" (tap)="onNext()"></Button>
-            <Button row="2" *ngIf="slides.indexOf(slide) == 0" text="Back" (tap)="onBack()"></Button>
-
-
-          </StackLayout>
-        </ScrollView>
-    </GridLayout>
+	<StackLayout orientation="horizontal" horizontalAlignment="center">
+          <button text="Back" class="back-button" (tap)="onBack()"></button>
+          <button text="Complete" class="start-button" (tap)="onNext()"></button>
+	</StackLayout>
       </StackLayout>
+    </ScrollView>
+  </GridLayout>
+</StackLayout>

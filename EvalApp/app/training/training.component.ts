@@ -75,6 +75,7 @@ export class TrainingComponent implements OnInit {
     // button events
     onNext(): void {
         this.routerExtensions.navigate(["/trial"], {
+	    clearHistory: true,
             transition: {
                 name: "slide"
             }
@@ -83,6 +84,7 @@ export class TrainingComponent implements OnInit {
 
     onBack(): void {
         this.routerExtensions.navigate(["/evalEntry"], {
+	    clearHistory: true,
             transition: {
                 name: "slideRight"
             }

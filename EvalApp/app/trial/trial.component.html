@@ -21,6 +21,8 @@
 
             //Trial options
             <StackLayout class="trial-stack-layout">
+              <TextField hint="Enter trial name" autocorrect="false" (textChange)="onTextChange($event)" (returnPress)="onReturn($event)"
+                class="trial-name-textfield"></TextField>
               //Terrain Options
               <DockLayout class="dockLayout-options" stretchLastChild="false">
                 <Label text="Flat Surfaces" class="trial-item" dock="left"></Label>
@@ -65,12 +67,7 @@
             </StackLayout>
 
 
-            <button row="2"  text="Next" class="start-button" (tap)="onNext()"></button>
-            
-
-            <Button row="2" *ngIf="slides.indexOf(slide) == (slides.length-1)" text="Next" (tap)="onNext()"></Button>
-            <Button row="2" *ngIf="slides.indexOf(slide) == 0" text="Back" (tap)="onBack()"></Button>
-
+            <Button row="2" text="Back" (tap)="onBack()"></Button>
 
           </StackLayout>
         </ScrollView>
@@ -86,8 +83,6 @@
 
             //Trial Name
             <StackLayout class="input-field">
-              <TextField hint="Enter trial name" autocorrect="false" (textChange)="onTextChange($event)" (returnPress)="onReturn($event)"
-                class="trial-name-textfield"></TextField>
 
                 <button row="2"  text="Start" class="start-button" (tap)="onStartTrial()"></button>
 

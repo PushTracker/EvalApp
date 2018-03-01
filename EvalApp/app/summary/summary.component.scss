@@ -71,6 +71,14 @@ Button, TextField {
     border-radius: 2;
     margin: 25, 10, 30, 10;
 }
+.back-button{
+    width: 150;
+    height: 40; 
+    color: $permobil-charcoal;
+    background-color: $permobil-steel;
+    border-radius: 2;
+    margin: 25, 10, 30, 10;
+}
 
 Image {
     display: block;

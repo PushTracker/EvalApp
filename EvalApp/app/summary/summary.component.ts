@@ -52,11 +52,13 @@ export class SummaryComponent implements OnInit {
 
     onBack(): void {
         this.routerExtensions.navigate(["/trial"], {
+            clearHistory: true,
             transition: {
                 name: "slideRight"
             }
         });
     }
+    
     onTextChange(args) {
         const textField = <TextField>args.object;
 
@@ -81,28 +83,15 @@ export class SummaryComponent implements OnInit {
 
     onSliderUpdate(key, args) {
         this.settings.set(key, args.object.value);
-        }
+    }
 
     /* ***********************************************************
-    * Use the sideDrawerTransition property to change the open/close animation of the drawer.
-    *************************************************************/
+     * Use the sideDrawerTransition property to change the open/close animation of the drawer.
+     *************************************************************/
     ngOnInit(): void {
-    console.log("summary page");
-}
-
-//     get sideDrawerTransition(): DrawerTransitionBase {
-//     return this._sideDrawerTransition;
-// }
+    }
 
     get settings(): Observable {
-    return EvaluationService.settings;
-}
-
-/* ***********************************************************
-* According to guidelines, if you have a drawer on your page, you should always
-* have a button that opens it. Use the showDrawer() function to open the app drawer section.
-*************************************************************/
-    onDrawerButtonTap(): void {
-    // this.drawerComponent.sideDrawer.showDrawer();
-}
+	return EvaluationService.settings;
+    }
 }

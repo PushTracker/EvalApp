@@ -39,14 +39,14 @@ export class TrialComponent implements OnInit {
             Image: "~/images/stopwatch.jpg",
             Label: "Phase 1",
             Label_2: "With SmartDrive",
-            Description: "Please enter a name for the trial and press Start to begin.",
+            Description: "Go through the trial course with the SmartDrive - press start to begin.",
             Key: "start"
         },
         {
             Image: "~/images/stopwatch.jpg",
             Label: "Phase 2",
             Label_2: "Without SmartDrive",
-            Description: "Now perform the same course without Smart Drive.",
+            Description: "Now perform the same course without Smart Drive - press start to begin.",
             Key: "end"
         },
         {
@@ -67,6 +67,7 @@ export class TrialComponent implements OnInit {
     // button events
     onNext(): void {
         this.routerExtensions.navigate(["/summary"], {
+	    clearHistory: true,
             transition: {
                 name: "slide"
             }
@@ -75,6 +76,7 @@ export class TrialComponent implements OnInit {
 
     onBack(): void {
         this.routerExtensions.navigate(["/training"], {
+	    clearHistory: true,
             transition: {
                 name: "slideRight"
             }
