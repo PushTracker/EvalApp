@@ -65,17 +65,17 @@
         <Slider verticalAlignment="center" class="eval-slider" [value]="settings.independence" (valueChange)="onSliderUpdate('independence', $event)" row="0" col="0"></Slider>
       </GridLayout>
 
-      <DockLayout stretchLastChild="false" padding="30,0,0,0">
-        <Label text="Years in manual chair:" class="eval-item" ></Label>
-        <Label verticalAlignment="center" text="Select" dock="right" class="eval-slider-value-label" style="min-width: 50" row="0" col="1"></Label>
-        <!-- <ListPicker [items]="timeFrames" selectedIndex="0" (selectedIndexChange)="selectedIndexChanged($event)" class="p-15"></ListPicker> -->
+      <DockLayout stretchLastChild="true" padding="30,0,0,0">
+        <Label dock="left" text="Years in manual chair:" class="eval-item" ></Label>
+        <!-- <Label verticalAlignment="center" text="Select" dock="right" class="eval-slider-value-label" style="min-width: 50" row="0" col="1"></Label>  -->
+        <DropDown #dd dock="right" hint="years" [items]="timeFrames" [(ngModel)]="timeIndex" (selectedIndexChanged)="selectedIndexChanged($event)" horizontalAlignment="right" class="p-15"></DropDown>
 
       </DockLayout>
 
-      <DockLayout stretchLastChild="false" padding="30,0,0,0">
-        <Label text="Type of chair:" class="eval-item" ></Label>
-        <Label verticalAlignment="center" text="Select" dock="right" class="eval-slider-value-label" style="min-width: 50" row="0" col="1"></Label>
-        <!-- <ListPicker [items]="timeFrames" selectedIndex="0" (selectedIndexChange)="selectedIndexChanged($event)" class="p-15"></ListPicker> -->
+      <DockLayout stretchLastChild="true" padding="30,0,0,0">
+        <Label dock="left" text="Type of chair:" class="eval-item" ></Label>
+        <!-- <Label verticalAlignment="center" text="Select" dock="right" class="eval-slider-value-label" style="min-width: 50" row="0" col="1"></Label> -->
+        <DropDown #dd dock="right" hint="chair type" [items]="chairTypes" [(ngModel)]="chairIndex" (selectedIndexChanged)="selectedIndexChanged($event)" horizontalAlignment="right" class="p-15"></DropDown>
 
       </DockLayout>
 

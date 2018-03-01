@@ -6,8 +6,6 @@ import { RadSideDrawerComponent } from "nativescript-pro-ui/sidedrawer/angular";
 
 import { SegmentedBar, SegmentedBarItem } from "ui/segmented-bar";
 
-import { ListPicker } from "ui/list-picker";
-
 import { Observable } from "data/observable";
 import { confirm } from "ui/dialogs";
 
@@ -15,8 +13,12 @@ import { EvaluationService } from "../shared/evaluation.service";
 
 import { RouterExtensions } from "nativescript-angular/router";
 
+import { DropDownModule } from "nativescript-drop-down/angular";
+
 const timeInChair = ["1", "2", "3", "4", "5+",
-    "10+", "20+", "30+"];
+		     "10+", "20+", "30+"];
+
+const chairType = [ "TiLite", "Quckie", "Other" ];
 
 @Component({
     selector: "EvalEntry",
@@ -39,7 +41,10 @@ export class EvalEntryComponent implements OnInit {
     isAndroid: boolean = false;
 
     timeFrames: Array<string>;
-    picked: string;
+    timeIndex: number = 0;
+    chairTypes: Array<string>;
+    chairIndex: number = 0;
+    
 
     // private members
     private _sideDrawerTransition: DrawerTransitionBase;
@@ -64,6 +69,13 @@ export class EvalEntryComponent implements OnInit {
         for (let i = 0; i < timeInChair.length; i++) {
             this.timeFrames.push(timeInChair[i]);
         }
+
+        this.chairTypes = [];
+
+        // tslint:disable-next-line:prefer-for-of
+        for (let i = 0; i < chairType.length; i++) {
+            this.chairTypes.push(chairType[i]);
+        }
     }
 
     onSliderUpdate(key, args) {
@@ -82,10 +94,6 @@ export class EvalEntryComponent implements OnInit {
 
     // listPicker events
     selectedIndexChanged(args) {
-        const picker = <ListPicker>args.object;
-        console.log("picker selection: " + picker.selectedIndex);
-
-        this.picked = this.timeFrames[picker.selectedIndex];
     }
 
     // pushing pain

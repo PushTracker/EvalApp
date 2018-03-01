@@ -15,6 +15,8 @@ import { LoginService } from "./shared/login.service";
 
 // import { TNSFrescoModule } from "nativescript-fresco/angular";
 
+import { DropDownModule } from "nativescript-drop-down/angular";
+
 @NgModule({
     bootstrap: [
         AppComponent
@@ -23,7 +25,8 @@ import { LoginService } from "./shared/login.service";
         NativeScriptModule,
 	NativeScriptHttpModule,
         AppRoutingModule,
-	HttpClientModule
+	HttpClientModule,
+	DropDownModule
     ],
     declarations: [
         AppComponent
