@@ -7,5 +7,6 @@ import { registerElement} from "nativescript-angular/element-registry";
 registerElement("VideoPlayer", () => require("nativescript-videoplayer").Video);
 registerElement("Carousel", () => require("nativescript-carousel").Carousel);
 registerElement("CarouselItem", () => require("nativescript-carousel").CarouselItem);
+registerElement("exoplayer", () => require("nativescript-exoplayer").Video);
 
 platformNativeScriptDynamic().bootstrapModule(AppModule);

@@ -29,6 +29,7 @@
     "nativescript-angular": "~5.2.0",
     "nativescript-carousel": "^3.1.1",
     "nativescript-drop-down": "^3.2.3",
+    "nativescript-exoplayer": "^3.4.0",
     "nativescript-fresco": "^3.0.6",
     "nativescript-ngx-slides": "^1.0.0",
     "nativescript-pro-ui": "~3.3.0",
