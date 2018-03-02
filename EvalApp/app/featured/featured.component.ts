@@ -37,8 +37,13 @@ export class FeaturedComponent implements OnInit {
 
         setInterval(() => {
             this.sdBtProgressValue += 1;
+            if (this.sdBtProgressValue > 100) this.sdBtProgressValue = 100;
+
             this.sdMpProgressValue += 5;
+            if (this.sdMpProgressValue > 100) this.sdMpProgressValue = 100;
+
             this.ptBtProgressValue += 10;
+            if (this.ptBtProgressValue > 100) this.ptBtProgressValue = 100;
 
             // this.onValueChanged(5);
 
