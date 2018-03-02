@@ -22,6 +22,14 @@ Button, TextField {
     padding:5;
 }
 
+.summaryDescription{
+    margin: 5, 5, 5, 5;
+    padding: 5, 5, 10, 0;
+    font-family: $os-Light;
+    // font-size: 14;
+    // color: #fff;
+}
+
 .trial-item {
     vertical-align: center;
     text-overflow: none;

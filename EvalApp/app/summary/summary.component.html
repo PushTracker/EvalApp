@@ -9,16 +9,48 @@
     </StackLayout>
 
     //First Page: Configure Trial
-    <ScrollView row="1">
+    <ScrollView class="hero" row="1">
       <StackLayout class="hero" class="lowerSlide" orientation="vertical" horizontalAlignment="center">
 
         //Heading and description
         <Label text="Summary" class="slideLowerLabel" textWrap="true"></Label>
-        <Label text="Tell us how it went." class="slideDescription" textWrap="true"></Label>
+        <!-- <Label text="Tell us how it went." class="slideDescription" textWrap="true"></Label> -->
 
-        //Trial options
+        //Stats and Questionaire
         <StackLayout class="trial-stack-layout">
-          //Terrain Options
+              <DockLayout stretchLastChild="false">
+                  <Label textWrap="true" class="summaryDescription">
+                      <FormattedString>
+                          <Span text="User performed " color= "#fff"></Span>
+                          <Span text="96% " color="#c4d600" fontAttributes="Bold"></Span>
+                          <Span text="less pushes with SmartDrive." color= "#fff"></Span>
+
+                      </FormattedString>
+
+                  </Label>
+
+                </DockLayout>
+                <DockLayout stretchLastChild="false">
+                    <Label textWrap="true" class="summaryDescription">
+                        <FormattedString>
+                            <Span text="Average coast time was " color= "#fff"></Span>
+                            <Span text="98% " color="#c4d600" fontAttributes="Bold"></Span>
+                            <Span text="higher with SmartDrive." color= "#fff"></Span>
+  
+                        </FormattedString>
+                    </Label>
+                  </DockLayout>
+                  <DockLayout stretchLastChild="false">
+                    
+                      <Label textWrap="true" class="summaryDescription">
+                        <FormattedString>
+                            <Span text="At " color= "#fff"></Span>
+                            <Span text="167 " color="#FF0000" fontAttributes="Bold"></Span>
+                            <Span text="pushes per minute, users cadence is exceptionally high. Consider looking at rear wheel placement and efficient push technique." color= "#fff"></Span>
+                        </FormattedString>
+                      </Label>
+                    </DockLayout>
+
           <DockLayout class="dockLayout-options" stretchLastChild="false">
             <Label text="Difficulty with ramp?" class="trial-item" dock="left"></Label>
             <Switch dock="right" class="trial-item"></Switch>
@@ -42,22 +74,22 @@
           //Flat Difficulty
           <DockLayout stretchLastChild="false">
             <Label text="Flat Surface Difficulty" class="trial-item"></Label>
-            <Label verticalAlignment="center" dock="right" class="trial-slider-value-label" style="min-width: 50" [text]="settings.flatDifficulty.toFixed(0)"
+            <Label verticalAlignment="center" dock="right" class="trial-slider-value-label" style="min-width: 50" [text]="settings.flatDifficulty.toFixed(0) +'/10'"
                    row="0" col="1"></Label>
           </DockLayout>
           <GridLayout rows="auto" columns="*, auto">
-            <Slider verticalAlignment="center" class="trial-slider" [value]="settings.flatDifficulty" (valueChange)="onSliderUpdate('flatDifficulty', $event)"
+            <Slider maxValue="10" verticalAlignment="center" class="trial-slider" [value]="settings.flatDifficulty" (valueChange)="onSliderUpdate('flatDifficulty', $event)"
                     row="0" col="0"></Slider>
           </GridLayout>
 
           //Ramp Difficulty
           <DockLayout stretchLastChild="false">
             <Label text="Ramp Difficulty" class="trial-item"></Label>
-            <Label verticalAlignment="center" dock="right" class="trial-slider-value-label" style="min-width: 50" [text]="settings.rampDifficulty.toFixed(0)"
+            <Label verticalAlignment="center" dock="right" class="trial-slider-value-label" style="min-width: 50" [text]="settings.rampDifficulty.toFixed(0) +'/10'"
                    row="0" col="1"></Label>
           </DockLayout>
           <GridLayout rows="auto" columns="*, auto">
-            <Slider verticalAlignment="center" class="trial-slider" [value]="settings.rampDifficulty" (valueChange)="onSliderUpdate('rampDifficulty', $event)"
+            <Slider maxValue="10" verticalAlignment="center" class="trial-slider" [value]="settings.rampDifficulty" (valueChange)="onSliderUpdate('rampDifficulty', $event)"
                     row="0" col="0"></Slider>
           </GridLayout>
 

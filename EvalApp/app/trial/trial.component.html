@@ -12,7 +12,7 @@
         </StackLayout>
 
         //First Page: Configure Trial
-        <ScrollView row="1" *ngIf="slides.indexOf(slide) == 0">
+        <ScrollView class="hero" row="1" *ngIf="slides.indexOf(slide) == 0">
           <StackLayout class="hero" class="lowerSlide" orientation="vertical" horizontalAlignment="center">
 
             //Heading and description
@@ -25,8 +25,6 @@
 
             //Trial options
             <StackLayout class="trial-stack-layout">
-              <TextField hint="Enter trial name" autocorrect="false" (textChange)="onTextChange($event)" (returnPress)="onReturn($event)"
-                class="trial-name-textfield"></TextField>
               //Terrain Options
               <DockLayout class="dockLayout-options" stretchLastChild="false">
                 <Label text="Flat Surfaces" class="trial-item" dock="left"></Label>
@@ -77,7 +75,7 @@
         </ScrollView>
 
         //Page 2 Start Trial
-        <ScrollView row="1" *ngIf="slides.indexOf(slide) == 1">
+        <ScrollView class="hero" row="1" *ngIf="slides.indexOf(slide) == 1">
           <StackLayout class="hero" class="lowerSlide" orientation="vertical" horizontalAlignment="center">
 
             //Heading and description
@@ -109,7 +107,7 @@
         </ScrollView>
 
           //Page 3 Without SmartDrive
-        <ScrollView row="1" *ngIf="slides.indexOf(slide) == 2">
+        <ScrollView class="hero" row="1" *ngIf="slides.indexOf(slide) == 2">
           <StackLayout class="hero" class="lowerSlide" orientation="vertical" horizontalAlignment="center">
 
             //Heading and description
@@ -141,7 +139,7 @@
         </ScrollView>
 
         //Page 3 Without SmartDrive
-        <ScrollView row="1" *ngIf="slides.indexOf(slide) == 3">
+        <ScrollView class="hero" row="1" *ngIf="slides.indexOf(slide) == 3">
           <StackLayout class="hero" class="lowerSlide" orientation="vertical" horizontalAlignment="center">
 
             //Heading and description
