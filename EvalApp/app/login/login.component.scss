@@ -1,27 +1,32 @@
 // Custom common variables
 @import '../app-variables';
 
-GridLayout {
-    margin: 40, 30, 0, 30;
+.permobil-logo{
+  text-align: left;
 }
 
-Button, TextField {
-  margin-left: 16;
-  margin-right: 16;
-  margin-bottom: 10;  
+.hero{
+  background-color: $permobil-hero;
 }
+
+GridLayout {
+    margin: 40, 40, 0, 40;
+}
+
 .submit-button {
   background-color: $permobil-ocean;
   color: white;
   padding: 10;
   margin-top: 20;
   border-radius: 2;
+  width:150;
 }
 TextField{
-  background-color: rgba(80,135,180,0.05);
-  padding: 7;
-  border-style: solid;
-  border-width: 2px;
-  border-color: #b1b1b1;
-  border-radius: 2;
+  background-color: rgba(80,135,180,0.8);
+    padding: 5;
+    margin: 5,10,5,10;
+    color: #fff;
+    border-radius: 2;
+    placeholder-color: lightgray;
 }
+

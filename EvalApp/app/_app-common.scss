@@ -6,7 +6,7 @@
 }
 
 Button{
-    color: $permobil-ocean;
+    color: #fff;
     font: $os;
 }
 
@@ -16,16 +16,20 @@ Button{
 }
 
 .evalApp{
-    font: bold 25%, $os; 
-    color: slategray;
-    margin: 0, 50, 0, 50;
+    font: $os; 
+    font-size: 20em;
+    color: $permobil-titan;
+    margin: 30, 0, 0, 0;
+    padding: 0, 45, 0, 5;
+    text-align: center; 
+    // background: #ff0000;
 }
 
 .account-icon {
     color: $permobil-ocean;
     font-size: 60;
     text-align: center;
-    margin: 75, 10, 10, 10;
+    margin: 75, 10, 20, 10;
 }
 
 Label{
@@ -53,6 +57,10 @@ Label{
 //Action bar
 ActionBar .action-bar-title {
     font: $os;
+}
+
+ActionBar {
+    background-color: green;
 }
 
 .slideLowerLabel{

@@ -1,13 +1,14 @@
-<ScrollView tkMainContent>
+
+<ScrollView class="page hero" tkMainContent backgroundSpanUnderStatusBar="true">
   <GridLayout 
     rows="auto, auto, auto, auto, auto, auto, auto, auto, auto"
     columns="*, *"
-    class="page page-content"
+    class="hero"
     verticalAlign="center">
     <Image 
       row="0"
       colSpan="2"
-      src="https://permobilus.com/wp-content/uploads/2016/08/permobil.png"
+      src="~/images/permobil_logo.png"
       class="logo">
     </Image>	
     <Label 
@@ -23,7 +24,8 @@
       row="2"
       colSpan="2"
       class="account-icon fa"
-      text="&#xf2be;">
+      text="&#xf2be;"
+      margin-bottom="25">
     </Label>
     <TextField #email
 	       [(ngModel)]="user.email"

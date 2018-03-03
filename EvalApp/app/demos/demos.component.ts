@@ -23,7 +23,7 @@ export class DemosComponent implements OnInit {
 	{ SerialNumber: "11004", LastUsed: new Date(), Location: "San Francisco, CA" },
 	{ SerialNumber: "11005", LastUsed: new Date(), Location: "Los Angeles, CA" },
 	{ SerialNumber: "11006", LastUsed: new Date(), Location: "New Orleans, LA" },
-	{ SerialNumber: "11007", LastUsed: new Date(), Location: "New York, NY" },
+	{ SerialNumber: "11007", LastUsed: new Date(), Location: "New York, NY" }
     ];
 
     private _sideDrawerTransition: DrawerTransitionBase;
