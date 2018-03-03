@@ -8,9 +8,6 @@ import { isIOS } from "platform";
 
 import { RouterExtensions } from "nativescript-angular/router";
 
-declare var UIImage: any;
-declare var UIBarMetrics: any;
-
 @Component({
     selector: "Home",
     moduleId: module.id,

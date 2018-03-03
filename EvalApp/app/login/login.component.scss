@@ -22,11 +22,12 @@ GridLayout {
   width:150;
 }
 TextField{
-  background-color: rgba(80,135,180,0.8);
+  background-color: rgba(80,135,180,0.5);
     padding: 5;
     margin: 5,10,5,10;
     color: #fff;
     border-radius: 2;
-    placeholder-color: lightgray;
+    placeholder-color: $permobil-titan
+    ;
 }
 
