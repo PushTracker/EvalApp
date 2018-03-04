@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from "@angular/core";
 
 import { User } from "../user";
+
 import { LoginService } from "../login.service";
 
 import { Config } from "../config";
@@ -13,7 +14,7 @@ import { Config } from "../config";
     selector: "MyDrawer",
     moduleId: module.id,
     templateUrl: "./my-drawer.component.html",
-    styleUrls: ["./my-drawer.component.scss"]
+    styleUrls: ["./my-drawer.component.css"]
 })
 export class MyDrawerComponent implements OnInit {
     /* ***********************************************************

@@ -1,5 +1,5 @@
 // Custom common variables
-@import '../../app-variables';
+@import '../../_app-variables';
 
 $sidedrawer-list-item-offset-left: 15;
 $sidedrawer-list-icon-offset: 10;
@@ -9,7 +9,7 @@ $sidedrawer-list-icon-size: 20;
     padding-left: $sidedrawer-list-item-offset-left;
     Label {
         vertical-align: center;
-        color: $permobil-hero;
+        // color: $permobil-hero;
     }
     .fa {
         width: $sidedrawer-list-icon-size;
