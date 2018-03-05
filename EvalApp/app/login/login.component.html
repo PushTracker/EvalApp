@@ -59,12 +59,14 @@
       row="6"
       colSpan="2"
       [text]="isLoggingIn ? 'Sign up' : 'Back to login'"
+      class="extra-button"
       (tap)="toggleDisplay()">
     </Button>
     <Button 
       row="7"
       colSpan="2"
       text="Cancel"
+      class="extra-button"
       (tap)="cancel()">
     </Button>
   </GridLayout>

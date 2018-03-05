@@ -21,6 +21,14 @@ GridLayout {
   border-radius: 2;
   width:150;
 }
+.extra-button {
+  background-color: $permobil-steel;
+  color: $permobil-charcoal;
+  padding: 10;
+  margin-top: 20;
+  border-radius: 2;
+  width:150;
+}
 TextField{
   background-color: rgba(80,135,180,0.5);
     padding: 5;
