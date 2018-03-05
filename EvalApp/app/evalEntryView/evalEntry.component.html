@@ -34,47 +34,45 @@
   <ScrollView class="page page-content" orientation="vertical" tkMainContent>
     <StackLayout class="eval-stack-layout">
       <DockLayout stretchLastChild="false" >
-        <Label text="User states pain from pushing:" class="eval-item" dock="left"></Label>
+        <Label text="Do you have pain from pushing?" class="eval-item" dock="left"></Label>
         <SegmentedBar [items]="PushingPain" [selectedIndex]="getPushingPainIndex()" class="eval-segmentedBar" dock="right" (selectedIndexChanged)="onPushingPainIndexChange($event)"></SegmentedBar>
       </DockLayout>
-      <DockLayout stretchLastChild="false">
-        <Label text="User States x/10 pain:" class="eval-item" ></Label>
-        <Label verticalAlignment="center" dock="right" class="eval-slider-value-label" style="min-width: 50" [text]="settings.pain.toFixed(0)+'%'" row="0" col="1"></Label>
+      <DockLayout *ngIf="getPushingPainIndex() == 0" stretchLastChild="false">
+        <Label text="Pain Level:" class="eval-item" ></Label>
+        <Label verticalAlignment="center" dock="right" class="eval-slider-value-label" style="min-width: 50" [text]="settings.pain.toFixed(0)+' / 10'" row="0" col="1"></Label>
       </DockLayout>
-      <GridLayout rows="auto" columns="*, auto">
-        <Slider verticalAlignment="center" class="eval-slider" [value]="settings.pain" (valueChange)="onSliderUpdate('pain', $event)" row="0" col="0"></Slider>
+      <GridLayout *ngIf="getPushingPainIndex() == 0" rows="auto" columns="*, auto">
+        <Slider maxValue="10"  verticalAlignment="center" class="eval-slider" [value]="settings.pain" (valueChange)="onSliderUpdate('pain', $event)" row="0" col="0"></Slider>
       </GridLayout>
 
       <DockLayout stretchLastChild="false" padding="30,0,0,0">
-        <Label text="User states fatigue from pushing:" class="eval-item" dock="left"></Label>
+        <Label text="Do you have fatigue from pushing?" class="eval-item" dock="left"></Label>
         <SegmentedBar [items]="PushingFatigue" [selectedIndex]="getPushingFatigueIndex()" class="eval-segmentedBar" dock="right" (selectedIndexChanged)="onPushingFatigueIndexChange($event)"></SegmentedBar>
       </DockLayout>
-      <DockLayout stretchLastChild="false">
-        <Label text="User states x/10 fatigue:" class="eval-item" ></Label>
-        <Label verticalAlignment="center" dock="right" class="eval-slider-value-label" style="min-width: 50" [text]="settings.fatigue.toFixed(0)+'%'" row="0" col="1"></Label>
+      <DockLayout *ngIf="getPushingFatigueIndex() == 0" stretchLastChild="false">
+        <Label text="Fatigue Level:" class="eval-item" ></Label>
+        <Label verticalAlignment="center" dock="right" class="eval-slider-value-label" style="min-width: 50" [text]="settings.fatigue.toFixed(0)+' / 10'" row="0" col="1"></Label>
       </DockLayout>
-      <GridLayout rows="auto" columns="*, auto">
-        <Slider verticalAlignment="center" class="eval-slider" [value]="settings.fatigue" (valueChange)="onSliderUpdate('fatigue', $event)" row="0" col="0"></Slider>
+      <GridLayout *ngIf="getPushingFatigueIndex() == 0" rows="auto" columns="*, auto">
+        <Slider maxValue="10"  verticalAlignment="center" class="eval-slider" [value]="settings.fatigue" (valueChange)="onSliderUpdate('fatigue', $event)" row="0" col="0"></Slider>
       </GridLayout>
 
       <DockLayout stretchLastChild="false" padding="30,0,0,0">
-        <Label text="User states impact on independence:" class="eval-item" ></Label>
-        <Label verticalAlignment="center" dock="right" class="eval-slider-value-label" style="min-width: 50" [text]="settings.independence.toFixed(0)+'%'" row="0" col="1"></Label>
+        <Label text="Impact on independence:" class="eval-item" ></Label>
+        <Label verticalAlignment="center" dock="right" class="eval-slider-value-label" style="min-width: 50" [text]="settings.independence.toFixed(0)+' / 10'" row="0" col="1"></Label>
       </DockLayout>
       <GridLayout rows="auto" columns="*, auto">
-        <Slider verticalAlignment="center" class="eval-slider" [value]="settings.independence" (valueChange)="onSliderUpdate('independence', $event)" row="0" col="0"></Slider>
+        <Slider maxValue="10"  verticalAlignment="center" class="eval-slider" [value]="settings.independence" (valueChange)="onSliderUpdate('independence', $event)" row="0" col="0"></Slider>
       </GridLayout>
 
       <DockLayout stretchLastChild="true" padding="30,0,0,0">
         <Label dock="left" text="Years in manual chair:" class="eval-item" ></Label>
-        <!-- <Label verticalAlignment="center" text="Select" dock="right" class="eval-slider-value-label" style="min-width: 50" row="0" col="1"></Label>  -->
         <DropDown #dd dock="right" hint="years" [items]="timeFrames" [(ngModel)]="timeIndex" (selectedIndexChanged)="selectedIndexChanged($event)" horizontalAlignment="right" class="p-15"></DropDown>
 
       </DockLayout>
 
       <DockLayout stretchLastChild="true" padding="30,0,0,0">
         <Label dock="left" text="Type of chair:" class="eval-item" ></Label>
-        <!-- <Label verticalAlignment="center" text="Select" dock="right" class="eval-slider-value-label" style="min-width: 50" row="0" col="1"></Label> -->
         <DropDown #dd dock="right" hint="chair type" [items]="chairTypes" [(ngModel)]="chairIndex" (selectedIndexChanged)="selectedIndexChanged($event)" horizontalAlignment="right" class="p-15"></DropDown>
 
       </DockLayout>

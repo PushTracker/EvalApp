@@ -7,9 +7,9 @@ export class Settings {
     PushingPain: string = "Yes";
     PushingFatigue: string = "Yes";
 
-    pain: number = 30;
-    fatigue: number = 70;
-    independence: number = 100;
+    pain: number = 3;
+    fatigue: number = 7;
+    independence: number = 10;
 
     maxSpeed: number = 50;
     accelerationRate: number = 30;
@@ -39,9 +39,9 @@ export class Settings {
         this.PushingPain = obj && obj.PushingPain || "Yes";
         this.PushingFatigue = obj && obj.PushingFatigue || "Yes";
 
-        this.pain = obj && obj.pain || 30;
-        this.fatigue = obj && obj.fatigue || 70;
-        this.independence = obj && obj.independence || 100;
+        this.pain = obj && obj.pain || 3;
+        this.fatigue = obj && obj.fatigue || 7;
+        this.independence = obj && obj.independence || 10;
 
         this.maxSpeed = obj && obj.maxSpeed || 50;
         this.accelerationRate = obj && obj.accelerationRate || 30;
