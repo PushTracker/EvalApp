@@ -5,6 +5,13 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# compiled output
+dist/
+ua-backend/dist/
+tmp/
+out-tsc/
+env.json
+
 # Runtime data
 pids
 *.pid
@@ -67,4 +74,30 @@ package-lock.json
 .DS_Store
 **/platforms/
 /**/platforms/
-EvalApp/platforms/
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# dependencies
+node_modules/
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# e2e
+e2e/*.js
+e2e/*.map
+
+# System Files
+.DS_Store
+Thumbs.db
