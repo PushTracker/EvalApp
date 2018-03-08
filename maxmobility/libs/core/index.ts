@@ -1,2 +1,3 @@
-export * from "./services";
-export { CoreModule } from "./core.module";
+export * from './services';
+export * from './models';
+export { CoreModule } from './core.module';
