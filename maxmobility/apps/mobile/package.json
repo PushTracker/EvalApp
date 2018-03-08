@@ -43,6 +43,7 @@
     "@angular/platform-browser-dynamic": "file:../../node_modules/@angular/platform-browser-dynamic",
     "@angular/router": "file:../../node_modules/@angular/router",
     "@maxmobility/core": "file:../../libs/core",
+    "@maxmobility/helpers": "file:../../libs/core/helpers",
     "@maxmobility/mobile": "file:../../xplat/mobile",
     "@ngx-translate/core": "file:../../node_modules/@ngx-translate/core",
     "@nrwl/nx": "file:../../node_modules/@nrwl/nx",
@@ -62,6 +63,7 @@
     "primeng": "file:../../node_modules/primeng",
     "reflect-metadata": "file:../../node_modules/reflect-metadata",
     "rxjs": "file:../../node_modules/rxjs",
+    "tns-android": "3.4.2",
     "tns-core-modules": "file:../../node_modules/tns-core-modules",
     "ts-md5": "file:../../node_modules/ts-md5",
     "zone.js": "file:../../node_modules/zone.js"
