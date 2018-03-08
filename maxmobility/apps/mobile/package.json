@@ -58,12 +58,10 @@
     "nativescript-theme-core": "file:../../node_modules/nativescript-theme-core",
     "nativescript-ui-listview": "file:../../node_modules/nativescript-ui-listview",
     "nativescript-ui-sidedrawer": "file:../../node_modules/nativescript-ui-sidedrawer",
-    "nativescript-videoplayer": "file:../../node_modules/nativescript-videoplayer",
     "ngx-progressbar": "file:../../node_modules/ngx-progressbar",
     "primeng": "file:../../node_modules/primeng",
     "reflect-metadata": "file:../../node_modules/reflect-metadata",
     "rxjs": "file:../../node_modules/rxjs",
-    "tns-android": "3.4.2",
     "tns-core-modules": "file:../../node_modules/tns-core-modules",
     "ts-md5": "file:../../node_modules/ts-md5",
     "zone.js": "file:../../node_modules/zone.js"

@@ -55,10 +55,8 @@
     "nativescript-drop-down": "^3.2.3",
     "nativescript-exoplayer": "^3.4.0",
     "nativescript-fresco": "^3.0.6",
-    "nativescript-ngx-slides": "^1.0.0",
     "nativescript-pro-ui": "~3.4.1",
     "nativescript-snackbar": "^2.0.1",
-    "nativescript-videoplayer": "^3.1.0",
     "nativescript-loading-indicator": "^2.4.0",
     "nativescript-ngx-fonticon": "^4.0.0",
     "nativescript-permissions": "~1.2.3",
@@ -96,6 +94,6 @@
     "ts-node": "~4.1.0",
     "tslint": "~5.9.1",
     "typescript": "2.6.2",
-    "prettier": "1.10.2"
+    "prettier": "^1.11.1"
   }
 }
