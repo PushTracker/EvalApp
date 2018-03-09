@@ -2,6 +2,7 @@
   "rulesDirectory": ["node_modules/codelyzer", "node_modules/@nrwl/schematics/src/tslint"],
   "rules": {
     "arrow-return-shorthand": true,
+    "arrow-parens": false,
     "callable-types": true,
     "class-name": true,
     "forin": true,
