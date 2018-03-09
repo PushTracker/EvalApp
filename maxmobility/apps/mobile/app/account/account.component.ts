@@ -1,77 +1,76 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
-import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-pro-ui/sidedrawer";
-import { RadSideDrawerComponent } from "nativescript-pro-ui/sidedrawer/angular";
-
-import { confirm } from "ui/dialogs";
-
-import { Config } from "../shared/config";
-import { User } from "../shared/user";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-ui-sidedrawer';
+import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
+import { confirm } from 'tns-core-modules/ui/dialogs';
+import { Config } from '../shared/config';
+import { User } from '../shared/user';
 
 @Component({
-    selector: "Account",
-    moduleId: module.id,
-    templateUrl: "./account.component.html",
-    styleUrls: ["./account.component.css"]
+  selector: 'Account',
+  moduleId: module.id,
+  templateUrl: './account.component.html',
+  styleUrls: ['./account.component.css']
 })
 export class AccountComponent implements OnInit {
-    /* ***********************************************************
-    * Use the @ViewChild decorator to get a reference to the drawer component.
-    * It is used in the "onDrawerButtonTap" function below to manipulate the drawer.
-    *************************************************************/
-    @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
+  /**
+   * Use the @ViewChild decorator to get a reference to the drawer component.
+   * It is used in the "onDrawerButtonTap" function below to manipulate the drawer.
+   */
 
-    public user = new User();
+  @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
 
-    // private members
-    private _sideDrawerTransition: DrawerTransitionBase;
+  user = new User();
 
-    constructor() {
-	this.user = Config.user;
-    }
+  // private members
+  private _sideDrawerTransition: DrawerTransitionBase;
 
-    /* ***********************************************************
-    * Use the sideDrawerTransition property to change the open/close animation of the drawer.
-    *************************************************************/
-    ngOnInit(): void {
-        this._sideDrawerTransition = new SlideInOnTopTransition();
-    }
+  constructor() {
+    this.user = Config.user;
+  }
 
-    get sideDrawerTransition(): DrawerTransitionBase {
-        return this._sideDrawerTransition;
-    }
+  /************************************************************
+   * Use the sideDrawerTransition property to change the open/close animation of the drawer.
+   *************************************************************/
+  ngOnInit(): void {
+    this._sideDrawerTransition = new SlideInOnTopTransition();
+  }
 
-    /* ***********************************************************
-    * According to guidelines, if you have a drawer on your page, you should always
-    * have a button that opens it. Use the showDrawer() function to open the app drawer section.
-    *************************************************************/
-    onDrawerButtonTap(): void {
-        this.drawerComponent.sideDrawer.showDrawer();
-    }
+  get sideDrawerTransition(): DrawerTransitionBase {
+    return this._sideDrawerTransition;
+  }
 
-    onSaveAccountTap(): void {
-	confirm({
-            title: "Update User Account?",
-            message: "Send these settings to the Server?",
-            okButtonText: "Yes",
-            cancelButtonText: "No"
-	});
-    }
+  /************************************************************
+   * According to guidelines, if you have a drawer on your page, you should always
+   * have a button that opens it. Use the showDrawer() function to open the app drawer section.
+   *************************************************************/
+  onDrawerButtonTap(): void {
+    this.drawerComponent.sideDrawer.showDrawer();
+  }
 
-    onChangePasswordTap(): void {
-	confirm({
-            title: "Change Password?",
-            message: "Are you sure you want to change your password?",
-            okButtonText: "Yes",
-            cancelButtonText: "No"
-	});
-    }
+  onSaveAccountTap() {
+    confirm({
+      title: 'Update User Account?',
+      message: 'Send these settings to the Server?',
+      okButtonText: 'Yes',
+      cancelButtonText: 'No'
+    });
+  }
 
-    onResetAccountTap(): void {
-	confirm({
-            title: "Reset Account?",
-            message: "Are you sure you want to reset your account (remove all your data / settings)?",
-            okButtonText: "Yes",
-            cancelButtonText: "No"
-	});
-    }
+  onChangePasswordTap() {
+    confirm({
+      title: 'Change Password?',
+      message: 'Are you sure you want to change your password?',
+      okButtonText: 'Yes',
+      cancelButtonText: 'No'
+    });
+  }
+
+  onResetAccountTap() {
+    confirm({
+      title: 'Reset Account?',
+      message: 'Are you sure you want to reset your account (remove all your data / settings)?',
+      okButtonText: 'Yes',
+      cancelButtonText: 'No'
+    });
+  }
 }
