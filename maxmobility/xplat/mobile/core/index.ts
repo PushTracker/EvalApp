@@ -1,2 +1,2 @@
 export * from './services';
-export { EvalMobileCoreModule } from './core.module';
+export { MobileCoreModule } from './core.module';
