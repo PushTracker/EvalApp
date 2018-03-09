@@ -1,146 +1,143 @@
-import application = require("application");
+import application = require('application');
 
-import { Component, OnInit, ViewChild } from "@angular/core";
-import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-pro-ui/sidedrawer";
-import { RadSideDrawerComponent } from "nativescript-pro-ui/sidedrawer/angular";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-ui-sidedrawer';
+import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 
-import { SegmentedBar, SegmentedBarItem } from "ui/segmented-bar";
+import { SegmentedBar, SegmentedBarItem } from 'ui/segmented-bar';
 
-import { Observable } from "data/observable";
-import { confirm } from "ui/dialogs";
+import { Observable } from 'data/observable';
+import { confirm } from 'ui/dialogs';
 
-import { EvaluationService } from "../shared/evaluation.service";
+import { EvaluationService } from '../shared/evaluation.service';
 
-import { RouterExtensions } from "nativescript-angular/router";
+import { RouterExtensions } from 'nativescript-angular/router';
 
-import { DropDownModule } from "nativescript-drop-down/angular";
+import { DropDownModule } from 'nativescript-drop-down/angular';
 
-const timeInChair = ["1", "2", "3", "4", "5+",
-		     "10+", "20+", "30+"];
+const timeInChair = ['1', '2', '3', '4', '5+', '10+', '20+', '30+'];
 
-const chairType = [ "TiLite", "Quckie", "Other" ];
+const chairType = ['TiLite', 'Quckie', 'Other'];
 
 @Component({
-    selector: "EvalEntry",
-    moduleId: module.id,
-    templateUrl: "./evalEntry.component.html",
-    styleUrls: ["./evalEntry.component.css"]
+  selector: 'EvalEntry',
+  moduleId: module.id,
+  templateUrl: './evalEntry.component.html',
+  styleUrls: ['./evalEntry.component.css']
 })
 export class EvalEntryComponent implements OnInit {
-    /* ***********************************************************
-    * Use the @ViewChild decorator to get a reference to the drawer component.
-    * It is used in the "onDrawerButtonTap" function below to manipulate the drawer.
-    *************************************************************/
-    @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
+  /************************************************************
+   * Use the @ViewChild decorator to get a reference to the drawer component.
+   * It is used in the "onDrawerButtonTap" function below to manipulate the drawer.
+   *************************************************************/
+  @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
 
-    yesNo: Array<SegmentedBarItem> = [];
-    PushingPain: Array<SegmentedBarItem> = [];
-    PushingFatigue: Array<SegmentedBarItem> = [];
+  yesNo: Array<SegmentedBarItem> = [];
+  PushingPain: Array<SegmentedBarItem> = [];
+  PushingFatigue: Array<SegmentedBarItem> = [];
 
-    isIOS: boolean = false;
-    isAndroid: boolean = false;
+  isIOS: boolean = false;
+  isAndroid: boolean = false;
 
-    timeFrames: Array<string>;
-    timeIndex: number = 0;
-    chairTypes: Array<string>;
-    chairIndex: number = 0;
-    
+  timeFrames: Array<string>;
+  timeIndex: number = 0;
+  chairTypes: Array<string>;
+  chairIndex: number = 0;
 
-    // private members
-    private _sideDrawerTransition: DrawerTransitionBase;
-    private pains = ["Yes", "No"];
-    private fatigues = ["Yes", "No"];
+  // private members
+  private _sideDrawerTransition: DrawerTransitionBase;
+  private pains = ['Yes', 'No'];
+  private fatigues = ['Yes', 'No'];
 
-    constructor(private routerExtensions: RouterExtensions) {
-        this.pains.map((o) => {
-            const item = new SegmentedBarItem();
-            item.title = o;
-            this.PushingPain.push(item);
-        });
-        this.fatigues.map((o) => {
-            const item = new SegmentedBarItem();
-            item.title = o;
-            this.PushingFatigue.push(item);
-        });
+  constructor(private routerExtensions: RouterExtensions) {
+    this.pains.map(o => {
+      const item = new SegmentedBarItem();
+      item.title = o;
+      this.PushingPain.push(item);
+    });
+    this.fatigues.map(o => {
+      const item = new SegmentedBarItem();
+      item.title = o;
+      this.PushingFatigue.push(item);
+    });
 
-        this.timeFrames = [];
+    this.timeFrames = [];
 
-        // tslint:disable-next-line:prefer-for-of
-        for (let i = 0; i < timeInChair.length; i++) {
-            this.timeFrames.push(timeInChair[i]);
-        }
-
-        this.chairTypes = [];
-
-        // tslint:disable-next-line:prefer-for-of
-        for (let i = 0; i < chairType.length; i++) {
-            this.chairTypes.push(chairType[i]);
-        }
+    // tslint:disable-next-line:prefer-for-of
+    for (let i = 0; i < timeInChair.length; i++) {
+      this.timeFrames.push(timeInChair[i]);
     }
 
-    onSliderUpdate(key, args) {
-        this.settings.set(key, args.object.value);
-    }
+    this.chairTypes = [];
 
-    // button events
-    onNext(): void {
-        this.routerExtensions.navigate(["/training"], {
-	    clearHistory: true,
-            transition: {
-                name: "slide"
-            }
-        });
+    // tslint:disable-next-line:prefer-for-of
+    for (let i = 0; i < chairType.length; i++) {
+      this.chairTypes.push(chairType[i]);
     }
+  }
 
-    // listPicker events
-    selectedIndexChanged(args) {
-    }
+  onSliderUpdate(key, args) {
+    this.settings.set(key, args.object.value);
+  }
 
-    // pushing pain
-    getPushingPainIndex(): number {
-        return this.pains.indexOf(this.settings.get("PushingPain"));
-    }
+  // button events
+  onNext(): void {
+    this.routerExtensions.navigate(['/training'], {
+      clearHistory: true,
+      transition: {
+        name: 'slide'
+      }
+    });
+  }
 
-    onPushingPainIndexChange(args): void {
-        const segmentedBar = <SegmentedBar>args.object;
-        this.settings.set("PushingPain", this.pains[segmentedBar.selectedIndex]);
-    }
+  // listPicker events
+  selectedIndexChanged(args) {}
 
-    // pushing fatigue
-    getPushingFatigueIndex(): number {
-        return this.fatigues.indexOf(this.settings.get("PushingFatigue"));
-    }
+  // pushing pain
+  getPushingPainIndex(): number {
+    return this.pains.indexOf(this.settings.get('PushingPain'));
+  }
 
-    onPushingFatigueIndexChange(args): void {
-        const segmentedBar = <SegmentedBar>args.object;
-        this.settings.set("PushingFatigue", this.fatigues[segmentedBar.selectedIndex]);
-    }
+  onPushingPainIndexChange(args): void {
+    const segmentedBar = <SegmentedBar>args.object;
+    this.settings.set('PushingPain', this.pains[segmentedBar.selectedIndex]);
+  }
 
-    /* ***********************************************************
-    * Use the sideDrawerTransition property to change the open/close animation of the drawer.
-    *************************************************************/
-    ngOnInit(): void {
-        this._sideDrawerTransition = new SlideInOnTopTransition();
-        if (application.ios) {
-            this.isIOS = true;
-        } else if (application.android) {
-            this.isAndroid = true;
-        }
-    }
+  // pushing fatigue
+  getPushingFatigueIndex(): number {
+    return this.fatigues.indexOf(this.settings.get('PushingFatigue'));
+  }
 
-    get sideDrawerTransition(): DrawerTransitionBase {
-        return this._sideDrawerTransition;
-    }
+  onPushingFatigueIndexChange(args): void {
+    const segmentedBar = <SegmentedBar>args.object;
+    this.settings.set('PushingFatigue', this.fatigues[segmentedBar.selectedIndex]);
+  }
 
-    get settings(): Observable {
-        return EvaluationService.settings;
+  /************************************************************
+   * Use the sideDrawerTransition property to change the open/close animation of the drawer.
+   *************************************************************/
+  ngOnInit(): void {
+    this._sideDrawerTransition = new SlideInOnTopTransition();
+    if (application.ios) {
+      this.isIOS = true;
+    } else if (application.android) {
+      this.isAndroid = true;
     }
+  }
 
-    /* ***********************************************************
-    * According to guidelines, if you have a drawer on your page, you should always
-    * have a button that opens it. Use the showDrawer() function to open the app drawer section.
-    *************************************************************/
-    onDrawerButtonTap(): void {
-        this.drawerComponent.sideDrawer.showDrawer();
-    }
+  get sideDrawerTransition(): DrawerTransitionBase {
+    return this._sideDrawerTransition;
+  }
+
+  get settings(): Observable {
+    return EvaluationService.settings;
+  }
+
+  /************************************************************
+   * According to guidelines, if you have a drawer on your page, you should always
+   * have a button that opens it. Use the showDrawer() function to open the app drawer section.
+   *************************************************************/
+  onDrawerButtonTap(): void {
+    this.drawerComponent.sideDrawer.showDrawer();
+  }
 }

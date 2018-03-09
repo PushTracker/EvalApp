@@ -53,7 +53,6 @@
     "nativescript-drop-down": "file:../../node_modules/nativescript-drop-down",
     "nativescript-exoplayer": "file:../../node_modules/nativescript-exoplayer",
     "nativescript-fresco": "file:../../node_modules/nativescript-fresco",
-    "nativescript-pro-ui": "file:../../node_modules/nativescript-pro-ui",
     "nativescript-snackbar": "file:../../node_modules/nativescript-snackbar",
     "nativescript-theme-core": "file:../../node_modules/nativescript-theme-core",
     "nativescript-ui-listview": "file:../../node_modules/nativescript-ui-listview",
