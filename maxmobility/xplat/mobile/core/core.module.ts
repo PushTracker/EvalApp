@@ -24,54 +24,54 @@ import { TNSKinveyService } from './services/tns-kinvey.service';
 
 // factories
 export function loadingIndicatorFactory() {
-	return new LoadingIndicator();
+  return new LoadingIndicator();
 }
 
 export function platformLangFactory() {
-	console.log('platformLangFactory:', device.language);
-	return device.language;
+  console.log('platformLangFactory:', device.language);
+  return device.language;
 }
 
 export function kinveyFactory() {
-	return TNSKinvey;
+  return TNSKinvey;
 }
 
 @NgModule({
-	imports: [
-		NativeScriptModule,
-		NativeScriptHttpClientModule,
-		TNSFontIconModule.forRoot({
-			ion: './assets/ionicons.min.css'
-		}),
-		CoreModule.forRoot([
-			// {
-			// 	provide: PlatformLanguageToken,
-			// 	useFactory: platformLangFactory
-			// },
-			// {
-			// 	provide: PlatformKinveyToken,
-			// 	useFactory: kinveyFactory
-			// },
-			// {
-			// 	provide: KinveyService,
-			// 	useClass: TNSKinveyService
-			// }
-		]),
-		TranslateModule.forRoot({
-			loader: {
-				provide: TranslateLoader
-				// useFactory: createTranslateLoader
-			}
-		})
-	],
-	providers: [...PROVIDERS]
+  imports: [
+    NativeScriptModule,
+    NativeScriptHttpClientModule,
+    TNSFontIconModule.forRoot({
+      ion: './assets/ionicons.min.css'
+    }),
+    CoreModule.forRoot([
+      // {
+      // 	provide: PlatformLanguageToken,
+      // 	useFactory: platformLangFactory
+      // },
+      // {
+      // 	provide: PlatformKinveyToken,
+      // 	useFactory: kinveyFactory
+      // },
+      // {
+      // 	provide: KinveyService,
+      // 	useClass: TNSKinveyService
+      // }
+    ])
+    // TranslateModule.forRoot({
+    //   loader: {
+    //     provide: TranslateLoader
+    //     // useFactory: createTranslateLoader
+    //   }
+    // })
+  ],
+  providers: [...PROVIDERS]
 })
-export class EvalMobileCoreModule {
-	constructor(
-		@Optional()
-		@SkipSelf()
-		parentModule: EvalMobileCoreModule
-	) {
-		// throwIfAlreadyLoaded(parentModule, 'EvalMobileCoreModule');
-	}
+export class MobileCoreModule {
+  constructor(
+    @Optional()
+    @SkipSelf()
+    parentModule: MobileCoreModule
+  ) {
+    throwIfAlreadyLoaded(parentModule, 'MobileCoreModule');
+  }
 }

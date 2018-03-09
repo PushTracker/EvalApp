@@ -1,24 +1,19 @@
-import {
-  ModuleWithProviders,
-  NgModule,
-  Optional,
-  SkipSelf
-} from "@angular/core";
-import { APP_BASE_HREF, CommonModule } from "@angular/common";
-import { HTTP_INTERCEPTORS } from "@angular/common/http";
+import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
+import { APP_BASE_HREF, CommonModule } from '@angular/common';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 // libs
-import { NxModule } from "@nrwl/nx";
-// import { throwIfAlreadyLoaded } from '@maxmobility/helpers';
+import { NxModule } from '@nrwl/nx';
+import { throwIfAlreadyLoaded } from '@maxmobility/helpers';
 
 // app
-import { CORE_PROVIDERS } from "./services";
+import { CORE_PROVIDERS } from './services';
 
 export const BASE_PROVIDERS: any[] = [
   ...CORE_PROVIDERS,
   {
     provide: APP_BASE_HREF,
-    useValue: "/"
+    useValue: '/'
   }
 ];
 
@@ -44,6 +39,6 @@ export class CoreModule {
     @SkipSelf()
     parentModule: CoreModule
   ) {
-    // throwIfAlreadyLoaded(parentModule, "CoreModule");
+    throwIfAlreadyLoaded(parentModule, 'CoreModule');
   }
 }
