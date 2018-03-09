@@ -1,8 +1,8 @@
 // Custom common variables
-@import '../app-variables';
+@import '../../scss/variables';
 
 .action-item {
-  color: white;
+  color: $white;
   font-size: 18;
   text-transform: none;
 }
@@ -19,7 +19,7 @@
   text-overflow: none;
   text-align: left;
   word-wrap: normal;
-  color: black;
+  color: $black;
   font-weight: bold;
   margin: 15;
 }

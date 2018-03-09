@@ -1,0 +1,23 @@
+<ScrollView class="permobil-hero">
+    <GridLayout rows="auto, auto, auto, auto" columns="*" class="hero" verticalAlign="center">
+        <Image row="0" src="~/assets/permobil_logo.png" class="logo"></Image>
+        <Label row="1" class="evalApp">
+            <FormattedString>
+                <Span text="Smart"></Span>
+                <Span text=" Evaluation"></Span>
+            </FormattedString>
+        </Label>
+        <StackLayout row="2">
+            <Label class="account-icon fa" text="&#xf2be;" margin-bottom="25"></Label>
+            <TextField #email [text]="user.first_name" class="selectedTextField" hint="First Name..." keyboardType="email" autocorrect="false"
+                autocapitalizationType="none"></TextField>
+            <TextField #email [text]="user.last_name" class="selectedTextField" hint="Last Name..." keyboardType="email" autocorrect="false"
+                autocapitalizationType="none"></TextField>
+            <TextField #email [text]="user.email" class="selectedTextField" hint="email..." keyboardType="email" autocorrect="false"
+                autocapitalizationType="none"></TextField>
+            <TextField #password [text]="user.password" hint="password..." secure="true"></TextField>
+            <Button text="Sign up" class="submit-button" (tap)="signUpTap()"></Button>
+            <Button text="Back to Login" class="extra-button" (tap)="navToLogin()"></Button>
+        </StackLayout>
+    </GridLayout>
+</ScrollView>

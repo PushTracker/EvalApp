@@ -1,6 +1,7 @@
 {
   "rulesDirectory": ["node_modules/codelyzer", "node_modules/@nrwl/schematics/src/tslint"],
   "rules": {
+    "array-type": [true, "array"],
     "arrow-return-shorthand": true,
     "arrow-parens": false,
     "callable-types": true,

@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers, RequestOptions, URLSearchParams } from '@angular/http';
-
 // lib
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
@@ -10,13 +8,12 @@ import * as Kinvey from 'kinvey-nativescript-sdk';
 import { User } from '@maxmobility/core';
 
 @Injectable()
-// export class TNSKinveyService extends KinveyService {
-export class TNSKinveyService {
+export class UserService {
   public static Kinvey_App_Key = 'kid_SyIIDJjdM';
   public static Kinvey_App_Secret = '3cfe36e6ac8f4d80b04014cc980a4d47';
   public static Kinvey_Host_Url = 'https://baas.kinvey.com/';
 
-  constructor(private http: Http) {}
+  constructor() {}
 
   get user() {
     return Kinvey.User.getActiveUser();
@@ -30,11 +27,7 @@ export class TNSKinveyService {
     return Kinvey.User.login(username.trim(), pw.trim());
   }
 
-  //   loginWithMIC() {
-  //     return TNSKinvey.Kinvey.User.loginWithMIC('http://redirecturi');
-  //   }
-
-  logoff() {
+  logout() {
     return Kinvey.User.logout();
   }
 

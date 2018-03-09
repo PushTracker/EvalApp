@@ -30,27 +30,27 @@ export class TrialComponent implements OnInit {
 
   slides = [
     {
-      Image: '~/images/controls-4.png',
+      Image: '~/assets/images/controls-4.png',
       Label: 'Trial Set-Up',
       Description: 'Select options and settings for SmartDrive trial.',
       Key: 'setUp'
     },
     {
-      Image: '~/images/stopwatch.jpg',
+      Image: '~/assets/images/stopwatch.jpg',
       Label: 'Phase 1',
       Label_2: 'With SmartDrive',
       Description: 'Go through the trial course with the SmartDrive - press start to begin.',
       Key: 'start'
     },
     {
-      Image: '~/images/stopwatch.jpg',
+      Image: '~/assets/images/stopwatch.jpg',
       Label: 'Phase 2',
       Label_2: 'Without SmartDrive',
       Description: 'Now perform the same course without Smart Drive - press start to begin.',
       Key: 'end'
     },
     {
-      Image: '~/images/checked-1.png',
+      Image: '~/assets/images/checked-1.png',
       Label: 'Trial Complete',
       Description: 'Nice work!',
       Key: 'summary'

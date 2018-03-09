@@ -9,8 +9,8 @@ import { View } from 'tns-core-modules/ui/core/view';
 import { Animation, AnimationDefinition } from 'tns-core-modules/ui/animation';
 import { TextField } from 'tns-core-modules/ui/text-field';
 // app
-import { User } from '../shared/user';
-import { LoginService } from '../shared/login.service';
+import { User } from '../../shared/user';
+import { LoginService } from '../../shared/login.service';
 
 @Component({
   selector: 'Login',
@@ -79,7 +79,10 @@ export class LoginComponent implements OnInit {
   login(): void {
     this.loginService
       .login(this.user)
-      .subscribe(() => this.enterApp(), error => this.handleErrors(error, 'Login Failed', "Unfortunately we couldn't find your account"));
+      .subscribe(
+        () => this.enterApp(),
+        error => this.handleErrors(error, 'Login Failed', "Unfortunately we couldn't find your account")
+      );
   }
 
   signUp(): void {
@@ -89,6 +92,10 @@ export class LoginComponent implements OnInit {
       },
       error => this.handleErrors(error, 'Register Failed', "Unfortunately we couldn't create your account")
     );
+  }
+
+  navToSignUp() {
+    this.routerExtensions.navigate(['/sign-up']);
   }
 
   toggleDisplay(): void {

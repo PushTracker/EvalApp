@@ -5,8 +5,8 @@ import { confirm } from 'tns-core-modules/ui/dialogs';
 import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-ui-sidedrawer';
 import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 // app
-import { Config } from '../shared/config';
-import { User } from '../shared/user';
+import { Config } from '../../shared/config';
+import { User } from '../../shared/user';
 
 @Component({
   selector: 'Account',

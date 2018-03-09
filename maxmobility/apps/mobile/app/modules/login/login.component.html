@@ -3,7 +3,7 @@
 
 </ActionBar> -->
 
-<ScrollView class="page hero">
+<ScrollView class="permobil-hero">
   <GridLayout 
     rows="auto, auto, auto, auto, auto, auto, auto, auto, auto"
     columns="*, *"
@@ -12,7 +12,7 @@
     <Image 
       row="0"
       colSpan="2"
-      src="~/images/permobil_logo.png"
+      src="~/assets/images/permobil_logo.png"
       class="logo">
     </Image>	
     <Label 
@@ -58,9 +58,9 @@
     <Button 
       row="6"
       colSpan="2"
-      [text]="isLoggingIn ? 'Sign up' : 'Back to login'"
+      text="Sign up"
       class="extra-button"
-      (tap)="toggleDisplay()">
+      (tap)="navToSignUp()">
     </Button>
     <Button 
       row="7"

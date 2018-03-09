@@ -20,19 +20,19 @@ export class TrainingComponent implements OnInit {
 
   slides = [
     {
-      Image: '~/images/PowerOn.jpg',
+      Image: '~/assets/images/PowerOn.jpg',
       Label: 'Powering SmartDrive',
       Description: 'Press back on the rocker switch to power on the SmartDrive, and forward to power off.'
     },
     {
-      Image: '~/images/BandPower.jpg',
+      Image: '~/assets/images/BandPower.jpg',
       Label: 'Powering PushTracker',
       // tslint:disable-next-line:max-line-length
       Description:
         "Press the left raised button on the PushTracker to power on. Press and hold for 3 secconds to enter sleep mode 'zzz' and pwer off."
     },
     {
-      Image: '~/images/Stop.jpg',
+      Image: '~/assets/images/Stop.jpg',
       Label: 'Tap Gesture',
       Description: 'Proper tapping technique.',
       // tslint:disable-next-line:max-line-length
@@ -40,10 +40,11 @@ export class TrainingComponent implements OnInit {
         'Keeping your wrist straight, make contact on the pushrim with the palm of your hand. A red light will alluminate upon succesful tap.',
       Bullet_2: "Tip: You don't need to make contact with the PushTracker band.",
       // tslint:disable-next-line:max-line-length
-      Bullet_3: "Tip: Avoid moving your hand in a 'fishtail' like motion. This will lead to inconsistant tap recognition."
+      Bullet_3:
+        "Tip: Avoid moving your hand in a 'fishtail' like motion. This will lead to inconsistant tap recognition."
     },
     {
-      Image: '~/images/Tapping.jpg',
+      Image: '~/assets/images/Tapping.jpg',
       Label: 'Starting SmartDrive',
       Description: 'Starting & Setting Speed',
       // tslint:disable-next-line:max-line-length
@@ -54,23 +55,24 @@ export class TrainingComponent implements OnInit {
       Bullet_4: 'To increase speed, give a faster push and then single tap to set your desired speed.'
     },
     {
-      Image: '~/images/Steer.jpg',
+      Image: '~/assets/images/Steer.jpg',
       Label: 'Steering',
       Description: 'To steer, gently grip the pushrim of the direction you want to go.',
       Bullet_1: 'Light grip will allow you to veer.',
       Bullet_2: 'Allow the pushrim to slide through your hands.'
     },
     {
-      Image: '~/images/turn.jpg',
+      Image: '~/assets/images/turn.jpg',
       Label: 'Turning',
       Description: 'To turn, firmly grip the pushrim of the direction you want to go.',
       Bullet_1: 'Firm grip will allow you to turn.',
       Bullet_2: 'The tighter you grip, the sharper you will turn.',
       // tslint:disable-next-line:max-line-length
-      Bullet_3: 'Tip: An optimal center of gravity position of the reer wheels will reduce the grip needed to make sharp turns.'
+      Bullet_3:
+        'Tip: An optimal center of gravity position of the reer wheels will reduce the grip needed to make sharp turns.'
     },
     {
-      Image: '~/images/Stop.jpg',
+      Image: '~/assets/images/Stop.jpg',
       Label: 'Stopping',
       Description: 'Double-tap to disengage the SmartDrive.',
       Bullet_1: 'Then coast and break with your hands.',

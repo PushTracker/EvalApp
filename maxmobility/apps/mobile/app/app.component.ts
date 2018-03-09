@@ -7,7 +7,7 @@ import { Kinvey } from 'kinvey-nativescript-sdk';
 const NS_CAROUSEL = require('nativescript-carousel');
 const NS_EXOPLAYER = require('nativescript-exoplayer');
 // app
-import { TNSKinveyService } from '@maxmobility/mobile';
+import { UserService } from '@maxmobility/mobile';
 
 registerElement('Carousel', () => NS_CAROUSEL.Carousel);
 registerElement('CarouselItem', () => NS_CAROUSEL.CarouselItem);
@@ -20,8 +20,15 @@ registerElement('exoplayer', () => NS_EXOPLAYER.ExoVideoPlayer);
 export class AppComponent {
   constructor() {
     Kinvey.init({
-      appKey: `${TNSKinveyService.Kinvey_App_Key}`,
-      appSecret: `${TNSKinveyService.Kinvey_App_Secret}`
+      appKey: `${UserService.Kinvey_App_Key}`,
+      appSecret: `${UserService.Kinvey_App_Secret}`
     });
+    Kinvey.ping()
+      .then(res => {
+        console.log('kinvey ping res');
+      })
+      .catch(err => {
+        console.log('kinvey ping err', err);
+      });
   }
 }

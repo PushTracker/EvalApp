@@ -50,37 +50,37 @@ export class SearchComponent implements OnInit {
 
   slides = [
     {
-      Image: '~/images/PowerOn.jpg',
+      Image: '~/assets/images/PowerOn.jpg',
       Label: 'Powering SmartDrive',
       Description: 'It is important to learn how to do a proper tapping technique.'
     },
     {
-      Image: '~/images/BandPower.jpg',
+      Image: '~/assets/images/BandPower.jpg',
       Label: 'Powering PushTracker',
       Description: 'It is important to learn how to do a proper tapping technique.'
     },
     {
-      Image: '~/images/Tapping.jpg',
+      Image: '~/assets/images/Tapping.jpg',
       Label: 'Tap Gesture',
       Description: 'It is important to learn how to do a proper tapping technique.'
     },
     {
-      Image: '~/images/Steer.jpg',
+      Image: '~/assets/images/Steer.jpg',
       Label: 'Steering',
       Description: 'It is important to learn how to do a proper tapping technique.'
     },
     {
-      Image: '~/images/turn.jpg',
+      Image: '~/assets/images/turn.jpg',
       Label: 'Turning',
       Description: 'It is important to learn how to do a proper tapping technique.'
     },
     {
-      Image: '~/images/Stop.jpg',
+      Image: '~/assets/images/Stop.jpg',
       Label: 'Stopping',
       Description: 'It is important to learn how to do a proper tapping technique.'
     },
     {
-      Image: '~/images/Stop2.jpg',
+      Image: '~/assets/images/Stop2.jpg',
       Label: 'More Stopping',
       Description: 'It is important to learn how to do a proper tapping technique.'
     }
