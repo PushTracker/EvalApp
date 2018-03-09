@@ -1,7 +1,10 @@
+// angular
 import { Component, OnInit, ViewChild } from '@angular/core';
+// nativescript
+import { confirm } from 'tns-core-modules/ui/dialogs';
 import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-ui-sidedrawer';
 import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
-import { confirm } from 'tns-core-modules/ui/dialogs';
+// app
 import { Config } from '../shared/config';
 import { User } from '../shared/user';
 

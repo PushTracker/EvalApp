@@ -1,41 +1,22 @@
-import { NgModule, NgModuleFactoryLoader, NO_ERRORS_SCHEMA } from "@angular/core";
-import { NativeScriptModule } from "nativescript-angular/nativescript.module";
-import { NativeScriptHttpModule } from "nativescript-angular/http";
-
-import { AppRoutingModule } from "./app-routing.module";
-import { AppComponent } from "./app.component";
-
-import { NgProgressModule } from "ngx-progressbar";
-
-import { HttpClient, HttpClientModule } from "@angular/common/http";
-
-import { LoginService } from "./shared/login.service";
-
-// import { NativeScriptUIListViewModule } from "nativescript-pro-ui/listview/angular";
-
-// import { TNSFrescoModule } from "nativescript-fresco/angular";
-
-import { DropDownModule } from "nativescript-drop-down/angular";
+// angular
+import { NgModule, NgModuleFactoryLoader, NO_ERRORS_SCHEMA } from '@angular/core';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+// nativescript
+import { NativeScriptModule } from 'nativescript-angular/nativescript.module';
+import { NativeScriptHttpModule } from 'nativescript-angular/http';
+// app
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { LoginService } from './shared/login.service';
+// libs
+import { NgProgressModule } from 'ngx-progressbar';
+import { DropDownModule } from 'nativescript-drop-down/angular';
 
 @NgModule({
-    bootstrap: [
-        AppComponent
-    ],
-    imports: [
-        NativeScriptModule,
-	NativeScriptHttpModule,
-        AppRoutingModule,
-	HttpClientModule,
-	DropDownModule
-    ],
-    declarations: [
-        AppComponent
-    ],
-    providers: [
-	LoginService
-    ],
-    schemas: [
-        NO_ERRORS_SCHEMA
-    ]
+  bootstrap: [AppComponent],
+  imports: [NativeScriptModule, NativeScriptHttpModule, AppRoutingModule, HttpClientModule, DropDownModule],
+  declarations: [AppComponent],
+  providers: [LoginService],
+  schemas: [NO_ERRORS_SCHEMA]
 })
-export class AppModule { }
+export class AppModule {}
