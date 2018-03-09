@@ -2,9 +2,9 @@ import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/
 import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-ui-sidedrawer';
 import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 
-import { EventData } from 'data/observable';
-import { topmost } from 'ui/frame';
-import { isIOS } from 'platform';
+import { EventData } from 'tns-core-modules/data/observable';
+import { topmost } from 'tns-core-modules/ui/frame';
+import { isIOS } from 'tns-core-modules/platform';
 
 import { RouterExtensions } from 'nativescript-angular/router';
 

@@ -1,19 +1,17 @@
+// angular
 import { Component, OnInit, ViewChild } from '@angular/core';
+// nativescript
 import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-ui-sidedrawer';
 import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
-import { SegmentedBar, SegmentedBarItem } from 'ui/segmented-bar';
-
-import { TextField } from 'ui/text-field';
-
-import { confirm } from 'ui/dialogs';
-
-import * as switchModule from 'tns-core-modules/ui/switch';
-
-import { EvaluationService } from '../shared/evaluation.service';
-
-import { Observable } from 'data/observable';
-
 import { RouterExtensions } from 'nativescript-angular/router';
+import { SegmentedBar, SegmentedBarItem } from 'tns-core-modules/ui/segmented-bar';
+import { TextField } from 'tns-core-modules/ui/text-field';
+import { confirm } from 'tns-core-modules/ui/dialogs';
+import * as switchModule from 'tns-core-modules/ui/switch';
+import { Observable } from 'tns-core-modules/data/observable';
+
+// app
+import { EvaluationService } from '../shared/evaluation.service';
 
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 

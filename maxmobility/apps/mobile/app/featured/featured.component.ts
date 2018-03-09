@@ -1,11 +1,11 @@
+// angular
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+// nativescript
+import { Progress } from 'tns-core-modules/ui/progress';
+import { Color } from 'tns-core-modules/color';
 import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-ui-sidedrawer';
 import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
-
-import { Progress } from 'ui/progress';
-
-import { HttpClient } from '@angular/common/http';
-import { Color } from 'tns-core-modules/color/color';
 
 @Component({
   selector: 'Featured',
@@ -37,13 +37,19 @@ export class FeaturedComponent implements OnInit {
 
     setInterval(() => {
       this.sdBtProgressValue += 1;
-      if (this.sdBtProgressValue > 100) this.sdBtProgressValue = 100;
+      if (this.sdBtProgressValue > 100) {
+        this.sdBtProgressValue = 100;
+      }
 
       this.sdMpProgressValue += 5;
-      if (this.sdMpProgressValue > 100) this.sdMpProgressValue = 100;
+      if (this.sdMpProgressValue > 100) {
+        this.sdMpProgressValue = 100;
+      }
 
       this.ptBtProgressValue += 10;
-      if (this.ptBtProgressValue > 100) this.ptBtProgressValue = 100;
+      if (this.ptBtProgressValue > 100) {
+        this.ptBtProgressValue = 100;
+      }
 
       // this.onValueChanged(5);
     }, 2300);

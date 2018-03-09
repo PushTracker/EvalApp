@@ -1,86 +1,88 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, Response } from "@angular/http";
-import { Observable } from "rxjs/Observable";
-import "rxjs/add/operator/catch";
-import "rxjs/add/operator/do";
-import "rxjs/add/operator/map";
+import { Http, Headers, Response } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/map';
 
-import { User } from "./user";
-import { Config } from "./config";
+import { User } from './user';
+import { Config } from './config';
 
 @Injectable()
 export class LoginService {
+  constructor(private http: Http) {}
 
-    constructor(private http: Http) { }
+  register(user: User) {
+    Config.user.loggedIn = false;
 
-    public register(user: User) {
-	Config.user.loggedIn = false;
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-Type', 'application/json');
 
-	let headers = new Headers();
-	headers.append('Accept', 'application/json');
-	headers.append('Content-Type', 'application/json');
+    return this.http
+      .post(
+        Config.apiUrl + 'auth/',
+        JSON.stringify({
+          email: user.email,
+          password: user.password,
+          password_confirmation: user.password
+        }),
+        { headers }
+      )
+      .map(res => {
+        console.log(`res: ${res}`);
+        const headers2 = res.headers;
+        console.log(`headers2:\n ${JSON.stringify(headers2, null, 2)}`);
 
-	return this.http.post(
-	    Config.apiUrl + "auth/",
-	    JSON.stringify({
-		email: user.email,
-		password: user.password,
-		password_confirmation: user.password
-	    }),
-	    { headers: headers }
-	)
-	    .map(res => {
-		console.log(`res: ${res}`);
-		const headers = res.headers;
-		console.log(`headers:\n ${JSON.stringify(headers, null, 2)}`);
-		return res.json();
-	    })
-	    .do(data => {
-		console.log(`data: ${data}`);
-		console.log(JSON.stringify(data, null, 2));
-	    })
-		.catch(this.handleErrors);
-	
-    }
+        return res.json();
+      })
+      .do(data => {
+        console.log(`data: ${data}`);
+        console.log(JSON.stringify(data, null, 2));
+      })
+      .catch(this.handleErrors);
+  }
 
-    public login(user: User) {
-	Config.user.loggedIn = false;
+  login(user: User) {
+    Config.user.loggedIn = false;
 
-	let headers = new Headers();
-	headers.append('Accept', 'application/json');
-	headers.append('Content-Type', 'application/json');
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-Type', 'application/json');
 
-	return this.http.post(
-	    Config.apiUrl + "auth/sign_in",
-	    JSON.stringify({
-		email: user.email,
-		password: user.password
-	    }),
-	    { headers: headers }
-	)
-	    .map(res => {
-		console.log(`res: ${res}`);
-		const headers = res.headers;
-		Config.token = headers['access-token'];
-		Config.client = headers['client'];
-		Config.uid = headers['uid'];
-		Config.user = user;
-		Config.user.loggedIn = true;
-		return res.json();
-	    })
-	    .do(data => {
-		console.log(`data: ${data}`);
-		Config.user.name = data.data.first_name;
-		console.log(JSON.stringify(data, null, 2));
-	    })
-		.catch(this.handleErrors);
-    }
+    return this.http
+      .post(
+        Config.apiUrl + 'auth/sign_in',
+        JSON.stringify({
+          email: user.email,
+          password: user.password
+        }),
+        { headers }
+      )
+      .map(res => {
+        console.log(`res: ${res}`);
+        const headers2 = res.headers;
+        Config.token = headers2['access-token'];
+        Config.client = headers2['client'];
+        Config.uid = headers2['uid'];
+        Config.user = user;
+        Config.user.loggedIn = true;
 
-    public handleErrors(error: Response) {
-	Config.user.loggedIn = false;
+        return res.json();
+      })
+      .do(data => {
+        console.log(`data: ${data}`);
+        Config.user.name = data.data.first_name;
+        console.log(JSON.stringify(data, null, 2));
+      })
+      .catch(this.handleErrors);
+  }
 
-        console.log(error.json());
-        return Observable.throw(error);
-    }
+  handleErrors(error: Response) {
+    Config.user.loggedIn = false;
 
+    console.log(error.json());
+
+    return Observable.throw(error);
+  }
 }

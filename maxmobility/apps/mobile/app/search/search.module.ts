@@ -5,17 +5,8 @@ import { SharedModule } from '../shared/shared.module';
 import { SearchRoutingModule } from './search-routing.module';
 import { SearchComponent } from './search.component';
 
-// import { SlidesModule } from "nativescript-ngx-slides";
-
-// import { AppComponent } from "./app.component";
-
 @NgModule({
-  imports: [
-    NativeScriptCommonModule,
-    SearchRoutingModule,
-    SharedModule
-    // SlidesModule
-  ],
+  imports: [NativeScriptCommonModule, SearchRoutingModule, SharedModule],
   declarations: [SearchComponent],
   schemas: [NO_ERRORS_SCHEMA]
 })

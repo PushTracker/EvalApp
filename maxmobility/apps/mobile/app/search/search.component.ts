@@ -8,7 +8,6 @@ import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
   templateUrl: './search.component.html',
   styles: [
     `
-
       Image {
         display: block;
         margin-left: auto;
@@ -16,7 +15,6 @@ import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
         width: 50%;
         height: auto;
     }
-
 
       .slide-indicator-inactive{
           background-color: #fff;
@@ -50,7 +48,7 @@ export class SearchComponent implements OnInit {
    *************************************************************/
   @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
 
-  public slides = [
+  slides = [
     {
       Image: '~/images/PowerOn.jpg',
       Label: 'Powering SmartDrive',

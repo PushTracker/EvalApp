@@ -1,7 +1,8 @@
+// angular
 import { Component, OnInit, ViewChild } from '@angular/core';
+// nativescript
 import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-ui-sidedrawer';
 import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
-
 import { RouterExtensions } from 'nativescript-angular/router';
 
 @Component({

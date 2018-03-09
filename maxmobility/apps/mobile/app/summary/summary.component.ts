@@ -1,101 +1,88 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
-
-import { SegmentedBar, SegmentedBarItem } from "ui/segmented-bar";
-
-import { TextField } from "ui/text-field";
-
-import { confirm } from "ui/dialogs";
-
-import * as switchModule from "tns-core-modules/ui/switch";
-
-import { EvaluationService } from "../shared/evaluation.service";
-
-import { Observable } from "data/observable";
-
-import { RouterExtensions } from "nativescript-angular/router";
-
-import { SnackBar, SnackBarOptions } from "nativescript-snackbar";
+// angular
+import { Component, OnInit, ViewChild } from '@angular/core';
+// nativescript
+import { RouterExtensions } from 'nativescript-angular/router';
+import { SegmentedBar, SegmentedBarItem } from 'tns-core-modules/ui/segmented-bar';
+import { TextField } from 'tns-core-modules/ui/text-field';
+import { Observable } from 'tns-core-modules/data/observable';
+import { confirm } from 'tns-core-modules/ui/dialogs';
+import * as switchModule from 'tns-core-modules/ui/switch';
+import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
+// app
+import { EvaluationService } from '../shared/evaluation.service';
 
 @Component({
-    selector: "Summary",
-    moduleId: module.id,
-    templateUrl: "./summary.component.html",
-    styleUrls: ["./summary.component.css"]
+  selector: 'Summary',
+  moduleId: module.id,
+  templateUrl: './summary.component.html',
+  styleUrls: ['./summary.component.css']
 })
 export class SummaryComponent implements OnInit {
+  trialName: string = '';
+  snackbar = new SnackBar();
 
-    // public members
-    trialName: string = "";
+  constructor(private routerExtensions: RouterExtensions) {}
 
-    snackbar = new SnackBar();
-
-    // private members
-
-    constructor(private routerExtensions: RouterExtensions) {
-    }
-
-    // button events
-    onNext(): void {
-        confirm({
-            title: "Complete Evaluation?",
-            message: "Are you sure you're done with the evaluation?",
-            okButtonText: "Yes",
-            cancelButtonText: "No"
-        })
-            .then((result) => {
-                if (result) {
-                    this.routerExtensions.navigate(["/home"], {
-                        clearHistory: true,
-                        transition: {
-                            name: "fade"
-                        }
-                    });
-                }
-            });
-    }
-
-    onBack(): void {
-        this.routerExtensions.navigate(["/trial"], {
-            clearHistory: true,
-            transition: {
-                name: "slideRight"
-            }
+  // button events
+  onNext(): void {
+    confirm({
+      title: 'Complete Evaluation?',
+      message: "Are you sure you're done with the evaluation?",
+      okButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then(result => {
+      if (result) {
+        this.routerExtensions.navigate(['/home'], {
+          clearHistory: true,
+          transition: {
+            name: 'fade'
+          }
         });
-    }
-    
-    onTextChange(args) {
-        const textField = <TextField>args.object;
+      }
+    });
+  }
 
-        console.log("onTextChange");
-        this.trialName = textField.text;
-    }
+  onBack(): void {
+    this.routerExtensions.navigate(['/trial'], {
+      clearHistory: true,
+      transition: {
+        name: 'slideRight'
+      }
+    });
+  }
 
-    onReturn(args) {
-        const textField = <TextField>args.object;
+  onTextChange(args) {
+    const textField = <TextField>args.object;
 
-        console.log("onReturn");
-        this.trialName = textField.text;
-    }
+    console.log('onTextChange');
+    this.trialName = textField.text;
+  }
 
-    showAlert(result) {
-        alert("Text: " + result);
-    }
+  onReturn(args) {
+    const textField = <TextField>args.object;
 
-    submit(result) {
-        alert("Text: " + result);
-    }
+    console.log('onReturn');
+    this.trialName = textField.text;
+  }
 
-    onSliderUpdate(key, args) {
-        this.settings.set(key, args.object.value);
-    }
+  showAlert(result) {
+    alert('Text: ' + result);
+  }
 
-    /* ***********************************************************
-     * Use the sideDrawerTransition property to change the open/close animation of the drawer.
-     *************************************************************/
-    ngOnInit(): void {
-    }
+  submit(result) {
+    alert('Text: ' + result);
+  }
 
-    get settings(): Observable {
-	return EvaluationService.settings;
-    }
+  onSliderUpdate(key, args) {
+    this.settings.set(key, args.object.value);
+  }
+
+  /************************************************************
+   * Use the sideDrawerTransition property to change the open/close animation of the drawer.
+   *************************************************************/
+  ngOnInit(): void {}
+
+  get settings(): Observable {
+    return EvaluationService.settings;
+  }
 }

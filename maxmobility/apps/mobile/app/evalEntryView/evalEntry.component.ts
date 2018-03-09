@@ -4,10 +4,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-ui-sidedrawer';
 import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 
-import { SegmentedBar, SegmentedBarItem } from 'ui/segmented-bar';
+import { SegmentedBar, SegmentedBarItem } from 'tns-core-modules/ui/segmented-bar';
 
-import { Observable } from 'data/observable';
-import { confirm } from 'ui/dialogs';
+import { Observable } from 'tns-core-modules/data/observable';
+import { confirm } from 'tns-core-modules/ui/dialogs';
 
 import { EvaluationService } from '../shared/evaluation.service';
 
