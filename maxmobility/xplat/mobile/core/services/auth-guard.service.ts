@@ -15,9 +15,9 @@ export class AuthGuardService implements CanActivate, CanLoad {
         resolve(true);
       } else {
         console.log('user not authenticated, cannot pass authGuard');
-        this.router.navigate(['/login'], {
-          clearHistory: true
-        });
+        // this.router.navigate(['/login'], {
+        //   clearHistory: true
+        // });
         resolve(false);
       }
     });

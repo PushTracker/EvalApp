@@ -19,6 +19,7 @@
         "order": ["static-field", "instance-field", "static-method", "instance-method"]
       }
     ],
+    "newline-before-return": false,
     "no-arg": true,
     "no-bitwise": true,
     "no-console": [true, "debug", "info", "time", "timeEnd", "trace"],

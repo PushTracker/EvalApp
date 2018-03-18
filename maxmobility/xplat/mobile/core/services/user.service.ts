@@ -15,6 +15,9 @@ export class UserService {
 
   constructor() {}
 
+  /**
+   * Will return the active user from the Kinvey auth.
+   */
   get user() {
     return Kinvey.User.getActiveUser();
   }
@@ -31,7 +34,11 @@ export class UserService {
     return Kinvey.User.logout();
   }
 
-  resetPassword(email) {
+  resetPassword(email: string) {
     return Kinvey.User.resetPassword(email);
+  }
+
+  getUserDetails() {
+    return Kinvey.User.getActiveUser().me();
   }
 }

@@ -1,9 +1,19 @@
 export class User {
-  first_name: string;
-  last_name: string;
-  email: string;
-  dob: string;
-  phone_number: string;
-  region: string;
-  associated_sd: any[];
+  first_name = '';
+  last_name = '';
+  email = '';
+  dob = '';
+  phone_number = '';
+  region = '';
+  associated_sd: any[] = [];
+  loggedIn = false;
+  accessToken = '';
+  client = '';
+  uid = '';
+  password = '';
+  wristband_serial_number = '';
+  smartdrive_serial_number = '';
+  login_state = '';
+  gender = '';
+  ability = '';
 }

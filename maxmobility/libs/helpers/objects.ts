@@ -38,11 +38,25 @@ export function equals(x, y): boolean {
   return true;
 }
 
-export const isString = function(arg: any) {
+export const isString = (arg: any) => {
   return typeof arg === 'string';
 };
 
-export const isObject = function(arg: any) {
+export const isObject = (arg: any) => {
   // important to test *truthy* since `null` is also typeof === 'object'!
   return arg && typeof arg === 'object';
+};
+
+/**
+ * Checks if an object is empty
+ * @param obj [object]
+ * @returns boolean
+ */
+export const isEmpty = obj => {
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      return false;
+    }
+  }
+  return true;
 };
