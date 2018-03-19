@@ -27,7 +27,7 @@ export class SignUpComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log('SignUpComponent OnInit');
+    CLog('SignUpComponent OnInit');
     this._page.actionBarHidden = true;
     this._page.backgroundSpanUnderStatusBar = true;
   }
@@ -36,7 +36,7 @@ export class SignUpComponent implements OnInit {
     // validate user form
     // TODO: improve this with UI tips and not alerts that block the user
     if (!this.user.first_name || !this.user.last_name || !this.user.email || !this.user.password) {
-      console.log('form is invalid');
+      CLog('form is invalid');
       alert({ message: 'The form is invalid. Please fill in all fields.' });
       return;
     }
@@ -58,7 +58,7 @@ export class SignUpComponent implements OnInit {
   }
 
   onReturnPress(args: PropertyChangeData) {
-    console.log('return press object', args.object);
+    CLog('return press object', args.object);
   }
 
   navToLogin() {

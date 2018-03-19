@@ -1,12 +1,10 @@
 import { NgModule } from '@angular/core';
 
 // libs
+import { MaxMobilityCoreModule } from '@maxmobility/core';
 import { MobileCoreModule } from '@maxmobility/mobile';
 
-import { PROVIDERS } from './services';
-
 @NgModule({
-  imports: [MobileCoreModule],
-  providers: [...PROVIDERS]
+  imports: [MaxMobilityCoreModule, MobileCoreModule]
 })
 export class CoreModule {}

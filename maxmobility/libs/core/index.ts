@@ -1,3 +1,3 @@
 export * from './services';
 export * from './models';
-export { CoreModule } from './core.module';
+export { MaxMobilityCoreModule } from './core.module';

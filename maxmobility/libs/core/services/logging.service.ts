@@ -15,13 +15,13 @@ export class LoggingService {
    * the exception with Sentry logging.
    * @param err
    */
-  public static logException(exception: Error) {
+  public logException(exception: Error) {
     console.log(exception);
 
     // wire up to some service/api
   }
 
-  public static logMessage(message: string) {
+  public logMessage(message: string) {
     console.log(message);
     // wire up to service/api
   }

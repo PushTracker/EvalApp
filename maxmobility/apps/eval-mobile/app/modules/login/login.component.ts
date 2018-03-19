@@ -28,12 +28,12 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('LoginComponent OnInit');
+    CLog('LoginComponent OnInit');
     this._page.actionBarHidden = true;
     this._page.backgroundSpanUnderStatusBar = true;
   }
 
-  enterApp(): void {
+  enterApp() {
     this._routerExtensions.navigate(['/home'], {
       transition: {
         name: 'fade'
@@ -46,11 +46,11 @@ export class LoginComponent implements OnInit {
     this._userService
       .logout()
       .then(() => {
-        console.log('logged out active user');
+        CLog('logged out active user');
         this.enterApp();
       })
       .catch(err => {
-        console.log('logout err', err);
+        CLog('logout err', err);
       });
   }
 
@@ -70,10 +70,10 @@ export class LoginComponent implements OnInit {
     this._userService
       .login(this.user.email, this.user.password)
       .then(res => {
-        console.log('login res', res);
+        CLog('login res', res);
       })
       .catch(err => {
-        console.log('login error', err);
+        CLog('login error', err);
       });
   }
 
@@ -82,7 +82,7 @@ export class LoginComponent implements OnInit {
   }
 
   onEmailTextChange(args: PropertyChangeData) {
-    console.log('args', args.value);
+    CLog('args', args.value);
     // this._isEmailValid(args.value);
     this._isEmailValid(this.user.email);
   }
@@ -93,7 +93,7 @@ export class LoginComponent implements OnInit {
 
   private _isEmailValid(text: string): boolean {
     // validate the email
-    console.log('isemailvalid', text);
+    CLog('isemailvalid', text);
     if (!text) {
       this.emailError = 'Email is required.';
       return false;

@@ -27,7 +27,7 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('ForgotPasswordComponent OnInit');
+    CLog('ForgotPasswordComponent OnInit');
     this._page.actionBarHidden = false;
     this._page.actionBar.visibility = 'visible';
   }
@@ -56,16 +56,16 @@ export class ForgotPasswordComponent implements OnInit {
     this.emailError = '';
 
     const result = await this._userService.resetPassword(this.email).catch(err => {
-      console.log('resetPassword err', err);
+      CLog('resetPassword err', err);
     });
 
     if (result) {
-      console.log('RESULT', result);
+      CLog('RESULT', result);
     }
   }
 
   onEmailTextChange(args: PropertyChangeData) {
-    console.log('args', args.value);
+    CLog('args', args.value);
     // make sure it's a valid email
     const em = this.email.trim();
     this.emailError = !validate(em) ? `${em} is not a valid email address!` : '';

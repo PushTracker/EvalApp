@@ -4,16 +4,17 @@ import { LoggingService } from './logging.service';
 
 @Injectable()
 export class StorageService {
+  constructor(private _logService: LoggingService) {}
   public static KEYS: IKeys = {
     current_user: 'current-user',
     token: 'auth-token'
   };
 
-  public static setItem(key: string, value) {
+  public setItem(key: string, value) {
     try {
       localStorage.setItem(key, value);
     } catch (error) {
-      LoggingService.logException(error);
+      this._logService.logException(error);
     }
   }
 
@@ -21,12 +22,12 @@ export class StorageService {
    * Get an item from localStorage.
    * @param key
    */
-  public static getItem(key: string): string | any {
+  public getItem(key: string): string | any {
     try {
       const result = localStorage.getItem(key);
       return result;
     } catch (error) {
-      LoggingService.logException(error);
+      this._logService.logException(error);
     }
   }
 
@@ -34,11 +35,11 @@ export class StorageService {
    * Delete an item from localStorage.
    * @param key
    */
-  public static removeItem(key: string) {
+  public removeItem(key: string) {
     try {
       localStorage.removeItem(key);
     } catch (error) {
-      LoggingService.logException(error);
+      this._logService.logException(error);
     }
   }
 }

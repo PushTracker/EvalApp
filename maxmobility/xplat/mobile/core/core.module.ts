@@ -16,7 +16,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { throwIfAlreadyLoaded } from '@maxmobility/helpers';
 import { LoadingIndicator } from 'nativescript-loading-indicator';
 import { TNSFontIconModule } from 'nativescript-ngx-fonticon';
-import { CoreModule } from '@maxmobility/core';
+import { MaxMobilityCoreModule } from '@maxmobility/core';
 // app
 import { PROVIDERS } from './services';
 

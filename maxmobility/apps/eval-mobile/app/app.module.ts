@@ -5,6 +5,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { NativeScriptModule } from 'nativescript-angular/nativescript.module';
 import { NativeScriptHttpModule } from 'nativescript-angular/http';
 // app
+import { CORE_PROVIDERS } from '@maxmobility/core';
 import { CoreModule } from './modules/core/core.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -17,7 +18,7 @@ import { DropDownModule } from 'nativescript-drop-down/angular';
   bootstrap: [AppComponent],
   imports: [NativeScriptModule, NativeScriptHttpModule, CoreModule, AppRoutingModule, HttpClientModule, DropDownModule],
   declarations: [AppComponent],
-  providers: [LoginService],
+  providers: [LoginService, ...CORE_PROVIDERS],
   schemas: [NO_ERRORS_SCHEMA]
 })
 export class AppModule {}

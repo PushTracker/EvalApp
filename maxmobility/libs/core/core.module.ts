@@ -25,11 +25,11 @@ export const BASE_PROVIDERS: any[] = [
     NxModule.forRoot()
   ]
 })
-export class CoreModule {
+export class MaxMobilityCoreModule {
   // configuredProviders: *required to configure WindowService and others per platform
   static forRoot(configuredProviders: any[]): ModuleWithProviders {
     return {
-      ngModule: CoreModule,
+      ngModule: MaxMobilityCoreModule,
       providers: [...BASE_PROVIDERS, ...configuredProviders]
     };
   }
@@ -37,7 +37,7 @@ export class CoreModule {
   constructor(
     @Optional()
     @SkipSelf()
-    parentModule: CoreModule
+    parentModule: MaxMobilityCoreModule
   ) {
     throwIfAlreadyLoaded(parentModule, 'CoreModule');
   }
