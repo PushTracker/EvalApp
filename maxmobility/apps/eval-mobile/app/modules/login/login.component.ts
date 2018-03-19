@@ -23,7 +23,12 @@ export class LoginComponent implements OnInit {
   passwordError = '';
   emailError = '';
 
-  constructor(private _routerExtensions: RouterExtensions, private _userService: UserService, private _page: Page) {
+  constructor(
+    private _routerExtensions: RouterExtensions,
+    private _logService: LoggingService,
+    private _userService: UserService,
+    private _page: Page
+  ) {
     preventKeyboardFromShowing();
   }
 
@@ -34,7 +39,7 @@ export class LoginComponent implements OnInit {
   }
 
   enterApp() {
-    this._routerExtensions.navigate(['/home'], {
+    this._routerExtensions.navigate(['/home/featured'], {
       transition: {
         name: 'fade'
       },
@@ -71,9 +76,22 @@ export class LoginComponent implements OnInit {
       .login(this.user.email, this.user.password)
       .then(res => {
         CLog('login res', res);
+        this._routerExtensions.navigate(['/home']);
       })
       .catch(err => {
         CLog('login error', err);
+
+        // parse the exceptions from kinvey sign up
+        let errorMessage = 'An error occurred during sign in. Check your email and password.';
+        if (err.toString().includes('InvalidCredentialsError')) {
+          errorMessage = 'Invalid email and/or password. Please try again.';
+        }
+        alert({
+          title: 'Error',
+          message: errorMessage,
+          okButtonText: 'Okay'
+        });
+        this._logService.logException(err);
       });
   }
 

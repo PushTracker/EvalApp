@@ -1,7 +1,6 @@
 {
   "android": {
-    "v8Flags": "--expose_gc",
-    "markingMode": "none"
+    "v8Flags": "--expose_gc"
   },
   "main": "main.js",
   "name": "tns-template-drawer-navigation-ng",

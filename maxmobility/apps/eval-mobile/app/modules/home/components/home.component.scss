@@ -1,5 +1,5 @@
 // Custom common variables
-@import '../../scss/variables';
+@import '../../../scss/variables';
 
 .icon {
   font-size: 60em;
@@ -22,8 +22,8 @@
   padding: 0;
 }
 
-NavigationButton {
-  width: 35;
-  height: 35;
-  padding: 15, 0, 0, 15;
-}
+// NavigationButton {
+//   width: 35;
+//   height: 35;
+//   padding: 15, 0, 0, 15;
+// }

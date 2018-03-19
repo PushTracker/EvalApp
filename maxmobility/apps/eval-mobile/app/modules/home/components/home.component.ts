@@ -1,12 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
-import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-ui-sidedrawer';
-import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
-
 import { EventData } from 'tns-core-modules/data/observable';
 import { topmost } from 'tns-core-modules/ui/frame';
 import { isIOS } from 'tns-core-modules/platform';
-
 import { RouterExtensions } from 'nativescript-angular/router';
+import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-ui-sidedrawer';
+import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
+import { CLog, LoggingService } from '@maxmobility/core';
 
 @Component({
   selector: 'Home',
@@ -44,9 +43,10 @@ export class HomeComponent implements OnInit {
 
   private _sideDrawerTransition: DrawerTransitionBase;
 
-  constructor(private routerExtensions: RouterExtensions) {}
+  constructor(private _routerExtensions: RouterExtensions, private _logService: LoggingService) {}
 
   ngOnInit(): void {
+    CLog('HomeComponent OnInit');
     this._sideDrawerTransition = new SlideInOnTopTransition();
   }
 
@@ -59,7 +59,7 @@ export class HomeComponent implements OnInit {
   }
 
   onItemTapThirdList(args) {
-    this.routerExtensions.navigate([this.titles[args.index].Route], {
+    this._routerExtensions.navigate([this.titles[args.index].Route], {
       transition: {
         name: 'slide'
       }

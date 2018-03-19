@@ -28,8 +28,8 @@ export class ForgotPasswordComponent implements OnInit {
 
   ngOnInit(): void {
     CLog('ForgotPasswordComponent OnInit');
-    this._page.actionBarHidden = false;
-    this._page.actionBar.visibility = 'visible';
+    // this._page.actionBarHidden = false;
+    // this._page.actionBar.visibility = 'visible';
   }
 
   goBack() {
@@ -40,7 +40,7 @@ export class ForgotPasswordComponent implements OnInit {
     }
   }
 
-  async submit() {
+  submit() {
     // validate the email
     if (!this.email) {
       this.emailError = 'Email is required.';
@@ -55,13 +55,24 @@ export class ForgotPasswordComponent implements OnInit {
 
     this.emailError = '';
 
-    const result = await this._userService.resetPassword(this.email).catch(err => {
-      CLog('resetPassword err', err);
-    });
-
-    if (result) {
-      CLog('RESULT', result);
-    }
+    this._userService
+      .resetPassword(this.email)
+      .then(resp => {
+        CLog('resp', resp);
+        alert({
+          title: 'Success',
+          message: 'Check your email for instructions on resetting your password.',
+          okButtonText: 'Okay'
+        });
+      })
+      .catch(err => {
+        CLog('resetPassword err', err);
+        alert({
+          title: 'Error',
+          message: 'An error occurred trying to retrieve your account information. Try again later.',
+          okButtonText: 'Okay'
+        });
+      });
   }
 
   onEmailTextChange(args: PropertyChangeData) {

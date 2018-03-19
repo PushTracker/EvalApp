@@ -1,6 +1,7 @@
 export class User {
   first_name = '';
   last_name = '';
+  username = '';
   email = '';
   dob = '';
   phone_number = '';

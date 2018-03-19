@@ -47,6 +47,8 @@ export class SignUpComponent implements OnInit {
       return;
     }
 
+    this.user.username = this.user.email.toLowerCase().trim();
+
     this._userService
       .register(this.user)
       .then((resp: Kinvey.User) => {

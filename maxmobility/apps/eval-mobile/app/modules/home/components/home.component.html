@@ -1,19 +1,27 @@
-<ActionBar class="action-bar">
+<ActionBar title="Home">
     <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
     <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem>
-    <Label class="action-bar-title" text="Home"></Label>
 </ActionBar>
 
-<StackLayout>
-    <Label text="Hello World" textWrap="true"></Label>
-</StackLayout>
-<!-- <RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
+<!-- <RadSideDrawer #drawer [drawerTransition]="sideDrawerTransition">
+    <StackLayout tkDrawerContent>
+        <Label text="hello" textWrap="true"></Label>
+    </StackLayout>
+    <GridLayout tkMainContent backgroundColor="white">
+        <Label text="main content" textWrap="true"></Label>
+    </GridLayout>
+    </RadSideDrawer> -->
+
+<router-outlet></router-outlet>
+
+
+
+<!-- 
+<RadSideDrawer #drawer [drawerTransition]="sideDrawerTransition">
     <StackLayout tkDrawerContent>
         <MyDrawer [selectedPage]="'Home'"></MyDrawer>
     </StackLayout>
-
-    <GridLayout class="page page-content" tkMainContent backgroundcolor="white">
-
+    <GridLayout tkMainContent backgroundColor="white">
         <ListView class="list-group" [items]="titles" (itemTap)="onItemTapThirdList($event)">
 
             <ng-template let-title="item">
@@ -34,7 +42,5 @@
             </ng-template>
 
         </ListView>
-
     </GridLayout>
-
 </RadSideDrawer> -->
