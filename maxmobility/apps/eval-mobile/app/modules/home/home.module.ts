@@ -7,7 +7,7 @@ import { FeaturedComponent, HOME_COMPONENTS } from './index';
 
 const routes: Routes = [
   {
-    path: 'home',
+    path: '',
     component: HomeComponent,
     children: [
       {

@@ -50,10 +50,14 @@ export class SignUpComponent implements OnInit {
     this._userService
       .register(this.user)
       .then((resp: Kinvey.User) => {
-        CLog(resp.email, resp.username, resp._id);
+        CLog(JSON.stringify(resp));
+        alert({ title: 'Success', message: `Sign up successful. Your account email is ${resp.email}` }).then(() => {
+          this._router.navigate(['/home']);
+        });
       })
       .catch(err => {
         this._logService.logException(err);
+        alert({ title: 'Error', message: `Error during sign up: ${err}` });
       });
   }
 

@@ -3,13 +3,15 @@
     <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem>
     <Label class="action-bar-title" text="Home"></Label>
 </ActionBar>
-<RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
-    <!-- Use the tkDrawerContent directive to display the content of the app drawer on this page. -->
+
+<StackLayout>
+    <Label text="Hello World" textWrap="true"></Label>
+</StackLayout>
+<!-- <RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
     <StackLayout tkDrawerContent>
         <MyDrawer [selectedPage]="'Home'"></MyDrawer>
     </StackLayout>
 
-    <!-- Use the tkMainContent directive to display the content of the page when you have an app drawer. -->
     <GridLayout class="page page-content" tkMainContent backgroundcolor="white">
 
         <ListView class="list-group" [items]="titles" (itemTap)="onItemTapThirdList($event)">
@@ -35,4 +37,4 @@
 
     </GridLayout>
 
-</RadSideDrawer>
+</RadSideDrawer> -->
