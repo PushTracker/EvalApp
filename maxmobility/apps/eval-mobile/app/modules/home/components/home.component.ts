@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { EventData } from 'tns-core-modules/data/observable';
 import { topmost } from 'tns-core-modules/ui/frame';
+import { Page } from 'tns-core-modules/ui/page';
 import { isIOS } from 'tns-core-modules/platform';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-ui-sidedrawer';
@@ -43,10 +44,18 @@ export class HomeComponent implements OnInit {
 
   private _sideDrawerTransition: DrawerTransitionBase;
 
-  constructor(private _routerExtensions: RouterExtensions, private _logService: LoggingService) {}
+  constructor(private _page: Page, private _routerExtensions: RouterExtensions, private _logService: LoggingService) {}
 
   ngOnInit(): void {
     CLog('HomeComponent OnInit');
+    CLog('drawer', this.drawerComponent.nativeElement);
+    this._page.on('tap', () => {
+      console.log('page tap');
+
+      CLog('getIsOpen', this.drawerComponent.nativeElement.getIsOpen());
+
+      this.drawerComponent.nativeElement.showDrawer();
+    });
     this._sideDrawerTransition = new SlideInOnTopTransition();
   }
 

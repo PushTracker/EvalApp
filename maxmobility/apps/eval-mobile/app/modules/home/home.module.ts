@@ -1,6 +1,9 @@
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { Routes } from '@angular/router';
+import { NativeScriptCommonModule } from 'nativescript-angular/common';
 import { NativeScriptRouterModule } from 'nativescript-angular/router';
+import { NativeScriptUIListViewModule } from 'nativescript-ui-listview/angular';
+import { NativeScriptUISideDrawerModule } from 'nativescript-ui-sidedrawer/angular';
 import { HomeComponent } from './components/home.component';
 import { AuthGuardService } from '@maxmobility/mobile';
 import { FeaturedComponent, HOME_COMPONENTS } from './components';
@@ -40,7 +43,12 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [NativeScriptRouterModule.forChild(routes)],
+  imports: [
+    NativeScriptCommonModule,
+    NativeScriptUIListViewModule,
+    NativeScriptUISideDrawerModule,
+    NativeScriptRouterModule.forChild(routes)
+  ],
   declarations: [...HOME_COMPONENTS],
   schemas: [NO_ERRORS_SCHEMA]
 })

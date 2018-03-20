@@ -5,6 +5,10 @@ ActionBar .action-bar-title {
   font: $os;
 }
 
-ActionBar {
+ActionBar.permobil-action-bar {
   background-color: $permobil-hero;
+}
+
+ActionBar.white-action-bar {
+  background-color: $white;
 }

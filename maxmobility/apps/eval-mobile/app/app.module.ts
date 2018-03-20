@@ -2,6 +2,7 @@
 import { NgModule, NgModuleFactoryLoader, NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 // nativescript
+import { NativeScriptCommonModule } from 'nativescript-angular/common';
 import { NativeScriptModule } from 'nativescript-angular/nativescript.module';
 import { NativeScriptHttpModule } from 'nativescript-angular/http';
 import { NativeScriptUIListViewModule } from 'nativescript-ui-listview/angular';
@@ -19,6 +20,7 @@ import { DropDownModule } from 'nativescript-drop-down/angular';
 @NgModule({
   bootstrap: [AppComponent],
   imports: [
+    NativeScriptCommonModule,
     NativeScriptModule,
     NativeScriptHttpModule,
     NativeScriptUIListViewModule,
