@@ -10,6 +10,7 @@ import { Video as ExoPlayer } from 'nativescript-exoplayer';
 const NS_CAROUSEL = require('nativescript-carousel');
 // app
 import { UserService, LoggingService, CLog } from '@maxmobility/mobile';
+import { RouterExtensions } from 'nativescript-angular/router';
 
 registerElement('Carousel', () => NS_CAROUSEL.Carousel);
 registerElement('CarouselItem', () => NS_CAROUSEL.CarouselItem);
@@ -21,7 +22,11 @@ registerElement('exoplayer', () => ExoPlayer);
   template: '<page-router-outlet></page-router-outlet>'
 })
 export class AppComponent {
-  constructor(private _logService: LoggingService) {
+  constructor(
+    private _logService: LoggingService,
+    private _userService: UserService,
+    private _router: RouterExtensions
+  ) {
     // application level events
     // application.on(application.uncaughtErrorEvent, (args: application.UnhandledErrorEventData) => {
     //   console.log('uncaughtException', args.error);
@@ -38,5 +43,12 @@ export class AppComponent {
       .catch(err => {
         this._logService.logException(err);
       });
+
+    // if user is logged in, go home, else go to login
+    if (this._userService.user) {
+      this._router.navigate(['/home']);
+    } else {
+      this._router.navigate(['/login']);
+    }
   }
 }
