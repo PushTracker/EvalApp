@@ -12,8 +12,8 @@ const routes: Routes = [
     children: [
       {
         path: 'featured',
-        component: FeaturedComponent,
-        canActivate: [AuthGuardService]
+        component: FeaturedComponent
+        // canActivate: [AuthGuardService]
       },
       {
         path: 'profile',

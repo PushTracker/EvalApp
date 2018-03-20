@@ -26,7 +26,7 @@
     "clean": "rm -rf hooks node_modules package-lock.json && npm i",
     "clean.eval.mobile": "cd apps/eval-mobile && rm -rf hooks node_modules platforms package-lock.json && npm i",
     "clean.shared": "npx rimraf -- libs/**/*.js && npx rimraf -- libs/**/*.map && npx rimraf -- libs/**/*.d.ts && npx rimraf -- libs/**/*.ngfactory.ts && npx rimraf -- libs/**/*.ngsummary.json && npx rimraf -- libs/**/*.metadata.json && npx rimraf -- xplat/**/*.js && npx rimraf -- xplat/**/*.map && npx rimraf -- xplat/**/*.d.ts && npx rimraf -- xplat/**/*.ngfactory.ts && npx rimraf -- xplat/**/*.ngsummary.json && npx rimraf -- xplat/**/*.metadata.json",
-    "nuke": "npm run clean && npm run clean.mobile && npm run clean.shared"
+    "nuke": "npm run clean && npm run clean.eval.mobile && npm run clean.shared"
   },
   "private": true,
   "dependencies": {

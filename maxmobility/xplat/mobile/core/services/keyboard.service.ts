@@ -8,9 +8,9 @@ export class KeyboardService {
   private callBack: android.view.ViewTreeObserver.OnGlobalLayoutListener;
   private activity: android.app.Activity;
   private keyboardActive: boolean;
-  public events: Observable;
+  events: Observable;
 
-  public constructor() {
+  constructor() {
     if (isIOS) {
       throw new Error('Currently no implementation for iOS; should only be constructed for Android.');
     }
@@ -18,7 +18,7 @@ export class KeyboardService {
     this.events = fromObject({});
   }
 
-  public start() {
+  start() {
     const rootView = this.activity
       .getWindow()
       .getDecorView()
@@ -48,7 +48,7 @@ export class KeyboardService {
     rootView.getViewTreeObserver().addOnGlobalLayoutListener(this.callBack);
   }
 
-  public stop() {
+  stop() {
     const rootView = this.activity
       .getWindow()
       .getDecorView()

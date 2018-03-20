@@ -9,7 +9,7 @@ import { TextField } from 'tns-core-modules/ui/text-field';
 import { alert } from 'tns-core-modules/ui/dialogs';
 // app
 import { User, LoggingService, CLog } from '@maxmobility/core';
-import { UserService, preventKeyboardFromShowing } from '@maxmobility/mobile';
+import { UserService, ProgressService, preventKeyboardFromShowing } from '@maxmobility/mobile';
 import { validate } from 'email-validator';
 
 @Component({
@@ -22,7 +22,13 @@ export class ForgotPasswordComponent implements OnInit {
   email = '';
   emailError = '';
 
-  constructor(private _routerExtensions: RouterExtensions, private _userService: UserService, private _page: Page) {
+  constructor(
+    private _routerExtensions: RouterExtensions,
+    private _logService: LoggingService,
+    private _progressService: ProgressService,
+    private _userService: UserService,
+    private _page: Page
+  ) {
     preventKeyboardFromShowing();
   }
 
@@ -55,18 +61,24 @@ export class ForgotPasswordComponent implements OnInit {
 
     this.emailError = '';
 
+    this._progressService.show('Submitting...');
+
     this._userService
       .resetPassword(this.email)
       .then(resp => {
         CLog('resp', resp);
+        this._progressService.hide();
         alert({
           title: 'Success',
           message: 'Check your email for instructions on resetting your password.',
           okButtonText: 'Okay'
+        }).then(() => {
+          this._routerExtensions.navigate(['/login']);
         });
       })
       .catch(err => {
-        CLog('resetPassword err', err);
+        this._logService.logException(err);
+        this._progressService.hide();
         alert({
           title: 'Error',
           message: 'An error occurred trying to retrieve your account information. Try again later.',

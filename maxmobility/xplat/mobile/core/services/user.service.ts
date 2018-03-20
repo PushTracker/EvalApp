@@ -26,6 +26,10 @@ export class UserService {
     return Kinvey.User.signup(user);
   }
 
+  isUsernameTaken(username: string) {
+    return Kinvey.User.exists(username);
+  }
+
   login(username: string, pw: string) {
     return Kinvey.User.login(username.trim(), pw.trim());
   }

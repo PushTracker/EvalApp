@@ -5,7 +5,7 @@ import { alert } from 'tns-core-modules/ui/dialogs';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { Store, select } from '@ngrx/store';
 import { takeUntil } from 'rxjs/operators';
-import { UserService } from '@maxmobility/mobile';
+import { UserService, ProgressService } from '@maxmobility/mobile';
 import { User, LoggingService, CLog } from '@maxmobility/core';
 import { validate } from 'email-validator';
 import { Kinvey } from 'kinvey-nativescript-sdk';
@@ -22,6 +22,7 @@ export class SignUpComponent implements OnInit {
   constructor(
     private _userService: UserService,
     private _logService: LoggingService,
+    private _progressService: ProgressService,
     private _page: Page,
     private _router: RouterExtensions
   ) {}
@@ -32,7 +33,7 @@ export class SignUpComponent implements OnInit {
     this._page.backgroundSpanUnderStatusBar = true;
   }
 
-  signUpTap() {
+  async signUpTap() {
     // validate user form
     // TODO: improve this with UI tips and not alerts that block the user
     if (!this.user.first_name || !this.user.last_name || !this.user.email || !this.user.password) {
@@ -49,18 +50,34 @@ export class SignUpComponent implements OnInit {
 
     this.user.username = this.user.email.toLowerCase().trim();
 
-    this._userService
-      .register(this.user)
-      .then((resp: Kinvey.User) => {
-        CLog(JSON.stringify(resp));
-        alert({ title: 'Success', message: `Sign up successful. Your account email is ${resp.email}` }).then(() => {
-          this._router.navigate(['/home']);
-        });
-      })
-      .catch(err => {
-        this._logService.logException(err);
-        alert({ title: 'Error', message: `Error during sign up: ${err}` });
-      });
+    this._progressService.show('Creating account...');
+    // need to make sure the username is not already taken
+    const isTaken = await this._userService.isUsernameTaken(this.user.username).catch(err => {
+      this._logService.logException(err);
+      this._progressService.hide();
+    });
+    CLog('isTaken', isTaken);
+
+    if (isTaken) {
+      CLog('Username is taken');
+      alert({ title: 'Error', message: 'An account with this email already exists.' });
+      return;
+    }
+
+    const signUpResult = await this._userService.register(this.user).catch(err => {
+      this._logService.logException(err);
+      this._progressService.hide();
+    });
+
+    if (signUpResult) {
+      this._progressService.hide();
+      CLog(JSON.stringify(signUpResult));
+      alert({ title: 'Success', message: `Sign up successful. Your account email is ${signUpResult.email}` }).then(
+        () => {
+          this._router.navigate(['/home'], { clearHistory: true });
+        }
+      );
+    }
   }
 
   onReturnPress(args: PropertyChangeData) {

@@ -9,7 +9,7 @@ import { TextField } from 'tns-core-modules/ui/text-field';
 import { alert } from 'tns-core-modules/ui/dialogs';
 // app
 import { User, LoggingService, CLog } from '@maxmobility/core';
-import { UserService, preventKeyboardFromShowing } from '@maxmobility/mobile';
+import { UserService, ProgressService, preventKeyboardFromShowing } from '@maxmobility/mobile';
 import { validate } from 'email-validator';
 
 @Component({
@@ -27,6 +27,7 @@ export class LoginComponent implements OnInit {
     private _routerExtensions: RouterExtensions,
     private _logService: LoggingService,
     private _userService: UserService,
+    private _progressService: ProgressService,
     private _page: Page
   ) {
     preventKeyboardFromShowing();
@@ -38,21 +39,17 @@ export class LoginComponent implements OnInit {
     this._page.backgroundSpanUnderStatusBar = true;
   }
 
-  enterApp() {
-    this._routerExtensions.navigate(['/home/featured'], {
-      transition: {
-        name: 'fade'
-      },
-      clearHistory: true
-    });
-  }
-
   cancel() {
     this._userService
       .logout()
       .then(() => {
         CLog('logged out active user');
-        this.enterApp();
+        this._routerExtensions.navigate(['/home/featured'], {
+          transition: {
+            name: 'fade'
+          },
+          clearHistory: true
+        });
       })
       .catch(err => {
         CLog('logout err', err);
@@ -71,16 +68,19 @@ export class LoginComponent implements OnInit {
       return;
     }
 
+    this._progressService.show('Signing In...');
+
     // now try logging in with Kinvey user account
     this._userService
       .login(this.user.email, this.user.password)
       .then(res => {
         CLog('login res', res);
         this._routerExtensions.navigate(['/home']);
+        this._progressService.hide();
       })
       .catch(err => {
+        this._progressService.hide();
         CLog('login error', err);
-
         // parse the exceptions from kinvey sign up
         let errorMessage = 'An error occurred during sign in. Check your email and password.';
         if (err.toString().includes('InvalidCredentialsError')) {
@@ -100,8 +100,6 @@ export class LoginComponent implements OnInit {
   }
 
   onEmailTextChange(args: PropertyChangeData) {
-    CLog('args', args.value);
-    // this._isEmailValid(args.value);
     this._isEmailValid(this.user.email);
   }
 
@@ -111,7 +109,7 @@ export class LoginComponent implements OnInit {
 
   private _isEmailValid(text: string): boolean {
     // validate the email
-    CLog('isemailvalid', text);
+    CLog('isEmailValid', text);
     if (!text) {
       this.emailError = 'Email is required.';
       return false;
@@ -135,16 +133,5 @@ export class LoginComponent implements OnInit {
     }
     this.passwordError = '';
     return true;
-  }
-
-  private handleErrors(error, message, defaultText): void {
-    const errors = error.json && error.json().errors;
-    if (errors && errors.length) {
-      alert(`${message}:\n${errors.join('\n')}`);
-    } else if (errors && errors.full_messages) {
-      alert(`${message}:\n${errors.full_messages}`);
-    } else {
-      alert(defaultText);
-    }
   }
 }
