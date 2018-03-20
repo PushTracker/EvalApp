@@ -11,7 +11,7 @@ import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
   selector: 'Featured',
   moduleId: module.id,
   templateUrl: './featured.component.html',
-  styleUrls: ['./ota.component.css']
+  styleUrls: ['./featured.component.css']
 })
 export class FeaturedComponent implements OnInit {
   @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;

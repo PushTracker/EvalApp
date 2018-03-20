@@ -18,14 +18,6 @@ const routes: Routes = [
         component: FeaturedComponent,
         canActivate: [AuthGuardService]
       },
-      {
-        path: 'profile',
-        loadChildren: './components/profile/profile.module#ProfileModule'
-      },
-      {
-        path: 'featured',
-        loadChildren: './components/featured/featured.module#FeaturedModule'
-      },
       { path: 'account', loadChildren: './components/account/account.module#AccountModule' },
       { path: 'home', loadChildren: './components/home/home.module#HomeModule' },
       { path: 'videos', loadChildren: './components/browse/browse.module#BrowseModule' },
@@ -35,7 +27,7 @@ const routes: Routes = [
       { path: 'evalEntry', loadChildren: './components/eval-entry-view/eval-entry.module#EvalEntryModule' },
       { path: 'summary', loadChildren: './components/summary/summary.module#SummaryModule' },
       { path: 'demos', loadChildren: './components/demos/demos.module#DemosModule' },
-      { path: 'faq', loadChildren: './components/faq/faq.module#FAQModule' },
+      { path: 'faq', loadChildren: './modules/home/components/faq/faq.module#FAQModule' },
       { path: 'settings', loadChildren: './components/settings/settings.module#SettingsModule' }
     ]
   }

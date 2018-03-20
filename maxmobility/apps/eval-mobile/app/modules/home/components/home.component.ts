@@ -24,22 +24,27 @@ export class HomeComponent implements OnInit {
       Title: 'Videos',
       Image: String.fromCharCode(0xf008),
       Description: 'Training videos and Lessons',
-      Route: '/videos'
+      Route: '/home/videos'
     },
     {
       Title: 'Eval',
       Image: String.fromCharCode(0xf0ae),
       Description: 'Walk-through evaluation and generate an LMN',
-      Route: '/evalEntry'
+      Route: '/home/evalEntry'
     },
-    { Title: 'OTA', Image: String.fromCharCode(0xf019), Description: 'Over the Air Firmware Updates', Route: '/ota' },
+    {
+      Title: 'OTA',
+      Image: String.fromCharCode(0xf019),
+      Description: 'Over the Air Firmware Updates',
+      Route: '/home/ota'
+    },
     {
       Title: 'Demos',
       Image: String.fromCharCode(0xf02a),
       Description: 'Fleet management and Tracking.',
-      Route: '/demos'
+      Route: '/home/demos'
     },
-    { Title: 'FAQ', Image: String.fromCharCode(0xf059), Description: 'Common SmartDrive Questions', Route: '/faq' }
+    { Title: 'FAQ', Image: String.fromCharCode(0xf059), Description: 'Common SmartDrive Questions', Route: '/home/faq' }
   ];
 
   private _sideDrawerTransition: DrawerTransitionBase;
@@ -48,14 +53,6 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     CLog('HomeComponent OnInit');
-    CLog('drawer', this.drawerComponent.nativeElement);
-    this._page.on('tap', () => {
-      console.log('page tap');
-
-      CLog('getIsOpen', this.drawerComponent.nativeElement.getIsOpen());
-
-      this.drawerComponent.nativeElement.showDrawer();
-    });
     this._sideDrawerTransition = new SlideInOnTopTransition();
   }
 

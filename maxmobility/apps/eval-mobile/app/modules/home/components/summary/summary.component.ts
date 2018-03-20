@@ -9,7 +9,7 @@ import { confirm } from 'tns-core-modules/ui/dialogs';
 import * as switchModule from 'tns-core-modules/ui/switch';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 // app
-import { EvaluationService } from '../../shared/evaluation.service';
+// import { EvaluationService } from '../../shared/evaluation.service';
 
 @Component({
   selector: 'Summary',
@@ -74,7 +74,7 @@ export class SummaryComponent implements OnInit {
   }
 
   onSliderUpdate(key, args) {
-    this.settings.set(key, args.object.value);
+    // this.settings.set(key, args.object.value);
   }
 
   /************************************************************
@@ -84,7 +84,7 @@ export class SummaryComponent implements OnInit {
     console.log('ngOnInit');
   }
 
-  get settings(): Observable {
-    return EvaluationService.settings;
-  }
+  // get settings(): Observable {
+  //   return EvaluationService.settings;
+  // }
 }

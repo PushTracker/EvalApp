@@ -1,19 +1,9 @@
-<ActionBar title="Home">
+<ActionBar title="Home" class="permobil-action-bar">
     <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
     <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem>
 </ActionBar>
-
-<!-- <RadSideDrawer #drawer [drawerTransition]="sideDrawerTransition">
-    <StackLayout tkDrawerContent>
-        <Label text="hello" textWrap="true"></Label>
-    </StackLayout>
-    <GridLayout tkMainContent backgroundColor="white">
-        <Label text="main content" textWrap="true"></Label>
-    </GridLayout>
-    </RadSideDrawer> -->
-
 <RadSideDrawer #drawer [drawerTransition]="sideDrawerTransition">
-    <StackLayout tkDrawerContent backgroundColor="red">
+    <StackLayout tkDrawerContent backgroundColor="white" color="black">
         <MyDrawer [selectedPage]="'Home'"></MyDrawer>
     </StackLayout>
     <GridLayout tkMainContent backgroundColor="white">

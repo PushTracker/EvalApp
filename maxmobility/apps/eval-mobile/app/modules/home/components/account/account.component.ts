@@ -4,9 +4,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { confirm } from 'tns-core-modules/ui/dialogs';
 import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-ui-sidedrawer';
 import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
-// app
-import { Config } from '../../shared/config';
-import { User } from '../../shared/user';
+// // app
+// import { Config } from '../../shared/config';
+// import { User } from '../../shared/user';
 
 @Component({
   selector: 'Account',
@@ -22,13 +22,13 @@ export class AccountComponent implements OnInit {
 
   @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
 
-  user = new User();
+  // user = new User();
 
   // private members
   private _sideDrawerTransition: DrawerTransitionBase;
 
   constructor() {
-    this.user = Config.user;
+    // this.user = Config.user;
   }
 
   /************************************************************
