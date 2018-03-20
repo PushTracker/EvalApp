@@ -34,8 +34,8 @@ export class ForgotPasswordComponent implements OnInit {
 
   ngOnInit(): void {
     CLog('ForgotPasswordComponent OnInit');
-    // this._page.actionBarHidden = false;
-    // this._page.actionBar.visibility = 'visible';
+    this._page.actionBarHidden = false;
+    this._page.actionBar.visibility = 'visible';
   }
 
   goBack() {
@@ -46,7 +46,7 @@ export class ForgotPasswordComponent implements OnInit {
     }
   }
 
-  submit() {
+  onSubmitTap() {
     // validate the email
     if (!this.email) {
       this.emailError = 'Email is required.';

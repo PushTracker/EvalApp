@@ -2,10 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 // nativescript
 import { RouterExtensions } from 'nativescript-angular/router';
-import { PropertyChangeData } from 'tns-core-modules/data/observable';
 import { Page } from 'tns-core-modules/ui/page';
-import { Color } from 'tns-core-modules/color';
-import { TextField } from 'tns-core-modules/ui/text-field';
 import { alert } from 'tns-core-modules/ui/dialogs';
 // app
 import { User, LoggingService, CLog } from '@maxmobility/core';
@@ -37,26 +34,25 @@ export class LoginComponent implements OnInit {
     CLog('LoginComponent OnInit');
     this._page.actionBarHidden = true;
     this._page.backgroundSpanUnderStatusBar = true;
+
+    // if we get to the login page, no user should be logged in
+    CLog(
+      'LoginComponent ngOnInit ',
+      'Logging out any active user. Login screen should only be used when no user is authenticated.'
+    );
+    this._userService.logout();
   }
 
-  cancel() {
-    this._userService
-      .logout()
-      .then(() => {
-        CLog('logged out active user');
-        this._routerExtensions.navigate(['/home/featured'], {
-          transition: {
-            name: 'fade'
-          },
-          clearHistory: true
-        });
-      })
-      .catch(err => {
-        CLog('logout err', err);
-      });
+  onCancelTap() {
+    this._routerExtensions.navigate(['/home/featured'], {
+      transition: {
+        name: 'fade'
+      },
+      clearHistory: true
+    });
   }
 
-  submit() {
+  onSubmitTap() {
     // validate the email
     const isEmailValid = this._isEmailValid(this.user.email);
     if (!isEmailValid) {
@@ -75,12 +71,12 @@ export class LoginComponent implements OnInit {
       .login(this.user.email, this.user.password)
       .then(res => {
         CLog('login res', res);
-        this._routerExtensions.navigate(['/home']);
         this._progressService.hide();
+        this._routerExtensions.navigate(['/home']);
       })
       .catch(err => {
-        this._progressService.hide();
         CLog('login error', err);
+        this._progressService.hide();
         // parse the exceptions from kinvey sign up
         let errorMessage = 'An error occurred during sign in. Check your email and password.';
         if (err.toString().includes('InvalidCredentialsError')) {
@@ -99,7 +95,7 @@ export class LoginComponent implements OnInit {
     this._routerExtensions.navigate(['/forgot-password']);
   }
 
-  onEmailTextChange(args: PropertyChangeData) {
+  onEmailTextChange(args) {
     this._isEmailValid(this.user.email);
   }
 

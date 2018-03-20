@@ -9,7 +9,7 @@ import { Video as ExoPlayer } from 'nativescript-exoplayer';
 // these modules don't have index.d.ts so TS compiler doesn't know their shape for importing
 const NS_CAROUSEL = require('nativescript-carousel');
 // app
-import { UserService } from '@maxmobility/mobile';
+import { UserService, LoggingService, CLog } from '@maxmobility/mobile';
 
 registerElement('Carousel', () => NS_CAROUSEL.Carousel);
 registerElement('CarouselItem', () => NS_CAROUSEL.CarouselItem);
@@ -18,10 +18,10 @@ registerElement('exoplayer', () => ExoPlayer);
 
 @Component({
   selector: 'ns-app',
-  templateUrl: 'app.component.html'
+  template: '<page-router-outlet></page-router-outlet>'
 })
 export class AppComponent {
-  constructor() {
+  constructor(private _logService: LoggingService) {
     // application level events
     // application.on(application.uncaughtErrorEvent, (args: application.UnhandledErrorEventData) => {
     //   console.log('uncaughtException', args.error);
@@ -33,10 +33,10 @@ export class AppComponent {
     });
     Kinvey.ping()
       .then(res => {
-        console.log('kinvey ping successful');
+        CLog(`Kinvey ping successful, SDK is active ${String.fromCodePoint(0x1f60e)}`);
       })
       .catch(err => {
-        console.log('kinvey ping error', err);
+        this._logService.logException(err);
       });
   }
 }

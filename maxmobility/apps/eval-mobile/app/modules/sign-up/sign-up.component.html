@@ -11,7 +11,7 @@
             autocapitalizationType="none" (returnPress)="onReturnPress($event)"></TextField>
         <TextField #password [(ngModel)]="user.password" class="blue-text-field" hint="Password..." secure="true" autocorrect="false"
             (returnPress)="onReturnPress($event)"></TextField>
-        <Button text="Sign up" class="permobil-ocean-btn m-20" (tap)="signUpTap()"></Button>
+        <Button text="Sign up" class="permobil-ocean-btn m-20" (tap)="onSubmitTap()"></Button>
         <Button text="Back to Login" class="btn-transparent text-white" (tap)="navToLogin()"></Button>
     </StackLayout>
 </ScrollView>
