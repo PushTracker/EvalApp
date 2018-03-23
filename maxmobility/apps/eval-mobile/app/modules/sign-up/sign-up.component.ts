@@ -36,7 +36,7 @@ export class SignUpComponent implements OnInit {
     // TODO: improve this with UI tips and not alerts that block the user
     if (!this.user.first_name || !this.user.last_name || !this.user.email || !this.user.password) {
       CLog('form is invalid');
-      alert({ message: 'The form is invalid. Please fill in all fields.' });
+      alert({ message: 'The form is invalid. Please fill in all fields.', okButtonText: 'Okay' });
       return;
     }
 
@@ -59,7 +59,11 @@ export class SignUpComponent implements OnInit {
           .then(user => {
             CLog(JSON.stringify(user));
             this._progressService.hide();
-            alert({ title: 'Success', message: `Sign up successful. Your account email is ${user.email}` }).then(() => {
+            alert({
+              title: 'Success',
+              message: `Sign up successful. Your account email is ${user.email}`,
+              okButtonText: 'Okay'
+            }).then(() => {
               this._router.navigate(['/home'], { clearHistory: true });
             });
           })
@@ -71,7 +75,7 @@ export class SignUpComponent implements OnInit {
       .catch(err => {
         this._progressService.hide();
         this._logService.logException(err);
-        alert({ title: 'Error', message: 'An error occurred during sign up.' });
+        alert({ title: 'Error', message: 'An error occurred during sign up.', okButtonText: 'Okay' });
       });
   }
 
