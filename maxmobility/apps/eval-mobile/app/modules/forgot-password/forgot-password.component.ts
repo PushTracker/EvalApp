@@ -91,6 +91,6 @@ export class ForgotPasswordComponent implements OnInit {
     CLog('args', args.value);
     // make sure it's a valid email
     const em = this.email.trim();
-    this.emailError = !validate(em) ? `${em} is not a valid email address!` : '';
+    this.emailError = !validate(em) ? `${em} is not a valid email address.` : '';
   }
 }

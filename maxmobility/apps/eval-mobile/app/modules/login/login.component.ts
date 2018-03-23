@@ -113,7 +113,7 @@ export class LoginComponent implements OnInit {
     // make sure it's a valid email
     const email = text.trim();
     if (!validate(email)) {
-      this.emailError = `${email} is not a valid email address!`;
+      this.emailError = `${email} is not a valid email address.`;
       return false;
     }
 
