@@ -9,10 +9,6 @@ import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
   styleUrls: ['./demos.component.css']
 })
 export class DemosComponent implements OnInit {
-  /************************************************************
-   * Use the @ViewChild decorator to get a reference to the drawer component.
-   * It is used in the "onDrawerButtonTap" function below to manipulate the drawer.
-   *************************************************************/
   @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
 
   demos = [
@@ -28,16 +24,11 @@ export class DemosComponent implements OnInit {
 
   private _sideDrawerTransition: DrawerTransitionBase;
 
-  // functions
-
-  onDemoTap(args): void {
+  onDemoTap(args) {
     console.log('onDemoTap');
   }
 
-  /************************************************************
-   * Use the sideDrawerTransition property to change the open/close animation of the drawer.
-   *************************************************************/
-  ngOnInit(): void {
+  ngOnInit() {
     this._sideDrawerTransition = new SlideInOnTopTransition();
   }
 
@@ -45,10 +36,6 @@ export class DemosComponent implements OnInit {
     return this._sideDrawerTransition;
   }
 
-  /************************************************************
-   * According to guidelines, if you have a drawer on your page, you should always
-   * have a button that opens it. Use the showDrawer() function to open the app drawer section.
-   *************************************************************/
   onDrawerButtonTap(): void {
     this.drawerComponent.sideDrawer.showDrawer();
   }

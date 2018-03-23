@@ -10,6 +10,7 @@ import { NativeScriptUISideDrawerModule } from 'nativescript-ui-sidedrawer/angul
 // app
 import { CORE_PROVIDERS } from '@maxmobility/core';
 import { CoreModule } from './modules/core/core.module';
+import { MobileCoreModule } from '@maxmobility/mobile';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginService } from './shared/login.service';
@@ -26,6 +27,7 @@ import { DropDownModule } from 'nativescript-drop-down/angular';
     NativeScriptUIListViewModule,
     NativeScriptUISideDrawerModule,
     CoreModule,
+    MobileCoreModule,
     AppRoutingModule,
     HttpClientModule,
     DropDownModule

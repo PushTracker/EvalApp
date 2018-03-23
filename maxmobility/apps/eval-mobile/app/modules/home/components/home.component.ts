@@ -42,7 +42,7 @@ export class HomeComponent implements OnInit {
       Title: 'Demos',
       Image: String.fromCharCode(0xf02a),
       Description: 'Fleet management and Tracking.',
-      Route: '/home/demos'
+      Route: 'home/demos'
     },
     { Title: 'FAQ', Image: String.fromCharCode(0xf059), Description: 'Common SmartDrive Questions', Route: '/home/faq' }
   ];
@@ -65,10 +65,15 @@ export class HomeComponent implements OnInit {
   }
 
   onItemTapThirdList(args) {
-    this._routerExtensions.navigate([this.titles[args.index].Route], {
-      transition: {
-        name: 'slide'
-      }
-    });
+    const route = this.titles[args.index].Route;
+    CLog('current route', this._routerExtensions.router.url, 'navigating to = ', route);
+    this._routerExtensions.navigate(
+      [route]
+      //   {
+      //   transition: {
+      //     name: 'slide'
+      //   }
+      // }
+    );
   }
 }

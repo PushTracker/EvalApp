@@ -3,7 +3,7 @@
     <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem>
 </ActionBar>
 <RadSideDrawer #drawer [drawerTransition]="sideDrawerTransition">
-    <StackLayout tkDrawerContent backgroundColor="white" color="black">
+    <StackLayout tkDrawerContent>
         <MyDrawer [selectedPage]="'Home'"></MyDrawer>
     </StackLayout>
     <GridLayout tkMainContent backgroundColor="white">

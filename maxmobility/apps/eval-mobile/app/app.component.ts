@@ -46,7 +46,7 @@ export class AppComponent {
 
     // if user is logged in, go home, else go to login
     if (this._userService.user) {
-      this._router.navigate(['/home/featured']);
+      this._router.navigate(['/home']);
     } else {
       this._router.navigate(['/login']);
     }
