@@ -1,0 +1,39 @@
+<ActionBar class="action-bar">
+  <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+  <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left">
+  </ActionItem>
+  <ActionItem ios.position="right" (tap)="onSaveAccountTap()">
+    <Button text="Save" (tap)="onSaveAccountTap()" class="action-item"></Button>
+  </ActionItem>
+  <Label class="action-bar-title" text="Account"></Label>
+</ActionBar>
+<RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
+  <StackLayout tkDrawerContent>
+    <MyDrawer [selectedPage]="'Account'"></MyDrawer>
+  </StackLayout>
+  <ScrollView tkMainContent>
+    <StackLayout class="page-content">
+      <Label class="account-icon fa" text="&#xf2be;"></Label>
+      <GridLayout columns="auto, *">
+        <Label col="0" text="First Name" class="account-item"></Label>
+        <TextField col="1" [(ngModel)]="user.data.first_name" returnKeyType="next" class="account-text-entry" hint="First Name..."></TextField>
+      </GridLayout>
+      <GridLayout columns="auto, *">
+        <Label col="0" text="Last Name" class="account-item"></Label>
+        <TextField col="1" [(ngModel)]="user.data.last_name" returnKeyType="next" class="account-text-entry" hint="Last Name..."></TextField>
+      </GridLayout>
+      <GridLayout columns="auto, *">
+        <Label col="0" text="Email" class="account-item"></Label>
+        <TextField col="1" [(ngModel)]="user.data.email" keyboardType="email" returnKeyType="next" class="account-text-entry" hint="Email..."></TextField>
+      </GridLayout>
+      <GridLayout columns="auto, *">
+        <Label col="0" text="Phone #" class="account-item"></Label>
+        <TextField col="1" [(ngModel)]="user.data.phone_number" keyboardType="phone" returnKeyType="done" class="account-text-entry"
+          hint="Phone..."></TextField>
+      </GridLayout>
+      <Button text="Change Password" (tap)="onChangePasswordTap()"></Button>
+      <Button text="Reset Account" (tap)="onResetAccountTap()"></Button>
+      <Button text="Sign Out" (tap)="onSignOutTap()"></Button>
+    </StackLayout>
+  </ScrollView>
+</RadSideDrawer>

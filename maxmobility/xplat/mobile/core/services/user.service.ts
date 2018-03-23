@@ -42,7 +42,7 @@ export class UserService {
     return Kinvey.User.resetPassword(email);
   }
 
-  getUserDetails() {
-    return Kinvey.User.getActiveUser().me();
-  }
+  // getUserDetails() {
+  //   return Kinvey.User.getActiveUser().metadata;
+  // }
 }

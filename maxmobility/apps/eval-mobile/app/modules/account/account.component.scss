@@ -1,0 +1,30 @@
+// Custom common variables
+@import '../../scss/variables';
+
+.action-item {
+  color: $white;
+  font-size: 18;
+  text-transform: none;
+}
+
+// .account-icon {
+//   color: #0067a6;
+//   font-size: 100;
+//   text-align: center;
+//   margin: 10;
+// }
+
+.account-item {
+  vertical-align: center;
+  text-overflow: none;
+  text-align: left;
+  word-wrap: normal;
+  color: $black;
+  font-weight: bold;
+  margin: 15;
+}
+
+.account-text-entry {
+  text-align: right;
+  margin: 15;
+}

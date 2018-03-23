@@ -11,7 +11,7 @@ export class AuthGuardService implements CanActivate, CanLoad {
   canActivate(): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       const user = await this._userService.user;
-      CLog('canActivate user', user);
+      CLog('canActivate user', JSON.stringify(user));
       if (user) {
         resolve(true);
       } else {

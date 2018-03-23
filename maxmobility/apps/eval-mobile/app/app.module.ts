@@ -9,6 +9,7 @@ import { NativeScriptUIListViewModule } from 'nativescript-ui-listview/angular';
 import { NativeScriptUISideDrawerModule } from 'nativescript-ui-sidedrawer/angular';
 // app
 import { CORE_PROVIDERS } from '@maxmobility/core';
+import { SharedModule } from './modules/shared/shared.module';
 import { CoreModule } from './modules/core/core.module';
 import { MobileCoreModule } from '@maxmobility/mobile';
 import { AppRoutingModule } from './app-routing.module';
@@ -25,6 +26,7 @@ import { DropDownModule } from 'nativescript-drop-down/angular';
     NativeScriptHttpModule,
     NativeScriptUIListViewModule,
     NativeScriptUISideDrawerModule,
+    SharedModule,
     CoreModule,
     MobileCoreModule,
     AppRoutingModule,

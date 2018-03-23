@@ -43,15 +43,6 @@ export class LoginComponent implements OnInit {
     this._userService.logout();
   }
 
-  onCancelTap() {
-    this._routerExtensions.navigate(['/home/featured'], {
-      transition: {
-        name: 'fade'
-      },
-      clearHistory: true
-    });
-  }
-
   onSubmitTap() {
     // validate the email
     const isEmailValid = this._isEmailValid(this.user.email);

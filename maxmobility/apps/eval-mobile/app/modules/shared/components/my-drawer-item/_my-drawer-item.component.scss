@@ -1,0 +1,52 @@
+// Custom common variables
+@import '../../../../scss/variables';
+
+$sidedrawer-list-item-offset-left: 15;
+$sidedrawer-list-icon-offset: 10;
+$sidedrawer-list-icon-size: 20;
+
+.sidedrawer-list-item {
+  padding-left: $sidedrawer-list-item-offset-left;
+  margin: 2 0 2 0;
+  label {
+    vertical-align: center;
+    font-size: 17;
+    // color: $permobil-hero;
+  }
+  .fa {
+    width: $sidedrawer-list-icon-size;
+    margin-right: $sidedrawer-list-icon-offset;
+  }
+  &.selected {
+    background-color: $item-active-background;
+    label {
+      color: $item-active-color;
+    }
+  }
+}
+
+@import '../../../../scss/variables';
+
+$sidedrawer-list-item-offset-left: 15;
+$sidedrawer-list-icon-offset: 10;
+$sidedrawer-list-icon-size: 20;
+
+.sidedrawer-list-item {
+  padding-left: $sidedrawer-list-item-offset-left;
+  padding: 4;
+  label {
+    font-size: 16;
+    vertical-align: center;
+    // color: $permobil-hero;
+  }
+  .fa {
+    width: $sidedrawer-list-icon-size;
+    margin-right: $sidedrawer-list-icon-offset;
+  }
+  &.selected {
+    background-color: $item-active-background;
+    label {
+      color: $item-active-color;
+    }
+  }
+}

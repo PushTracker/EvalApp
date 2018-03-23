@@ -1,0 +1,24 @@
+<GridLayout rows="auto, *" class="sidedrawer sidedrawer-left">
+    <StackLayout row="0" class="sidedrawer-header">
+        <Label class="sidedrawer-header-image fa" text="&#xf2bd;"></Label>
+        <Label class="sidedrawer-header-brand" [text]="user.data.first_name + ' ' + user.data.last_name"></Label>
+        <Label class="footnote" [text]="user.data.email"></Label>
+    </StackLayout>
+
+    <ScrollView row="1">
+        <StackLayout class="sidedrawer-content">
+            <MyDrawerItem title="Home" route="/home" icon="&#xf015;" [isSelected]="isPageSelected('Home')"></MyDrawerItem>
+            <MyDrawerItem title="Videos" route="/videos" icon="&#xf008;" [isSelected]="isPageSelected('Videos')"></MyDrawerItem>
+            <MyDrawerItem title="Evaluation" route="/eval-entry" icon="&#xf0ae;" [isSelected]="isPageSelected('Evaluation')"></MyDrawerItem>
+            <MyDrawerItem title="OTA" route="/ota" icon="&#xf019;" [isSelected]="isPageSelected('OTA')"></MyDrawerItem>
+            <MyDrawerItem title="Demos" route="/demos" icon="&#xf02a;" [isSelected]="isPageSelected('Demos')"></MyDrawerItem>
+            <MyDrawerItem title="FAQ" route="/faq" icon="&#xf059;" [isSelected]="isPageSelected('FAQ')"></MyDrawerItem>
+
+            <StackLayout class="hr-light"></StackLayout>
+
+            <MyDrawerItem title="Settings" route="/settings" icon="&#xf013;" [isSelected]="isPageSelected('Settings')"></MyDrawerItem>
+            <MyDrawerItem title="Account" route="/account" icon="&#xf2bd;" [isSelected]="isPageSelected('Account')"></MyDrawerItem>
+            <!-- <MyDrawerItem title="Login" route="/login" icon="&#xf2bd;"></MyDrawerItem> -->
+        </StackLayout>
+    </ScrollView>
+</GridLayout>
