@@ -1,12 +1,17 @@
 // customized variables
 @import 'variables';
 
-// RadSideDrawer {
-//   StackLayout {
-//     background-color: $white;
-//     color: $black;
-//   }
-// }
+RadSideDrawer {
+  StackLayout {
+    background-color: $white;
+    color: $black;
+  }
+
+  MyDrawer {
+    background-color: $white;
+    color: $black;
+  }
+}
 
 .sidedrawer-header {
   border-width: 0 0 1 0;

@@ -13,7 +13,6 @@ import { CoreModule } from './modules/core/core.module';
 import { MobileCoreModule } from '@maxmobility/mobile';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginService } from './shared/login.service';
 // libs
 import { NgProgressModule } from 'ngx-progressbar';
 import { DropDownModule } from 'nativescript-drop-down/angular';
@@ -33,7 +32,7 @@ import { DropDownModule } from 'nativescript-drop-down/angular';
     DropDownModule
   ],
   declarations: [AppComponent],
-  providers: [LoginService, ...CORE_PROVIDERS],
+  providers: [...CORE_PROVIDERS],
   schemas: [NO_ERRORS_SCHEMA]
 })
 export class AppModule {}

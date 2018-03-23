@@ -1,15 +1,15 @@
 // angular
 import { Component, OnInit, ViewChild } from '@angular/core';
 // nativescript
+import * as switchModule from 'tns-core-modules/ui/switch';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { SegmentedBar, SegmentedBarItem } from 'tns-core-modules/ui/segmented-bar';
 import { TextField } from 'tns-core-modules/ui/text-field';
 import { Observable } from 'tns-core-modules/data/observable';
 import { confirm } from 'tns-core-modules/ui/dialogs';
-import * as switchModule from 'tns-core-modules/ui/switch';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 // app
-// import { EvaluationService } from '../../shared/evaluation.service';
+import { EvaluationService } from '@maxmobility/mobile';
 
 @Component({
   selector: 'Summary',
@@ -74,17 +74,14 @@ export class SummaryComponent implements OnInit {
   }
 
   onSliderUpdate(key, args) {
-    // this.settings.set(key, args.object.value);
+    this.settings.set(key, args.object.value);
   }
 
-  /************************************************************
-   * Use the sideDrawerTransition property to change the open/close animation of the drawer.
-   *************************************************************/
   ngOnInit() {
-    console.log('ngOnInit');
+    console.log('Summary.Component ngOnInit');
   }
 
-  // get settings(): Observable {
-  //   return EvaluationService.settings;
-  // }
+  get settings(): Observable {
+    return EvaluationService.settings;
+  }
 }

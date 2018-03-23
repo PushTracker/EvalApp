@@ -1,6 +1,5 @@
 // @import 'my-drawer-item.component';
 
-
 // .sidedrawer-list-item{
 //     padding-left:15
 // }
@@ -20,26 +19,26 @@
 //     }
 
 // Custom common variables
-@import '../../scss/variables';
+@import '../../../scss/variables';
 
 $sidedrawer-list-item-offset-left: 15;
 $sidedrawer-list-icon-offset: 10;
 $sidedrawer-list-icon-size: 20;
 
 .sidedrawer-list-item {
-    padding-left: $sidedrawer-list-item-offset-left;
-    Label {
-        vertical-align: center;
-        // color: $permobil-hero;
+  padding-left: $sidedrawer-list-item-offset-left;
+  label {
+    vertical-align: center;
+    // color: $permobil-hero;
+  }
+  .fa {
+    width: $sidedrawer-list-icon-size;
+    margin-right: $sidedrawer-list-icon-offset;
+  }
+  &.selected {
+    background-color: $item-active-background;
+    label {
+      color: $item-active-color;
     }
-    .fa {
-        width: $sidedrawer-list-icon-size;
-        margin-right: $sidedrawer-list-icon-offset;
-    }
-    &.selected {
-        background-color: $item-active-background;
-        Label {
-            color: $item-active-color;
-        }
-    }
+  }
 }

@@ -5,7 +5,7 @@ import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 import { SegmentedBar, SegmentedBarItem } from 'tns-core-modules/ui/segmented-bar';
 import { Observable } from 'tns-core-modules/data/observable';
 import { confirm } from 'tns-core-modules/ui/dialogs';
-// import { EvaluationService } from '../../shared/evaluation.service';
+import { EvaluationService } from '@maxmobility/mobile';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { DropDownModule } from 'nativescript-drop-down/angular';
 
@@ -25,15 +25,13 @@ export class EvalEntryComponent implements OnInit {
   PushingPain: SegmentedBarItem[] = [];
   PushingFatigue: SegmentedBarItem[] = [];
 
-  isIOS: boolean = false;
-  isAndroid: boolean = false;
+  isIOS = false;
+  isAndroid = false;
 
   timeFrames: string[];
-  timeIndex: number = 0;
+  timeIndex = 0;
   chairTypes: string[];
-  chairIndex: number = 0;
-
-  // private members
+  chairIndex = 0;
   private _sideDrawerTransition: DrawerTransitionBase;
   private pains = ['Yes', 'No'];
   private fatigues = ['Yes', 'No'];
@@ -66,16 +64,13 @@ export class EvalEntryComponent implements OnInit {
   }
 
   onSliderUpdate(key, args) {
-    // this.settings.set(key, args.object.value);
+    this.settings.set(key, args.object.value);
   }
 
   // button events
   onNext(): void {
     this.routerExtensions.navigate(['/training'], {
-      clearHistory: true,
-      transition: {
-        name: 'slide'
-      }
+      clearHistory: true
     });
   }
 
@@ -86,27 +81,24 @@ export class EvalEntryComponent implements OnInit {
 
   // pushing pain
   getPushingPainIndex() {
-    // return this.pains.indexOf(this.settings.get('PushingPain'));
+    return this.pains.indexOf(this.settings.get('PushingPain'));
   }
 
   onPushingPainIndexChange(args): void {
     const segmentedBar = <SegmentedBar>args.object;
-    // this.settings.set('PushingPain', this.pains[segmentedBar.selectedIndex]);
+    this.settings.set('PushingPain', this.pains[segmentedBar.selectedIndex]);
   }
 
   // pushing fatigue
   getPushingFatigueIndex() {
-    // return this.fatigues.indexOf(this.settings.get('PushingFatigue'));
+    return this.fatigues.indexOf(this.settings.get('PushingFatigue'));
   }
 
   onPushingFatigueIndexChange(args) {
     const segmentedBar = <SegmentedBar>args.object;
-    // this.settings.set('PushingFatigue', this.fatigues[segmentedBar.selectedIndex]);
+    this.settings.set('PushingFatigue', this.fatigues[segmentedBar.selectedIndex]);
   }
 
-  /************************************************************
-   * Use the sideDrawerTransition property to change the open/close animation of the drawer.
-   *************************************************************/
   ngOnInit(): void {
     this._sideDrawerTransition = new SlideInOnTopTransition();
     if (app.ios) {
@@ -120,9 +112,9 @@ export class EvalEntryComponent implements OnInit {
     return this._sideDrawerTransition;
   }
 
-  // get settings(): Observable {
-  //   return EvaluationService.settings;
-  // }
+  get settings(): Observable {
+    return EvaluationService.settings;
+  }
 
   /************************************************************
    * According to guidelines, if you have a drawer on your page, you should always

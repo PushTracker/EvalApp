@@ -1,9 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { RouterExtensions } from 'nativescript-angular/router';
 
-/************************************************************
- * Keep data that is displayed as drawer items in the MyDrawer component class.
- *************************************************************/
 @Component({
   selector: 'MyDrawerItem',
   moduleId: module.id,
@@ -29,7 +26,7 @@ export class MyDrawerItemComponent implements OnInit {
    * The "tap" event handler of the app drawer item <GridLayout> is used to navigate the app
    * based on the tapped navigationItem's route.
    *************************************************************/
-  onNavItemTap(navItemRoute: string): void {
+  onNavItemTap(navItemRoute: string) {
     this.routerExtensions.navigate([navItemRoute], {
       transition: {
         name: 'fade'

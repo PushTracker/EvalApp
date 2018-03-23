@@ -16,11 +16,11 @@ const routes: Routes = [
   },
   { path: 'home/account', loadChildren: './modules/home/components/account/account.module#AccountModule' },
   { path: 'home/videos', loadChildren: './modules/home/components/browse/browse.module#BrowseModule' },
-  { path: 'home/eval', loadChildren: './modules/home/components/search/search.module#SearchModule' },
+  { path: 'home/search', loadChildren: './modules/home/components/search/search.module#SearchModule' },
   { path: 'home/training', loadChildren: './modules/home/components/training/training.module#TrainingModule' },
   { path: 'home/trial', loadChildren: './modules/home/components/trial/trial.module#TrialModule' },
   {
-    path: 'home/evalEntry',
+    path: 'home/eval-entry',
     loadChildren: './modules/home/components/eval-entry-view/eval-entry.module#EvalEntryModule'
   },
   { path: 'home/summary', loadChildren: './modules/home/components/summary/summary.module#SummaryModule' },

@@ -1,28 +1,28 @@
 import { Injectable } from '@angular/core';
 
-import { fromObject, Observable } from 'data/observable';
+import { fromObject, Observable } from 'tns-core-modules/data/observable';
 
 export class Settings {
   // public members
-  PushingPain: string = 'Yes';
-  PushingFatigue: string = 'Yes';
+  PushingPain = 'Yes';
+  PushingFatigue = 'Yes';
 
-  pain: number = 3;
-  fatigue: number = 7;
-  independence: number = 10;
+  pain = 3;
+  fatigue = 7;
+  independence = 10;
 
-  maxSpeed: number = 50;
-  accelerationRate: number = 30;
+  maxSpeed = 50;
+  accelerationRate = 30;
 
-  pushCount: number = 0;
-  coastTime: number = 0.0;
-  trialDistance: number = 0.0;
-  trialTime: number = 0.0;
-  pushesPercentDifference: number = 0.0;
-  coastPercentDifference: number = 0.0;
+  pushCount = 0;
+  coastTime = 0.0;
+  trialDistance = 0.0;
+  trialTime = 0.0;
+  pushesPercentDifference = 0.0;
+  coastPercentDifference = 0.0;
 
-  rampDifficulty: number = 0.0;
-  flatDifficulty: number = 0.0;
+  rampDifficulty = 0.0;
+  flatDifficulty = 0.0;
 
   // private members
 
@@ -34,7 +34,7 @@ export class Settings {
     }
   }
 
-  fromObject(obj: any): void {
+  fromObject(obj: any) {
     this.PushingPain = (obj && obj.PushingPain) || 'Yes';
     this.PushingFatigue = (obj && obj.PushingFatigue) || 'Yes';
 

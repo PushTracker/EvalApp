@@ -5,6 +5,7 @@ import { NativeScriptCommonModule } from 'nativescript-angular/common';
 import { NativeScriptUIListViewModule } from 'nativescript-ui-listview/angular';
 import { NativeScriptUISideDrawerModule } from 'nativescript-ui-sidedrawer/angular';
 import { DemosComponent } from './demos.component';
+import { CORE_DECLARATIONS } from '../../../core/core.module';
 
 const routes: Routes = [{ path: '', component: DemosComponent }];
 
@@ -12,7 +13,7 @@ const MODULES = [NativeScriptCommonModule, NativeScriptUIListViewModule, NativeS
 
 @NgModule({
   imports: [NativeScriptRouterModule.forChild(routes), ...MODULES],
-  declarations: [DemosComponent],
+  declarations: [DemosComponent, CORE_DECLARATIONS],
   schemas: [NO_ERRORS_SCHEMA]
 })
 export class DemosModule {}

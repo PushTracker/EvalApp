@@ -30,7 +30,7 @@ export class HomeComponent implements OnInit {
       Title: 'Eval',
       Image: String.fromCharCode(0xf0ae),
       Description: 'Walk-through evaluation and generate an LMN',
-      Route: '/home/evalEntry'
+      Route: '/home/eval-entry'
     },
     {
       Title: 'OTA',

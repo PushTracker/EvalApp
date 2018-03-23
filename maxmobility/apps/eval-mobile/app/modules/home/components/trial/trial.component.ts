@@ -11,7 +11,7 @@ import * as switchModule from 'tns-core-modules/ui/switch';
 import { Observable } from 'tns-core-modules/data/observable';
 
 // app
-// import { EvaluationService } from '../../shared/evaluation.service';
+import { EvaluationService } from '@maxmobility/mobile';
 
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 
@@ -22,10 +22,6 @@ import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
   styleUrls: ['./trial.component.css']
 })
 export class TrialComponent implements OnInit {
-  /************************************************************
-   * Use the @ViewChild decorator to get a reference to the drawer component.
-   * It is used in the "onDrawerButtonTap" function below to manipulate the drawer.
-   *************************************************************/
   @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
 
   slides = [
@@ -141,12 +137,9 @@ export class TrialComponent implements OnInit {
   }
 
   onSliderUpdate(key, args) {
-    // this.settings.set(key, args.object.value);
+    this.settings.set(key, args.object.value);
   }
 
-  /************************************************************
-   * Use the sideDrawerTransition property to change the open/close animation of the drawer.
-   *************************************************************/
   ngOnInit(): void {
     this._sideDrawerTransition = new SlideInOnTopTransition();
   }
@@ -155,14 +148,10 @@ export class TrialComponent implements OnInit {
     return this._sideDrawerTransition;
   }
 
-  // get settings(): Observable {
-  //   return EvaluationService.settings;
-  // }
+  get settings(): Observable {
+    return EvaluationService.settings;
+  }
 
-  /************************************************************
-   * According to guidelines, if you have a drawer on your page, you should always
-   * have a button that opens it. Use the showDrawer() function to open the app drawer section.
-   *************************************************************/
   onDrawerButtonTap(): void {
     this.drawerComponent.sideDrawer.showDrawer();
   }
