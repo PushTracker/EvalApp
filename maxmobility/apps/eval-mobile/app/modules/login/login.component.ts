@@ -63,7 +63,9 @@ export class LoginComponent implements OnInit {
       .then(res => {
         CLog('login res', res);
         this._progressService.hide();
-        this._routerExtensions.navigate(['/home']);
+        this._routerExtensions.navigate(['/home'], {
+          clearHistory: true
+        });
       })
       .catch(err => {
         CLog('login error', err);
