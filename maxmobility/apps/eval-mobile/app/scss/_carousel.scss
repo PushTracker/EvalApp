@@ -1,0 +1,57 @@
+@import 'variables';
+
+.slideLowerLabel {
+  text-align: center;
+  width: 100%;
+  font-family: $os-Light;
+  font-size: 35;
+  margin-top: 20;
+  color: $white;
+}
+
+.slideLowerLabel_2 {
+  text-align: center;
+  width: 100%;
+  font-family: $os-Light;
+  font-size: 25;
+  // margin-top: 15;
+  color: $white;
+}
+.slideDescription {
+  color: $white;
+  font-family: $os-SemiBold;
+  font-size: 15;
+  text-align: center;
+  margin: 15, 20, 20, 20;
+}
+
+.topSlide {
+  background-color: $white;
+}
+
+.lowerSlide {
+  background-color: $permobil-hero;
+  margin-bottom: 30;
+}
+
+.slide-indicator-inactive {
+  background-color: $white;
+  opacity: 0.4;
+  width: 10;
+  height: 10;
+  margin-left: 2.5;
+  margin-right: 2.5;
+  margin-top: 0;
+  border-radius: 5;
+}
+
+.slide-indicator-active {
+  background-color: $white;
+  opacity: 0.9;
+  width: 10;
+  height: 10;
+  margin-left: 2.5;
+  margin-right: 2.5;
+  margin-top: 0;
+  border-radius: 5;
+}

@@ -1,0 +1,68 @@
+// customized variables
+@import 'variables';
+
+RadSideDrawer {
+  StackLayout {
+    background-color: $white;
+    color: $black;
+  }
+
+  MyDrawer {
+    background-color: $white;
+    color: $black;
+  }
+}
+
+.sidedrawer-header {
+  border-width: 0 0 1 0;
+  border-color: $primary;
+}
+
+.sidedrawer-list-item-icon {
+  font-size: 22;
+  color: $black;
+  text-align: center;
+  border-width: 0;
+}
+
+.sidedrawer-list-item-text {
+  font-size: 18;
+  color: $black;
+  vertical-align: center;
+  border-width: 0;
+}
+
+.sidedrawer-header label.h3 {
+  color: $primary;
+}
+.sidedrawer-header label.h4 {
+  color: $black;
+}
+
+.sidedrawer-content,
+.sidedrawer-left,
+.sidedrawer-header {
+  background-color: $white;
+  // color: $white;
+}
+
+.sidedrawer-content ListView {
+  background-color: $white;
+}
+
+.sidedrawer-content GridLayout {
+  width: 100%;
+  height: 100%;
+  padding: 4;
+  vertical-align: middle;
+
+  &.active {
+    // background-color: $light-grey;
+    .sidedrawer-list-item-icon {
+      color: $primary;
+    }
+    .sidedrawer-list-item-text {
+      color: $primary;
+    }
+  }
+}

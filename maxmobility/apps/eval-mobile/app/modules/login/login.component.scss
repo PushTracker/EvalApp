@@ -1,0 +1,17 @@
+@import '../../scss/variables';
+Page {
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.login-page {
+  background-color: #0067a6;
+  horizontal-align: center;
+  margin: 5 10 10 10;
+
+  > StackLayout {
+    height: 100%;
+    width: 100%;
+  }
+
+}

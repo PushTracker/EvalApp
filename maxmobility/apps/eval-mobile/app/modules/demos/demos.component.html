@@ -1,0 +1,32 @@
+<ActionBar title="Demos" class="permobil-action-bar">
+  <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+  <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem>
+</ActionBar>
+
+<RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
+
+  <StackLayout tkDrawerContent>
+    <MyDrawer [selectedPage]="'Demos'"></MyDrawer>
+  </StackLayout>
+
+  <GridLayout class="page page-content" tkMainContent>
+    <ListView class="list-group" [items]="demos" (itemTap)="onDemoTap($event)">
+      <ng-template let-item="item">
+        <GridLayout columns="auto, auto, *" rows="auto, auto, auto">
+          <!-- Note: we should probably have model type so that we can have the image pulled from a server according to MX2+ vs MX3 vs others. -->
+          <Image row="0" col="0" rowSpan="3" height="75" width="75" margin="10" ios:src="~/assets/images/SmartDrive.JPG" android:src="~/assets/images/SmartDrive.jpg"
+            stretch="aspectFit"></Image>
+
+          <Label text="&#xf02a;" row="0" col="1" class="fa icon"></Label>
+          <Label [text]="item.SerialNumber" row="0" col="2" class="info"></Label>
+
+          <Label text="&#xf041;" row="1" col="1" class="fa icon"></Label>
+          <Label [text]="item.Location" row="1" col="2" class="info"></Label>
+
+          <Label text="&#xf017;" row="2" col="1" class="fa icon"></Label>
+          <Label [text]="item.LastUsed" row="2" col="2" class="info"></Label>
+        </GridLayout>
+      </ng-template>
+    </ListView>
+  </GridLayout>
+</RadSideDrawer>

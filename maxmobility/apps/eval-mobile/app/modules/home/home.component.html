@@ -1,0 +1,31 @@
+<ActionBar title="Home" class="permobil-action-bar">
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem>
+</ActionBar>
+<RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
+    <StackLayout tkDrawerContent>
+        <MyDrawer [selectedPage]="'Home'"></MyDrawer>
+    </StackLayout>
+    <GridLayout tkMainContent backgroundColor="white">
+        <ListView class="list-group" [items]="titles" (itemTap)="onItemTapThirdList($event)">
+
+            <ng-template let-title="item">
+
+                <StackLayout orientation="horizontal">
+
+                    <Label height="95" width="95" class="fa icon" [text]="title.Image"></Label>
+
+                    <GridLayout class="list-group-item" rows="*, *" columns="*">
+
+                        <Label row="0" col="0" [text]="title.Title" class="list-group-item-heading heading"></Label>
+
+                        <Label row="1" col="0" [text]="title.Description" class="features description" textWrap="true"></Label>
+
+                    </GridLayout>
+                </StackLayout>
+
+            </ng-template>
+
+        </ListView>
+    </GridLayout>
+</RadSideDrawer>
