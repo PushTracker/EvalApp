@@ -50,6 +50,7 @@
     "@ngrx/store": "file:../../node_modules/@ngrx/store",
     "@ngx-translate/core": "file:../../node_modules/@ngx-translate/core",
     "@nrwl/nx": "file:../../node_modules/@nrwl/nx",
+    "buffer": "file:../../node_modules/buffer",
     "email-validator": "file:../../node_modules/email-validator",
     "kinvey-nativescript-sdk": "file:../../node_modules/kinvey-nativescript-sdk",
     "nativescript-angular": "file:../../node_modules/nativescript-angular",
