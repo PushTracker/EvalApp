@@ -19,8 +19,7 @@
     "reset": "rm -rf hooks node_modules platforms && npm run css.clean && npm run js.clean",
     "clean": "npm run js.clean && npm run css",
     "css.clean": "find app -type f -iname '*.css' -and ! -iname 'font-awesome.min.css' -delete",
-    "css.generate":
-      "node -e 'require(\"./node_modules/nativescript-dev-sass/lib/converter.js\").convert(console, \".\");'",
+    "css.generate": "node -e 'require(\"./node_modules/nativescript-dev-sass/lib/converter.js\").convert(console, \".\");'",
     "css": "npm run css.clean && npm run css.generate",
     "js.clean": "npx rimraf -- app/**/*.js",
     "ns-bundle": "ns-bundle",
@@ -55,6 +54,7 @@
     "kinvey-nativescript-sdk": "file:../../node_modules/kinvey-nativescript-sdk",
     "nativescript-angular": "file:../../node_modules/nativescript-angular",
     "nativescript-barcodescanner": "file:../../node_modules/nativescript-barcodescanner",
+    "nativescript-bluetooth": "file:../../nativescript-bluetooth",
     "nativescript-carousel": "file:../../node_modules/nativescript-carousel",
     "nativescript-drop-down": "file:../../node_modules/nativescript-drop-down",
     "nativescript-exoplayer": "file:../../node_modules/nativescript-exoplayer",
