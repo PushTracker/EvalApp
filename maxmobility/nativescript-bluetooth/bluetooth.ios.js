@@ -396,6 +396,7 @@ Bluetooth._toArrayBuffer = function(value) {
 };
 
 /* * * * * *  BLUETOOTH PERIPHERAL CODE * * * * * * */
+/*
 var CBPeripheralManagerImpl = (function(_super) {
   __extends(CBPeripheralManagerImpl, _super);
 
@@ -411,6 +412,7 @@ var CBPeripheralManagerImpl = (function(_super) {
 Bluetooth.getAdapter = function() {
   return adapter;
 };
+*/
 
 Bluetooth.removeBond = function(device) {
   /*
