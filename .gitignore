@@ -70,6 +70,7 @@ hooks/
 package-lock.json
 *.js
 **/*.js
+!/**/nativescript-bluetooth/**
 **/*.css
 .DS_Store
 **/platforms/
