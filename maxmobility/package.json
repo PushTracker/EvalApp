@@ -9,6 +9,7 @@
     "start.eval.mobile.android": "cd apps/eval-mobile && tns run android --syncAllFiles",
     "debug.eval.mobile.android": "cd apps/eval-mobile && tns debug android --syncAllFiles",
     "start.eval.mobile.ios": "cd apps/eval-mobile && tns run ios --syncAllFiles",
+    "debug.eval.mobile.ios": "cd apps/eval-mobile && tns debug ios --syncAllFiles",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
