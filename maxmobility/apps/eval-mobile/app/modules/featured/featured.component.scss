@@ -1,5 +1,14 @@
 @import '../../scss/variables';
 
+.hero {
+  color: $permobil-hero;
+}
+
+.grayed {
+
+  color: $permobil-charcoal;
+}
+
 .progress {
   color: $permobil-ocean;
   border-radius: 3;
