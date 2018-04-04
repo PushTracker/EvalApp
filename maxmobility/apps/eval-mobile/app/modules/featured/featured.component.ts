@@ -154,6 +154,15 @@ export class FeaturedComponent implements OnInit {
 
     this.otaButtonText = "updating SmartDrive firmware...";
 
+    const scrollView = this.scrollView.nativeElement as ScrollView;
+
+    // const scrollView = new ScrollView();
+
+    const offset = scrollView.scrollableHeight;
+    console.log(offset);
+
+    scrollView.scrollToVerticalOffset(offset, true);
+
     const otaProgressViewSD = <View>this.otaProgressViewSD.nativeElement;
     otaProgressViewSD.animate({
       opacity: 1,
@@ -174,7 +183,7 @@ export class FeaturedComponent implements OnInit {
       const otaProgressViewPT = <View>this.otaProgressViewPT.nativeElement;
       otaProgressViewPT.animate({
         opacity: 1,
-        duration: 800
+        duration: 500
       });
       this.otaButtonText = "updating PushTracker";
       this.ptBtProgressValue += 10;
@@ -188,7 +197,7 @@ export class FeaturedComponent implements OnInit {
       if (this.sdMpProgressValue > 100) {
         this.sdMpProgressValue = 100;
       }
-    }, 500);
+    }, 1000);
   }
 
 }
