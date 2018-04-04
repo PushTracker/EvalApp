@@ -3,6 +3,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 // nativescript
 import { Progress } from 'tns-core-modules/ui/progress';
+import { ScrollView, ScrollEventData } from "ui/scroll-view"; 
 import { Color } from 'tns-core-modules/color';
 import { AnimationCurve } from "ui/enums";
 import { View } from "ui/core/view";
@@ -10,6 +11,26 @@ import { Animation, AnimationDefinition } from "ui/animation";
 import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-ui-sidedrawer';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
+import { Observable, Scheduler } from "rxjs";
+
+// const timeElapsed = Observable.defer(() => {
+//     const start = Scheduler.animationFrame.now();
+//     return Observable.interval(1)
+//         .map(() => Math.floor((Date.now() - start)));
+// });
+
+// const duration = (totalMs) =>
+//     timeElapsed
+//         .map(elapsedMs => elapsedMs / totalMs)
+//         .takeWhile(t => t <= 1);
+
+// const amount = (d) => (t) => t * d;
+
+// const elasticOut = (t) =>
+//     Math.sin(-13.0 * (t + 1.0) *
+//         Math.PI / 2) *
+//     Math.pow(2.0, -10.0 * t) +
+//     1.0;
 
 @Component({
   selector: 'Featured',
@@ -19,12 +40,18 @@ import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 })
 export class FeaturedComponent implements OnInit {
   @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
+  @ViewChild('scrollView') scrollView: ElementRef;
   @ViewChild("sdConnectionButton") sdConnectionButton: ElementRef;
   @ViewChild("ptConnectionButton") ptConnectionButton: ElementRef;
   @ViewChild("otaTitleView") otaTitleView: ElementRef;
   @ViewChild("otaProgressViewSD") otaProgressViewSD: ElementRef;
   @ViewChild("otaProgressViewPT") otaProgressViewPT: ElementRef;
   @ViewChild("otaFeaturesView") otaFeaturesView: ElementRef;
+
+  // blah$: Observable<number> = Observable.of(25);
+
+  titleText = "Press the right button on your PushTracker to connect. (use the one up to the left to test)";
+  otaButtonText = "Begin Firmware Updates";
 
   sdBtConnected = false;
   ptBtConnected = false;
@@ -35,9 +62,9 @@ export class FeaturedComponent implements OnInit {
   bTSmartDriveConnectionIcon = String.fromCharCode(0xf293);
   bTPushTrackerConnectionIcon = String.fromCharCode(0xf293);
 
-  sdBtProgressValue: number;
-  sdMpProgressValue: number;
-  ptBtProgressValue: number;
+  sdBtProgressValue = 0;
+  sdMpProgressValue = 0;
+  ptBtProgressValue = 0;
 
   snackbar = new SnackBar();
 
@@ -46,6 +73,7 @@ export class FeaturedComponent implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
+
     const otaTitleView = <View>this.otaTitleView.nativeElement;
     otaTitleView.opacity = 0;
 
@@ -60,28 +88,6 @@ export class FeaturedComponent implements OnInit {
 
     this._sideDrawerTransition = new SlideInOnTopTransition();
 
-    this.sdBtProgressValue = 0;
-    this.sdMpProgressValue = 0;
-    this.ptBtProgressValue = 0;
-
-    setInterval(() => {
-      this.sdBtProgressValue += 1;
-      if (this.sdBtProgressValue > 100) {
-        this.sdBtProgressValue = 100;
-      }
-
-      this.sdMpProgressValue += 5;
-      if (this.sdMpProgressValue > 100) {
-        this.sdMpProgressValue = 100;
-      }
-
-      this.ptBtProgressValue += 10;
-      if (this.ptBtProgressValue > 100) {
-        this.ptBtProgressValue = 100;
-      }
-
-      // this.onValueChanged(5);
-    }, 2300);
   }
 
   onValueChanged(args) {
@@ -103,20 +109,30 @@ export class FeaturedComponent implements OnInit {
 
     this.bTPushTrackerConnectionIcon = connected = true ? String.fromCharCode(0xf294) : String.fromCharCode(0xf293);
 
-    this.ptConnectionButtonClass = connected = true ? "fa permobil-primary-btn" : "fa grayed";
+    this.ptConnectionButtonClass = connected = true ? "fa hero" : "fa grayed";
+
+    // tslint:disable-next-line:max-line-length
+    this.titleText = connected = true ? "Firmware Version 1.5" : "Press the right button on your PushTracker to connect. (use the one here to test)";
+
+    // tslint:disable-next-line:max-line-length
+    this.otaButtonText = connected = true ? "Begin Firmware Updates" : "Press the right button on your PushTracker to connect. (use the one here to test)";
 
     const otaTitleView = <View>this.otaTitleView.nativeElement;
     otaTitleView.animate({
       opacity: 1,
-      duration: 800
+      duration: 500
     });
+
+    // this.blah$ = duration(800)
+    // .map(elasticOut)
+    // .map(amount(150));
 
   }
   didConnectPSmartDrive(connected) {
 
     this.bTSmartDriveConnectionIcon = connected = true ? String.fromCharCode(0xf294) : String.fromCharCode(0xf293);
 
-    this.sdConnectionButtonClass = connected = true ? "fa permobil-primary-btn" : "fa grayed";
+    this.sdConnectionButtonClass = connected = true ? "fa hero" : "fa grayed";
 
   }
 
@@ -132,6 +148,47 @@ export class FeaturedComponent implements OnInit {
 
   onSdButtonTapped() {
     this.didConnectPSmartDrive(true);
+  }
+
+  onStartOtaUpdate() {
+
+    this.otaButtonText = "updating SmartDrive firmware...";
+
+    const otaProgressViewSD = <View>this.otaProgressViewSD.nativeElement;
+    otaProgressViewSD.animate({
+      opacity: 1,
+      duration: 500
+    });
+
+    const otaFeaturesView = <View>this.otaFeaturesView.nativeElement;
+    otaFeaturesView.animate({
+      opacity: 1,
+      duration: 500
+    });
+
+    setInterval(() => {
+
+      this.sdBtProgressValue += 5;
+      if (this.sdBtProgressValue > 100) {
+      this.sdBtProgressValue = 100;
+      const otaProgressViewPT = <View>this.otaProgressViewPT.nativeElement;
+      otaProgressViewPT.animate({
+        opacity: 1,
+        duration: 800
+      });
+      this.otaButtonText = "updating PushTracker";
+      this.ptBtProgressValue += 10;
+      if (this.ptBtProgressValue > 100) {
+        this.ptBtProgressValue = 100;
+        this.otaButtonText = "Update Complete";
+      }
+    }
+
+      this.sdMpProgressValue += 10;
+      if (this.sdMpProgressValue > 100) {
+        this.sdMpProgressValue = 100;
+      }
+    }, 500);
   }
 
 }
