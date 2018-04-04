@@ -10,8 +10,13 @@ const routes: Routes = [
   { path: 'forgot-password', loadChildren: './modules/forgot-password/forgot-password.module#ForgotPasswordModule' },
   { path: 'home', loadChildren: './modules/home/home.module#HomeModule', canActivate: [AuthGuardService] },
   {
-    path: 'featured',
-    loadChildren: './modules/featured/featured.module#FeaturedModule',
+    path: 'ota',
+    loadChildren: './modules/ota/ota.module#OTAModule',
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'pairing',
+    loadChildren: './modules/pairing/pairing.module#PairingModule',
     canActivate: [AuthGuardService]
   },
   { path: 'account', loadChildren: './modules/account/account.module#AccountModule', canActivate: [AuthGuardService] },

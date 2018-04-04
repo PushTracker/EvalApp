@@ -19,10 +19,14 @@ export class HomeComponent implements OnInit {
   @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
 
   titles = [
-    { Title: 'Intro', Image: String.fromCharCode(0xf05a), Description: 'Learn about SmartDrive', Route: '/home' },
+    // tslint:disable-next-line:max-line-length
+    { Title: 'Pairing', 
+      Image: String.fromCharCode(0xf0c1), 
+      Description: 'Connect with PaushTracker and SmartDrive', 
+      Route: '/pairing' },
     {
       Title: 'Videos',
-      Image: String.fromCharCode(0xf008),
+      Image: String.fromCharCode(0xf05a),
       Description: 'Training videos and Lessons',
       Route: '/videos'
     },
