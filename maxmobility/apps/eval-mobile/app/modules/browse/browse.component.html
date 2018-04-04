@@ -30,34 +30,30 @@ it shouldn't have any other siblings other than the <ActionBar> component.
     Use the tkMainContent directive to display the content of the page when you have an app drawer.
     -->
 
-    <GridLayout class="page page-content"  padding="0" margin="0" rows="auto, *" colomns="*" tkMainContent>
+    <GridLayout class="page page-content" padding="0" margin="0" rows="auto, *" colomns="*" tkMainContent>
 
-        //WebView for use with local files
-        <WebView row="0" col="0" height="231" [src]="videoHtmlString" >
+        //WebView for use with youtube videos
+        <WebView row="0" col="0" height="231" [src]="videoHtmlString">
         </WebView>
 
-        //Video player for use with local files
-           <!-- <VideoPlayer   src="https://www.youtube.com/watch?v=6_M1J8HZXIk" autoplay="true" height="231">
-            </VideoPlayer> -->
+        <ListView row="2" col="0" class="list-group" [items]="videos" (itemTap="onItemTapThirdList($event)">
 
-            <ListView row="2" col="0" class="list-group" [items]="videos" (itemTap="onItemTapThirdList($event)">
+            <ng-template let-video="item">
 
-                <ng-template let-video="item">
+                <StackLayout orientation="horizontal" class="list-group-item">
 
-                    <StackLayout orientation="horizontal" class="list-group-item">
+                    <Label row="0" col="0" rowSpan="2" height="108" width="108" class="fa icon" text="&#xf008;"></Label>
 
-                        <Label row="0" col="0" rowSpan="2" height="108" width="108" class="fa icon" text="&#xf008;"></Label>
+                    <GridLayout class="list-group-item" rows="*, *" columns="*">
 
-                        <GridLayout class="list-group-item" rows="*, *" columns="*">
+                        <Label row="0" col="0" [text]="video.Title" class="list-group-item-heading heading"></Label>
 
-                            <Label row="0" col="0" [text]="video.Title" class="list-group-item-heading heading"></Label>
+                        <TextView class="features" editable="false" textWrap="true" row="1" col="0" class="description" [text]="video.Description "></TextView>
 
-                            <TextView class="features" editable="false" textWrap="true"  row="1" col="0" class="description" [text]="video.Description "></TextView>
-
-                        </GridLayout>
-                    </StackLayout>
-                </ng-template>
-            </ListView>
+                    </GridLayout>
+                </StackLayout>
+            </ng-template>
+        </ListView>
 
 
 
