@@ -26,6 +26,7 @@ import { PairingService } from './shared/pairing.service';
 })
 export class PairingComponent implements OnInit {
   @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
+  @ViewChild("ptStackLayout") ptStackLayout: ElementRef;
 
   pairing: Pairing[] = [];
 
