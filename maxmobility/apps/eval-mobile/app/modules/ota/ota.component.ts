@@ -195,9 +195,13 @@ export class OTAComponent implements OnInit {
       if (this.ptBtProgressValue > 100) {
         this.ptBtProgressValue = 100;
         this.otaButtonText = "Update Complete";
-        this.routerExtensions.navigate(['/pairing'], {
+
+        setTimeout(() => {
+      this.routerExtensions.navigate(['/pairing'], {
           clearHistory: true
         });
+    }, 1500)
+        
       }
     }
 

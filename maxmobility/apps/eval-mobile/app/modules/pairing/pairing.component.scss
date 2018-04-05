@@ -1,13 +1,28 @@
 @import '../../scss/variables';
 
 
-.pairing {
-background-color: $permobil-hero;
+.clear{
+    background-color: rgba($color: #fff, $alpha: 0.0);
 }
 
-.ptBackGround {
-    background: "~/assets/images/pushTrackerFull.png";
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
+.title{
+    font-family: sans-serif;
+    font-size: 30em;
+    margin: 20, 0, 0, 0; 
+    padding: 10;
+}
+
+.description{
+    font-family: sans-serif;
+    font-size: 15em;
+    margin: 0, 0, 10, 0; 
+    padding: 10;
+}
+
+.pt{
+    opacity: 0;
+}
+
+.sd{
+    opacity: 0;
 }

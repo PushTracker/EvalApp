@@ -9,22 +9,18 @@
     <StackLayout tkDrawerContent>
       <MyDrawer [selectedPage]="'Pairing'"></MyDrawer>
     </StackLayout>
-
-    //set the main background
     
-<ScrollView  tkMainContent>
-<GridLayout col="*" row="*">
-<Image  row="0" col="1"  src="~/assets/images/pushTrackerFull.png" stretch="aspectFill" horizontalAlignment="right"></Image>
-    <StackLayout row="0" col="0" padding="10" width="200" #ptStackLayout orientation="vertical" horizontalAlignment="left">
-
-              <Label text="PushTracker">  
+<GridLayout (loaded)="pageLoaded()" col="*" row="*" tkMainContent>
+<Image class="pt" #ptImage  row="0" col="1"  src="~/assets/images/pushTrackerFull.png" stretch="aspectFill" horizontalAlignment="right"></Image>
+<Image class="sd" #sdImage  row="0" col="1"  src="~/assets/images/smartDriveFull.png" stretch="aspectFill" horizontalAlignment="right"></Image>
+    <StackLayout class="clear" row="0" col="0" width="200"  orientation="vertical" horizontalAlignment="left">
+              <Label #title class="title" text="PushTracker">  
                 </Label>
-
-                <Label font-size="12" textWrap="true" text="Press the left button on PushTracker to begin Pairing">
+                <Label #description class="description" textWrap="true" text="Press the left button on PushTracker to begin pairing">
                 </Label>
+                <Button text="Connect" (tap)="onConnectTap()"></Button>
           </StackLayout>
 </GridLayout>
-    </ScrollView>
 
 
     
