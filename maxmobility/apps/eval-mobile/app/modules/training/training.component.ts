@@ -95,7 +95,7 @@ export class TrainingComponent implements OnInit {
   }
 
   onBack(): void {
-    this.routerExtensions.navigate(['/evalEntry'], {
+    this.routerExtensions.navigate(['/eval-entry'], {
       clearHistory: true,
       transition: {
         name: 'slideRight'
