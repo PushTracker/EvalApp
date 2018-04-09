@@ -75,6 +75,10 @@ export class OTAComponent implements OnInit {
 
     ngOnInit(): void {
 
+	// start discovering smartDrives here; given a list of
+	// available smartDrives - ask the user which one they want to
+	// update
+
 	const otaTitleView = <View>this.otaTitleView.nativeElement;
 	otaTitleView.opacity = 0;
 
@@ -129,22 +133,15 @@ export class OTAComponent implements OnInit {
 	// .map(amount(150));
 
     }
-    didConnectPSmartDrive(connected) {
+    didConnectSmartDrive(connected) {
 
 	this.bTSmartDriveConnectionIcon = connected = true ? String.fromCharCode(0xf294) : String.fromCharCode(0xf293);
 
 	this.sdConnectionButtonClass = connected = true ? "fa hero" : "fa grayed";
-
-	this.routerExtensions.navigate(['/pairing'], {
-	    clearHistory: true
-	});
-
     }
 
-    didDisoverSmartDrives() {
-
+    discoverSmartDrives() {
 	// show list of SDs
-
     }
 
     onPtButtonTapped() {
@@ -152,7 +149,7 @@ export class OTAComponent implements OnInit {
     }
 
     onSdButtonTapped() {
-	this.didConnectPSmartDrive(true);
+	this.didConnectSmartDrive(true);
     }
 
     onStartOtaUpdate() {
