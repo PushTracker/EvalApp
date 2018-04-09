@@ -34,181 +34,192 @@ import { Observable, Scheduler } from "rxjs";
 //     1.0;
 
 @Component({
-  selector: 'OTA',
-  moduleId: module.id,
-  templateUrl: './ota.component.html',
-  styleUrls: ['./ota.component.css']
+    selector: 'OTA',
+    moduleId: module.id,
+    templateUrl: './ota.component.html',
+    styleUrls: ['./ota.component.css']
 })
 export class OTAComponent implements OnInit {
-  @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
-  @ViewChild('scrollView') scrollView: ElementRef;
-  @ViewChild("sdConnectionButton") sdConnectionButton: ElementRef;
-  @ViewChild("ptConnectionButton") ptConnectionButton: ElementRef;
-  @ViewChild("otaTitleView") otaTitleView: ElementRef;
-  @ViewChild("otaProgressViewSD") otaProgressViewSD: ElementRef;
-  @ViewChild("otaProgressViewPT") otaProgressViewPT: ElementRef;
-  @ViewChild("otaFeaturesView") otaFeaturesView: ElementRef;
+    @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
+    @ViewChild('scrollView') scrollView: ElementRef;
+    @ViewChild("sdConnectionButton") sdConnectionButton: ElementRef;
+    @ViewChild("ptConnectionButton") ptConnectionButton: ElementRef;
+    @ViewChild("otaTitleView") otaTitleView: ElementRef;
+    @ViewChild("otaProgressViewSD") otaProgressViewSD: ElementRef;
+    @ViewChild("otaProgressViewPT") otaProgressViewPT: ElementRef;
+    @ViewChild("otaFeaturesView") otaFeaturesView: ElementRef;
 
-  // blah$: Observable<number> = Observable.of(25);
+    // blah$: Observable<number> = Observable.of(25);
 
-  titleText = "Press the right button on your PushTracker to connect. (use the one up to the left to test)";
-  otaButtonText = "Begin Firmware Updates";
+    titleText = "Press the right button on your PushTracker to connect. (use the one up to the left to test)";
+    otaButtonText = "Begin Firmware Updates";
 
-  sdBtConnected = false;
-  ptBtConnected = false;
+    sdBtConnected = false;
+    ptBtConnected = false;
 
-  ptConnectionButtonClass = "fa grayed";
-  sdConnectionButtonClass = "fa grayed";
+    ptConnectionButtonClass = "fa grayed";
+    sdConnectionButtonClass = "fa grayed";
 
-  bTSmartDriveConnectionIcon = String.fromCharCode(0xf293);
-  bTPushTrackerConnectionIcon = String.fromCharCode(0xf293);
+    bTSmartDriveConnectionIcon = String.fromCharCode(0xf293);
+    bTPushTrackerConnectionIcon = String.fromCharCode(0xf293);
 
-  sdBtProgressValue = 0;
-  sdMpProgressValue = 0;
-  ptBtProgressValue = 0;
+    sdBtProgressValue = 0;
+    sdMpProgressValue = 0;
+    ptBtProgressValue = 0;
 
-  snackbar = new SnackBar();
+    snackbar = new SnackBar();
 
-  private _sideDrawerTransition: DrawerTransitionBase;
+    private _sideDrawerTransition: DrawerTransitionBase;
 
-  constructor(private http: HttpClient, private routerExtensions: RouterExtensions) {}
+    constructor(private http: HttpClient, private routerExtensions: RouterExtensions) {}
 
-  ngOnInit(): void {
+    ngOnInit(): void {
 
-    const otaTitleView = <View>this.otaTitleView.nativeElement;
-    otaTitleView.opacity = 0;
+	// start discovering smartDrives here; given a list of
+	// available smartDrives - ask the user which one they want to
+	// update
 
-    const otaProgressViewSD = <View>this.otaProgressViewSD.nativeElement;
-    otaProgressViewSD.opacity = 0;
+	const otaTitleView = <View>this.otaTitleView.nativeElement;
+	otaTitleView.opacity = 0;
 
-    const otaProgressViewPT = <View>this.otaProgressViewPT.nativeElement;
-    otaProgressViewPT.opacity = 0;
+	const otaProgressViewSD = <View>this.otaProgressViewSD.nativeElement;
+	otaProgressViewSD.opacity = 0;
 
-    const otaFeaturesView = <View>this.otaFeaturesView.nativeElement;
-    otaFeaturesView.opacity = 0;
+	const otaProgressViewPT = <View>this.otaProgressViewPT.nativeElement;
+	otaProgressViewPT.opacity = 0;
 
-    this._sideDrawerTransition = new SlideInOnTopTransition();
+	const otaFeaturesView = <View>this.otaFeaturesView.nativeElement;
+	otaFeaturesView.opacity = 0;
 
-  }
+	this._sideDrawerTransition = new SlideInOnTopTransition();
 
-  onValueChanged(args) {
-    const progressBar = <Progress>args.object;
-
-    console.log('Value changed for ' + progressBar);
-    console.log('New value: ' + progressBar.value);
-  }
-
-  get sideDrawerTransition(): DrawerTransitionBase {
-    return this._sideDrawerTransition;
-  }
-  onDrawerButtonTap(): void {
-    this.drawerComponent.sideDrawer.showDrawer();
-  }
-
-   // Connectivity
-  didConnectPushTracker(connected) {
-
-    this.bTPushTrackerConnectionIcon = connected = true ? String.fromCharCode(0xf294) : String.fromCharCode(0xf293);
-
-    this.ptConnectionButtonClass = connected = true ? "fa hero" : "fa grayed";
-
-    // tslint:disable-next-line:max-line-length
-    this.titleText = connected = true ? "Firmware Version 1.5" : "Press the right button on your PushTracker to connect. (use the one here to test)";
-
-    // tslint:disable-next-line:max-line-length
-    this.otaButtonText = connected = true ? "Begin Firmware Updates" : "Press the right button on your PushTracker to connect. (use the one here to test)";
-
-    const otaTitleView = <View>this.otaTitleView.nativeElement;
-    otaTitleView.animate({
-      opacity: 1,
-      duration: 500
-    });
-
-    // this.blah$ = duration(800)
-    // .map(elasticOut)
-    // .map(amount(150));
-
-  }
-  didConnectPSmartDrive(connected) {
-
-    this.bTSmartDriveConnectionIcon = connected = true ? String.fromCharCode(0xf294) : String.fromCharCode(0xf293);
-
-    this.sdConnectionButtonClass = connected = true ? "fa hero" : "fa grayed";
-
-    this.routerExtensions.navigate(['/pairing'], {
-      clearHistory: true
-    });
-
-  }
-
-  didDisoverSmartDrives() {
-
-    // show list of SDs
-
-  }
-
-  onPtButtonTapped() {
-    this.didConnectPushTracker(true);
-  }
-
-  onSdButtonTapped() {
-    this.didConnectPSmartDrive(true);
-  }
-
-  onStartOtaUpdate() {
-
-    this.otaButtonText = "updating SmartDrive firmware...";
-
-    const scrollView = this.scrollView.nativeElement as ScrollView;
-
-    // const scrollView = new ScrollView();
-
-    const offset = scrollView.scrollableHeight;
-    console.log(offset);
-
-    scrollView.scrollToVerticalOffset(offset, true);
-
-    const otaProgressViewSD = <View>this.otaProgressViewSD.nativeElement;
-    otaProgressViewSD.animate({
-      opacity: 1,
-      duration: 500
-    });
-
-    const otaFeaturesView = <View>this.otaFeaturesView.nativeElement;
-    otaFeaturesView.animate({
-      opacity: 1,
-      duration: 500
-    });
-
-    setInterval(() => {
-
-      this.sdBtProgressValue += 15;
-      if (this.sdBtProgressValue > 100) {
-      this.sdBtProgressValue = 100;
-      const otaProgressViewPT = <View>this.otaProgressViewPT.nativeElement;
-      otaProgressViewPT.animate({
-        opacity: 1,
-        duration: 500
-      });
-      this.otaButtonText = "updating PushTracker";
-      this.ptBtProgressValue += 25;
-      if (this.ptBtProgressValue > 100) {
-        this.ptBtProgressValue = 100;
-        this.otaButtonText = "Update Complete";
-
-        setTimeout(() => {
-      this.routerExtensions.navigate(['/pairing'], {
-          clearHistory: true
-        });
-    }, 1500)
-        
-      }
     }
 
-      this.sdMpProgressValue += 25;
-      if (this.sdMpProgressValue > 100) {
-        this.sdMpProgressValue = 100;
-      }
-    }, 500);
-  }
+    onValueChanged(args) {
+	const progressBar = <Progress>args.object;
+
+	console.log('Value changed for ' + progressBar);
+	console.log('New value: ' + progressBar.value);
+    }
+
+    get sideDrawerTransition(): DrawerTransitionBase {
+	return this._sideDrawerTransition;
+    }
+    onDrawerButtonTap(): void {
+	this.drawerComponent.sideDrawer.showDrawer();
+    }
+
+    // Connectivity
+    didConnectPushTracker(connected) {
+
+	this.bTPushTrackerConnectionIcon = connected = true ? String.fromCharCode(0xf294) : String.fromCharCode(0xf293);
+
+	this.ptConnectionButtonClass = connected = true ? "fa hero" : "fa grayed";
+
+	// tslint:disable-next-line:max-line-length
+	this.titleText = connected = true ? "Firmware Version 1.5" : "Press the right button on your PushTracker to connect. (use the one here to test)";
+
+	// tslint:disable-next-line:max-line-length
+	this.otaButtonText = connected = true ? "Begin Firmware Updates" : "Press the right button on your PushTracker to connect. (use the one here to test)";
+
+	const otaTitleView = <View>this.otaTitleView.nativeElement;
+	otaTitleView.animate({
+	    opacity: 1,
+	    duration: 500
+	});
+
+	// this.blah$ = duration(800)
+	// .map(elasticOut)
+	// .map(amount(150));
+
+    }
+    didConnectSmartDrive(connected) {
+
+	this.bTSmartDriveConnectionIcon = connected = true ? String.fromCharCode(0xf294) : String.fromCharCode(0xf293);
+
+	this.sdConnectionButtonClass = connected = true ? "fa hero" : "fa grayed";
+    }
+
+    discoverSmartDrives() {
+	// show list of SDs
+    }
+
+    onPtButtonTapped() {
+	this.didConnectPushTracker(true);
+    }
+
+    onSdButtonTapped() {
+	this.didConnectSmartDrive(true);
+    }
+
+    onStartOtaUpdate() {
+
+	this.otaButtonText = "updating SmartDrive firmware...";
+
+	const scrollView = this.scrollView.nativeElement as ScrollView;
+
+	// const scrollView = new ScrollView();
+
+	const offset = scrollView.scrollableHeight;
+	console.log(offset);
+
+	scrollView.scrollToVerticalOffset(offset, true);
+
+	const otaProgressViewSD = <View>this.otaProgressViewSD.nativeElement;
+	otaProgressViewSD.animate({
+	    opacity: 1,
+	    duration: 500
+	});
+
+	const otaFeaturesView = <View>this.otaFeaturesView.nativeElement;
+	otaFeaturesView.animate({
+	    opacity: 1,
+	    duration: 500
+	});
+
+	let intervalID = null;
+	let updatingPT = false;
+	intervalID = setInterval(() => {
+
+	    this.sdBtProgressValue += 15;
+	    if (this.sdBtProgressValue > 100) {
+		this.sdBtProgressValue = 100;
+	    }
+	    this.sdMpProgressValue += 25;
+	    if (this.sdMpProgressValue > 100) {
+		this.sdMpProgressValue = 100;
+	    }
+
+	    if (this.sdMpProgressValue >= 100 && this.sdBtProgressValue >= 100) {
+
+		this.ptBtProgressValue += 25;
+		if (this.ptBtProgressValue > 100) {
+		    this.ptBtProgressValue = 100;
+		}
+
+		if (!updatingPT) {
+		    const otaProgressViewPT = <View>this.otaProgressViewPT.nativeElement;
+		    otaProgressViewPT.animate({
+			opacity: 1,
+			duration: 500
+		    });
+		    this.otaButtonText = "updating PushTracker";
+		    updatingPT = true;
+		}
+
+		if (this.ptBtProgressValue >= 100) {
+		    this.otaButtonText = "Update Complete";
+		    // cancel the interval we have set
+		    clearInterval(intervalID);
+
+		    setTimeout(() => {
+			this.routerExtensions.navigate(['/pairing'], {
+			    clearHistory: true
+			});
+		    }, 1500)
+		    
+		}
+	    }
+	}, 500);
+    }
 }

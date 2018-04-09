@@ -1,26 +1,26 @@
 <ActionBar class="action-bar">
-    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
-    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem>
-    <Label class="action-bar-title" text="Pairing"></Label>
-  </ActionBar>
+  <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+  <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem>
+  <Label class="action-bar-title" text="Pairing"></Label>
+</ActionBar>
+
+<RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
   
-  <RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
+  <StackLayout tkDrawerContent>
+    <MyDrawer [selectedPage]="'Pairing'"></MyDrawer>
+  </StackLayout>
   
-    <StackLayout tkDrawerContent>
-      <MyDrawer [selectedPage]="'Pairing'"></MyDrawer>
-    </StackLayout>
-    
-<GridLayout (loaded)="pageLoaded()" col="*" row="*" tkMainContent>
-<Image class="pt" #ptImage  row="0" col="1"  src="~/assets/images/pushTrackerFull.png" stretch="aspectFill" horizontalAlignment="right"></Image>
-<Image class="sd" #sdImage  row="0" col="1"  src="~/assets/images/smartDriveFull.png" stretch="aspectFill" horizontalAlignment="right"></Image>
+  <GridLayout (loaded)="pageLoaded()" col="*" row="*" tkMainContent>
+    <Image class="pt" #ptImage  row="0" col="1"  src="~/assets/images/pushTrackerFull.png" stretch="aspectFill" horizontalAlignment="right"></Image>
+    <Image class="sd" #sdImage  row="0" col="1"  src="~/assets/images/smartDriveFull.png" stretch="aspectFill" horizontalAlignment="right"></Image>
     <StackLayout class="clear" row="0" col="0" width="200"  orientation="vertical" horizontalAlignment="left">
-              <Label #title class="title" text="PushTracker">  
-                </Label>
-                <Label #description class="description" textWrap="true" text="Press the left button on PushTracker to begin pairing">
-                </Label>
-                <Button text="Connect" (tap)="onConnectTap()"></Button>
-          </StackLayout>
-</GridLayout>
+      <Label #title class="title" text="PushTracker">  
+      </Label>
+      <Label #description class="description" textWrap="true" text="Press the left button on PushTracker to begin pairing">
+      </Label>
+      <Button text="Connect" (tap)="onConnectTap()"></Button>
+    </StackLayout>
+  </GridLayout>
 
+</RadSideDrawer>
 
-    
