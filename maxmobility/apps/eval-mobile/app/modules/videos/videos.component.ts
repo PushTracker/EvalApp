@@ -17,15 +17,13 @@ import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 export class VideosComponent implements OnInit {
 
 
-
-  // tslint:disable-next-line:max-line-length
-  videoHtmlString_0 = '<iframe height="75" width="120" src="https://www.youtube.com/embed/hFid9ks551A" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
-  videoHtmlString_1 = '<iframe height="75" width="130" src="https://www.youtube.com/embed/uhA3-svjQFg" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
-  videoHtmlString_2 = '<iframe height="75" width="130" src="https://www.youtube.com/embed/6_M1J8HZXIk" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
-  videoHtmlString_3 = '<iframe height="75" width="130" src="https://www.youtube.com/embed/3B-6ked84us" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
-  videoHtmlString_4 = '<iframe height="75" width="130" src="https://www.youtube.com/embed/3B-6ked84us" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
-  videoHtmlString_5 = '<iframe height="75" width="130" src="https://www.youtube.com/embed/45Kj7zJpDcM" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
-  videoHtmlString_6 = '<iframe height="75" width="130" src="https://www.youtube.com/embed/hFid9ks551A" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+  videoHtmlString_0 = '<iframe height="75" width="135" src="https://www.youtube.com/embed/8fn26J59WJ4" modestbranding=1 controlles=0 frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+  videoHtmlString_1 = '<iframe height="75" width="135" src="https://www.youtube.com/embed/uhA3-svjQFg" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+  videoHtmlString_2 = '<iframe height="75" width="135" src="https://www.youtube.com/embed/6_M1J8HZXIk" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+  videoHtmlString_3 = '<iframe height="75" width="135" src="https://www.youtube.com/embed/3B-6ked84us" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+  videoHtmlString_4 = '<iframe height="75" width="135" src="https://www.youtube.com/embed/3B-6ked84us" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+  videoHtmlString_5 = '<iframe height="75" width="135" src="https://www.youtube.com/embed/45Kj7zJpDcM" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+  videoHtmlString_6 = '<iframe height="75" width="135" src="https://www.youtube.com/embed/hFid9ks551A" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
 
     videos = [
     { Url: this.videoHtmlString_0, Description: 'SmartDrive Introduction' 
@@ -35,7 +33,7 @@ export class VideosComponent implements OnInit {
     },
     { Url: this.videoHtmlString_3, Description: 'Intro to the PushTracker App' 
     },
-    { Url: this.videoHtmlString_4, Description: 'Intro to the Eval App App' 
+    { Url: this.videoHtmlString_4, Description: 'Intro to the Eval App' 
     },
     { Url: this.videoHtmlString_5, Description: 'SmartDrive Evaluation and Training' 
     },
@@ -63,14 +61,6 @@ export class VideosComponent implements OnInit {
 
   didSelectItemAtIndex(args) {
 
-
-    
     console.log(args.index);
   }
 
- didLoad(args) {
-   
-   console.log(args.index);
- }
-
-}
