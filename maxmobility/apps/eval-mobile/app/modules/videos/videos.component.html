@@ -13,25 +13,18 @@
     <MyDrawer [selectedPage]="'Videos'"></MyDrawer>
 </StackLayout>
 
-<ListView tkMainContent class="list-group" [items]="videos" (itemTap="onItemTapThirdList($event)">
+<ListView tkMainContent class="list-group" [items]="videos" (itemTap)="didSelectItemAtIndex($event)">
 
-    <ng-template let-video="item">
+    <ng-template let-item="item">
 
-         <GridLayout  rows="auto" columns="125, *">
+         <GridLayout  rows="auto" columns="145, *">
 
-                        <!-- <WebView row="0" col="0" [src]="videoHtmlString">
-                        </WebView> -->
-
-     <exoplayer class="thumb"
-      [src]="video.Url"
-      autoplay="true" 
-      height="300">
-    </exoplayer>
-
-                        <Label class="description" editable="false" textWrap="true" row="0" col="1" class="description" [text]="video.Description "></Label>
+            <WebView class="thumb" row="0" col="0" [src]="item.Url">
+            </WebView>
+            
+            <Label class="description" editable="false" textWrap="true" row="0" col="1" class="description" [text]="item.Description "></Label>
 
                     </GridLayout>
-         
             </ng-template>
         </ListView>
 

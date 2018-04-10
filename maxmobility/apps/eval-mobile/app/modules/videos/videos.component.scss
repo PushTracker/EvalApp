@@ -1,19 +1,19 @@
 // Custom common variables
 @import '../../scss/variables';
 
-WebView {
-    width: 100;
-    height: 75;
-    margin: 5, 0, 5, 0;
-    border: solid;
-    border-radius: 3;
-}
+// WebView {
+    // width: 120;
+    // height: 75;
+//     margin: 5, 5, 5, 10;
+//     border: solid;
+//     border-radius: 3;
+// }
 
 .thumb {
 
-    width: 100;
+    width: 120;
     height: 75;
-    margin: 5, 0, 5, 0;
+    margin: 5, 5, 5, 10;
     border: solid;
     border-radius: 3;
 }
@@ -32,6 +32,6 @@ WebView {
     font-size: 15;
     font-weight: 300;
     color: $permobil-charcoal;
-    margin: 5, 5, 5, 0;
+    margin: 5, 5, 5, 10;
 
 }
