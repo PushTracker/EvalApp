@@ -64,3 +64,4 @@ export class VideosComponent implements OnInit {
     console.log(args.index);
   }
 
+}
