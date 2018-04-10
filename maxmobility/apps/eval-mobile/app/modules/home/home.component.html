@@ -6,6 +6,7 @@
     <StackLayout tkDrawerContent>
         <MyDrawer [selectedPage]="'Home'"></MyDrawer>
     </StackLayout>
+    
     <GridLayout tkMainContent backgroundColor="white">
         <ListView class="list-group" [items]="titles" (itemTap)="onItemTapThirdList($event)">
 
