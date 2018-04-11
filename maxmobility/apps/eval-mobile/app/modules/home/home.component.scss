@@ -1,25 +1,94 @@
 // Custom common variables
 @import '../../scss/variables';
 
-.icon {
-  font-size: 60em;
-  padding: 15, 0, 0, 15;
-  color: $permobil-ocean;
-  text-shadow: 5px, 5px, 5px, $permobil-icon-shadow-orange;
+// .icon {
+//   font-size: 60em;
+//   padding: 15, 0, 0, 15;
+//   color: $permobil-ocean;
+//   text-shadow: 5px, 5px, 5px, $permobil-icon-shadow-orange;
+// }
+
+.icon-description-group {
+  padding: 0;
+  width: 150;
+  margin: 0, 0, 0, 15;
 }
 
 .heading {
   font-family: $os-SemiBold;
   text-align: left;
-  font-size: 25;
-  padding: 0;
+  font-size: 20;
+  font-weight: 600;
+  margin: 5, 0, 5, 15;
   color: $permobil-charcoal;
 }
 
 .description {
   font-family: $os-Light;
   color: $permobil-charcoal;
-  padding: 0;
+  font-size: 15;
+  font-weight: 400;
+  margin: 5, 0, 5, 15;
+}
+
+.item-description {
+  font-family: $os-Light;
+  color: $permobil-charcoal;
+  width: 150;
+  height: 50;
+  font-size: 14;
+  font-weight: 400;
+  margin: 5, 0, 0, 0;
+}
+
+.chev {
+
+  width: 22em;
+  height: 22em;
+  margin: 5, 10, 0, 0;
+
+}
+
+.list-stack-layout {
+  margin: 10, 0, 10, 0;
+
+}
+
+.main-scrool-view {
+  padding: 10, 0, 10, 30;
+  margin: 10, 0, 20, 0;
+
+}
+
+.thumb {
+  width: 150;
+  height: 150;
+  background-color: $permobil-hero;
+  margin: 5, 0, 5, 0;
+  border: solid;
+  border-radius: 4;
+}
+
+.floor {
+
+  margin: 10, 0, 10, 0;
+
+}
+
+.icon{
+    font-size: 14em;
+    padding: 0, 0, 0, 10;
+    color: $permobil-ocean;
+    horizontal-align: center;
+    vertical-align: center;
+}
+
+.info{
+    font-family: $os-SemiBold;
+    padding: 0, 0, 0, 5;
+    color: $permobil-charcoal;
+    font-size: 14em;
+    vertical-align: center;
 }
 
 // NavigationButton {
