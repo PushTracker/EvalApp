@@ -1,7 +1,11 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { EventData } from 'tns-core-modules/data/observable';
 import { topmost } from 'tns-core-modules/ui/frame';
+import { View } from "ui/core/view";
 import { Page } from 'tns-core-modules/ui/page';
+import { Image } from 'ui/image';
+import { Label } from 'ui/label';
+import { WebView } from 'tns-core-modules/ui/web-view';
 import { isIOS } from 'tns-core-modules/platform';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-ui-sidedrawer';
@@ -19,7 +23,6 @@ export class HomeComponent implements OnInit {
   @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
 
   titles = [
-    // tslint:disable-next-line:max-line-length
     { Title: 'Pairing', 
       Image: String.fromCharCode(0xf0c1), 
       Description: 'Connect with PaushTracker and SmartDrive', 
@@ -50,13 +53,94 @@ export class HomeComponent implements OnInit {
     },
     { Title: 'FAQ', Image: String.fromCharCode(0xf059), Description: 'Common SmartDrive Questions', Route: '/faq' }
   ];
-    pairingItems = [
-    { Image: "~/assets/images/band_bluetooth.png", Description: 'Pair your app with a PushTracker', Route: '/pairing' },
-    { Image: "~/assets/images/band_settings.png", Description: 'Connect your app with the PushTracker', Route: 'connect()' },
-    { Image: "~/assets/images/smartdrive-wheel.png", Description: 'Pair your PushTracker with a SmartDrive', Route: '/home' },
+
+  connectivityItems = [
+    { Image: "~/assets/images/band_bluetooth.png", 
+      Description: 'Pair your app with a PushTracker', 
+      Directive:'pt-phone',
+      Route: '/pairing' 
+    },
+    { Image: "~/assets/images/band_settings.png", 
+      Description: 'Connect your app with the PushTracker', 
+      Directive:'pt-phone-connect',
+      Route: 'pairing' 
+    },
+    { Image: "~/assets/images/smartdrive-wheel.png", 
+      Description: 'Pair your PushTracker with a SmartDrive',
+      Directive:'pt-sd',
+      Route: '/pairing' 
+    },
+  ];
+
+  evalItems = [
+    { Image: "~/assets/images/training-tap.jpg", 
+      Description: 'Training how to use SmartDrive', 
+      Route: '/training' 
+    },
+    { Image: "~/assets/images/eval-controls.jpg", 
+      Description: 'Begin SmartDrive Evaluation', 
+      Route: '/eval-entry' 
+    },
+    { Image: "~/assets/images/trial.jpg", 
+      Description: 'Begin a SmartDrive Trial.', 
+      Route: '/trial' 
+    },
 
   ];
 
+  otaItems = [
+    { Image: "~/assets/images/pt-bt.jpg", 
+      Description: 'Update the Firmware on your PushTracker',
+      Directive:'pt',
+      Route: '/ota'
+    },
+    { Image: "~/assets/images/sd-bt.jpg", 
+      Description: 'Update the Firmware on your SmartDrive',
+      Directive:'sd',
+      Route: '/ota' 
+    },
+    { Image: "~/assets/images/pt-sd-bt.jpg", 
+      Description: 'Update a PushTracker and SmartDrive together',
+      Directive:'pt-sd',
+      Route: '/ota' 
+    },
+
+  ];
+
+  demoItems = [
+    { SerialNumber: '11000', 
+      LastUsed: new Date(1988, 10, 23), 
+      Location: 'Mountain View, CA' 
+    },
+    { SerialNumber: '11001', 
+      LastUsed: new Date(), 
+      Location: 'Nashville, TN' 
+    },
+    { SerialNumber: '11002', 
+      LastUsed: new Date(), 
+      Location: 'Breckenridge, CO' 
+    },
+    { SerialNumber: '11003', 
+      LastUsed: new Date(), 
+      Location: 'Seattle, WA'
+    },
+    { SerialNumber: '11004', 
+      LastUsed: new Date(), 
+      Location: 'San Francisco, CA' 
+    },
+    { SerialNumber: '11005', 
+      LastUsed: new Date(), 
+      Location: 'Los Angeles, CA' 
+    },
+    { SerialNumber: '11006', 
+      LastUsed: new Date(), 
+      Location: 'New Orleans, LA' 
+    },
+    { SerialNumber: '11007', 
+      LastUsed: new Date(), 
+      Location: 'New York, NY' 
+    }
+  ];
 
   videoHtmlString_0 = '<iframe height="170" width="170" margin="0" src="https://www.youtube.com/embed/8fn26J59WJ4" modestbranding=1 controlles=0 frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
   videoHtmlString_1 = '<iframe height="170" width="170" src="https://www.youtube.com/embed/uhA3-svjQFg" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
@@ -67,32 +151,36 @@ export class HomeComponent implements OnInit {
   videoHtmlString_6 = '<iframe height="170" width="170" src="https://www.youtube.com/embed/hFid9ks551A" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
 
     videoItems = [
-    { Url: this.videoHtmlString_0, Description: 'SmartDrive Introduction' 
+    { Url: this.videoHtmlString_0, 
+      Description: 'SmartDrive Introduction',
+      Thumb: '~/assets/images/overview-thumb.jpg'
     },
-    { Url: this.videoHtmlString_1, Description: 'SmartDrive MX2+ Basic Operation' },
-    { Url: this.videoHtmlString_2, Description: 'PushTracker Basic Operation' 
+    { Url: this.videoHtmlString_1, 
+      Description: 'SmartDrive MX2+ Basic Operation',
+      Thumb: '~/assets/images/sd-basic-op-thumb.jpg' 
     },
-    { Url: this.videoHtmlString_3, Description: 'Intro to the PushTracker App' 
+    { Url: this.videoHtmlString_2, 
+      Description: 'PushTracker Basic Operation',
+      Thumb: '~/assets/images/pt-basic-op-thumb.jpg' 
     },
-    { Url: this.videoHtmlString_4, Description: 'Intro to the Eval App' 
+    { Url: this.videoHtmlString_3, 
+      Description: 'Intro to the PushTracker App',
+      Thumb: '~/assets/images/intro-PushTracker-app-thumb.jpg' 
     },
-    { Url: this.videoHtmlString_5, Description: 'SmartDrive Evaluation and Training' 
+    { Url: this.videoHtmlString_4, 
+      Description: 'Intro to the Eval App',
+      Thumb: '~/assets/images/intro-PushTracker-app-thumb.jpg'  
     },
-    { Url: this.videoHtmlString_6, Description: 'Interview with Chels and Steph' 
+    { Url: this.videoHtmlString_5, 
+      Description: 'SmartDrive Evaluation and Training',
+      Thumb: '~/assets/images/eval-thumb.jpg'  
+    },
+    { Url: this.videoHtmlString_6, 
+      Description: 'Interview with Chels and Steph',
+      Thumb: '~/assets/images/interview-thumb.jpg'  
     },
     
   ];  
-
-  demoItems = [
-    { SerialNumber: '11000', LastUsed: new Date(1988, 10, 23), Location: 'Mountain View, CA' },
-    { SerialNumber: '11001', LastUsed: new Date(), Location: 'Nashville, TN' },
-    { SerialNumber: '11002', LastUsed: new Date(), Location: 'Breckenridge, CO' },
-    { SerialNumber: '11003', LastUsed: new Date(), Location: 'Seattle, WA' },
-    { SerialNumber: '11004', LastUsed: new Date(), Location: 'San Francisco, CA' },
-    { SerialNumber: '11005', LastUsed: new Date(), Location: 'Los Angeles, CA' },
-    { SerialNumber: '11006', LastUsed: new Date(), Location: 'New Orleans, LA' },
-    { SerialNumber: '11007', LastUsed: new Date(), Location: 'New York, NY' }
-  ];
 
   private _sideDrawerTransition: DrawerTransitionBase;
 
@@ -111,11 +199,64 @@ export class HomeComponent implements OnInit {
     this.drawerComponent.sideDrawer.showDrawer();
   }
 
-  chevronButtonTapped(String: string) {
+  connectivityThumbTapped(item: any) {
 
-    // console.log(String);
+    const route = item.Route;
+    //Determines the pairing processs to perform
+    const directive = item.Directive;
 
-    const route = String;
+    this._routerExtensions.navigate([route],
+        {
+        transition: {
+          name: 'wipe'
+        }
+      }
+    );
+  }
+
+  otaThumbTapped(item: any) {
+
+    const route = item.Route;
+    //Determines the OTA process to perform
+    const directive = item.Directive;
+
+    this._routerExtensions.navigate([route],
+        {
+        transition: {
+          name: 'wipe'
+        }
+      }
+    );
+  }
+
+  videoThumbTapped(item: any) {
+
+    const videoUrl = item.Url;
+    const route = item.Route;
+
+    this._routerExtensions.navigate([route],
+        {
+        transition: {
+          name: 'wipe'
+        }
+      }
+    );
+  }
+
+  evalThumbTapped(item: any) {
+
+    console.log(item.Route);
+
+    this._routerExtensions.navigate([item.Route],
+        {
+        transition: {
+          name: 'wipe'
+        }
+      }
+    );
+  }
+
+  chevronButtonTapped(route: string) {
 
     console.log(route);
 
@@ -129,16 +270,4 @@ export class HomeComponent implements OnInit {
 
   }
 
-  onItemTapThirdList(args) {
-    const route = this.titles[args.index].Route;
-    CLog('current route', this._routerExtensions.router.url, 'navigating to = ', route);
-    this._routerExtensions.navigate(
-      [route]
-      //   {
-      //   transition: {
-      //     name: 'slide'
-      //   }
-      // }
-    );
-  }
 }

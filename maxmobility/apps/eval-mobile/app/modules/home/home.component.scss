@@ -7,11 +7,15 @@
 //   color: $permobil-ocean;
 //   text-shadow: 5px, 5px, 5px, $permobil-icon-shadow-orange;
 // }
+.rad-list-view {
+padding: 0, 10, 0, 0;
+
+}
 
 .icon-description-group {
   padding: 0;
   width: 150;
-  margin: 0, 0, 0, 15;
+  margin: 0, 10, 0, 15;
 }
 
 .heading {
@@ -78,7 +82,15 @@
 .icon{
     font-size: 14em;
     padding: 0, 0, 0, 10;
-    color: $permobil-ocean;
+    color: $permobil-hero;
+    horizontal-align: center;
+    vertical-align: center;
+}
+
+.large-icon{
+    font-size: 100em;
+    // padding: 0, 0, 0, 10;
+    color: #fff;
     horizontal-align: center;
     vertical-align: center;
 }
