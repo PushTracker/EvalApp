@@ -108,35 +108,60 @@ export class HomeComponent implements OnInit {
   ];
 
   demoItems = [
-    { SerialNumber: '11000', 
+
+    { Image: "~/assets/images/sd-demo.jpg", 
+      SerialNumber: 'SD: 00001', 
+      PTSerialNumber: 'PT: 00001', 
+      Firmware: 'SD Firmware: 0.0.01',
       LastUsed: new Date(1988, 10, 23), 
       Location: 'Mountain View, CA' 
     },
-    { SerialNumber: '11001', 
+    { Image: "~/assets/images/sd-demo.jpg", 
+      SerialNumber: 'SD: 11001', 
+      PTSerialNumber: 'PT: 11001', 
+      Firmware: 'SD Firmware: 1.4',
       LastUsed: new Date(), 
       Location: 'Nashville, TN' 
     },
-    { SerialNumber: '11002', 
+    { Image: "~/assets/images/sd-demo.jpg", 
+      SerialNumber: 'SD: 11002', 
+      PTSerialNumber: 'PT: 110002', 
+      Firmware: 'SD Firmware: 1.1',
       LastUsed: new Date(), 
       Location: 'Breckenridge, CO' 
     },
-    { SerialNumber: '11003', 
+    { Image: "~/assets/images/sd-demo.jpg", 
+      SerialNumber: 'SD: 11003', 
+      PTSerialNumber: 'PT: 11003', 
+      Firmware: 'SD Firmware: 1.1',
       LastUsed: new Date(), 
       Location: 'Seattle, WA'
     },
-    { SerialNumber: '11004', 
+    { Image: "~/assets/images/sd-demo.jpg", 
+      SerialNumber: 'SD: 11004', 
+      PTSerialNumber: 'PT: 11004', 
+      Firmware: 'SD Firmware: 1.2',
       LastUsed: new Date(), 
       Location: 'San Francisco, CA' 
     },
-    { SerialNumber: '11005', 
+    { Image: "~/assets/images/sd-demo.jpg", 
+      SerialNumber: 'SD: 11005', 
+      PTSerialNumber: 'PT: 11005', 
+      Firmware: 'SD Firmware: 1.4',
       LastUsed: new Date(), 
       Location: 'Los Angeles, CA' 
     },
-    { SerialNumber: '11006', 
+    { Image: "~/assets/images/sd-demo.jpg", 
+      SerialNumber: 'SD: 11006',
+      PTSerialNumber: 'PT: 11006',  
+      Firmware: 'SD Firmware: 1.2',
       LastUsed: new Date(), 
       Location: 'New Orleans, LA' 
     },
-    { SerialNumber: '11007', 
+    { Image: "~/assets/images/sd-demo.jpg", 
+      SerialNumber: 'SD: 11007', 
+      PTSerialNumber: 'PT: 11007', 
+      Firmware: 'SD Firmware: 1.1',
       LastUsed: new Date(), 
       Location: 'New York, NY' 
     }

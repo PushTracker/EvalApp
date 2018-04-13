@@ -45,6 +45,26 @@ padding: 0, 10, 0, 0;
   margin: 5, 0, 0, 0;
 }
 
+.demo-item-description {
+  font-family: $os-Light;
+  color: #fff;
+  width: 150;
+  height: 25;
+  font-size: 15;
+  font-weight: 400;
+  padding: 0, 0, 0, 5;
+  margin: 3, 0, 0, 0;
+  background-color: $permobil-hero;
+  border: solid;
+  border-radius: 3;
+}
+
+
+// .demo-orange {
+
+//   background-color: $
+// }
+
 .chev {
 
   width: 22em;
@@ -83,14 +103,6 @@ padding: 0, 10, 0, 0;
     font-size: 14em;
     padding: 0, 0, 0, 10;
     color: $permobil-hero;
-    horizontal-align: center;
-    vertical-align: center;
-}
-
-.large-icon{
-    font-size: 100em;
-    // padding: 0, 0, 0, 10;
-    color: #fff;
     horizontal-align: center;
     vertical-align: center;
 }
