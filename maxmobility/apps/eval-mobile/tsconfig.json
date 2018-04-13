@@ -9,7 +9,7 @@
         "declaration": false,
         "removeComments": false,
         "noEmitHelpers": true,
-        "noEmitOnError": true,
+        "noEmitOnError": false,
         "skipLibCheck": true,
         "lib": [
             "es2017",
