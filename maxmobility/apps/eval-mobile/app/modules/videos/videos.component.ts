@@ -5,8 +5,6 @@ import { LoadEventData, WebView } from 'tns-core-modules/ui/web-view';
 import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-ui-sidedrawer';
 import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 
-// import {registerElement} from "nativescript-angular/element-registry";
-// registerElement("exoplayer", () => require("nativescript-exoplayer").Video);
 
 @Component({
   selector: 'Videos',

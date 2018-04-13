@@ -38,7 +38,11 @@ const routes: Routes = [
   { path: 'videos', 
    loadChildren: './modules/videos/videos.module#VideosModule', 
     canActivate: [AuthGuardService] 
-    },
+  },
+  { path: 'video', 
+   loadChildren: './modules/video-page/video.module#VideoModule', 
+    canActivate: [AuthGuardService] 
+  },
   { path: 'search', 
     loadChildren: './modules/search/search.module#SearchModule', 
     canActivate: [AuthGuardService] 

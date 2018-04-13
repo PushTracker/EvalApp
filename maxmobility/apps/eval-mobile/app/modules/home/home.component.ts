@@ -21,6 +21,7 @@ import { CLog, LoggingService } from '@maxmobility/core';
 })
 export class HomeComponent implements OnInit {
   @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
+  
 
   titles = [
     { Title: 'Pairing', 
@@ -167,7 +168,7 @@ export class HomeComponent implements OnInit {
     }
   ];
 
-  videoHtmlString_0 = '<iframe height="170" width="170" margin="0" src="https://www.youtube.com/embed/8fn26J59WJ4" modestbranding=1 controlles=0 frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+  videoHtmlString_0 = '<iframe height="100%" width="100%" margin="0" src="https://www.youtube.com/embed/8fn26J59WJ4" modestbranding=1 controlles=0 frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
   videoHtmlString_1 = '<iframe height="170" width="170" src="https://www.youtube.com/embed/uhA3-svjQFg" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
   videoHtmlString_2 = '<iframe height="170" width="170" src="https://www.youtube.com/embed/6_M1J8HZXIk" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
   videoHtmlString_3 = '<iframe height="170" width="170" src="https://www.youtube.com/embed/3B-6ked84us" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
@@ -175,41 +176,51 @@ export class HomeComponent implements OnInit {
   videoHtmlString_5 = '<iframe height="170" width="170" src="https://www.youtube.com/embed/45Kj7zJpDcM" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
   videoHtmlString_6 = '<iframe height="170" width="170" src="https://www.youtube.com/embed/hFid9ks551A" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
 
-    videoItems = [
+  videoItems = [
     { Url: this.videoHtmlString_0, 
       Description: 'SmartDrive Introduction',
-      Thumb: '~/assets/images/overview-thumb.jpg'
+      Thumb: '~/assets/images/overview-thumb.jpg',
+      Route:"/video"
     },
     { Url: this.videoHtmlString_1, 
       Description: 'SmartDrive MX2+ Basic Operation',
-      Thumb: '~/assets/images/sd-basic-op-thumb.jpg' 
+      Thumb: '~/assets/images/sd-basic-op-thumb.jpg',
+      Route:"/video"
     },
     { Url: this.videoHtmlString_2, 
       Description: 'PushTracker Basic Operation',
-      Thumb: '~/assets/images/pt-basic-op-thumb.jpg' 
+      Thumb: '~/assets/images/pt-basic-op-thumb.jpg',
+      Route:"/video" 
     },
     { Url: this.videoHtmlString_3, 
       Description: 'Intro to the PushTracker App',
-      Thumb: '~/assets/images/intro-PushTracker-app-thumb.jpg' 
+      Thumb: '~/assets/images/intro-PushTracker-app-thumb.jpg',
+      Route:"/video" 
     },
     { Url: this.videoHtmlString_4, 
       Description: 'Intro to the Eval App',
-      Thumb: '~/assets/images/intro-PushTracker-app-thumb.jpg'  
+      Thumb: '~/assets/images/intro-PushTracker-app-thumb.jpg',
+      Route:"/video"  
     },
     { Url: this.videoHtmlString_5, 
       Description: 'SmartDrive Evaluation and Training',
-      Thumb: '~/assets/images/eval-thumb.jpg'  
+      Thumb: '~/assets/images/eval-thumb.jpg',
+      Route:"/video"  
     },
     { Url: this.videoHtmlString_6, 
       Description: 'Interview with Chels and Steph',
-      Thumb: '~/assets/images/interview-thumb.jpg'  
+      Thumb: '~/assets/images/interview-thumb.jpg',
+      Route:"/video"  
     },
     
   ];  
 
   private _sideDrawerTransition: DrawerTransitionBase;
 
-  constructor(private _page: Page, private _routerExtensions: RouterExtensions, private _logService: LoggingService) {}
+  constructor(private _page: Page, private _routerExtensions: RouterExtensions, private _logService: LoggingService) {
+
+
+  }
 
   ngOnInit(): void {
     CLog('HomeComponent OnInit');
@@ -259,10 +270,17 @@ export class HomeComponent implements OnInit {
     const videoUrl = item.Url;
     const route = item.Route;
 
+    console.log(item.Url);
+    console.log(item.Route);
+
     this._routerExtensions.navigate([route],
         {
         transition: {
           name: 'wipe'
+        },
+        queryParams: {
+        url: videoUrl,
+        desc: item.Description
         }
       }
     );
