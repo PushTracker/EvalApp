@@ -8,7 +8,7 @@
     "emitDecoratorMetadata": true,
     "noEmitHelpers": true,
     "noEmitOnError": false,
-    "declaration": true,
+    "declaration": false,
     "lib": ["es6", "es2016", "dom"],
     "baseUrl": ".",
     "typeRoots": ["./node_modules/@types"]

@@ -36,6 +36,13 @@
     "name": "Eddy Verbruggen",
     "email": "eddyverbruggen@gmail.com"
   },
+  "contributors": [
+    {
+      "name": "Brad Martin",
+      "email": "bmartin@nstudio.io",
+      "url": "https://github.com/bradmartin"
+    }
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/eddyverbruggen/nativescript-bluetooth/issues"
