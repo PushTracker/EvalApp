@@ -501,7 +501,7 @@ export class Bluetooth extends BluetoothCommon {
         if (!peripheral) {
           reject('Could not find peripheral with UUID ' + arg.UUID);
         } else {
-          CLog(CLogTypes.info, 'Bluetooth.disconnect ---- Disconnecting peripheral with UUID: ' + arg.UUID);
+          CLog(CLogTypes.info, `Bluetooth.disconnect ---- Disconnecting peripheral with UUID ${arg.UUID}`);
           // no need to send an error when already disconnected, but it's wise to check it
           if (peripheral.state !== CBPeripheralState.Disconnected) {
             this._centralManager.cancelPeripheralConnection(peripheral);
@@ -511,7 +511,7 @@ export class Bluetooth extends BluetoothCommon {
           resolve();
         }
       } catch (ex) {
-        CLog(CLogTypes.error, `Bluetooth.disconnect ---- ${ex}`);
+        CLog(CLogTypes.error, `Bluetooth.disconnect ---- error: ${ex}`);
         reject(ex);
       }
     });
@@ -532,11 +532,11 @@ export class Bluetooth extends BluetoothCommon {
         if (peripheral === null) {
           reject('Could not find peripheral with UUID ' + arg.UUID);
         } else {
-          CLog(CLogTypes.info, 'Bluetooth.isConnected ---- checking connection with peripheral UUID: ' + arg.UUID);
+          CLog(CLogTypes.info, `Bluetooth.isConnected ---- checking connection with peripheral UUID: ${arg.UUID}`);
           resolve(peripheral.state === CBPeripheralState.Connected);
         }
       } catch (ex) {
-        CLog(CLogTypes.error, `Bluetooth.isConnected ---- ${ex}`);
+        CLog(CLogTypes.error, `Bluetooth.isConnected ---- error: ${ex}`);
         reject(ex);
       }
     });
@@ -556,7 +556,7 @@ export class Bluetooth extends BluetoothCommon {
     return new Promise((resolve, reject) => {
       try {
         const wrapper = this._getWrapper(arg, CBCharacteristicProperties.PropertyRead, reject);
-        if (wrapper === null) {
+        if (!wrapper) {
           // no need to reject, this has already been done in _getWrapper()
           return;
         }
@@ -565,7 +565,7 @@ export class Bluetooth extends BluetoothCommon {
         (wrapper.peripheral.delegate as CBPeripheralDelegateImpl)._onReadPromise = resolve;
         wrapper.peripheral.readValueForCharacteristic(wrapper.characteristic);
       } catch (ex) {
-        CLog(CLogTypes.error, `Bluetooth.read ---- ${ex}`);
+        CLog(CLogTypes.error, `Bluetooth.read ---- error: ${ex}`);
         reject(ex);
       }
     });
@@ -579,7 +579,7 @@ export class Bluetooth extends BluetoothCommon {
           return;
         }
         const wrapper = this._getWrapper(arg, CBCharacteristicProperties.PropertyWrite, reject);
-        if (wrapper === null) {
+        if (!wrapper) {
           // no need to reject, this has already been done
           return;
         }
@@ -601,7 +601,7 @@ export class Bluetooth extends BluetoothCommon {
           CBCharacteristicWriteType.WithResponse
         );
       } catch (ex) {
-        CLog(CLogTypes.error, `Bluetooth.write ---- ${ex}`);
+        CLog(CLogTypes.error, `Bluetooth.write ---- error: ${ex}`);
         reject(ex);
       }
     });
@@ -614,7 +614,6 @@ export class Bluetooth extends BluetoothCommon {
           reject("You need to provide some data to write in the 'value' property");
           return;
         }
-        // const wrapper = this._getWrapper(arg, CBCharacteristicPropertyWriteWithoutResponse, reject);
         const wrapper = this._getWrapper(arg, CBCharacteristicProperties.PropertyWriteWithoutResponse, reject);
         if (!wrapper) {
           // no need to reject, this has already been done
@@ -628,13 +627,12 @@ export class Bluetooth extends BluetoothCommon {
         wrapper.peripheral.writeValueForCharacteristicType(
           valueEncoded,
           wrapper.characteristic,
-          // CBCharacteristicWriteWithoutResponse
           CBCharacteristicWriteType.WithoutResponse
         );
 
         resolve();
       } catch (ex) {
-        CLog(CLogTypes.error, `Bluetooth.writeWithoutResponse ---- ${ex}`);
+        CLog(CLogTypes.error, `Bluetooth.writeWithoutResponse ---- error: ${ex}`);
         reject(ex);
       }
     });
@@ -665,7 +663,7 @@ export class Bluetooth extends BluetoothCommon {
         wrapper.peripheral.setNotifyValueForCharacteristic(true, wrapper.characteristic);
         resolve();
       } catch (ex) {
-        CLog(CLogTypes.error, `Bluetooth.startNotifying ---- ${ex}`);
+        CLog(CLogTypes.error, `Bluetooth.startNotifying ---- error: ${ex}`);
         reject(ex);
       }
     });
@@ -687,7 +685,7 @@ export class Bluetooth extends BluetoothCommon {
         peripheral.setNotifyValueForCharacteristic(false, wrapper.characteristic);
         resolve();
       } catch (ex) {
-        CLog(CLogTypes.error, `Bluetooth.stopNotifying ---- ${ex}`);
+        CLog(CLogTypes.error, `Bluetooth.stopNotifying ---- error: ${ex}`);
         reject(ex);
       }
     });
@@ -789,7 +787,7 @@ export class Bluetooth extends BluetoothCommon {
     const serviceUUID = CBUUID.UUIDWithString(arg.serviceUUID);
     const service = this._findService(serviceUUID, peripheral);
     if (!service) {
-      reject('Could not find service with UUID ' + arg.serviceUUID + ' on peripheral with UUID ' + arg.peripheralUUID);
+      reject(`Could not find service with UUID ${arg.serviceUUID} on peripheral with UUID ${arg.peripheralUUID}`);
       return null;
     }
 
