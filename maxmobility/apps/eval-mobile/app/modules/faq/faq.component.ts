@@ -25,7 +25,7 @@ const FAQs = [
 },
     {
     question: 'Why should I want a SmartDrive / I need to push or I will lose my independence!',
-    answer: "You should be active and go out into the world! With pushing however, unlike the general advice with walking (where people really cannot walk too much) - people can push too much! If you push too much then you will be more likely to get pain and injury in your arms and shoulders - which may limit your mobility and independence.  With the SmartDrive you are still able to push around in your chair as you normally would - you can now go farther faster and with less effort! Use it when you need to get somewhere fast or up a big hill - don't kill your shoulders if you dn't have to! Enjoy your journey with your SmartDrive!"
+    answer: "You should be active and go out into the world! With pushing however, unlike the general advice with walking (where people really cannot walk too much) - people can push too much! If you push too much then you will be more likely to get pain and injury in your arms and shoulders - which may limit your mobility and independence.  With the SmartDrive you are still able to push around in your chair as you normally would - you can now go farther faster and with less effort! Use it when you need to get somewhere fast or up a big hill - don't kill your shoulders if you don't have to! Enjoy your journey with your SmartDrive!"
 }
 ];
 export { FAQs };
