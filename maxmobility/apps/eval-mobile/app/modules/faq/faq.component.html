@@ -16,7 +16,7 @@
         <ListView class="list-group" [items]="faqs">
             <ng-template let-item="item">
                 <DockLayout>
-                    <Label dock="top" [text]="item.question" class="faq-question"></Label>
+                    <Label dock="top" [text]="item.question" textWrap="true" class="faq-question"></Label>
                     <Label dock="bottom" [text]="item.answer" textWrap="true" class="faq-answer"></Label>
                 </DockLayout>
             </ng-template>
