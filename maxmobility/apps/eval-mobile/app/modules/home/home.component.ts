@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { EventData } from 'tns-core-modules/data/observable';
 import { topmost } from 'tns-core-modules/ui/frame';
 import { View } from "ui/core/view";
@@ -10,6 +10,7 @@ import { isIOS } from 'tns-core-modules/platform';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-ui-sidedrawer';
 import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
+import { RadListViewComponent } from 'nativescript-ui-listview/angular';
 import { CLog, LoggingService } from '@maxmobility/core';
 
 import { FAQs } from '../faq/faq.component';
@@ -21,7 +22,7 @@ import { FAQs } from '../faq/faq.component';
   styleUrls: ['./home.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewInit {
   @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
   
     faqItems = FAQs;
@@ -223,11 +224,28 @@ export class HomeComponent implements OnInit {
   constructor(private _page: Page, private _routerExtensions: RouterExtensions, private _logService: LoggingService) {
 
 
+    //const radList = <RadListViewComponent>this.radListView.nativeElement;
+    //this.radListView.listView.scrollWithAmount(50, true);
+
   }
 
   ngOnInit(): void {
     CLog('HomeComponent OnInit');
-    this._sideDrawerTransition = new SlideInOnTopTransition();
+    this._sideDrawerTransition = new SlideInOnTopTransition();    
+  }
+
+  ngAfterViewInit(): void {
+
+  }
+
+  onRadListLoaded(event) {
+    const radListView = event.object;
+    setTimeout(() => {
+      radListView.scrollWithAmount(150, true);
+    setTimeout(() => {
+      radListView.scrollWithAmount(-150, true);    
+    }, 500);
+    }, 100);
   }
 
   get sideDrawerTransition(): DrawerTransitionBase {
@@ -244,13 +262,7 @@ export class HomeComponent implements OnInit {
     //Determines the pairing processs to perform
     const directive = item.Directive;
 
-    this._routerExtensions.navigate([route],
-        {
-        transition: {
-          name: 'wipe'
-        }
-      }
-    );
+    this._routerExtensions.navigate([route]);
   }
 
   otaThumbTapped(item: any) {
@@ -259,13 +271,7 @@ export class HomeComponent implements OnInit {
     //Determines the OTA process to perform
     const directive = item.Directive;
 
-    this._routerExtensions.navigate([route],
-        {
-        transition: {
-          name: 'wipe'
-        }
-      }
-    );
+    this._routerExtensions.navigate([route]);
   }
 
   videoThumbTapped(item: any) {
@@ -279,7 +285,7 @@ export class HomeComponent implements OnInit {
     this._routerExtensions.navigate([route],
         {
         transition: {
-          name: 'wipe'
+          name: ''
         },
         queryParams: {
         url: videoUrl,
@@ -296,7 +302,7 @@ export class HomeComponent implements OnInit {
     this._routerExtensions.navigate([item.Route],
         {
         transition: {
-          name: 'wipe'
+          name: ''
         }
       }
     );
@@ -309,7 +315,7 @@ export class HomeComponent implements OnInit {
     this._routerExtensions.navigate([route],
         {
         transition: {
-          name: 'wipe'
+          name: ''
         }
       }
     );
