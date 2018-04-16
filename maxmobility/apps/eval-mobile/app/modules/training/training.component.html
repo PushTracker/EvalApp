@@ -9,14 +9,13 @@
       
 	<GridLayout background="#fff" rows="auto, *, auto" cols="*" class="hero">
       
-	  <StackLayout  class="topSlide" orientation="vertical" horizontalAlignment="center">
+	  <StackLayout row="0"  class="topSlide" orientation="vertical" horizontalAlignment="center">
 	    <Image [src]="slide.Image" stretch="aspectFit"></Image>
     </StackLayout>
 
     <ScrollView row="1" class="hero">
-          <StackLayout class="hero" row="1" class="lowerSlide" orientation="vertical" horizontalAlignment="center">
+          <StackLayout class="hero" class="lowerSlide" orientation="vertical" horizontalAlignment="center">
             <Label [text]="slide.Label" class="slideLowerLabel" textWrap="true"></Label>
-            <Label [text]="slide.Description" class="slideDescription" textWrap="true"></Label>
             <Label [text]="slide.Bullet_1" class="bullet" textWrap="true"></Label>
             <Label [text]="slide.Bullet_2" class="bullet" textWrap="true"></Label>
             <Label [text]="slide.Bullet_3" class="bullet" textWrap="true"></Label>

@@ -168,7 +168,7 @@ export class HomeComponent implements OnInit {
     }
   ];
 
-  videoHtmlString_0 = '<iframe height="100%" width="100%" margin="0" src="https://www.youtube.com/embed/8fn26J59WJ4" modestbranding=1 controlles=0 frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+  videoHtmlString_0 = '<iframe frameborder="0" vspace="0" hspace="0" marginwidth="0" marginheight="0" width="100%" seamless="seamless" src="https://www.youtube.com/embed/8fn26J59WJ4" border="0"></iframe>';
   videoHtmlString_1 = '<iframe height="170" width="170" src="https://www.youtube.com/embed/uhA3-svjQFg" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
   videoHtmlString_2 = '<iframe height="170" width="170" src="https://www.youtube.com/embed/6_M1J8HZXIk" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
   videoHtmlString_3 = '<iframe height="170" width="170" src="https://www.youtube.com/embed/3B-6ked84us" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';

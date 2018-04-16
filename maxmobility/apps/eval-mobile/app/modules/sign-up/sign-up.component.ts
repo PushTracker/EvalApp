@@ -84,6 +84,12 @@ export class SignUpComponent implements OnInit {
   }
 
   navToLogin() {
-    this._router.navigate(['/login']);
+    this._router.navigate(["/login"],
+        {
+        transition: {
+          name: 'slideRight'
+        }
+      }
+    );
   }
 }

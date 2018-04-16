@@ -10,10 +10,38 @@
     background: #fff;
 }
 
-Button, TextField {
-  margin-left: 16;
-  margin-right: 16;
-  margin-bottom: 10;  
+.slideLowerLabel {
+  text-align: left;
+  // width: 100%;
+  font-family: $os-Light;
+  font-size: 25;
+  margin: 20, 0, 10, 10;
+  color: $white;
+}
+
+.slideLowerLabel_2 {
+  text-align: left;
+  width: 100%;
+  font-family: $os-Light;
+  font-size: 25;
+  // margin-top: 15;
+  color: $white;
+}
+.slideDescription {
+  color: $white;
+  font-family: $os-SemiBold;
+  font-size: 15;
+  text-align: left;
+  margin: 20, 0, 10, 10;
+}
+
+.topSlide {
+  background-color: $white;
+}
+
+.lowerSlide {
+  background-color: $permobil-hero;
+  margin-bottom: 30;
 }
 .start-button{
     width: 150;
@@ -21,15 +49,15 @@ Button, TextField {
     color: #fff;
     background-color: $permobil-ocean;
     border-radius: 2;
-    margin: 25, 10, 50, 10;
+    margin: 5, 10, 50, 10;
 }
 .back-button{
     width: 150;
     height: 40; 
     color: $permobil-charcoal;
-    background-color: $permobil-steel;
+    background-color: $permobil-ocean;
     border-radius: 2;
-    margin: 25, 10, 50, 10;
+    margin: 5, 10, 50, 10;
 }
 .submit-button {
   background-color: $permobil-ocean;
@@ -44,7 +72,7 @@ Image {
     margin-left: auto;
     margin-right: auto;
     width: 50%;
-    height: auto;
+    height: 50%;
 }
 
 .icon{
@@ -59,7 +87,7 @@ Image {
     font-family: $os-Light;
     font-size:13;
     text-align:left;
-    margin:10, 20, 0, 20;
+    margin:10, 20, 0, 10;
 }
 
 

@@ -1,38 +1,26 @@
 <ActionBar class="action-bar">
-  <!-- 
-       Use the NavigationButton as a side-drawer button in Android because ActionItems are shown on the right side of the ActionBar
-    -->
-  <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
-  <!-- 
-       Use the ActionItem for IOS with position set to left. Using the NavigationButton as a side-drawer button in iOS is not possible, because its function is to always navigate back in the application.
-    -->
+  <!-- <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+
   <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()"
               ios.position="left">
-  </ActionItem>
+  </ActionItem> -->
   <Label class="action-bar-title" text="Evaluation"></Label>
 </ActionBar>
 
-<!--
-    RadSideDrawer is a UI component part of the Progress NativeScript UI set of components.
-    Learn more about the RadSideDrawer UI component and how it can be customized in this documentation article:
-    http://docs.telerik.com/devtools/nativescript-ui/Controls/Angular/SideDrawer/getting-started
-    The RadSideDrawer component is designed to be used as a root element and
-    it shouldn't have any other siblings other than the <ActionBar> component.
-  -->
 <RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
-  <!--
-      Use the tkMainContent directive to display the content of the page when you have an app drawer.
-    -->
+
 
   <StackLayout tkDrawerContent>
     <MyDrawer [selectedPage]="'Evaluation'"></MyDrawer>
   </StackLayout>
+
+<GridLayout backgroundColor="#fff"  tkMainContent  rows="auto, *" cols="*">
+  <StackLayout row="0" class="topSlide" orientation="horizontal" horizontalAlignment="center">
+    <Image src="~/assets/images/controls-4.png" stretch="aspectFit" width="100" height="100" margin="25"></Image>
+    </StackLayout>
   
-  <!--
-      Use the tkMainContent directive to display the content of the page when you have an app drawer.
-    -->
-  <ScrollView class="page page-content" orientation="vertical" tkMainContent>
-    <StackLayout class="eval-stack-layout">
+  <ScrollView row="1" class="hero" orientation="vertical">
+    <StackLayout class="eval-stack-layout hero">
       <DockLayout stretchLastChild="false" >
         <Label text="Do you have pain from pushing?" class="eval-item" dock="left"></Label>
         <SegmentedBar [items]="PushingPain" [selectedIndex]="getPushingPainIndex()" class="eval-segmentedBar" dock="right" (selectedIndexChanged)="onPushingPainIndexChange($event)"></SegmentedBar>
@@ -78,13 +66,14 @@
       </DockLayout>
 
 
-      <GridLayout rows="auto" columns="*, auto" >
+      <!-- <GridLayout rows="auto" columns="*, auto" >
         <exoplayer class="videoPlayer"  src="~/assets/videos/Lesson_small.mov" autoplay="false" height="231" width="auto">
         </exoplayer>
-      </GridLayout>
+      </GridLayout> -->
 
       <Button (tap)="onNext()" text="Next" class="nextButton"></Button>
 
-    </StackLayout>
-  </ScrollView>
+     </StackLayout>
+   </ScrollView>
+ </GridLayout>
 </RadSideDrawer>
