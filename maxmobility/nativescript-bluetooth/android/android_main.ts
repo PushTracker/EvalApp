@@ -244,19 +244,23 @@ export class Bluetooth extends BluetoothCommon {
             const scanSettings = new android.bluetooth.le.ScanSettings.Builder();
             scanSettings.setReportDelay(0);
 
-            const scanMode = arg.android.scanMode || android.bluetooth.le.ScanSettings.SCAN_MODE_LOW_LATENCY;
+            const scanMode =
+              (arg.android && arg.android.scanMode) || android.bluetooth.le.ScanSettings.SCAN_MODE_LOW_LATENCY;
             scanSettings.setScanMode(scanMode);
 
             // if >= Android23 (Marshmallow)
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-              const matchMode = arg.android.matchMode || android.bluetooth.le.ScanSettings.MATCH_MODE_AGGRESSIVE;
+              const matchMode =
+                (arg.android && arg.android.matchMode) || android.bluetooth.le.ScanSettings.MATCH_MODE_AGGRESSIVE;
               scanSettings.setMatchMode(matchMode);
 
-              const matchNum = arg.android.matchNum || android.bluetooth.le.ScanSettings.MATCH_NUM_MAX_ADVERTISEMENT;
+              const matchNum =
+                (arg.android && arg.android.matchNum) || android.bluetooth.le.ScanSettings.MATCH_NUM_MAX_ADVERTISEMENT;
               scanSettings.setNumOfMatches(matchNum);
 
               const callbackType =
-                arg.android.callbackType || android.bluetooth.le.ScanSettings.CALLBACK_TYPE_ALL_MATCHES;
+                (arg.android && arg.android.callbackType) ||
+                android.bluetooth.le.ScanSettings.CALLBACK_TYPE_ALL_MATCHES;
               scanSettings.setCallbackType(callbackType);
             }
 
