@@ -2,13 +2,13 @@
 
 $sidedrawer-list-item-offset-left: 15;
 $sidedrawer-list-icon-offset: 10;
-$sidedrawer-list-icon-size: 20;
+$sidedrawer-list-icon-size: 22;
 
 .sidedrawer-list-item {
   padding-left: $sidedrawer-list-item-offset-left;
-  padding: 4;
+  padding: 10;
   label {
-    font-size: 16;
+    font-size: 20;
     vertical-align: center;
   }
   .fa {

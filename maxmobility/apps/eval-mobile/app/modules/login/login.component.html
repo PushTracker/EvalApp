@@ -1,4 +1,4 @@
-<ScrollView class="permobil-hero">
+<ScrollView class="permobil-hero" height="100%">
   <GridLayout rows="auto, *, auto" class="login-page">
     <StackLayout row="0">
       <Image src="~/assets/images/permobil_logo.png" class="logo"></Image>
@@ -13,8 +13,8 @@
       <Button text="Sign in" class="permobil-ocean-btn m-20" (tap)="onSubmitTap()"></Button>
     </StackLayout>
     <GridLayout row="2" rows="*" columns="auto, *, auto">
-      <Button col="0" text="Forgot Password" class="btn-transparent text-white" (tap)="navToForgotPassword()"></Button>
-      <Button col="2" text="Sign up" class="btn-transparent text-white" (tap)="navToSignUp()"></Button>
+      <Button col="0" text="Forgot Password" class="btn-transparent text-white forgot" (tap)="navToForgotPassword()"></Button>
+      <Button col="2" text="Sign up" class="btn-transparent text-white sign-up" (tap)="navToSignUp()"></Button>
     </GridLayout>
   </GridLayout>
 </ScrollView>

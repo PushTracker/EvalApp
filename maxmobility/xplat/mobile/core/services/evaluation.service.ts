@@ -12,7 +12,7 @@ export class Settings {
   independence = 10;
 
   maxSpeed = 50;
-  accelerationRate = 30;
+  acceleration = 30;
 
   pushCount = 0;
   coastTime = 0.0;
@@ -43,7 +43,7 @@ export class Settings {
     this.independence = (obj && obj.independence) || 10;
 
     this.maxSpeed = (obj && obj.maxSpeed) || 50;
-    this.accelerationRate = (obj && obj.accelerationRate) || 30;
+    this.acceleration = (obj && obj.acceleration) || 30;
     this.rampDifficulty = (obj && obj.rampDifficulty) || 0;
     this.flatDifficulty = (obj && obj.flatDifficulty) || 0;
   }

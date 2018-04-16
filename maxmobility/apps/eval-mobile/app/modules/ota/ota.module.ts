@@ -1,14 +1,15 @@
+// angular
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { Routes } from '@angular/router';
 import { NativeScriptRouterModule } from 'nativescript-angular/router';
 import { SharedModule } from '../shared/shared.module';
-import { BrowseComponent } from './browse.component';
+import { OTAComponent } from './ota.component';
 
-const routes: Routes = [{ path: '', component: BrowseComponent }];
+const routes: Routes = [{ path: '', component: OTAComponent }];
 
 @NgModule({
   imports: [NativeScriptRouterModule.forChild(routes), SharedModule],
-  declarations: [BrowseComponent],
+  declarations: [OTAComponent],
   schemas: [NO_ERRORS_SCHEMA]
 })
-export class BrowseModule {}
+export class OTAModule {}

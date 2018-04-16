@@ -1,0 +1,22 @@
+// Custom common variables
+@import '../../scss/variables';
+
+.thumb {
+
+    width: 135;
+    height: 75;
+    margin: 5, 5, 5, 5;
+    border: solid;
+        // border-radius: 5;
+        // background-color: $permobil-charcoal;
+}
+
+.description{
+    font-family: $os-Light;
+    text-align: left;
+    font-size: 15;
+    font-weight: 300;
+    color: $permobil-charcoal;
+    margin: 5, 5, 5, 10;
+
+}

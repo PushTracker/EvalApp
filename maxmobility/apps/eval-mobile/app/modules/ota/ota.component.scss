@@ -1,5 +1,17 @@
 @import '../../scss/variables';
 
+ScrollView{
+  background-color: $permobil-hero;
+}
+.hero {
+  color: $permobil-hero;
+}
+
+.grayed {
+
+  color: $permobil-charcoal;
+}
+
 .progress {
   color: $permobil-ocean;
   border-radius: 3;
@@ -9,13 +21,13 @@
 .title {
   font-family: $os-Light;
   text-align: center;
-  font-size: 30;
+  font-size: 18;
   padding: 20, 0, 15, 0;
   color: $permobil-charcoal;
 }
 
 .otaDescription {
-  margin: 0, 15, 10, 10;
+  margin: 0, 10, 10, 0;
   font-family: $os-SemiBold;
   font-size: 14;
   color: $permobil-charcoal;

@@ -1,16 +1,16 @@
 @import 'variables';
 
 .slideLowerLabel {
-  text-align: center;
-  width: 100%;
+  text-align: left;
+  // width: 100%;
   font-family: $os-Light;
-  font-size: 35;
-  margin-top: 20;
+  font-size: 25;
+  padding: 20, 0, 10, 10;
   color: $white;
 }
 
 .slideLowerLabel_2 {
-  text-align: center;
+  text-align: left;
   width: 100%;
   font-family: $os-Light;
   font-size: 25;
@@ -21,8 +21,8 @@
   color: $white;
   font-family: $os-SemiBold;
   font-size: 15;
-  text-align: center;
-  margin: 15, 20, 20, 20;
+  text-align: left;
+  padding: 20, 0, 10, 10;
 }
 
 .topSlide {
@@ -31,7 +31,8 @@
 
 .lowerSlide {
   background-color: $permobil-hero;
-  margin-bottom: 30;
+  padding-left: 15;
+  padding-right: 15;
 }
 
 .slide-indicator-inactive {
