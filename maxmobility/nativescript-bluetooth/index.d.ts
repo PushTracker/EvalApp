@@ -66,3 +66,150 @@ export class Bluetooth extends COMMON.BluetoothCommon {
   removeBond(device: any): any;
   getAdapter(): any;
 }
+
+/**
+ * The returned object in several callback functions.
+ */
+export interface Peripheral {
+  /**
+   * The UUID of the peripheral.
+   */
+  UUID: string;
+
+  /**
+   * A friendly description of the peripheral as provided by the manufacturer.
+   */
+  name: string;
+
+  // state: string; // TODO not sure we'll keep this, so not adding it here for now
+
+  /**
+   * The relative signal strength which more or less can be used to determine how far away the peripheral is.
+   */
+  RSSI: number;
+
+  /**
+   * Once connected to the peripheral a list of services will be set.
+   */
+  services?: Service[];
+
+  manufacturerId?: number;
+
+  manufacturerData?: ArrayBuffer;
+}
+
+/**
+ * A service provided by a periperhal.
+ */
+export interface Service {
+  /**
+   * The UUID of the service.
+   */
+  UUID: string;
+  /**
+   * Depending on the peripheral and platform this may be a more friendly description of the service.
+   */
+  name?: string;
+  /**
+   * A list of service characteristics a client can interact with by reading, writing, subscribing, etc.
+   */
+  characteristics: Characteristic[];
+}
+
+/**
+ * A characteristic provided by a service.
+ */
+export interface Characteristic {
+  /**
+   * The UUID of the characteristic.
+   */
+  UUID: string;
+  /**
+   * Depending on the service and platform (iOS only) this may be a more friendly description of the characteristic.
+   * On Android it's always the same as the UUID.
+   */
+  name: string;
+  /**
+   * An object containing characteristic properties like read, write and notify.
+   */
+  properties: {
+    read: boolean;
+    write: boolean;
+    writeWithoutResponse: boolean;
+    notify: boolean;
+    indicate: boolean;
+    broadcast: boolean;
+    authenticatedSignedWrites: boolean;
+    extendedProperties: boolean;
+  };
+
+  /**
+   * ignored for now
+   */
+  descriptors: any;
+
+  /**
+   * ignored for now
+   */
+  permissions: any;
+}
+
+/**
+ * Base properties for all CRUD actions
+ */
+export interface CRUDOptions {
+  peripheralUUID: string;
+  serviceUUID: string;
+  characteristicUUID: string;
+}
+
+// tslint:disable-next-line:no-empty-interface
+export interface ReadOptions extends CRUDOptions {}
+
+export interface WriteOptions extends CRUDOptions {
+  value: any;
+}
+
+// tslint:disable-next-line:no-empty-interface
+export interface StopNotifyingOptions extends CRUDOptions {}
+
+export interface StartNotifyingOptions extends CRUDOptions {
+  onNotify: (data: ReadResult) => void;
+}
+
+/**
+ * Response object for the read function
+ */
+export interface ReadResult {
+  value: any;
+  valueRaw: any;
+  characteristicUUID: string;
+}
+
+export interface StartAdvertisingOptions {
+  settings;
+  UUID;
+  data;
+}
+
+/**
+ * All of the events for Bluetooth that can be emitted and listened to.
+ */
+export interface IBluetoothEvents {
+  error_event: string;
+  bluetooth_enabled_event: string;
+  peripheral_connected_event: string;
+  bluetooth_advertise_success_event: string;
+  bluetooth_advertise_failure_event: string;
+  server_connection_state_changed_event: string;
+  bond_status_change_event: string;
+  device_discovered_event: string;
+  device_name_change_event: string;
+  device_uuid_change_event: string;
+  device_acl_disconnected_event: string;
+  characteristic_write_request_event: string;
+  characteristic_read_request_event: string;
+  descriptor_write_request_event: string;
+  descriptor_read_request_event: string;
+  execute_write_event: string;
+}
