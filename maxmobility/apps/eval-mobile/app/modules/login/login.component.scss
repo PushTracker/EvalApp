@@ -2,16 +2,29 @@
 Page {
   background-repeat: no-repeat;
   background-size: 100% 100%;
+  background-color: $permobil-hero;
 }
 
 .login-page {
-  background-color: #0067a6;
+  background-color: $permobil-hero;
   horizontal-align: center;
-  margin: 5 10 10 10;
+  margin: 0, 15, 0, 15;
 
   > StackLayout {
     height: 100%;
     width: 100%;
   }
+
+}
+
+.forgot {
+  
+  margin: 0, 0, 0, 21;
+
+}
+
+.sign-up {
+  
+  margin: 0, 21, 0, 0;
 
 }

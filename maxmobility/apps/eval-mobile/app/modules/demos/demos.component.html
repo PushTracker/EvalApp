@@ -1,6 +1,7 @@
-<ActionBar title="Demos" class="permobil-action-bar">
-  <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
-  <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem>
+<ActionBar class="action-bar">
+  <!-- <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+  <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem> -->
+  <Label class="action-bar-title" text="Pairing"></Label>
 </ActionBar>
 
 <RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
@@ -14,7 +15,7 @@
       <ng-template let-item="item">
         <GridLayout columns="auto, auto, *" rows="auto, auto, auto">
           <!-- Note: we should probably have model type so that we can have the image pulled from a server according to MX2+ vs MX3 vs others. -->
-          <Image row="0" col="0" rowSpan="3" height="75" width="75" margin="10" ios:src="~/assets/images/SmartDrive.JPG" android:src="~/assets/images/SmartDrive.jpg"
+          <Image row="0" col="0" rowSpan="3" height="75" width="75" margin="10" src="~/assets/images/SmartDrive.jpg"
             stretch="aspectFit"></Image>
 
           <Label text="&#xf02a;" row="0" col="1" class="fa icon"></Label>

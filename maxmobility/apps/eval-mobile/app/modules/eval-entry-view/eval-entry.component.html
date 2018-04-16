@@ -1,90 +1,79 @@
 <ActionBar class="action-bar">
-  <!-- 
-       Use the NavigationButton as a side-drawer button in Android because ActionItems are shown on the right side of the ActionBar
-    -->
-  <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
-  <!-- 
-       Use the ActionItem for IOS with position set to left. Using the NavigationButton as a side-drawer button in iOS is not possible, because its function is to always navigate back in the application.
-    -->
-  <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()"
-              ios.position="left">
-  </ActionItem>
+  <!-- <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+
+       <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()"
+		   ios.position="left">
+       </ActionItem> -->
   <Label class="action-bar-title" text="Evaluation"></Label>
 </ActionBar>
 
-<!--
-    RadSideDrawer is a UI component part of the Progress NativeScript UI set of components.
-    Learn more about the RadSideDrawer UI component and how it can be customized in this documentation article:
-    http://docs.telerik.com/devtools/nativescript-ui/Controls/Angular/SideDrawer/getting-started
-    The RadSideDrawer component is designed to be used as a root element and
-    it shouldn't have any other siblings other than the <ActionBar> component.
-  -->
 <RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
-  <!--
-      Use the tkMainContent directive to display the content of the page when you have an app drawer.
-    -->
+
 
   <StackLayout tkDrawerContent>
     <MyDrawer [selectedPage]="'Evaluation'"></MyDrawer>
   </StackLayout>
-  
-  <!--
-      Use the tkMainContent directive to display the content of the page when you have an app drawer.
-    -->
-  <ScrollView class="page page-content" orientation="vertical" tkMainContent>
-    <StackLayout class="eval-stack-layout">
-      <DockLayout stretchLastChild="false" >
-        <Label text="Do you have pain from pushing?" class="eval-item" dock="left"></Label>
-        <SegmentedBar [items]="PushingPain" [selectedIndex]="getPushingPainIndex()" class="eval-segmentedBar" dock="right" (selectedIndexChanged)="onPushingPainIndexChange($event)"></SegmentedBar>
-      </DockLayout>
-      <DockLayout *ngIf="getPushingPainIndex() == 0" stretchLastChild="false">
-        <Label text="Pain Level:" class="eval-item" ></Label>
-        <Label verticalAlignment="center" dock="right" class="eval-slider-value-label" style="min-width: 50" [text]="settings.pain.toFixed(0)+' / 10'" row="0" col="1"></Label>
-      </DockLayout>
-      <GridLayout *ngIf="getPushingPainIndex() == 0" rows="auto" columns="*, auto">
-        <Slider maxValue="10"  verticalAlignment="center" class="eval-slider" [value]="settings.pain" (valueChange)="onSliderUpdate('pain', $event)" row="0" col="0"></Slider>
-      </GridLayout>
 
-      <DockLayout stretchLastChild="false" padding="30,0,0,0">
-        <Label text="Do you have fatigue from pushing?" class="eval-item" dock="left"></Label>
-        <SegmentedBar [items]="PushingFatigue" [selectedIndex]="getPushingFatigueIndex()" class="eval-segmentedBar" dock="right" (selectedIndexChanged)="onPushingFatigueIndexChange($event)"></SegmentedBar>
-      </DockLayout>
-      <DockLayout *ngIf="getPushingFatigueIndex() == 0" stretchLastChild="false">
-        <Label text="Fatigue Level:" class="eval-item" ></Label>
-        <Label verticalAlignment="center" dock="right" class="eval-slider-value-label" style="min-width: 50" [text]="settings.fatigue.toFixed(0)+' / 10'" row="0" col="1"></Label>
-      </DockLayout>
-      <GridLayout *ngIf="getPushingFatigueIndex() == 0" rows="auto" columns="*, auto">
-        <Slider maxValue="10"  verticalAlignment="center" class="eval-slider" [value]="settings.fatigue" (valueChange)="onSliderUpdate('fatigue', $event)" row="0" col="0"></Slider>
-      </GridLayout>
-
-      <DockLayout stretchLastChild="false" padding="30,0,0,0">
-        <Label text="Impact on independence:" class="eval-item" ></Label>
-        <Label verticalAlignment="center" dock="right" class="eval-slider-value-label" style="min-width: 50" [text]="settings.independence.toFixed(0)+' / 10'" row="0" col="1"></Label>
-      </DockLayout>
-      <GridLayout rows="auto" columns="*, auto">
-        <Slider maxValue="10"  verticalAlignment="center" class="eval-slider" [value]="settings.independence" (valueChange)="onSliderUpdate('independence', $event)" row="0" col="0"></Slider>
-      </GridLayout>
-
-      <DockLayout stretchLastChild="true" padding="30,0,0,0">
-        <Label dock="left" text="Years in manual chair:" class="eval-item" ></Label>
-        <DropDown #dd dock="right" hint="years" [items]="timeFrames" [(ngModel)]="timeIndex" (selectedIndexChanged)="selectedIndexChanged($event)" horizontalAlignment="right" class="p-15"></DropDown>
-
-      </DockLayout>
-
-      <DockLayout stretchLastChild="true" padding="30,0,0,0">
-        <Label dock="left" text="Type of chair:" class="eval-item" ></Label>
-        <DropDown #dd dock="right" hint="chair type" [items]="chairTypes" [(ngModel)]="chairIndex" (selectedIndexChanged)="selectedIndexChanged($event)" horizontalAlignment="right" class="p-15"></DropDown>
-
-      </DockLayout>
-
-
-      <GridLayout rows="auto" columns="*, auto" >
-        <exoplayer class="videoPlayer"  src="~/assets/videos/Lesson_small.mov" autoplay="false" height="231" width="auto">
-        </exoplayer>
-      </GridLayout>
-
-      <Button (tap)="onNext()" text="Next" class="nextButton"></Button>
-
+  <GridLayout tkMainContent backgroundColor="#fff" rows="auto, *" cols="*">
+    <StackLayout row="0" class="topSlide" height="30%" orientation="horizontal" horizontalAlignment="center">
+      <Image src="~/assets/images/controls-4.png" stretch="aspectFit"></Image>
     </StackLayout>
-  </ScrollView>
+    
+    <ScrollView row="1" class="hero" orientation="vertical">
+      <StackLayout class="eval-stack-layout hero">
+	<DockLayout stretchLastChild="false" >
+          <Label text="Do you have pain from pushing?" class="eval-item" dock="left"></Label>
+          <SegmentedBar [items]="PushingPain" [selectedIndex]="getPushingPainIndex()" class="eval-segmentedBar" dock="right" (selectedIndexChanged)="onPushingPainIndexChange($event)"></SegmentedBar>
+	</DockLayout>
+	<DockLayout *ngIf="getPushingPainIndex() == 0" stretchLastChild="false">
+          <Label text="Pain Level:" class="eval-item" ></Label>
+          <Label verticalAlignment="center" dock="right" class="eval-slider-value-label" style="min-width: 50" [text]="settings.pain.toFixed(0)+' / 10'" row="0" col="1"></Label>
+	</DockLayout>
+	<GridLayout *ngIf="getPushingPainIndex() == 0" rows="auto" columns="*, auto">
+          <Slider maxValue="10"  verticalAlignment="center" class="eval-slider" [value]="settings.pain" (valueChange)="onSliderUpdate('pain', $event)" row="0" col="0"></Slider>
+	</GridLayout>
+
+	<DockLayout stretchLastChild="false" padding="30,0,0,0">
+          <Label text="Do you have fatigue from pushing?" class="eval-item" dock="left"></Label>
+          <SegmentedBar [items]="PushingFatigue" [selectedIndex]="getPushingFatigueIndex()" class="eval-segmentedBar" dock="right" (selectedIndexChanged)="onPushingFatigueIndexChange($event)"></SegmentedBar>
+	</DockLayout>
+	<DockLayout *ngIf="getPushingFatigueIndex() == 0" stretchLastChild="false">
+          <Label text="Fatigue Level:" class="eval-item" ></Label>
+          <Label verticalAlignment="center" dock="right" class="eval-slider-value-label" style="min-width: 50" [text]="settings.fatigue.toFixed(0)+' / 10'" row="0" col="1"></Label>
+	</DockLayout>
+	<GridLayout *ngIf="getPushingFatigueIndex() == 0" rows="auto" columns="*, auto">
+          <Slider maxValue="10"  verticalAlignment="center" class="eval-slider" [value]="settings.fatigue" (valueChange)="onSliderUpdate('fatigue', $event)" row="0" col="0"></Slider>
+	</GridLayout>
+
+	<DockLayout stretchLastChild="false" padding="30,0,0,0">
+          <Label text="Impact on independence:" class="eval-item" ></Label>
+          <Label verticalAlignment="center" dock="right" class="eval-slider-value-label" style="min-width: 50" [text]="settings.independence.toFixed(0)+' / 10'" row="0" col="1"></Label>
+	</DockLayout>
+	<GridLayout rows="auto" columns="*, auto">
+          <Slider maxValue="10"  verticalAlignment="center" class="eval-slider" [value]="settings.independence" (valueChange)="onSliderUpdate('independence', $event)" row="0" col="0"></Slider>
+	</GridLayout>
+
+	<DockLayout stretchLastChild="true" padding="30,0,0,0">
+          <Label dock="left" text="Years in manual chair:" class="eval-item" ></Label>
+          <DropDown #dd dock="right" hint="years" [items]="timeFrames" (selectedIndexChanged)="selectedIndexChanged($event)" horizontalAlignment="right" class="p-15"></DropDown>
+
+	</DockLayout>
+
+	<DockLayout stretchLastChild="true" padding="30,0,0,0">
+          <Label dock="left" text="Type of chair:" class="eval-item" ></Label>
+          <DropDown #dd dock="right" hint="chair type" [items]="chairTypes" (selectedIndexChanged)="selectedIndexChanged($event)" horizontalAlignment="right" class="p-15"></DropDown>
+
+	</DockLayout>
+
+
+	<!-- <GridLayout rows="auto" columns="*, auto" >
+             <exoplayer class="videoPlayer"  src="~/assets/videos/Lesson_small.mov" autoplay="false" height="231" width="auto">
+             </exoplayer>
+	</GridLayout> -->
+
+	<Button (tap)="onNext()" text="Next" class="nextButton"></Button>
+
+      </StackLayout>
+    </ScrollView>
+  </GridLayout>
 </RadSideDrawer>

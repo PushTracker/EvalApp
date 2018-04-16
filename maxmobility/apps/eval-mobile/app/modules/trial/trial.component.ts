@@ -24,35 +24,6 @@ import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 export class TrialComponent implements OnInit {
   @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
 
-  slides = [
-    {
-      Image: '~/assets/images/controls-4.png',
-      Label: 'Trial Set-Up',
-      Description: 'Select options and settings for SmartDrive trial.',
-      Key: 'setUp'
-    },
-    {
-      Image: '~/assets/images/stopwatch.jpg',
-      Label: 'Phase 1',
-      Label_2: 'With SmartDrive',
-      Description: 'Go through the trial course with the SmartDrive - press start to begin.',
-      Key: 'start'
-    },
-    {
-      Image: '~/assets/images/stopwatch.jpg',
-      Label: 'Phase 2',
-      Label_2: 'Without SmartDrive',
-      Description: 'Now perform the same course without Smart Drive - press start to begin.',
-      Key: 'end'
-    },
-    {
-      Image: '~/assets/images/checked-1.png',
-      Label: 'Trial Complete',
-      Description: 'Nice work!',
-      Key: 'summary'
-    }
-  ];
-
   trialName: string = '';
 
   snackbar = new SnackBar();

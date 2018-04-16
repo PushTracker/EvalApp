@@ -84,16 +84,9 @@ export class LoginComponent implements OnInit {
       });
   }
 
-  navToForgotPassword() {
-    this._routerExtensions.navigate(['/forgot-password']);
-  }
 
   onEmailTextChange(args) {
     this._isEmailValid(this.user.email);
-  }
-
-  navToSignUp() {
-    this._routerExtensions.navigate(['/sign-up']);
   }
 
   private _isEmailValid(text: string): boolean {

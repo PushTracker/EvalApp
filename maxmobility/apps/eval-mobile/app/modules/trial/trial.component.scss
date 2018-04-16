@@ -1,5 +1,5 @@
 // Custom common variables
-@import '../../scss/variables';
+@import '../../scss/carousel';
 
 .hero {
   background-color: $permobil-hero;
@@ -15,11 +15,15 @@ TextField {
 }
 
 .trial-stack-layout {
-  margin: 15, 10, 10, 10;
+//  margin: 15, 10, 10, 10;
 }
 
 .docklayout-options {
   padding: 5;
+}
+
+.trial-scroll-view {
+    height:70%;
 }
 
 .trial-item {
@@ -29,7 +33,7 @@ TextField {
   color: #fff;
   font-family: $os-Light;
   margin: 5, 5, 5, 5;
-  padding: 10, 15, 10, 0;
+  // padding: 10, 15, 10, 0;
 }
 
 .switch {
@@ -50,7 +54,7 @@ TextField {
 
 .trial-slider {
   margin: 0, 5, 0, 10;
-  color: $permobil-ocean;
+  color: #fff;
   background-color: $permobil-ocean;
 }
 
@@ -83,8 +87,6 @@ image {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 50%;
-  height: auto;
 }
 
 .icon {

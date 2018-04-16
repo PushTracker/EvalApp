@@ -34,15 +34,21 @@ export class ForgotPasswordComponent implements OnInit {
 
   ngOnInit(): void {
     CLog('ForgotPasswordComponent OnInit');
-    this._page.actionBarHidden = false;
-    this._page.actionBar.visibility = 'visible';
+    this._page.actionBarHidden = true;
+    this._page.backgroundSpanUnderStatusBar = true;
   }
 
   goBack() {
     if (this._routerExtensions.canGoBack()) {
       this._routerExtensions.back();
     } else {
-      this._routerExtensions.navigate(['/login']);
+      this._routerExtensions.navigate(["/login"],
+        {
+        transition: {
+          name: 'slideRight'
+        }
+      }
+    );
     }
   }
 
@@ -73,7 +79,13 @@ export class ForgotPasswordComponent implements OnInit {
           message: 'Check your email for instructions on resetting your password.',
           okButtonText: 'Okay'
         }).then(() => {
-          this._routerExtensions.navigate(['/login']);
+          this._routerExtensions.navigate(["/login"],
+        {
+        transition: {
+          name: 'slideRight'
+        }
+      }
+    );
         });
       })
       .catch(err => {
@@ -93,4 +105,15 @@ export class ForgotPasswordComponent implements OnInit {
     const em = this.email.trim();
     this.emailError = !validate(em) ? `${em} is not a valid email address.` : '';
   }
+
+    navToLogin() {
+    this._routerExtensions.navigate(["/login"],
+        {
+        transition: {
+          name: 'slideRight'
+        }
+      }
+    );
+  }
+
 }
