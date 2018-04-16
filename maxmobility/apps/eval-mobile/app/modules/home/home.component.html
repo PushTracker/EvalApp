@@ -140,28 +140,27 @@
 </StackLayout>
 
 //FAQ 
-<!-- <StackLayout class="list-stack-layout" row="5">
+<StackLayout class="list-stack-layout" row="5">
 <Image src="~/assets/images/divide.png" stretch="aspectFit" class="floor" ></Image>
     <DockLayout class="dockLayout-options" stretchLastChild="false">
        <Label text="FAQ" class="heading" dock="left"></Label>
        <Image src="~/assets/images/chevron_next.png" class="chev" (tap)="chevronButtonTapped('/faq')" dock="right"></Image>
    </DockLayout>
    <DockLayout class="dockLayout-options" stretchLastChild="false">
-       <Label text="Some frequently asked quesitons" class="description" textWrap="true" dock="left"></Label>
+       <Label text="Some frequently asked questions" class="description" textWrap="true" dock="left"></Label>
    </DockLayout>
 
 <RadListView [items]="faqItems">
 <ng-template tkListItemTemplate let-item="item">
 
 <AbsoluteLayout class="icon-description-group">
-   <Label [src]="item.Image" stretch="aspectFill" class="thumb" left="0" top="0"></Label>
-   <Label class="item-description" textWrap="true" [text]="item.itemDescription" left="0" top="150" ></Label>
+   <Label class="thumb faq-question" stretch="aspectFill" left="0" top="0" [text]="item.question" textWrap="true"></Label>
 </AbsoluteLayout>
 
 </ng-template>
 <ListViewLinearLayout tkListViewLayout scrollDirection="Horizontal" ios:itemHeight="300" ios:itemWidth="165" itemInsertAnimation="Default" itemDeleteAnimation="Default"></ListViewLinearLayout>
 </RadListView>
-</StackLayout> -->
+</StackLayout>
 
 
 </GridLayout>

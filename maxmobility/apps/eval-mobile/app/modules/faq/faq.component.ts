@@ -11,7 +11,7 @@ import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 export class FAQComponent implements OnInit {
     @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
 
-    faqs = [
+    public static faqs = [
 	{
 	question: "Why isn't my SmartDrive engaging?",
 	answer: 'Generally, you should check these things: 1) that your SmartDrive is powered on, 2) that your PushTracker is in "SD On" mode - the blue light should be flashing, and 3) that you are in MX2+ mode - in which a double tap will engage the motor.'
@@ -33,8 +33,8 @@ export class FAQComponent implements OnInit {
 	answer: 'The SmartDrive is safe for children to use - but we do recommend the best way to ensure safety is to train them on proper tapping and braking techniques. Moreover, we have included the ability to limit the max speed of the SmartDrive (from 0.5 miles per hour all the way up to 5.5 miles per hour) as well as the acceleration of the SmartDrive. For someone who is just learning to push or to use a SmartDrive, we recommend setting both very low.'
     },
 	{
-	question: 'I need to push or I will lose my independence!',
-	answer: "We agree with you! However, unlike the general advice with walking (where people really cannot walk too much) - people can push too much! If you push too much then you will be more likely to get pain and injury in your arms and shoulders - which may limit your mobility and independence.  With the SmartDrive you are still able to push around in your chair as you normally would - you can now go farther faster and with less effort! Use it when you need to get somewhere fast or up a big hill - don't kill your shoulders if you dn't have to! Enjoy your journey with your SmartDrive!"
+	question: 'Why should I want a SmartDrive / I need to push or I will lose my independence!',
+	answer: "You should be active and go out into the world! With pushing however, unlike the general advice with walking (where people really cannot walk too much) - people can push too much! If you push too much then you will be more likely to get pain and injury in your arms and shoulders - which may limit your mobility and independence.  With the SmartDrive you are still able to push around in your chair as you normally would - you can now go farther faster and with less effort! Use it when you need to get somewhere fast or up a big hill - don't kill your shoulders if you dn't have to! Enjoy your journey with your SmartDrive!"
     }
     ];
 

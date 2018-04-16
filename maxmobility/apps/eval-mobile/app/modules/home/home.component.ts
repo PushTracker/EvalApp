@@ -12,6 +12,8 @@ import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-ui-si
 import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 import { CLog, LoggingService } from '@maxmobility/core';
 
+import { FAQComponent } from '../faq/faq.component';
+
 @Component({
   selector: 'Home',
   moduleId: module.id,
@@ -22,7 +24,8 @@ import { CLog, LoggingService } from '@maxmobility/core';
 export class HomeComponent implements OnInit {
   @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
   
-
+    faqItems = FAQComponent.faqs;
+    
   titles = [
     { Title: 'Pairing', 
       Image: String.fromCharCode(0xf0c1), 
