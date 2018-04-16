@@ -17,22 +17,22 @@ export class TrainingComponent implements OnInit {
 
     slides = [
 	{
-	Image: "~/assets/images/",
+	Image: "~/assets/images/PowerOn.png",
 	Label: "Powering SmartDrive",
 	Bullets: [
 	    "Press back on the rocker switch to power on the SmartDrive, and forward to power off."
 	]
     },
 	{
-	Image: "~/assets/images/Steer.jpg",
+	Image: "~/assets/images/BandPower.png",
 	Label: "Powering PushTracker",
 	Bullets: [
 	    "Press the left raised button on the PushTracker to power on.",
-	    'Press and hold for 3 secconds to enter sleep mode "zzz" and pwer off.',
+	    'Press and hold for 3 secconds to enter sleep mode "zzz" and pwer off.'
 	]
     },
 	{
-	Image: "~/assets/images/PowerOn.jpg.jpg",
+	Image: "~/assets/images/Tap.jpg",
 	Label: "Tap Gesture",
 	Bullets: [
 	    "Keeping your wrist straight, make contact on the pushrim with the palm of your hand.",
@@ -42,7 +42,7 @@ export class TrainingComponent implements OnInit {
 	]
     },
 	{
-	Image: "~/assets/images/Tapping.jpg",
+	Image: "~/assets/images/start-coast.jpg",
 	Label: "Starting & Setting Speed",
 	Bullets: [
 	    "Double-tap to initiate the SmartDrive. It will then begin to accelerate.",
