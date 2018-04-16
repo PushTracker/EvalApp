@@ -1,6 +1,8 @@
-<ActionBar title="Home" class="permobil-action-bar">
+<ActionBar class="action-bar">
   <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
   <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem>
+
+  <Label class="action-bar-title" text="Welcome to SmartDrive"></Label>
 </ActionBar>
 <RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
 
@@ -11,7 +13,7 @@
 
 
   <ScrollView tkMainContent class="main-scroll-view">
-    <GridLayout rows="auto, auto, auto, auto, auto, auto" columns="*">
+    <GridLayout rows="300, 340, 320, 320, 410, 280" columns="*">
 
       //Connectivity
       <StackLayout class="list-stack-layout" row="0">
