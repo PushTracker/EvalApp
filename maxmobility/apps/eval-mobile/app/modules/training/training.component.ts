@@ -17,18 +17,18 @@ export class TrainingComponent implements OnInit {
 
   slides = [
     {
-      Image: "~/assets/images/",
+      Image: "~/assets/images/PowerOn.png",
       Label: "Powering SmartDrive",
       Bullet_1: "Press back on the rocker switch to power on the SmartDrive, and forward to power off."
     },
     {
-      Image: "~/assets/images/Steer.jpg",
+      Image: "~/assets/images/BandPower.png",
       Label: "Powering PushTracker",
       Bullet_1: "Press the left raised button on the PushTracker to power on.",
       Bullet_2: 'Press and hold for 3 secconds to enter sleep mode "zzz" and pwer off.'
     },
     {
-      Image: "~/assets/images/PowerOn.jpg.jpg",
+      Image: "~/assets/images/Tap.jpg",
       Label: "Tap Gesture",
       Bullet_1: "Keeping your wrist straight, make contact on the pushrim with the palm of your hand.",
       Bullet_2: "A red light will alluminate upon succesful tap.",
@@ -36,7 +36,7 @@ export class TrainingComponent implements OnInit {
       Bullet_4: "Tip: Avoid moving your hand in a 'fishtail' like motion. This will lead to inconsistant tap recognition."
     },
     {
-      Image: "~/assets/images/Tapping.jpg",
+      Image: "~/assets/images/start-coast.jpg",
       Label: "Starting & Setting Speed",
       Bullet_1: "Double-tap to initiate the SmartDrive. It will then begin to accelerate.",
       Bullet_2: "Then, single-tap to set your desired speed.",
