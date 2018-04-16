@@ -2,32 +2,27 @@
   <Label class="action-bar-title" text="Training"></Label>
 </ActionBar>
 
-<StackLayout class="page page-content hero" tkMainContent>
+<StackLayout tkMainContent class="page page-content hero">
 
-  <Carousel ios:indicatorOffset="0,-10" indicatorColor="#66ccff" indicatorColorUnselected="#cceeff">
+  <Carousel ios:indicatorOffset="0,-10" height="100%" indicatorColor="#66ccff" indicatorColorUnselected="#cceeff">
     <CarouselItem  *ngFor="let slide of slides">
       
-	<GridLayout background="#fff" rows="auto, *, auto" cols="*" class="hero">
-      
-	  <StackLayout row="0"  class="topSlide" orientation="vertical" horizontalAlignment="center">
-	    <Image [src]="slide.Image" stretch="aspectFit"></Image>
-    </StackLayout>
+      <GridLayout background="#fff" rows="auto, *" cols="*" class="hero">
+	
+	<StackLayout row="0" class="topSlide" height="30%" orientation="vertical" horizontalAlignment="center">
+	  <Image [src]="slide.Image" stretch="aspectFit"></Image>
+	</StackLayout>
 
-    <ScrollView row="1" class="hero">
-          <StackLayout class="hero" class="lowerSlide" orientation="vertical" horizontalAlignment="center">
+	<ScrollView row="1" class="hero">
+          <StackLayout class="hero" class="lowerSlide" height="70%" orientation="vertical" horizontalAlignment="center">
             <Label [text]="slide.Label" class="slideLowerLabel" textWrap="true"></Label>
-            <Label [text]="slide.Bullet_1" class="bullet" textWrap="true"></Label>
-            <Label [text]="slide.Bullet_2" class="bullet" textWrap="true"></Label>
-            <Label [text]="slide.Bullet_3" class="bullet" textWrap="true"></Label>
-            <Label [text]="slide.Bullet_4" class="bullet" textWrap="true"></Label>
-            <Label [text]="slide.Bullet_5" class="bullet" textWrap="true"></Label>
-            <Label [text]="slide.Bullet_6" class="bullet" textWrap="true"></Label>
+	    <Label *ngFor="let bullet of slide.Bullets" [text]="bullet" class="bullet" textWrap="true"></Label>
             <!-- <Button  class="icon fa" text="&#xf008;"></Button> -->
-            <Button row="2" *ngIf="slides.indexOf(slide) == (slides.length-1)" class="start-button" text="Next" (tap)="onNext()"></Button>
-            <Button row="2" *ngIf="slides.indexOf(slide) == 0" class="back-button" text="Back" (tap)="onBack()"></Button>
+            <Button *ngIf="slides.indexOf(slide) == (slides.length-1)" class="start-button" text="Next" (tap)="onNext()"></Button>
+            <Button *ngIf="slides.indexOf(slide) == 0" class="back-button" text="Back" (tap)="onBack()"></Button>
           </StackLayout>
         </ScrollView>
-	</GridLayout>
+      </GridLayout>
       
     </CarouselItem>
   </Carousel>

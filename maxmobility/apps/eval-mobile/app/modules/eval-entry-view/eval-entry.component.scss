@@ -2,12 +2,12 @@
 @import '../../scss/variables';
 
 .eval-stack-layout{
-margin: 25, 10, 50, 10;
-background-color: $permobil-hero;
+    margin: 0, 10, 0, 10;
+    background-color: $permobil-hero;
 }
 
 .hero {
-  background-color: $permobil-hero;
+    background-color: $permobil-hero;
 }
 
 .action-item {
@@ -16,40 +16,38 @@ background-color: $permobil-hero;
     text-transform: none;
 }
 
-image {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 50%;
-  height: auto;
+Image {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .eval-item {
-  vertical-align: center;
-  text-overflow: none;
-  word-wrap: normal;
-  color: #fff;
-  font-family: $os-Light;
-  margin: 5, 5, 5, 5;
-  // padding: 5, 5, 5, 0;
+    vertical-align: center;
+    text-overflow: none;
+    word-wrap: normal;
+    color: #fff;
+    font-family: $os-Light;
+    margin: 5, 5, 5, 5;
+    // padding: 5, 5, 5, 0;
 }
 
 .eval-slider-label {
-  color: $permobil-ocean;
-  font-family: $os-Light;
-  margin: 0, 0, 0, 0;
+    color: $permobil-ocean;
+    font-family: $os-Light;
+    margin: 0, 0, 0, 0;
 }
 
 .eval-slider-value-label {
-  color: #fff;
-  font-family: $os-Light;
-  margin: 0, 0, 0, 0;
+    color: #fff;
+    font-family: $os-Light;
+    margin: 0, 0, 0, 0;
 }
 
 .eval-slider {
-  margin: 0, 5, 0, 10;
-  color: #fff;
-  background-color: $permobil-ocean;
+    margin: 0, 5, 0, 10;
+    color: #fff;
+    background-color: $permobil-ocean;
 }
 
 .eval-segmentedBar{
@@ -75,11 +73,10 @@ image {
 }
 
 .videoPlayer{
-    margin: 30, 0, 30, 0;
     background: $permobil-charcoal;
     margin: 30, 0, 0, 0;
     border-radius: 5;
-   
+    
 }
 
 
