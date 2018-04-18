@@ -1,6 +1,10 @@
 // Custom common variables
 @import '../../scss/variables';
 
+Switch {
+    background-color: $success-light;//$permobil-ocean;
+}
+
 .hero{
     background-color: $permobil-hero;
 }
