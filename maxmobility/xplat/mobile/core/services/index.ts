@@ -6,7 +6,7 @@ import { StorageService } from './storage.service';
 import { LoggingService } from './logging.service';
 import { ProgressService } from './progress.service';
 import { BluetoothService } from './bluetooth.service';
-import { PairingService } from './paring.service';
+import { PairingService } from './pairing.service';
 
 export const PROVIDERS: any[] = [
   EvaluationService,
