@@ -830,39 +830,46 @@ export class Bluetooth extends BluetoothCommon {
 
   public startAdvertising(opts: StartAdvertisingOptions) {
     return new Promise((resolve, reject) => {
-      if (!this.adapter) {
-        // TODO: should we create a new adapter here by default and not reject???
-        reject('Bluetooth not properly initialized!');
-        return;
-      }
+      try {
+        if (!this.adapter) {
+          // TODO: should we create a new adapter here by default and not reject???
+          reject('Bluetooth not properly initialized!');
+          return;
+        }
 
-      const adv = this.getAdvertiser();
-      CLog(CLogTypes.info, `Bluetooth.startAdvertising ---- advertiser: ${adv}`);
+        const adv = this.getAdvertiser();
+        CLog(CLogTypes.info, `Bluetooth.startAdvertising ---- advertiser: ${adv}`);
 
-      if (adv === null || !this.adapter.isMultipleAdvertisementSupported()) {
-        reject('Adapter is turned off or doesnt support bluetooth advertisement');
-        return;
-      } else {
-        const settings = opts.settings;
-        const _s = new android.bluetooth.le.AdvertiseSettings.Builder()
-          .setAdvertiseMode(settings.advertiseMode || android.bluetooth.le.AdvertiseSettings.ADVERTISE_MODE_LOW_LATENCY)
-          .setTxPowerLevel(settings.txPowerLevel || android.bluetooth.le.AdvertiseSettings.ADVERTISE_TX_POWER_HIGH)
-          .setConnectable(settings.connectable || false)
-          .build();
+        if (adv === null || !this.adapter.isMultipleAdvertisementSupported()) {
+          reject('Adapter is turned off or doesnt support bluetooth advertisement');
+          return;
+        } else {
+          const settings = opts.settings;
+          const _s = new android.bluetooth.le.AdvertiseSettings.Builder()
+            .setAdvertiseMode(
+              settings.advertiseMode || android.bluetooth.le.AdvertiseSettings.ADVERTISE_MODE_LOW_LATENCY
+            )
+            .setTxPowerLevel(settings.txPowerLevel || android.bluetooth.le.AdvertiseSettings.ADVERTISE_TX_POWER_HIGH)
+            .setConnectable(settings.connectable || false)
+            .build();
 
-        const pUuid = android.os.ParcelUuid.fromString(opts.UUID) as android.os.ParcelUuid;
+          const pUuid = android.os.ParcelUuid.fromString(opts.UUID) as android.os.ParcelUuid;
 
-        const data = opts.data;
-        const _d = new android.bluetooth.le.AdvertiseData.Builder().addServiceUuid(pUuid).build();
+          const data = opts.data;
+          const _d = new android.bluetooth.le.AdvertiseData.Builder().addServiceUuid(pUuid).build();
 
-        const _scanResult = new android.bluetooth.le.AdvertiseData.Builder()
-          .setIncludeDeviceName(data.includeDeviceName || true)
-          .build();
+          const _scanResult = new android.bluetooth.le.AdvertiseData.Builder()
+            .setIncludeDeviceName(data.includeDeviceName || true)
+            .build();
 
-        adv.startAdvertising(_s, _d, _scanResult, this.advertiseCallback);
-        CLog(CLogTypes.info, 'Bluetooth.startAdvertising ---- started advertising');
+          adv.startAdvertising(_s, _d, _scanResult, this.advertiseCallback);
+          CLog(CLogTypes.info, 'Bluetooth.startAdvertising ---- started advertising');
 
-        resolve();
+          resolve();
+        }
+      } catch (err) {
+        this.sendEvent(Bluetooth.error_event, { error: err }, 'Error with Bluetooth.startAdvertising()');
+        reject(err);
       }
     });
   }
