@@ -15,6 +15,8 @@ import { CLog, LoggingService } from '@maxmobility/core';
 
 import { FAQs } from '../faq/faq.component';
 
+import { BluetoothService } from '@maxmobility/mobile';
+
 @Component({
   selector: 'Home',
   moduleId: module.id,
@@ -221,7 +223,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   private _sideDrawerTransition: DrawerTransitionBase;
 
-  constructor(private _page: Page, private _routerExtensions: RouterExtensions, private _logService: LoggingService) {
+    constructor(private _page: Page, private _routerExtensions: RouterExtensions, private _logService: LoggingService, private _bluetoothService: BluetoothService) {
 
 
     //const radList = <RadListViewComponent>this.radListView.nativeElement;
@@ -231,7 +233,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     CLog('HomeComponent OnInit');
-    this._sideDrawerTransition = new SlideInOnTopTransition();    
+      this._sideDrawerTransition = new SlideInOnTopTransition();
+
+      this._bluetoothService.advertise().then((result) => console.log(result))
+	  .catch((error) => console.log(`Couldn't advertise: ${error}`));
   }
 
   ngAfterViewInit(): void {
