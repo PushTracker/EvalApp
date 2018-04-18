@@ -25,12 +25,10 @@ export class BluetoothService {
 
   // private members
   private _bluetooth = new Bluetooth();
-
   private PushTrackerDataCharacteristic: any = null;
   private AppService: any = null;
-
-  private snackbar: SnackBar = new SnackBar();
-  private feedback: Feedback = new Feedback();
+  private snackbar = new SnackBar();
+  private feedback = new Feedback();
 
   // public functions
   constructor() {}
