@@ -64,7 +64,9 @@
           //Flat Difficulty
           <DockLayout stretchLastChild="false">
             <Label text="Difficulty on Flat Surface?" class="trial-item" dock="left" textWrap="true" width="70%"></Label>
-            <Switch (checkedChange)="onFlatDifficultyChecked($event)" (checked)="hasFlatDifficulty" dock="right" class="trial-item"></Switch>
+            <Switch (checkedChange)="onFlatDifficultyChecked($event)"
+		    (checked)="hasFlatDifficulty"
+		    dock="right"></Switch>
           </DockLayout>
           <DockLayout *ngIf="hasFlatDifficulty" stretchLastChild="false">
             <Label text="Flat Surface Difficulty" class="trial-item"></Label>
@@ -79,7 +81,9 @@
           //Ramp Difficulty
           <DockLayout class="dockLayout-options" stretchLastChild="false">
             <Label text="Difficulty with ramp?" class="trial-item" dock="left" textWrap="true" width="70%"></Label>
-            <Switch (checkedChange)="onRampDifficultyChecked($event)" (checked)="hasRampDifficulty" dock="right" class="trial-item" ></Switch>
+            <Switch (checkedChange)="onRampDifficultyChecked($event)"
+		    (checked)="hasRampDifficulty"
+		    dock="right"></Switch>
           </DockLayout>
           <DockLayout *ngIf="hasRampDifficulty" stretchLastChild="false">
             <Label text="Ramp Difficulty" class="trial-item"></Label>
