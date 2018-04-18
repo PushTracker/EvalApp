@@ -30,9 +30,9 @@
     "postinstall": "./node_modules/.bin/nx postinstall",
     "clean": "rm -rf hooks node_modules package-lock.json && npm i",
     "clean.eval.mobile": "cd apps/eval-mobile && rm -rf hooks node_modules platforms package-lock.json && npm i",
-    "clean.shared":
-      "npx rimraf -- libs/**/*.js && npx rimraf -- libs/**/*.map && npx rimraf -- libs/**/*.d.ts && npx rimraf -- libs/**/*.ngfactory.ts && npx rimraf -- libs/**/*.ngsummary.json && npx rimraf -- libs/**/*.metadata.json && npx rimraf -- xplat/**/*.js && npx rimraf -- xplat/**/*.map && npx rimraf -- xplat/**/*.d.ts && npx rimraf -- xplat/**/*.ngfactory.ts && npx rimraf -- xplat/**/*.ngsummary.json && npx rimraf -- xplat/**/*.metadata.json",
-    "nuke": "npm run clean && npm run clean.eval.mobile && npm run clean.shared"
+    "clean.shared": "npx rimraf -- libs/**/*.js && npx rimraf -- libs/**/*.map && npx rimraf -- libs/**/*.d.ts && npx rimraf -- libs/**/*.ngfactory.ts && npx rimraf -- libs/**/*.ngsummary.json && npx rimraf -- libs/**/*.metadata.json && npx rimraf -- xplat/**/*.js && npx rimraf -- xplat/**/*.map && npx rimraf -- xplat/**/*.d.ts && npx rimraf -- xplat/**/*.ngfactory.ts && npx rimraf -- xplat/**/*.ngsummary.json && npx rimraf -- xplat/**/*.metadata.json",
+    "nuke": "npm run clean && npm run clean.eval.mobile && npm run clean.shared",
+    "precommit": "lint-staged"
   },
   "private": true,
   "dependencies": {
@@ -83,6 +83,12 @@
     "ts-md5": "^1.2.4",
     "zone.js": "^0.8.19"
   },
+  "lint-staged": {
+    "*.{ts, js, json, css, md}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
   "devDependencies": {
     "@angular-devkit/core": "^0.0.29",
     "@angular-devkit/schematics": "0.0.52",
@@ -103,9 +109,11 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "protractor": "~5.1.2",
     "tns-platform-declarations": "^3.4.1",
+    "husky": "^0.14.3",
+    "lint-staged": "^7.0.4",
     "ts-node": "~4.1.0",
     "tslint": "~5.9.1",
     "typescript": "2.6.2",
-    "prettier": "^1.11.1"
+    "prettier": "^1.12.1"
   }
 }
