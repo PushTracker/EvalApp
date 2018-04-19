@@ -199,9 +199,9 @@ export class BluetoothService {
     const p = new Packet();
     p.initialize(data);
     if (p.Type() === 'Data' && p.SubType() === 'DailyInfo') {
-      const di = DailyInfo();
+      const di = new DailyInfo();
       di.fromPacket(p);
-      console.log(JSON.stringify(di.data));
+      console.log(JSON.stringify(di.data()));
       // TODO: SAVE THE DATA WE RECEIVE INTO OUR LOCAL STORAGE
       //DataStorage.HistoricalData.update(di);
       // TODO: UPDATE THE SERVER WITH OUR DAILY INFO (FOR PUSHTRACKER APP)
@@ -218,7 +218,7 @@ export class BluetoothService {
         if (args.command === 'Action') {
           dialogsModule.alert({
             title: `${device} Daily Info`,
-            message: JSON.stringify(di.data, null, 2),
+            message: JSON.stringify(di.data(), null, 2),
             okButtonText: 'Ok'
           });
         }
@@ -278,9 +278,9 @@ export class BluetoothService {
         descriptors.map(d => {
           c.addDescriptor(d);
         });
+        c.setValue(0, android.bluetooth.BluetoothGattCharacteristic.FORMAT_UINT8, 0);
+        c.setWriteType(android.bluetooth.BluetoothGattCharacteristic.WRTIE_TYPE_DEFAULT);
         /*
-		c.setValue(0, android.bluetooth.BluetoothGattCharacteristic.FORMAT_UINT8, 0);
-		c.setWriteType(android.bluetooth.BluetoothGattCharacteristic.WRTIE_TYPE_DEFAULT);
 		if (cuuid === ptDataChar) {
 		    pushTrackerDataCharacteristic = c;
 		}
