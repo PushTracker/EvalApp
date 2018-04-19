@@ -42,18 +42,15 @@ export class BluetoothService {
   }
 
   public advertise() {
-    if (this._bluetooth.isBluetoothEnabled()) {
-      return this._bluetooth.startAdvertising({ UUID: BluetoothService.AppServiceUUID });
-    } else {
-      return this._bluetooth
-        .requestCoarseLocationPermission()
-        .then(() => {
-          this._bluetooth.enable();
-        })
-        .then(() => {
-          this._bluetooth.startAdvertising({ UUID: BluetoothService.AppServiceUUID });
-        });
-    }
+    return this._bluetooth
+      .requestCoarseLocationPermission()
+      .then(() => {
+        return this._bluetooth.enable();
+      })
+      .then(wasEnabled => {
+        console.log(`BLUETOOTH WAS ENABLED? ${wasEnabled}`);
+        return this._bluetooth.startAdvertising({ UUID: BluetoothService.AppServiceUUID });
+      });
   }
 
   public scanForAny(onDiscoveredCallback: Function, timeout: number = 4): Promise<any> {
