@@ -862,10 +862,12 @@ export class Bluetooth extends BluetoothCommon {
           const settings = opts.settings;
           const _s = new android.bluetooth.le.AdvertiseSettings.Builder()
             .setAdvertiseMode(
-              settings.advertiseMode || android.bluetooth.le.AdvertiseSettings.ADVERTISE_MODE_LOW_LATENCY
+              (settings && settings.advertiseMode) || android.bluetooth.le.AdvertiseSettings.ADVERTISE_MODE_LOW_LATENCY
             )
-            .setTxPowerLevel(settings.txPowerLevel || android.bluetooth.le.AdvertiseSettings.ADVERTISE_TX_POWER_HIGH)
-            .setConnectable(settings.connectable || false)
+            .setTxPowerLevel(
+              (settings && settings.txPowerLevel) || android.bluetooth.le.AdvertiseSettings.ADVERTISE_TX_POWER_HIGH
+            )
+            .setConnectable((settings && settings.connectable) || false)
             .build();
 
           const pUuid = android.os.ParcelUuid.fromString(opts.UUID) as android.os.ParcelUuid;
