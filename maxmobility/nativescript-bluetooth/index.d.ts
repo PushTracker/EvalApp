@@ -6,6 +6,11 @@ export class Bluetooth extends COMMON.BluetoothCommon {
    */
   debug: boolean;
 
+  /**
+   * Property to determine if bluetooth is enabled.
+   */
+  readonly enabled: boolean;
+
   isBluetoothEnabled(): Promise<boolean>;
 
   /**
@@ -196,20 +201,20 @@ export interface StartAdvertisingOptions {
  * All of the events for Bluetooth that can be emitted and listened to.
  */
 export interface IBluetoothEvents {
-  error_event: string;
-  bluetooth_enabled_event: string;
-  peripheral_connected_event: string;
-  bluetooth_advertise_success_event: string;
-  bluetooth_advertise_failure_event: string;
-  server_connection_state_changed_event: string;
-  bond_status_change_event: string;
-  device_discovered_event: string;
-  device_name_change_event: string;
-  device_uuid_change_event: string;
-  device_acl_disconnected_event: string;
-  characteristic_write_request_event: string;
-  characteristic_read_request_event: string;
-  descriptor_write_request_event: string;
-  descriptor_read_request_event: string;
-  execute_write_event: string;
+  error_event: string = 'error_event';
+  bluetooth_enabled_event: string = 'bluetooth_enabled_event';
+  peripheral_connected_event: string = 'peripheral_connected_event';
+  bluetooth_advertise_success_event: string = 'bluetooth_advertise_success_event';
+  bluetooth_advertise_failure_event: string = 'bluetooth_advertise_failure_event';
+  server_connection_state_changed_event: string = 'server_connection_state_changed_event';
+  bond_status_change_event: string = 'bond_status_change_event';
+  device_discovered_event: string = 'device_discovered_event';
+  device_name_change_event: string = 'device_name_change_event';
+  device_uuid_change_event: string = 'device_uuid_change_event';
+  device_acl_disconnected_event: string = 'device_acl_disconnected_event';
+  characteristic_write_request_event: string = 'characteristic_write_request_event';
+  characteristic_read_request_event: string = 'characteristic_read_request_event';
+  descriptor_write_request_event: string = 'descriptor_write_request_event';
+  descriptor_read_request_event: string = 'descriptor_read_request_event';
+  execute_write_event: string = 'execute_write_event';
 }

@@ -2,7 +2,6 @@
 	"compileOnSave": false,
 	"compilerOptions": {
 		"sourceMap": true,
-		"skipLibCheck": true,
 		"declaration": false,
 		"moduleResolution": "node",
 		"emitDecoratorMetadata": true,

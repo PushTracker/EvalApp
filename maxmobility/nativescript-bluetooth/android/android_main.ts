@@ -59,6 +59,15 @@ export class Bluetooth extends BluetoothCommon {
    */
   public connections = {};
 
+  // Getter/Setters
+  get enabled() {
+    if (this.adapter !== null && this.adapter.isEnabled()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   constructor() {
     super();
     CLog(CLogTypes.info, '*** Android Bluetooth Constructor ***');
@@ -134,34 +143,39 @@ export class Bluetooth extends BluetoothCommon {
     });
   }
 
-  public enable() {
+  public enable(): Promise<boolean> {
     return new Promise((resolve, reject) => {
       try {
         // activityResult event
         const onBluetoothEnableResult = (args: application.AndroidActivityResultEventData) => {
+          CLog(
+            CLogTypes.info,
+            'Bluetooth.onBluetoothEnableResult ---',
+            `requestCode: ${args.requestCode}, result: ${args.resultCode}`
+          );
+
           if (args.requestCode === ACTION_REQUEST_ENABLE_BLUETOOTH_REQUEST_CODE) {
             try {
-              if (args.requestCode === ACTION_REQUEST_ENABLE_BLUETOOTH_REQUEST_CODE) {
-                this.sendEvent(Bluetooth.bluetooth_enabled_event);
-              } else if (args.requestCode === ACTION_REQUEST_BLUETOOTH_DISCOVERABLE_REQUEST_CODE) {
-                this.sendEvent(Bluetooth.bluetooth_discoverable_event);
-              }
-
-              const data = args.intent;
-
+              // remove the event listener
               application.android.off(application.AndroidApplication.activityResultEvent, onBluetoothEnableResult);
-              resolve(true);
-              return; // yay
+
+              // RESULT_OK = -1
+              if (args.resultCode === android.app.Activity.RESULT_OK) {
+                this.sendEvent(Bluetooth.bluetooth_enabled_event);
+                resolve(true);
+              } else {
+                resolve(false);
+              }
             } catch (ex) {
               CLog(CLogTypes.error, ex);
               application.android.off(application.AndroidApplication.activityResultEvent, onBluetoothEnableResult);
+              this.sendEvent(Bluetooth.error_event, { error: ex }, `Bluetooth.enable ---- error: ${ex}`);
               reject(ex);
-              this.sendEvent(Bluetooth.error_event, { error: ex }, 'Bluetooth.enable ---- error: ${ex}');
               return;
             }
           } else {
             application.android.off(application.AndroidApplication.activityResultEvent, onBluetoothEnableResult);
-            reject(`Image picker activity result code ${args.resultCode}`);
+            resolve(false);
             return;
           }
         };
@@ -171,10 +185,8 @@ export class Bluetooth extends BluetoothCommon {
 
         // create the intent to start the bluetooth enable request
         const intent = new android.content.Intent(android.bluetooth.BluetoothAdapter.ACTION_REQUEST_ENABLE);
-        application.android.foregroundActivity.startActivityForResult(
-          intent,
-          ACTION_REQUEST_ENABLE_BLUETOOTH_REQUEST_CODE
-        );
+        const activity = application.android.foregroundActivity || application.android.startActivity;
+        activity.startActivityForResult(intent, ACTION_REQUEST_ENABLE_BLUETOOTH_REQUEST_CODE);
       } catch (ex) {
         CLog(CLogTypes.error, `Bluetooth.enable: ${ex}`);
         reject(ex);
@@ -291,7 +303,10 @@ export class Bluetooth extends BluetoothCommon {
             CLogTypes.info,
             'Bluetooth.startScanning ---- Coarse Location Permission not granted on Android device, will request permission.'
           );
-          this.requestCoarseLocationPermission();
+          // request the permission and on resolve we'll recall this method with the same args provided
+          this.requestCoarseLocationPermission().then(() => {
+            this.startScanning(arg);
+          });
         } else {
           onPermissionGranted();
         }

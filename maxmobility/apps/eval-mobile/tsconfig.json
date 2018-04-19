@@ -36,11 +36,6 @@
             ]
         }
     },
-    "include": [
-        "references.d.ts",
-        "app/main.ts",
-        "app/**/*.module.ts"
-    ],
     "exclude": [
         "node_modules",
         "platforms"
