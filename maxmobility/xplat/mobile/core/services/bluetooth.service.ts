@@ -42,14 +42,35 @@ export class BluetoothService {
   }
 
   public advertise() {
+    // return this._bluetooth
+    //   .requestCoarseLocationPermission()
+    //   .then(() => {
+    //     return this._bluetooth.enable();
+    //   })
+    //   .then(wasEnabled => {
+    //     console.log(`BLUETOOTH WAS ENABLED? ${wasEnabled}`);
+    //     return this._bluetooth.startAdvertising({ UUID: BluetoothService.AppServiceUUID });
+    //   });
+
     return this._bluetooth
       .requestCoarseLocationPermission()
       .then(() => {
-        return this._bluetooth.enable();
+        return this._bluetooth
+          .enable()
+          .then(wasEnabled => {
+            console.log(`BLUETOOTH WAS ENABLED? ${wasEnabled}`);
+            if (wasEnabled === true) {
+              return this._bluetooth.startAdvertising({ UUID: BluetoothService.AppServiceUUID });
+            } else {
+              return 'Bluetooth is not enabled.';
+            }
+          })
+          .catch(err => {
+            console.log('enable err', err);
+          });
       })
-      .then(wasEnabled => {
-        console.log(`BLUETOOTH WAS ENABLED? ${wasEnabled}`);
-        return this._bluetooth.startAdvertising({ UUID: BluetoothService.AppServiceUUID });
+      .catch(ex => {
+        console.log('location permission error', ex);
       });
   }
 
