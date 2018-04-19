@@ -35,6 +35,16 @@ export class BluetoothService {
     // enabling `debug` will output console.logs from the bluetooth source code
     this._bluetooth.debug = true;
 
+    this._bluetooth.on(Bluetooth.bond_status_change_event, this.onBondStatusChange.bind(this));
+    this._bluetooth.on(Bluetooth.peripheral_connected_event, this.onPeripheralConnected.bind(this));
+    this._bluetooth.on(Bluetooth.device_discovered_event, this.onDeviceDiscovered.bind(this));
+    this._bluetooth.on(Bluetooth.device_name_change_event, this.onDeviceNameChange.bind(this));
+    this._bluetooth.on(Bluetooth.device_uuid_change_event, this.onDeviceUuidChange.bind(this));
+    this._bluetooth.on(Bluetooth.device_acl_disconnected_event, this.onDeviceAclDisconnected.bind(this));
+
+    this._bluetooth.on(Bluetooth.server_connection_state_changed_event, this.onServerConnectionStateChanged.bind(this));
+    this._bluetooth.on(Bluetooth.characteristic_write_request_event, this.onCharacteristicWriteRequest.bind(this));
+
     // setup event listeners
     this._bluetooth.on(Bluetooth.bluetooth_advertise_failure_event, args => {
       console.log(Bluetooth.bluetooth_advertise_failure_event, args);
@@ -126,6 +136,102 @@ export class BluetoothService {
   }
 
   // private functions
+  // event listeners
+  private onBondStatusChange(args: any): void {
+    const dev = args.data.device;
+    const bondState = args.data.bs;
+    console.log(`${dev} - bond state - ${bondState}`);
+    switch (bondState) {
+      case android.bluetooth.BluetoothDevice.BOND_BONDING:
+        break;
+      case android.bluetooth.BluetoothDevice.BOND_BONDED:
+        this._bluetooth.removeBond(dev);
+        this.feedback.success({
+          title: 'Successfully Paired',
+          message: `PushTracker ${dev} now paired`
+        });
+        break;
+      case android.bluetooth.BluetoothDevice.BOND_NONE:
+        break;
+      default:
+        break;
+    }
+  }
+
+  private onDeviceDiscovered(args: any): void {}
+
+  private onDeviceNameChange(args: any): void {}
+
+  private onDeviceUuidChange(args: any): void {}
+
+  private onDeviceAclDisconnected(args: any): void {
+    console.log(`${args.data.device} acl disconnected!`);
+  }
+
+  private onServerConnectionStateChanged(args: any): void {
+    const newState = args.data.newState;
+    const device = args.data.device;
+    switch (newState) {
+      case android.bluetooth.BluetoothProfile.STATE_CONNECTED:
+        this.notify(`${device.getName()}::${device} connected`);
+        //Toast.makeText(`${device.getName()}::${device} connected`).show();
+        break;
+      case android.bluetooth.BluetoothProfile.STATE_CONNECTING:
+        break;
+      case android.bluetooth.BluetoothProfile.STATE_DISCONNECTED:
+        this.notify(`${device.getName()}::${device} disconnected`);
+        //Toast.makeText(`${device.getName()}::${device} disconnected`).show();
+        break;
+      case android.bluetooth.BluetoothProfile.STATE_DISCONNECTING:
+        break;
+      default:
+        break;
+    }
+  }
+
+  private onPeripheralConnected(args: any): void {}
+
+  private onCharacteristicWriteRequest(args: any): void {
+    const value = args.data.value;
+    const device = args.data.device;
+
+    const data = new Uint8Array(value);
+    const p = new Packet();
+    p.initialize(data);
+    if (p.Type() === 'Data' && p.SubType() === 'DailyInfo') {
+      const di = DailyInfo();
+      di.fromPacket(p);
+      console.log(JSON.stringify(di.data));
+      // TODO: SAVE THE DATA WE RECEIVE INTO OUR LOCAL STORAGE
+      //DataStorage.HistoricalData.update(di);
+      // TODO: UPDATE THE SERVER WITH OUR DAILY INFO (FOR PUSHTRACKER APP)
+
+      // TODO: THIS DATA SHOULD BE AVAILABLE DURING THE TRIAL PAGES WHEN STARTING AND STOPPING A TRIAL
+      //       - we need events for when we receive daily info from devices that the pages can listen to
+
+      let options = {
+        actionText: 'View',
+        snackText: `${device.getName()}::${device} sent DailyInfo`,
+        hideDelay: 1000
+      };
+      this.snackbar.action(options).then(args => {
+        if (args.command === 'Action') {
+          dialogsModule.alert({
+            title: `${device} Daily Info`,
+            message: JSON.stringify(di.data, null, 2),
+            okButtonText: 'Ok'
+          });
+        }
+      });
+    } else {
+      console.log(`${p.Type()}::${p.SubType()} ${p.toString()}`);
+    }
+    p.destroy();
+  }
+
+  private onCharacteristicReadRequest(args: any): void {}
+
+  // service controls
   private deleteServices(): void {
     try {
       this._bluetooth.clearServices();
