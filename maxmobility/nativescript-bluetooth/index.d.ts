@@ -62,6 +62,7 @@ export class Bluetooth extends COMMON.BluetoothCommon {
   makeDescriptor(options: any): any;
   makeCharacteristic(options: any): any;
   makeService(options: any): any;
+  addService(service): any;
   getAdvertiser(): any;
   setDiscoverable(): Promise<any>;
   startGattServer();
