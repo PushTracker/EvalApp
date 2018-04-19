@@ -876,7 +876,7 @@ export class Bluetooth extends BluetoothCommon {
           const _d = new android.bluetooth.le.AdvertiseData.Builder().addServiceUuid(pUuid).build();
 
           const _scanResult = new android.bluetooth.le.AdvertiseData.Builder()
-            .setIncludeDeviceName(data.includeDeviceName || true)
+            .setIncludeDeviceName((data && data.includeDeviceName) || true)
             .build();
 
           adv.startAdvertising(_s, _d, _scanResult, this.advertiseCallback);
