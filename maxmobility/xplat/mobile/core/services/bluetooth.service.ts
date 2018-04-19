@@ -31,7 +31,15 @@ export class BluetoothService {
   private feedback = new Feedback();
 
   // public functions
-  constructor() {}
+  constructor() {
+    // enabling `debug` will output console.logs from the bluetooth source code
+    this._bluetooth.debug = true;
+
+    // setup event listeners
+    this._bluetooth.on(Bluetooth.bluetooth_advertise_failure_event, args => {
+      console.log(Bluetooth.bluetooth_advertise_failure_event, args);
+    });
+  }
 
   public advertise() {
     if (this._bluetooth.isBluetoothEnabled()) {
