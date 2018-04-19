@@ -261,7 +261,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     this._bluetoothService
       .advertise()
-      .then(result => console.log(result))
+      .then(result => console.log(`advertising result: ${result}`))
       .catch(error => console.log(`Couldn't advertise: ${error}`));
   }
 
