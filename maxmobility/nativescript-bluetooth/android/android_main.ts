@@ -786,7 +786,11 @@ export class Bluetooth extends BluetoothCommon {
       const pUuid = this.stringToUuid(uuidString);
       const services = this.gattServer.getServices();
       const service = this.gattServer.getService(pUuid);
-      CLog(CLogTypes.info, `Bluetooth.getServerService ---- getService: ${service} - ${service.getUuid()}`);
+      if (service) {
+        CLog(CLogTypes.info, `Bluetooth.getServerService ---- getService: ${service} - ${service.getUuid()}`);
+      } else {
+        CLog(CLogTypes.info, `Bluetooth.getServerService ---- getService: ${uuidString} - not found!`);
+      }
       return service;
     }
     return null;

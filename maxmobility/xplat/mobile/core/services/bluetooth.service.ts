@@ -133,7 +133,7 @@ export class BluetoothService {
       console.log('making service');
 
       this.AppService = this._bluetooth.makeService({
-        UUID: '9358ac8f-6343-4a31-b4e0-4b13a2b45d86'
+        UUID: BluetoothService.AppServiceUUID
       });
 
       const descriptorUUIDs = ['2900', '2902'];
