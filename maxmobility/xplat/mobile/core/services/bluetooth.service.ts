@@ -126,10 +126,18 @@ export class BluetoothService {
   }
 
   // private functions
+  private deleteServices(): void {
+    try {
+      this._bluetooth.clearServices();
+    } catch (ex) {
+      console.log(ex);
+    }
+  }
+
   private addServices(): void {
     try {
-      //console.log("deleting any existing services");
-      //deleteServices();
+      console.log('deleting any existing services');
+      this.deleteServices();
       console.log('making service');
 
       this.AppService = this._bluetooth.makeService({
