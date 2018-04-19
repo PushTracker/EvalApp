@@ -103,10 +103,13 @@ export class Bluetooth extends BluetoothCommon {
   public coarseLocationPermissionGranted() {
     let hasPermission = android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.M;
     if (!hasPermission) {
+      const ctx = this._getContext();
+      CLog(CLogTypes.info, `app context ${ctx}`);
+
       hasPermission =
         android.content.pm.PackageManager.PERMISSION_GRANTED ===
         (android.support.v4.content.ContextCompat as any).checkSelfPermission(
-          application.android.foregroundActivity,
+          ctx,
           android.Manifest.permission.ACCESS_COARSE_LOCATION
         );
     }
@@ -134,9 +137,11 @@ export class Bluetooth extends BluetoothCommon {
         }
       );
 
+      const activity = this._getActivity();
+
       // invoke the permission dialog
       (android.support.v4.app.ActivityCompat as any).requestPermissions(
-        application.android.foregroundActivity,
+        activity,
         [android.Manifest.permission.ACCESS_COARSE_LOCATION],
         ACCESS_COARSE_LOCATION_PERMISSION_REQUEST_CODE
       );
@@ -1106,5 +1111,33 @@ export class Bluetooth extends BluetoothCommon {
 
   private _isEnabled() {
     return this.adapter !== null && this.adapter.isEnabled();
+  }
+
+  private _getContext() {
+    //noinspection JSUnresolvedVariable,JSUnresolvedFunction
+    const ctx = java.lang.Class.forName('android.app.AppGlobals')
+      .getMethod('getInitialApplication', null)
+      .invoke(null, null);
+    if (ctx) {
+      return ctx;
+    }
+
+    //noinspection JSUnresolvedVariable,JSUnresolvedFunction
+    return java.lang.Class.forName('android.app.ActivityThread')
+      .getMethod('currentApplication', null)
+      .invoke(null, null);
+  }
+
+  private _getActivity() {
+    const activity = application.android.foregroundActivity || application.android.startActivity;
+    if (activity === null) {
+      // Throw this off into the future since an activity is not available....
+      setTimeout(() => {
+        this._getActivity();
+      }, 250);
+      return;
+    } else {
+      return activity;
+    }
   }
 }

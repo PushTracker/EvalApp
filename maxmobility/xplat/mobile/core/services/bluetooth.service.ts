@@ -41,17 +41,7 @@ export class BluetoothService {
     });
   }
 
-  public advertise() {
-    // return this._bluetooth
-    //   .requestCoarseLocationPermission()
-    //   .then(() => {
-    //     return this._bluetooth.enable();
-    //   })
-    //   .then(wasEnabled => {
-    //     console.log(`BLUETOOTH WAS ENABLED? ${wasEnabled}`);
-    //     return this._bluetooth.startAdvertising({ UUID: BluetoothService.AppServiceUUID });
-    //   });
-
+  public async advertise() {
     return this._bluetooth
       .requestCoarseLocationPermission()
       .then(() => {
@@ -142,7 +132,7 @@ export class BluetoothService {
       //deleteServices();
       console.log('making service');
 
-      this.AppService = this._this._bluetooth.makeService({
+      this.AppService = this._bluetooth.makeService({
         UUID: '9358ac8f-6343-4a31-b4e0-4b13a2b45d86'
       });
 
@@ -165,7 +155,9 @@ export class BluetoothService {
           const d = this._bluetooth.makeDescriptor({
             UUID: duuid
           });
-          d.setValue(new Array([0x00, 0x00]));
+          // d.setValue(new Array([0x00, 0x00]));
+          const bytes = Array.create('byte', 0);
+          d.setValue(bytes);
           console.log('Making descriptor: ' + duuid);
           return d;
         });
