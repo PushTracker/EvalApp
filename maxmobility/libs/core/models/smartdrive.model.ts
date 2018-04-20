@@ -93,16 +93,31 @@ export class SmartDrive {
     // TODO: update state and spawn events
   }
 
-  public handlePacket(obj: Packet) {
-    // TODO: determine type here and then call the private
-    // handlers (which may update state or spawn events)
+  public handlePacket(p: Packet) {
+    const packetType = p.Type();
+    const subType = p.SubType();
+    if (packetType && packetType == 'Data') {
+      switch (subType) {
+        case 'DeviceInfo':
+          this.handleDeviceInfo(p);
+          break;
+        case 'MotorInfo':
+          this.handleMotorInfo(p);
+          break;
+        case 'DistanceInfo':
+          this.handleDistanceInfo(p);
+          break;
+        default:
+          break;
+      }
+    }
   }
 
   // private functions
-  private handleDeviceInfo(obj: Packet) {
+  private handleDeviceInfo(p: Packet) {
     // This is sent by the SmartDrive Bluetooth Chip when it
     // connects
-    // TODO: send version event (for BLE_VERSION) to subscribers
+    const devInfo = p.data('deviceInfo');
     // so they get updated
     /* Device Info
 	   struct {
@@ -110,15 +125,14 @@ export class SmartDrive {
 	   uint8_t    version;    // Major.Minor version as the MAJOR and MINOR nibbles of the byte.
 	   }            deviceInfo;
 	*/
+    this.ble_version = devInfo.version;
+    // TODO: send version event (for BLE_VERSION) to subscribers
   }
 
-  private handleMotorInfo(obj: Packet) {
+  private handleMotorInfo(p: Packet) {
     // This is sent by the SmartDrive microcontroller every 200ms
     // (5 hz) while connected
-    // TODO: send version event (for MCU_VERSION) to subscribers
-    // so they get updated about this smartDrive's version
-    // TODO: update battery status for the SmartDrive
-    // TODO: update state (is the motor on or off)
+    const motorInfo = p.data('motorInfo');
     /* Motor Info
 	   struct {
 	   Motor::State state;
@@ -130,18 +144,24 @@ export class SmartDrive {
 	   float        driveTime;
 	   }            motorInfo;
 	*/
+    this.mcu_version = motorInfo.version;
+    this.battery = motorInfo.batteryLevel;
+    // TODO: send version event (for MCU_VERSION) to subscribers
+    // so they get updated about this smartDrive's version
+    // TODO: update state (is the motor on or off)
   }
 
-  private handleDistanceInfo(obj: Packet) {
+  private handleDistanceInfo(p: Packet) {
     // This is sent by the SmartDrive microcontroller every 1000
     // ms (1 hz) while connected and the motor is off
-    // TODO: update coastDistance
-    // TODO: update driveDistance
+    const distInfo = p.data('distanceInfo');
     /* Distance Info
 	   struct {
            uint64_t   motorDistance;  // Cumulative Drive distance in ticks.
            uint64_t   caseDistance;   // Cumulative Case distance in ticks.
 	   }            distanceInfo;
 	*/
+    this.driveDistance = distInfo.motorDistance;
+    this.coastDistance = distInfo.caseDistance;
   }
 }

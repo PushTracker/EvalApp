@@ -83,16 +83,46 @@ export class PushTracker {
     // TODO: update state and spawn events
   }
 
-  public handlePacket(obj: Packet) {
+  public handlePacket(p: Packet) {
     // TODO: determine type here and call the private handlers
     // (which may update state or spawn events)
+    const packetType = p.Type();
+    const subType = p.SubType();
+    if (packetType && packetType == 'Data') {
+      switch (subType) {
+        case 'VersionInfo':
+          this.handleVersionInfo(p);
+          break;
+        case 'ErrorInfo':
+          this.handleErrorInfo(p);
+          break;
+        case 'TotalDistance':
+          this.handleDistance(p);
+          break;
+        case 'DailyInfo':
+          this.handleDailyInfo(p);
+          break;
+        case 'Ready':
+          this.handleReady(p);
+          break;
+        default:
+          break;
+      }
+    } else if (packetType && packetType == 'Command') {
+      switch (subType) {
+        case 'SetSettings':
+          this.handleSettings(p);
+          break;
+        default:
+          break;
+      }
+    }
   }
 
   // private functions
-  private handleVersionInfo(obj: Packet) {
+  private handleVersionInfo(p: Packet) {
     // This is sent by the PushTracker when it connects
-    // TODO: update the version, mcu_version, and ble_version states
-    // TODO: send version event to subscribers so they get updated
+    const versionInfo = p.data('versionInfo');
     /* Version Info
 	   struct {
 	   uint8_t     pushTracker;         // Major.Minor version as the MAJOR and MINOR nibbles of the byte.
@@ -100,13 +130,15 @@ export class PushTracker {
 	   uint8_t     smartDriveBluetooth; // Major.Minor version as the MAJOR and MINOR nibbles of the byte.
 	   }            versionInfo;
 	*/
+    this.version = versionInfo.pushTracker;
+    this.mcu_version = versionInfo.smartDrive;
+    this.ble_version = versionInfo.smartDriveBluetooth;
+    // TODO: send version event to subscribers so they get updated
   }
 
-  private handleErrorInfo(obj: Packet) {
+  private handleErrorInfo(p: Packet) {
     // This is sent by the PushTracker when it connects
-    // TODO: send error event to subscribers so they get updated
-    // TODO: update error record for this pushtracker (locally and
-    // on the server)
+    const errorInfo = p.data('errorInfo');
     /* Error Info
 	   struct {
 	   uint16_t            year;
@@ -124,26 +156,29 @@ export class PushTracker {
 	   uint8_t             numBLEDisconnectErrors;
 	   }                     errorInfo;
 	*/
+    // TODO: send error event to subscribers so they get updated
+    // TODO: update error record for this pushtracker (locally and
+    // on the server)
   }
 
-  private handleDistance(obj: Packet) {
+  private handleDistance(p: Packet) {
     // This is sent by the PushTracker when it connects
-    // TODO: send distance event to subscribers so they get
-    // updated
-    // TODO: update distance record for this pushtracker (locally
-    // and on the server)
+    const distance = p.data('distanceInfo');
     /* DistanceInfo
 	   struct {
            uint64_t   motorDistance;  /** Cumulative Drive distance in ticks.
            uint64_t   caseDistance;   /** Cumulative Case distance in ticks. 
 	   }            distanceInfo;
 	*/
+    // TODO: send distance event to subscribers so they get
+    // updated
+    // TODO: update distance record for this pushtracker (locally
+    // and on the server)
   }
 
-  private handleSettings(obj: Packet) {
+  private handleSettings(p: Packet) {
     // This is sent by the PushTracker when it connects
-    // TODO: send settings event to subscribers so they get updated
-    // TODO: update our stored settings
+    const settings = p.data('settings');
     /* Settings
 	   struct Settings {
 	   ControlMode controlMode;
@@ -155,16 +190,15 @@ export class PushTracker {
 	   float       maxSpeed;        /** Slider setting, range: [0.1, 1.0]
 	   } settings;
 	*/
+    // TODO: send settings event to subscribers so they get updated
+    // TODO: update our stored settings
   }
 
-  private handleDailyInfo(obj: Packet) {
+  private handleDailyInfo(p: Packet) {
     // This is sent by the PushTracker every 10 seconds while it
     // is connected (for today's daily info) - it also sends all
     // unsent daily info for previous days on connection
-    // TODO: send daily info event to subscribers so they get
-    // updated
-    // TODO: upate daily info record for this pushtracker (locally
-    // and on the server)
+    const di = p.data('dailyInfo');
     /* Daily Info
 	   struct {
 	   uint16_t    year;
@@ -180,9 +214,13 @@ export class PushTracker {
 	   uint8_t     sdBattery;       /** Percent, [0, 100].            
 	   }            dailyInfo;
 	*/
+    // TODO: send daily info event to subscribers so they get
+    // updated
+    // TODO: upate daily info record for this pushtracker (locally
+    // and on the server)
   }
 
-  private handleReady(obj: Packet) {
+  private handleReady(p: Packet) {
     // This is sent by the PushTracker after it has received a
     // Wake command
     // TODO: send awawke event to subscribers so they get updated
