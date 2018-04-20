@@ -279,7 +279,7 @@ export class BluetoothService {
           c.addDescriptor(d);
         });
         c.setValue(0, android.bluetooth.BluetoothGattCharacteristic.FORMAT_UINT8, 0);
-        c.setWriteType(android.bluetooth.BluetoothGattCharacteristic.WRTIE_TYPE_DEFAULT);
+        c.setWriteType(android.bluetooth.BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT);
         /*
 		if (cuuid === ptDataChar) {
 		    pushTrackerDataCharacteristic = c;
