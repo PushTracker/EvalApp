@@ -3,7 +3,7 @@ import { Packet } from '@maxmobility/core';
 /**
  * The options object passed to the PushTracker's performOTA function
  */
-export interface OTAOptions {
+export interface PTOTAOptions {
   /**
    * How long do we want our timeouts (generally on reconnection) to
    * be in seconds?
@@ -68,7 +68,7 @@ export class PushTracker {
 
   // regular methods
 
-  public performOTA(otaOptions: OTAOptions) {
+  public performOTA(otaOptions: PTOTAOptions) {
     // TODO: handle all the ota process for this specific
     // smartdrive
   }

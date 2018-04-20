@@ -1,3 +1,4 @@
+const Buffer = require("buffer").Buffer;
 // The Module object: Our interface to the outside world. We import
 // and export values on it. There are various ways Module can be used:
 // 1. Not defined. We create it here

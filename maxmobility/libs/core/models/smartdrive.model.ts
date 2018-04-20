@@ -3,7 +3,7 @@ import { Packet } from '@maxmobility/core';
 /**
  * The options object passed to the SmartDrive's performOTA function
  */
-export interface OTAOptions {
+export interface SDOTAOptions {
   /**
    * The type of device we want to OTA - can be 'MCU', 'BLE', or 'BOTH'
    */
@@ -78,7 +78,7 @@ export class SmartDrive {
 
   // regular methods
 
-  public performOTA(otaOptions: OTAOptions) {
+  public performOTA(otaOptions: SDOTAOptions) {
     // TODO: handle all the ota process for this specific
     // smartdrive
   }
