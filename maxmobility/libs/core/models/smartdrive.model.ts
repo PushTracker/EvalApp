@@ -1,6 +1,47 @@
 import { Packet } from '@maxmobility/core';
 
+/**
+ * The options object passed to the SmartDrive's performOTA function
+ */
+export interface OTAOptions {
+  /**
+   * The type of device we want to OTA - can be 'MCU', 'BLE', or 'BOTH'
+   */
+  deviceType: string;
+
+  /**
+   * How long do we want our timeouts (generally on reconnection) to
+   * be in seconds?
+   */
+  timeout: number;
+
+  /**
+   * The array of bytes containing the firmware for the MCU
+   * (including header)
+   */
+  mcuFirmware: number[];
+
+  /**
+   * The array of bytes containing the firmware for the BLE
+   * (including header)
+   */
+  bleFirmware: number[];
+}
+
 export class SmartDrive {
+  // Event names
+  public static disconnect_event = 'disconnect_event';
+  public static connect_event = 'disconnect_event';
+
+  public static ble_version_event = 'ble_version_event';
+  public static mcu_version_event = 'mcu_version_event';
+
+  public static ota_timeout_event = 'ota_timeout_event';
+  public static ota_progress_event = 'ota_progress_event';
+  public static ota_version_event = 'ota_version_event';
+  public static ota_complete_event = 'ota_complete_event';
+  public static ota_failure_event = 'ota_failure_event';
+
   // public members
   public mcu_version: number = 0xff; // microcontroller firmware version number
   public ble_version: number = 0xff; // bluetooth chip firmware version number
@@ -33,6 +74,23 @@ export class SmartDrive {
     this.ble_version = (obj && obj.ble_version) || 0xff;
     this.battery = (obj && obj.battery) || 0;
     this.address = (obj && obj.address) || '';
+  }
+
+  // regular methods
+
+  public performOTA(otaOptions: OTAOptions) {
+    // TODO: handle all the ota process for this specific
+    // smartdrive
+  }
+
+  // handlers
+
+  public handleConnect() {
+    // TODO: update state and spawn events
+  }
+
+  public handleDisconnect() {
+    // TODO: update state and spawn events
   }
 
   public handlePacket(obj: Packet) {
