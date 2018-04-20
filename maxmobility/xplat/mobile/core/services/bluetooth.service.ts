@@ -51,8 +51,6 @@ export class BluetoothService {
     this._bluetooth.on(Bluetooth.bluetooth_advertise_failure_event, args => {
       console.log(Bluetooth.bluetooth_advertise_failure_event, args);
     });
-
-    this.initialize();
   }
 
   public async initialize() {
@@ -84,9 +82,9 @@ export class BluetoothService {
   }
 
   public async advertise() {
-    if (this._initialized === true) {
-      return this._bluetooth
-        .startAdvertising({
+    return this.initialize()
+      .then(() => {
+        return this._bluetooth.startAdvertising({
           UUID: BluetoothService.AppServiceUUID,
           settings: {
             connectable: true
@@ -94,20 +92,15 @@ export class BluetoothService {
           data: {
             includeDeviceName: true
           }
-        })
-        .then(() => {
-          this._bluetooth.addService(this.AppService);
-          console.log('Advertising Started!');
-        })
-        .catch(err => {
-          console.log('advertising err', err);
         });
-    } else {
-      console.log('Bluetooth is not enabled.');
-      return new Promise((resolve, reject) => {
-        reject('BluetoothService not properly initialized');
+      })
+      .then(() => {
+        this._bluetooth.addService(this.AppService);
+        console.log('Advertising Started!');
+      })
+      .catch(err => {
+        console.log('advertising err', err);
       });
-    }
   }
 
   public scanForAny(onDiscoveredCallback: Function, timeout: number = 4): Promise<any> {
@@ -185,13 +178,13 @@ export class BluetoothService {
   private onDeviceNameChange(args: any): void {
     const dev = args.data.device;
     const name = args.data.name;
-    console.log(`${dev} - name change - ${name}`);
+    console.log(`${dev} - name change - ${name || 'None'}`);
   }
 
   private onDeviceUuidChange(args: any): void {
     const dev = args.data.device;
     const uuid = args.data.uuid;
-    console.log(`${dev} - uuid change - ${uuid}`);
+    console.log(`${dev} - uuid change - ${uuid || 'None'}`);
   }
 
   private onDeviceAclDisconnected(args: any): void {
@@ -277,7 +270,8 @@ export class BluetoothService {
       console.log('making service');
 
       this.AppService = this._bluetooth.makeService({
-        UUID: BluetoothService.AppServiceUUID
+        UUID: BluetoothService.AppServiceUUID,
+        serviceType: android.bluetooth.BluetoothGattService.SERVICE_TYPE_PRIMARY
       });
 
       const descriptorUUIDs = ['2900', '2902'];
@@ -292,16 +286,24 @@ export class BluetoothService {
       charUUIDs.map(cuuid => {
         console.log('Making characteristic: ' + cuuid);
         const c = this._bluetooth.makeCharacteristic({
-          UUID: cuuid
+          UUID: cuuid,
+          gattProperty:
+            android.bluetooth.BluetoothGattCharacteristic.PROPERTY_READ |
+            android.bluetooth.BluetoothGattCharacteristic.PROPERTY_WRITE |
+            android.bluetooth.BluetoothGattCharacteristic.PROPERTY_NOTIFY,
+          gattPermissions:
+            android.bluetooth.BluetoothGattCharacteristic.PERMISSION_WRITE |
+            android.bluetooth.BluetoothGattCharacteristic.PERMISSION_READ
         });
         console.log('making descriptors');
         const descriptors = descriptorUUIDs.map(duuid => {
           const d = this._bluetooth.makeDescriptor({
-            UUID: duuid
+            UUID: duuid,
+            permissions:
+              android.bluetooth.BluetoothGattDescriptor.PERMISSION_READ |
+              android.bluetooth.BluetoothGattDescriptor.PERMISSION_WRITE
           });
-          // d.setValue(new Array([0x00, 0x00]));
-          const bytes = Array.create('byte', 0);
-          d.setValue(bytes);
+          d.setValue(new Array([0x00, 0x00]));
           console.log('Making descriptor: ' + duuid);
           return d;
         });
