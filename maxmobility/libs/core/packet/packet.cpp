@@ -242,7 +242,7 @@ public:
   };
 
   // DistanceInfo: How far have the motor and case gone?
-  struct {
+  struct DistanceInfo {
     uint64_t   motorDistance;  /** Cumulative Drive distance in ticks. **/
     uint64_t   caseDistance;   /** Cumulative Case distance in ticks. **/
   };
@@ -482,17 +482,17 @@ public:
   }
 
   void setMotorDistance(int d) {
-    motorInfo.motorDistance = (uint64_t)d;
+    distanceInfo.motorDistance = (uint64_t)d;
   }
   int getMotorDistance() const {
-    return (int)motorInfo.motorDistance;
+    return (int)distanceInfo.motorDistance;
   }
     
   void setCaseDistance(int d) {
-    motorInfo.caseDistance = (uint64_t)d;
+    distanceInfo.caseDistance = (uint64_t)d;
   }
   int getCaseDistance() const {
-    return (int)motorInfo.caseDistance;
+    return (int)distanceInfo.caseDistance;
   }
     
 private:
