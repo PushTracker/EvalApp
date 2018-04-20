@@ -241,6 +241,12 @@ public:
     uint8_t    pushTrackerBatteryLevel;    /** [0,100] */
   };
 
+  // DistanceInfo: How far have the motor and case gone?
+  struct {
+    uint64_t   motorDistance;  /** Cumulative Drive distance in ticks. **/
+    uint64_t   caseDistance;   /** Cumulative Case distance in ticks. **/
+  };
+
   // The length of data bytes contained in the packet
   int dataLength;
 
@@ -266,6 +272,7 @@ public:
     DeviceInfo           deviceInfo;
     ErrorInfo            errorInfo;
     BatteryInfo          batteryInfo;
+    DistanceInfo         distanceInfo;
 
     /**
      * Used with StartOTA / StopOTA commands, tells which device the
@@ -369,7 +376,7 @@ public:
       output.push_back((uint8_t)data);
       switch (data) {
       case Packet::Data::MotorDistance:
-        dataLen = sizeof(motorDistance);
+        dataLen = sizeof(distanceInfo);
         break;
       case Packet::Data::Speed:
         dataLen = sizeof(motorSpeed);
@@ -475,10 +482,17 @@ public:
   }
 
   void setMotorDistance(int d) {
-    motorDistance = (uint64_t)d;
+    motorInfo.motorDistance = (uint64_t)d;
   }
   int getMotorDistance() const {
-    return (int)motorDistance;
+    return (int)motorInfo.motorDistance;
+  }
+    
+  void setCaseDistance(int d) {
+    motorInfo.caseDistance = (uint64_t)d;
+  }
+  int getCaseDistance() const {
+    return (int)motorInfo.caseDistance;
   }
     
 private:
@@ -545,8 +559,8 @@ EMSCRIPTEN_BINDINGS(packet_bindings) {
     .value("JourneyInfo", Packet::Data::JourneyInfo)
     .value("MotorInfo", Packet::Data::MotorInfo)
     .value("DeviceInfo", Packet::Data::DeviceInfo)
-    .value("Ready", Packet::Data::Ready)
     .value("ErrorInfo", Packet::Data::ErrorInfo)
+    .value("Ready", Packet::Data::Ready)
     ;
 
   emscripten::value_object<Packet::VersionInfo>("VersionInfo")
@@ -573,6 +587,11 @@ EMSCRIPTEN_BINDINGS(packet_bindings) {
     .field("pushes", &Packet::JourneyInfo::pushes)
     .field("distance", &Packet::JourneyInfo::distance)
     .field("speed", &Packet::JourneyInfo::speed)
+    ;
+
+  emscripten::value_object<Packet::DistanceInfo>("DistanceInfo")
+    .field("motorDistance", &Packet::DistanceInfo::motorDistance)
+    .field("caseDistance", &Packet::DistanceInfo::caseDistance)
     ;
 
   emscripten::value_object<Packet::MotorInfo>("MotorInfo")
@@ -675,10 +694,12 @@ EMSCRIPTEN_BINDINGS(packet_bindings) {
     .property("deviceInfo", &Packet::deviceInfo)
     .property("errorInfo", &Packet::errorInfo)
     .property("batteryInfo", &Packet::batteryInfo)
+    .property("distanceInfo", &Packet::distanceInfo)
 
     .property("OTADevice", &Packet::otaDevice)
 
     .property("motorDistance", &Packet::getMotorDistance, &Packet::setMotorDistance)
+    .property("caseDistance", &Packet::getCaseDistance, &Packet::setCaseDistance)
 
     .property("bytes", &Packet::getBytes, &Packet::setBytes)
     ;
