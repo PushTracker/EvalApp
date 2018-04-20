@@ -158,11 +158,22 @@ export class BluetoothService {
     }
   }
 
-  private onDeviceDiscovered(args: any): void {}
+  private onDeviceDiscovered(args: any): void {
+    const dev = args.data.device;
+    console.log(`${dev} - discovered`);
+  }
 
-  private onDeviceNameChange(args: any): void {}
+  private onDeviceNameChange(args: any): void {
+    const dev = args.data.device;
+    const name = args.data.name;
+    console.log(`${dev} - name change - ${name}`);
+  }
 
-  private onDeviceUuidChange(args: any): void {}
+  private onDeviceUuidChange(args: any): void {
+    const dev = args.data.device;
+    const uuid = args.data.uuid;
+    console.log(`${dev} - uuid change - ${uuid}`);
+  }
 
   private onDeviceAclDisconnected(args: any): void {
     console.log(`${args.data.device} acl disconnected!`);
@@ -281,10 +292,11 @@ export class BluetoothService {
         c.setValue(0, android.bluetooth.BluetoothGattCharacteristic.FORMAT_UINT8, 0);
         c.setWriteType(android.bluetooth.BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT);
         /*
-		if (cuuid === ptDataChar) {
-		    pushTrackerDataCharacteristic = c;
-		}
+		  if (cuuid === ptDataChar) {
+		  pushTrackerDataCharacteristic = c;
+		  }
 		*/
+        console.log('Adding characteristic to service!');
         this.AppService.addCharacteristic(c);
       });
     } catch (ex) {
