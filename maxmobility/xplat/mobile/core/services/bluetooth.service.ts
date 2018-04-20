@@ -22,8 +22,10 @@ export class BluetoothService {
   public static peripherals = new ObservableArray<any>();
 
   // public members
+  public enabled = false;
 
   // private members
+  private _initialized = false;
   private _bluetooth = new Bluetooth();
   private PushTrackerDataCharacteristic: any = null;
   private AppService: any = null;
@@ -49,35 +51,25 @@ export class BluetoothService {
     this._bluetooth.on(Bluetooth.bluetooth_advertise_failure_event, args => {
       console.log(Bluetooth.bluetooth_advertise_failure_event, args);
     });
+
+    this.initialize();
   }
 
-  public async advertise() {
+  public async initialize() {
     return this._bluetooth
       .requestCoarseLocationPermission()
       .then(() => {
         return this._bluetooth
           .enable()
           .then(wasEnabled => {
-            console.log(`BLUETOOTH WAS ENABLED? ${wasEnabled}`);
-            if (wasEnabled === true) {
+            this.enabled = wasEnabled;
+            console.log(`BLUETOOTH WAS ENABLED? ${this.enabled}`);
+            if (this.enabled === true) {
               this._bluetooth.startGattServer();
               if (!this._bluetooth.offersService(BluetoothService.AppServiceUUID)) {
                 this.addServices();
               }
-              return this._bluetooth
-                .startAdvertising({
-                  UUID: BluetoothService.AppServiceUUID,
-                  settings: {
-                    connectable: true
-                  },
-                  data: {
-                    includeDeviceName: true
-                  }
-                })
-                .then(() => {
-                  this._bluetooth.addService(this.AppService);
-                  console.log('Advertising Started!');
-                });
+              this._initialized = true;
             } else {
               console.log('Bluetooth is not enabled.');
             }
@@ -89,6 +81,33 @@ export class BluetoothService {
       .catch(ex => {
         console.log('location permission error', ex);
       });
+  }
+
+  public async advertise() {
+    if (this._initialized === true) {
+      return this._bluetooth
+        .startAdvertising({
+          UUID: BluetoothService.AppServiceUUID,
+          settings: {
+            connectable: true
+          },
+          data: {
+            includeDeviceName: true
+          }
+        })
+        .then(() => {
+          this._bluetooth.addService(this.AppService);
+          console.log('Advertising Started!');
+        })
+        .catch(err => {
+          console.log('advertising err', err);
+        });
+    } else {
+      console.log('Bluetooth is not enabled.');
+      return new Promise((resolve, reject) => {
+        reject('BluetoothService not properly initialized');
+      });
+    }
   }
 
   public scanForAny(onDiscoveredCallback: Function, timeout: number = 4): Promise<any> {
