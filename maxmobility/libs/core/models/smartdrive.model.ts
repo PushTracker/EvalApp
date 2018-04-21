@@ -59,120 +59,143 @@ export class SmartDrive extends Observable {
 
     // functions
     constructor(obj?: any) {
-	if (obj !== null && obj !== undefined) {
-	    this.fromObject(obj);
-	}
+        if (obj !== null && obj !== undefined) {
+            this.fromObject(obj);
+        }
     }
 
     public data(): any {
-	return {
-	    mcu_version: this.mcu_version,
-	    ble_version: this.ble_version,
-	    battery: this.battery,
-	    address: this.address
-	};
+        return {
+            mcu_version: this.mcu_version,
+            ble_version: this.ble_version,
+            battery: this.battery,
+            address: this.address
+        };
     }
 
     public fromObject(obj: any): void {
-	this.mcu_version = (obj && obj.mcu_version) || 0xff;
-	this.ble_version = (obj && obj.ble_version) || 0xff;
-	this.battery = (obj && obj.battery) || 0;
-	this.address = (obj && obj.address) || '';
+        this.mcu_version = (obj && obj.mcu_version) || 0xff;
+        this.ble_version = (obj && obj.ble_version) || 0xff;
+        this.battery = (obj && obj.battery) || 0;
+        this.address = (obj && obj.address) || '';
     }
 
     // regular methods
 
+    /**
+     * Notify events by name and optionally pass data
+     */
+    public sendEvent(eventName: string, data?: any, msg?: string) {
+	this.notify({
+	    eventName,
+	    object: this,
+	    data,
+	    message: msg
+	});
+    }
+
     public performOTA(otaOptions: SDOTAOptions) {
-	// TODO: handle all the ota process for this specific
-	// smartdrive
+        // TODO: handle all the ota process for this specific
+        // smartdrive
     }
 
     // handlers
 
     public handleConnect() {
-	// TODO: update state and spawn events
+        // TODO: update state and spawn events
+	this.sendEvent(SmartDrive.smartdrive_connect_event);
     }
 
     public handleDisconnect() {
-	// TODO: update state and spawn events
+        // TODO: update state and spawn events
+	this.sendEvent(SmartDrive.smartdrive_disconnect_event);
     }
 
     public handlePacket(p: Packet) {
-	const packetType = p.Type();
-	const subType = p.SubType();
-	if (packetType && packetType == 'Data') {
-	    switch (subType) {
-		case 'DeviceInfo':
-		    this.handleDeviceInfo(p);
-		    break;
-		case 'MotorInfo':
-		    this.handleMotorInfo(p);
-		    break;
-		case 'DistanceInfo':
-		    this.handleDistanceInfo(p);
-		    break;
-		default:
-		    break;
-	    }
-	}
+        const packetType = p.Type();
+        const subType = p.SubType();
+        if (packetType && packetType == 'Data') {
+            switch (subType) {
+                case 'DeviceInfo':
+                    this.handleDeviceInfo(p);
+                    break;
+                case 'MotorInfo':
+                    this.handleMotorInfo(p);
+                    break;
+                case 'DistanceInfo':
+                    this.handleDistanceInfo(p);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     // private functions
     private handleDeviceInfo(p: Packet) {
-	// This is sent by the SmartDrive Bluetooth Chip when it
-	// connects
-	const devInfo = p.data('deviceInfo');
-	// so they get updated
-	/* Device Info
-	   struct {
-	   Device     device;     // Which Device is this about?
-	   uint8_t    version;    // Major.Minor version as the MAJOR and MINOR nibbles of the byte.
-	   }            deviceInfo;
-	*/
-	this.ble_version = devInfo.version;
-	// TODO: send version event (for BLE_VERSION) to subscribers
+        // This is sent by the SmartDrive Bluetooth Chip when it
+        // connects
+        const devInfo = p.data('deviceInfo');
+        // so they get updated
+        /* Device Info
+           struct {
+           Device     device;     // Which Device is this about?
+           uint8_t    version;    // Major.Minor version as the MAJOR and MINOR nibbles of the byte.
+           }            deviceInfo;
+        */
+        this.ble_version = devInfo.version;
+        // TODO: send version event (for BLE_VERSION) to subscribers
+	this.sendEvent(
+	    SmartDrive.smartdrive_ble_version_event,
+	    {
+		ble: this.ble_version
+	    });
     }
 
     private handleMotorInfo(p: Packet) {
-	// This is sent by the SmartDrive microcontroller every 200ms
-	// (5 hz) while connected
-	const motorInfo = p.data('motorInfo');
-	/* Motor Info
-	   struct {
-	   Motor::State state;
-	   uint8_t      batteryLevel; // [0,100] integer percent. 
-	   uint8_t      version;      // Major.Minor version as the MAJOR and MINOR nibbles of the byte.
-	   uint8_t      padding;
-	   float        distance;
-	   float        speed;
-	   float        driveTime;
-	   }            motorInfo;
-	*/
-	this.mcu_version = motorInfo.version;
-	this.battery = motorInfo.batteryLevel;
-	// TODO: send version event (for MCU_VERSION) to subscribers
-	// so they get updated about this smartDrive's version
-	// TODO: update state (is the motor on or off)
+        // This is sent by the SmartDrive microcontroller every 200ms
+        // (5 hz) while connected
+        const motorInfo = p.data('motorInfo');
+        /* Motor Info
+           struct {
+           Motor::State state;
+           uint8_t      batteryLevel; // [0,100] integer percent. 
+           uint8_t      version;      // Major.Minor version as the MAJOR and MINOR nibbles of the byte.
+           uint8_t      padding;
+           float        distance;
+           float        speed;
+           float        driveTime;
+           }            motorInfo;
+        */
+        this.mcu_version = motorInfo.version;
+        this.battery = motorInfo.batteryLevel;
+        // TODO: send version event (for MCU_VERSION) to subscribers
+	this.sendEvent(
+	    SmartDrive.smartdrive_mcu_version_event,
+	    {
+		mcu: this.mcu_version
+	    });
+        // so they get updated about this smartDrive's version
+        // TODO: update state (is the motor on or off)
     }
 
     private handleDistanceInfo(p: Packet) {
-	// This is sent by the SmartDrive microcontroller every 1000
-	// ms (1 hz) while connected and the motor is off
-	const distInfo = p.data('distanceInfo');
-	/* Distance Info
-	   struct {
+        // This is sent by the SmartDrive microcontroller every 1000
+        // ms (1 hz) while connected and the motor is off
+        const distInfo = p.data('distanceInfo');
+        /* Distance Info
+           struct {
            uint64_t   motorDistance;  // Cumulative Drive distance in ticks.
            uint64_t   caseDistance;   // Cumulative Case distance in ticks.
-	   }            distanceInfo;
-	*/
-	this.driveDistance = distInfo.motorDistance;
-	this.coastDistance = distInfo.caseDistance;
+           }            distanceInfo;
+        */
+        this.driveDistance = distInfo.motorDistance;
+        this.coastDistance = distInfo.caseDistance;
     }
 }
 
 /**
- * All of the events for SmartDrive that can be emitted and listened
- * to.
+ * All of the events for SmartDrive that can be emitted and listened to.
  */
 export interface ISmartDriveEvents {
     smartdrive_disconnect_event: string;
