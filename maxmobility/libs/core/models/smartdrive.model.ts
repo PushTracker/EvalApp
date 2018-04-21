@@ -1,3 +1,5 @@
+import { Observable, EventData } from 'tns-core-modules/data/observable';
+
 import { Packet } from '@maxmobility/core';
 
 /**
@@ -28,19 +30,19 @@ export interface SDOTAOptions {
   bleFirmware: number[];
 }
 
-export class SmartDrive {
+export class SmartDrive extends Observable {
   // Event names
-  public static disconnect_event = 'disconnect_event';
-  public static connect_event = 'disconnect_event';
+  public static smartdrive_disconnect_event = 'smartdrive_disconnect_event';
+  public static smartdrive_connect_event = 'smartdrive_disconnect_event';
 
-  public static ble_version_event = 'ble_version_event';
-  public static mcu_version_event = 'mcu_version_event';
+  public static smartdrive_ble_version_event = 'smartdrive_ble_version_event';
+  public static smartdrive_mcu_version_event = 'smartdrive_mcu_version_event';
 
-  public static ota_timeout_event = 'ota_timeout_event';
-  public static ota_progress_event = 'ota_progress_event';
-  public static ota_version_event = 'ota_version_event';
-  public static ota_complete_event = 'ota_complete_event';
-  public static ota_failure_event = 'ota_failure_event';
+  public static smartdrive_ota_timeout_event = 'smartdrive_ota_timeout_event';
+  public static smartdrive_ota_progress_event = 'smartdrive_ota_progress_event';
+  public static smartdrive_ota_version_event = 'smartdrive_ota_version_event';
+  public static smartdrive_ota_complete_event = 'smartdrive_ota_complete_event';
+  public static smartdrive_ota_failure_event = 'smartdrive_ota_failure_event';
 
   // public members
   public mcu_version: number = 0xff; // microcontroller firmware version number

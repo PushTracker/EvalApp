@@ -1,3 +1,5 @@
+import { Observable, EventData } from 'tns-core-modules/data/observable';
+
 import { Packet } from '@maxmobility/core';
 
 /**
@@ -16,24 +18,24 @@ export interface PTOTAOptions {
   firmware: number[];
 }
 
-export class PushTracker {
+export class PushTracker extends Observable {
   // Event names
-  public static disconnect_event = 'disconnect_event';
-  public static connect_event = 'disconnect_event';
+  public static pushtracker_disconnect_event = 'pushtracker_disconnect_event';
+  public static pushtracker_connect_event = 'pushtracker_disconnect_event';
 
-  public static version_event = 'version_event';
-  public static error_event = 'error_event';
-  public static distance_event = 'distance_event';
-  public static settings_event = 'settings_event';
+  public static pushtracker_version_event = 'pushtracker_version_event';
+  public static pushtracker_error_event = 'pushtracker_error_event';
+  public static pushtracker_distance_event = 'pushtracker_distance_event';
+  public static pushtracker_settings_event = 'pushtracker_settings_event';
 
-  public static daily_info_event = 'daily_info_event';
-  public static awake_event = 'awake_event';
+  public static pushtracker_daily_info_event = 'pushtracker_daily_info_event';
+  public static pushtracker_awake_event = 'pushtracker_awake_event';
 
-  public static ota_timeout_event = 'ota_timeout_event';
-  public static ota_progress_event = 'ota_progress_event';
-  public static ota_version_event = 'ota_version_event';
-  public static ota_complete_event = 'ota_complete_event';
-  public static ota_failure_event = 'ota_failure_event';
+  public static pushtracker_ota_timeout_event = 'pushtracker_ota_timeout_event';
+  public static pushtracker_ota_progress_event = 'pushtracker_ota_progress_event';
+  public static pushtracker_ota_version_event = 'pushtracker_ota_version_event';
+  public static pushtracker_ota_complete_event = 'pushtracker_ota_complete_event';
+  public static pushtracker_ota_failure_event = 'pushtracker_ota_failure_event';
 
   // public members
   public version: number = 0xff; // firmware version number for the PT firmware
