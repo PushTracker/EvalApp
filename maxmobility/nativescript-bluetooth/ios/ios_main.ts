@@ -190,13 +190,9 @@ export class Bluetooth extends BluetoothCommon {
   }
 
   public startGattServer() {
-    /*
-    // peripheral mode:
-    if (android.os.Build.VERSION.SDK_INT >= 21) { android.os.Build.VERSION_CODES.LOLLIPOP
-  gattServer = bluetoothManager.openGattServer(utils.ad.getApplicationContext(), Bluetooth._MyGattServerCallback);
-  Bluetooth._gattServer = gattServer;
-    }
-    */
+    // TODO: see if there is more to this but from the doc https://developer.apple.com/documentation/corebluetooth/cbperipheralmanager
+    // it appears as long as the CBPeripheralManager has been initialized, that is for managing the GATT DB.
+    return;
   }
 
   public setDiscoverable() {
@@ -221,13 +217,9 @@ export class Bluetooth extends BluetoothCommon {
   }
 
   public makeService(serviceOptions) {
-    /*
-    let suuid = Bluetooth._stringToUuid(serviceOptions.UUID);
-    let serviceType = new Number(serviceOptions.serviceType || android.bluetooth.BluetoothGattService.SERVICE_TYPE_PRIMARY);
+    const service = CBMutableService.alloc().initWithTypePrimary(CBUUID.UUIDWithString(serviceOptions.UUID), true);
 
-    return new android.bluetooth.BluetoothGattService( suuid, serviceType );
-    */
-    return null;
+    return service;
   }
 
   public makeCharacteristic(characteristicOptions) {
@@ -247,10 +239,14 @@ export class Bluetooth extends BluetoothCommon {
     return null;
   }
 
+  /**
+   * https://developer.apple.com/documentation/corebluetooth/cbperipheralmanager/1393255-addservice
+   */
   public addService(service) {
-    // if (service !== null && service !== undefined && gattServer !== null && gattServer !== undefined) {
-    //   gattServer.addService(service);
-    // }
+    if (service && this.peripheralManager) {
+      // create a CBMutableService - https://developer.apple.com/documentation/corebluetooth/cbmutableservice?language=objc
+      this._peripheralManager.addService();
+    }
   }
 
   public getServerService(uuidString) {
