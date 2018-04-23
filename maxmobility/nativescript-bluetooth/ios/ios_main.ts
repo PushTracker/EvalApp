@@ -329,9 +329,17 @@ export class Bluetooth extends BluetoothCommon {
     // }
   }
 
+  /**
+   * https://developer.apple.com/documentation/corebluetooth/cbperipheralmanager/1393252-startadvertising?language=objc
+   */
   public startAdvertising(args: StartAdvertisingOptions) {
     return new Promise((resolve, reject) => {
       try {
+        if (!this._peripheralManager) {
+          reject('Bluetooth not properly initialized!');
+          return;
+        }
+
         const uuid = CBUUID.UUIDWithString(args.UUID);
 
         CLog(CLogTypes.info, `Bluetooth.startAdvertising ---- creating advertisement`);
@@ -340,88 +348,32 @@ export class Bluetooth extends BluetoothCommon {
           [CBAdvertisementDataServiceUUIDsKey, CBAdvertisementDataLocalNameKey]
         );
 
+        // invokes the Peripheral Managers peripheralManagerDidStartAdvertising:error method
         this._peripheralManager.startAdvertising(advertisement);
-
-        CLog(CLogTypes.info, `Bluetooth.startAdvertising ---- bluetooth is advertising`);
+        CLog(CLogTypes.info, 'Bluetooth.startAdvertising ---- started advertising');
         resolve();
       } catch (error) {
         CLog(CLogTypes.error, `Bluetooth.startAdvertising ---- ${error}`);
         reject(error);
       }
-
-      resolve();
-      /*
-  if (adapter === null || adapter === undefined) {
-      reject("Bluetooth not properly initialized!");
-
-      return;
-  }
-  let adv = adapter.getBluetoothLeAdvertiser();
-  if (adv === null || !adapter.isMultipleAdvertisementSupported()) {
-      reject("Adapter is turned off or doesnt support bluetooth advertisement");
-      return;
-  }
-  else {
-      let settings = advertiseOptions.settings;
-      let _s = new android.bluetooth.le.AdvertiseSettings.Builder()
-    .setAdvertiseMode( settings.advertiseMode || android.bluetooth.le.AdvertiseSettings.ADVERTISE_MODE_LOW_LATENCY )
-    .setTxPowerLevel( settings.txPowerLevel || android.bluetooth.le.AdvertiseSettings.ADVERTISE_TX_POWER_HIGH )
-    .setConnectable( settings.connectable || false )
-    .build();
-
-      let pUuid = new android.os.ParcelUuid.fromString( advertiseOptions.UUID );
-
-      let data = advertiseOptions.data;
-      let _d = new android.bluetooth.le.AdvertiseData.Builder()
-    .addServiceUuid( pUuid )
-    .build();
-
-      let _scanResult = new android.bluetooth.le.AdvertiseData.Builder()
-    .setIncludeDeviceName( data.includeDeviceName || true )
-    .build();
-
-      CLog("--- bluetooth starting advertising!");
-      _onBluetoothAdvertiseResolve = resolve;
-      _onBluetoothAdvertiseReject = reject;
-      //adv.startAdvertising(_s, _d, Bluetooth._MyAdvertiseCallback);
-      adv.startAdvertising(_s, _d, _scanResult, Bluetooth._MyAdvertiseCallback);
-  }
-  */
     });
   }
 
+  /**
+   * https://developer.apple.com/documentation/corebluetooth/cbperipheralmanager/1393275-stopadvertising?language=objc
+   */
   public stopAdvertising() {
     return new Promise((resolve, reject) => {
-      /*
-  if (adapter === null || adapter === undefined) {
-      reject("Bluetooth not properly initialized!");
+      if (!this._peripheralManager) {
+        reject('Bluetooth not properly initialized.');
+        return;
+      }
 
-      return;
-  }
-  let adv = adapter.getBluetoothLeAdvertiser();
-  if (adv === null || !adapter.isMultipleAdvertisementSupported()) {
-      reject("Adapter is turned off or doesnt support bluetooth advertisement");
-
-      return;
-  }
-  else {
-      CLog("--- bluetooth stopping advertising!");
-      _onBluetoothAdvertiseResolve = resolve;
-      _onBluetoothAdvertiseReject = reject;
-      adv.stopAdvertising(Bluetooth._MyAdvertiseCallback);
-      resolve(); // for some reason the callback doesn't get called... TODO: FIX
-  }
-  */
-      resolve();
-    });
-  }
-
-  public disable() {
-    /*
-    adapter.disable();
-    */
-    return new Promise((resolve, reject) => {
-      resolve();
+      if (this._peripheralManager.isAdvertising) {
+        CLog(CLogTypes.info, 'Peripheral manager is advertising.');
+        this._peripheralManager.stopAdvertising();
+        resolve();
+      }
     });
   }
 
@@ -446,6 +398,17 @@ export class Bluetooth extends BluetoothCommon {
     return new Promise((resolve, reject) => {
       CLog(CLogTypes.info, 'Bluetooth.enable ---- Not possible on iOS');
       reject('Not possible - you may want to choose to not call this function on iOS.');
+    });
+  }
+
+  /**
+   * Disabled Bluetooth on iOS is only available via a private API which will get any app rejected.
+   * So the plugin is not going to be exposing such functionality.
+   */
+  public disable() {
+    return new Promise((resolve, reject) => {
+      CLog(CLogTypes.info, 'Disabling bluetooth on iOS is not possible via the public CoreBluetooth API.');
+      resolve();
     });
   }
 
