@@ -739,8 +739,9 @@ export class Bluetooth extends BluetoothCommon {
    * The method returns a BluetoothGattServer instance. You can use BluetoothGattServer to conduct GATT server operations.
    */
   public startGattServer() {
-    // if >= Android21 (Lollipop)
-    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+    // if >= Android18 (JellyBean)
+    // if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR2) {
       this.gattServer = this.bluetoothManager.openGattServer(
         utils.ad.getApplicationContext(),
         this.bluetoothGattServerCallback
