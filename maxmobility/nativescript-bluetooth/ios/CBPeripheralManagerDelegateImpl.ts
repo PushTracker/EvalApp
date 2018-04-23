@@ -56,11 +56,18 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
 
   /**
    * Invoked when you start advertising the local peripheral device’s data.
-   * @param peripheral [CBPeripheralManager] - The peripheral manager providing this information.
+   * @param peripheralMgr [CBPeripheralManager] - The peripheral manager providing this information.
    * @param error? [NSError] - If an error occurred, the cause of the failure.
    */
-  public peripheralManagerDidStartAdvertisingError(peripheral: CBPeripheralManager, error?: NSError) {
+  public peripheralManagerDidStartAdvertisingError(peripheralMgr: CBPeripheralManager, error?: NSError) {
     CLog(CLogTypes.info, 'CBPeripheralManagerDelegateImpl.peripheralManagerDidStartAdvertisingError ----', error);
+    if (error) {
+      CLog(CLogTypes.warning, 'TODO: we may need to parse out the error value here for parity with Android.');
+      this.owner.get().sendEvent(Bluetooth.bluetooth_advertise_failure_event, { error: error });
+      return;
+    }
+
+    this.owner.get().sendEvent(Bluetooth.bluetooth_advertise_success_event);
   }
 
   /**
