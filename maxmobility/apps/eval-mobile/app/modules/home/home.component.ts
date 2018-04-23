@@ -245,12 +245,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   private _sideDrawerTransition: DrawerTransitionBase;
 
-  constructor(
-    private _page: Page,
-    private _routerExtensions: RouterExtensions,
-    private _logService: LoggingService,
-    private _bluetoothService: BluetoothService
-  ) {
+  constructor(private _page: Page, private _routerExtensions: RouterExtensions, private _logService: LoggingService) {
     //const radList = <RadListViewComponent>this.radListView.nativeElement;
     //this.radListView.listView.scrollWithAmount(50, true);
   }
@@ -258,11 +253,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     CLog('HomeComponent OnInit');
     this._sideDrawerTransition = new SlideInOnTopTransition();
-
-    this._bluetoothService
-      .advertise()
-      .then(result => console.log(`advertising result: ${result}`))
-      .catch(error => console.log(`Couldn't advertise: ${error}`));
   }
 
   ngAfterViewInit(): void {}

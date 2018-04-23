@@ -6,6 +6,7 @@ import { RouterExtensions } from 'nativescript-angular/router';
 import { Progress } from 'tns-core-modules/ui/progress';
 import { ScrollView, ScrollEventData } from 'tns-core-modules/ui/scroll-view';
 import { Observable, EventData } from 'tns-core-modules/data/observable';
+import { ObservableArray, ChangedData, ChangeType } from 'tns-core-modules/data/observable-array';
 import { StackLayout } from 'tns-core-modules/ui/layouts/stack-layout';
 import { GridLayout } from 'tns-core-modules/ui/layouts/grid-layout';
 import { Color } from 'tns-core-modules/color';
@@ -19,15 +20,16 @@ import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 // import { Observable, Scheduler } from "rxjs";
 
-import { Pairing } from '@maxmobility/core';
-import { CLog, PairingService } from '@maxmobility/mobile';
+// libs
+import { CLog } from '@maxmobility/mobile';
+import { BluetoothService } from '@maxmobility/mobile';
+import { Packet, DailyInfo, PushTracker, SmartDrive } from '@maxmobility/core';
 
 @Component({
   selector: 'Pairing',
   moduleId: module.id,
   templateUrl: './pairing.component.html',
-  styleUrls: ['./pairing.component.css'],
-  providers: [PairingService]
+  styleUrls: ['./pairing.component.css']
 })
 export class PairingComponent implements OnInit, AfterViewInit {
   @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
@@ -38,17 +40,11 @@ export class PairingComponent implements OnInit, AfterViewInit {
 
   show = false;
 
-  pairing: Pairing[] = [];
-
   private _sideDrawerTransition: DrawerTransitionBase;
 
-  constructor(private pairingService: PairingService, private _routerExtensions: RouterExtensions) {}
+  constructor(private _routerExtensions: RouterExtensions, private _bluetoothService: BluetoothService) {}
 
   ngOnInit() {
-    this.pairingService.getList().subscribe(res => {
-      this.pairing = res;
-    });
-
     this._sideDrawerTransition = new SlideInOnTopTransition();
 
     const title = <View>this.title.nativeElement;
@@ -57,6 +53,33 @@ export class PairingComponent implements OnInit, AfterViewInit {
 
     title.opacity = 0;
     description.opacity = 0;
+
+    // TODO: cases we need to handle:
+    //  - a new pushtracker we haven't seen pairs
+    //  - a previously paired / connected pushtracker re-pairs
+
+    // handle pushtracker pairing events for existing pushtrackers
+    console.log('registering for pairing events!');
+    BluetoothService.PushTrackers.map(pt => {
+      console.log(pt);
+      pt.on(PushTracker.pushtracker_paired_event, args => {
+        console.log(`PT PAIRED EVENT!`);
+        this.onConnectTap(null);
+      });
+    });
+    // listen for completely new pusthrackers (that we haven't seen before)
+    BluetoothService.PushTrackers.on(ObservableArray.changeEvent, (args: ChangedData<number>) => {
+      if (args.action === 'add') {
+        console.log(`PT ADDED EVENT!`);
+        const pt = BluetoothService.PushTrackers.getItem(BluetoothService.PushTrackers.length - 1);
+        if (pt) {
+          pt.on(PushTracker.pushtracker_paired_event, args => {
+            console.log(`PT PAIRED EVENT!`);
+            this.onConnectTap(null);
+          });
+        }
+      }
+    });
   }
 
   ngAfterViewInit() {

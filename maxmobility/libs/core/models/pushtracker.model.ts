@@ -20,8 +20,10 @@ export interface PTOTAOptions {
 
 export class PushTracker extends Observable {
   // Event names
+  public static pushtracker_paired_event = 'pushtracker_paired_event';
+
+  public static pushtracker_connect_event = 'pushtracker_connect_event';
   public static pushtracker_disconnect_event = 'pushtracker_disconnect_event';
-  public static pushtracker_connect_event = 'pushtracker_disconnect_event';
 
   public static pushtracker_version_event = 'pushtracker_version_event';
   public static pushtracker_error_event = 'pushtracker_error_event';
@@ -46,6 +48,8 @@ export class PushTracker extends Observable {
   public battery: number = 0; // battery percent Stat of Charge (SoC)
 
   public address: string = ''; // MAC Address
+  public paired: boolean = false; // Is this PushTracker paired?
+  public connected: boolean = false; // Is this PushTracker connected?
 
   // private members
 
@@ -60,15 +64,23 @@ export class PushTracker extends Observable {
   public data(): any {
     return {
       version: this.version,
+      mcu_version: this.mcu_version,
+      ble_version: this.ble_version,
+      battery: this.battery,
       address: this.address,
-      battery: this.battery
+      paired: this.paired,
+      connected: this.connected
     };
   }
 
   public fromObject(obj: any): void {
     this.version = (obj && obj.version) || 0xff;
+    this.mcu_version = (obj && obj.mcu_version) || 0xff;
+    this.ble_version = (obj && obj.ble_version) || 0xff;
     this.battery = (obj && obj.battery) || 0;
     this.address = (obj && obj.address) || '';
+    this.paired = (obj && obj.paired) || false;
+    this.connected = (obj && obj.connected) || false;
   }
 
   // regular methods
@@ -91,18 +103,24 @@ export class PushTracker extends Observable {
   }
 
   // handlers
+  public handlePaired() {
+    this.paired = true;
+    this.sendEvent(PushTracker.pushtracker_paired_event);
+  }
 
   public handleConnect() {
-    // TODO: update state and spawn events
+    this.connected = true;
     this.sendEvent(PushTracker.pushtracker_connect_event);
   }
 
   public handleDisconnect() {
-    // TODO: update state and spawn events
+    this.connected = false;
     this.sendEvent(PushTracker.pushtracker_disconnect_event);
   }
 
   public handlePacket(p: Packet) {
+    // if we get a pakcet we must have been paired
+    this.paired = true;
     // TODO: determine type here and call the private handlers
     // (which may update state or spawn events)
     const packetType = p.Type();

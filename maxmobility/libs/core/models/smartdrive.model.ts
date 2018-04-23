@@ -32,8 +32,8 @@ export interface SDOTAOptions {
 
 export class SmartDrive extends Observable {
   // Event names
+  public static smartdrive_connect_event = 'smartdrive_connect_event';
   public static smartdrive_disconnect_event = 'smartdrive_disconnect_event';
-  public static smartdrive_connect_event = 'smartdrive_disconnect_event';
 
   public static smartdrive_ble_version_event = 'smartdrive_ble_version_event';
   public static smartdrive_mcu_version_event = 'smartdrive_mcu_version_event';
@@ -70,6 +70,8 @@ export class SmartDrive extends Observable {
       mcu_version: this.mcu_version,
       ble_version: this.ble_version,
       battery: this.battery,
+      driveDistance: this.driveDistance,
+      coastDistance: this.coastDistance,
       address: this.address
     };
   }
@@ -78,6 +80,8 @@ export class SmartDrive extends Observable {
     this.mcu_version = (obj && obj.mcu_version) || 0xff;
     this.ble_version = (obj && obj.ble_version) || 0xff;
     this.battery = (obj && obj.battery) || 0;
+    this.driveDistance = (obj && obj.driveDistance) || 0;
+    this.coastDistance = (obj && obj.coastDistance) || 0;
     this.address = (obj && obj.address) || '';
   }
 

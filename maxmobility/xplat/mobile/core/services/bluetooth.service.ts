@@ -11,7 +11,7 @@ import * as Toast from 'nativescript-toast';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 import { Feedback, FeedbackType, FeedbackPosition } from 'nativescript-feedback';
 import { Bluetooth } from 'nativescript-bluetooth';
-import { Packet, DailyInfo } from '@maxmobility/core';
+import { Packet, DailyInfo, PushTracker, SmartDrive } from '@maxmobility/core';
 
 @Injectable()
 export class BluetoothService {
@@ -19,7 +19,9 @@ export class BluetoothService {
   public static SmartDriveServiceUUID = '0cd51666-e7cb-469b-8e4d-2742f1ba7723';
   public static PushTrackerServiceUUID = '1d14d6ee-fd63-4fa1-bfa4-8f47b42119f0';
   public static AppServiceUUID = '9358ac8f-6343-4a31-b4e0-4b13a2b45d86';
-  public static peripherals = new ObservableArray<any>();
+
+  public static PushTrackers = new ObservableArray<PushTracker>();
+  public static SmartDrives = new ObservableArray<SmartDrive>();
 
   // public members
   public enabled = false;
@@ -51,6 +53,16 @@ export class BluetoothService {
     this._bluetooth.on(Bluetooth.bluetooth_advertise_failure_event, args => {
       console.log(Bluetooth.bluetooth_advertise_failure_event, args);
     });
+
+    this.advertise();
+  }
+
+  public clearSmartDrives(): void {
+    BluetoothService.SmartDrives.splice(0, BluetoothService.SmartDrives.length);
+  }
+
+  public clearPushTrackers(): void {
+    BluetoothService.PushTrackers.splice(0, BluetoothService.PushTrackers.length);
   }
 
   public async initialize() {
@@ -114,13 +126,16 @@ export class BluetoothService {
   // returns a promise that resolves when scanning completes
   public scan(uuids: string[], onDiscoveredCallback: Function, timeout: number = 4): Promise<any> {
     // clear peripherals
-    this.clearPeripherals();
+    this.clearSmartDrives();
 
     return this._bluetooth.startScanning({
       serviceUUIDs: uuids,
       seconds: timeout,
       onDiscovered: peripheral => {
-        BluetoothService.peripherals.push(fromObject(peripheral));
+        if (this.isSmartDrive(peripheral)) {
+          BluetoothService.SmartDrives.push(new SmartDrive(peripheral));
+          console.log(`SmartDrives: ${BluetoothService.SmartDrives.length} : ${BluetoothService.SmartDrives}`);
+        }
         if (onDiscoveredCallback && typeof onDiscoveredCallback === 'function') {
           onDiscoveredCallback(peripheral);
         }
@@ -130,10 +145,6 @@ export class BluetoothService {
 
   public stopScanning(): Promise<any> {
     return this._bluetooth.stopScanning();
-  }
-
-  public clearPeripherals(): void {
-    BluetoothService.peripherals.splice(0, BluetoothService.peripherals.length);
   }
 
   public restart(): Promise<any> {
@@ -158,9 +169,11 @@ export class BluetoothService {
         break;
       case android.bluetooth.BluetoothDevice.BOND_BONDED:
         this._bluetooth.removeBond(dev);
+        const pt = this.getOrMakePushTracker(dev.getAddress());
+        pt.handlePaired();
         this.feedback.success({
           title: 'Successfully Paired',
-          message: `PushTracker ${dev} now paired`
+          message: `PushTracker ${pt.address} now paired`
         });
         break;
       case android.bluetooth.BluetoothDevice.BOND_NONE:
@@ -196,13 +209,21 @@ export class BluetoothService {
     const device = args.data.device;
     switch (newState) {
       case android.bluetooth.BluetoothProfile.STATE_CONNECTED:
-        this.notify(`${device.getName()}::${device} connected`);
+        if (this.isPushTracker(device)) {
+          const pt = this.getOrMakePushTracker(device.getAddress());
+          pt.handleConnect();
+          this.notify(`${device.getName()}::${device} connected`);
+        }
         //Toast.makeText(`${device.getName()}::${device} connected`).show();
         break;
       case android.bluetooth.BluetoothProfile.STATE_CONNECTING:
         break;
       case android.bluetooth.BluetoothProfile.STATE_DISCONNECTED:
-        this.notify(`${device.getName()}::${device} disconnected`);
+        if (this.isPushTracker(device)) {
+          const pt = this.getOrMakePushTracker(device.getAddress());
+          pt.handleDisconnect();
+          this.notify(`${device.getName()}::${device} disconnected`);
+        }
         //Toast.makeText(`${device.getName()}::${device} disconnected`).show();
         break;
       case android.bluetooth.BluetoothProfile.STATE_DISCONNECTING:
@@ -212,43 +233,54 @@ export class BluetoothService {
     }
   }
 
-  private onPeripheralConnected(args: any): void {}
+  private onPeripheralConnected(args: any): void {
+    const peripheral = args.data.device;
+    // TODO: this event is not emitted by the bluetooth library
+  }
 
   private onCharacteristicWriteRequest(args: any): void {
     const value = args.data.value;
     const device = args.data.device;
-
     const data = new Uint8Array(value);
     const p = new Packet();
     p.initialize(data);
-    if (p.Type() === 'Data' && p.SubType() === 'DailyInfo') {
-      const di = new DailyInfo();
-      di.fromPacket(p);
-      console.log(JSON.stringify(di.data()));
-      // TODO: SAVE THE DATA WE RECEIVE INTO OUR LOCAL STORAGE
-      //DataStorage.HistoricalData.update(di);
-      // TODO: UPDATE THE SERVER WITH OUR DAILY INFO (FOR PUSHTRACKER APP)
 
-      // TODO: THIS DATA SHOULD BE AVAILABLE DURING THE TRIAL PAGES WHEN STARTING AND STOPPING A TRIAL
-      //       - we need events for when we receive daily info from devices that the pages can listen to
-
-      let options = {
-        actionText: 'View',
-        snackText: `${device.getName()}::${device} sent DailyInfo`,
-        hideDelay: 1000
-      };
-      this.snackbar.action(options).then(args => {
-        if (args.command === 'Action') {
-          dialogsModule.alert({
-            title: `${device} Daily Info`,
-            message: JSON.stringify(di.data(), null, 2),
-            okButtonText: 'Ok'
-          });
-        }
-      });
-    } else {
-      console.log(`${p.Type()}::${p.SubType()} ${p.toString()}`);
+    if (this.isPushTracker(device)) {
+      const pt = this.getOrMakePushTracker(device.getAddress());
+      pt.handlePacket(p);
     }
+
+    /*
+	if (p.Type() === 'Data' && p.SubType() === 'DailyInfo') {
+	    const di = new DailyInfo();
+	    di.fromPacket(p);
+	    console.log(JSON.stringify(di.data()));
+	    // TODO: SAVE THE DATA WE RECEIVE INTO OUR LOCAL STORAGE
+	    //DataStorage.HistoricalData.update(di);
+	    // TODO: UPDATE THE SERVER WITH OUR DAILY INFO (FOR PUSHTRACKER APP)
+
+	    // TODO: THIS DATA SHOULD BE AVAILABLE DURING THE TRIAL PAGES WHEN STARTING AND STOPPING A TRIAL
+	    //       - we need events for when we receive daily info from devices that the pages can listen to
+
+	    let options = {
+		actionText: 'View',
+		snackText: `${device.getName()}::${device} sent DailyInfo`,
+		hideDelay: 1000
+	    };
+	    this.snackbar.action(options).then(args => {
+		if (args.command === 'Action') {
+		    dialogsModule.alert({
+			title: `${device} Daily Info`,
+			message: JSON.stringify(di.data(), null, 2),
+			okButtonText: 'Ok'
+		    });
+		}
+	    });
+	} else {
+	    console.log(`${p.Type()}::${p.SubType()} ${p.toString()}`);
+	}
+	*/
+    console.log(`${p.Type()}::${p.SubType()} ${p.toString()}`);
     p.destroy();
   }
 
@@ -325,8 +357,42 @@ export class BluetoothService {
     }
   }
 
+  private getOrMakePushTracker(address: string): PushTracker {
+    let pt = BluetoothService.PushTrackers.filter(p => p.address == address)[0];
+    console.log(`Found PT: ${pt}`);
+    if (pt === null || pt === undefined) {
+      pt = new PushTracker({ address });
+      BluetoothService.PushTrackers.push(pt);
+    }
+    console.log(`Found or made PT: ${pt}`);
+    return pt;
+  }
+
+  private getOrMakeSmartDrive(address: string): SmartDrive {
+    let sd = BluetoothService.SmartDrives.filter(sd => sd.address == address)[0];
+    console.log(`Found SD: ${sd}`);
+    if (sd === null || sd === undefined) {
+      sd = new SmartDrive({ address });
+      BluetoothService.SmartDrives.push(sd);
+    }
+    console.log(`Found or made SD: ${sd}`);
+    return sd;
+  }
+
+  public getPushTracker(address: string) {
+    return BluetoothService.PushTrackers.filter(p => p.address === address)[0];
+  }
+
+  public getSmartDrive(address: string) {
+    return BluetoothService.SmartDrives.filter(sd => sd.address === address)[0];
+  }
+
   private isSmartDrive(dev: any): boolean {
     return dev.getName() === 'SmartDrive DU' || dev.getUuids().indexOf(BluetoothService.SmartDriveServiceUUID) > -1;
+  }
+
+  private isPushTracker(dev: any): boolean {
+    return dev.getName() === 'PushTracker' || dev.getUuids().indexOf(BluetoothService.PushTrackerServiceUUID) > -1;
   }
 
   private notify(text: string): void {
