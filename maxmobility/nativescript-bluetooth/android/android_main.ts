@@ -148,6 +148,11 @@ export class Bluetooth extends BluetoothCommon {
     });
   }
 
+  /**
+   * https://developer.android.com/reference/android/bluetooth/BluetoothAdapter.html#enable()
+   * Turn on the local Bluetooth adapter—do not use without explicit user action to turn on Bluetooth.
+   * This powers on the underlying Bluetooth hardware, and starts all Bluetooth system services.
+   */
   public enable(): Promise<boolean> {
     return new Promise((resolve, reject) => {
       try {
@@ -197,6 +202,18 @@ export class Bluetooth extends BluetoothCommon {
         reject(ex);
         this.sendEvent(Bluetooth.error_event, { error: ex }, 'Error enabling bluetooth.');
       }
+    });
+  }
+
+  /**
+   * https://developer.android.com/reference/android/bluetooth/BluetoothAdapter.html#disable()
+   * Turn off the local Bluetooth adapter—do not use without explicit user action to turn off Bluetooth.
+   * This gracefully shuts down all Bluetooth connections, stops Bluetooth system services, and powers down the underlying Bluetooth hardware.
+   */
+  public disable() {
+    return new Promise((resolve, reject) => {
+      this.adapter.disable();
+      resolve();
     });
   }
 
@@ -902,7 +919,7 @@ export class Bluetooth extends BluetoothCommon {
 
   public stopAdvertising() {
     return new Promise((resolve, reject) => {
-      if (this.adapter === null || this.adapter === undefined) {
+      if (!this.adapter) {
         reject('Bluetooth not properly initialized!');
         return;
       }
@@ -918,13 +935,6 @@ export class Bluetooth extends BluetoothCommon {
         adv.stopAdvertising(this.advertiseCallback);
         resolve();
       }
-    });
-  }
-
-  public disable() {
-    this.adapter.disable();
-    return new Promise((resolve, reject) => {
-      resolve();
     });
   }
 
