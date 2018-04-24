@@ -387,6 +387,11 @@ export interface StartAdvertisingOptions {
   data;
 }
 
+export interface MakeServiceOptions {
+  UUID: string;
+  primary: boolean;
+}
+
 /**
  * All of the events for Bluetooth that can be emitted and listened to.
  */
