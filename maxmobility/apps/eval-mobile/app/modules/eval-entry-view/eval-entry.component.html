@@ -22,7 +22,7 @@
     <ScrollView row="1" class="hero" orientation="vertical">
       <StackLayout class="eval-stack-layout hero">
 	<DockLayout stretchLastChild="false" >
-          <Label text="Do you have pain from pushing?" class="eval-item" dock="left"></Label>
+          <Label text="Do you have pain from pushing?" class="eval-item" dock="left" textWrap="true" width="50%"></Label>
           <SegmentedBar [items]="PushingPain" [selectedIndex]="getPushingPainIndex()" class="eval-segmentedBar" dock="right" (selectedIndexChanged)="onPushingPainIndexChange($event)"></SegmentedBar>
 	</DockLayout>
 	<DockLayout *ngIf="getPushingPainIndex() == 0" stretchLastChild="false">
@@ -34,7 +34,7 @@
 	</GridLayout>
 
 	<DockLayout stretchLastChild="false" padding="30,0,0,0">
-          <Label text="Do you have fatigue from pushing?" class="eval-item" dock="left"></Label>
+          <Label text="Do you have fatigue from pushing?" class="eval-item" dock="left" textWrap="true" width="50%"></Label>
           <SegmentedBar [items]="PushingFatigue" [selectedIndex]="getPushingFatigueIndex()" class="eval-segmentedBar" dock="right" (selectedIndexChanged)="onPushingFatigueIndexChange($event)"></SegmentedBar>
 	</DockLayout>
 	<DockLayout *ngIf="getPushingFatigueIndex() == 0" stretchLastChild="false">

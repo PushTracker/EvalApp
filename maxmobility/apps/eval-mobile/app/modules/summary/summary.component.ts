@@ -12,76 +12,87 @@ import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 import { EvaluationService } from '@maxmobility/mobile';
 
 @Component({
-  selector: 'Summary',
-  moduleId: module.id,
-  templateUrl: './summary.component.html',
-  styleUrls: ['./summary.component.css']
+    selector: 'Summary',
+    moduleId: module.id,
+    templateUrl: './summary.component.html',
+    styleUrls: ['./summary.component.css']
 })
 export class SummaryComponent implements OnInit {
-  trialName: string = '';
-  snackbar = new SnackBar();
+    trialName: string = '';
+    snackbar = new SnackBar();
 
-  constructor(private routerExtensions: RouterExtensions) {}
+    hasFlatDifficulty: boolean = false;
+    hasRampDifficulty: boolean = false;
 
-  // button events
-  onNext(): void {
-    confirm({
-      title: 'Complete Evaluation?',
-      message: "Are you sure you're done with the evaluation?",
-      okButtonText: 'Yes',
-      cancelButtonText: 'No'
-    }).then(result => {
-      if (result) {
-        this.routerExtensions.navigate(['/home'], {
-          clearHistory: true,
-          transition: {
-            name: 'fade'
-          }
-        });
-      }
-    });
-  }
+    constructor(private routerExtensions: RouterExtensions) {}
 
-  onBack(): void {
-    this.routerExtensions.navigate(['/trial'], {
-      clearHistory: true,
-      transition: {
-        name: 'slideRight'
-      }
-    });
-  }
+    // button events
+    onNext(): void {
+	confirm({
+	    title: 'Complete Evaluation?',
+	    message: "Are you sure you're done with the evaluation?",
+	    okButtonText: 'Yes',
+	    cancelButtonText: 'No'
+	}).then(result => {
+	    if (result) {
+		this.routerExtensions.navigate(['/home'], {
+		    clearHistory: true,
+		    transition: {
+			name: 'fade'
+		    }
+		});
+	    }
+	});
+    }
 
-  onTextChange(args) {
-    const textField = <TextField>args.object;
+    onRampDifficultyChecked(args): void {
+	this.hasRampDifficulty = args.value;
+    }
 
-    console.log('onTextChange');
-    this.trialName = textField.text;
-  }
+    onFlatDifficultyChecked(args): void {
+	this.hasFlatDifficulty = args.value;
+    }
 
-  onReturn(args) {
-    const textField = <TextField>args.object;
+    onBack(): void {
+	this.routerExtensions.navigate(['/trial'], {
+	    clearHistory: true,
+	    transition: {
+		name: 'slideRight'
+	    }
+	});
+    }
 
-    console.log('onReturn');
-    this.trialName = textField.text;
-  }
+    onTextChange(args) {
+	const textField = <TextField>args.object;
 
-  showAlert(result) {
-    alert('Text: ' + result);
-  }
+	console.log('onTextChange');
+	this.trialName = textField.text;
+    }
 
-  submit(result) {
-    alert('Text: ' + result);
-  }
+    onReturn(args) {
+	const textField = <TextField>args.object;
 
-  onSliderUpdate(key, args) {
-    this.settings.set(key, args.object.value);
-  }
+	console.log('onReturn');
+	this.trialName = textField.text;
+    }
 
-  ngOnInit() {
-    console.log('Summary.Component ngOnInit');
-  }
+    showAlert(result) {
+	alert('Text: ' + result);
+    }
 
-  get settings(): Observable {
-    return EvaluationService.settings;
-  }
+    submit(result) {
+	alert('Text: ' + result);
+    }
+
+    onSliderUpdate(key, args) {
+	this.settings.set(key, args.object.value);
+    }
+
+    ngOnInit() {
+	console.log('Summary.Component ngOnInit');
+    }
+
+    get settings(): Observable {
+	return EvaluationService.settings;
+    }
 }
