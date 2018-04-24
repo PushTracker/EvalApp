@@ -14,7 +14,9 @@ import {
   StartAdvertisingOptions,
   DisconnectOptions,
   WriteOptions,
-  ReadOptions
+  ReadOptions,
+  MakeServiceOptions,
+  MakeCharacteristicOptions
 } from '../common';
 import { TNS_AdvertiseCallback } from './TNS_AdvertiseCallback';
 import { TNS_BroadcastReceiver } from './TNS_BroadcastReceiver';
@@ -749,6 +751,10 @@ export class Bluetooth extends BluetoothCommon {
     }
   }
 
+  /**
+   * Show a system activity that requests discoverable mode. This activity will also request the user to turn on Bluetooth if it is not currently enabled.
+   * TODO: finish implementing, not actually firing right now.
+   */
   public setDiscoverable() {
     return new Promise((resolve, reject) => {
       try {
@@ -757,6 +763,7 @@ export class Bluetooth extends BluetoothCommon {
           intent,
           ACTION_REQUEST_BLUETOOTH_DISCOVERABLE_REQUEST_CODE
         );
+        resolve();
       } catch (ex) {
         CLog(CLogTypes.error, `Bluetooth.setDiscoverable ---- error: ${ex}`);
         reject(ex);
@@ -772,18 +779,19 @@ export class Bluetooth extends BluetoothCommon {
     }
   }
 
-  public makeService(serviceOptions) {
-    const suuid = this.stringToUuid(serviceOptions.UUID);
-    const serviceType: number =
-      serviceOptions.serviceType || android.bluetooth.BluetoothGattService.SERVICE_TYPE_PRIMARY;
+  public makeService(opts: MakeServiceOptions) {
+    const suuid = this.stringToUuid(opts.UUID);
+    const serviceType =
+      opts && opts.primary === true
+        ? android.bluetooth.BluetoothGattService.SERVICE_TYPE_PRIMARY
+        : android.bluetooth.BluetoothGattService.SERVICE_TYPE_SECONDARY;
     return new android.bluetooth.BluetoothGattService(suuid, serviceType);
   }
 
-  public makeCharacteristic(characteristicOptions) {
-    const cuuid = this.stringToUuid(characteristicOptions.UUID);
-    const gprop = characteristicOptions.gattProperty || android.bluetooth.BluetoothGattCharacteristic.PROPERTY_READ;
-    const gperm =
-      characteristicOptions.gattPermissions || android.bluetooth.BluetoothGattCharacteristic.PERMISSION_READ;
+  public makeCharacteristic(opts: MakeCharacteristicOptions) {
+    const cuuid = this.stringToUuid(opts.UUID);
+    const gprop = (opts && opts.property) || android.bluetooth.BluetoothGattCharacteristic.PROPERTY_READ;
+    const gperm = (opts && opts.permission) || android.bluetooth.BluetoothGattCharacteristic.PERMISSION_READ;
     return new android.bluetooth.BluetoothGattCharacteristic(cuuid, gprop, gperm);
   }
 

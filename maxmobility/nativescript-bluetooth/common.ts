@@ -392,6 +392,12 @@ export interface MakeServiceOptions {
   primary: boolean;
 }
 
+export interface MakeCharacteristicOptions {
+  UUID: string;
+  property: number;
+  permission: number;
+}
+
 /**
  * All of the events for Bluetooth that can be emitted and listened to.
  */

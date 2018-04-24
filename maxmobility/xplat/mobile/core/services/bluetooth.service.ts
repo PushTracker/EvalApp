@@ -301,9 +301,14 @@ export class BluetoothService {
       this.deleteServices();
       console.log('making service');
 
+      // this.AppService = this._bluetooth.makeService({
+      //   UUID: BluetoothService.AppServiceUUID,
+      //   serviceType: android.bluetooth.BluetoothGattService.SERVICE_TYPE_PRIMARY
+      // });
+
       this.AppService = this._bluetooth.makeService({
         UUID: BluetoothService.AppServiceUUID,
-        serviceType: android.bluetooth.BluetoothGattService.SERVICE_TYPE_PRIMARY
+        primary: true
       });
 
       const descriptorUUIDs = ['2900', '2902'];

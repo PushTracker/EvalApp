@@ -11,6 +11,8 @@ import {
   ConnectOptions,
   StartScanningOptions,
   StartAdvertisingOptions,
+  MakeServiceOptions,
+  MakeCharacteristicOptions,
   CLogTypes
 } from '../common';
 import { CBPeripheralManagerDelegateImpl } from './CBPeripheralManagerDelegateImpl';
@@ -158,35 +160,8 @@ export class Bluetooth extends BluetoothCommon {
     */
   }
 
-  public setGattServerCallbacks(callbackOptions) {
-    // _onServerConnectionStateChangeCallback = null;
-    // _onBondStatusChangeCallback = null;
-    // _onDeviceNameChangeCallback = null;
-    // _onDeviceUUIDChangeCallback = null;
-    // _onDeviceACLDisconnectedCallback = null;
-    // _onCharacteristicWriteRequestCallback = null;
-    // _onCharacteristicReadRequestCallback = null;
-    // _onDescriptorWriteRequestCallback = null;
-    // _onDescriptorReadRequestCallback = null;
-    // if (callbackOptions !== null && callbackOptions !== undefined) {
-    //   _onServerConnectionStateChangeCallback = callbackOptions.onServerConnectionStateChange;
-    //   _onBondStatusChangeCallback = callbackOptions.onBondStatusChange;
-    //   _onDeviceNameChangeCallback = callbackOptions.onDeviceNameChange;
-    //   _onDeviceUUIDChangeCallback = callbackOptions.onDeviceUUIDChange;
-    //   _onDeviceACLDisconnectedCallback = callbackOptions.onDeviceACLDisconnected;
-    //   _onCharacteristicWriteRequestCallback = callbackOptions.onCharacteristicWrite;
-    //   _onCharacteristicReadRequestCallback = callbackOptions.onCharacteristicRead;
-    //   _onDescriptorWriteRequestCallback = callbackOptions.onDescriptorWrite;
-    //   _onDescriptorReadRequestCallback = callbackOptions.onDescriptorRead;
-    // }
-  }
-
   public stopGattServer() {
-    // this.setGattServerCallbacks();
-    // if (gattServer !== null && gattServer !== undefined) {
-    //   gattServer.close();
-    // }
-    // gattServer = null;
+    return;
   }
 
   public startGattServer() {
@@ -197,16 +172,6 @@ export class Bluetooth extends BluetoothCommon {
 
   public setDiscoverable() {
     return new Promise((resolve, reject) => {
-      /*
-  try {
-      _onBluetoothDiscoverableResolve = resolve;
-      var intent = new android.content.Intent(android.bluetooth.BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-      application.android.foregroundActivity.startActivityForResult(intent, ACTION_REQUEST_BLUETOOTH_DISCOVERABLE_REQUEST_CODE);
-  } catch (ex) {
-      CLog("Error in Bluetooth.setDiscoverable: " + ex);
-      reject(ex);
-  }
-  */
       resolve();
     });
   }
@@ -216,13 +181,16 @@ export class Bluetooth extends BluetoothCommon {
     return null;
   }
 
-  public makeService(serviceOptions) {
-    const service = CBMutableService.alloc().initWithTypePrimary(CBUUID.UUIDWithString(serviceOptions.UUID), true);
-
+  public makeService(opts: MakeServiceOptions) {
+    const primary = opts && opts.primary === true ? true : false;
+    const uuid = CBUUID.UUIDWithString(opts.UUID);
+    const service = CBMutableService.alloc().initWithTypePrimary(uuid, primary);
     return service;
   }
 
-  public makeCharacteristic(characteristicOptions) {
+  public makeCharacteristic(opts: MakeCharacteristicOptions) {
+    const uuid = CBUUID.UUIDWithString(opts.UUID);
+    return permission;
     /*
     let cuuid = Bluetooth._stringToUuid(characteristicOptions.UUID);
     let gprop = new Number(characteristicOptions.gattProperty || android.bluetooth.BluetoothGattCharacteristic.PROPERTY_READ);
@@ -230,7 +198,6 @@ export class Bluetooth extends BluetoothCommon {
 
     return new android.bluetooth.BluetoothGattCharacteristic(cuuid, gprop, gperm);
     */
-    return null;
   }
 
   public makeDescriptor(options) {
@@ -243,7 +210,7 @@ export class Bluetooth extends BluetoothCommon {
    * https://developer.apple.com/documentation/corebluetooth/cbperipheralmanager/1393255-addservice
    */
   public addService(service) {
-    if (service && this.peripheralManager) {
+    if (service && this._peripheralManager) {
       // create a CBMutableService - https://developer.apple.com/documentation/corebluetooth/cbmutableservice?language=objc
       this._peripheralManager.addService();
     }
