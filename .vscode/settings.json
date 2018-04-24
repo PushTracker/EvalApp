@@ -4,6 +4,7 @@
     "**/.git/subtree-cache/**": true,
     "**/hooks/**": true,
     "**/platforms/**": true,
-    "**/node_modules/**": true
+    "maxmobility/node_modules/**": true,
+    "maxmobility/apps/eval-mobile/node_modules/**": true
   }
 }
