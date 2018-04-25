@@ -189,6 +189,10 @@ export class OTAComponent implements OnInit {
 
   discoverSmartDrives() {
     // show list of SDs
+    return this._bluetoothService.scanForSmartDrive().then(() => {
+      var sds = BluetoothService.SmartDrives;
+      console.log(`Found ${sds.length} SmartDrives!`);
+    });
   }
 
   onPtButtonTapped() {
@@ -232,46 +236,61 @@ export class OTAComponent implements OnInit {
     // TODO: handle OTA done for PushTracker
     // TODO: handle OTA done for SmartDrive
 
-    let intervalID = null;
-    let updatingPT = false;
-    intervalID = setInterval(() => {
-      this.sdBtProgressValue += 15;
-      if (this.sdBtProgressValue > 100) {
-        this.sdBtProgressValue = 100;
-      }
-      this.sdMpProgressValue += 25;
-      if (this.sdMpProgressValue > 100) {
-        this.sdMpProgressValue = 100;
-      }
+    this.discoverSmartDrives()
+      .then(smartDrives => {
+        // if more than one smart drive is found then we
+        // should pop up to ask the user to select (possibly
+        // more than one), else we just auto-select the only
+        // one
+      })
+      .then(selectedSmartDrives => {
+        // connect to the selected smart drive(s)
+      })
+      .then(connectionStatus => {})
+      .then(versionInfo => {});
 
-      if (this.sdMpProgressValue >= 100 && this.sdBtProgressValue >= 100) {
-        this.ptBtProgressValue += 25;
-        if (this.ptBtProgressValue > 100) {
-          this.ptBtProgressValue = 100;
-        }
+    /*
+	let intervalID = null;
+	let updatingPT = false;
+	intervalID = setInterval(() => {
+	    this.sdBtProgressValue += 15;
+	    if (this.sdBtProgressValue > 100) {
+		this.sdBtProgressValue = 100;
+	    }
+	    this.sdMpProgressValue += 25;
+	    if (this.sdMpProgressValue > 100) {
+		this.sdMpProgressValue = 100;
+	    }
 
-        if (!updatingPT) {
-          const otaProgressViewPT = <View>this.otaProgressViewPT.nativeElement;
-          otaProgressViewPT.animate({
-            opacity: 1,
-            duration: 500
-          });
-          this.otaButtonText = 'updating PushTracker';
-          updatingPT = true;
-        }
+	    if (this.sdMpProgressValue >= 100 && this.sdBtProgressValue >= 100) {
+		this.ptBtProgressValue += 25;
+		if (this.ptBtProgressValue > 100) {
+		    this.ptBtProgressValue = 100;
+		}
 
-        if (this.ptBtProgressValue >= 100) {
-          this.otaButtonText = 'Update Complete';
-          // cancel the interval we have set
-          clearInterval(intervalID);
+		if (!updatingPT) {
+		    const otaProgressViewPT = <View>this.otaProgressViewPT.nativeElement;
+		    otaProgressViewPT.animate({
+			opacity: 1,
+			duration: 500
+		    });
+		    this.otaButtonText = 'updating PushTracker';
+		    updatingPT = true;
+		}
 
-          setTimeout(() => {
-            this.routerExtensions.navigate(['/pairing'], {
-              clearHistory: true
-            });
-          }, 1500);
-        }
-      }
-    }, 500);
+		if (this.ptBtProgressValue >= 100) {
+		    this.otaButtonText = 'Update Complete';
+		    // cancel the interval we have set
+		    clearInterval(intervalID);
+
+		    setTimeout(() => {
+			this.routerExtensions.navigate(['/pairing'], {
+			    clearHistory: true
+			});
+		    }, 1500);
+		}
+	    }
+	}, 500);
+	*/
   }
 }

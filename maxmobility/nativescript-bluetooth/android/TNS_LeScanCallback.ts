@@ -53,7 +53,7 @@ export class TNS_LeScanCallback extends android.bluetooth.BluetoothAdapter.LeSca
             manufacturerData: manufacturerData
           };
           CLog(CLogTypes.info, `---- TNS_LeScanCallback.scanCallback ---- payload: ${JSON.stringify(payload)}`);
-          this.owner.get().sendEvent(Bluetooth.device_discovered_event, { data: payload });
+          this.owner.get().sendEvent(Bluetooth.device_discovered_event, payload);
         }
       }
     });

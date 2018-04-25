@@ -115,31 +115,20 @@ export class BluetoothService {
       });
   }
 
-  public scanForAny(onDiscoveredCallback: Function, timeout: number = 4): Promise<any> {
-    return this.scan([], onDiscoveredCallback, timeout);
+  public scanForAny(timeout: number = 4): Promise<any> {
+    return this.scan([], timeout);
   }
 
-  public scanForSmartDrive(onDiscoveredCallback: Function, timeout: number = 4): Promise<any> {
-    return this.scan([BluetoothService.SmartDriveServiceUUID], onDiscoveredCallback, timeout);
+  public scanForSmartDrive(timeout: number = 4): Promise<any> {
+    this.clearSmartDrives();
+    return this.scan([BluetoothService.SmartDriveServiceUUID], timeout);
   }
 
   // returns a promise that resolves when scanning completes
-  public scan(uuids: string[], onDiscoveredCallback: Function, timeout: number = 4): Promise<any> {
-    // clear peripherals
-    this.clearSmartDrives();
-
+  public scan(uuids: string[], timeout: number = 4): Promise<any> {
     return this._bluetooth.startScanning({
       serviceUUIDs: uuids,
-      seconds: timeout,
-      onDiscovered: peripheral => {
-        if (this.isSmartDrive(peripheral)) {
-          BluetoothService.SmartDrives.push(new SmartDrive(peripheral));
-          console.log(`SmartDrives: ${BluetoothService.SmartDrives.length} : ${BluetoothService.SmartDrives}`);
-        }
-        if (onDiscoveredCallback && typeof onDiscoveredCallback === 'function') {
-          onDiscoveredCallback(peripheral);
-        }
-      }
+      seconds: timeout
     });
   }
 
@@ -184,8 +173,13 @@ export class BluetoothService {
   }
 
   private onDeviceDiscovered(args: any): void {
-    const dev = args.data.device;
-    console.log(`${dev} - discovered`);
+    const peripheral = args.data.data; // of type Peripheral
+    console.log(`${peripheral.UUID}::${peripheral.name} - discovered`);
+    if (this.isSmartDrive(peripheral)) {
+      var address = peripheral.UUID;
+      var sd = this.getOrMakeSmartDrive(address);
+      console.log(`SmartDrives: ${BluetoothService.SmartDrives.length} : ${BluetoothService.SmartDrives}`);
+    }
   }
 
   private onDeviceNameChange(args: any): void {
@@ -251,34 +245,34 @@ export class BluetoothService {
     }
 
     /*
-	if (p.Type() === 'Data' && p.SubType() === 'DailyInfo') {
-	    const di = new DailyInfo();
-	    di.fromPacket(p);
-	    console.log(JSON.stringify(di.data()));
-	    // TODO: SAVE THE DATA WE RECEIVE INTO OUR LOCAL STORAGE
-	    //DataStorage.HistoricalData.update(di);
-	    // TODO: UPDATE THE SERVER WITH OUR DAILY INFO (FOR PUSHTRACKER APP)
+	  if (p.Type() === 'Data' && p.SubType() === 'DailyInfo') {
+	  const di = new DailyInfo();
+	  di.fromPacket(p);
+	  console.log(JSON.stringify(di.data()));
+	  // TODO: SAVE THE DATA WE RECEIVE INTO OUR LOCAL STORAGE
+	  //DataStorage.HistoricalData.update(di);
+	  // TODO: UPDATE THE SERVER WITH OUR DAILY INFO (FOR PUSHTRACKER APP)
 
-	    // TODO: THIS DATA SHOULD BE AVAILABLE DURING THE TRIAL PAGES WHEN STARTING AND STOPPING A TRIAL
-	    //       - we need events for when we receive daily info from devices that the pages can listen to
+	  // TODO: THIS DATA SHOULD BE AVAILABLE DURING THE TRIAL PAGES WHEN STARTING AND STOPPING A TRIAL
+	  //       - we need events for when we receive daily info from devices that the pages can listen to
 
-	    let options = {
-		actionText: 'View',
-		snackText: `${device.getName()}::${device} sent DailyInfo`,
-		hideDelay: 1000
-	    };
-	    this.snackbar.action(options).then(args => {
-		if (args.command === 'Action') {
-		    dialogsModule.alert({
-			title: `${device} Daily Info`,
-			message: JSON.stringify(di.data(), null, 2),
-			okButtonText: 'Ok'
-		    });
-		}
-	    });
-	} else {
-	    console.log(`${p.Type()}::${p.SubType()} ${p.toString()}`);
-	}
+	  let options = {
+	  actionText: 'View',
+	  snackText: `${device.getName()}::${device} sent DailyInfo`,
+	  hideDelay: 1000
+	  };
+	  this.snackbar.action(options).then(args => {
+	  if (args.command === 'Action') {
+	  dialogsModule.alert({
+	  title: `${device} Daily Info`,
+	  message: JSON.stringify(di.data(), null, 2),
+	  okButtonText: 'Ok'
+	  });
+	  }
+	  });
+	  } else {
+	  console.log(`${p.Type()}::${p.SubType()} ${p.toString()}`);
+	  }
 	*/
     console.log(`${p.Type()}::${p.SubType()} ${p.toString()}`);
     p.destroy();
@@ -393,11 +387,13 @@ export class BluetoothService {
   }
 
   private isSmartDrive(dev: any): boolean {
-    return dev.getName() === 'SmartDrive DU' || dev.getUuids().indexOf(BluetoothService.SmartDriveServiceUUID) > -1;
+    return dev.name.includes('Smart Drive DU'); // || dev.UUID === BluetoothService.SmartDriveServiceUUID;
   }
 
   private isPushTracker(dev: any): boolean {
-    return dev.getName() === 'PushTracker' || dev.getUuids().indexOf(BluetoothService.PushTrackerServiceUUID) > -1;
+    return (
+      dev.getName().includes('PushTracker') || dev.getUuids().indexOf(BluetoothService.PushTrackerServiceUUID) > -1
+    );
   }
 
   private notify(text: string): void {
