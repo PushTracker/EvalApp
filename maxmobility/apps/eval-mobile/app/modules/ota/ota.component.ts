@@ -223,6 +223,15 @@ export class OTAComponent implements OnInit {
       duration: 500
     });
 
+    // TODO: Discover SmartDrives
+    // TODO: Prompt user to select the SmartDrive
+    // TODO: connect to the selected SmartDrive
+    // TODO: wait for version info from connected pushtracker / smartdrives
+    // TODO: prompt user (if the version is already up to date) if they want to force the ota
+    // TODO: begin OTA process for PushTracker and SD
+    // TODO: handle OTA done for PushTracker
+    // TODO: handle OTA done for SmartDrive
+
     let intervalID = null;
     let updatingPT = false;
     intervalID = setInterval(() => {
