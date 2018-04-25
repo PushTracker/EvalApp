@@ -5,7 +5,7 @@
   // width: 100%;
   font-family: $os-Light;
   font-size: 25;
-  padding: 20, 0, 10, 10;
+  padding: 20, 0, 10, 15;
   color: $white;
 }
 
@@ -26,13 +26,13 @@
 }
 
 .topSlide {
-  background-color: $white;
+  background-color: rgba(250,250,250,0.0);
 }
 
 .lowerSlide {
   background-color: $permobil-hero;
-  padding-left: 15;
-  padding-right: 15;
+  // padding-left: 15;
+  // padding-right: 15;
 }
 
 .slide-indicator-inactive {

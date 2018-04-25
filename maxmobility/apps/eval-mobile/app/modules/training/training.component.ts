@@ -1,9 +1,13 @@
 // angular
-import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { Component, ElementRef, OnInit, AfterViewInit, ViewChild } from "@angular/core";
 // nativescript
 import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-ui-sidedrawer";
 import { RadSideDrawerComponent } from "nativescript-ui-sidedrawer/angular";
 import { RouterExtensions } from "nativescript-angular/router";
+import { View } from "ui/core/view";
+import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
+
+const carousel = require('nativescript-carousel').Carousel;
 
 @Component({
     selector: "Training",
@@ -11,11 +15,14 @@ import { RouterExtensions } from "nativescript-angular/router";
     templateUrl: "./training.component.html",
     styleUrls: ["./training.component.css"]
 })
-export class TrainingComponent implements OnInit {
+export class TrainingComponent implements OnInit, AfterViewInit {
 
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
+    @ViewChild('carousel') carousel: ElementRef;
 
-    slides = [
+	snackbar = new SnackBar();
+
+  slides = [
 	{
 	Image: "~/assets/images/PowerOn.png",
 	Label: "Powering SmartDrive",
@@ -78,7 +85,7 @@ export class TrainingComponent implements OnInit {
 	    "Tip: To stop quickly, perform a single-tap followed by a quick combined tap and grab."
 	]
     }
-    ];
+];
 
     private _sideDrawerTransition: DrawerTransitionBase;
 
@@ -93,6 +100,15 @@ export class TrainingComponent implements OnInit {
 	    }
 	});
     }
+
+	ngAfterViewInit(){
+
+		setTimeout(() => {
+	    this.snackbar.simple('Swipe left to view more slides.');
+	}, 1000)
+
+		
+	}
 
     onBack(): void {
 	this.routerExtensions.navigate(["/eval-entry"], {
