@@ -166,6 +166,22 @@ export class OTAComponent implements OnInit {
     });
   }
 
+  select(objects) {
+    // takes a list of objects and prompts the user to select
+    // which of the objects they're interested in. might be
+    // more than one
+    var selected = [];
+    if (objects && objects.length) {
+      if (objects.length > 1) {
+        // TODO: add UI for selecting one or more of the objects
+        selected = objects;
+      } else {
+        selected = objects;
+      }
+    }
+    return selected;
+  }
+
   selectSmartDrives(smartDrives) {
     // takes a list of smart drives and prompts the user to select
     // which of the smartdrives they're interested in. might be
@@ -306,26 +322,28 @@ export class OTAComponent implements OnInit {
       duration: 500
     });
 
-    // TODO: Discover SmartDrives
-    // TODO: Prompt user to select the SmartDrive
-    // TODO: connect to the selected SmartDrive
-    // TODO: wait for version info from connected pushtracker / smartdrives
-    // TODO: prompt user (if the version is already up to date) if they want to force the ota
-    // TODO: begin OTA process for PushTracker and SD
-    // TODO: handle OTA done for PushTracker
-    // TODO: handle OTA done for SmartDrive
-
     if (!this.updating) {
+      let smartDrives = [];
+      let pushTrackers = [];
       this.discoverSmartDrives()
         .then(smartDrives => {
-          return this.selectSmartDrives(smartDrives);
+          return this.select(smartDrives);
         })
         .then(selectedSmartDrives => {
+          smartDrives = selectedSmartDrives;
+          return this.select(BluetoothService.PushTrackers.filter(pt => pt.connected));
+        })
+        .then(selectedPushTrackers => {
+          pushTrackers = selectedPushTrackers;
+
           // OTA the selected smart drive(s)
-          var tasks = selectedSmartDrives.map(sd => {
+          var smartDriveOTATasks = smartDrives.map(sd => {
             return this.performSDOTA(sd);
           });
-          return Promise.all(tasks);
+          var pushTrackerOTATasks = pushTrackers.map(pt => {
+            return this.performPTOTA(pt);
+          });
+          return Promise.all(smartDriveOTATasks.concat(pushTrackerOTATasks));
         })
         .then(connectionStatus => {})
         .then(versionInfo => {});
