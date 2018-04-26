@@ -136,6 +136,14 @@ export class BluetoothService {
     return this._bluetooth.stopScanning();
   }
 
+  public connect(address: string, onConnected?: Function, onDisconnected?: Function) {
+    this._bluetooth.connect({
+      UUID: address,
+      onConnected: onConnected,
+      onDisconnected: onDisconnected
+    });
+  }
+
   public restart(): Promise<any> {
     return new Promise((resolve, reject) => {
       this._bluetooth.disable();
@@ -387,12 +395,15 @@ export class BluetoothService {
   }
 
   private isSmartDrive(dev: any): boolean {
-    return dev.name.includes('Smart Drive DU'); // || dev.UUID === BluetoothService.SmartDriveServiceUUID;
+    var name = dev && dev.name;
+    return name && name.includes('Smart Drive DU'); // || dev.UUID === BluetoothService.SmartDriveServiceUUID;
   }
 
   private isPushTracker(dev: any): boolean {
+    var UUIDs = dev && dev.getUuids && dev.getUuids();
+    var name = dev && dev.getName && dev.getName();
     return (
-      dev.getName().includes('PushTracker') || dev.getUuids().indexOf(BluetoothService.PushTrackerServiceUUID) > -1
+      (name && name.includes('PushTracker')) || (UUIDs && UUIDs.indexOf(BluetoothService.PushTrackerServiceUUID) > -1)
     );
   }
 

@@ -54,6 +54,7 @@ export class SmartDrive extends Observable {
   public coastDistance: number = 0; // cumulative total distance the smartDrive has gone
 
   public address: string = ''; // MAC Address
+  public connected: boolean = false;
 
   // private members
 
@@ -72,7 +73,8 @@ export class SmartDrive extends Observable {
       battery: this.battery,
       driveDistance: this.driveDistance,
       coastDistance: this.coastDistance,
-      address: this.address
+      address: this.address,
+      connected: this.connected
     };
   }
 
@@ -83,6 +85,7 @@ export class SmartDrive extends Observable {
     this.driveDistance = (obj && obj.driveDistance) || 0;
     this.coastDistance = (obj && obj.coastDistance) || 0;
     this.address = (obj && obj.address) || '';
+    this.connected = (obj && obj.connected) || false;
   }
 
   // regular methods
@@ -108,11 +111,13 @@ export class SmartDrive extends Observable {
 
   public handleConnect() {
     // TODO: update state and spawn events
+    this.connected = true;
     this.sendEvent(SmartDrive.smartdrive_connect_event);
   }
 
   public handleDisconnect() {
     // TODO: update state and spawn events
+    this.connected = false;
     this.sendEvent(SmartDrive.smartdrive_disconnect_event);
   }
 

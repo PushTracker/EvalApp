@@ -111,7 +111,7 @@ export class OTAComponent implements OnInit {
     // handle pushtracker connection events for existing pushtrackers
     console.log('registering for connection events!');
     BluetoothService.PushTrackers.map(pt => {
-      console.log(pt);
+      //console.log(pt);
       pt.on(PushTracker.pushtracker_connect_event, args => {
         console.log(`PT CONNECTED EVENT!`);
         if (pt.paired === true) {
@@ -122,7 +122,7 @@ export class OTAComponent implements OnInit {
     // listen for completely new pusthrackers (that we haven't seen before)
     BluetoothService.PushTrackers.on(ObservableArray.changeEvent, (args: ChangedData<number>) => {
       if (args.action === 'add') {
-        console.log(`PT ADDED EVENT!`);
+        //console.log(`PT ADDED EVENT!`);
         const pt = BluetoothService.PushTrackers.getItem(BluetoothService.PushTrackers.length - 1);
         pt.on(PushTracker.pushtracker_connect_event, args => {
           console.log(`PT CONNECTED EVENT!`);
@@ -190,9 +190,24 @@ export class OTAComponent implements OnInit {
   discoverSmartDrives() {
     // show list of SDs
     return this._bluetoothService.scanForSmartDrive().then(() => {
-      var sds = BluetoothService.SmartDrives;
-      console.log(`Found ${sds.length} SmartDrives!`);
+      console.log(`Found ${BluetoothService.SmartDrives.length} SmartDrives!`);
+      return BluetoothService.SmartDrives;
     });
+  }
+
+  selectSmartDrives(smartDrives) {
+    // takes a list of smart drives and prompts the user to select
+    // which of the smartdrives they're interested in. might be
+    // more than one
+    var selectedSmartDrives = [];
+    if (smartDrives && smartDrives.length) {
+      if (smartDrives.length > 1) {
+        // select smart drive(s) here
+      } else {
+        selectedSmartDrives = smartDrives;
+      }
+    }
+    return selectedSmartDrives;
   }
 
   onPtButtonTapped() {
@@ -242,55 +257,72 @@ export class OTAComponent implements OnInit {
         // should pop up to ask the user to select (possibly
         // more than one), else we just auto-select the only
         // one
+        return this.selectSmartDrives(smartDrives);
       })
       .then(selectedSmartDrives => {
         // connect to the selected smart drive(s)
+        var tasks = selectedSmartDrives.map(sd => {
+          return new Promise((resolve, reject) => {
+            this._bluetoothService.connect(
+              sd.address,
+              function(data) {
+                sd.handleConnect();
+                console.log(`connected to ${data.UUID}::${data.name}`);
+                resolve();
+              },
+              function(data) {
+                sd.handleDisconnect();
+              }
+            );
+          });
+        });
+        return Promise.all(tasks);
       })
       .then(connectionStatus => {})
       .then(versionInfo => {});
 
     /*
-	let intervalID = null;
-	let updatingPT = false;
-	intervalID = setInterval(() => {
-	    this.sdBtProgressValue += 15;
-	    if (this.sdBtProgressValue > 100) {
-		this.sdBtProgressValue = 100;
-	    }
-	    this.sdMpProgressValue += 25;
-	    if (this.sdMpProgressValue > 100) {
-		this.sdMpProgressValue = 100;
-	    }
+	  let intervalID = null;
+	  let updatingPT = false;
+	  intervalID = setInterval(() => {
+	  this.sdBtProgressValue += 15;
+	  if (this.sdBtProgressValue > 100) {
+	  this.sdBtProgressValue = 100;
+	  }
+	  this.sdMpProgressValue += 25;
+	  if (this.sdMpProgressValue > 100) {
+	  this.sdMpProgressValue = 100;
+	  }
 
-	    if (this.sdMpProgressValue >= 100 && this.sdBtProgressValue >= 100) {
-		this.ptBtProgressValue += 25;
-		if (this.ptBtProgressValue > 100) {
-		    this.ptBtProgressValue = 100;
-		}
+	  if (this.sdMpProgressValue >= 100 && this.sdBtProgressValue >= 100) {
+	  this.ptBtProgressValue += 25;
+	  if (this.ptBtProgressValue > 100) {
+	  this.ptBtProgressValue = 100;
+	  }
 
-		if (!updatingPT) {
-		    const otaProgressViewPT = <View>this.otaProgressViewPT.nativeElement;
-		    otaProgressViewPT.animate({
-			opacity: 1,
-			duration: 500
-		    });
-		    this.otaButtonText = 'updating PushTracker';
-		    updatingPT = true;
-		}
+	  if (!updatingPT) {
+	  const otaProgressViewPT = <View>this.otaProgressViewPT.nativeElement;
+	  otaProgressViewPT.animate({
+	  opacity: 1,
+	  duration: 500
+	  });
+	  this.otaButtonText = 'updating PushTracker';
+	  updatingPT = true;
+	  }
 
-		if (this.ptBtProgressValue >= 100) {
-		    this.otaButtonText = 'Update Complete';
-		    // cancel the interval we have set
-		    clearInterval(intervalID);
+	  if (this.ptBtProgressValue >= 100) {
+	  this.otaButtonText = 'Update Complete';
+	  // cancel the interval we have set
+	  clearInterval(intervalID);
 
-		    setTimeout(() => {
-			this.routerExtensions.navigate(['/pairing'], {
-			    clearHistory: true
-			});
-		    }, 1500);
-		}
-	    }
-	}, 500);
+	  setTimeout(() => {
+	  this.routerExtensions.navigate(['/pairing'], {
+	  clearHistory: true
+	  });
+	  }, 1500);
+	  }
+	  }
+	  }, 500);
 	*/
   }
 }
