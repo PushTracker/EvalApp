@@ -18,6 +18,18 @@ export interface PTOTAOptions {
   firmware: number[];
 }
 
+export enum PTOTAState {
+  not_started,
+  awaiting_version,
+  awaiting_ready,
+  updating,
+  rebooting,
+  veryfing_update,
+  complete,
+  cancelling,
+  canceled
+}
+
 export class PushTracker extends Observable {
   // Event names
   public static pushtracker_paired_event = 'pushtracker_paired_event';
@@ -50,6 +62,9 @@ export class PushTracker extends Observable {
   public address: string = ''; // MAC Address
   public paired: boolean = false; // Is this PushTracker paired?
   public connected: boolean = false; // Is this PushTracker connected?
+
+  // not serialized
+  public otaState: PTOTAState = PTOTAState.not_started;
 
   // private members
 

@@ -30,6 +30,21 @@ export interface SDOTAOptions {
   bleFirmware: number[];
 }
 
+export enum SDOTAState {
+  not_started,
+  awaiting_versions,
+  awaiting_mcu_ready,
+  updating_mcu,
+  awaiting_ble_ready,
+  updating_ble,
+  rebooting_ble,
+  rebooting_mcu,
+  verifying_update,
+  complete,
+  cancelling,
+  canceled
+}
+
 export class SmartDrive extends Observable {
   // Event names
   public static smartdrive_connect_event = 'smartdrive_connect_event';
@@ -55,6 +70,9 @@ export class SmartDrive extends Observable {
 
   public address: string = ''; // MAC Address
   public connected: boolean = false;
+
+  // not serialized
+  public otaState: SDOTAState = SDOTAState.not_started;
 
   // private members
 
