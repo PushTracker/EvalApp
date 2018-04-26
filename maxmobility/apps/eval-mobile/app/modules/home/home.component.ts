@@ -60,17 +60,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ];
 
   connectivityItems = [
-    { Image: "~/assets/images/PushTracker-pairing.png", 
+    { Image: "~/assets/images/pt-phone-home.png", 
       Description: 'Pair your app with a PushTracker', 
       Directive:'pt-phone',
       Route: '/pairing' 
     },
-    { Image: "~/assets/images/PushTracker-Connecting.png", 
+    { Image: "~/assets/images/pt-connect-home.png", 
       Description: 'Connect your app with the PushTracker', 
       Directive:'pt-phone-connect',
       Route: 'pairing' 
     },
-    { Image: "~/assets/images/PushTracker-SmartDrive-pairing.png", 
+    { Image: "~/assets/images/pt-sd-pairing-home.png", 
       Description: 'Pair your PushTracker with a SmartDrive',
       Directive:'pt-sd',
       Route: '/pairing' 
