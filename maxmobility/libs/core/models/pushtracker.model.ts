@@ -2,23 +2,7 @@ import { Observable, EventData } from 'tns-core-modules/data/observable';
 
 import { Packet } from '@maxmobility/core';
 
-/**
- * The options object passed to the PushTracker's performOTA function
- */
-export interface PTOTAOptions {
-  /**
-   * How long do we want our timeouts (generally on reconnection) to
-   * be in seconds?
-   */
-  timeout: number;
-
-  /**
-   * The array of bytes containing the firmware for the PT
-   */
-  firmware: number[];
-}
-
-export enum PTOTAState {
+enum OTAState {
   not_started,
   awaiting_version,
   awaiting_ready,
@@ -31,6 +15,9 @@ export enum PTOTAState {
 }
 
 export class PushTracker extends Observable {
+  static readonly OTAState = OTAState;
+  readonly OTAState = PushTracker.OTAState;
+
   // Event names
   public static pushtracker_paired_event = 'pushtracker_paired_event';
 
@@ -45,11 +32,7 @@ export class PushTracker extends Observable {
   public static pushtracker_daily_info_event = 'pushtracker_daily_info_event';
   public static pushtracker_awake_event = 'pushtracker_awake_event';
 
-  public static pushtracker_ota_timeout_event = 'pushtracker_ota_timeout_event';
-  public static pushtracker_ota_progress_event = 'pushtracker_ota_progress_event';
-  public static pushtracker_ota_version_event = 'pushtracker_ota_version_event';
-  public static pushtracker_ota_complete_event = 'pushtracker_ota_complete_event';
-  public static pushtracker_ota_failure_event = 'pushtracker_ota_failure_event';
+  public static pushtracker_ota_ready_event = 'pushtracker_ota_ready_event';
 
   public events: any /*IPushTrackerEvents*/;
 
@@ -64,7 +47,7 @@ export class PushTracker extends Observable {
   public connected: boolean = false; // Is this PushTracker connected?
 
   // not serialized
-  public otaState: PTOTAState = PTOTAState.not_started;
+  public otaState: OTAState = OTAState.not_started;
 
   // private members
 
@@ -110,11 +93,6 @@ export class PushTracker extends Observable {
       data,
       message: msg
     });
-  }
-
-  public performOTA(otaOptions: PTOTAOptions) {
-    // TODO: handle all the ota process for this specific
-    // smartdrive
   }
 
   // handlers

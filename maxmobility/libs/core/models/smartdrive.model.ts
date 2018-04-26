@@ -1,36 +1,8 @@
 import { Observable, EventData } from 'tns-core-modules/data/observable';
 
-import { Packet } from '@maxmobility/core';
+import { Packet, bindingTypeToString } from '@maxmobility/core';
 
-/**
- * The options object passed to the SmartDrive's performOTA function
- */
-export interface SDOTAOptions {
-  /**
-   * The type of device we want to OTA - can be 'MCU', 'BLE', or 'BOTH'
-   */
-  deviceType: string;
-
-  /**
-   * How long do we want our timeouts (generally on reconnection) to
-   * be in seconds?
-   */
-  timeout: number;
-
-  /**
-   * The array of bytes containing the firmware for the MCU
-   * (including header)
-   */
-  mcuFirmware: number[];
-
-  /**
-   * The array of bytes containing the firmware for the BLE
-   * (including header)
-   */
-  bleFirmware: number[];
-}
-
-export enum SDOTAState {
+enum OTAState {
   not_started,
   awaiting_versions,
   awaiting_mcu_ready,
@@ -46,6 +18,9 @@ export enum SDOTAState {
 }
 
 export class SmartDrive extends Observable {
+  static readonly OTAState = OTAState;
+  readonly OTAState = SmartDrive.OTAState;
+
   // Event names
   public static smartdrive_connect_event = 'smartdrive_connect_event';
   public static smartdrive_disconnect_event = 'smartdrive_disconnect_event';
@@ -53,11 +28,8 @@ export class SmartDrive extends Observable {
   public static smartdrive_ble_version_event = 'smartdrive_ble_version_event';
   public static smartdrive_mcu_version_event = 'smartdrive_mcu_version_event';
 
-  public static smartdrive_ota_timeout_event = 'smartdrive_ota_timeout_event';
-  public static smartdrive_ota_progress_event = 'smartdrive_ota_progress_event';
-  public static smartdrive_ota_version_event = 'smartdrive_ota_version_event';
-  public static smartdrive_ota_complete_event = 'smartdrive_ota_complete_event';
-  public static smartdrive_ota_failure_event = 'smartdrive_ota_failure_event';
+  public static smartdrive_ota_ready_ble_event = 'smartdrive_ota_ready_ble_event';
+  public static smartdrive_ota_ready_mcu_event = 'smartdrive_ota_ready_mcu_event';
 
   public events: any /*ISmartDriveEvents*/;
 
@@ -72,7 +44,7 @@ export class SmartDrive extends Observable {
   public connected: boolean = false;
 
   // not serialized
-  public otaState: SDOTAState = SDOTAState.not_started;
+  public otaState: OTAState = OTAState.not_started;
 
   // private members
 
@@ -120,44 +92,6 @@ export class SmartDrive extends Observable {
     });
   }
 
-  public performOTA(otaOptions: SDOTAOptions) {
-    return new Promise((resolve, reject) => {
-      // TODO: handle all the ota process for this specific
-      // smartdrive
-      /* OTA States
-	       not_started,
-	       awaiting_versions,
-	       awaiting_mcu_ready,
-	       updating_mcu,
-	       awaiting_ble_ready,
-	       updating_ble,
-	       rebooting_ble,
-	       rebooting_mcu,
-	       verifying_update,
-	       complete,
-	       cancelling,
-	       canceled
-	    */
-      // check state here
-      if (this.otaState !== SDOTAState.not_started) {
-        console.log(`SD already in inconsistent ota state: ${this.otaState}`);
-        console.log('Reboot the SD and then try again!');
-        this.otaState = SDOTAState.not_started;
-        reject();
-      } else {
-        // wait for versions (ble (DeviceInfo) and mcu (MotorInfo))
-        // send start until we receive ota ready from mcu (involves connect / reconnect)
-        // send firmware for mcu
-        // send '6' to SD BLE OTA control characteristic
-        // wait for ota ready from ble
-        // send firmware for ble
-        // send '3' to SD BLE OTA control characteristic (involves connect / reconnect)
-        // send stopOTA to MCU (involves connect / reconnect)
-        // wait for versions (ble (DeviceInfo) and mcu (MotorInfo))
-      }
-    });
-  }
-
   // handlers
 
   public handleConnect() {
@@ -175,7 +109,9 @@ export class SmartDrive extends Observable {
   public handlePacket(p: Packet) {
     const packetType = p.Type();
     const subType = p.SubType();
-    if (packetType && packetType == 'Data') {
+    if (!packetType || !subType) {
+      return;
+    } else if (packetType == 'Data') {
       switch (subType) {
         case 'DeviceInfo':
           this.handleDeviceInfo(p);
@@ -185,6 +121,14 @@ export class SmartDrive extends Observable {
           break;
         case 'DistanceInfo':
           this.handleDistanceInfo(p);
+          break;
+        default:
+          break;
+      }
+    } else if (packetType == 'Command') {
+      switch (subType) {
+        case 'OTAReady':
+          this.handleOTAReady(p);
           break;
         default:
           break;
@@ -248,6 +192,22 @@ export class SmartDrive extends Observable {
         */
     this.driveDistance = distInfo.motorDistance;
     this.coastDistance = distInfo.caseDistance;
+  }
+
+  private handleOTAReady(p: Packet) {
+    // this is sent by both the MCU and the BLE chip in response
+    // to a Command::StartOTA
+    const otaDevice = bindingTypeToString('PacketOTAType', p.data('otaDevice'));
+    switch (otaDevice) {
+      case 'SmartDrive':
+        this.sendEvent(SmartDrive.smartdrive_ota_ready_mcu_event);
+        break;
+      case 'SmartDriveBluetooth':
+        this.sendEvent(SmartDrive.smartdrive_ota_ready_ble_event);
+        break;
+      default:
+        break;
+    }
   }
 }
 

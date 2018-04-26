@@ -183,6 +183,107 @@ export class OTAComponent implements OnInit {
     return selectedSmartDrives;
   }
 
+  performPTOTA(pt: PushTracker): Promise<any> {
+    return new Promise((resolve, reject) => {
+      if (!pt) {
+        console.log('PushTracker passed for OTA is invalid!');
+        reject();
+      } else {
+        // check state here
+        if (pt.otaState !== PushTracker.OTAState.not_started) {
+          console.log(`PT already in inconsistent ota state: ${pt.otaState}`);
+          console.log('Reboot the PT and then try again!');
+          // update the state so it will work next time
+          pt.otaState = PushTracker.OTAState.not_started;
+          reject();
+        } else {
+          // register for disconnection
+          //   - which will happen when we finish / cancel the ota
+          pt.on(PushTracker.pushtracker_disconnect_event, () => {});
+          // register for version events
+          pt.on(PushTracker.pushtracker_version_event, data => {});
+          // send start ota to PT
+          //   - periodically sends start ota
+          //   - stop sending once we get ota ready from PT
+          // send firmware data for PT
+          // send stop ota to PT
+          //   - wait for disconnect event
+          // inform the user they will need to re-pair the PT to the app
+          //   - wait for pairing event for PT
+          // tell the user to reconnect to the app
+          //   - wait for connection event
+          // wait for versions and check to verify update
+          resolve();
+        }
+      }
+    });
+  }
+
+  performSDOTA(sd: SmartDrive): Promise<any> {
+    return new Promise((resolve, reject) => {
+      if (!sd) {
+        console.log('SmartDrive passed for OTA is invalid!');
+        reject();
+      } else {
+        // check state here
+        if (sd.otaState !== SmartDrive.OTAState.not_started) {
+          console.log(`SD already in inconsistent ota state: ${sd.otaState}`);
+          console.log('Reboot the SD and then try again!');
+          // update the state so it will work next time
+          sd.otaState = SmartDrive.OTAState.not_started;
+          reject();
+        } else {
+          // register for connection events
+          sd.on(SmartDrive.smartdrive_connect_event, () => {});
+          sd.on(SmartDrive.smartdrive_disconnect_event, () => {});
+          // register for version events
+          sd.on(SmartDrive.smartdrive_ble_version_event, data => {});
+          sd.on(SmartDrive.smartdrive_mcu_version_event, data => {});
+          // register for ota events
+          sd.on(SmartDrive.smartdrive_ota_ready_ble_event, data => {});
+          sd.on(SmartDrive.smartdrive_ota_ready_mcu_event, data => {});
+
+          // we will generate these ota events:
+          //  * ota_timeout
+          //  * ota_failure
+          //  * ota_complete
+
+          // connect to the smartdrive
+          this._bluetoothService.connect(
+            sd.address,
+            function(data) {
+              sd.handleConnect();
+              console.log(`connected to ${data.UUID}::${data.name}`);
+            },
+            function(data) {
+              sd.handleDisconnect();
+            }
+          );
+
+          // wait to get the connection
+          // wait to get the ble version
+          // wait to get the mcu version
+          // send start ota for MCU
+          //   - wait for reconnection (try to reconnect)
+          //   - keep sending periodically (check connection state)
+          //   - stop sending once we get ota ready from mcu
+          // send firmware data for MCU
+          // send start ota for BLE
+          //   - keep sending periodically (check connection state)
+          //   - stop sending once we get ota ready from mcu
+          // send firmware data for BLE
+          // send '3' to ble control characteristic
+          //   - wait for reconnection (try to reconnect)
+          // send stop OTA to MCU
+          //   - wait for reconnection (try to reconnect)
+          // wait to get ble version
+          // wait to get mcu version
+          // check versions
+        }
+      }
+    });
+  }
+
   onStartOtaUpdate() {
     const scrollView = this.scrollView.nativeElement as ScrollView;
 
@@ -217,28 +318,12 @@ export class OTAComponent implements OnInit {
     if (!this.updating) {
       this.discoverSmartDrives()
         .then(smartDrives => {
-          // if more than one smart drive is found then we
-          // should pop up to ask the user to select (possibly
-          // more than one), else we just auto-select the only
-          // one
           return this.selectSmartDrives(smartDrives);
         })
         .then(selectedSmartDrives => {
-          // connect to the selected smart drive(s)
+          // OTA the selected smart drive(s)
           var tasks = selectedSmartDrives.map(sd => {
-            return new Promise((resolve, reject) => {
-              this._bluetoothService.connect(
-                sd.address,
-                function(data) {
-                  sd.handleConnect();
-                  console.log(`connected to ${data.UUID}::${data.name}`);
-                  resolve();
-                },
-                function(data) {
-                  sd.handleDisconnect();
-                }
-              );
-            });
+            return this.performSDOTA(sd);
           });
           return Promise.all(tasks);
         })
