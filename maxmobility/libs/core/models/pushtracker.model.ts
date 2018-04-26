@@ -143,6 +143,9 @@ export class PushTracker extends Observable {
         case 'SetSettings':
           this.handleSettings(p);
           break;
+        case 'OTAReady':
+          this.handleOTAReady(p);
+          break;
         default:
           break;
       }
@@ -273,6 +276,19 @@ export class PushTracker extends Observable {
     // Wake command
     // TODO: send awawke event to subscribers so they get updated
     this.sendEvent(PushTracker.pushtracker_awake_event);
+  }
+
+  private handleOTAReady(p: Packet) {
+    // this is sent by both the PT in response to a
+    // Command::StartOTA
+    const otaDevice = bindingTypeToString('PacketOTAType', p.data('otaDevice'));
+    switch (otaDevice) {
+      case 'PushTracker':
+        this.sendEvent(PushTracker.pushtracker_ota_ready_event);
+        break;
+      default:
+        break;
+    }
   }
 }
 
