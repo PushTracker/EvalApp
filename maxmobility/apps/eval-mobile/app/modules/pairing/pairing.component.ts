@@ -5,9 +5,13 @@ import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-ui-si
 import { RadSideDrawerComponent } from "nativescript-ui-sidedrawer/angular";
 import { RouterExtensions } from "nativescript-angular/router";
 import { View } from "ui/core/view";
+import { Color } from "tns-core-modules/color";
+import { Feedback, FeedbackType, FeedbackPosition } from "nativescript-feedback";
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 
 const carousel = require('nativescript-carousel').Carousel;
+
+
 
 @Component({
     selector: "Pairing",
@@ -19,7 +23,7 @@ export class PairingComponent implements OnInit, AfterViewInit {
 
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
     @ViewChild('carousel') carousel: ElementRef;
-
+    private feedback: Feedback;
 	snackbar = new SnackBar();
 
 slides = [
@@ -53,7 +57,38 @@ slides = [
 
     private _sideDrawerTransition: DrawerTransitionBase;
 
-    constructor(private routerExtensions: RouterExtensions) {}
+    constructor(private routerExtensions: RouterExtensions) {
+
+		this.feedback = new Feedback();
+	}
+
+	//Connectivity Events
+	pushTrackerPairingSuccess(){
+
+    this.feedback.success({
+      title: "Success!",
+      message: "Successfully paired with PushTracker!",
+      duration: 4500,
+      // type: FeedbackType.Success, // no need to specify when using 'success' instead of 'show'
+      onTap: () => { console.log("showSuccess tapped"); }
+    });
+
+	}
+
+	pushTrackerConnectionSuccess(){
+	this.feedback.success({
+      title: "Success!",
+      message: "Successfully connected with PushTracker!",
+      duration: 4500,
+      // type: FeedbackType.Success, // no need to specify when using 'success' instead of 'show'
+      onTap: () => { console.log("showSuccess tapped"); }
+    });
+		
+	}
+
+
+     
+
 
     // button events
     onNext(): void {

@@ -5,6 +5,8 @@ import { View } from "ui/core/view";
 import { Page } from 'tns-core-modules/ui/page';
 import { Image } from 'ui/image';
 import { Label } from 'ui/label';
+import { Color } from "tns-core-modules/color";
+import { Feedback, FeedbackType, FeedbackPosition } from "nativescript-feedback";
 import { WebView } from 'tns-core-modules/ui/web-view';
 import { isIOS } from 'tns-core-modules/platform';
 import { RouterExtensions } from 'nativescript-angular/router';
@@ -24,6 +26,8 @@ import { FAQs } from '../faq/faq.component';
 })
 export class HomeComponent implements OnInit, AfterViewInit {
   @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
+
+  private feedback: Feedback;
   
     faqItems = FAQs;
     
@@ -222,6 +226,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   private _sideDrawerTransition: DrawerTransitionBase;
 
   constructor(private _page: Page, private _routerExtensions: RouterExtensions, private _logService: LoggingService) {
+
+    this.feedback = new Feedback();
 
 
     //const radList = <RadListViewComponent>this.radListView.nativeElement;

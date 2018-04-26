@@ -28,9 +28,11 @@
           <DockLayout *ngIf="slides.indexOf(slide) == 0" stretchLastChild="false">
             <!-- <Button  class="icon fa" (tap)="onChevronTapped()" text="&#xf054;" dock="right"></Button> -->
           </DockLayout>
+            <Button *ngIf="slides.indexOf(slide) == 0" class="back-button" text="Success" (tap)="pushTrackerPairingSuccess()"></Button>
+
+            <Button *ngIf="slides.indexOf(slide) == 1" class="back-button" text="Success" (tap)="pushTrackerConnectionSuccess()"></Button>
             
-            <!-- <Button *ngIf="slides.indexOf(slide) == (slides.length-1)" class="next-button" text="Next" (tap)="onNext()"></Button>
-            <Button *ngIf="slides.indexOf(slide) == 0" class="back-button" text="Back" (tap)="onBack()"></Button> -->
+            
           </StackLayout>
         </ScrollView>
       </GridLayout>
