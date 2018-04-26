@@ -249,15 +249,55 @@ export class OTAComponent implements OnInit {
           sd.otaState = SmartDrive.OTAState.not_started;
           reject();
         } else {
+          console.log(`Beginning OTA for SmartDrive: ${sd.address}`);
+          // set up variables to keep track of the ota
+          let haveMCUVersion = false;
+          let haveBLEVersion = false;
+          let connectionIntervalID = null;
+          // now that we're starting the OTA, we are awaiting the versions
+          sd.otaState = SmartDrive.OTAState.awaiting_versions;
           // register for connection events
-          sd.on(SmartDrive.smartdrive_connect_event, () => {});
-          sd.on(SmartDrive.smartdrive_disconnect_event, () => {});
+          sd.on(SmartDrive.smartdrive_connect_event, () => {
+            // clear out the connection interval if it exists
+            if (connectionIntervalID) {
+              clearInterval(connectionIntervalID);
+            }
+            // TODO: Subscribe to all the characteristics
+            // so the SD will send us data!
+          });
+          sd.on(SmartDrive.smartdrive_disconnect_event, () => {
+            // try to connect to it again
+            connectionIntervalID = setInterval(() => {
+              this._bluetoothService.connect(
+                sd.address,
+                function(data) {
+                  sd.handleConnect();
+                  console.log(`connected to ${data.UUID}::${data.name}`);
+                },
+                function(data) {
+                  sd.handleDisconnect();
+                }
+              );
+            }, 5000);
+          });
           // register for version events
-          sd.on(SmartDrive.smartdrive_ble_version_event, data => {});
-          sd.on(SmartDrive.smartdrive_mcu_version_event, data => {});
+          sd.on(SmartDrive.smartdrive_ble_version_event, data => {
+            console.log(`Got SD MCU Version ${data.data.ble}`);
+            haveBLEVersion = true;
+          });
+          sd.on(SmartDrive.smartdrive_mcu_version_event, data => {
+            console.log(`Got SD MCU Version ${data.data.mcu}`);
+            haveMCUVersion = true;
+          });
           // register for ota events
-          sd.on(SmartDrive.smartdrive_ota_ready_ble_event, data => {});
-          sd.on(SmartDrive.smartdrive_ota_ready_mcu_event, data => {});
+          sd.on(SmartDrive.smartdrive_ota_ready_ble_event, data => {
+            console.log(`Got BLE OTAReady from ${sd.address}`);
+            sd.otaState = SmartDrive.OTAState.updating_ble;
+          });
+          sd.on(SmartDrive.smartdrive_ota_ready_mcu_event, data => {
+            console.log(`Got MCU OTAReady from ${sd.address}`);
+            sd.otaState = SmartDrive.OTAState.updating_mcu;
+          });
 
           // we will generate these ota events:
           //  * ota_timeout
@@ -276,9 +316,42 @@ export class OTAComponent implements OnInit {
             }
           );
 
-          // wait to get the connection
-          // wait to get the ble version
-          // wait to get the mcu version
+          let intID = null;
+          intID = setInterval(() => {
+            // wait to get the ble version
+            // wait to get the mcu version
+            if (haveBLEVersion && haveMCUVersion) {
+              sd.otaState = SmartDrive.OTAState.awaiting_mcu_ready;
+            }
+
+            switch (sd.otaState) {
+              case SmartDrive.OTAState.awaiting_mcu_ready:
+                if (sd.connected) {
+                  // send start OTA
+                  console.log(`Sending StartOTA to ${sd.address}`);
+                  const p = new Packet();
+                  p.Type('Command');
+                  p.SubType('StartOTA');
+                  p.data('otaDevice', 0); // smartdrive is 0
+                  const data = p.toUint8Array();
+                  this._bluetoothService.write({
+                    peripheralUUID: sd.address,
+                    serviceUUID: BluetoothService.SmartDriveServiceUUID,
+                    characteristicUUID: BluetoothService.SmartDriveControlCharacteristic,
+                    value: data
+                  });
+                  p.destroy();
+                }
+                break;
+              case SmartDrive.OTAState.updating_mcu:
+                clearInterval(intID);
+                break;
+              case SmartDrive.OTAState.awaiting_ble_ready:
+                break;
+              default:
+                break;
+            }
+          }, 250);
           // send start ota for MCU
           //   - wait for reconnection (try to reconnect)
           //   - keep sending periodically (check connection state)
