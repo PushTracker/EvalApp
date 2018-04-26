@@ -1,6 +1,6 @@
 import { Observable, EventData } from 'tns-core-modules/data/observable';
 
-import { Packet } from '@maxmobility/core';
+import { Packet, bindingTypeToString } from '@maxmobility/core';
 
 enum OTAState {
   not_started,
