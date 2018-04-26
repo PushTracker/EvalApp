@@ -136,7 +136,7 @@ export class BluetoothService {
     return this._bluetooth.stopScanning();
   }
 
-  public connect(address: string, onConnected?: Function, onDisconnected?: Function) {
+  public connect(address: string, onConnected?: any, onDisconnected?: any) {
     this._bluetooth.connect({
       UUID: address,
       onConnected: onConnected,

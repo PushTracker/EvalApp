@@ -121,8 +121,41 @@ export class SmartDrive extends Observable {
   }
 
   public performOTA(otaOptions: SDOTAOptions) {
-    // TODO: handle all the ota process for this specific
-    // smartdrive
+    return new Promise((resolve, reject) => {
+      // TODO: handle all the ota process for this specific
+      // smartdrive
+      /* OTA States
+	       not_started,
+	       awaiting_versions,
+	       awaiting_mcu_ready,
+	       updating_mcu,
+	       awaiting_ble_ready,
+	       updating_ble,
+	       rebooting_ble,
+	       rebooting_mcu,
+	       verifying_update,
+	       complete,
+	       cancelling,
+	       canceled
+	    */
+      // check state here
+      if (this.otaState !== SDOTAState.not_started) {
+        console.log(`SD already in inconsistent ota state: ${this.otaState}`);
+        console.log('Reboot the SD and then try again!');
+        this.otaState = SDOTAState.not_started;
+        reject();
+      } else {
+        // wait for versions (ble (DeviceInfo) and mcu (MotorInfo))
+        // send start until we receive ota ready from mcu (involves connect / reconnect)
+        // send firmware for mcu
+        // send '6' to SD BLE OTA control characteristic
+        // wait for ota ready from ble
+        // send firmware for ble
+        // send '3' to SD BLE OTA control characteristic (involves connect / reconnect)
+        // send stopOTA to MCU (involves connect / reconnect)
+        // wait for versions (ble (DeviceInfo) and mcu (MotorInfo))
+      }
+    });
   }
 
   // handlers

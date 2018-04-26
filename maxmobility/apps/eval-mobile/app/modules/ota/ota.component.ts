@@ -47,26 +47,23 @@ import { Packet, DailyInfo, PushTracker, SmartDrive } from '@maxmobility/core';
 export class OTAComponent implements OnInit {
   @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
   @ViewChild('scrollView') scrollView: ElementRef;
-  @ViewChild('sdConnectionButton') sdConnectionButton: ElementRef;
-  @ViewChild('ptConnectionButton') ptConnectionButton: ElementRef;
   @ViewChild('otaTitleView') otaTitleView: ElementRef;
   @ViewChild('otaProgressViewSD') otaProgressViewSD: ElementRef;
   @ViewChild('otaProgressViewPT') otaProgressViewPT: ElementRef;
   @ViewChild('otaFeaturesView') otaFeaturesView: ElementRef;
 
-  // blah$: Observable<number> = Observable.of(25);
+  connected = false;
+  updating = false;
 
-  titleText = 'Press the right button on your PushTracker to connect. (use the one up to the left to test)';
-  otaButtonText = 'Begin Firmware Updates';
+  // text for buttons and titles in different states
+  initialTitleText = 'Press the right button on your PushTracker to connect. (use the one here to test)';
+  connectedTitleText = 'Firmware Version 1.5';
 
-  sdBtConnected = false;
-  ptBtConnected = false;
+  initialButtonText = 'Begin Firmware Updates';
+  updatingButtonText = 'Updating SmartDrive firmware...';
 
-  ptConnectionButtonClass = 'fa grayed';
-  sdConnectionButtonClass = 'fa grayed';
-
-  bTSmartDriveConnectionIcon = String.fromCharCode(0xf293);
-  bTPushTrackerConnectionIcon = String.fromCharCode(0xf293);
+  //bTSmartDriveConnectionIcon = String.fromCharCode(0xf293);
+  //bTPushTrackerConnectionIcon = String.fromCharCode(0xf293);
 
   sdBtProgressValue = 0;
   sdMpProgressValue = 0;
@@ -83,10 +80,6 @@ export class OTAComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // start discovering smartDrives here; given a list of
-    // available smartDrives - ask the user which one they want to
-    // update
-
     const otaTitleView = <View>this.otaTitleView.nativeElement;
     otaTitleView.opacity = 0;
 
@@ -115,7 +108,7 @@ export class OTAComponent implements OnInit {
       pt.on(PushTracker.pushtracker_connect_event, args => {
         console.log(`PT CONNECTED EVENT!`);
         if (pt.paired === true) {
-          this.didConnectPushTracker(true);
+          this.onPushTrackerConnected();
         }
       });
     });
@@ -125,66 +118,44 @@ export class OTAComponent implements OnInit {
         //console.log(`PT ADDED EVENT!`);
         const pt = BluetoothService.PushTrackers.getItem(BluetoothService.PushTrackers.length - 1);
         pt.on(PushTracker.pushtracker_connect_event, args => {
-          console.log(`PT CONNECTED EVENT!`);
+          //console.log(`PT CONNECTED EVENT!`);
           if (/*pt.paired === true*/ true) {
-            this.didConnectPushTracker(true);
+            this.onPushTrackerConnected();
           }
         });
       }
     });
 
+    // start discovering smartDrives here; given a list of
+    // available smartDrives - ask the user which one they want to
+    // update
+
     // smartdrives
     BluetoothService.SmartDrives.on(ObservableArray.changeEvent, (args: ChangedData<number>) => {
       if (args.action === 'add') {
-        this.didConnectPushTracker(true);
+        //console.log(`SD ADDED EVENT`);
       }
     });
   }
 
-  onValueChanged(args) {
-    const progressBar = <Progress>args.object;
-
-    console.log('Value changed for ' + progressBar);
-    console.log('New value: ' + progressBar.value);
+  // DEBUGGING
+  onPtButtonTapped() {
+    this.onPushTrackerConnected();
   }
 
-  get sideDrawerTransition(): DrawerTransitionBase {
-    return this._sideDrawerTransition;
+  onSdButtonTapped() {
+    this.onPushTrackerConnected();
   }
-  onDrawerButtonTap(): void {
-    this.drawerComponent.sideDrawer.showDrawer();
-  }
+  // END DEBUGGING
 
   // Connectivity
-  didConnectPushTracker(connected) {
-    this.bTPushTrackerConnectionIcon = connected = true ? String.fromCharCode(0xf294) : String.fromCharCode(0xf293);
-
-    this.ptConnectionButtonClass = connected = true ? 'fa hero' : 'fa grayed';
-
-    // tslint:disable-next-line:max-line-length
-    this.titleText = connected = true
-      ? 'Firmware Version 1.5'
-      : 'Press the right button on your PushTracker to connect. (use the one here to test)';
-
-    // tslint:disable-next-line:max-line-length
-    this.otaButtonText = connected = true
-      ? 'Begin Firmware Updates'
-      : 'Press the right button on your PushTracker to connect. (use the one here to test)';
-
+  onPushTrackerConnected() {
+    this.connected = true;
     const otaTitleView = <View>this.otaTitleView.nativeElement;
     otaTitleView.animate({
       opacity: 1,
       duration: 500
     });
-
-    // this.blah$ = duration(800)
-    // .map(elasticOut)
-    // .map(amount(150));
-  }
-  didConnectSmartDrive(connected) {
-    this.bTSmartDriveConnectionIcon = connected = true ? String.fromCharCode(0xf294) : String.fromCharCode(0xf293);
-
-    this.sdConnectionButtonClass = connected = true ? 'fa hero' : 'fa grayed';
   }
 
   discoverSmartDrives() {
@@ -203,6 +174,8 @@ export class OTAComponent implements OnInit {
     if (smartDrives && smartDrives.length) {
       if (smartDrives.length > 1) {
         // select smart drive(s) here
+        // TODO: add UI for selecting one or more of the smartdrives
+        selectedSmartDrives = smartDrives;
       } else {
         selectedSmartDrives = smartDrives;
       }
@@ -210,17 +183,7 @@ export class OTAComponent implements OnInit {
     return selectedSmartDrives;
   }
 
-  onPtButtonTapped() {
-    this.didConnectPushTracker(true);
-  }
-
-  onSdButtonTapped() {
-    this.didConnectSmartDrive(true);
-  }
-
   onStartOtaUpdate() {
-    this.otaButtonText = 'updating SmartDrive firmware...';
-
     const scrollView = this.scrollView.nativeElement as ScrollView;
 
     // const scrollView = new ScrollView();
@@ -251,36 +214,39 @@ export class OTAComponent implements OnInit {
     // TODO: handle OTA done for PushTracker
     // TODO: handle OTA done for SmartDrive
 
-    this.discoverSmartDrives()
-      .then(smartDrives => {
-        // if more than one smart drive is found then we
-        // should pop up to ask the user to select (possibly
-        // more than one), else we just auto-select the only
-        // one
-        return this.selectSmartDrives(smartDrives);
-      })
-      .then(selectedSmartDrives => {
-        // connect to the selected smart drive(s)
-        var tasks = selectedSmartDrives.map(sd => {
-          return new Promise((resolve, reject) => {
-            this._bluetoothService.connect(
-              sd.address,
-              function(data) {
-                sd.handleConnect();
-                console.log(`connected to ${data.UUID}::${data.name}`);
-                resolve();
-              },
-              function(data) {
-                sd.handleDisconnect();
-              }
-            );
+    if (!this.updating) {
+      this.discoverSmartDrives()
+        .then(smartDrives => {
+          // if more than one smart drive is found then we
+          // should pop up to ask the user to select (possibly
+          // more than one), else we just auto-select the only
+          // one
+          return this.selectSmartDrives(smartDrives);
+        })
+        .then(selectedSmartDrives => {
+          // connect to the selected smart drive(s)
+          var tasks = selectedSmartDrives.map(sd => {
+            return new Promise((resolve, reject) => {
+              this._bluetoothService.connect(
+                sd.address,
+                function(data) {
+                  sd.handleConnect();
+                  console.log(`connected to ${data.UUID}::${data.name}`);
+                  resolve();
+                },
+                function(data) {
+                  sd.handleDisconnect();
+                }
+              );
+            });
           });
-        });
-        return Promise.all(tasks);
-      })
-      .then(connectionStatus => {})
-      .then(versionInfo => {});
+          return Promise.all(tasks);
+        })
+        .then(connectionStatus => {})
+        .then(versionInfo => {});
+    }
 
+    this.updating = true;
     /*
 	  let intervalID = null;
 	  let updatingPT = false;
@@ -324,5 +290,12 @@ export class OTAComponent implements OnInit {
 	  }
 	  }, 500);
 	*/
+  }
+
+  get sideDrawerTransition(): DrawerTransitionBase {
+    return this._sideDrawerTransition;
+  }
+  onDrawerButtonTap(): void {
+    this.drawerComponent.sideDrawer.showDrawer();
   }
 }
