@@ -60,17 +60,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ];
 
   connectivityItems = [
-    { Image: "~/assets/images/band_bluetooth.png", 
+    { Image: "~/assets/images/PushTracker-pairing.png", 
       Description: 'Pair your app with a PushTracker', 
       Directive:'pt-phone',
       Route: '/pairing' 
     },
-    { Image: "~/assets/images/band_settings.png", 
+    { Image: "~/assets/images/PushTracker-Connecting.png", 
       Description: 'Connect your app with the PushTracker', 
       Directive:'pt-phone-connect',
       Route: 'pairing' 
     },
-    { Image: "~/assets/images/smartdrive-wheel.png", 
+    { Image: "~/assets/images/PushTracker-SmartDrive-pairing.png", 
       Description: 'Pair your PushTracker with a SmartDrive',
       Directive:'pt-sd',
       Route: '/pairing' 
@@ -78,7 +78,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ];
 
   evalItems = [
-    { Image: "~/assets/images/training-tap.jpg", 
+    { Image: "~/assets/images/Training.jpg", 
       Description: 'Training how to use SmartDrive', 
       Route: '/training' 
     },
