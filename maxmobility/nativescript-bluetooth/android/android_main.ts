@@ -790,14 +790,24 @@ export class Bluetooth extends BluetoothCommon {
 
   public makeCharacteristic(opts: MakeCharacteristicOptions) {
     const cuuid = this.stringToUuid(opts.UUID);
-    const gprop = (opts && opts.property) || android.bluetooth.BluetoothGattCharacteristic.PROPERTY_READ;
-    const gperm = (opts && opts.permission) || android.bluetooth.BluetoothGattCharacteristic.PERMISSION_READ;
-    return new android.bluetooth.BluetoothGattCharacteristic(cuuid, gprop, gperm);
+    const props =
+      (opts && opts.properties) ||
+      android.bluetooth.BluetoothGattCharacteristic.PROPERTY_READ |
+        android.bluetooth.BluetoothGattCharacteristic.PROPERTY_WRITE |
+        android.bluetooth.BluetoothGattCharacteristic.PROPERTY_NOTIFY;
+    const permissions =
+      (opts && opts.permissions) ||
+      android.bluetooth.BluetoothGattCharacteristic.PERMISSION_WRITE |
+        android.bluetooth.BluetoothGattCharacteristic.PERMISSION_READ;
+    return new android.bluetooth.BluetoothGattCharacteristic(cuuid, props, permissions);
   }
 
-  public makeDescriptor(options) {
-    const uuid = this.stringToUuid(options.UUID);
-    const perms: number = options.permissions || android.bluetooth.BluetoothGattDescriptor.PERMISSION_READ;
+  public makeDescriptor(opts) {
+    const uuid = this.stringToUuid(opts.UUID);
+    const perms =
+      (opts && opts.permissions) ||
+      android.bluetooth.BluetoothGattDescriptor.PERMISSION_READ |
+        android.bluetooth.BluetoothGattDescriptor.PERMISSION_WRITE;
     return new android.bluetooth.BluetoothGattDescriptor(uuid, perms);
   }
 
@@ -956,7 +966,7 @@ export class Bluetooth extends BluetoothCommon {
       );
     });
   }
-  /* * * * * * END BLUETOOTH PERIPHERAL CODE  * * * * */
+  /* * * * * * END BLUETOOTHcd PERIPHERAL CODE  * * * * */
 
   public gattDisconnect(gatt: android.bluetooth.BluetoothGatt) {
     if (gatt !== null) {
