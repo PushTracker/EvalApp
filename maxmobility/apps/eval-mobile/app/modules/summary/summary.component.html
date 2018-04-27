@@ -2,10 +2,10 @@
   <Label class="action-bar-title" text="Summary"></Label>
 </ActionBar>
 
-<StackLayout class="page page-content hero" tkMainContent>
-  <GridLayout background="#fff" rows="auto, *, auto" cols="*">
-    <StackLayout row="0" class="topSlide" orientation="horizontal" horizontalAlignment="center">
-      <Image src="~/assets/images/notebook-5" stretch="aspectFit" width="100" height="100" margin="25"></Image>
+<StackLayout class="hero" tkMainContent>
+  <GridLayout backgroundImage="~/assets/images/background_1.jpg" rows="auto, *, auto" cols="*">
+    <StackLayout row="0" class="topSlide" orientation="horizontal" horizontalAlignment="center" height="20%">
+      <Image src="~/assets/images/trial-summary" stretch="aspectFit"></Image>
     </StackLayout>
 
     //First Page: Configure Trial
@@ -14,7 +14,6 @@
 
         //Heading and description
         <Label text="Summary" class="slideLowerLabel" textWrap="true"></Label>
-        <!-- <Label text="Tell us how it went." class="slideDescription" textWrap="true"></Label> -->
 
         //Stats and Questionaire
         <StackLayout class="trial-stack-layout">
