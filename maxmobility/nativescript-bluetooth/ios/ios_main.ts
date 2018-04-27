@@ -13,6 +13,7 @@ import {
   StartAdvertisingOptions,
   MakeServiceOptions,
   MakeCharacteristicOptions,
+  CharacteristicProperties,
   CLogTypes
 } from '../common';
 import { CBPeripheralManagerDelegateImpl } from './CBPeripheralManagerDelegateImpl';
@@ -190,18 +191,34 @@ export class Bluetooth extends BluetoothCommon {
 
   public makeCharacteristic(opts: MakeCharacteristicOptions) {
     const uuid = CBUUID.UUIDWithString(opts.UUID);
-    return permission;
-    /*
-    let cuuid = Bluetooth._stringToUuid(characteristicOptions.UUID);
-    let gprop = new Number(characteristicOptions.gattProperty || android.bluetooth.BluetoothGattCharacteristic.PROPERTY_READ);
-    let gperm = new Number(characteristicOptions.gattPermissions || android.bluetooth.BluetoothGattCharacteristic.PERMISSION_READ);
 
-    return new android.bluetooth.BluetoothGattCharacteristic(cuuid, gprop, gperm);
-    */
+    // let props;
+    // if (opts && opts.properties) {
+    //   props = this._mapCharacteristicProps(opts.properties);
+    // }
+
+    const props =
+      (opts && opts.properties) || CBCharacteristicProperties.PropertyRead | CBCharacteristicProperties.PropertyWrite;
+
+    const permissions =
+      (opts && opts.permissions) || CBAttributePermissions.Writeable | CBAttributePermissions.Readable;
+
+    // create characterstic
+    const characteristic = CBMutableCharacteristic.alloc().initWithTypePropertiesValuePermissions(
+      uuid,
+      props,
+      null,
+      permissions
+    );
+
+    return characteristic;
   }
 
   public makeDescriptor(options) {
     const uuid = this._stringToUuid(options.UUID);
+    // const perms = (opts && opts.perms) ||
+    const descriptor = CBMutableDescriptor.alloc().init();
+    const d = CBDescriptor.alloc().init();
     // return new android.bluetooth.BluetoothGattDescriptor(uuid, perms);
     return null;
   }
@@ -210,9 +227,10 @@ export class Bluetooth extends BluetoothCommon {
    * https://developer.apple.com/documentation/corebluetooth/cbperipheralmanager/1393255-addservice
    */
   public addService(service) {
+    // TODO: add a check against the type service is
     if (service && this._peripheralManager) {
       // create a CBMutableService - https://developer.apple.com/documentation/corebluetooth/cbmutableservice?language=objc
-      this._peripheralManager.addService();
+      this._peripheralManager.addService(service);
     }
   }
 
@@ -626,6 +644,24 @@ export class Bluetooth extends BluetoothCommon {
         reject(ex);
       }
     });
+  }
+
+  private _mapCharacteristicProps(props) {
+    // check the properties/permissions
+    const result = null;
+    if (props) {
+      props.forEach(v => {
+        if (v === 0) {
+          props += CBCharacteristicProperties.PropertyWrite;
+        }
+        if (v === 1) {
+          props += CBCharacteristicProperties.PropertyRead;
+        }
+        if (v === 2) {
+          props += CBCharacteristicProperties.PropertyNotify;
+        }
+      });
+    }
   }
 
   private _isEnabled() {
