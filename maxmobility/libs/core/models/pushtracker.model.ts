@@ -18,6 +18,17 @@ export class PushTracker extends Observable {
   static readonly OTAState = OTAState;
   readonly OTAState = PushTracker.OTAState;
 
+  // bluetooth info
+  public static ServiceUUID = '1d14d6ee-fd63-4fa1-bfa4-8f47b42119f0';
+  public static Characteristics = [
+    '58daaa15-f2b2-4cd9-b827-5807b267dae1',
+    '68208ebf-f655-4a2d-98f4-20d7d860c471',
+    '9272e309-cd33-4d83-a959-b54cc7a54d1f',
+    '8489625f-6c73-4fc0-8bcc-735bb173a920',
+    '5177fda8-1003-4254-aeb9-7f9edb3cc9cf'
+  ];
+  public static DataCharacteristic = PushTracker.Characteristics[1];
+
   // Event names
   public static pushtracker_paired_event = 'pushtracker_paired_event';
 

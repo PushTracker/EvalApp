@@ -16,28 +16,6 @@ import { Packet, DailyInfo, PushTracker, SmartDrive } from '@maxmobility/core';
 @Injectable()
 export class BluetoothService {
   // static members
-  public static SmartDriveServiceUUID = '0cd51666-e7cb-469b-8e4d-2742f1ba7723';
-  public static SmartDriveCharacteristics = [
-    'e7add780-b042-4876-aae1-112855353cc1',
-    'e8add780-b042-4876-aae1-112855353cc1',
-    'e9add780-b042-4876-aae1-112855353cc1',
-    'eaadd780-b042-4876-aae1-112855353cc1',
-    'ebadd780-b042-4876-aae1-112855353cc1'
-  ];
-  public static SmartDriveDataCharacteristic = BluetoothService.SmartDriveCharacteristics[1];
-  public static SmartDriveControlCharacteristic = BluetoothService.SmartDriveCharacteristics[2];
-  public static SmartDriveBLEOTADataCharacteristic = BluetoothService.SmartDriveCharacteristics[0];
-  public static SmartDriveBLEOTAControlCharacteristic = BluetoothService.SmartDriveCharacteristics[4];
-
-  public static PushTrackerServiceUUID = '1d14d6ee-fd63-4fa1-bfa4-8f47b42119f0';
-  public static PushTrackerCharacteristics = [
-    '58daaa15-f2b2-4cd9-b827-5807b267dae1',
-    '68208ebf-f655-4a2d-98f4-20d7d860c471',
-    '9272e309-cd33-4d83-a959-b54cc7a54d1f',
-    '8489625f-6c73-4fc0-8bcc-735bb173a920',
-    '5177fda8-1003-4254-aeb9-7f9edb3cc9cf'
-  ];
-  public static PushTrackerDataCharacteristic = BluetoothService.PushTrackerCharacteristics[1];
 
   public static AppServiceUUID = '9358ac8f-6343-4a31-b4e0-4b13a2b45d86';
 
@@ -142,7 +120,7 @@ export class BluetoothService {
 
   public scanForSmartDrive(timeout: number = 4): Promise<any> {
     this.clearSmartDrives();
-    return this.scan([BluetoothService.SmartDriveServiceUUID], timeout);
+    return this.scan([SmartDrive.ServiceUUID], timeout);
   }
 
   // returns a promise that resolves when scanning completes
@@ -164,6 +142,10 @@ export class BluetoothService {
       onDisconnected: onDisconnected
     });
   }
+
+  public discoverServices(opts: any) {}
+
+  public discoverCharacteristics(opts: any) {}
 
   public write(opts: Bluetooth.WriteOptions) {
     return this._bluetooth.write(opts);
@@ -427,9 +409,7 @@ export class BluetoothService {
   private isPushTracker(dev: any): boolean {
     var UUIDs = dev && dev.getUuids && dev.getUuids();
     var name = dev && dev.getName && dev.getName();
-    return (
-      (name && name.includes('PushTracker')) || (UUIDs && UUIDs.indexOf(BluetoothService.PushTrackerServiceUUID) > -1)
-    );
+    return (name && name.includes('PushTracker')) || (UUIDs && UUIDs.indexOf(PushTracker.ServiceUUID) > -1);
   }
 
   private notify(text: string): void {

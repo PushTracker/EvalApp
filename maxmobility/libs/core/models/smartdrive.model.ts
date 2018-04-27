@@ -21,9 +21,26 @@ export class SmartDrive extends Observable {
   static readonly OTAState = OTAState;
   readonly OTAState = SmartDrive.OTAState;
 
+  // bluetooth info
+  public static ServiceUUID = '0cd51666-e7cb-469b-8e4d-2742f1ba7723';
+  public static Characteristics = [
+    'e7add780-b042-4876-aae1-112855353cc1',
+    'e8add780-b042-4876-aae1-112855353cc1',
+    'e9add780-b042-4876-aae1-112855353cc1',
+    'eaadd780-b042-4876-aae1-112855353cc1',
+    'ebadd780-b042-4876-aae1-112855353cc1'
+  ];
+  public static DataCharacteristic = SmartDrive.Characteristics[1];
+  public static ControlCharacteristic = SmartDrive.Characteristics[2];
+  public static BLEOTADataCharacteristic = SmartDrive.Characteristics[0];
+  public static BLEOTAControlCharacteristic = SmartDrive.Characteristics[4];
+
   // Event names
   public static smartdrive_connect_event = 'smartdrive_connect_event';
   public static smartdrive_disconnect_event = 'smartdrive_disconnect_event';
+
+  public static smartdrive_service_discovered_event = 'smartdrive_service_discovered_event';
+  public static smartdrive_characteristic_discovered_event = 'smartdrive_characteristic_discovered_event';
 
   public static smartdrive_ble_version_event = 'smartdrive_ble_version_event';
   public static smartdrive_mcu_version_event = 'smartdrive_mcu_version_event';
@@ -94,10 +111,10 @@ export class SmartDrive extends Observable {
 
   // handlers
 
-  public handleConnect() {
+  public handleConnect(data?: any) {
     // TODO: update state and spawn events
     this.connected = true;
-    this.sendEvent(SmartDrive.smartdrive_connect_event);
+    this.sendEvent(SmartDrive.smartdrive_connect_event, data);
   }
 
   public handleDisconnect() {

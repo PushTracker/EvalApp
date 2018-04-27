@@ -257,13 +257,21 @@ export class OTAComponent implements OnInit {
           // now that we're starting the OTA, we are awaiting the versions
           sd.otaState = SmartDrive.OTAState.awaiting_versions;
           // register for connection events
-          sd.on(SmartDrive.smartdrive_connect_event, () => {
+          sd.on(SmartDrive.smartdrive_connect_event, d => {
+            let data = d.data;
+            console.log(`connected to ${data.UUID}::${data.name}`);
             // clear out the connection interval if it exists
             if (connectionIntervalID) {
               clearInterval(connectionIntervalID);
             }
             // TODO: Subscribe to all the characteristics
             // so the SD will send us data!
+            var services = data.services;
+            console.log(services);
+            var sdService = services.filter(s => s.UUID == SmartDrive.ServiceUUID)[0];
+            console.log(sdService);
+            var characteristics = sdService.characteristics;
+            console.log(characteristics);
           });
           sd.on(SmartDrive.smartdrive_disconnect_event, () => {
             // try to connect to it again
@@ -271,8 +279,7 @@ export class OTAComponent implements OnInit {
               this._bluetoothService.connect(
                 sd.address,
                 function(data) {
-                  sd.handleConnect();
-                  console.log(`connected to ${data.UUID}::${data.name}`);
+                  sd.handleConnect(data);
                 },
                 function(data) {
                   sd.handleDisconnect();
@@ -308,8 +315,7 @@ export class OTAComponent implements OnInit {
           this._bluetoothService.connect(
             sd.address,
             function(data) {
-              sd.handleConnect();
-              console.log(`connected to ${data.UUID}::${data.name}`);
+              sd.handleConnect(data);
             },
             function(data) {
               sd.handleDisconnect();
@@ -336,8 +342,8 @@ export class OTAComponent implements OnInit {
                   const data = p.toUint8Array();
                   this._bluetoothService.write({
                     peripheralUUID: sd.address,
-                    serviceUUID: BluetoothService.SmartDriveServiceUUID,
-                    characteristicUUID: BluetoothService.SmartDriveControlCharacteristic,
+                    serviceUUID: SmartDrive.ServiceUUID,
+                    characteristicUUID: SmartDrive.ControlCharacteristic,
                     value: data
                   });
                   p.destroy();
