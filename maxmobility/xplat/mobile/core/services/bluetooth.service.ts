@@ -10,7 +10,7 @@ import { ObservableArray } from 'tns-core-modules/data/observable-array';
 import * as Toast from 'nativescript-toast';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 import { Feedback, FeedbackType, FeedbackPosition } from 'nativescript-feedback';
-import { Bluetooth } from 'nativescript-bluetooth';
+import { Bluetooth, CharacteristicProperties } from 'nativescript-bluetooth';
 import { Packet, DailyInfo, PushTracker, SmartDrive } from '@maxmobility/core';
 
 @Injectable()
@@ -204,8 +204,8 @@ export class BluetoothService {
     const peripheral = args.data.data; // of type Peripheral
     console.log(`${peripheral.UUID}::${peripheral.name} - discovered`);
     if (this.isSmartDrive(peripheral)) {
-      var address = peripheral.UUID;
-      var sd = this.getOrMakeSmartDrive(address);
+      const address = peripheral.UUID;
+      const sd = this.getOrMakeSmartDrive(address);
       console.log(`SmartDrives: ${BluetoothService.SmartDrives.length} : ${BluetoothService.SmartDrives}`);
     }
   }
@@ -226,8 +226,8 @@ export class BluetoothService {
     const peripheral = args.data.device; // of type Peripheral
     console.log(`${peripheral.UUID}::${peripheral.name} - disconnected`);
     if (this.isSmartDrive(peripheral)) {
-      var address = peripheral.UUID;
-      var sd = this.getOrMakeSmartDrive(address);
+      const address = peripheral.UUID;
+      const sd = this.getOrMakeSmartDrive(address);
       sd.handleDisconnect();
     }
   }
@@ -350,33 +350,57 @@ export class BluetoothService {
       const ptDataChar = charUUIDs[1];
       charUUIDs.map(cuuid => {
         console.log('Making characteristic: ' + cuuid);
+        // const c = this._bluetooth.makeCharacteristic({
+        //   UUID: cuuid,
+        //   gattProperty:
+        //     android.bluetooth.BluetoothGattCharacteristic.PROPERTY_READ |
+        //     android.bluetooth.BluetoothGattCharacteristic.PROPERTY_WRITE |
+        //     android.bluetooth.BluetoothGattCharacteristic.PROPERTY_NOTIFY,
+        //   gattPermissions:
+        //     android.bluetooth.BluetoothGattCharacteristic.PERMISSION_WRITE |
+        //     android.bluetooth.BluetoothGattCharacteristic.PERMISSION_READ
+        // });
+
+        //  defaults props are set READ/WRITE/NOTIFY, perms are set to READ/WRITE
         const c = this._bluetooth.makeCharacteristic({
-          UUID: cuuid,
-          gattProperty:
-            android.bluetooth.BluetoothGattCharacteristic.PROPERTY_READ |
-            android.bluetooth.BluetoothGattCharacteristic.PROPERTY_WRITE |
-            android.bluetooth.BluetoothGattCharacteristic.PROPERTY_NOTIFY,
-          gattPermissions:
-            android.bluetooth.BluetoothGattCharacteristic.PERMISSION_WRITE |
-            android.bluetooth.BluetoothGattCharacteristic.PERMISSION_READ
+          UUID: cuuid
         });
+
         console.log('making descriptors');
         const descriptors = descriptorUUIDs.map(duuid => {
+          // const d = this._bluetooth.makeDescriptor({
+          //   UUID: duuid,
+          //   permissions:
+          //     android.bluetooth.BluetoothGattDescriptor.PERMISSION_READ |
+          //     android.bluetooth.BluetoothGattDescriptor.PERMISSION_WRITE
+          // });
+
           const d = this._bluetooth.makeDescriptor({
-            UUID: duuid,
-            permissions:
-              android.bluetooth.BluetoothGattDescriptor.PERMISSION_READ |
-              android.bluetooth.BluetoothGattDescriptor.PERMISSION_WRITE
+            UUID: duuid
           });
-          d.setValue(new Array([0x00, 0x00]));
+
+          if (isAndroid) {
+            d.setValue(new Array([0x00, 0x00]));
+          } else {
+            d.value = new Array([0x00, 0x00]);
+          }
+
           console.log('Making descriptor: ' + duuid);
           return d;
         });
-        descriptors.map(d => {
-          c.addDescriptor(d);
-        });
+
+        // need to test this, mainly iOS part
+        if (isAndroid) {
+          descriptors.map(d => {
+            c.addDescriptor(d);
+          });
+        } else {
+          c.descriptors = descriptors;
+        }
+
         c.setValue(0, android.bluetooth.BluetoothGattCharacteristic.FORMAT_UINT8, 0);
         c.setWriteType(android.bluetooth.BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT);
+
         /*
 		  if (cuuid === ptDataChar) {
 		  pushTrackerDataCharacteristic = c;
@@ -391,7 +415,7 @@ export class BluetoothService {
   }
 
   private getOrMakePushTracker(address: string): PushTracker {
-    let pt = BluetoothService.PushTrackers.filter(p => p.address == address)[0];
+    let pt = BluetoothService.PushTrackers.filter(p => p.address === address)[0];
     console.log(`Found PT: ${pt}`);
     if (pt === null || pt === undefined) {
       pt = new PushTracker({ address });
@@ -402,7 +426,7 @@ export class BluetoothService {
   }
 
   private getOrMakeSmartDrive(address: string): SmartDrive {
-    let sd = BluetoothService.SmartDrives.filter(sd => sd.address == address)[0];
+    let sd = BluetoothService.SmartDrives.filter((x: SmartDrive) => x.address === address)[0];
     console.log(`Found SD: ${sd}`);
     if (sd === null || sd === undefined) {
       sd = new SmartDrive({ address });
@@ -421,13 +445,13 @@ export class BluetoothService {
   }
 
   private isSmartDrive(dev: any): boolean {
-    var name = dev && dev.name;
+    const name = dev && dev.name;
     return name && name.includes('Smart Drive DU'); // || dev.UUID === BluetoothService.SmartDriveServiceUUID;
   }
 
   private isPushTracker(dev: any): boolean {
-    var UUIDs = dev && dev.getUuids && dev.getUuids();
-    var name = dev && dev.getName && dev.getName();
+    const UUIDs = dev && dev.getUuids && dev.getUuids();
+    const name = dev && dev.getName && dev.getName();
     return (name && name.includes('PushTracker')) || (UUIDs && UUIDs.indexOf(PushTracker.ServiceUUID) > -1);
   }
 
