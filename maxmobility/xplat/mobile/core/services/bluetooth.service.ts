@@ -147,6 +147,10 @@ export class BluetoothService {
 
   public discoverCharacteristics(opts: any) {}
 
+  public startNotifying(opts: any) {
+    return this._bluetooth.startNotifying(opts);
+  }
+
   public write(opts: Bluetooth.WriteOptions) {
     return this._bluetooth.write(opts);
   }

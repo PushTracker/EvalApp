@@ -254,6 +254,10 @@ export class OTAComponent implements OnInit {
           let haveMCUVersion = false;
           let haveBLEVersion = false;
           let connectionIntervalID = null;
+          const smartDriveConnectionInterval = 2000;
+          // TODO: add timeout for connection to let the
+          // user know we tried and failed
+
           // now that we're starting the OTA, we are awaiting the versions
           sd.otaState = SmartDrive.OTAState.awaiting_versions;
           // register for connection events
@@ -272,6 +276,20 @@ export class OTAComponent implements OnInit {
             console.log(sdService);
             var characteristics = sdService.characteristics;
             console.log(characteristics);
+            let i = 0;
+            const notificationInterval = 1000;
+            characteristics.map(characteristic => {
+              setTimeout(() => {
+                console.log(`Start Notifying ${characteristic.UUID}`);
+                this._bluetoothService.startNotifying({
+                  peripheralUUID: sd.address,
+                  serviceUUID: SmartDrive.ServiceUUID,
+                  characteristicUUID: characteristic.UUID,
+                  onNotify: data => {}
+                });
+              }, i * notificationInterval);
+              i++;
+            });
           });
           sd.on(SmartDrive.smartdrive_disconnect_event, () => {
             // try to connect to it again
@@ -285,7 +303,7 @@ export class OTAComponent implements OnInit {
                   sd.handleDisconnect();
                 }
               );
-            }, 5000);
+            }, smartDriveConnectionInterval);
           });
           // register for version events
           sd.on(SmartDrive.smartdrive_ble_version_event, data => {
