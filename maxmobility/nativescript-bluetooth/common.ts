@@ -394,8 +394,15 @@ export interface MakeServiceOptions {
 
 export interface MakeCharacteristicOptions {
   UUID: string;
-  property: number;
-  permission: number;
+  properties: CharacteristicProperties;
+  permissions: number;
+}
+
+export enum CharacteristicProperties {
+  WRITE,
+  READ,
+  NOTIFY,
+  WRITE_NO_RESPONSE
 }
 
 /**
