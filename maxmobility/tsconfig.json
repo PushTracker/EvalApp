@@ -18,5 +18,5 @@
 			"@maxmobility/web/*": ["xplat/web/*"]
 		}
 	},
-	"exclude": ["node_modules", "tmp"]
+	"exclude": ["node_modules", "tmp", "platforms"]
 }
