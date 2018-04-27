@@ -278,7 +278,7 @@ export class OTAComponent implements OnInit {
           const smartDriveConnectionInterval = 2000;
 
           let otaTimeoutID = null;
-          const otaTimeout = 60000;
+          const otaTimeout = 300000;
           let stopOTA = false;
           otaTimeoutID = setTimeout(() => {
             console.log('OTA Timed out!');
@@ -430,6 +430,7 @@ export class OTAComponent implements OnInit {
 
           let index = 0;
           const payloadSize = 16;
+          const btService = this._bluetoothService;
           var writeFirmwareSector = function(device: string, fw: any) {
             console.log('writing firmware to ' + device);
             const fileSize = fw.length;
@@ -439,7 +440,7 @@ export class OTAComponent implements OnInit {
               p.makeOTAPacket(device, index, fw);
               // TODO: send packet here
               const data = p.toUint8Array();
-              this._bluetoothService
+              btService
                 .write({
                   peripheralUUID: sd.address,
                   serviceUUID: SmartDrive.ServiceUUID,
