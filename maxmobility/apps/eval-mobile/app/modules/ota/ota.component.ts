@@ -236,6 +236,10 @@ export class OTAComponent implements OnInit {
   }
 
   performSDOTA(sd: SmartDrive): Promise<any> {
+    // TODO: refactor this code some to move some methods into
+    // other library code for better re-use; perhaps see about
+    // having it be part of the SmartDrive library or the
+    // Bluetooth.service
     return new Promise((resolve, reject) => {
       if (!sd) {
         console.log('SmartDrive passed for OTA is invalid!');
@@ -256,13 +260,13 @@ export class OTAComponent implements OnInit {
           let haveBLEVersion = false;
           let connectionIntervalID = null;
           const smartDriveConnectionInterval = 2000;
+
+          let otaTimeoutID = null;
           const otaTimeout = 60000;
-          let cancelOTA = false;
-          // TODO: add timeout for connection to let the
-          // user know we tried and failed
-          setTimeout(() => {
+          let stopOTA = false;
+          otaTimeoutID = setTimeout(() => {
             console.log('OTA Timed out!');
-            cancelOTA = true;
+            stopOTA = true;
             clearInterval(otaIntervalID);
             SmartDrive.Characteristics.map(characteristic => {
               console.log(`Stop Notifying ${characteristic}`);
@@ -273,6 +277,7 @@ export class OTAComponent implements OnInit {
               });
             });
             console.log(`Disconnecting from ${sd.address}`);
+            // TODO: Doesn't properly disconnect
             this._bluetoothService.disconnect({
               UUID: sd.address
             });
@@ -333,7 +338,7 @@ export class OTAComponent implements OnInit {
             }
           });
           sd.on(SmartDrive.smartdrive_disconnect_event, () => {
-            if (!cancelOTA) {
+            if (!stopOTA) {
               // try to connect to it again
               connectionIntervalID = setInterval(() => {
                 this._bluetoothService.connect(
@@ -403,7 +408,6 @@ export class OTAComponent implements OnInit {
                   const otaDevice = Packet.makeBoundData('PacketOTAType', 'SmartDrive');
                   p.data('otaDevice', otaDevice); // smartdrive is 0
                   const data = p.toUint8Array();
-                  console.log(`${data}`);
                   this._bluetoothService.write({
                     peripheralUUID: sd.address,
                     serviceUUID: SmartDrive.ServiceUUID,
@@ -414,9 +418,23 @@ export class OTAComponent implements OnInit {
                 }
                 break;
               case SmartDrive.OTAState.updating_mcu:
-                clearInterval(otaIntervalID);
+                // now that we've successfully gotten the
+                // SD connected - don't timeout
+                clearTimout(otaTimeoutID);
+                // now send data to SD - probably want to
+                // send all the data here and cancel the
+                // interval for now?
+
                 break;
               case SmartDrive.OTAState.awaiting_ble_ready:
+                // now send StartOTA to BLE
+                break;
+              case SmartDrive.OTAState.updating_ble:
+                // now that we've successfully gotten the
+                // SD connected - don't timeout
+                clearTimout(otaTimeoutID);
+                // now send data to SD
+
                 break;
               default:
                 break;

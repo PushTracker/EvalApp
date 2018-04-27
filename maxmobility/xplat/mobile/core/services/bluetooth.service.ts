@@ -144,6 +144,7 @@ export class BluetoothService {
   }
 
   public disconnect(args: any) {
+    // TODO: doesn't properly disconnect
     this._bluetooth.disconnect(args);
   }
 
