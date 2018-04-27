@@ -143,12 +143,20 @@ export class BluetoothService {
     });
   }
 
+  public disconnect(args: any) {
+    this._bluetooth.disconnect(args);
+  }
+
   public discoverServices(opts: any) {}
 
   public discoverCharacteristics(opts: any) {}
 
   public startNotifying(opts: any) {
     return this._bluetooth.startNotifying(opts);
+  }
+
+  public stopNotifying(opts: any) {
+    return this._bluetooth.stopNotifying(opts);
   }
 
   public write(opts: Bluetooth.WriteOptions) {

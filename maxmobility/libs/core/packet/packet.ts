@@ -1,4 +1,4 @@
-const Binding = require('./packet_bindings');
+const PacketBinding = require('./packet_bindings');
 const Buffer = require('buffer').Buffer;
 
 export function bindingTypeToString(bindingType, bindingValue) {
@@ -6,8 +6,8 @@ export function bindingTypeToString(bindingType, bindingValue) {
   if (bindingType === null || bindingType === undefined || bindingValue === null || bindingValue === undefined) {
     return valueName;
   }
-  const names = Object.keys(Binding[bindingType]).filter(key => {
-    if (Binding[bindingType][key] === bindingValue) {
+  const names = Object.keys(PacketBinding[bindingType]).filter(key => {
+    if (PacketBinding[bindingType][key] === bindingValue) {
       return true;
     }
   });
@@ -19,13 +19,23 @@ export function bindingTypeToString(bindingType, bindingValue) {
 }
 
 export class Packet {
+  // static
+  public static makeBoundData(bindingType: string, data: string) {
+    return PacketBinding[bindingType][data];
+  }
+
+  // private members
   private instance: any;
   private _bytes: any;
 
   // lifecycle
+  constructor(bytes?: any) {
+    this.initialize(bytes);
+  }
+
   public initialize(bytes?: any) {
     this.destroy();
-    this.instance = new Binding.Packet();
+    this.instance = new PacketBinding.Packet();
     this.instance.newPacket();
 
     this._bytes = bytes;
@@ -64,8 +74,8 @@ export class Packet {
     if (this.instance === undefined || this.instance === null) {
       this.initialize();
     }
-    this.instance.Type = Binding.PacketType[_type];
-    this.instance[_type] = Binding[`Packet${_type}Type`][subType];
+    this.instance.Type = PacketBinding.PacketType[_type];
+    this.instance[_type] = PacketBinding[`Packet${_type}Type`][subType];
     if (key && data) {
       this.instance[key] = data;
     }
@@ -92,7 +102,7 @@ export class Packet {
     let output = null;
 
     if (this.instance) {
-      let vectorOut = new Binding.VectorInt();
+      let vectorOut = new PacketBinding.VectorInt();
       vectorOut = this.instance.format();
       const len = vectorOut.size();
       output = Buffer.alloc(len);
@@ -110,7 +120,7 @@ export class Packet {
   public Type(newType?: any) {
     if (this.instance !== null && this.instance !== undefined) {
       if (newType) {
-        this.instance.Type = Binding.PacketType[newType];
+        this.instance.Type = PacketBinding.PacketType[newType];
       } else {
         return bindingTypeToString('PacketType', this.instance.Type);
       }
@@ -124,7 +134,7 @@ export class Packet {
       const _type = this.Type();
       const bindingKey = `Packet${_type}Type`;
       if (_type && bindingKey && newSubType) {
-        this.instance[_type] = Binding[bindingKey][newSubType];
+        this.instance[_type] = PacketBinding[bindingKey][newSubType];
       } else if (bindingKey && _type) {
         return bindingTypeToString(bindingKey, this.instance[_type]);
       }
