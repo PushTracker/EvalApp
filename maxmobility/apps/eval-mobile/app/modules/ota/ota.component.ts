@@ -1,3 +1,5 @@
+import application = require('application');
+
 // angular
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -15,7 +17,8 @@ import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 import { Observable, Scheduler } from 'rxjs';
 
-// libs
+// libs;
+import { knownFolders, File } from 'file-system';
 import { BluetoothService } from '@maxmobility/mobile';
 import { Packet, DailyInfo, PushTracker, SmartDrive } from '@maxmobility/core';
 
@@ -37,6 +40,8 @@ import { Packet, DailyInfo, PushTracker, SmartDrive } from '@maxmobility/core';
 //         Math.PI / 2) *
 //     Math.pow(2.0, -10.0 * t) +
 //     1.0;
+
+let currentApp = knownFolders.currentApp();
 
 @Component({
   selector: 'OTA',
@@ -73,6 +78,9 @@ export class OTAComponent implements OnInit {
 
   private _sideDrawerTransition: DrawerTransitionBase;
 
+  public isIOS: boolean = false;
+  public isAndroid: boolean = false;
+
   constructor(
     private http: HttpClient,
     private routerExtensions: RouterExtensions,
@@ -80,6 +88,12 @@ export class OTAComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    if (application.ios) {
+      this.isIOS = true;
+    } else if (application.android) {
+      this.isAndroid = true;
+    }
+
     const otaTitleView = <View>this.otaTitleView.nativeElement;
     otaTitleView.opacity = 0;
 
@@ -199,7 +213,7 @@ export class OTAComponent implements OnInit {
     return selectedSmartDrives;
   }
 
-  performPTOTA(pt: PushTracker): Promise<any> {
+  performPTOTA(pt: PushTracker, firmware: any): Promise<any> {
     return new Promise((resolve, reject) => {
       if (!pt) {
         console.log('PushTracker passed for OTA is invalid!');
@@ -235,7 +249,7 @@ export class OTAComponent implements OnInit {
     });
   }
 
-  performSDOTA(sd: SmartDrive): Promise<any> {
+  performSDOTA(sd: SmartDrive, bleFirmware: any, mcuFirmware: any): Promise<any> {
     // TODO: refactor this code some to move some methods into
     // other library code for better re-use; perhaps see about
     // having it be part of the SmartDrive library or the
@@ -256,8 +270,10 @@ export class OTAComponent implements OnInit {
           console.log(`Beginning OTA for SmartDrive: ${sd.address}`);
           // set up variables to keep track of the ota
           let otaIntervalID = null;
+
           let haveMCUVersion = false;
           let haveBLEVersion = false;
+
           let connectionIntervalID = null;
           const smartDriveConnectionInterval = 2000;
 
@@ -268,20 +284,22 @@ export class OTAComponent implements OnInit {
             console.log('OTA Timed out!');
             stopOTA = true;
             clearInterval(otaIntervalID);
-            SmartDrive.Characteristics.map(characteristic => {
+            const tasks = SmartDrive.Characteristics.map(characteristic => {
               console.log(`Stop Notifying ${characteristic}`);
-              this._bluetoothService.stopNotifying({
+              return this._bluetoothService.stopNotifying({
                 peripheralUUID: sd.address,
                 serviceUUID: SmartDrive.ServiceUUID,
                 characteristicUUID: characteristic
               });
             });
-            console.log(`Disconnecting from ${sd.address}`);
-            // TODO: Doesn't properly disconnect
-            this._bluetoothService.disconnect({
-              UUID: sd.address
+            Promise.all(tasks).then(() => {
+              console.log(`Disconnecting from ${sd.address}`);
+              // TODO: Doesn't properly disconnect
+              this._bluetoothService.disconnect({
+                UUID: sd.address
+              });
+              reject();
             });
-            reject();
           }, otaTimeout);
 
           // now that we're starting the OTA, we are awaiting the versions
@@ -325,8 +343,8 @@ export class OTAComponent implements OnInit {
                           const data = new Uint8Array(value);
                           const p = new Packet();
                           p.initialize(data);
-                          sd.handlePacket(p);
                           console.log(`${p.Type()}::${p.SubType()} ${p.toString()}`);
+                          sd.handlePacket(p);
                           p.destroy();
                         }
                       });
@@ -338,20 +356,30 @@ export class OTAComponent implements OnInit {
             }
           });
           sd.on(SmartDrive.smartdrive_disconnect_event, () => {
-            if (!stopOTA) {
-              // try to connect to it again
-              connectionIntervalID = setInterval(() => {
-                this._bluetoothService.connect(
-                  sd.address,
-                  function(data) {
-                    sd.handleConnect(data);
-                  },
-                  function(data) {
-                    sd.handleDisconnect();
-                  }
-                );
-              }, smartDriveConnectionInterval);
-            }
+            const tasks = SmartDrive.Characteristics.map(characteristic => {
+              console.log(`Stop Notifying ${characteristic}`);
+              return this._bluetoothService.stopNotifying({
+                peripheralUUID: sd.address,
+                serviceUUID: SmartDrive.ServiceUUID,
+                characteristicUUID: characteristic
+              });
+            });
+            Promise.all(tasks).then(() => {
+              if (!stopOTA) {
+                // try to connect to it again
+                connectionIntervalID = setInterval(() => {
+                  this._bluetoothService.connect(
+                    sd.address,
+                    function(data) {
+                      sd.handleConnect(data);
+                    },
+                    function(data) {
+                      sd.handleDisconnect();
+                    }
+                  );
+                }, smartDriveConnectionInterval);
+              }
+            });
           });
           // register for version events
           sd.on(SmartDrive.smartdrive_ble_version_event, data => {
@@ -373,6 +401,16 @@ export class OTAComponent implements OnInit {
             console.log(`Got MCU OTAReady from ${sd.address}`);
             sd.otaState = SmartDrive.OTAState.updating_mcu;
           });
+          sd.on(SmartDrive.smartdrive_ota_ready_event, data => {
+            console.log(`Got OTAReady from ${sd.address}`);
+            if (sd.otaState == SmartDrive.OTAState.awaiting_mcu_ready) {
+              console.log('CHANGING SD OTA STATE TO UPDATING MCU');
+              sd.otaState = SmartDrive.OTAState.updating_mcu;
+            } else if (sd.otaState == SmartDrive.OTAState.awaiting_ble_ready) {
+              console.log('CHANGING SD OTA STATE TO UPDATING BLE');
+              sd.otaState = SmartDrive.OTAState.updating_ble;
+            }
+          });
 
           // we will generate these ota events:
           //  * ota_timeout
@@ -390,14 +428,44 @@ export class OTAComponent implements OnInit {
             }
           );
 
-          otaIntervalID = setInterval(() => {
-            // wait to get the ble version
-            // wait to get the mcu version
-            if (haveBLEVersion && haveMCUVersion) {
-              sd.otaState = SmartDrive.OTAState.awaiting_mcu_ready;
+          let index = 0;
+          const payloadSize = 16;
+          var writeFirmwareSector = function(device: string, fw: any) {
+            console.log('writing firmware to ' + device);
+            const fileSize = fw.length;
+            if (index < fileSize) {
+              console.log(`Writing ${index} / ${fileSize} of ota to ${device}`);
+              var p = new Packet();
+              p.makeOTAPacket(device, index, fw);
+              // TODO: send packet here
+              const data = p.toUint8Array();
+              this._bluetoothService
+                .write({
+                  peripheralUUID: sd.address,
+                  serviceUUID: SmartDrive.ServiceUUID,
+                  characteristicUUID: SmartDrive.ControlCharacteristic,
+                  value: data
+                })
+                .then(() => {
+                  console.log('Have finished writing fw packet, writing next!');
+                  writeFirmwareSector(device, fw);
+                });
+              p.destroy();
+              index += payloadSize;
+            } else {
+              // we are done with the sending change
+              // state to awaiting_ble_ready
+              sd.otaState = SmartDrive.OTAState.awaiting_ble_ready;
             }
+          };
 
+          otaIntervalID = setInterval(() => {
             switch (sd.otaState) {
+              case SmartDrive.OTAState.awaiting_versions:
+                if (haveBLEVersion && haveMCUVersion) {
+                  sd.otaState = SmartDrive.OTAState.awaiting_mcu_ready;
+                }
+                break;
               case SmartDrive.OTAState.awaiting_mcu_ready:
                 if (sd.connected) {
                   // send start OTA
@@ -418,23 +486,34 @@ export class OTAComponent implements OnInit {
                 }
                 break;
               case SmartDrive.OTAState.updating_mcu:
+                console.log('------------------  NOW UPDATING MCU!');
                 // now that we've successfully gotten the
                 // SD connected - don't timeout
-                clearTimout(otaTimeoutID);
-                // now send data to SD - probably want to
-                // send all the data here and cancel the
-                // interval for now?
-
+                clearTimeout(otaTimeoutID);
+                // now send data to SD MCU - probably want
+                // to send all the data here and cancel
+                // the interval for now? - shouldn't need
+                // to
+                if (index == 0) {
+                  writeFirmwareSector('SmartDrive', mcuFirmware);
+                }
+                // update the progress bar
+                this.sdMpProgressValue = Math.round(index / mcuFirmware.length * 100);
                 break;
               case SmartDrive.OTAState.awaiting_ble_ready:
                 // now send StartOTA to BLE
+                index = 0;
                 break;
               case SmartDrive.OTAState.updating_ble:
                 // now that we've successfully gotten the
                 // SD connected - don't timeout
-                clearTimout(otaTimeoutID);
-                // now send data to SD
-
+                clearTimeout(otaTimeoutID);
+                // now send data to SD BLE
+                if (index == 0) {
+                  writeFirmwareSector('SmartDriveBluetooth', bleFirmware);
+                }
+                // update the progress bar
+                this.sdBtProgressValue = Math.round(index / bleFirmware.length * 100);
                 break;
               default:
                 break;
@@ -486,7 +565,24 @@ export class OTAComponent implements OnInit {
     if (!this.updating) {
       let smartDrives = [];
       let pushTrackers = [];
-      this.discoverSmartDrives()
+      let ptFW = null;
+      let bleFW = null;
+      let mcuFW = null;
+      // load firmware files here!
+      this.loadFile('/assets/ota/PushTracker.14.ota')
+        .then(otaData => {
+          ptFW = otaData;
+          return this.loadFile('/assets/ota/SmartDriveBluetooth.14.ota');
+        })
+        .then(otaData => {
+          bleFW = otaData;
+          return this.loadFile('/assets/ota/MX2+.14.ota');
+        })
+        .then(otaData => {
+          mcuFW = otaData;
+          console.log(`got MX2+ OTA, version: 0x${Number(mcuFW[0]).toString(16)}`);
+          return this.discoverSmartDrives();
+        })
         .then(smartDrives => {
           return this.select(smartDrives);
         })
@@ -499,10 +595,10 @@ export class OTAComponent implements OnInit {
 
           // OTA the selected smart drive(s)
           var smartDriveOTATasks = smartDrives.map(sd => {
-            return this.performSDOTA(sd);
+            return this.performSDOTA(sd, bleFW, mcuFW);
           });
           var pushTrackerOTATasks = pushTrackers.map(pt => {
-            return this.performPTOTA(pt);
+            return this.performPTOTA(pt, ptFW);
           });
           return Promise.all(smartDriveOTATasks.concat(pushTrackerOTATasks));
         })
@@ -511,49 +607,26 @@ export class OTAComponent implements OnInit {
     }
 
     this.updating = true;
-    /*
-	  let intervalID = null;
-	  let updatingPT = false;
-	  intervalID = setInterval(() => {
-	  this.sdBtProgressValue += 15;
-	  if (this.sdBtProgressValue > 100) {
-	  this.sdBtProgressValue = 100;
-	  }
-	  this.sdMpProgressValue += 25;
-	  if (this.sdMpProgressValue > 100) {
-	  this.sdMpProgressValue = 100;
-	  }
+  }
 
-	  if (this.sdMpProgressValue >= 100 && this.sdBtProgressValue >= 100) {
-	  this.ptBtProgressValue += 25;
-	  if (this.ptBtProgressValue > 100) {
-	  this.ptBtProgressValue = 100;
-	  }
-
-	  if (!updatingPT) {
-	  const otaProgressViewPT = <View>this.otaProgressViewPT.nativeElement;
-	  otaProgressViewPT.animate({
-	  opacity: 1,
-	  duration: 500
-	  });
-	  this.otaButtonText = 'updating PushTracker';
-	  updatingPT = true;
-	  }
-
-	  if (this.ptBtProgressValue >= 100) {
-	  this.otaButtonText = 'Update Complete';
-	  // cancel the interval we have set
-	  clearInterval(intervalID);
-
-	  setTimeout(() => {
-	  this.routerExtensions.navigate(['/pairing'], {
-	  clearHistory: true
-	  });
-	  }, 1500);
-	  }
-	  }
-	  }, 500);
-	*/
+  private loadFile(fileName: string): Promise<any> {
+    const f = currentApp.getFile(fileName);
+    return new Promise((resolve, reject) => {
+      let data = null;
+      let source = f.readSync(e => {
+        console.log("couldn't read file:");
+        console.log(e);
+        reject();
+      });
+      if (this.isIOS) {
+        let arr = new ArrayBuffer(source.length);
+        source.getBytes(arr);
+        data = new Uint8Array(arr);
+      } else if (this.isAndroid) {
+        data = new Uint8Array(source);
+      }
+      resolve(data);
+    });
   }
 
   get sideDrawerTransition(): DrawerTransitionBase {
@@ -563,3 +636,47 @@ export class OTAComponent implements OnInit {
     this.drawerComponent.sideDrawer.showDrawer();
   }
 }
+
+/*
+  let intervalID = null;
+  let updatingPT = false;
+  intervalID = setInterval(() => {
+  this.sdBtProgressValue += 15;
+  if (this.sdBtProgressValue > 100) {
+  this.sdBtProgressValue = 100;
+  }
+  this.sdMpProgressValue += 25;
+  if (this.sdMpProgressValue > 100) {
+  this.sdMpProgressValue = 100;
+  }
+
+  if (this.sdMpProgressValue >= 100 && this.sdBtProgressValue >= 100) {
+  this.ptBtProgressValue += 25;
+  if (this.ptBtProgressValue > 100) {
+  this.ptBtProgressValue = 100;
+  }
+
+  if (!updatingPT) {
+  const otaProgressViewPT = <View>this.otaProgressViewPT.nativeElement;
+  otaProgressViewPT.animate({
+  opacity: 1,
+  duration: 500
+  });
+  this.otaButtonText = 'updating PushTracker';
+  updatingPT = true;
+  }
+
+  if (this.ptBtProgressValue >= 100) {
+  this.otaButtonText = 'Update Complete';
+  // cancel the interval we have set
+  clearInterval(intervalID);
+
+  setTimeout(() => {
+  this.routerExtensions.navigate(['/pairing'], {
+  clearHistory: true
+  });
+  }, 1500);
+  }
+  }
+  }, 500);
+*/

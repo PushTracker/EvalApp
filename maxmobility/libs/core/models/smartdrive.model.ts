@@ -45,6 +45,7 @@ export class SmartDrive extends Observable {
   public static smartdrive_ble_version_event = 'smartdrive_ble_version_event';
   public static smartdrive_mcu_version_event = 'smartdrive_mcu_version_event';
 
+  public static smartdrive_ota_ready_event = 'smartdrive_ota_ready_event';
   public static smartdrive_ota_ready_ble_event = 'smartdrive_ota_ready_ble_event';
   public static smartdrive_ota_ready_mcu_event = 'smartdrive_ota_ready_mcu_event';
 
@@ -223,6 +224,7 @@ export class SmartDrive extends Observable {
         this.sendEvent(SmartDrive.smartdrive_ota_ready_ble_event);
         break;
       default:
+        this.sendEvent(SmartDrive.smartdrive_ota_ready_event);
         break;
     }
   }

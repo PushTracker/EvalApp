@@ -223,7 +223,13 @@ export class BluetoothService {
   }
 
   private onDeviceAclDisconnected(args: any): void {
-    console.log(`${args.data.device} acl disconnected!`);
+    const peripheral = args.data.device; // of type Peripheral
+    console.log(`${peripheral.UUID}::${peripheral.name} - disconnected`);
+    if (this.isSmartDrive(peripheral)) {
+      var address = peripheral.UUID;
+      var sd = this.getOrMakeSmartDrive(address);
+      sd.handleDisconnect();
+    }
   }
 
   private onServerConnectionStateChanged(args: any): void {

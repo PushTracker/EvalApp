@@ -81,21 +81,13 @@ export class Packet {
     }
   }
 
-  public send(characteristic, _type, subType, key, data, length) {
-    if (characteristic) {
-      if (_type && subType) {
-        this.makePacket(_type, subType, key, data);
-      }
-      if (length) {
-        this.instance.length = length;
-      }
-      const output = this.writableBuffer();
-      if (output) {
-        //console.log(output);
-        characteristic.write(output, false); // withoutResponse = false
-        //console.log("Sent: " + this.Type() + "::" + this.SubType());
-      }
+  public makeOTAPacket(device: string, startIndex: number, firmware: any) {
+    let length = Math.min(firmware.length - startIndex, 16);
+    let bytes = new PacketBinding.VectorInt();
+    for (let i = 0; i < length; i++) {
+      bytes.push_back(firmware[startIndex + i]);
     }
+    this.makePacket('OTA', device, 'bytes', bytes);
   }
 
   public writableBuffer() {
