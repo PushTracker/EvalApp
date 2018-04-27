@@ -271,25 +271,39 @@ export class OTAComponent implements OnInit {
             // TODO: Subscribe to all the characteristics
             // so the SD will send us data!
             var services = data.services;
-            console.log(services);
-            var sdService = services.filter(s => s.UUID == SmartDrive.ServiceUUID)[0];
-            console.log(sdService);
-            var characteristics = sdService.characteristics;
-            console.log(characteristics);
-            let i = 0;
-            const notificationInterval = 1000;
-            characteristics.map(characteristic => {
-              setTimeout(() => {
-                console.log(`Start Notifying ${characteristic.UUID}`);
-                this._bluetoothService.startNotifying({
-                  peripheralUUID: sd.address,
-                  serviceUUID: SmartDrive.ServiceUUID,
-                  characteristicUUID: characteristic.UUID,
-                  onNotify: data => {}
+            if (services) {
+              console.log(services);
+              var sdService = services.filter(s => s.UUID == SmartDrive.ServiceUUID)[0];
+              console.log(sdService);
+              var characteristics = sdService.characteristics;
+              if (characteristics) {
+                console.log(characteristics);
+                let i = 0;
+                const notificationInterval = 1000;
+                characteristics.map(characteristic => {
+                  setTimeout(() => {
+                    console.log(`Start Notifying ${characteristic.UUID}`);
+                    this._bluetoothService.startNotifying({
+                      peripheralUUID: sd.address,
+                      serviceUUID: SmartDrive.ServiceUUID,
+                      characteristicUUID: characteristic.UUID,
+                      onNotify: args => {
+                        console.log('GOT NOTIFICATION');
+                        console.log(Object.keys(args));
+                        const value = args.value;
+                        const data = new Uint8Array(value);
+                        const p = new Packet();
+                        p.initialize(data);
+                        sd.handlePacket(p);
+                        console.log(`${p.Type()}::${p.SubType()} ${p.toString()}`);
+                        p.destroy();
+                      }
+                    });
+                  }, i * notificationInterval);
+                  i++;
                 });
-              }, i * notificationInterval);
-              i++;
-            });
+              }
+            }
           });
           sd.on(SmartDrive.smartdrive_disconnect_event, () => {
             // try to connect to it again
@@ -307,10 +321,12 @@ export class OTAComponent implements OnInit {
           });
           // register for version events
           sd.on(SmartDrive.smartdrive_ble_version_event, data => {
-            console.log(`Got SD MCU Version ${data.data.ble}`);
+            console.log('GOT BLE VERSION');
+            console.log(`Got SD BLE Version ${data.data.ble}`);
             haveBLEVersion = true;
           });
           sd.on(SmartDrive.smartdrive_mcu_version_event, data => {
+            console.log('GOT MCU VERSION');
             console.log(`Got SD MCU Version ${data.data.mcu}`);
             haveMCUVersion = true;
           });
