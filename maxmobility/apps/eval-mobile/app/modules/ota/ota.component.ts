@@ -5,6 +5,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { RouterExtensions } from 'nativescript-angular/router';
 // nativescript
+import timer = require('timer');
 import { Progress } from 'tns-core-modules/ui/progress';
 import { ScrollView, ScrollEventData } from 'ui/scroll-view';
 import { Color } from 'tns-core-modules/color';
@@ -273,6 +274,7 @@ export class OTAComponent implements OnInit {
 
           let haveMCUVersion = false;
           let haveBLEVersion = false;
+          let ableToSend = false;
 
           let connectionIntervalID = null;
           const smartDriveConnectionInterval = 2000;
@@ -280,10 +282,11 @@ export class OTAComponent implements OnInit {
           let otaTimeoutID = null;
           const otaTimeout = 300000;
           let stopOTA = false;
-          otaTimeoutID = setTimeout(() => {
+          otaTimeoutID = timer.setTimeout(() => {
             console.log('OTA Timed out!');
             stopOTA = true;
-            clearInterval(otaIntervalID);
+            timer.clearInterval(otaIntervalID);
+            ableToSend = false;
             const tasks = SmartDrive.Characteristics.map(characteristic => {
               console.log(`Stop Notifying ${characteristic}`);
               return this._bluetoothService.stopNotifying({
@@ -310,7 +313,7 @@ export class OTAComponent implements OnInit {
             console.log(`connected to ${data.UUID}::${data.name}`);
             // clear out the connection interval if it exists
             if (connectionIntervalID) {
-              clearInterval(connectionIntervalID);
+              timer.clearInterval(connectionIntervalID);
             }
             // TODO: Subscribe to all the characteristics
             // so the SD will send us data!
@@ -330,24 +333,28 @@ export class OTAComponent implements OnInit {
                   let i = 0;
                   const notificationInterval = 1000;
                   characteristics.map(characteristic => {
-                    setTimeout(() => {
+                    timer.setTimeout(() => {
                       console.log(`Start Notifying ${characteristic.UUID}`);
-                      this._bluetoothService.startNotifying({
-                        peripheralUUID: sd.address,
-                        serviceUUID: SmartDrive.ServiceUUID,
-                        characteristicUUID: characteristic.UUID,
-                        onNotify: args => {
-                          console.log('GOT NOTIFICATION');
-                          console.log(Object.keys(args));
-                          const value = args.value;
-                          const data = new Uint8Array(value);
-                          const p = new Packet();
-                          p.initialize(data);
-                          console.log(`${p.Type()}::${p.SubType()} ${p.toString()}`);
-                          sd.handlePacket(p);
-                          p.destroy();
-                        }
-                      });
+                      this._bluetoothService
+                        .startNotifying({
+                          peripheralUUID: sd.address,
+                          serviceUUID: SmartDrive.ServiceUUID,
+                          characteristicUUID: characteristic.UUID,
+                          onNotify: args => {
+                            console.log('GOT NOTIFICATION');
+                            console.log(Object.keys(args));
+                            const value = args.value;
+                            const data = new Uint8Array(value);
+                            const p = new Packet();
+                            p.initialize(data);
+                            console.log(`${p.Type()}::${p.SubType()} ${p.toString()}`);
+                            sd.handlePacket(p);
+                            p.destroy();
+                          }
+                        })
+                        .then(() => {
+                          ableToSend = true;
+                        });
                     }, i * notificationInterval);
                     i++;
                   });
@@ -367,7 +374,7 @@ export class OTAComponent implements OnInit {
             Promise.all(tasks).then(() => {
               if (!stopOTA) {
                 // try to connect to it again
-                connectionIntervalID = setInterval(() => {
+                connectionIntervalID = timer.setInterval(() => {
                   this._bluetoothService.connect(
                     sd.address,
                     function(data) {
@@ -460,7 +467,7 @@ export class OTAComponent implements OnInit {
             }
           };
 
-          otaIntervalID = setInterval(() => {
+          otaIntervalID = timer.setInterval(() => {
             switch (sd.otaState) {
               case SmartDrive.OTAState.awaiting_versions:
                 if (haveBLEVersion && haveMCUVersion) {
@@ -468,7 +475,7 @@ export class OTAComponent implements OnInit {
                 }
                 break;
               case SmartDrive.OTAState.awaiting_mcu_ready:
-                if (sd.connected) {
+                if (sd.connected && ableToSend) {
                   // send start OTA
                   console.log(`Sending StartOTA to ${sd.address}`);
                   const p = new Packet();
@@ -490,7 +497,7 @@ export class OTAComponent implements OnInit {
                 console.log('------------------  NOW UPDATING MCU!');
                 // now that we've successfully gotten the
                 // SD connected - don't timeout
-                clearTimeout(otaTimeoutID);
+                timer.clearTimeout(otaTimeoutID);
                 // now send data to SD MCU - probably want
                 // to send all the data here and cancel
                 // the interval for now? - shouldn't need
@@ -508,7 +515,7 @@ export class OTAComponent implements OnInit {
               case SmartDrive.OTAState.updating_ble:
                 // now that we've successfully gotten the
                 // SD connected - don't timeout
-                clearTimeout(otaTimeoutID);
+                timer.clearTimeout(otaTimeoutID);
                 // now send data to SD BLE
                 if (index == 0) {
                   writeFirmwareSector('SmartDriveBluetooth', bleFirmware);
