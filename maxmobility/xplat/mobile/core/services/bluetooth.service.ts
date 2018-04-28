@@ -1,8 +1,11 @@
+/// <reference path="../../../typings/android27.d.ts" />
+
 // angular
 import { Injectable } from '@angular/core';
 
 // nativescript
 import * as dialogsModule from 'tns-core-modules/ui/dialogs';
+import { isAndroid } from 'tns-core-modules/platform';
 import { fromObject } from 'tns-core-modules/data/observable';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
 
@@ -16,9 +19,7 @@ import { Packet, DailyInfo, PushTracker, SmartDrive } from '@maxmobility/core';
 @Injectable()
 export class BluetoothService {
   // static members
-
   public static AppServiceUUID = '9358ac8f-6343-4a31-b4e0-4b13a2b45d86';
-
   public static PushTrackers = new ObservableArray<PushTracker>();
   public static SmartDrives = new ObservableArray<SmartDrive>();
 
@@ -33,22 +34,19 @@ export class BluetoothService {
   private snackbar = new SnackBar();
   private feedback = new Feedback();
 
-  // public functions
   constructor() {
     // enabling `debug` will output console.logs from the bluetooth source code
     this._bluetooth.debug = true;
 
+    // setup event listeners
     this._bluetooth.on(Bluetooth.bond_status_change_event, this.onBondStatusChange.bind(this));
     this._bluetooth.on(Bluetooth.peripheral_connected_event, this.onPeripheralConnected.bind(this));
     this._bluetooth.on(Bluetooth.device_discovered_event, this.onDeviceDiscovered.bind(this));
     this._bluetooth.on(Bluetooth.device_name_change_event, this.onDeviceNameChange.bind(this));
     this._bluetooth.on(Bluetooth.device_uuid_change_event, this.onDeviceUuidChange.bind(this));
     this._bluetooth.on(Bluetooth.device_acl_disconnected_event, this.onDeviceAclDisconnected.bind(this));
-
     this._bluetooth.on(Bluetooth.server_connection_state_changed_event, this.onServerConnectionStateChanged.bind(this));
     this._bluetooth.on(Bluetooth.characteristic_write_request_event, this.onCharacteristicWriteRequest.bind(this));
-
-    // setup event listeners
     this._bluetooth.on(Bluetooth.bluetooth_advertise_failure_event, args => {
       console.log(Bluetooth.bluetooth_advertise_failure_event, args);
     });
@@ -56,11 +54,11 @@ export class BluetoothService {
     this.advertise();
   }
 
-  public clearSmartDrives(): void {
+  public clearSmartDrives() {
     BluetoothService.SmartDrives.splice(0, BluetoothService.SmartDrives.length);
   }
 
-  public clearPushTrackers(): void {
+  public clearPushTrackers() {
     BluetoothService.PushTrackers.splice(0, BluetoothService.PushTrackers.length);
   }
 

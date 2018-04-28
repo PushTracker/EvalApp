@@ -2,6 +2,7 @@
   "files.watcherExclude": {
     "**/.git/objects/**": true,
     "**/.git/subtree-cache/**": true,
+    "**/typings/**": true,
     "**/hooks/**": true,
     "**/platforms/**": true,
     "**/node_modules/**": true,

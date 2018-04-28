@@ -7,15 +7,15 @@ import { CLog, CLogTypes } from '../common';
 @JavaProxy('com.nativescript.TNS_BluetoothGattServerCallback')
 // tslint:disable-next-line:class-name
 export class TNS_BluetoothGattServerCallback extends android.bluetooth.BluetoothGattServerCallback {
-  private owner: WeakRef<Bluetooth>;
+  private _owner: WeakRef<Bluetooth>;
   constructor() {
     super();
     return global.__native(this);
   }
 
   onInit(owner: WeakRef<Bluetooth>) {
-    this.owner = owner;
-    CLog(CLogTypes.info, `---- TNS_BluetoothGattServerCallback.onInit ---- this.owner: ${this.owner}`);
+    this._owner = owner;
+    CLog(CLogTypes.info, `---- TNS_BluetoothGattServerCallback.onInit ---- this._owner: ${this._owner}`);
   }
 
   /**
@@ -36,14 +36,14 @@ export class TNS_BluetoothGattServerCallback extends android.bluetooth.Bluetooth
       `---- TNS_BluetoothGattServerCallback.onCharacteristicReadRequest ---- device: ${device} requestId: ${requestId}, offset: ${offset}, characteristic: ${characteristic}`
     );
 
-    this.owner
+    this._owner
       .get()
       .sendEvent(Bluetooth.characteristic_read_request_event, { device, requestId, offset, characteristic });
 
-    // this.owner.get()._onCharacteristicReadRequestCallback(device, requestId, offset, characteristic);
+    // this._owner.get()._onCharacteristicReadRequestCallback(device, requestId, offset, characteristic);
 
-    if (this.owner.get().gattServer) {
-      this.owner.get().gattServer.sendResponse(device, requestId, 0, offset, Array.create('byte', 0x01));
+    if (this._owner.get().gattServer) {
+      this._owner.get().gattServer.sendResponse(device, requestId, 0, offset, Array.create('byte', 0x01));
     }
   }
 
@@ -71,7 +71,7 @@ export class TNS_BluetoothGattServerCallback extends android.bluetooth.Bluetooth
       `---- TNS_BluetoothGattServerCallback.onCharacteristicWriteRequest ---- device: ${device} requestId: ${requestId}, characteristic: ${characteristic}`
     );
 
-    this.owner.get().sendEvent(Bluetooth.characteristic_write_request_event, {
+    this._owner.get().sendEvent(Bluetooth.characteristic_write_request_event, {
       device,
       requestId,
       characteristic,
@@ -81,7 +81,7 @@ export class TNS_BluetoothGattServerCallback extends android.bluetooth.Bluetooth
       value
     });
 
-    // this.owner
+    // this._owner
     //   .get()
     //   ._onCharacteristicWriteRequestCallback(
     //     device,
@@ -92,8 +92,8 @@ export class TNS_BluetoothGattServerCallback extends android.bluetooth.Bluetooth
     //     offset,
     //     value
     //   );
-    if (this.owner.get().gattServer) {
-      this.owner.get().gattServer.sendResponse(device, requestId, 0, offset, Array.create('byte', 0x01));
+    if (this._owner.get().gattServer) {
+      this._owner.get().gattServer.sendResponse(device, requestId, 0, offset, Array.create('byte', 0x01));
     }
   }
 
@@ -109,9 +109,9 @@ export class TNS_BluetoothGattServerCallback extends android.bluetooth.Bluetooth
       `---- TNS_BluetoothGattServerCallback.onConnectionStateChange ---- device: ${device}, status: ${status}, newState: ${newState}`
     );
 
-    this.owner.get().sendEvent(Bluetooth.server_connection_state_changed_event, { device, status, newState });
+    this._owner.get().sendEvent(Bluetooth.server_connection_state_changed_event, { device, status, newState });
 
-    // this.owner.get()._onServerConnectionStateChangeCallback(device, status, newState);
+    // this._owner.get()._onServerConnectionStateChangeCallback(device, status, newState);
   }
 
   /**
@@ -128,11 +128,11 @@ export class TNS_BluetoothGattServerCallback extends android.bluetooth.Bluetooth
       `---- TNS_BluetoothGattServerCallback.onDescriptorReadRequest ---- device: ${device}, requestId: ${requestId}, offset: ${offset}, descriptor: ${descriptor}`
     );
 
-    this.owner.get().sendEvent(Bluetooth.descriptor_read_request_event, { device, requestId, offset, descriptor });
+    this._owner.get().sendEvent(Bluetooth.descriptor_read_request_event, { device, requestId, offset, descriptor });
 
-    // this.owner.get()._onDescriptorReadRequestCallback(device, requestId, offset, descriptor);
-    if (this.owner.get().gattServer) {
-      this.owner.get().gattServer.sendResponse(device, requestId, 0, offset, Array.create('byte', 0x01));
+    // this._owner.get()._onDescriptorReadRequestCallback(device, requestId, offset, descriptor);
+    if (this._owner.get().gattServer) {
+      this._owner.get().gattServer.sendResponse(device, requestId, 0, offset, Array.create('byte', 0x01));
     }
   }
 
@@ -153,7 +153,7 @@ export class TNS_BluetoothGattServerCallback extends android.bluetooth.Bluetooth
       `---- TNS_BluetoothGattServerCallback.onDescriptorWriteRequest ---- device: ${device}, requestId: ${requestId}, descriptor: ${descriptor}`
     );
 
-    this.owner.get().sendEvent(Bluetooth.descriptor_write_request_event, {
+    this._owner.get().sendEvent(Bluetooth.descriptor_write_request_event, {
       device: requestId,
       descriptor: preparedWrite,
       responseNeeded,
@@ -161,11 +161,11 @@ export class TNS_BluetoothGattServerCallback extends android.bluetooth.Bluetooth
       value
     });
 
-    // this.owner
+    // this._owner
     //   .get()
     //   ._onDescriptorWriteRequestCallback(device, requestId, descriptor, preparedWrite, responseNeeded, offset, value);
-    if (this.owner.get().gattServer) {
-      this.owner.get().gattServer.sendResponse(device, requestId, 0, offset, Array.create('byte', 0x01));
+    if (this._owner.get().gattServer) {
+      this._owner.get().gattServer.sendResponse(device, requestId, 0, offset, Array.create('byte', 0x01));
     }
   }
 
@@ -182,12 +182,12 @@ export class TNS_BluetoothGattServerCallback extends android.bluetooth.Bluetooth
       `---- TNS_BluetoothGattServerCallback.onExecuteWrite ---- device: ${device}, requestId: ${requestId}, execute: ${execute}`
     );
 
-    this.owner.get().sendEvent(Bluetooth.execute_write_event, { device, requestId, execute });
+    this._owner.get().sendEvent(Bluetooth.execute_write_event, { device, requestId, execute });
 
-    // this.owner.get()._onExecuteWrite(device, requestId, execute);
+    // this._owner.get()._onExecuteWrite(device, requestId, execute);
 
-    if (this.owner.get().gattServer) {
-      this.owner.get().gattServer.sendResponse(device, requestId, 0, 0, Array.create('byte', 0x01));
+    if (this._owner.get().gattServer) {
+      this._owner.get().gattServer.sendResponse(device, requestId, 0, 0, Array.create('byte', 0x01));
     }
   }
 

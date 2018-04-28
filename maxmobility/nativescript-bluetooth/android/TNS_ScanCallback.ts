@@ -11,14 +11,14 @@ import { CLog, CLogTypes } from '../common';
 @JavaProxy('com.nativescript.TNS_ScanCallback')
 // tslint:disable-next-line:class-name
 export class TNS_ScanCallback extends android.bluetooth.le.ScanCallback {
-  private owner: WeakRef<Bluetooth>;
+  private _owner: WeakRef<Bluetooth>;
   constructor() {
     super();
     return global.__native(this);
   }
 
   onInit(owner: WeakRef<Bluetooth>) {
-    this.owner = owner;
+    this._owner = owner;
   }
 
   /**
@@ -57,9 +57,9 @@ export class TNS_ScanCallback extends android.bluetooth.le.ScanCallback {
    */
   onScanResult(callbackType: number, result: android.bluetooth.le.ScanResult) {
     CLog(CLogTypes.info, `----- TNS_ScanCallback.onScanResult ----- callbackType: ${callbackType}, result: ${result}`);
-    const stateObject = this.owner.get().connections[result.getDevice().getAddress()];
+    const stateObject = this._owner.get().connections[result.getDevice().getAddress()];
     if (!stateObject) {
-      this.owner.get().connections[result.getDevice().getAddress()] = {
+      this._owner.get().connections[result.getDevice().getAddress()] = {
         state: 'disconnected'
       };
       let manufacturerId;
@@ -75,7 +75,7 @@ export class TNS_ScanCallback extends android.bluetooth.le.ScanCallback {
           .getManufacturerSpecificData()
           .keyAt(0);
         CLog(CLogTypes.info, `---- TNS_ScanCallback.onScanResult ---- manufacturerId: ${manufacturerId}`);
-        manufacturerData = this.owner.get().decodeValue(
+        manufacturerData = this._owner.get().decodeValue(
           result
             .getScanRecord()
             .getManufacturerSpecificData()
@@ -98,7 +98,7 @@ export class TNS_ScanCallback extends android.bluetooth.le.ScanCallback {
         manufacturerData: manufacturerData
       };
       CLog(CLogTypes.info, '---- Lollipop+ scanCallback result: ' + JSON.stringify(payload));
-      this.owner.get().sendEvent(Bluetooth.device_discovered_event, { data: payload });
+      this._owner.get().sendEvent(Bluetooth.device_discovered_event, { data: payload });
     }
   }
 }

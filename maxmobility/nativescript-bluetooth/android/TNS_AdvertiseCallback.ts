@@ -7,15 +7,15 @@ import { CLog, CLogTypes } from '../common';
 @JavaProxy('com.nativescript.TNS_AdvertiseCallback')
 // tslint:disable-next-line:class-name
 export class TNS_AdvertiseCallback extends android.bluetooth.le.AdvertiseCallback {
-  private owner: WeakRef<Bluetooth>;
+  private _owner: WeakRef<Bluetooth>;
   constructor() {
     super();
     return global.__native(this);
   }
 
   onInit(owner: WeakRef<Bluetooth>) {
-    this.owner = owner;
-    CLog(CLogTypes.info, `---- TNS_AdvertiseCallback.onInit ---- this.owner: ${this.owner}`);
+    this._owner = owner;
+    CLog(CLogTypes.info, `---- TNS_AdvertiseCallback.onInit ---- this._owner: ${this._owner}`);
   }
 
   /**
@@ -25,9 +25,9 @@ export class TNS_AdvertiseCallback extends android.bluetooth.le.AdvertiseCallbac
   onStartSuccess(settingsInEffect: android.bluetooth.le.AdvertiseSettings) {
     CLog(CLogTypes.info, `---- TNS_AdvertiseCallback.onStartSuccess ---- settingsInEffect: ${settingsInEffect}`);
 
-    this.owner.get().sendEvent(Bluetooth.bluetooth_advertise_success_event);
+    this._owner.get().sendEvent(Bluetooth.bluetooth_advertise_success_event);
 
-    // this.owner.get()._onBluetoothAdvertiseResolve(settingsInEffect);
+    // this._owner.get()._onBluetoothAdvertiseResolve(settingsInEffect);
   }
 
   /**
@@ -76,7 +76,7 @@ export class TNS_AdvertiseCallback extends android.bluetooth.le.AdvertiseCallbac
         break;
     }
 
-    this.owner
+    this._owner
       .get()
       .sendEvent(
         Bluetooth.bluetooth_advertise_failure_event,
@@ -84,6 +84,6 @@ export class TNS_AdvertiseCallback extends android.bluetooth.le.AdvertiseCallbac
         `TNS_AdvertiseCallback.onStartFailure --- error: ${errorObj.msg}`
       );
 
-    // this.owner.get()._onBluetoothAdvertiseReject(errorCode);
+    // this._owner.get()._onBluetoothAdvertiseReject(errorCode);
   }
 }

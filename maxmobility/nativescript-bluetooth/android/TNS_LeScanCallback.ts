@@ -11,7 +11,8 @@ import { CLog, CLogTypes } from '../common';
 @JavaProxy('com.nativescript.TNS_LeScanCallback')
 // tslint:disable-next-line:class-name
 export class TNS_LeScanCallback extends android.bluetooth.BluetoothAdapter.LeScanCallback {
-  private owner: WeakRef<Bluetooth>;
+  private _owner: WeakRef<Bluetooth>;
+
   constructor() {
     super({
       /**
@@ -26,15 +27,15 @@ export class TNS_LeScanCallback extends android.bluetooth.BluetoothAdapter.LeSca
           `---- TNS_LeScanCallback.onLeScan ---- device: ${device}, rssi: ${rssi}, scanRecord: ${scanRecord}`
         );
 
-        const stateObject = this.owner.get().connections[device.getAddress()];
+        const stateObject = this._owner.get().connections[device.getAddress()];
         if (!stateObject) {
-          this.owner.get().connections[device.getAddress()] = {
+          this._owner.get().connections[device.getAddress()] = {
             state: 'disconnected'
           };
 
           let manufacturerId;
           let manufacturerData;
-          const manufacturerDataRaw = this.owner.get().extractManufacturerRawData(scanRecord);
+          const manufacturerDataRaw = this._owner.get().extractManufacturerRawData(scanRecord);
           CLog(CLogTypes.info, `---- TNS_LeScanCallback.onLeScan ---- manufacturerDataRaw: ${manufacturerDataRaw}`);
           if (manufacturerDataRaw) {
             manufacturerId = new DataView(manufacturerDataRaw, 0).getUint16(0, true);
@@ -53,7 +54,7 @@ export class TNS_LeScanCallback extends android.bluetooth.BluetoothAdapter.LeSca
             manufacturerData: manufacturerData
           };
           CLog(CLogTypes.info, `---- TNS_LeScanCallback.scanCallback ---- payload: ${JSON.stringify(payload)}`);
-          this.owner.get().sendEvent(Bluetooth.device_discovered_event, payload);
+          this._owner.get().sendEvent(Bluetooth.device_discovered_event, payload);
         }
       }
     });
@@ -61,7 +62,7 @@ export class TNS_LeScanCallback extends android.bluetooth.BluetoothAdapter.LeSca
   }
 
   onInit(owner: WeakRef<Bluetooth>) {
-    this.owner = owner;
-    CLog(CLogTypes.info, `---- TNS_LeScanCallback.onInit ---- this.owner: ${this.owner}`);
+    this._owner = owner;
+    CLog(CLogTypes.info, `---- TNS_LeScanCallback.onInit ---- this._owner: ${this._owner}`);
   }
 }
