@@ -7,9 +7,9 @@
   <Carousel #carousel ios:indicatorOffset="0,-10" ios:finite="true" ios:bounce="true" height="100%" indicatorColor="#66ccff" indicatorColorUnselected="#cceeff">
     <CarouselItem  *ngFor="let slide of slides">
       
-      <GridLayout  rows="auto, *" cols="*" class="">
+ <GridLayout  rows="auto, *" cols="*" class="">
 	
-	<StackLayout row="0" class="topSlide" height="35%" width="100%" orientation="horizontal" horizontalAlignment="center">
+	<StackLayout row="0"  height="35%" width="100%" orientation="horizontal" horizontalAlignment="center">
 	  <Image [src]="slide.Image" stretch="aspectFit"></Image>
 	</StackLayout>
 

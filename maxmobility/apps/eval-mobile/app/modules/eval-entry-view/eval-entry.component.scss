@@ -4,7 +4,7 @@
 
 .eval-stack-layout{
     margin: 20, 0, 0, 0;
-    background-color: $permobil-hero;
+    background: transparent;
 }
 
 .hero {
@@ -15,6 +15,10 @@
     color: white;
     font-size: 18;
     text-transform: none;
+}
+
+.topView {
+    background-size: cover;
 }
 
 Image {
@@ -46,7 +50,7 @@ Image {
 .eval-slider {
     margin: 0, 15, 0, 25;
     color: #fff;
-    background-color: $permobil-ocean;
+    background-color: $permobil-orange;
 }
 
 .eval-segmentedBar{
@@ -76,6 +80,18 @@ Image {
     margin: 30, 0, 0, 0;
     border-radius: 5;
     
+}
+
+.dropdown {
+    background-color: rgba(250, 250, 250, 0.4);
+    placeholder-color: rgba(250, 250, 250, 0.5);
+    color: $permobil-orange;
+    border-radius: 2;
+    padding:0, 5, 0, 5;
+    margin: 0, 15, 0, 10;
+    width: 150;
+    text-align: center;
+    horizontal-alignment: right;
 }
 
 

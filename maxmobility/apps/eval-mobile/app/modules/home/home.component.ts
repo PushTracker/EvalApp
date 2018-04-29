@@ -176,22 +176,24 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
   ];
 
-  videoHtmlString_0 = '<iframe frameborder="0" vspace="0" hspace="0" marginwidth="0" marginheight="0" width="100%" seamless="seamless" src="https://www.youtube.com/embed/8fn26J59WJ4" border="0"></iframe>';
-  videoHtmlString_1 = '<iframe height="170" width="170" src="https://www.youtube.com/embed/uhA3-svjQFg" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
-  videoHtmlString_2 = '<iframe height="170" width="170" src="https://www.youtube.com/embed/6_M1J8HZXIk" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
-  videoHtmlString_3 = '<iframe height="170" width="170" src="https://www.youtube.com/embed/3B-6ked84us" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
-  videoHtmlString_4 = '<iframe height="170" width="170" src="https://www.youtube.com/embed/3B-6ked84us" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
-  videoHtmlString_5 = '<iframe height="170" width="170" src="https://www.youtube.com/embed/45Kj7zJpDcM" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
-  videoHtmlString_6 = '<iframe height="170" width="170" src="https://www.youtube.com/embed/hFid9ks551A" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+  videoHtmlString_0 = '<iframe style="margin-bottom: 10; padding:0; border:0; width:100%; height:100%"  src="https://www.youtube.com/embed/8fn26J59WJ4"></iframe>';
+  videoHtmlString_1 = '<iframe backgroundColor=red frameborder=0 vspace=0 hspace=0 border=0 marginwidth=0 marginheight=0 width=100% seamless=seamless src="https://www.youtube.com/embed/uhA3-svjQFg" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+  videoHtmlString_2 = '<iframe frameborder="0" vspace="0" hspace="0" marginwidth="0" marginheight="0" width="100%" seamless="seamless" src="https://www.youtube.com/embed/6_M1J8HZXIk" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+  videoHtmlString_3 = '<iframe frameborder="0" vspace="0" hspace="0" marginwidth="0" marginheight="0" width="100%" seamless="seamless" src="https://www.youtube.com/embed/3B-6ked84us" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+  videoHtmlString_4 = '<iframe frameborder="0" vspace="0" hspace="0" marginwidth="0" marginheight="0" width="100%" seamless="seamless" src="https://www.youtube.com/embed/3B-6ked84us" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+  videoHtmlString_5 = '<iframe frameborder="0" vspace="0" hspace="0" marginwidth="0" marginheight="0" width="100%" seamless="seamless" src="https://www.youtube.com/embed/45Kj7zJpDcM" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+  videoHtmlString_6 = '<iframe frameborder="0" vspace="0" hspace="0" marginwidth="0" marginheight="0" width="100%" seamless="seamless" src="https://www.youtube.com/embed/hFid9ks551A" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
 
   videoItems = [
     { Url: this.videoHtmlString_0, 
-      Description: 'SmartDrive Introduction',
+      Description: 'This video is an overview of SmartDrive being used by people of varying ages and circumstances in a variety of environments.',
+      Title: 'SmartDrive Introduction',
       Thumb: '~/assets/images/overview-thumb.jpg',
       Route:"/video"
     },
     { Url: this.videoHtmlString_1, 
-      Description: 'SmartDrive MX2+ Basic Operation',
+      Description: 'This video covers the basic operation and functionality of the SmartDrive MX2+ and PushTracker.',
+      Title: 'SmartDrive MX2+ Basic Operation',
       Thumb: '~/assets/images/sd-basic-op-thumb.jpg',
       Route:"/video"
     },
@@ -244,15 +246,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   }
 
-  onRadListLoaded(event) {
-    const radListView = event.object;
-    setTimeout(() => {
-      radListView.scrollWithAmount(150, true);
-    setTimeout(() => {
-      radListView.scrollWithAmount(-150, true);    
-    }, 500);
-    }, 100);
-  }
+  // onRadListLoaded(event) {
+  //   const radListView = event.object;
+  //   setTimeout(() => {
+  //     radListView.scrollWithAmount(150, true);
+  //   setTimeout(() => {
+  //     radListView.scrollWithAmount(-150, true);    
+  //   }, 500);
+  //   }, 100);
+  // }
 
   get sideDrawerTransition(): DrawerTransitionBase {
     return this._sideDrawerTransition;
@@ -284,7 +286,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     const videoUrl = item.Url;
     const route = item.Route;
-
+    const title = item.Title;
+    const desc = item.Description;
     console.log(item.Url);
     console.log(item.Route);
 
@@ -295,7 +298,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
         },
         queryParams: {
         url: videoUrl,
-        desc: item.Description
+        desc: item.Description,
+        title: item.Title
         }
       }
     );

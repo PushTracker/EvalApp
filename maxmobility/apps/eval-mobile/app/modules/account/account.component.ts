@@ -9,6 +9,8 @@ import { UserService, ProgressService, LoggingService } from '@maxmobility/mobil
 import { User, CLog } from '@maxmobility/core';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { Kinvey } from 'kinvey-nativescript-sdk';
+import { registerElement } from "nativescript-angular";
+registerElement("Gradient", () => require("nativescript-gradient").Gradient);
 
 @Component({
   selector: 'Account',

@@ -22,6 +22,9 @@ import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 // import { Observable, Scheduler } from "rxjs";
 import { Observable } from "data/observable";
 
+import { registerElement } from "nativescript-angular";
+registerElement("Gradient", () => require("nativescript-gradient").Gradient);
+
 
 @Component({
     selector: 'Video',
@@ -34,6 +37,7 @@ export class VideoComponent implements OnInit, AfterViewInit {
 	@ViewChild("description") description: ElementRef;
 
     url = String();
+	title = String();
 	desc = String();
 
     private _sideDrawerTransition: DrawerTransitionBase;
@@ -45,6 +49,7 @@ export class VideoComponent implements OnInit, AfterViewInit {
 		const query = this.route.snapshot.queryParams
 
 		this.url = `${query["url"]}`;
+		this.title = `${query["title"]}`;
 		this.desc = `${query["desc"]}`;
 		
 		this._sideDrawerTransition = new SlideInOnTopTransition();

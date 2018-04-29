@@ -6,7 +6,8 @@ import { RadSideDrawerComponent } from "nativescript-ui-sidedrawer/angular";
 import { RouterExtensions } from "nativescript-angular/router";
 import { View } from "ui/core/view";
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
-
+import { registerElement } from "nativescript-angular";
+registerElement("Gradient", () => require("nativescript-gradient").Gradient);
 const carousel = require('nativescript-carousel').Carousel;
 
 @Component({
@@ -39,7 +40,7 @@ export class TrainingComponent implements OnInit, AfterViewInit {
 	]
     },
 	{
-	Image: "~/assets/images/Tap.jpg",
+	Image: "~/assets/images/Stop.png",
 	Label: "Tap Gesture",
 	Bullets: [
 	    "Keeping your wrist straight, make contact on the pushrim with the palm of your hand.",
@@ -49,7 +50,7 @@ export class TrainingComponent implements OnInit, AfterViewInit {
 	]
     },
 	{
-	Image: "~/assets/images/start-coast.jpg",
+	Image: "~/assets/images/start-coast.png",
 	Label: "Starting & Setting Speed",
 	Bullets: [
 	    "Double-tap to initiate the SmartDrive. It will then begin to accelerate.",
@@ -58,7 +59,7 @@ export class TrainingComponent implements OnInit, AfterViewInit {
 	]
     },
 	{
-	Image: "~/assets/images/Steer.jpg",
+	Image: "~/assets/images/Steer.png",
 	Label: "Steering",
 	Bullets: [
 	    "To steer, gently grip the pushrim of the direction you want to go.",
@@ -67,7 +68,7 @@ export class TrainingComponent implements OnInit, AfterViewInit {
 	]
     },
 	{
-	Image: "~/assets/images/turn.jpg",
+	Image: "~/assets/images/turn.png",
 	Label: "Turning",
 	Bullets: [
 	    "To turn, firmly grip the pushrim of the direction you want to go.",
@@ -77,7 +78,7 @@ export class TrainingComponent implements OnInit, AfterViewInit {
 	]
     },
 	{
-	Image: "~/assets/images/Stop.jpg",
+	Image: "~/assets/images/Stop2.png",
 	Label: "Stopping",
 	Bullets: [
 	    "Double-tap to disengage the SmartDrive.",

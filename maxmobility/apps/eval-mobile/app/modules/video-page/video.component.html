@@ -1,21 +1,21 @@
 <ActionBar class="action-bar">
-  <!-- <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
-  <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem> -->
-  <Label class="action-bar-title" [text]="desc"></Label>
+  <Label class="action-bar-title" text="Video"></Label>
 </ActionBar>
 
-<RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
-  
-  <StackLayout tkDrawerContent>
-    <MyDrawer [selectedPage]="'Video'"></MyDrawer>
-  </StackLayout>
-  
-  <GridLayout padding="0" margin="0" col="*" row="*" tkMainContent>
-      
-      <WebView backgroundColor="blue" border-radius="5" padding="0" margin="0" display="block" overFlow="hidden" width="100%" height="100%" class="full-page" [src]="url">
-      </WebView>
-   
-  </GridLayout>
+<StackLayout backgroundImage="~/assets/images/background_1.jpg" tkMainContent class="gridImage" padding="0" margin="0">
 
-</RadSideDrawer>
+      
+  <GridLayout padding="0" margin="0" backgroundColor="blue" rows="auto, *" cols="auto">
+	 <WebView row="0" padding="0" margin="0" background="yellow" height="30%" width="100%" [src]="url">
+      </WebView>
+	<ScrollView  row="1" class="lowerSlide" height="70%" >
+      <Gradient direction="to bottom right" colors="rgba(250,250,250, 0.3), rgba(0,40,85, 0.3)" orientation="vertical" horizontalAlignment="center" width="100%">
+          <Label row="1" [text]="title" class="title" textWrap="true"></Label>
+	        <Label row="1" [text]="desc" class="bullet" textWrap="true"></Label>
+          </Gradient>
+        </ScrollView>
+      </GridLayout>
+
+</StackLayout>
+
 

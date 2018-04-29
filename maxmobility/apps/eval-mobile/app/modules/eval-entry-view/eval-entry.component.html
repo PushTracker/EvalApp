@@ -14,13 +14,13 @@
     <MyDrawer [selectedPage]="'Evaluation'"></MyDrawer>
   </StackLayout>
 
-  <GridLayout tkMainContent backgroundImage="~/assets/images/background_1.jpg" rows="auto, *" cols="*">
-    <StackLayout row="0" class="topSlide" height="20%" orientation="horizontal" horizontalAlignment="center">
+  <GridLayout class="hero" tkMainContent  rows="auto, *" cols="*" width="100%">
+    <StackLayout backgroundImage="~/assets/images/background_1.jpg"  row="0" class="topView" height="20%" width="100%" orientation="horizontal" horizontalAlignment="center">
       <Image src="~/assets/images/evaluation-start.png" 
       stretch="aspectFit"></Image>
     </StackLayout>
-    
-    <ScrollView row="1" class="hero" orientation="vertical">
+    <Gradient row="1" direction="to bottom" colors="rgba(250,250,250, 0.2), rgba(0,40,85, 0.2)">
+    <ScrollView row="1" class="" orientation="vertical">
       <StackLayout class="eval-stack-layout" width="100%">
 	<DockLayout stretchLastChild="false" >
           <Label text="Do you have pain from pushing?" class="eval-item" dock="left" textWrap="true" width="70%"></Label>
@@ -54,17 +54,27 @@
           <Slider maxValue="10"  verticalAlignment="center" class="eval-slider" [value]="settings.independence" (valueChange)="onSliderUpdate('independence', $event)" row="0" col="0"></Slider>
 	</GridLayout>
 
-	<DockLayout stretchLastChild="true" padding="30,0,0,0">
+	<DockLayout stretchLastChild="false" padding="30,0,0,0" width="100%">
           <Label dock="left" text="Years in manual chair:" class="eval-item" ></Label>
-          <DropDown #dd dock="right" hint="years" [items]="timeFrames" (selectedIndexChanged)="selectedIndexChanged($event)" horizontalAlignment="right" class="p-15"></DropDown>
+          <DropDown #dd 
+          dock="right" 
+          hint="years" 
+          [items]="timeFrames" 
+          (selectedIndexChanged)="selectedIndexChanged($event)"
+          class="p-15 dropdown"></DropDown>
 
 	</DockLayout>
 
-	<DockLayout stretchLastChild="true" padding="30,0,0,0">
+	  <DockLayout stretchLastChild="false" padding="30,0,0,0">
           <Label dock="left" text="Type of chair:" class="eval-item" ></Label>
-          <DropDown #dd dock="right" hint="chair type" [items]="chairTypes" (selectedIndexChanged)="selectedIndexChanged($event)" horizontalAlignment="right" class="p-15"></DropDown>
-
-	</DockLayout>
+          <DropDown #dd 
+          textAlign="center"
+          dock="right" 
+          hint="chair type" 
+          [items]="chairTypes" 
+          (selectedIndexChanged)="selectedIndexChanged($event)" 
+          class="p-15 dropdown"></DropDown>
+  </DockLayout>
 
 
 	<!-- <GridLayout rows="auto" columns="*, auto" >
@@ -76,5 +86,6 @@
 
       </StackLayout>
     </ScrollView>
+    </Gradient>
   </GridLayout>
 </RadSideDrawer>
