@@ -523,7 +523,6 @@ export class OTAComponent implements OnInit {
               case SmartDrive.OTAState.awaiting_versions:
                 if (haveBLEVersion && haveMCUVersion) {
                   sd.otaState = SmartDrive.OTAState.awaiting_mcu_ready;
-                  hasRebooted = false;
                   // TOOD: Check the versions here and
                   // prompt the user if they want to
                   // force the OTA
@@ -535,7 +534,7 @@ export class OTAComponent implements OnInit {
               case SmartDrive.OTAState.awaiting_mcu_ready:
                 // make sure the index is set to 0 for next OTA
                 index = 0;
-                if (sd.connected && !hasRebooted) {
+                if (sd.connected && ableToSend) {
                   // send start OTA
                   console.log(`Sending StartOTA::MCU to ${sd.address}`);
                   const p = new Packet();
@@ -669,6 +668,8 @@ export class OTAComponent implements OnInit {
                 }
                 this.snackbar.simple(msg);
                 clearInterval(otaIntervalID);
+                // make sure we tell ourselves not to reconnect!
+                stopOTA = true;
                 // now disconnect from the smartdrive
                 console.log('disconnecting from sd');
                 const tasks = SmartDrive.Characteristics.map(characteristic => {
