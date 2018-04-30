@@ -87,6 +87,7 @@ export class Packet {
     for (let i = 0; i < length; i++) {
       bytes.push_back(firmware[startIndex + i]);
     }
+    this.data('length', length);
     this.makePacket('OTA', device, 'bytes', bytes);
   }
 

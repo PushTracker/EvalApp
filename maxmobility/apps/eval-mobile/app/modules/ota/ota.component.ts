@@ -340,8 +340,9 @@ export class OTAComponent implements OnInit {
             if (connectionIntervalID) {
               timer.clearInterval(connectionIntervalID);
             }
-            // TODO: Subscribe to all the characteristics
-            // so the SD will send us data!
+            // TODO: Refactor characteristic subscription
+            //       out of this code (into
+            //       smartdrive.model?)
             const services = data.services;
             if (services) {
               // TODO: if we didn't get services then we should disconnect and re-scan!
@@ -391,6 +392,8 @@ export class OTAComponent implements OnInit {
           sd.on(SmartDrive.smartdrive_disconnect_event, () => {
             ableToSend = false;
             hasRebooted = true;
+            // TODO: refactor stop notifying code out of
+            //       this code (into smartdrive.model?)
             const tasks = SmartDrive.Characteristics.map(characteristic => {
               console.log(`Stop Notifying ${characteristic}`);
               return this._bluetoothService.stopNotifying({
@@ -507,7 +510,6 @@ export class OTAComponent implements OnInit {
                   value: data
                 })
                 .then(() => {
-                  console.log('Have finished writing fw packet, writing next!');
                   writeFirmwareSector(device, fw, characteristic, nextState);
                 });
               index += payloadSize;
@@ -528,7 +530,7 @@ export class OTAComponent implements OnInit {
                   // force the OTA
                   //   - add / show buttons on the
                   //     progress bar for whether they
-                  //     want to force it or not
+                  //     want to force it or cancel it
                 }
                 break;
               case SmartDrive.OTAState.awaiting_mcu_ready:
@@ -553,7 +555,6 @@ export class OTAComponent implements OnInit {
                 }
                 break;
               case SmartDrive.OTAState.updating_mcu:
-                console.log('------------------  NOW UPDATING MCU!');
                 // now that we've successfully gotten the
                 // SD connected - don't timeout
                 timer.clearTimeout(otaTimeoutID);
@@ -589,7 +590,6 @@ export class OTAComponent implements OnInit {
                 }
                 break;
               case SmartDrive.OTAState.updating_ble:
-                console.log('------------------  NOW UPDATING BLE!');
                 // now that we've successfully gotten the
                 // SD connected - don't timeout
                 timer.clearTimeout(otaTimeoutID);
@@ -666,12 +666,13 @@ export class OTAComponent implements OnInit {
                 } else {
                   msg = `SmartDrive OTA FAILED! ${mcuVersion.toString(16)}, ${bleVersion.toString(16)}`;
                 }
+                console.log(msg);
                 this.snackbar.simple(msg);
                 clearInterval(otaIntervalID);
                 // make sure we tell ourselves not to reconnect!
                 stopOTA = true;
                 // now disconnect from the smartdrive
-                console.log('disconnecting from sd');
+                console.log(`OTA Complete for ${sd.address}`);
                 const tasks = SmartDrive.Characteristics.map(characteristic => {
                   console.log(`Stop Notifying ${characteristic}`);
                   return this._bluetoothService.stopNotifying({
@@ -723,7 +724,6 @@ export class OTAComponent implements OnInit {
   onStartOtaUpdate() {
     const scrollView = this.scrollView.nativeElement as ScrollView;
     const offset = scrollView.scrollableHeight;
-    console.log(offset);
 
     scrollView.scrollToVerticalOffset(offset, true);
 
