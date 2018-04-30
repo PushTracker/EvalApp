@@ -263,6 +263,16 @@ export class OTAComponent implements OnInit {
     //   * button on / around progress bar to cancel the OTA
     //   * button on / around progress bar to pause the OTA
     //   * button on / around progress bar to retry the OTA
+
+    // TODO: cancel all timeouts and intervals if the user
+    //       navigates away
+
+    // TOOD: add timeout for write function in case of disconnect
+    //       during write.
+
+    // TODO: cancel all timeouts and intervals if connection
+    //       terminates or write times out
+
     return new Promise((resolve, reject) => {
       if (!sd) {
         console.log('SmartDrive passed for OTA is invalid!');
@@ -285,6 +295,8 @@ export class OTAComponent implements OnInit {
           let haveMCUVersion = false;
           let haveBLEVersion = false;
           let ableToSend = false;
+
+          let hasRebooted = false;
 
           let connectionIntervalID = null;
           const smartDriveConnectionInterval = 2000;
@@ -320,6 +332,7 @@ export class OTAComponent implements OnInit {
 
           // register for connection events
           sd.on(SmartDrive.smartdrive_connect_event, d => {
+            ableToSend = false;
             const data = d.data;
 
             console.log(`connected to ${data.UUID}::${data.name}`);
@@ -376,6 +389,8 @@ export class OTAComponent implements OnInit {
           });
 
           sd.on(SmartDrive.smartdrive_disconnect_event, () => {
+            ableToSend = false;
+            hasRebooted = true;
             const tasks = SmartDrive.Characteristics.map(characteristic => {
               console.log(`Stop Notifying ${characteristic}`);
               return this._bluetoothService.stopNotifying({
@@ -395,6 +410,8 @@ export class OTAComponent implements OnInit {
                       sd.handleConnect(data);
                     },
                     data => {
+                      ableToSend = false;
+                      hasRebooted = true;
                       sd.handleDisconnect();
                     }
                   );
@@ -452,6 +469,8 @@ export class OTAComponent implements OnInit {
               sd.handleConnect(data);
             },
             data => {
+              ableToSend = false;
+              hasRebooted = true;
               sd.handleDisconnect();
             }
           );
@@ -474,7 +493,9 @@ export class OTAComponent implements OnInit {
                 p.destroy();
               } else if (device === 'SmartDriveBluetooth') {
                 const length = Math.min(fw.length - index, 16);
-                data = new Uint8Array(fw, index, length);
+                //console.log(` ----------------- MAKING : ${length}`);
+                data = fw.subarray(index, index + length);
+                //console.log(` ----------------- SENDING : ${data.length}`);
               } else {
                 throw `ERROR: ${device} should be either 'SmartDrive' or 'SmartDriveBluetooth'`;
               }
@@ -502,6 +523,7 @@ export class OTAComponent implements OnInit {
               case SmartDrive.OTAState.awaiting_versions:
                 if (haveBLEVersion && haveMCUVersion) {
                   sd.otaState = SmartDrive.OTAState.awaiting_mcu_ready;
+                  hasRebooted = false;
                   // TOOD: Check the versions here and
                   // prompt the user if they want to
                   // force the OTA
@@ -513,7 +535,7 @@ export class OTAComponent implements OnInit {
               case SmartDrive.OTAState.awaiting_mcu_ready:
                 // make sure the index is set to 0 for next OTA
                 index = 0;
-                if (sd.connected && ableToSend) {
+                if (sd.connected && !hasRebooted) {
                   // send start OTA
                   console.log(`Sending StartOTA::MCU to ${sd.address}`);
                   const p = new Packet();
@@ -586,6 +608,8 @@ export class OTAComponent implements OnInit {
                 // make sure we clear out the version info that we get
                 haveBLEVersion = false;
                 haveMCUVersion = false;
+                // we need to reboot after the OTA
+                hasRebooted = false;
                 break;
               case SmartDrive.OTAState.rebooting_ble:
                 // if we have gotten the version, it has
@@ -593,9 +617,9 @@ export class OTAComponent implements OnInit {
                 // MCU
                 if (haveBLEVersion) {
                   sd.otaState = SmartDrive.OTAState.rebooting_mcu;
-                }
-                // send BLE stop ota command
-                if (sd.connected && ableToSend) {
+                  hasRebooted = false;
+                } else if (sd.connected && !hasRebooted) {
+                  // send BLE stop ota command
                   console.log(`Sending StopOTA::BLE to ${sd.address}`);
                   const data = Uint8Array.from([0x03]); // this is the stop command
                   this._bluetoothService.write({
@@ -612,9 +636,9 @@ export class OTAComponent implements OnInit {
                 // MCU
                 if (haveMCUVersion) {
                   sd.otaState = SmartDrive.OTAState.verifying_update;
-                }
-                // send MCU stop ota command
-                if (sd.connected && ableToSend) {
+                  hasRebooted = false;
+                } else if (sd.connected && !hasRebooted) {
+                  // send MCU stop ota command
                   // send stop OTA
                   console.log(`Sending StopOTA::MCU to ${sd.address}`);
                   const p = new Packet();
@@ -637,11 +661,31 @@ export class OTAComponent implements OnInit {
                 // user of the success / failure of each
                 // of t he updates!
                 // - probably add buttons so they can retry?
+                let msg = '';
                 if (mcuVersion == 0x15 && bleVersion == 0x14) {
-                  this.snackbar.simple('SmartDrive OTA Succeeded!');
+                  msg = `SmartDrive OTA Succeeded! ${mcuVersion.toString(16)}, ${bleVersion.toString(16)}`;
                 } else {
-                  this.snackbar.simple('SmartDrive OTA FAILED!');
+                  msg = `SmartDrive OTA FAILED! ${mcuVersion.toString(16)}, ${bleVersion.toString(16)}`;
                 }
+                this.snackbar.simple(msg);
+                clearInterval(otaIntervalID);
+                // now disconnect from the smartdrive
+                console.log('disconnecting from sd');
+                const tasks = SmartDrive.Characteristics.map(characteristic => {
+                  console.log(`Stop Notifying ${characteristic}`);
+                  return this._bluetoothService.stopNotifying({
+                    peripheralUUID: sd.address,
+                    serviceUUID: SmartDrive.ServiceUUID,
+                    characteristicUUID: characteristic
+                  });
+                });
+                Promise.all(tasks).then(() => {
+                  console.log(`Disconnecting from ${sd.address}`);
+                  // TODO: Doesn't properly disconnect
+                  this._bluetoothService.disconnect({
+                    UUID: sd.address
+                  });
+                });
                 break;
               case SmartDrive.OTAState.complete:
                 break;
