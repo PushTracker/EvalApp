@@ -8,8 +8,7 @@ import { confirm } from 'tns-core-modules/ui/dialogs';
 import { EvaluationService } from '@maxmobility/mobile';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { DropDownModule } from 'nativescript-drop-down/angular';
-import { registerElement } from "nativescript-angular";
-registerElement("Gradient", () => require("nativescript-gradient").Gradient);
+
 
 const timeInChair = ['1', '2', '3', '4', '5+', '10+', '20+', '30+'];
 const chairType = ['TiLite', 'Quckie', 'Other'];

@@ -6,8 +6,6 @@ import { RadSideDrawerComponent } from "nativescript-ui-sidedrawer/angular";
 import { RouterExtensions } from "nativescript-angular/router";
 import { View } from "ui/core/view";
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
-import { registerElement } from "nativescript-angular";
-registerElement("Gradient", () => require("nativescript-gradient").Gradient);
 const carousel = require('nativescript-carousel').Carousel;
 
 @Component({
