@@ -247,6 +247,7 @@ export class OTAComponent implements OnInit {
           // register for disconnection
           //   - which will happen when we finish / cancel the ota
           pt.on(PushTracker.pushtracker_disconnect_event, () => {
+            ableToSend = false;
             hasRebooted = true;
           });
           // register for version events
@@ -273,6 +274,8 @@ export class OTAComponent implements OnInit {
               data = p.toUint8Array();
               p.destroy();
               // TODO: actually send data to pushtracker
+              btService.sendToPushTrackers(data);
+              btService.notifyPushTrackers([pt.address]);
               index += payloadSize;
             } else {
               // we are done with the sending change
@@ -285,7 +288,7 @@ export class OTAComponent implements OnInit {
             switch (pt.otaState) {
               case PushTracker.OTAState.awaiting_version:
                 if (haveVersion) {
-                  // TOOD: Check the versions here and
+                  // TODO: Check the versions here and
                   // prompt the user if they want to
                   // force the OTA
                   //   - add / show buttons on the
@@ -304,10 +307,12 @@ export class OTAComponent implements OnInit {
                   p.Type('Command');
                   p.SubType('StartOTA');
                   const otaDevice = Packet.makeBoundData('PacketOTAType', 'PushTracker');
-                  p.data('otaDevice', otaDevice); // smartdrive is 0
+                  p.data('otaDevice', otaDevice);
                   const data = p.toUint8Array();
-                  // TODO: actually send to PT
                   p.destroy();
+                  // TODO: actually send to PT
+                  btService.sendToPushTrackers(data);
+                  btService.notifyPushTrackers([pt.address]);
                 }
                 break;
               case PushTracker.OTAState.updating:
@@ -330,9 +335,18 @@ export class OTAComponent implements OnInit {
                 if (haveVersion) {
                   pt.otaState = PushTracker.OTAState.verifying_update;
                 } else if (pt.connected && !hasRebooted) {
-                  // send BLE stop ota command
+                  // send stop ota command
                   console.log(`Sending StopOTA::PT to ${pt.address}`);
+                  const p = new Packet();
+                  p.Type('Command');
+                  p.SubType('StopOTA');
+                  const otaDevice = Packet.makeBoundData('PacketOTAType', 'PushTracker');
+                  p.data('otaDevice', otaDevice);
+                  const data = p.toUint8Array();
+                  p.destroy();
                   // TODO: actually send to pt
+                  btService.sendToPushTrackers(data);
+                  btService.notifyPushTrackers([pt.address]);
                 }
                 break;
               case PushTracker.OTAState.verifying_update:

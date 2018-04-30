@@ -314,6 +314,7 @@ export class BluetoothService {
 
   // service controls
   private deleteServices(): void {
+    PushTracker.DataCharacteristic = null;
     try {
       this._bluetooth.clearServices();
     } catch (ex) {
@@ -399,11 +400,11 @@ export class BluetoothService {
         c.setValue(0, android.bluetooth.BluetoothGattCharacteristic.FORMAT_UINT8, 0);
         c.setWriteType(android.bluetooth.BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT);
 
-        /*
-		  if (cuuid === ptDataChar) {
-		  pushTrackerDataCharacteristic = c;
-		  }
-		*/
+        // store the characteristic here
+        if (cuuid === PushTracker.DataCharacteristicUUID) {
+          PushTracker.DataCharacteristic = c;
+        }
+
         console.log('Adding characteristic to service!');
         this.AppService.addCharacteristic(c);
       });
@@ -432,6 +433,24 @@ export class BluetoothService {
     }
     console.log(`Found or made SD: ${sd}`);
     return sd;
+  }
+
+  public disconnectPushTrackers(addresses: string[]) {
+    addresses.map(addr => {
+      this._bluetooth.cancelServerConnection(addr);
+    });
+  }
+
+  public sendToPushTrackers(data: any) {
+    if (PushTracker.DataCharacteristic) {
+      PushTracker.DataCharacteristic.setValue(data);
+    }
+  }
+
+  public notifyPushTrackers(addresses: string[]) {
+    addresses.map(addr => {
+      this._bluetooth.notifyCharacteristicChanged(addr, PushTracker.DataCharacteristic, false);
+    });
   }
 
   public getPushTracker(address: string) {
