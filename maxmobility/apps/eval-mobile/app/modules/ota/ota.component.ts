@@ -86,7 +86,33 @@ export class OTAComponent implements OnInit {
     private http: HttpClient,
     private routerExtensions: RouterExtensions,
     private _bluetoothService: BluetoothService
-  ) {}
+  ) {
+    // TODO: cases we need to handle:
+    //  * an already connected pushtracker exists - what do we
+    //    want to do here? should we inform the user that a
+    //    pushtracker is already connected and try to see what
+    //    version it is?
+
+    // sign up for events on PushTrackers and SmartDrives
+    // handle pushtracker connection events for existing pushtrackers
+    console.log('registering for connection events!');
+    const self = this;
+    BluetoothService.PushTrackers.map(function(pt) {
+      pt.on(PushTracker.pushtracker_connect_event, function(args) {
+        self.onPushTrackerConnected();
+      });
+    });
+
+    // listen for completely new pusthrackers (that we haven't seen before)
+    BluetoothService.PushTrackers.on(ObservableArray.changeEvent, function(args) {
+      if (args.action === 'add') {
+        const pt = BluetoothService.PushTrackers.getItem(BluetoothService.PushTrackers.length - 1);
+        pt.on(PushTracker.pushtracker_connect_event, function(arg) {
+          self.onPushTrackerConnected();
+        });
+      }
+    });
+  }
 
   ngOnInit() {
     const otaTitleView = <View>this.otaTitleView.nativeElement;
@@ -102,50 +128,6 @@ export class OTAComponent implements OnInit {
     otaFeaturesView.opacity = 0;
 
     this._sideDrawerTransition = new SlideInOnTopTransition();
-
-    // TODO: cases we need to handle:
-    //  * an already connected pushtracker exists - what do we
-    //    want to do here? should we inform the user that a
-    //    pushtracker is already connected and try to see what
-    //    version it is?
-
-    // sign up for events on PushTrackers and SmartDrives
-    // handle pushtracker connection events for existing pushtrackers
-    console.log('registering for connection events!');
-    BluetoothService.PushTrackers.map(pt => {
-      // console.log(pt);
-      pt.on(PushTracker.pushtracker_connect_event, args => {
-        console.log(`PT CONNECTED EVENT!`);
-        if (pt.paired === true) {
-          this.onPushTrackerConnected();
-        }
-      });
-    });
-
-    // listen for completely new pusthrackers (that we haven't seen before)
-    BluetoothService.PushTrackers.on(ObservableArray.changeEvent, (args: ChangedData<number>) => {
-      if (args.action === 'add') {
-        // console.log(`PT ADDED EVENT!`);
-        const pt = BluetoothService.PushTrackers.getItem(BluetoothService.PushTrackers.length - 1);
-        pt.on(PushTracker.pushtracker_connect_event, arg => {
-          // console.log(`PT CONNECTED EVENT!`);
-          if (/*pt.paired === true*/ true) {
-            this.onPushTrackerConnected();
-          }
-        });
-      }
-    });
-
-    // start discovering smartDrives here; given a list of
-    // available smartDrives - ask the user which one they want to
-    // update
-
-    // smartdrives
-    BluetoothService.SmartDrives.on(ObservableArray.changeEvent, (args: ChangedData<number>) => {
-      if (args.action === 'add') {
-        // console.log(`SD ADDED EVENT`);
-      }
-    });
   }
 
   get sideDrawerTransition(): DrawerTransitionBase {
@@ -231,11 +213,161 @@ export class OTAComponent implements OnInit {
           pt.otaState = PushTracker.OTAState.not_started;
           reject();
         } else {
+          console.log(`Beginning OTA for PushTracker: ${pt.address}`);
+          // set up variables to keep track of the ota
+          let otaIntervalID = null;
+
+          let version = 0xff;
+          let haveVersion = false;
+          let ableToSend = false;
+
+          let hasRebooted = false;
+
+          let connectionIntervalID = null;
+          const ptConnectionInterval = 2000;
+
+          let otaTimeoutID = null;
+          const otaTimeout = 300000;
+          let stopOTA = false;
+          otaTimeoutID = timer.setTimeout(() => {
+            console.log('OTA Timed out!');
+            stopOTA = true;
+            timer.clearInterval(otaIntervalID);
+            ableToSend = false;
+            console.log(`Disconnecting from ${pt.address}`);
+            // TODO: How do we disconnect from the PT?
+            reject();
+          }, otaTimeout);
+          // set the state
+          if (pt.connected) {
+            pt.otaState = PushTracker.OTAState.awaiting_ready;
+          } else {
+            pt.otaState = PushTracker.OTAState.awaiting_version;
+          }
           // register for disconnection
           //   - which will happen when we finish / cancel the ota
-          pt.on(PushTracker.pushtracker_disconnect_event, () => {});
+          pt.on(PushTracker.pushtracker_disconnect_event, () => {
+            hasRebooted = true;
+          });
           // register for version events
-          pt.on(PushTracker.pushtracker_version_event, data => {});
+          pt.on(PushTracker.pushtracker_version_event, data => {
+            console.log('GOT PT VERSION');
+            console.log(`Got PT Version ${data.data.pt}`);
+            version = data.data.pt;
+            haveVersion = true;
+            ableToSend = true;
+          });
+          // now actually perform the ota
+          let index = 0;
+          const payloadSize = 16;
+          const btService = this._bluetoothService;
+          const writeFirmwareSector = (fw: any, characteristic: any, nextState: any) => {
+            console.log('writing firmware to pt');
+            // TODO: right now only sending 1% for faster testing of the OTA process
+            const fileSize = fw.length / 100;
+            if (index < fileSize) {
+              console.log(`Writing ${index} / ${fileSize} of ota to pt`);
+              let data = null;
+              const p = new Packet();
+              p.makeOTAPacket('PushTracker', index, fw);
+              data = p.toUint8Array();
+              p.destroy();
+              // TODO: actually send data to pushtracker
+              index += payloadSize;
+            } else {
+              // we are done with the sending change
+              // state to the next state
+              pt.otaState = nextState;
+            }
+          };
+
+          otaIntervalID = timer.setInterval(() => {
+            switch (pt.otaState) {
+              case PushTracker.OTAState.awaiting_version:
+                if (haveVersion) {
+                  // TOOD: Check the versions here and
+                  // prompt the user if they want to
+                  // force the OTA
+                  //   - add / show buttons on the
+                  //     progress bar for whether they
+                  //     want to force it or cancel it
+                  pt.otaState = PushTracker.OTAState.awaiting_ready;
+                }
+                break;
+              case PushTracker.OTAState.awaiting_ready:
+                // make sure the index is set to 0 for next OTA
+                index = 0;
+                if (pt.connected && ableToSend) {
+                  // send start OTA
+                  console.log(`Sending StartOTA::PT to ${pt.address}`);
+                  const p = new Packet();
+                  p.Type('Command');
+                  p.SubType('StartOTA');
+                  const otaDevice = Packet.makeBoundData('PacketOTAType', 'PushTracker');
+                  p.data('otaDevice', otaDevice); // smartdrive is 0
+                  const data = p.toUint8Array();
+                  // TODO: actually send to PT
+                  p.destroy();
+                }
+                break;
+              case PushTracker.OTAState.updating:
+                // now that we've successfully gotten the
+                // OTA started - don't timeout
+                timer.clearTimeout(otaTimeoutID);
+                if (index === 0) {
+                  writeFirmwareSector(firmware, PushTracker.DataCharacteristic, PushTracker.OTAState.rebooting);
+                }
+                // update the progress bar
+                this.ptBtProgressValue = Math.round(index / firmware.length * 100);
+                // make sure we clear out the version info that we get
+                haveVersion = false;
+                // we need to reboot after the OTA
+                hasRebooted = false;
+                break;
+              case PushTracker.OTAState.rebooting:
+                // if we have gotten the version, it has
+                // rebooted
+                if (haveVersion) {
+                  pt.otaState = PushTracker.OTAState.verifying_update;
+                } else if (pt.connected && !hasRebooted) {
+                  // send BLE stop ota command
+                  console.log(`Sending StopOTA::PT to ${pt.address}`);
+                  // TODO: actually send to pt
+                }
+                break;
+              case PushTracker.OTAState.verifying_update:
+                // check the version here and notify the
+                // user of the success / failure
+                // - probably add buttons so they can retry?
+                let msg = '';
+                if (version == 0x15) {
+                  msg = `PushTracker OTA Succeeded! ${version.toString(16)}`;
+                } else {
+                  msg = `PushTracker OTA FAILED! ${version.toString(16)}`;
+                }
+                console.log(msg);
+                this.snackbar.simple(msg);
+                clearInterval(otaIntervalID);
+                // make sure we tell ourselves not to reconnect!
+                stopOTA = true;
+                // TODO: disconnect from PT here!
+                break;
+              case PushTracker.OTAState.complete:
+                clearInterval(otaIntervalID);
+                resolve();
+                break;
+              case PushTracker.OTAState.cancelling:
+                clearInterval(otaIntervalID);
+                break;
+              case PushTracker.OTAState.canceled:
+                clearInterval(otaIntervalID);
+                resolve();
+                break;
+              default:
+                break;
+            }
+          }, 250);
+
           // send start ota to PT
           //   - periodically sends start ota
           //   - stop sending once we get ota ready from PT
@@ -247,7 +379,6 @@ export class OTAComponent implements OnInit {
           // tell the user to reconnect to the app
           //   - wait for connection event
           // wait for versions and check to verify update
-          resolve();
         }
       }
     });
@@ -272,6 +403,8 @@ export class OTAComponent implements OnInit {
 
     // TODO: cancel all timeouts and intervals if connection
     //       terminates or write times out
+
+    // TODO: track and show how much time has elapsed for the OTA
 
     return new Promise((resolve, reject) => {
       if (!sd) {
@@ -483,7 +616,6 @@ export class OTAComponent implements OnInit {
           const writeFirmwareSector = (device: string, fw: any, characteristic: any, nextState: any) => {
             console.log('writing firmware to ' + device);
             // TODO: right now only sending 1% for faster testing of the OTA process
-            //       - need to figure out why the SDBT is so slow to ota
             const fileSize = fw.length / 100;
             if (index < fileSize) {
               console.log(`Writing ${index} / ${fileSize} of ota to ${device}`);
@@ -687,12 +819,18 @@ export class OTAComponent implements OnInit {
                     UUID: sd.address
                   });
                 });
+                sd.otaState = SmartDrive.OTAState.complete;
                 break;
               case SmartDrive.OTAState.complete:
+                clearInterval(otaIntervalID);
+                resolve();
                 break;
               case SmartDrive.OTAState.cancelling:
+                clearInterval(otaIntervalID);
                 break;
               case SmartDrive.OTAState.canceled:
+                clearInterval(otaIntervalID);
+                resolve();
                 break;
               default:
                 break;
@@ -732,6 +870,12 @@ export class OTAComponent implements OnInit {
       duration: 500
     });
 
+    const otaProgressViewPT = <View>this.otaProgressViewPT.nativeElement;
+    otaProgressViewPT.animate({
+      opacity: 1,
+      duration: 500
+    });
+
     const otaFeaturesView = <View>this.otaFeaturesView.nativeElement;
     otaFeaturesView.animate({
       opacity: 1,
@@ -764,7 +908,7 @@ export class OTAComponent implements OnInit {
         })
         .then(selectedSmartDrives => {
           smartDrives = selectedSmartDrives;
-          return this.select(BluetoothService.PushTrackers.filter(pt => pt.connected));
+          return this.select(BluetoothService.PushTrackers); //.filter(pt => pt.connected));
         })
         .then(selectedPushTrackers => {
           pushTrackers = selectedPushTrackers;
@@ -809,39 +953,6 @@ export class OTAComponent implements OnInit {
 }
 
 /*
-  let intervalID = null;
-  let updatingPT = false;
-  intervalID = setInterval(() => {
-  this.sdBtProgressValue += 15;
-  if (this.sdBtProgressValue > 100) {
-  this.sdBtProgressValue = 100;
-  }
-  this.sdMpProgressValue += 25;
-  if (this.sdMpProgressValue > 100) {
-  this.sdMpProgressValue = 100;
-  }
-
-  if (this.sdMpProgressValue >= 100 && this.sdBtProgressValue >= 100) {
-  this.ptBtProgressValue += 25;
-  if (this.ptBtProgressValue > 100) {
-  this.ptBtProgressValue = 100;
-  }
-
-  if (!updatingPT) {
-  const otaProgressViewPT = <View>this.otaProgressViewPT.nativeElement;
-  otaProgressViewPT.animate({
-  opacity: 1,
-  duration: 500
-  });
-  this.otaButtonText = 'updating PushTracker';
-  updatingPT = true;
-  }
-
-  if (this.ptBtProgressValue >= 100) {
-  this.otaButtonText = 'Update Complete';
-  // cancel the interval we have set
-  clearInterval(intervalID);
-
   setTimeout(() => {
   this.routerExtensions.navigate(['/pairing'], {
   clearHistory: true

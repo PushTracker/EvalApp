@@ -8,7 +8,7 @@ enum OTAState {
   awaiting_ready,
   updating,
   rebooting,
-  veryfing_update,
+  verifying_update,
   complete,
   cancelling,
   canceled
