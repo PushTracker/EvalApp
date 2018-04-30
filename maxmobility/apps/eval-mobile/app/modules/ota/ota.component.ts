@@ -275,6 +275,8 @@ export class OTAComponent implements OnInit {
           // set up variables to keep track of the ota
           let otaIntervalID = null;
 
+          let mcuVersion = 0xff;
+          let bleVersion = 0xff;
           let haveMCUVersion = false;
           let haveBLEVersion = false;
           let ableToSend = false;
@@ -400,12 +402,14 @@ export class OTAComponent implements OnInit {
           sd.on(SmartDrive.smartdrive_ble_version_event, data => {
             console.log('GOT BLE VERSION');
             console.log(`Got SD BLE Version ${data.data.ble}`);
+            bleVersion = data.data.ble;
             haveBLEVersion = true;
           });
 
           sd.on(SmartDrive.smartdrive_mcu_version_event, data => {
             console.log('GOT MCU VERSION');
             console.log(`Got SD MCU Version ${data.data.mcu}`);
+            mcuVersion = data.data.mcu;
             haveMCUVersion = true;
           });
 
@@ -450,32 +454,42 @@ export class OTAComponent implements OnInit {
           let index = 0;
           const payloadSize = 16;
           const btService = this._bluetoothService;
-          const writeFirmwareSector = (device: string, fw: any) => {
+          const writeFirmwareSector = (device: string, fw: any, characteristic: any, nextState: any) => {
             console.log('writing firmware to ' + device);
             const fileSize = fw.length;
             if (index < fileSize) {
               console.log(`Writing ${index} / ${fileSize} of ota to ${device}`);
-              const p = new Packet();
-              p.makeOTAPacket(device, index, fw);
-              // TODO: send packet here
-              const data = p.toUint8Array();
+              let data = null;
+              if (device === 'SmartDrive') {
+                const p = new Packet();
+                p.makeOTAPacket(device, index, fw);
+                data = p.toUint8Array();
+                p.destroy();
+              } else if (device === 'SmartDriveBluetooth') {
+                data = new Uint8Array();
+                const length = Math.min(fw.length - index, 16);
+                for (let i = 0; i < length; i++) {
+                  data.push(fw[index + i]);
+                }
+              } else {
+                throw `ERROR: ${device} should be either 'SmartDrive' or 'SmartDriveBluetooth'`;
+              }
               btService
                 .write({
                   peripheralUUID: sd.address,
                   serviceUUID: SmartDrive.ServiceUUID,
-                  characteristicUUID: SmartDrive.ControlCharacteristic,
+                  characteristicUUID: characteristic,
                   value: data
                 })
                 .then(() => {
                   console.log('Have finished writing fw packet, writing next!');
-                  writeFirmwareSector(device, fw);
+                  writeFirmwareSector(device, fw, characteristic, nextState);
                 });
-              p.destroy();
               index += payloadSize;
             } else {
               // we are done with the sending change
-              // state to awaiting_ble_ready
-              sd.otaState = SmartDrive.OTAState.awaiting_ble_ready;
+              // state to the next state
+              sd.otaState = nextState;
             }
           };
 
@@ -484,12 +498,20 @@ export class OTAComponent implements OnInit {
               case SmartDrive.OTAState.awaiting_versions:
                 if (haveBLEVersion && haveMCUVersion) {
                   sd.otaState = SmartDrive.OTAState.awaiting_mcu_ready;
+                  // TOOD: Check the versions here and
+                  // prompt the user if they want to
+                  // force the OTA
+                  //   - add / show buttons on the
+                  //     progress bar for whether they
+                  //     want to force it or not
                 }
                 break;
               case SmartDrive.OTAState.awaiting_mcu_ready:
+                // make sure the index is set to 0 for next OTA
+                index = 0;
                 if (sd.connected && ableToSend) {
                   // send start OTA
-                  console.log(`Sending StartOTA to ${sd.address}`);
+                  console.log(`Sending StartOTA::MCU to ${sd.address}`);
                   const p = new Packet();
                   p.Type('Command');
                   p.SubType('StartOTA');
@@ -515,25 +537,113 @@ export class OTAComponent implements OnInit {
                 // the interval for now? - shouldn't need
                 // to
                 if (index === 0) {
-                  writeFirmwareSector('SmartDrive', mcuFirmware);
+                  writeFirmwareSector(
+                    'SmartDrive',
+                    mcuFirmware,
+                    SmartDrive.ControlCharacteristic,
+                    SmartDrive.OTAState.awaiting_ble_ready
+                  );
                 }
                 // update the progress bar
                 this.sdMpProgressValue = Math.round(index / mcuFirmware.length * 100);
                 break;
               case SmartDrive.OTAState.awaiting_ble_ready:
-                // now send StartOTA to BLE
+                // make sure the index is set to 0 for next OTA
                 index = 0;
+                // now send StartOTA to BLE
+                if (sd.connected && ableToSend) {
+                  // send start OTA
+                  console.log(`Sending StartOTA::BLE to ${sd.address}`);
+                  const data = Uint8Array.from([0x06]); // this is the start command
+                  this._bluetoothService.write({
+                    peripheralUUID: sd.address,
+                    serviceUUID: SmartDrive.ServiceUUID,
+                    characteristicUUID: SmartDrive.BLEOTAControlCharacteristic,
+                    value: data
+                  });
+                }
                 break;
               case SmartDrive.OTAState.updating_ble:
+                console.log('------------------  NOW UPDATING BLE!');
                 // now that we've successfully gotten the
                 // SD connected - don't timeout
                 timer.clearTimeout(otaTimeoutID);
                 // now send data to SD BLE
                 if (index === 0) {
-                  writeFirmwareSector('SmartDriveBluetooth', bleFirmware);
+                  writeFirmwareSector(
+                    'SmartDriveBluetooth',
+                    bleFirmware,
+                    SmartDrive.BLEOTADataCharacteristic,
+                    SmartDrive.OTAState.rebooting_ble
+                  );
                 }
                 // update the progress bar
                 this.sdBtProgressValue = Math.round(index / bleFirmware.length * 100);
+                // make sure we clear out the version info that we get
+                haveBLEVersion = false;
+                haveMCUVersion = false;
+                break;
+              case SmartDrive.OTAState.rebooting_ble:
+                // if we have gotten the version, it has
+                // rebooted so now we should reboot the
+                // MCU
+                if (haveBLEVersion) {
+                  sd.otaState = SmartDrive.OTAState.rebooting_mcu;
+                }
+                // send BLE stop ota command
+                if (sd.connected && ableToSend) {
+                  console.log(`Sending StopOTA::BLE to ${sd.address}`);
+                  const data = Uint8Array.from([0x03]); // this is the stop command
+                  this._bluetoothService.write({
+                    peripheralUUID: sd.address,
+                    serviceUUID: SmartDrive.ServiceUUID,
+                    characteristicUUID: SmartDrive.BLEOTAControlCharacteristic,
+                    value: data
+                  });
+                }
+                break;
+              case SmartDrive.OTAState.rebooting_mcu:
+                // if we have gotten the version, it has
+                // rebooted so now we should reboot the
+                // MCU
+                if (haveMCUVersion) {
+                  sd.otaState = SmartDrive.OTAState.verifying_update;
+                }
+                // send MCU stop ota command
+                if (sd.connected && ableToSend) {
+                  // send stop OTA
+                  console.log(`Sending StopOTA::MCU to ${sd.address}`);
+                  const p = new Packet();
+                  p.Type('Command');
+                  p.SubType('StopOTA');
+                  const otaDevice = Packet.makeBoundData('PacketOTAType', 'SmartDrive');
+                  p.data('otaDevice', otaDevice); // smartdrive is 0
+                  const data = p.toUint8Array();
+                  this._bluetoothService.write({
+                    peripheralUUID: sd.address,
+                    serviceUUID: SmartDrive.ServiceUUID,
+                    characteristicUUID: SmartDrive.ControlCharacteristic,
+                    value: data
+                  });
+                  p.destroy();
+                }
+                break;
+              case SmartDrive.OTAState.verifying_update:
+                // check the versions here and notify the
+                // user of the success / failure of each
+                // of t he updates!
+                // - probably add buttons so they can retry?
+                if (mcuVersion == 0x15 && bleVersion == 0x14) {
+                  this.snackbar.simple('SmartDrive OTA Succeeded!');
+                } else {
+                  this.snackbar.simple('SmartDrive OTA FAILED!');
+                }
+                break;
+              case SmartDrive.OTAState.complete:
+                break;
+              case SmartDrive.OTAState.cancelling:
+                break;
+              case SmartDrive.OTAState.canceled:
                 break;
               default:
                 break;
