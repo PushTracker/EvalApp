@@ -258,6 +258,11 @@ export class OTAComponent implements OnInit {
     // other library code for better re-use; perhaps see about
     // having it be part of the SmartDrive library or the
     // Bluetooth.service
+
+    // TODO: add buttons for user control of OTA process
+    //   * button on / around progress bar to cancel the OTA
+    //   * button on / around progress bar to pause the OTA
+    //   * button on / around progress bar to retry the OTA
     return new Promise((resolve, reject) => {
       if (!sd) {
         console.log('SmartDrive passed for OTA is invalid!');
@@ -456,7 +461,9 @@ export class OTAComponent implements OnInit {
           const btService = this._bluetoothService;
           const writeFirmwareSector = (device: string, fw: any, characteristic: any, nextState: any) => {
             console.log('writing firmware to ' + device);
-            const fileSize = fw.length;
+            // TODO: right now only sending 1% for faster testing of the OTA process
+            //       - need to figure out why the SDBT is so slow to ota
+            const fileSize = fw.length / 100;
             if (index < fileSize) {
               console.log(`Writing ${index} / ${fileSize} of ota to ${device}`);
               let data = null;
@@ -466,11 +473,8 @@ export class OTAComponent implements OnInit {
                 data = p.toUint8Array();
                 p.destroy();
               } else if (device === 'SmartDriveBluetooth') {
-                data = new Uint8Array();
                 const length = Math.min(fw.length - index, 16);
-                for (let i = 0; i < length; i++) {
-                  data.push(fw[index + i]);
-                }
+                data = new Uint8Array(fw, index, length);
               } else {
                 throw `ERROR: ${device} should be either 'SmartDrive' or 'SmartDriveBluetooth'`;
               }
