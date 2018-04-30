@@ -361,26 +361,25 @@ export class OTAComponent implements OnInit {
                   characteristics.map(characteristic => {
                     timer.setTimeout(() => {
                       console.log(`Start Notifying ${characteristic.UUID}`);
-                      this._bluetoothService
-                        .startNotifying({
-                          peripheralUUID: sd.address,
-                          serviceUUID: SmartDrive.ServiceUUID,
-                          characteristicUUID: characteristic.UUID,
-                          onNotify: args => {
-                            console.log('GOT NOTIFICATION');
-                            console.log(Object.keys(args));
-                            const value = args.value;
-                            const uArray = new Uint8Array(value);
-                            const p = new Packet();
-                            p.initialize(uArray);
-                            console.log(`${p.Type()}::${p.SubType()} ${p.toString()}`);
-                            sd.handlePacket(p);
-                            p.destroy();
-                          }
-                        })
-                        .then(() => {
+                      this._bluetoothService.startNotifying({
+                        peripheralUUID: sd.address,
+                        serviceUUID: SmartDrive.ServiceUUID,
+                        characteristicUUID: characteristic.UUID,
+                        onNotify: args => {
+                          // now that we're receiving data we can definitly send data
                           ableToSend = true;
-                        });
+                          // handle the packet here
+                          console.log('GOT NOTIFICATION');
+                          console.log(Object.keys(args));
+                          const value = args.value;
+                          const uArray = new Uint8Array(value);
+                          const p = new Packet();
+                          p.initialize(uArray);
+                          console.log(`${p.Type()}::${p.SubType()} ${p.toString()}`);
+                          sd.handlePacket(p);
+                          p.destroy();
+                        }
+                      });
                     }, i * notificationInterval);
                     i++;
                   });
