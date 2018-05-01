@@ -752,6 +752,21 @@ export class Bluetooth extends BluetoothCommon {
   }
 
   /**
+   * Send a notification or indication that a local characteristic has been updated.
+   * A notification or indication is sent to the remote device to signal that the characteristic has been updated.
+   * This function should be invoked for every client that requests notifications/indications by writing to the "Client Configuration" descriptor for the given characteristic.
+   * https://developer.android.com/reference/android/bluetooth/BluetoothGattServer.html#notifyCharacteristicChanged(android.bluetooth.BluetoothDevice,%20android.bluetooth.BluetoothGattCharacteristic,%20boolean)
+   */
+  public notifyCentral(
+    device: android.bluetooth.BluetoothDevice,
+    char: android.bluetooth.BluetoothGattCharacteristic,
+    confirm: boolean = true
+  ) {
+    const result = this.gattServer.notifyCharacteristicChanged(device, char, confirm);
+    return result;
+  }
+
+  /**
    * Show a system activity that requests discoverable mode. This activity will also request the user to turn on Bluetooth if it is not currently enabled.
    * TODO: finish implementing, not actually firing right now.
    */
