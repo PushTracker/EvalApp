@@ -299,6 +299,7 @@ export class PushTracker extends Observable {
         this.sendEvent(PushTracker.pushtracker_ota_ready_event);
         break;
       default:
+        this.sendEvent(PushTracker.pushtracker_ota_ready_event);
         break;
     }
   }

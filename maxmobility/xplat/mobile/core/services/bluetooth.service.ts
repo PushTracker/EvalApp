@@ -397,8 +397,12 @@ export class BluetoothService {
           c.descriptors = descriptors;
         }
 
-        c.setValue(0, android.bluetooth.BluetoothGattCharacteristic.FORMAT_UINT8, 0);
-        c.setWriteType(android.bluetooth.BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT);
+        if (isAndroid) {
+          c.setValue(0, android.bluetooth.BluetoothGattCharacteristic.FORMAT_UINT8, 0);
+          c.setWriteType(android.bluetooth.BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT);
+        } else {
+          // TODO: write iOS impl here!
+        }
 
         // store the characteristic here
         if (cuuid === PushTracker.DataCharacteristicUUID) {
@@ -447,9 +451,26 @@ export class BluetoothService {
     }
   }
 
-  public notifyPushTrackers(addresses: string[]) {
+  public notifyPushTrackers(addresses: any) {
+    const connectedDevices = this._bluetooth.getServerConnectedDevices();
+    let jsConnDev = [];
+    let length = connectedDevices.size();
+    for (let i = 0; i < length; i++) {
+      jsConnDev.push(`${connectedDevices.get(i)}`);
+    }
+    console.log(`Notifying pushtrackers: ${addresses}`);
     addresses.map(addr => {
-      this._bluetooth.notifyCharacteristicChanged(addr, PushTracker.DataCharacteristic, false);
+      const dev = jsConnDev.filter(d => {
+        return d == addr;
+      });
+      if (dev.length) {
+        console.log(`notifying ${addr}!`);
+        this._bluetooth.notifyCentral(
+          connectedDevices.get(jsConnDev.indexOf(dev[0])),
+          PushTracker.DataCharacteristic,
+          false
+        );
+      }
     });
   }
 
@@ -469,7 +490,11 @@ export class BluetoothService {
   private isPushTracker(dev: any): boolean {
     const UUIDs = dev && dev.getUuids && dev.getUuids();
     const name = dev && dev.getName && dev.getName();
-    return (name && name.includes('PushTracker')) || (UUIDs && UUIDs.indexOf(PushTracker.ServiceUUID) > -1);
+    return (
+      (name && name.includes('PushTracker')) ||
+      (name && name.includes('Bluegiga')) ||
+      (UUIDs && UUIDs.indexOf(PushTracker.ServiceUUID) > -1)
+    );
   }
 
   private notify(text: string): void {

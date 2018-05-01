@@ -241,6 +241,14 @@ export class OTAComponent implements OnInit {
           // set the state
           if (pt.connected) {
             pt.otaState = PushTracker.OTAState.awaiting_ready;
+            ableToSend = true;
+            haveVersion = true;
+            // TODO: Check the versions here and
+            // prompt the user if they want to
+            // force the OTA
+            //   - add / show buttons on the
+            //     progress bar for whether they
+            //     want to force it or cancel it
           } else {
             pt.otaState = PushTracker.OTAState.awaiting_version;
           }
@@ -258,6 +266,10 @@ export class OTAComponent implements OnInit {
             haveVersion = true;
             ableToSend = true;
           });
+          pt.on(PushTracker.pushtracker_ota_ready_event, data => {
+            console.log('GOT PT OTA READY');
+            pt.otaState = PushTracker.OTAState.updating;
+          });
           // now actually perform the ota
           let index = 0;
           const payloadSize = 16;
@@ -268,12 +280,14 @@ export class OTAComponent implements OnInit {
             const fileSize = fw.length / 100;
             if (index < fileSize) {
               console.log(`Writing ${index} / ${fileSize} of ota to pt`);
-              let data = null;
               const p = new Packet();
               p.makeOTAPacket('PushTracker', index, fw);
-              data = p.toUint8Array();
+              const data = Array.create('byte', 18);
+              const pdata = p.toUint8Array();
+              for (let i = 0; i < 18; i++) {
+                data[i] = pdata[i];
+              }
               p.destroy();
-              // TODO: actually send data to pushtracker
               btService.sendToPushTrackers(data);
               btService.notifyPushTrackers([pt.address]);
               index += payloadSize;
@@ -307,10 +321,14 @@ export class OTAComponent implements OnInit {
                   p.Type('Command');
                   p.SubType('StartOTA');
                   const otaDevice = Packet.makeBoundData('PacketOTAType', 'PushTracker');
-                  p.data('otaDevice', otaDevice);
-                  const data = p.toUint8Array();
+                  p.data('OTADevice', otaDevice);
+                  console.log(`${p.toString()}`);
+                  const data = Array.create('byte', 3);
+                  const pdata = p.toUint8Array();
+                  for (let i = 0; i < 3; i++) {
+                    data[i] = pdata[i];
+                  }
                   p.destroy();
-                  // TODO: actually send to PT
                   btService.sendToPushTrackers(data);
                   btService.notifyPushTrackers([pt.address]);
                 }
@@ -341,11 +359,16 @@ export class OTAComponent implements OnInit {
                   p.Type('Command');
                   p.SubType('StopOTA');
                   const otaDevice = Packet.makeBoundData('PacketOTAType', 'PushTracker');
-                  p.data('otaDevice', otaDevice);
-                  const data = p.toUint8Array();
+                  p.data('OTADevice', otaDevice);
+                  const data = Array.create('byte', 3);
+                  const pdata = p.toUint8Array();
+                  for (let i = 0; i < 3; i++) {
+                    data[i] = pdata[i];
+                  }
                   p.destroy();
-                  // TODO: actually send to pt
+                  console.log(`sending ${data}`);
                   btService.sendToPushTrackers(data);
+                  console.log(`notifying ${pt.address}`);
                   btService.notifyPushTrackers([pt.address]);
                 }
                 break;
@@ -688,7 +711,7 @@ export class OTAComponent implements OnInit {
                   p.Type('Command');
                   p.SubType('StartOTA');
                   const otaDevice = Packet.makeBoundData('PacketOTAType', 'SmartDrive');
-                  p.data('otaDevice', otaDevice); // smartdrive is 0
+                  p.data('OTADevice', otaDevice); // smartdrive is 0
                   const data = p.toUint8Array();
                   this._bluetoothService.write({
                     peripheralUUID: sd.address,
@@ -789,7 +812,7 @@ export class OTAComponent implements OnInit {
                   p.Type('Command');
                   p.SubType('StopOTA');
                   const otaDevice = Packet.makeBoundData('PacketOTAType', 'SmartDrive');
-                  p.data('otaDevice', otaDevice); // smartdrive is 0
+                  p.data('OTADevice', otaDevice); // smartdrive is 0
                   const data = p.toUint8Array();
                   this._bluetoothService.write({
                     peripheralUUID: sd.address,
