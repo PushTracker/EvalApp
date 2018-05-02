@@ -449,11 +449,13 @@ export class BluetoothService {
 
   public sendToPushTrackers(data: any) {
     if (PushTracker.DataCharacteristic) {
-      PushTracker.DataCharacteristic.setValue(data);
+      return PushTracker.DataCharacteristic.setValue(data);
+    } else {
+      return false;
     }
   }
 
-  public notifyPushTrackers(addresses: any) {
+  public notifyPushTrackers(addresses: any): Promise<any> {
     const connectedDevices = this._bluetooth.getServerConnectedDevices();
     let jsConnDev = [];
     let length = connectedDevices.size();
@@ -461,19 +463,51 @@ export class BluetoothService {
       jsConnDev.push(`${connectedDevices.get(i)}`);
     }
     console.log(`Notifying pushtrackers: ${addresses}`);
-    addresses.map(addr => {
-      const dev = jsConnDev.filter(d => {
-        return d == addr;
+
+    const notify = addr => {
+      return new Promise((resolve, reject) => {
+        const dev = jsConnDev.filter(d => {
+          return d == addr;
+        });
+        if (dev.length) {
+          const timeoutID = setTimeout(() => {
+            reject('notify timeout!');
+          }, 10000);
+          // handle when the notification is sent
+          const notificationSent = args => {
+            clearTimeout(timeoutID);
+            const device = args.data.device;
+            const status = args.data.status;
+            console.log(`notificationSent: ${device} : ${status}`);
+            this._bluetooth.off(Bluetooth.notification_sent_event, notificationSent);
+            if (status) {
+              // GATT_SUCCESS is 0x00
+              reject(`notify status error: ${status}`);
+            } else {
+              resolve();
+            }
+          };
+          // register for when notification is sent
+          this._bluetooth.on(Bluetooth.notification_sent_event, notificationSent);
+          console.log(`notifying ${addr}!`);
+          // tell it to send the notification
+          this._bluetooth.notifyCentral(
+            connectedDevices.get(jsConnDev.indexOf(dev[0])),
+            PushTracker.DataCharacteristic,
+            false
+          );
+        } else {
+          reject();
+        }
       });
-      if (dev.length) {
-        console.log(`notifying ${addr}!`);
-        this._bluetooth.notifyCentral(
-          connectedDevices.get(jsConnDev.indexOf(dev[0])),
-          PushTracker.DataCharacteristic,
-          false
-        );
-      }
-    });
+    };
+
+    // return the promise chain from last element
+    return addresses.reduce(function(chain, item) {
+      // bind item to first argument of function handle, replace `null` context as necessary
+      return chain.then(notify.bind(null, item));
+      // start chain with promise of first item
+    }, notify(addresses.shift()));
   }
 
   public getPushTracker(address: string) {

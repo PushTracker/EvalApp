@@ -118,6 +118,11 @@ export class BluetoothCommon extends Observable {
    */
   public static execute_write_event = 'execute_write_event';
 
+  /**
+   * String value for hooking into the notification_sent_event. This event fires when the Gatt Server has sent a notification to a remote device.
+   */
+  public static notification_sent_event = 'notification_sent_event';
+
   public events: any /*IBluetoothEvents*/;
 
   /**
@@ -425,4 +430,5 @@ export interface IBluetoothEvents {
   descriptor_write_request_event: string;
   descriptor_read_request_event: string;
   execute_write_event: string;
+  notification_sent_event: string;
 }

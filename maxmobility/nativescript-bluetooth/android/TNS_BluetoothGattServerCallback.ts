@@ -192,6 +192,21 @@ export class TNS_BluetoothGattServerCallback extends android.bluetooth.Bluetooth
   }
 
   /**
+   * Callback invoked when a notification or indication has been sent to a remote device.
+   * When multiple notifications are to be sent, an application must wait for this callback to be received before sending additional notifications.
+   * @param device - The remote device the notification has been sent to
+   * @param status [number] - Returns GATT_SUCCESS if the operation was successful.
+   */
+  onNotificationSent(device: android.bluetooth.BluetoothDevice, status: number) {
+    CLog(
+      CLogTypes.info,
+      `---- TNS_BluetoothGattServerCallback.onNotificationSent ---- device: ${device}, status: ${status}`
+    );
+
+    this._owner.get().sendEvent(Bluetooth.notification_sent_event, { device, status });
+  }
+
+  /**
    * Indicates whether a local service has been added successfully.
    * @param status [number] - Returns GATT_SUCCESS if the service was added successfully.
    * @param service [android.bluetooth.BluetoothGattService] - The service that has been added.

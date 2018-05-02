@@ -289,28 +289,51 @@ export class OTAComponent implements OnInit {
           const btService = this._bluetoothService;
           const writeFirmwareSector = (fw: any, characteristic: any, nextState: any) => {
             console.log('writing firmware to pt');
-            // TODO: right now only sending 1% for faster testing of the OTA process
             const fileSize = fw.length;
             if (index < fileSize) {
-              console.log(`Writing ${index} / ${fileSize} of ota to pt`);
-              const p = new Packet();
-              p.makeOTAPacket('PushTracker', index, fw);
-              const data = Array.create('byte', 18);
-              const pdata = p.toUint8Array();
-              for (let i = 0; i < 18; i++) {
-                data[i] = pdata[i];
+              if (pt.connected && ableToSend) {
+                console.log(`Writing ${index} / ${fileSize} of ota to pt`);
+                const p = new Packet();
+                p.makeOTAPacket('PushTracker', index, fw);
+                const data = Array.create('byte', 18);
+                const pdata = p.toUint8Array();
+                for (let i = 0; i < 18; i++) {
+                  data[i] = pdata[i];
+                }
+                p.destroy();
+                if (btService.sendToPushTrackers(data)) {
+                  btService
+                    .notifyPushTrackers([pt.address])
+                    .then(notified => {
+                      setTimeout(() => {
+                        index += payloadSize;
+                        writeFirmwareSector(fw, characteristic, nextState);
+                      }, 30);
+                    })
+                    .catch(err => {
+                      console.log(`couldn't notify: ${err}`);
+                      console.log('retrying');
+                      setTimeout(() => {
+                        writeFirmwareSector(fw, characteristic, nextState);
+                      }, 500);
+                    });
+                } else {
+                  setTimeout(() => {
+                    writeFirmwareSector(fw, characteristic, nextState);
+                  }, 500);
+                }
+              } else {
+                setTimeout(() => {
+                  writeFirmwareSector(fw, characteristic, nextState);
+                }, 500);
               }
-              p.destroy();
-              btService.sendToPushTrackers(data);
-              btService.notifyPushTrackers([pt.address]);
-              index += payloadSize;
-              setTimeout(() => {
-                writeFirmwareSector(fw, characteristic, nextState);
-              }, 10);
             } else {
               // we are done with the sending change
               // state to the next state
-              pt.otaState = nextState;
+              setTimeout(() => {
+                // wait for a little bit
+                pt.otaState = nextState;
+              }, 1500);
             }
           };
 
@@ -345,8 +368,9 @@ export class OTAComponent implements OnInit {
                     data[i] = pdata[i];
                   }
                   p.destroy();
-                  btService.sendToPushTrackers(data);
-                  btService.notifyPushTrackers([pt.address]);
+                  if (btService.sendToPushTrackers(data)) {
+                    btService.notifyPushTrackers([pt.address]);
+                  }
                 }
                 break;
               case PushTracker.OTAState.updating:
@@ -354,10 +378,12 @@ export class OTAComponent implements OnInit {
                 // OTA started - don't timeout
                 timer.clearTimeout(otaTimeoutID);
                 if (index === 0) {
-                  writeFirmwareSector(firmware, PushTracker.DataCharacteristic, PushTracker.OTAState.rebooting);
+                  setTimeout(() => {
+                    writeFirmwareSector(firmware, PushTracker.DataCharacteristic, PushTracker.OTAState.rebooting);
+                  }, 100);
                 }
                 // update the progress bar
-                this.ptBtProgressValue = Math.round(index * 100 / firmware.length);
+                this.ptBtProgressValue = Math.round((index + 16) * 100 / firmware.length);
                 // make sure we clear out the version info that we get
                 haveVersion = false;
                 // we need to reboot after the OTA
@@ -383,12 +409,17 @@ export class OTAComponent implements OnInit {
                   }
                   p.destroy();
                   console.log(`sending ${data}`);
-                  btService.sendToPushTrackers(data);
-                  console.log(`notifying ${pt.address}`);
-                  btService.notifyPushTrackers([pt.address]);
+                  if (btService.sendToPushTrackers(data)) {
+                    console.log(`notifying ${pt.address}`);
+                    btService.notifyPushTrackers([pt.address]);
+                  }
                 }
                 break;
               case PushTracker.OTAState.verifying_update:
+                // TODO: this should be a part of another
+                //       page - since we have to re-pair
+                //       and re-connect the PT to the App
+
                 // check the version here and notify the
                 // user of the success / failure
                 // - probably add buttons so they can retry?
@@ -443,7 +474,7 @@ export class OTAComponent implements OnInit {
     //       it be part of the SmartDrive library or the
     //       Bluetooth.service
 
-    // TODO: make progress bars for the SD
+    // TODO: programatically make progress bars for the SD
 
     // TODO: add buttons for user control of OTA process
     //   * button on / around progress bar to cancel the OTA
@@ -676,7 +707,6 @@ export class OTAComponent implements OnInit {
           const btService = this._bluetoothService;
           const writeFirmwareSector = (device: string, fw: any, characteristic: any, nextState: any) => {
             console.log('writing firmware to ' + device);
-            // TODO: right now only sending 1% for faster testing of the OTA process
             const fileSize = fw.length;
             if (index < fileSize) {
               console.log(`Writing ${index} / ${fileSize} of ota to ${device}`);
@@ -688,9 +718,7 @@ export class OTAComponent implements OnInit {
                 p.destroy();
               } else if (device === 'SmartDriveBluetooth') {
                 const length = Math.min(fw.length - index, 16);
-                //console.log(` ----------------- MAKING : ${length}`);
                 data = fw.subarray(index, index + length);
-                //console.log(` ----------------- SENDING : ${data.length}`);
               } else {
                 throw `ERROR: ${device} should be either 'SmartDrive' or 'SmartDriveBluetooth'`;
               }
@@ -702,9 +730,14 @@ export class OTAComponent implements OnInit {
                   value: data
                 })
                 .then(() => {
+                  index += payloadSize;
+                  writeFirmwareSector(device, fw, characteristic, nextState);
+                })
+                .catch(err => {
+                  console.log(`Couldn't send fw to ${device}: ${err}`);
+                  console.log('Retrying');
                   writeFirmwareSector(device, fw, characteristic, nextState);
                 });
-              index += payloadSize;
             } else {
               // we are done with the sending change
               // state to the next state
@@ -763,7 +796,7 @@ export class OTAComponent implements OnInit {
                   );
                 }
                 // update the progress bar
-                this.sdMpProgressValue = Math.round(index * 100 / mcuFirmware.length);
+                this.sdMpProgressValue = Math.round((index + 16) * 100 / mcuFirmware.length);
                 break;
               case SmartDrive.OTAState.awaiting_ble_ready:
                 // make sure the index is set to 0 for next OTA
@@ -795,7 +828,7 @@ export class OTAComponent implements OnInit {
                   );
                 }
                 // update the progress bar
-                this.sdBtProgressValue = Math.round(index * 100 / bleFirmware.length);
+                this.sdBtProgressValue = Math.round((index + 16) * 100 / bleFirmware.length);
                 // make sure we clear out the version info that we get
                 haveBLEVersion = false;
                 haveMCUVersion = false;
