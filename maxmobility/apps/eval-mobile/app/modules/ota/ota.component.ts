@@ -200,6 +200,8 @@ export class OTAComponent implements OnInit {
   }
 
   performPTOTA(pt: PushTracker, firmware: any): Promise<any> {
+    // TODO: make progress bars for the PT
+
     // TODO: we should actually take a list of pushtrackers here
     //       so that we can send the data synchronously to them -
     //       we just notify all of them at the same time
@@ -432,10 +434,12 @@ export class OTAComponent implements OnInit {
   }
 
   performSDOTA(sd: SmartDrive, bleFirmware: any, mcuFirmware: any): Promise<any> {
-    // TODO: refactor this code some to move some methods into
-    // other library code for better re-use; perhaps see about
-    // having it be part of the SmartDrive library or the
-    // Bluetooth.service
+    // TODO: refactor this code some to move some methods into other
+    //       library code for better re-use; perhaps see about having
+    //       it be part of the SmartDrive library or the
+    //       Bluetooth.service
+
+    // TODO: make progress bars for the SD
 
     // TODO: add buttons for user control of OTA process
     //   * button on / around progress bar to cancel the OTA
