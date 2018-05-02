@@ -200,6 +200,13 @@ export class OTAComponent implements OnInit {
   }
 
   performPTOTA(pt: PushTracker, firmware: any): Promise<any> {
+    // TODO: we should actually take a list of pushtrackers here
+    //       so that we can send the data synchronously to them -
+    //       we just notify all of them at the same time
+
+    // TODO: update so that the state objects can handle more
+    //       pushtrackers and try to synchronize their states -
+    //       can we send, have they rebooted, etc.
     return new Promise((resolve, reject) => {
       if (!pt) {
         console.log('PushTracker passed for OTA is invalid!');
