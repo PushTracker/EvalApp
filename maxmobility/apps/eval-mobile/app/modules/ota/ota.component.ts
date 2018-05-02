@@ -656,7 +656,7 @@ export class OTAComponent implements OnInit {
           const writeFirmwareSector = (device: string, fw: any, characteristic: any, nextState: any) => {
             console.log('writing firmware to ' + device);
             // TODO: right now only sending 1% for faster testing of the OTA process
-            const fileSize = fw.length / 100;
+            const fileSize = fw.length;
             if (index < fileSize) {
               console.log(`Writing ${index} / ${fileSize} of ota to ${device}`);
               let data = null;
@@ -832,7 +832,7 @@ export class OTAComponent implements OnInit {
                 // of t he updates!
                 // - probably add buttons so they can retry?
                 let msg = '';
-                if (mcuVersion == 0x15 && bleVersion == 0x14) {
+                if (mcuVersion == 0x14 && bleVersion == 0x14) {
                   msg = `SmartDrive OTA Succeeded! ${mcuVersion.toString(16)}, ${bleVersion.toString(16)}`;
                 } else {
                   msg = `SmartDrive OTA FAILED! ${mcuVersion.toString(16)}, ${bleVersion.toString(16)}`;
