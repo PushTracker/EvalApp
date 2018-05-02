@@ -25,9 +25,9 @@ export class BluetoothService {
 
   // public members
   public enabled = false;
+  public initialized = false;
 
   // private members
-  private _initialized = false;
   private _bluetooth = new Bluetooth();
   private PushTrackerDataCharacteristic: any = null;
   private AppService: any = null;
@@ -63,27 +63,20 @@ export class BluetoothService {
   }
 
   public async initialize() {
+    this.enabled = false;
+    this.initialized = false;
     return this._bluetooth
       .requestCoarseLocationPermission()
       .then(() => {
-        return this._bluetooth
-          .enable()
-          .then(wasEnabled => {
-            this.enabled = wasEnabled;
-            console.log(`BLUETOOTH WAS ENABLED? ${this.enabled}`);
-            if (this.enabled === true) {
-              this._bluetooth.startGattServer();
-              if (!this._bluetooth.offersService(BluetoothService.AppServiceUUID)) {
-                this.addServices();
-              }
-              this._initialized = true;
-            } else {
-              console.log('Bluetooth is not enabled.');
-            }
-          })
-          .catch(err => {
-            console.log('enable err', err);
-          });
+        return this.deleteServices();
+      })
+      .then(() => {
+        if (this.enabled === true) {
+          this.addServices();
+          this.initialized = true;
+        } else {
+          console.log('Bluetooth is not enabled.');
+        }
       })
       .catch(ex => {
         console.log('location permission error', ex);
@@ -163,14 +156,31 @@ export class BluetoothService {
   }
 
   public restart(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this._bluetooth.disable();
-      setTimeout(() => {
-        this._bluetooth.enable().then(enabled => {
-          resolve();
+    this.enabled = false;
+    this.initialized = false;
+    return this._bluetooth
+      .disable()
+      .then(() => {
+        return this._bluetooth.enable();
+      })
+      .then(wasEnabled => {
+        this.enabled = wasEnabled;
+        console.log(`BLUETOOTH WAS ENABLED? ${this.enabled}`);
+        if (this.enabled) {
+          console.log('Starting GattServer');
+          this._bluetooth.startGattServer();
+        }
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            resolve();
+          }, 1000);
         });
-      }, 250);
-    });
+      })
+      .catch(err => {
+        this.enabled = false;
+        this.initialized = false;
+        console.log('enable err', err);
+      });
   }
 
   // private functions
@@ -313,19 +323,19 @@ export class BluetoothService {
   private onCharacteristicReadRequest(args: any): void {}
 
   // service controls
-  private deleteServices(): void {
+  private deleteServices(): Promise<any> {
+    console.log('deleting any existing services');
+    this._bluetooth.clearServices();
     PushTracker.DataCharacteristic = null;
-    try {
-      this._bluetooth.clearServices();
-    } catch (ex) {
-      console.log(ex);
-    }
+    return this.restart();
   }
 
   private addServices(): void {
     try {
-      console.log('deleting any existing services');
-      this.deleteServices();
+      if (this._bluetooth.offersService(BluetoothService.AppServiceUUID)) {
+        console.log(`Bluetooth already offers ${BluetoothService.AppServiceUUID}`);
+        return;
+      }
       console.log('making service');
 
       // this.AppService = this._bluetooth.makeService({
@@ -339,15 +349,7 @@ export class BluetoothService {
       });
 
       const descriptorUUIDs = ['2900', '2902'];
-      const charUUIDs = [
-        '58daaa15-f2b2-4cd9-b827-5807b267dae1',
-        '68208ebf-f655-4a2d-98f4-20d7d860c471',
-        '9272e309-cd33-4d83-a959-b54cc7a54d1f',
-        '8489625f-6c73-4fc0-8bcc-735bb173a920',
-        '5177fda8-1003-4254-aeb9-7f9edb3cc9cf'
-      ];
-      const ptDataChar = charUUIDs[1];
-      charUUIDs.map(cuuid => {
+      PushTracker.Characteristics.map(cuuid => {
         console.log('Making characteristic: ' + cuuid);
         // const c = this._bluetooth.makeCharacteristic({
         //   UUID: cuuid,

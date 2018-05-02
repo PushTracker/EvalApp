@@ -277,7 +277,7 @@ export class OTAComponent implements OnInit {
           const writeFirmwareSector = (fw: any, characteristic: any, nextState: any) => {
             console.log('writing firmware to pt');
             // TODO: right now only sending 1% for faster testing of the OTA process
-            const fileSize = fw.length / 100;
+            const fileSize = fw.length;
             if (index < fileSize) {
               console.log(`Writing ${index} / ${fileSize} of ota to pt`);
               const p = new Packet();
@@ -291,6 +291,9 @@ export class OTAComponent implements OnInit {
               btService.sendToPushTrackers(data);
               btService.notifyPushTrackers([pt.address]);
               index += payloadSize;
+              setTimeout(() => {
+                writeFirmwareSector(fw, characteristic, nextState);
+              }, 10);
             } else {
               // we are done with the sending change
               // state to the next state
@@ -341,7 +344,7 @@ export class OTAComponent implements OnInit {
                   writeFirmwareSector(firmware, PushTracker.DataCharacteristic, PushTracker.OTAState.rebooting);
                 }
                 // update the progress bar
-                this.ptBtProgressValue = Math.round(index / firmware.length * 100);
+                this.ptBtProgressValue = Math.round(index * 100 / firmware.length);
                 // make sure we clear out the version info that we get
                 haveVersion = false;
                 // we need to reboot after the OTA
@@ -739,7 +742,7 @@ export class OTAComponent implements OnInit {
                   );
                 }
                 // update the progress bar
-                this.sdMpProgressValue = Math.round(index / mcuFirmware.length * 100);
+                this.sdMpProgressValue = Math.round(index * 100 / mcuFirmware.length);
                 break;
               case SmartDrive.OTAState.awaiting_ble_ready:
                 // make sure the index is set to 0 for next OTA
@@ -771,7 +774,7 @@ export class OTAComponent implements OnInit {
                   );
                 }
                 // update the progress bar
-                this.sdBtProgressValue = Math.round(index / bleFirmware.length * 100);
+                this.sdBtProgressValue = Math.round(index * 100 / bleFirmware.length);
                 // make sure we clear out the version info that we get
                 haveBLEVersion = false;
                 haveMCUVersion = false;
