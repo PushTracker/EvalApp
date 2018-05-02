@@ -34,6 +34,7 @@ export class SmartDrive extends Observable {
   public static ControlCharacteristic = SmartDrive.Characteristics[2];
   public static BLEOTADataCharacteristic = SmartDrive.Characteristics[0];
   public static BLEOTAControlCharacteristic = SmartDrive.Characteristics[4];
+  public static BLEOTADongleCharacteristic = SmartDrive.Characteristics[3];
 
   // Event names
   public static smartdrive_connect_event = 'smartdrive_connect_event';

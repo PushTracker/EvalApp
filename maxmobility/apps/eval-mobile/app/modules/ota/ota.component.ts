@@ -209,6 +209,10 @@ export class OTAComponent implements OnInit {
     // TODO: update so that the state objects can handle more
     //       pushtrackers and try to synchronize their states -
     //       can we send, have they rebooted, etc.
+
+    // TODO: add text display to let user know what's currently
+    //       happening with the OTA processes
+
     return new Promise((resolve, reject) => {
       if (!pt) {
         console.log('PushTracker passed for OTA is invalid!');
@@ -457,6 +461,9 @@ export class OTAComponent implements OnInit {
 
     // TODO: track and show how much time has elapsed for the OTA
 
+    // TODO: add text display to let user know what's currently
+    //       happening with the OTA processes
+
     return new Promise((resolve, reject) => {
       if (!sd) {
         console.log('SmartDrive passed for OTA is invalid!');
@@ -543,6 +550,9 @@ export class OTAComponent implements OnInit {
                   let i = 0;
                   const notificationInterval = 1000;
                   characteristics.map(characteristic => {
+                    if (characteristic.UUID == SmartDrive.BLEOTADongleCharacteristic) {
+                      return; // isn't set up to be subscribed to - we also don't use it
+                    }
                     timer.setTimeout(() => {
                       console.log(`Start Notifying ${characteristic.UUID}`);
                       this._bluetoothService.startNotifying({
