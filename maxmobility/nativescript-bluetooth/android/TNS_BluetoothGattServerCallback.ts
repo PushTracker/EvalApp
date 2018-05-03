@@ -184,8 +184,6 @@ export class TNS_BluetoothGattServerCallback extends android.bluetooth.Bluetooth
 
     this._owner.get().sendEvent(Bluetooth.execute_write_event, { device, requestId, execute });
 
-    // this._owner.get()._onExecuteWrite(device, requestId, execute);
-
     if (this._owner.get().gattServer) {
       this._owner.get().gattServer.sendResponse(device, requestId, 0, 0, Array.create('byte', 0x01));
     }
@@ -194,6 +192,7 @@ export class TNS_BluetoothGattServerCallback extends android.bluetooth.Bluetooth
   /**
    * Callback invoked when a notification or indication has been sent to a remote device.
    * When multiple notifications are to be sent, an application must wait for this callback to be received before sending additional notifications.
+   * API level 21+
    * @param device - The remote device the notification has been sent to
    * @param status [number] - Returns GATT_SUCCESS if the operation was successful.
    */
