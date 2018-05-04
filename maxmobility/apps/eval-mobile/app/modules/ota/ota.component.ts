@@ -438,20 +438,23 @@ export class OTAComponent implements OnInit {
                 }
                 console.log(msg);
                 this.snackbar.simple(msg);
-                clearInterval(otaIntervalID);
                 // make sure we tell ourselves not to reconnect!
                 stopOTA = true;
                 // TODO: disconnect from PT here!
                 pt.otaState = PushTracker.OTAState.complete;
                 break;
               case PushTracker.OTAState.complete:
+                pt.otaState = PushTracker.OTAState.not_started;
                 clearInterval(otaIntervalID);
                 resolve();
                 break;
               case PushTracker.OTAState.cancelling:
+                pt.otaState = PushTracker.OTAState.not_started;
                 clearInterval(otaIntervalID);
+                resolve();
                 break;
               case PushTracker.OTAState.canceled:
+                pt.otaState = PushTracker.OTAState.not_started;
                 clearInterval(otaIntervalID);
                 resolve();
                 break;
@@ -925,13 +928,16 @@ export class OTAComponent implements OnInit {
                 break;
               case SmartDrive.OTAState.complete:
                 clearInterval(otaIntervalID);
+                sd.otaState = SmartDrive.OTAState.not_started;
                 resolve();
                 break;
               case SmartDrive.OTAState.cancelling:
                 clearInterval(otaIntervalID);
+                sd.otaState = SmartDrive.OTAState.not_started;
                 break;
               case SmartDrive.OTAState.canceled:
                 clearInterval(otaIntervalID);
+                sd.otaState = SmartDrive.OTAState.not_started;
                 resolve();
                 break;
               default:

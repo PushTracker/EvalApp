@@ -214,35 +214,52 @@ export class BluetoothService {
     if (this.isSmartDrive(peripheral)) {
       const address = peripheral.UUID;
       const sd = this.getOrMakeSmartDrive(address);
-      console.log(`SmartDrives: ${BluetoothService.SmartDrives.length} : ${BluetoothService.SmartDrives}`);
     }
   }
 
   private onDeviceNameChange(args: any): void {
+    //console.log(`name change!`);
     const dev = args.data.device;
     const name = args.data.name;
     console.log(`${dev} - name change - ${name || 'None'}`);
   }
 
   private onDeviceUuidChange(args: any): void {
+    //console.log(`uuid change!`);
     const dev = args.data.device;
-    const uuid = args.data.uuid;
-    console.log(`${dev} - uuid change - ${uuid || 'None'}`);
+    const newUUID = args.data.uuid.toString();
+    console.log(`${dev} - uuid change - ${newUUID || 'None'}`);
+    if (this.isSmartDrive(dev)) {
+      const address = dev.UUID;
+      const sd = this.getOrMakeSmartDrive(address);
+    } else if (this.isPushTracker(dev)) {
+      const address = dev.getAddress();
+      const pt = this.getOrMakePushTracker(address);
+    }
+    //console.log('finished uuid change');
   }
 
   private onDeviceAclDisconnected(args: any): void {
+    //console.log(`acl disconnect!`);
     const peripheral = args.data.device; // of type Peripheral
-    console.log(`${peripheral.UUID}::${peripheral.name} - disconnected`);
+    const address = peripheral.address || peripheral.getAddress();
+    const name = peripheral.name || peripheral.getName();
+    console.log(`${name}::${address} - disconnected`);
     if (this.isSmartDrive(peripheral)) {
-      const address = peripheral.UUID;
       const sd = this.getOrMakeSmartDrive(address);
       sd.handleDisconnect();
+    } else if (this.isPushTracker(peripheral)) {
+      const pt = this.getOrMakePushTracker(address);
+      pt.handleDisconnect();
     }
+    //console.log('finished acl disconnect');
   }
 
   private onServerConnectionStateChanged(args: any): void {
+    //console.log(`server connection state change!`);
     const newState = args.data.newState;
     const device = args.data.device;
+    console.log(`state change - ${device} - ${newState}`);
     switch (newState) {
       case android.bluetooth.BluetoothProfile.STATE_CONNECTED:
         if (this.isPushTracker(device)) {
@@ -250,9 +267,9 @@ export class BluetoothService {
           pt.handleConnect();
           this.notify(`${device.getName()}::${device} connected`);
         }
-        //Toast.makeText(`${device.getName()}::${device} connected`).show();
         break;
       case android.bluetooth.BluetoothProfile.STATE_CONNECTING:
+        device.fetchUuidsWithSdp();
         break;
       case android.bluetooth.BluetoothProfile.STATE_DISCONNECTED:
         if (this.isPushTracker(device)) {
@@ -260,18 +277,20 @@ export class BluetoothService {
           pt.handleDisconnect();
           this.notify(`${device.getName()}::${device} disconnected`);
         }
-        //Toast.makeText(`${device.getName()}::${device} disconnected`).show();
         break;
       case android.bluetooth.BluetoothProfile.STATE_DISCONNECTING:
         break;
       default:
         break;
     }
+    //console.log(`finished server connection state change!`);
   }
 
   private onPeripheralConnected(args: any): void {
+    console.log('peripheral discovered!');
     const peripheral = args.data.device;
     // TODO: this event is not emitted by the bluetooth library
+    //console.log('finished peripheral discovered!');
   }
 
   private onCharacteristicWriteRequest(args: any): void {
@@ -285,37 +304,6 @@ export class BluetoothService {
       const pt = this.getOrMakePushTracker(device.getAddress());
       pt.handlePacket(p);
     }
-
-    /*
-	  if (p.Type() === 'Data' && p.SubType() === 'DailyInfo') {
-	  const di = new DailyInfo();
-	  di.fromPacket(p);
-	  console.log(JSON.stringify(di.data()));
-	  // TODO: SAVE THE DATA WE RECEIVE INTO OUR LOCAL STORAGE
-	  //DataStorage.HistoricalData.update(di);
-	  // TODO: UPDATE THE SERVER WITH OUR DAILY INFO (FOR PUSHTRACKER APP)
-
-	  // TODO: THIS DATA SHOULD BE AVAILABLE DURING THE TRIAL PAGES WHEN STARTING AND STOPPING A TRIAL
-	  //       - we need events for when we receive daily info from devices that the pages can listen to
-
-	  let options = {
-	  actionText: 'View',
-	  snackText: `${device.getName()}::${device} sent DailyInfo`,
-	  hideDelay: 1000
-	  };
-	  this.snackbar.action(options).then(args => {
-	  if (args.command === 'Action') {
-	  dialogsModule.alert({
-	  title: `${device} Daily Info`,
-	  message: JSON.stringify(di.data(), null, 2),
-	  okButtonText: 'Ok'
-	  });
-	  }
-	  });
-	  } else {
-	  console.log(`${p.Type()}::${p.SubType()} ${p.toString()}`);
-	  }
-	*/
     console.log(`${p.Type()}::${p.SubType()} ${p.toString()}`);
     p.destroy();
   }
@@ -421,23 +409,23 @@ export class BluetoothService {
 
   private getOrMakePushTracker(address: string): PushTracker {
     let pt = BluetoothService.PushTrackers.filter(p => p.address === address)[0];
-    console.log(`Found PT: ${pt}`);
+    //console.log(`Found PT: ${pt}`);
     if (pt === null || pt === undefined) {
       pt = new PushTracker({ address });
       BluetoothService.PushTrackers.push(pt);
     }
-    console.log(`Found or made PT: ${pt}`);
+    //console.log(`Found or made PT: ${pt}`);
     return pt;
   }
 
   private getOrMakeSmartDrive(address: string): SmartDrive {
     let sd = BluetoothService.SmartDrives.filter((x: SmartDrive) => x.address === address)[0];
-    console.log(`Found SD: ${sd}`);
+    //console.log(`Found SD: ${sd}`);
     if (sd === null || sd === undefined) {
       sd = new SmartDrive({ address });
       BluetoothService.SmartDrives.push(sd);
     }
-    console.log(`Found or made SD: ${sd}`);
+    //console.log(`Found or made SD: ${sd}`);
     return sd;
   }
 
@@ -494,7 +482,7 @@ export class BluetoothService {
           this._bluetooth.notifyCentral(
             connectedDevices.get(jsConnDev.indexOf(dev[0])),
             PushTracker.DataCharacteristic,
-            false
+            true
           );
         } else {
           reject();
@@ -520,17 +508,21 @@ export class BluetoothService {
 
   private isSmartDrive(dev: any): boolean {
     const name = dev && dev.name;
-    return name && name.includes('Smart Drive DU'); // || dev.UUID === BluetoothService.SmartDriveServiceUUID;
+    const uuid = dev && dev.UUID;
+    const isSD = (name && name.includes('Smart Drive DU')) || (uuid && uuid === SmartDrive.ServiceUUID);
+    //console.log(`isSD: ${isSD}`);
+    return isSD;
   }
 
   private isPushTracker(dev: any): boolean {
-    const UUIDs = dev && dev.getUuids && dev.getUuids();
-    const name = dev && dev.getName && dev.getName();
-    return (
+    const UUIDs = dev && dev.getUuids();
+    const name = dev && dev.getName();
+    const isPT =
       (name && name.includes('PushTracker')) ||
       (name && name.includes('Bluegiga')) ||
-      (UUIDs && UUIDs.indexOf(PushTracker.ServiceUUID) > -1)
-    );
+      (UUIDs && UUIDs.indexOf(PushTracker.ServiceUUID) > -1);
+    //console.log(`isPT: ${isPT}`);
+    return isPT;
   }
 
   private notify(text: string): void {
