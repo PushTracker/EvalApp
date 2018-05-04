@@ -442,6 +442,7 @@ export class OTAComponent implements OnInit {
                 // make sure we tell ourselves not to reconnect!
                 stopOTA = true;
                 // TODO: disconnect from PT here!
+                pt.otaState = PushTracker.OTAState.complete;
                 break;
               case PushTracker.OTAState.complete:
                 clearInterval(otaIntervalID);
@@ -893,7 +894,7 @@ export class OTAComponent implements OnInit {
                 // of t he updates!
                 // - probably add buttons so they can retry?
                 let msg = '';
-                if (mcuVersion == 0x14 && bleVersion == 0x14) {
+                if (mcuVersion == 0x15 && bleVersion == 0x15) {
                   msg = `SmartDrive OTA Succeeded! ${mcuVersion.toString(16)}, ${bleVersion.toString(16)}`;
                 } else {
                   msg = `SmartDrive OTA FAILED! ${mcuVersion.toString(16)}, ${bleVersion.toString(16)}`;
@@ -971,14 +972,14 @@ export class OTAComponent implements OnInit {
       let bleFW = null;
       let mcuFW = null;
       // load firmware files here!
-      this.loadFile('/assets/ota/PushTracker.14.ota')
+      this.loadFile('/assets/ota/PushTracker.15.ota')
         .then(otaData => {
           ptFW = otaData;
-          return this.loadFile('/assets/ota/SmartDriveBluetooth.14.ota');
+          return this.loadFile('/assets/ota/SmartDriveBluetooth.15.ota');
         })
         .then(otaData => {
           bleFW = otaData;
-          return this.loadFile('/assets/ota/MX2+.14.ota');
+          return this.loadFile('/assets/ota/MX2+.15.ota');
         })
         .then(otaData => {
           mcuFW = otaData;
