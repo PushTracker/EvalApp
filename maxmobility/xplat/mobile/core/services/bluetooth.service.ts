@@ -36,7 +36,7 @@ export class BluetoothService {
 
   constructor() {
     // enabling `debug` will output console.logs from the bluetooth source code
-    this._bluetooth.debug = true;
+    //this._bluetooth.debug = true;
 
     // setup event listeners
     this._bluetooth.on(Bluetooth.bond_status_change_event, this.onBondStatusChange.bind(this));
@@ -462,7 +462,7 @@ export class BluetoothService {
     for (let i = 0; i < length; i++) {
       jsConnDev.push(`${connectedDevices.get(i)}`);
     }
-    console.log(`Notifying pushtrackers: ${addresses}`);
+    //console.log(`Notifying pushtrackers: ${addresses}`);
 
     const notify = addr => {
       return new Promise((resolve, reject) => {
@@ -478,7 +478,7 @@ export class BluetoothService {
             clearTimeout(timeoutID);
             const device = args.data.device;
             const status = args.data.status;
-            console.log(`notificationSent: ${device} : ${status}`);
+            //console.log(`notificationSent: ${device} : ${status}`);
             this._bluetooth.off(Bluetooth.notification_sent_event, notificationSent);
             if (status) {
               // GATT_SUCCESS is 0x00
@@ -489,7 +489,7 @@ export class BluetoothService {
           };
           // register for when notification is sent
           this._bluetooth.on(Bluetooth.notification_sent_event, notificationSent);
-          console.log(`notifying ${addr}!`);
+          //console.log(`notifying ${addr}!`);
           // tell it to send the notification
           this._bluetooth.notifyCentral(
             connectedDevices.get(jsConnDev.indexOf(dev[0])),

@@ -1,6 +1,6 @@
 <ActionBar class="action-bar">
   <!-- <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
-  <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem> -->
+       <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem> -->
   <Label class="action-bar-title" text="OTA Update"></Label>
 </ActionBar>
 
@@ -41,12 +41,7 @@
 
         //OTA Descriptions
         <StackLayout #otaTitleView col="0" row="2" orientation="vertical" horizontalAlignment="center" padding="10">
-          <label class="otaDescription" textWrap="true" text="Updated company logo branding when booting PT from sleep."></label>
-          <label class="otaDescription" textWrap="true" text="Now show estimated drive range on the PT in DisplayInfo  battery status screen."></label>
-          <label class="otaDescription" textWrap="true" text="Now show OTA status bar and percentage on PT when performing PT OTA."></label>
-          <label class="otaDescription" textWrap="true" text="When SD is not paired (e.g. after OTA) and the left button is pressed to turn 'SD On', the PT goes directly into pairing to SD mode."></label>
-          <label class="otaDescription" textWrap="true" text="When App is not paired (e.g. after OTA) and the right button is pressed to connect to the app, the PT goes directly into pairing to app mode."></label>
-          <label class="otaDescription" textWrap="true" ext="Bugfixes to pairing process for handling multiple devices."></label>
+	  <Label *ngFor="let desc of otaDescription" [text]="desc" class="otaDescription" textWrap="true"></Label>
           <Button class="hero"
 		  [text]="updating ? updatingButtonText : initialButtonText"
 		  margin="15"

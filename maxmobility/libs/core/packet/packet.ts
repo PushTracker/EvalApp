@@ -68,6 +68,10 @@ export class Packet {
     return toUint8Array(this.writableBuffer());
   }
 
+  public toArray() {
+    return toArray(this.writableBuffer());
+  }
+
   // BINDING WRAPPING
 
   public makePacket(_type, subType, key, data) {
@@ -182,6 +186,15 @@ function toString(data) {
 
 function toUint8Array(data) {
   return Uint8Array.from(data);
+}
+
+function toArray(data) {
+  const length = data.length || (data.size && data.size());
+  const arr = Array.create('byte', length);
+  for (let i = 0; i < length; i++) {
+    arr[i] = data[i];
+  }
+  return arr;
 }
 
 function makePacketData(_type, subtype, key, data) {

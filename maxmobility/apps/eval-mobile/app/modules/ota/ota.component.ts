@@ -74,6 +74,15 @@ export class OTAComponent implements OnInit {
   // bTSmartDriveConnectionIcon = String.fromCharCode(0xf293);
   // bTPushTrackerConnectionIcon = String.fromCharCode(0xf293);
 
+  otaDescription = [
+    'Updated company logo branding when booting PT from sleep.',
+    'Now show estimated drive range on the PT in DisplayInfo  battery status screen.',
+    'Now show OTA status bar and percentage on PT when performing PT OTA.',
+    "When SD is not paired (e.g. after OTA) and the left button is pressed to turn 'SD On', the PT goes directly into pairing to SD mode.",
+    'When App is not paired (e.g. after OTA) and the right button is pressed to connect to the app, the PT goes directly into pairing to app mode.',
+    'Bugfixes to pairing process for handling multiple devices.'
+  ];
+
   sdBtProgressValue = 0;
   sdMpProgressValue = 0;
   ptBtProgressValue = 0;
@@ -115,20 +124,34 @@ export class OTAComponent implements OnInit {
   }
 
   ngOnInit() {
-    const otaTitleView = <View>this.otaTitleView.nativeElement;
-    otaTitleView.opacity = 0;
-
-    const otaProgressViewSD = <View>this.otaProgressViewSD.nativeElement;
-    otaProgressViewSD.opacity = 0;
-
-    const otaProgressViewPT = <View>this.otaProgressViewPT.nativeElement;
-    otaProgressViewPT.opacity = 0;
-
-    const otaFeaturesView = <View>this.otaFeaturesView.nativeElement;
-    otaFeaturesView.opacity = 0;
-
+    this.hideView(<View>this.otaTitleView.nativeElement);
+    this.hideView(<View>this.otaProgressViewSD.nativeElement);
+    this.hideView(<View>this.otaProgressViewPT.nativeElement);
+    this.hideView(<View>this.otaFeaturesView.nativeElement);
     this._sideDrawerTransition = new SlideInOnTopTransition();
   }
+
+  // view management
+  hideView(view: View): void {
+    view.opacity = 0;
+    view.visibility = 'collapse';
+  }
+
+  animateViewIn(view: View): void {
+    view.visibility = 'visible';
+    view
+      .animate({
+        opacity: 1,
+        duration: 500
+      })
+      .then(() => {
+        // scroll to the new view
+        const scrollView = this.scrollView.nativeElement as ScrollView;
+        const offset = scrollView.scrollableHeight;
+        scrollView.scrollToVerticalOffset(offset, true);
+      });
+  }
+  // end view management
 
   get sideDrawerTransition(): DrawerTransitionBase {
     return this._sideDrawerTransition;
@@ -151,11 +174,7 @@ export class OTAComponent implements OnInit {
   // Connectivity
   onPushTrackerConnected() {
     this.connected = true;
-    const otaTitleView = <View>this.otaTitleView.nativeElement;
-    otaTitleView.animate({
-      opacity: 1,
-      duration: 500
-    });
+    this.animateViewIn(<View>this.otaTitleView.nativeElement);
   }
 
   discoverSmartDrives() {
@@ -288,18 +307,14 @@ export class OTAComponent implements OnInit {
           const payloadSize = 16;
           const btService = this._bluetoothService;
           const writeFirmwareSector = (fw: any, characteristic: any, nextState: any) => {
-            console.log('writing firmware to pt');
+            //console.log('writing firmware to pt');
             const fileSize = fw.length;
             if (index < fileSize) {
               if (pt.connected && ableToSend) {
-                console.log(`Writing ${index} / ${fileSize} of ota to pt`);
+                //console.log(`Writing ${index} / ${fileSize} of ota to pt`);
                 const p = new Packet();
                 p.makeOTAPacket('PushTracker', index, fw);
-                const data = Array.create('byte', 18);
-                const pdata = p.toUint8Array();
-                for (let i = 0; i < 18; i++) {
-                  data[i] = pdata[i];
-                }
+                const data = p.toArray();
                 p.destroy();
                 if (btService.sendToPushTrackers(data)) {
                   btService
@@ -362,11 +377,7 @@ export class OTAComponent implements OnInit {
                   const otaDevice = Packet.makeBoundData('PacketOTAType', 'PushTracker');
                   p.data('OTADevice', otaDevice);
                   console.log(`${p.toString()}`);
-                  const data = Array.create('byte', 3);
-                  const pdata = p.toUint8Array();
-                  for (let i = 0; i < 3; i++) {
-                    data[i] = pdata[i];
-                  }
+                  const data = p.toArray();
                   p.destroy();
                   if (btService.sendToPushTrackers(data)) {
                     btService.notifyPushTrackers([pt.address]);
@@ -402,11 +413,7 @@ export class OTAComponent implements OnInit {
                   p.SubType('StopOTA');
                   const otaDevice = Packet.makeBoundData('PacketOTAType', 'PushTracker');
                   p.data('OTADevice', otaDevice);
-                  const data = Array.create('byte', 3);
-                  const pdata = p.toUint8Array();
-                  for (let i = 0; i < 3; i++) {
-                    data[i] = pdata[i];
-                  }
+                  const data = p.toArray();
                   p.destroy();
                   console.log(`sending ${data}`);
                   if (btService.sendToPushTrackers(data)) {
@@ -706,10 +713,10 @@ export class OTAComponent implements OnInit {
           const payloadSize = 16;
           const btService = this._bluetoothService;
           const writeFirmwareSector = (device: string, fw: any, characteristic: any, nextState: any) => {
-            console.log('writing firmware to ' + device);
+            //console.log('writing firmware to ' + device);
             const fileSize = fw.length;
             if (index < fileSize) {
-              console.log(`Writing ${index} / ${fileSize} of ota to ${device}`);
+              //console.log(`Writing ${index} / ${fileSize} of ota to ${device}`);
               let data = null;
               if (device === 'SmartDrive') {
                 const p = new Packet();
@@ -953,28 +960,9 @@ export class OTAComponent implements OnInit {
   }
 
   onStartOtaUpdate() {
-    const scrollView = this.scrollView.nativeElement as ScrollView;
-    const offset = scrollView.scrollableHeight;
-
-    scrollView.scrollToVerticalOffset(offset, true);
-
-    const otaProgressViewSD = <View>this.otaProgressViewSD.nativeElement;
-    otaProgressViewSD.animate({
-      opacity: 1,
-      duration: 500
-    });
-
-    const otaProgressViewPT = <View>this.otaProgressViewPT.nativeElement;
-    otaProgressViewPT.animate({
-      opacity: 1,
-      duration: 500
-    });
-
-    const otaFeaturesView = <View>this.otaFeaturesView.nativeElement;
-    otaFeaturesView.animate({
-      opacity: 1,
-      duration: 500
-    });
+    this.animateViewIn(<View>this.otaProgressViewSD.nativeElement);
+    this.animateViewIn(<View>this.otaProgressViewPT.nativeElement);
+    this.animateViewIn(<View>this.otaFeaturesView.nativeElement);
 
     if (!this.updating) {
       let smartDrives = [];
