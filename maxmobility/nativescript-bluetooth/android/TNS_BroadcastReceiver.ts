@@ -1,8 +1,8 @@
 /// <reference path="../node_modules/tns-platform-declarations/android.d.ts" />
 /// <reference path="../typings/android27.d.ts" />
 
-import { Bluetooth } from './android_main';
 import { CLog, CLogTypes } from '../common';
+import { Bluetooth } from './android_main';
 
 @JavaProxy('com.nativescript.TNS_BroadcastReceiver')
 // tslint:disable-next-line:class-name
@@ -53,10 +53,11 @@ export class TNS_BroadcastReceiver extends android.content.BroadcastReceiver {
       this._owner.get().sendEvent(Bluetooth.device_name_change_event, { device, name });
       // _onDeviceNameChangeCallback && _onDeviceNameChangeCallback(device, name);
     } else if (action === android.bluetooth.BluetoothDevice.ACTION_UUID) {
-      const uuid = intent.getIntExtra(
-        android.bluetooth.BluetoothDevice.EXTRA_UUID,
-        android.bluetooth.BluetoothDevice.ERROR
-      );
+      // const uuid = intent.getIntExtra(
+      //   android.bluetooth.BluetoothDevice.EXTRA_UUID,
+      //   android.bluetooth.BluetoothDevice.ERROR
+      // );
+      const uuid = intent.getParcelableExtra(android.bluetooth.BluetoothDevice.EXTRA_UUID);
       this._owner.get().sendEvent(Bluetooth.device_uuid_change_event, { device, uuid });
       // _onDeviceUUIDChangeCallback && _onDeviceUUIDChangeCallback(device, uuid);
     } else if (action === android.bluetooth.BluetoothDevice.ACTION_ACL_DISCONNECTED) {
