@@ -4,7 +4,7 @@
       <Image src="~/assets/images/permobil_logo.png" class="logo"></Image>
       <Label class="app-logo" text="Smart Evaluation"></Label>
       <Label class="account-icon fa text-white" text="&#xf2be;"></Label>
-      <TextField [(ngModel)]="user.email" class="blue-text-field" (textChange)="onEmailTextChange($event)" hint="Email..." keyboardType="email"
+      <TextField [text]="user.email" class="blue-text-field" (textChange)="onEmailTextChange($event)" hint="Email..." keyboardType="email"
         autocorrect="false" autocapitalizationType="none">
       </TextField>
       <Label [text]="emailError" class="text-white" [visibility]="emailError ? 'visible' : 'collapsed'" textWrap="true"></Label>
