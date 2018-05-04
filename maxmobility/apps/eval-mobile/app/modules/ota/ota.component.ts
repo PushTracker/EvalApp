@@ -1010,7 +1010,7 @@ export class OTAComponent implements OnInit {
           console.log(`completed all otas with statuses: ${otaStatuses}`);
           this.updating = false;
         })
-        .reject(err => {
+        .catch(err => {
           console.log(`Couldn't finish updating: ${err}`);
           this.updating = false;
         });
