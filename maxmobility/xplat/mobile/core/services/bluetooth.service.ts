@@ -227,7 +227,12 @@ export class BluetoothService {
   private onDeviceUuidChange(args: any): void {
     //console.log(`uuid change!`);
     const dev = args.data.device;
-    const newUUID = args.data.uuid.toString();
+    console.log('uuid:', args.data.uuids);
+    if (!args.data.uuids) {
+      console.log('no uuid returned');
+      return;
+    }
+    const newUUID = args.data.uuids[0].toString();
     console.log(`${dev} - uuid change - ${newUUID || 'None'}`);
     if (this.isSmartDrive(dev)) {
       const address = dev.UUID;

@@ -53,12 +53,12 @@ export class TNS_BroadcastReceiver extends android.content.BroadcastReceiver {
       this._owner.get().sendEvent(Bluetooth.device_name_change_event, { device, name });
       // _onDeviceNameChangeCallback && _onDeviceNameChangeCallback(device, name);
     } else if (action === android.bluetooth.BluetoothDevice.ACTION_UUID) {
-      // const uuid = intent.getIntExtra(
-      //   android.bluetooth.BluetoothDevice.EXTRA_UUID,
-      //   android.bluetooth.BluetoothDevice.ERROR
-      // );
-      const uuid = intent.getParcelableExtra(android.bluetooth.BluetoothDevice.EXTRA_UUID);
-      this._owner.get().sendEvent(Bluetooth.device_uuid_change_event, { device, uuid });
+      const uuids = intent.getParcelableArrayExtra(
+        android.bluetooth.BluetoothDevice.EXTRA_UUID
+      ) as android.os.Parcelable[];
+      CLog(CLogTypes.info, `${uuids.length} UUIDs found in the ACTION_UUID action.`);
+
+      this._owner.get().sendEvent(Bluetooth.device_uuid_change_event, { device, uuids });
       // _onDeviceUUIDChangeCallback && _onDeviceUUIDChangeCallback(device, uuid);
     } else if (action === android.bluetooth.BluetoothDevice.ACTION_ACL_DISCONNECTED) {
       this._owner.get().sendEvent(Bluetooth.device_acl_disconnected_event, { device });
