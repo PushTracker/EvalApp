@@ -84,8 +84,8 @@ export class LoginComponent implements OnInit {
       });
   }
 
-
   onEmailTextChange(args) {
+    this.user.email = args.value;
     this._isEmailValid(this.user.email);
   }
 
