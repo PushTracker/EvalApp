@@ -262,6 +262,14 @@ export class BluetoothService {
     console.log(`state change - ${device} - ${newState}`);
     switch (newState) {
       case android.bluetooth.BluetoothProfile.STATE_CONNECTED:
+        // TODO: use BluetoothGatt to get the service (by UUID 1800)
+
+        // TODO: use the returned service to get the characteristic
+        //       (by UUID 2a00)
+
+        // TODO: use the returned characteristic to call
+        //       'getStringValue()' to read the characteristic to get
+        //       the name
         if (this.isPushTracker(device)) {
           const pt = this.getOrMakePushTracker(device.getAddress());
           pt.handleConnect();
