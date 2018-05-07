@@ -36,7 +36,7 @@ export class BluetoothService {
 
   constructor() {
     // enabling `debug` will output console.logs from the bluetooth source code
-    //this._bluetooth.debug = true;
+    this._bluetooth.debug = true;
 
     // setup event listeners
     this._bluetooth.on(Bluetooth.bond_status_change_event, this.onBondStatusChange.bind(this));
@@ -267,6 +267,7 @@ export class BluetoothService {
     console.log(`state change - ${device} - ${newState}`);
     switch (newState) {
       case android.bluetooth.BluetoothProfile.STATE_CONNECTED:
+        device.fetchUuidsWithSdp();
         // TODO: use BluetoothGatt to get the service (by UUID 1800)
 
         // TODO: use the returned service to get the characteristic
@@ -282,7 +283,6 @@ export class BluetoothService {
         }
         break;
       case android.bluetooth.BluetoothProfile.STATE_CONNECTING:
-        device.fetchUuidsWithSdp();
         break;
       case android.bluetooth.BluetoothProfile.STATE_DISCONNECTED:
         if (this.isPushTracker(device)) {

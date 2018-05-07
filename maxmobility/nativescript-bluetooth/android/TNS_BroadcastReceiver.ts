@@ -56,7 +56,7 @@ export class TNS_BroadcastReceiver extends android.content.BroadcastReceiver {
       const uuids = intent.getParcelableArrayExtra(
         android.bluetooth.BluetoothDevice.EXTRA_UUID
       ) as android.os.Parcelable[];
-      CLog(CLogTypes.info, `${uuids.length} UUIDs found in the ACTION_UUID action.`);
+      CLog(CLogTypes.info, `${(uuids && uuids.length) || 0} UUIDs found in the ACTION_UUID action.`);
 
       this._owner.get().sendEvent(Bluetooth.device_uuid_change_event, { device, uuids });
       // _onDeviceUUIDChangeCallback && _onDeviceUUIDChangeCallback(device, uuid);
