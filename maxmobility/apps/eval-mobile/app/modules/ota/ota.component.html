@@ -53,22 +53,31 @@
       //       any number of progress bars for any number of updates running
 
       //StackLayout in row 2 contains progress views for updates
-      <StackLayout col="0" row="3" padding="5" orientation="vertical">
-        //SmartDrive BT Progress
-        <StackLayout #otaProgressViewSD>
-          <Label class="percentageLabel" [text]="sdBtProgressValue +'%'"></Label>
-          <Progress [value]="sdBtProgressValue" maxValue="100" class="progress"></Progress>
+      <StackLayout #otaProgressView col="0" row="3" padding="5" orientation="vertical">
+        //SmartDrive OTAs
+        <StackLayout *ngFor="let sd of smartDriveOTAs._array">
+	  <Label class="title" [text]="'SmartDrive ' + sd.address"></Label>
+	  <Label class="title" [text]="sd.otaStateToString()"></Label>
+	  // SmartDrive Bluetooth Progress
+          <Label class="percentageLabel" [text]="sd.bleOTAProgress +'%'"></Label>
+          <Progress [value]="sd.bleOTAProgress" maxValue="100" class="progress"></Progress>
           <Label class="otaLabel" text="SmartDrive Bluetooth"></Label>
-          //SmartDrive Microprocessor Progress
-          <Label class="percentageLabel" [text]="sdMpProgressValue +'%'"></Label>
-          <Progress [value]="sdMpProgressValue" maxValue="100" class="progress"></Progress>
+          // SmartDrive Microprocessor Progress
+          <Label class="percentageLabel" [text]="sd.mcuOTAProgress +'%'"></Label>
+          <Progress [value]="sd.mcuOTAProgress" maxValue="100" class="progress"></Progress>
           <Label class="otaLabel" text="SmartDrive Microprocessor"></Label>
 	</StackLayout>
-	<StackLayout  #otaProgressViewPT>
-          //PushTracker BT Progress
-          <Label class="percentageLabel" [text]="ptBtProgressValue +'%'"></Label>
-          <Progress [value]="ptBtProgressValue" maxValue="100" class=" progress"></Progress>
-          <Label class="otaLabel" text="PushTracker"></Label>
+        //PushTracker OTAs
+        <StackLayout *ngFor="let pt of pushTrackerOTAs._array">
+	  <DockLayout class="otaInfo">
+            <Label dock="left" class="otaLabel" [text]="pt.otaStateToString()"></Label>
+            <Label dock="right" class="percentageLabel" [text]="pt.otaProgress +'%'"></Label>
+	  </DockLayout>
+          <Progress [value]="pt.otaProgress" maxValue="100" class=" progress"></Progress>
+	  <DockLayout class="otaInfo">
+            <Label dock="left" class="otaLabel" [text]="'PushTracker ' + pt.address"></Label>
+            <Button dock="right" class="otaAction" [text]="pt.otaAction" (tap)="pt.onOTAActionTap()"></Button>
+	  </DockLayout>
 	</StackLayout>
       </StackLayout>
 

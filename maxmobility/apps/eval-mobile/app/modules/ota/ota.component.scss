@@ -45,16 +45,28 @@ ScrollView{
   background: $permobil-hero;
 }
 
+.otaInfo {
+    margin: 0, 0, 25, 25;
+    padding: 0, 0, 0, 0;
+}
+
+.otaAction {
+    font-size: 14;
+    margin: 0, 0, 0, 0;
+    color: $permobil-hero;
+}
+
 .otaLabel {
-  margin: 0, 0, 25, 15;
+  margin: 0, 0, 25, 25;
   font-family: $os-SemiBold;
   font-size: 14;
   color: $permobil-charcoal;
 }
 
-.percentagLabel {
+.percentageLabel {
   font-family: $os-SemiBold-Italic;
   font-size: 11;
   margin: 0, 0, 0, 15;
+  text-align: right;
   color: $permobil-charcoal;
 }

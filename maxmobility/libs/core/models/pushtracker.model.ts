@@ -46,6 +46,12 @@ export class PushTracker extends Observable {
 
   public static pushtracker_ota_ready_event = 'pushtracker_ota_ready_event';
 
+  // user interaction events
+  public static pushtracker_ota_pause_event = 'pushtracker_ota_pause_event';
+  public static pushtracker_ota_resume_event = 'pushtracker_ota_resume_event';
+  public static pushtracker_ota_cancel_event = 'pushtracker_ota_cancel_event';
+  public static pushtracker_ota_retry_event = 'pushtracker_ota_retry_event';
+
   public events: any /*IPushTrackerEvents*/;
 
   // public members
@@ -60,6 +66,8 @@ export class PushTracker extends Observable {
 
   // not serialized
   public otaState: OTAState = OTAState.not_started;
+  public otaProgress: number = 0;
+  public otaAction: string = '';
 
   // private members
 
@@ -69,6 +77,10 @@ export class PushTracker extends Observable {
     if (obj !== null && obj !== undefined) {
       this.fromObject(obj);
     }
+  }
+
+  public toString(): string {
+    return `${this.data()}`;
   }
 
   public data(): any {
@@ -94,6 +106,31 @@ export class PushTracker extends Observable {
   }
 
   // regular methods
+
+  public otaStateToString(): string {
+    return PushTracker.OTAState[this.otaState];
+  }
+
+  public onOTAActionTap() {
+    console.log(`OTA Action`);
+    console.log(`OTA Action: ${this.otaAction}`);
+    switch (this.otaAction) {
+      case 'Pause':
+        this.sendEvent(PushTracker.pushtracker_ota_pause_event);
+        break;
+      case 'Resume':
+        this.sendEvent(PushTracker.pushtracker_ota_resume_event);
+        break;
+      case 'Cancel':
+        this.sendEvent(PushTracker.pushtracker_ota_cancel_event);
+        break;
+      case 'Retry':
+        this.sendEvent(PushTracker.pushtracker_ota_retry_event);
+        break;
+      default:
+        break;
+    }
+  }
 
   /**
    * Notify events by name and optionally pass data

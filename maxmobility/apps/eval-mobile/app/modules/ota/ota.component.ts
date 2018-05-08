@@ -57,8 +57,7 @@ export class OTAComponent implements OnInit {
   @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
   @ViewChild('scrollView') scrollView: ElementRef;
   @ViewChild('otaTitleView') otaTitleView: ElementRef;
-  @ViewChild('otaProgressViewSD') otaProgressViewSD: ElementRef;
-  @ViewChild('otaProgressViewPT') otaProgressViewPT: ElementRef;
+  @ViewChild('otaProgressView') otaProgressView: ElementRef;
   @ViewChild('otaFeaturesView') otaFeaturesView: ElementRef;
 
   connected = false;
@@ -83,9 +82,8 @@ export class OTAComponent implements OnInit {
     'Bugfixes to pairing process for handling multiple devices.'
   ];
 
-  sdBtProgressValue = 0;
-  sdMpProgressValue = 0;
-  ptBtProgressValue = 0;
+  smartDriveOTAs: ObservableArray<SmartDrive> = new ObservableArray();
+  pushTrackerOTAs: ObservableArray<PushTracker> = new ObservableArray();
 
   snackbar = new SnackBar();
 
@@ -125,8 +123,7 @@ export class OTAComponent implements OnInit {
 
   ngOnInit() {
     this.hideView(<View>this.otaTitleView.nativeElement);
-    this.hideView(<View>this.otaProgressViewSD.nativeElement);
-    this.hideView(<View>this.otaProgressViewPT.nativeElement);
+    this.hideView(<View>this.otaProgressView.nativeElement);
     this.hideView(<View>this.otaFeaturesView.nativeElement);
     this._sideDrawerTransition = new SlideInOnTopTransition();
   }
@@ -260,16 +257,38 @@ export class OTAComponent implements OnInit {
 
           let otaTimeoutID = null;
           const otaTimeout = 300000;
-          let stopOTA = false;
-          otaTimeoutID = timer.setTimeout(() => {
-            console.log('OTA Timed out!');
-            stopOTA = true;
+          let cancelOTA = false;
+          const stopOTA = () => {
+            cancelOTA = true;
             timer.clearInterval(otaIntervalID);
+
+            // send stop ota command
+            console.log(`Sending StopOTA::PT to ${pt.address}`);
+            const p = new Packet();
+            p.Type('Command');
+            p.SubType('StopOTA');
+            const otaDevice = Packet.makeBoundData('PacketOTAType', 'PushTracker');
+            p.data('OTADevice', otaDevice);
+            const data = p.toArray();
+            p.destroy();
+            console.log(`sending ${data}`);
+            if (btService.sendToPushTrackers(data)) {
+              console.log(`notifying ${pt.address}`);
+              btService.notifyPushTrackers([pt.address]);
+            }
+
             ableToSend = false;
             console.log(`Disconnecting from ${pt.address}`);
             // TODO: How do we disconnect from the PT?
             reject();
+          };
+
+          otaTimeoutID = timer.setTimeout(() => {
+            console.log('OTA Timed out!');
+            stopOTA();
           }, otaTimeout);
+          // set the action
+          pt.otaAction = 'Cancel';
           // set the state
           if (pt.connected) {
             pt.otaState = PushTracker.OTAState.awaiting_ready;
@@ -302,6 +321,11 @@ export class OTAComponent implements OnInit {
             console.log('GOT PT OTA READY');
             pt.otaState = PushTracker.OTAState.updating;
           });
+          // register for ota interaction events
+          pt.on(PushTracker.pushtracker_ota_cancel_event, data => {
+            console.log('GOT PT OTA CANCEL');
+            stopOTA();
+          });
           // now actually perform the ota
           let index = 0;
           const payloadSize = 16;
@@ -309,6 +333,9 @@ export class OTAComponent implements OnInit {
           const writeFirmwareSector = (fw: any, characteristic: any, nextState: any) => {
             //console.log('writing firmware to pt');
             const fileSize = fw.length;
+            if (cancelOTA) {
+              return;
+            }
             if (index < fileSize) {
               if (pt.connected && ableToSend) {
                 //console.log(`Writing ${index} / ${fileSize} of ota to pt`);
@@ -394,7 +421,7 @@ export class OTAComponent implements OnInit {
                   }, 100);
                 }
                 // update the progress bar
-                this.ptBtProgressValue = Math.round((index + 16) * 100 / firmware.length);
+                pt.otaProgress = Math.round((index + 16) * 100 / firmware.length);
                 // make sure we clear out the version info that we get
                 haveVersion = false;
                 // we need to reboot after the OTA
@@ -438,8 +465,6 @@ export class OTAComponent implements OnInit {
                 }
                 console.log(msg);
                 this.snackbar.simple(msg);
-                // make sure we tell ourselves not to reconnect!
-                stopOTA = true;
                 // TODO: disconnect from PT here!
                 pt.otaState = PushTracker.OTAState.complete;
                 break;
@@ -807,7 +832,7 @@ export class OTAComponent implements OnInit {
                   );
                 }
                 // update the progress bar
-                this.sdMpProgressValue = Math.round((index + 16) * 100 / mcuFirmware.length);
+                sd.mcuOTAProgress = Math.round((index + 16) * 100 / mcuFirmware.length);
                 break;
               case SmartDrive.OTAState.awaiting_ble_ready:
                 // make sure the index is set to 0 for next OTA
@@ -839,7 +864,7 @@ export class OTAComponent implements OnInit {
                   );
                 }
                 // update the progress bar
-                this.sdBtProgressValue = Math.round((index + 16) * 100 / bleFirmware.length);
+                sd.bleOTAProgress = Math.round((index + 16) * 100 / bleFirmware.length);
                 // make sure we clear out the version info that we get
                 haveBLEVersion = false;
                 haveMCUVersion = false;
@@ -967,13 +992,12 @@ export class OTAComponent implements OnInit {
   }
 
   onStartOtaUpdate() {
-    this.animateViewIn(<View>this.otaProgressViewSD.nativeElement);
-    this.animateViewIn(<View>this.otaProgressViewPT.nativeElement);
+    this.animateViewIn(<View>this.otaProgressView.nativeElement);
     this.animateViewIn(<View>this.otaFeaturesView.nativeElement);
 
     if (!this.updating) {
-      let smartDrives = [];
-      let pushTrackers = [];
+      this.smartDriveOTAs.splice(0, this.smartDriveOTAs.length);
+      this.pushTrackerOTAs.splice(0, this.pushTrackerOTAs.length);
       let ptFW = null;
       let bleFW = null;
       let mcuFW = null;
@@ -996,18 +1020,24 @@ export class OTAComponent implements OnInit {
           return this.select(sds);
         })
         .then(selectedSmartDrives => {
-          smartDrives = selectedSmartDrives;
+          selectedSmartDrives.map(sd => {
+            this.smartDriveOTAs.push(sd);
+          });
+          //this.smartDriveOTAs.notify(ObservableArray.changeEvent);
           return this.select(BluetoothService.PushTrackers); //.filter(pt => pt.connected));
         })
         .then(selectedPushTrackers => {
-          pushTrackers = selectedPushTrackers;
+          selectedPushTrackers.map(pt => {
+            this.pushTrackerOTAs.push(pt);
+          });
+          //this.pushTrackerOTAs.notify(ObservableArray.changeEvent);
 
           // OTA the selected smart drive(s)
-          const smartDriveOTATasks = smartDrives.map(sd => {
+          const smartDriveOTATasks = this.smartDriveOTAs.map(sd => {
             return this.performSDOTA(sd, bleFW, mcuFW);
           });
 
-          const pushTrackerOTATasks = pushTrackers.map(pt => {
+          const pushTrackerOTATasks = this.pushTrackerOTAs.map(pt => {
             return this.performPTOTA(pt, ptFW);
           });
 

@@ -137,7 +137,7 @@ export class PairingComponent implements OnInit, AfterViewInit {
       console.log(pt);
       pt.on(PushTracker.pushtracker_paired_event, args => {
         console.log(`PT PAIRED EVENT!`);
-        this.pushTrackerPairingSuccess(null);
+        this.pushTrackerPairingSuccess();
         pt.on(PushTracker.pushtracker_connect_event, args => {
           this.pushTrackerConnectionSuccess();
         });

@@ -50,6 +50,12 @@ export class SmartDrive extends Observable {
   public static smartdrive_ota_ready_ble_event = 'smartdrive_ota_ready_ble_event';
   public static smartdrive_ota_ready_mcu_event = 'smartdrive_ota_ready_mcu_event';
 
+  // user interaction events
+  public static smartdrive_ota_pause_event = 'smartdrive_ota_pause_event';
+  public static smartdrive_ota_resume_event = 'smartdrive_ota_resume_event';
+  public static smartdrive_ota_cancel_event = 'smartdrive_ota_cancel_event';
+  public static smartdrive_ota_retry_event = 'smartdrive_ota_retry_event';
+
   public events: any /*ISmartDriveEvents*/;
 
   // public members
@@ -64,6 +70,9 @@ export class SmartDrive extends Observable {
 
   // not serialized
   public otaState: OTAState = OTAState.not_started;
+  public bleOTAProgress: number = 0;
+  public mcuOTAProgress: number = 0;
+  public otaAction: string = '';
 
   // private members
 
@@ -73,6 +82,10 @@ export class SmartDrive extends Observable {
     if (obj !== null && obj !== undefined) {
       this.fromObject(obj);
     }
+  }
+
+  public toString(): string {
+    return `${this.data()}`;
   }
 
   public data(): any {
@@ -98,6 +111,10 @@ export class SmartDrive extends Observable {
   }
 
   // regular methods
+
+  public otaStateToString(): string {
+    return SmartDrive.OTAState[this.otaState];
+  }
 
   /**
    * Notify events by name and optionally pass data
