@@ -17,7 +17,8 @@ $os-SemiBold-Italic: 'OpenSans-SemiBoldItalic, Open Sans SemiBold Italic';
 $background-dark: #f8f8f8 !default;
 $background-light: #ffffff !default;
 
-$permobil-hero: rgb(0, 103, 166) !default;
+$permobil-hero: rgb(0, 79, 126) !default;
+$permobil-hero-old: rgb(0, 103, 166) !default;
 $permobil-primary: rgb(0, 103, 166) !default;
 $permobil-ocean: rgb(0, 154, 199) !default;
 $permobil-charcoal: rgb(65, 54, 66) !default;
@@ -73,12 +74,12 @@ $item-color-android: #737373;
 $item-active-background: #f8f8f8;
 $item-active-color: $accent;
 $item-active-icon-color: $item-active-color;
-$item-color-ios: $permobil-hero;
-$item-color-android: $permobil-hero;
+$item-color-ios: $white;
+$item-color-android: $white;
 
-$side-drawer-header-background: #fafafa;
-$side-drawer-header-brand: #737373;
-$side-drawer-background: #ffffff;
+// $side-drawer-header-background: #fafafa;
+// $side-drawer-header-brand: #737373;
+// $side-drawer-background: #ffffff;
 
 // ActionBar
 $ab-background: $accent;

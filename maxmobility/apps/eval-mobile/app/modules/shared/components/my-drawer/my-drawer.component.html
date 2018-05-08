@@ -1,25 +1,37 @@
-<GridLayout rows="auto, *" class="sidedrawer sidedrawer-left">
-    <StackLayout row="0" class="sidedrawer-header">
+<Gradient padding-top="30" height="100%"  direction="to right" colors="#004F7E, #2da7fb">
+
+    <GridLayout margin-top="30" backgroundColor="transparent"  rows="auto, *" class="sidedrawer sidedrawer-left">
+
+
+    <StackLayout row="0" backgroundColor="transparent" class="sidedrawer-header">
         <Label class="sidedrawer-header-image fa" text="&#xf2bd;"></Label>
         <Label class="sidedrawer-header-brand" [text]="user.data.first_name + ' ' + user.data.last_name"></Label>
         <Label class="footnote" [text]="user.data.email"></Label>
     </StackLayout>
 
     <ScrollView row="1">
-        <StackLayout class="sidedrawer-content">
+        <StackLayout backgroundColor="transparent" class="sidedrawer-content">
             <MyDrawerItem title="Home" route="/home" icon="&#xf015;" [isSelected]="isPageSelected('Home')"></MyDrawerItem>
+            <StackLayout class="hr-light m-10"></StackLayout>
             <MyDrawerItem title="Pairing" route="/pairing" icon="&#xf0c1;" [isSelected]="isPageSelected('Pairing')"></MyDrawerItem>
+            <StackLayout class="hr-light m-10"></StackLayout>
             <MyDrawerItem title="Videos" route="/videos" icon="&#xf008;" [isSelected]="isPageSelected('Videos')"></MyDrawerItem>
+            <StackLayout class="hr-light m-10"></StackLayout>
             <MyDrawerItem title="Evaluation" route="/eval-entry" icon="&#xf0ae;" [isSelected]="isPageSelected('Evaluation')"></MyDrawerItem>
+            <StackLayout class="hr-light m-10"></StackLayout>
             <MyDrawerItem title="OTA" route="/ota" icon="&#xf019;" [isSelected]="isPageSelected('OTA')"></MyDrawerItem>
+            <StackLayout class="hr-light m-10"></StackLayout>
             <MyDrawerItem title="Demos" route="/demos" icon="&#xf02a;" [isSelected]="isPageSelected('Demos')"></MyDrawerItem>
+            <StackLayout class="hr-light m-10"></StackLayout>
             <MyDrawerItem title="FAQ" route="/faq" icon="&#xf059;" [isSelected]="isPageSelected('FAQ')"></MyDrawerItem>
 
-            <StackLayout class="hr-light"></StackLayout>
+            <StackLayout class="hr-light m-10"></StackLayout>
 
             <MyDrawerItem title="Settings" route="/settings" icon="&#xf013;" [isSelected]="isPageSelected('Settings')"></MyDrawerItem>
             <MyDrawerItem title="Account" route="/account" icon="&#xf2bd;" [isSelected]="isPageSelected('Account')"></MyDrawerItem>
             <!-- <MyDrawerItem title="Login" route="/login" icon="&#xf2bd;"></MyDrawerItem> -->
         </StackLayout>
     </ScrollView>
-</GridLayout>
+
+    </GridLayout>
+</Gradient>

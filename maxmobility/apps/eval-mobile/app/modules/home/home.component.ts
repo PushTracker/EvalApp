@@ -10,8 +10,8 @@ import { Feedback, FeedbackType, FeedbackPosition } from "nativescript-feedback"
 import { WebView } from 'tns-core-modules/ui/web-view';
 import { isIOS } from 'tns-core-modules/platform';
 import { RouterExtensions } from 'nativescript-angular/router';
-import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-ui-sidedrawer';
-import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
+import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-sidedrawer';
+import { RadSideDrawerComponent, SideDrawerType } from 'nativescript-ui-sidedrawer/angular';
 import { RadListViewComponent } from 'nativescript-ui-listview/angular';
 import { CLog, LoggingService } from '@maxmobility/core';
 
@@ -27,6 +27,7 @@ import { FAQs } from '../faq/faq.component';
 export class HomeComponent implements OnInit, AfterViewInit {
   @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
 
+  private drawer: SideDrawerType;
   private feedback: Feedback;
   
     faqItems = FAQs;
@@ -239,10 +240,19 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     CLog('HomeComponent OnInit');
-    this._sideDrawerTransition = new SlideInOnTopTransition();    
+    this._sideDrawerTransition = new SlideAlongTransition();    
   }
 
   ngAfterViewInit(): void {
+
+    this.drawer = this.drawerComponent.sideDrawer;
+    if (this.drawer.ios) {
+      const sideDrawer: TKSideDrawer = this.drawer.ios.defaultSideDrawer;
+      sideDrawer.style.shadowMode = TKSideDrawerShadowMode.Hostview;
+      sideDrawer.style.shadowOpacity = 0.75;
+      sideDrawer.style.shadowRadius = 5;
+      sideDrawer.transitionDuration = 0.25;
+    }
 
   }
 

@@ -22,8 +22,6 @@ import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 // import { Observable, Scheduler } from "rxjs";
 import { Observable } from "data/observable";
 
-import { registerElement } from "nativescript-angular";
-registerElement("Gradient", () => require("nativescript-gradient").Gradient);
 
 
 @Component({
