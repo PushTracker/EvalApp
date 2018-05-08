@@ -10,17 +10,37 @@
     <MyDrawer [selectedPage]="'Pairing'"></MyDrawer>
   </StackLayout>
   
-  <GridLayout (loaded)="pageLoaded()" col="*" row="*" tkMainContent>
-    <Image class="pt" #ptImage  row="0" col="1"  src="~/assets/images/pushTrackerFull.png" stretch="aspectFill" horizontalAlignment="right"></Image>
-    <Image class="sd" #sdImage  row="0" col="1"  src="~/assets/images/smartDriveFull.png" stretch="aspectFill" horizontalAlignment="right"></Image>
-    <StackLayout class="clear" row="0" col="0" width="200"  orientation="vertical" horizontalAlignment="left">
-      <Label #title class="title" text="PushTracker">  
-      </Label>
-      <Label #description class="description" textWrap="true" text="Press the left button on PushTracker to begin pairing">
-      </Label>
-      <Button text="Connect" (tap)="onConnectTap()"></Button>
-    </StackLayout>
-  </GridLayout>
+<StackLayout backgroundImage="~/assets/images/background_1.jpg" tkMainContent class="page page-content gridImage">
+
+  <Carousel #carousel ios:indicatorOffset="0,-10" ios:finite="true" ios:bounce="true" height="100%" indicatorColor="#66ccff" indicatorColorUnselected="#cceeff">
+    <CarouselItem  *ngFor="let slide of slides">
+      
+      <GridLayout  rows="auto, *" cols="*" class="">
+	
+	<StackLayout row="0" class="topSlide" height="35%" width="100%" orientation="horizontal" horizontalAlignment="center">
+	  <Image [src]="slide.Image" stretch="aspectFit"></Image>
+	</StackLayout>
+
+	<ScrollView  row="1" class="lowerSlide hero" height="65%" >
+      <StackLayout class="hero" orientation="vertical" horizontalAlignment="center" width="100%">
+          <Label [text]="slide.Label" class="slideLowerLabel" textWrap="true"></Label>
+	        <Label *ngFor="let bullet of slide.Bullets" [text]="bullet" class="bullet" textWrap="true"></Label>
+          <DockLayout *ngIf="slides.indexOf(slide) == 0" stretchLastChild="false">
+            <!-- <Button  class="icon fa" (tap)="onChevronTapped()" text="&#xf054;" dock="right"></Button> -->
+          </DockLayout>
+            <Button *ngIf="slides.indexOf(slide) == 0" class="back-button" text="Success" (tap)="pushTrackerPairingSuccess()"></Button>
+
+            <Button *ngIf="slides.indexOf(slide) == 1" class="back-button" text="Success" (tap)="pushTrackerConnectionSuccess()"></Button>
+            
+            
+          </StackLayout>
+        </ScrollView>
+      </GridLayout>
+      
+    </CarouselItem>
+  </Carousel>
+
+</StackLayout>
 
 </RadSideDrawer>
 

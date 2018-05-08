@@ -2,23 +2,26 @@
   <Label class="action-bar-title" text="Training"></Label>
 </ActionBar>
 
-<StackLayout tkMainContent class="page page-content hero">
+<StackLayout backgroundImage="~/assets/images/background_1.jpg" tkMainContent class="page page-content gridImage">
 
-  <Carousel ios:indicatorOffset="0,-10" height="100%" indicatorColor="#66ccff" indicatorColorUnselected="#cceeff">
+  <Carousel #carousel ios:indicatorOffset="0,-10" ios:finite="true" ios:bounce="true" height="100%" indicatorColor="#66ccff" indicatorColorUnselected="#cceeff">
     <CarouselItem  *ngFor="let slide of slides">
       
-      <GridLayout background="#fff" rows="auto, *" cols="*" class="hero">
+ <GridLayout  rows="auto, *" cols="*" class="">
 	
-	<StackLayout row="0" class="topSlide" height="30%" orientation="vertical" horizontalAlignment="center">
+	<StackLayout row="0"  height="35%" width="100%" orientation="horizontal" horizontalAlignment="center">
 	  <Image [src]="slide.Image" stretch="aspectFit"></Image>
 	</StackLayout>
 
-	<ScrollView row="1" class="hero">
-          <StackLayout class="hero" class="lowerSlide" height="70%" orientation="vertical" horizontalAlignment="center">
-            <Label [text]="slide.Label" class="slideLowerLabel" textWrap="true"></Label>
-	    <Label *ngFor="let bullet of slide.Bullets" [text]="bullet" class="bullet" textWrap="true"></Label>
-            <!-- <Button  class="icon fa" text="&#xf008;"></Button> -->
-            <Button *ngIf="slides.indexOf(slide) == (slides.length-1)" class="start-button" text="Next" (tap)="onNext()"></Button>
+	<ScrollView  row="1" class="lowerSlide" height="65%" >
+      <StackLayout orientation="vertical" horizontalAlignment="center" width="100%">
+          <Label [text]="slide.Label" class="slideLowerLabel" textWrap="true"></Label>
+	        <Label *ngFor="let bullet of slide.Bullets" [text]="bullet" class="bullet" textWrap="true"></Label>
+          <DockLayout *ngIf="slides.indexOf(slide) == 0" stretchLastChild="false">
+            <!-- <Button  class="icon fa" (tap)="onChevronTapped()" text="&#xf054;" dock="right"></Button> -->
+          </DockLayout>
+            
+            <Button *ngIf="slides.indexOf(slide) == (slides.length-1)" class="next-button" text="Next" (tap)="onNext()"></Button>
             <Button *ngIf="slides.indexOf(slide) == 0" class="back-button" text="Back" (tap)="onBack()"></Button>
           </StackLayout>
         </ScrollView>

@@ -1,99 +1,88 @@
 // angular
-import { Component, ElementRef, OnInit, AfterViewInit, ViewChild } from 
-'@angular/core';
-import { ActivatedRoute } from "@angular/router";
+import { Component, ElementRef, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { RouterExtensions } from 'nativescript-angular/router';
 // nativescript
 import { Progress } from 'tns-core-modules/ui/progress';
-import { ScrollView, ScrollEventData } from "ui/scroll-view";
+import { ScrollView, ScrollEventData } from 'ui/scroll-view';
 import { EventData } from 'data/observable';
 import { StackLayout } from 'ui/layouts/stack-layout';
 import { GridLayout } from 'ui/layouts/grid-layout';
 import { Color } from 'tns-core-modules/color';
 import { Image } from 'ui/image';
 import { Label } from 'ui/label';
-import { AnimationCurve } from "ui/enums";
-import { View } from "ui/core/view";
-import { Animation, AnimationDefinition } from "ui/animation";
+import { AnimationCurve } from 'ui/enums';
+import { View } from 'ui/core/view';
+import { Animation, AnimationDefinition } from 'ui/animation';
 import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-ui-sidedrawer';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 // import { Observable, Scheduler } from "rxjs";
-import { Observable } from "data/observable";
+import { Observable } from 'data/observable';
 
+import { registerElement } from 'nativescript-angular';
+registerElement('Gradient', () => require('nativescript-gradient').Gradient);
 
 @Component({
-    selector: 'Video',
-    moduleId: module.id,
-    templateUrl: './video.component.html',
-    styleUrls: ['./video.component.css']
+  selector: 'Video',
+  moduleId: module.id,
+  templateUrl: './video.component.html',
+  styleUrls: ['./video.component.css']
 })
 export class VideoComponent implements OnInit, AfterViewInit {
-    @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
-	@ViewChild("description") description: ElementRef;
+  @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
+  @ViewChild('description') description: ElementRef;
 
-    url = String();
-	desc = String();
+  url = String();
+  title = String();
+  desc = String();
 
-    private _sideDrawerTransition: DrawerTransitionBase;
+  private _sideDrawerTransition: DrawerTransitionBase;
 
-    constructor(private _routerExtensions: RouterExtensions, private route: ActivatedRoute) {}
+  constructor(private _routerExtensions: RouterExtensions, private route: ActivatedRoute) {}
 
-    ngOnInit() {
+  ngOnInit() {
+    const query = this.route.snapshot.queryParams;
 
-		const query = this.route.snapshot.queryParams
+    this.url = `${query['url']}`;
+    this.title = `${query['title']}`;
+    this.desc = `${query['desc']}`;
 
-		this.url = `${query["url"]}`;
-		this.desc = `${query["desc"]}`;
-		
-		this._sideDrawerTransition = new SlideInOnTopTransition();
-	}
+    this._sideDrawerTransition = new SlideInOnTopTransition();
+  }
 
-    ngAfterViewInit() {
-
-	// const title = <View>this.title.nativeElement as Label;
-	
-
-	// const pt = <View>this.ptImage.nativeElement as Image;
-
-	// setTimeout(() => {
-	//     pt.animate({
-	// 	duration: 1000,
-	// 	curve: AnimationCurve.easeInOut,
-	// 	opacity: 1
-	//     });
-	// }, 500)
-
-	// setTimeout(() => {
+  ngAfterViewInit() {
+    // const title = <View>this.title.nativeElement as Label;
+    // const pt = <View>this.ptImage.nativeElement as Image;
+    // setTimeout(() => {
+    //     pt.animate({
+    // 	duration: 1000,
+    // 	curve: AnimationCurve.easeInOut,
+    // 	opacity: 1
+    //     });
+    // }, 500)
+    // setTimeout(() => {
     //         title.animate({
-	// 	duration: 1000,
-	// 	curve: AnimationCurve.easeInOut,
-	// 	opacity: 1
-	//     });
-	// }, 500)
-
-	// setTimeout(() => {
+    // 	duration: 1000,
+    // 	curve: AnimationCurve.easeInOut,
+    // 	opacity: 1
+    //     });
+    // }, 500)
+    // setTimeout(() => {
     //         description.animate({
-	// 	duration: 1000,
-	// 	curve: AnimationCurve.easeInOut,
-	// 	opacity: 1
-	//     });
-	// }, 750)
-	
+    // 	duration: 1000,
+    // 	curve: AnimationCurve.easeInOut,
+    // 	opacity: 1
+    //     });
+    // }, 750)
+  }
 
-	
-    }
+  get sideDrawerTransition(): DrawerTransitionBase {
+    return this._sideDrawerTransition;
+  }
 
-    get sideDrawerTransition(): DrawerTransitionBase {
-	return this._sideDrawerTransition;
-    }
-
-    onDrawerButtonTap(): void {
-	this.drawerComponent.sideDrawer.showDrawer();
-    }
-
-
-
-
+  onDrawerButtonTap(): void {
+    this.drawerComponent.sideDrawer.showDrawer();
+  }
 }

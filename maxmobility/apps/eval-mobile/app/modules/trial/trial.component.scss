@@ -1,5 +1,6 @@
 // Custom common variables
 @import '../../scss/carousel';
+@import '../../scss/_carousel';
 
 Switch {
     color: #fff;
@@ -29,53 +30,54 @@ TextField {
 }
 
 .trial-stack-layout {
-//  margin: 15, 10, 10, 10;
+    margin: 20, 0, 0, 0;
+    background-color: $permobil-hero;
 }
 
 .docklayout-options {
-  padding: 5;
+  // padding: 5, 10, 5, 5; 
 }
 
 .trial-scroll-view {
-    height:70%;
+    height:80%;
+    background-color: $permobil-hero;
 }
 
 .trial-item {
-  vertical-align: center;
-  text-overflow: none;
-  word-wrap: normal;
-  color: #fff;
-  font-family: $os-Light;
-  margin: 5, 5, 5, 5;
-  // padding: 10, 15, 10, 0;
+    // vertical-align: center;
+    text-overflow: none;
+    word-wrap: normal;
+    color: #fff;
+    ffont-weight: 500;
+    margin: 10, 0, 10, 15;
 }
 
 .switch {
-  padding: 10, 15, 10, 0;
+    margin: 5, 15, 5, 0;
 }
 
 .trial-slider-label {
-  color: $permobil-ocean;
-  font-family: $os-Light;
-  margin: 0, 0, 0, 0;
+  color: #fff;
+  font-weight: 500;
+  margin: 10, 0, 10, 25;
 }
 
 .trial-slider-value-label {
   color: #fff;
   font-family: $os-Light;
-  margin: 0, 0, 0, 0;
+  margin: 10, 0, 10, 0;
 }
 
 .trial-slider {
-  margin: 0, 5, 0, 10;
+  margin: 0, 15, 0, 25;
   color: #fff;
-  background-color: $permobil-ocean;
+  background-color: $permobil-orange;
 }
 
 .trial-name-textfield {
-  background-color: rgba(80, 135, 180, 0.8);
+  background-color: rgba(255, 255, 255, 0.2);
   padding: 7;
-  margin: 5, 10, 5, 10;
+  margin: 5, 15, 5, 15;
   color: #fff;
   border-radius: 2;
   placeholder-color: lightgray;
@@ -86,7 +88,7 @@ TextField {
   color: #fff;
   background-color: $permobil-ocean;
   border-radius: 2;
-  margin: 25, 10, 50, 10;
+  margin: 45, 10, 50, 10;
 }
 .back-button {
   width: 150;
@@ -118,12 +120,20 @@ image {
   margin: 10, 20, 0, 20;
 }
 
+.sub-heading {
+  text-align: left;
+  font-size: 20;
+  margin: 20, 0, 10, 15;
+  color: $white;
+  font-weight: 500;
+}
+
 .value-label-left {
   // background: black;
   text-align: left;
   font-family: $os-Light;
-  font-size: 20;
-  margin: 10, 10, 10, 15;
+  font-size: 15;
+  margin: 5, 10, 0, 15;
   color: #fff;
 }
 
@@ -132,8 +142,8 @@ image {
   text-align: left;
   width: 100%;
   font-family: $os-Light;
-  font-size: 20;
-  margin: 10, 5, 10, 10;
+  font-size: 15;
+  margin: 5, 5, 0, 10;
   color: #fff;
 }
 
@@ -141,8 +151,8 @@ image {
   // background: black;
   text-align: left;
   font-family: $os-Light;
-  font-size: 20;
-  margin: 10, 10, 10, 15;
+  font-size: 15;
+  margin: 5, 10, 0, 15;
   color: #fff;
 }
 
@@ -151,8 +161,8 @@ image {
   text-align: left;
   width: 100%;
   font-family: $os-Light;
-  font-size: 20;
-  margin: 10, 5, 10, 10;
+  font-size: 15;
+  margin: 5, 5, 0, 10;
   color: #fff;
 }
 

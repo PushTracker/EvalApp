@@ -5,6 +5,8 @@ import { View } from 'ui/core/view';
 import { Page } from 'tns-core-modules/ui/page';
 import { Image } from 'ui/image';
 import { Label } from 'ui/label';
+import { Color } from 'tns-core-modules/color';
+import { Feedback, FeedbackType, FeedbackPosition } from 'nativescript-feedback';
 import { WebView } from 'tns-core-modules/ui/web-view';
 import { isIOS } from 'tns-core-modules/platform';
 import { RouterExtensions } from 'nativescript-angular/router';
@@ -26,6 +28,8 @@ import { BluetoothService } from '@maxmobility/mobile';
 })
 export class HomeComponent implements OnInit, AfterViewInit {
   @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
+
+  private feedback: Feedback;
 
   faqItems = FAQs;
 
@@ -60,24 +64,29 @@ export class HomeComponent implements OnInit, AfterViewInit {
       Description: 'Fleet management and Tracking.',
       Route: '/demos'
     },
-    { Title: 'FAQ', Image: String.fromCharCode(0xf059), Description: 'Common SmartDrive Questions', Route: '/faq' }
+    {
+      Title: 'FAQ',
+      Image: String.fromCharCode(0xf059),
+      Description: 'Common SmartDrive Questions',
+      Route: '/faq'
+    }
   ];
 
   connectivityItems = [
     {
-      Image: '~/assets/images/band_bluetooth.png',
+      Image: '~/assets/images/pt-phone-home.png',
       Description: 'Pair your app with a PushTracker',
       Directive: 'pt-phone',
       Route: '/pairing'
     },
     {
-      Image: '~/assets/images/band_settings.png',
+      Image: '~/assets/images/pt-connect-home.png',
       Description: 'Connect your app with the PushTracker',
       Directive: 'pt-phone-connect',
       Route: 'pairing'
     },
     {
-      Image: '~/assets/images/smartdrive-wheel.png',
+      Image: '~/assets/images/pt-sd-pairing-home.png',
       Description: 'Pair your PushTracker with a SmartDrive',
       Directive: 'pt-sd',
       Route: '/pairing'
@@ -86,12 +95,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   evalItems = [
     {
-      Image: '~/assets/images/training-tap.jpg',
+      Image: '~/assets/images/Training.jpg',
       Description: 'Training how to use SmartDrive',
       Route: '/training'
     },
     {
-      Image: '~/assets/images/eval-controls.jpg',
+      Image: '~/assets/images/evaluation.jpg',
       Description: 'Begin SmartDrive Evaluation',
       Route: '/eval-entry'
     },
@@ -190,24 +199,27 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
   ];
 
-  videoHtmlString_0 = '<iframe frameborder="0" vspace="0" hspace="0" marginwidth="0" marginheight="0" width="100%" seamless="seamless" src="https://www.youtube.com/embed/8fn26J59WJ4" border="0"></iframe>';
-  videoHtmlString_1 = '<iframe height="170" width="170" src="https://www.youtube.com/embed/uhA3-svjQFg" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
-  videoHtmlString_2 = '<iframe height="170" width="170" src="https://www.youtube.com/embed/6_M1J8HZXIk" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
-  videoHtmlString_3 = '<iframe height="170" width="170" src="https://www.youtube.com/embed/3B-6ked84us" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
-  videoHtmlString_4 = '<iframe height="170" width="170" src="https://www.youtube.com/embed/3B-6ked84us" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
-  videoHtmlString_5 = '<iframe height="170" width="170" src="https://www.youtube.com/embed/45Kj7zJpDcM" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
-  videoHtmlString_6 = '<iframe height="170" width="170" src="https://www.youtube.com/embed/hFid9ks551A" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+  videoHtmlString_0 = '<iframe style="margin-bottom: 10; padding:0; border:0; width:100%; height:100%"  src="https://www.youtube.com/embed/8fn26J59WJ4"></iframe>';
+  videoHtmlString_1 = '<iframe backgroundColor=red frameborder=0 vspace=0 hspace=0 border=0 marginwidth=0 marginheight=0 width=100% seamless=seamless src="https://www.youtube.com/embed/uhA3-svjQFg" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+  videoHtmlString_2 = '<iframe frameborder="0" vspace="0" hspace="0" marginwidth="0" marginheight="0" width="100%" seamless="seamless" src="https://www.youtube.com/embed/6_M1J8HZXIk" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+  videoHtmlString_3 = '<iframe frameborder="0" vspace="0" hspace="0" marginwidth="0" marginheight="0" width="100%" seamless="seamless" src="https://www.youtube.com/embed/3B-6ked84us" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+  videoHtmlString_4 = '<iframe frameborder="0" vspace="0" hspace="0" marginwidth="0" marginheight="0" width="100%" seamless="seamless" src="https://www.youtube.com/embed/3B-6ked84us" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+  videoHtmlString_5 = '<iframe frameborder="0" vspace="0" hspace="0" marginwidth="0" marginheight="0" width="100%" seamless="seamless" src="https://www.youtube.com/embed/45Kj7zJpDcM" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+  videoHtmlString_6 = '<iframe frameborder="0" vspace="0" hspace="0" marginwidth="0" marginheight="0" width="100%" seamless="seamless" src="https://www.youtube.com/embed/hFid9ks551A" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
 
   videoItems = [
     {
       Url: this.videoHtmlString_0,
-      Description: 'SmartDrive Introduction',
+      Description:
+        'This video is an overview of SmartDrive being used by people of varying ages and circumstances in a variety of environments.',
+      Title: 'SmartDrive Introduction',
       Thumb: '~/assets/images/overview-thumb.jpg',
       Route: '/video'
     },
     {
       Url: this.videoHtmlString_1,
-      Description: 'SmartDrive MX2+ Basic Operation',
+      Description: 'This video covers the basic operation and functionality of the SmartDrive MX2+ and PushTracker.',
+      Title: 'SmartDrive MX2+ Basic Operation',
       Thumb: '~/assets/images/sd-basic-op-thumb.jpg',
       Route: '/video'
     },
@@ -246,6 +258,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   private _sideDrawerTransition: DrawerTransitionBase;
 
   constructor(private _page: Page, private _routerExtensions: RouterExtensions, private _logService: LoggingService) {
+    this.feedback = new Feedback();
+
     //const radList = <RadListViewComponent>this.radListView.nativeElement;
     //this.radListView.listView.scrollWithAmount(50, true);
   }
@@ -258,13 +272,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {}
 
   onRadListLoaded(event) {
-    const radListView = event.object;
-    setTimeout(() => {
-      radListView.scrollWithAmount(150, true);
-      setTimeout(() => {
-        radListView.scrollWithAmount(-150, true);
-      }, 500);
-    }, 100);
+    /*
+	const radListView = event.object;
+	setTimeout(() => {
+            radListView.scrollWithAmount(150, true);
+	    setTimeout(() => {
+		radListView.scrollWithAmount(-150, true);    
+	    }, 500);
+	}, 100);
+	*/
   }
 
   get sideDrawerTransition(): DrawerTransitionBase {
@@ -294,7 +310,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   videoThumbTapped(item: any) {
     const videoUrl = item.Url;
     const route = item.Route;
-
+    const title = item.Title;
+    const desc = item.Description;
     console.log(item.Url);
     console.log(item.Route);
 
@@ -304,7 +321,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
       },
       queryParams: {
         url: videoUrl,
-        desc: item.Description
+        desc: item.Description,
+        title: item.Title
       }
     });
   }

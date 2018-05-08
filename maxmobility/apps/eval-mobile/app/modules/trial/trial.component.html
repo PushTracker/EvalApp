@@ -2,13 +2,13 @@
   <Label class="action-bar-title" text="Trial"></Label>
 </ActionBar>
 
-<StackLayout class="page page-content hero" tkMainContent>
+<StackLayout  tkMainContent>
 
   <Carousel ios:indicatorOffset="0,-10" indicatorColor="#66ccff" indicatorColorUnselected="#cceeff" height="100%">
     <CarouselItem class="hero" height="100%">
-      <GridLayout background="#fff" rows="auto, *" cols="*">
-        <StackLayout row="0" class="topSlide" height="30%" orientation="horizontal" horizontalAlignment="center">
-          <Image src="~/assets/images/controls-4.png" stretch="aspectFit"></Image>
+      <GridLayout backgroundImage="~/assets/images/background_1.jpg" rows="auto, *" cols="*">
+        <StackLayout row="0" class="topSlide" height="20%" orientation="horizontal" horizontalAlignment="center">
+          <Image src="~/assets/images/trial-setup.png" stretch="aspectFit"></Image>
         </StackLayout>
 
         //First Page: Configure Trial
@@ -28,25 +28,25 @@
               //Terrain Options
               <DockLayout class="dockLayout-options" stretchLastChild="false">
                 <Label text="Flat Surfaces" class="trial-item" dock="left"></Label>
-                <Switch dock="right" class="trial-item"></Switch>
+                <Switch dock="right" class="switch"></Switch>
               </DockLayout>
               <DockLayout stretchLastChild="false">
                 <Label text="Ramp" class="trial-item" dock="left"></Label>
-                <Switch dock="right" class="trial-item"></Switch>
+                <Switch dock="right" class="switch"></Switch>
               </DockLayout>
               <DockLayout stretchLastChild="false">
                 <Label text="Inclines" class="trial-item" dock="left"></Label>
-                <Switch dock="right" class="trial-item"></Switch>
+                <Switch dock="right" class="switch"></Switch>
               </DockLayout>
-              <DockLayout stretchLastChild="false">
+              <DockLayout stretchLastChild="false" margin="0, 0, 25, 0">
                 <Label text="Other" class="trial-item" dock="left"></Label>
-                <Switch dock="right" class="trial-item"></Switch>
+                <Switch dock="right" class="switch"></Switch>
               </DockLayout>
 
               //SmartDrive Settings 
               //Acceleration
               <DockLayout stretchLastChild="false">
-                <Label text="Acceleration" class="trial-item"></Label>
+                <Label text="Acceleration" class="trial-slider-label"></Label>
                 <Label verticalAlignment="center" dock="right" class="trial-slider-value-label" style="min-width: 50" [text]="settings.acceleration.toFixed(0)+'%'"
                        row="0" col="1"></Label>
               </DockLayout>
@@ -57,7 +57,7 @@
 
               //Max Speed
               <DockLayout stretchLastChild="false">
-                <Label text="Max Speed" class="trial-item"></Label>
+                <Label text="Max Speed" class="trial-slider-label"></Label>
                 <Label verticalAlignment="center" dock="right" class="trial-slider-value-label" style="min-width: 50" [text]="settings.maxSpeed.toFixed(0)+'%'"
                        row="0" col="1"></Label>
               </DockLayout>
@@ -69,21 +69,18 @@
               <Button class="back-button" text="Back" (tap)="onBack()"></Button>
 
             </StackLayout>
-
           </StackLayout>
         </ScrollView>
-
-
       </GridLayout>
     </CarouselItem>
 
+    //Page 2 Start Trial
     <CarouselItem class="hero" height="100%">
-      <GridLayout background="#fff" rows="auto, *" cols="*">
-        <StackLayout row="0" class="topSlide" height="30%" orientation="horizontal" horizontalAlignment="center">
-          <Image src="~/assets/images/stopwatch.png" stretch="aspectFit"></Image>
+      <GridLayout backgroundImage="~/assets/images/background_1.jpg" rows="auto, *" cols="*">
+        <StackLayout row="0" class="topSlide" height="20%" orientation="horizontal" horizontalAlignment="center">
+          <Image src="~/assets/images/trial-sd.png" stretch="aspectFit"></Image>
         </StackLayout>
 
-        //Page 2 Start Trial
         <ScrollView class="hero trial-scroll-view" row="1">
           <StackLayout class="hero lowerSlide" orientation="vertical" horizontalAlignment="center">
 
@@ -114,18 +111,16 @@
             </StackLayout>
           </StackLayout>
         </ScrollView>
-
-
       </GridLayout>
     </CarouselItem>
 
+    //Page 3 Without SmartDrive
     <CarouselItem class="hero" height="100%">
-      <GridLayout background="#fff" rows="auto, *" cols="*">
-        <StackLayout row="0" class="topSlide" height="30%" orientation="horizontal" horizontalAlignment="center">
-          <Image src="~/assets/images/stopwatch.png" stretch="aspectFit"></Image>
+      <GridLayout backgroundImage="~/assets/images/background_1.jpg" rows="auto, *" cols="*">
+        <StackLayout row="0" class="topSlide" height="20%" orientation="horizontal" horizontalAlignment="center">
+          <Image src="~/assets/images/trial-no-sd.png" stretch="aspectFit"></Image>
         </StackLayout>
 
-        //Page 3 Without SmartDrive
         <ScrollView class="hero trial-scroll-view" row="1">
           <StackLayout class="hero lowerSlide" orientation="vertical" horizontalAlignment="center">
 
@@ -156,18 +151,16 @@
             </StackLayout>
           </StackLayout>
         </ScrollView>
-
-
       </GridLayout>
     </CarouselItem>
 
+    //Page 4 Trial Complete
     <CarouselItem class="hero" height="100%">
-      <GridLayout background="#fff" rows="auto, *" cols="*">
-        <StackLayout row="0" class="topSlide" height="30%" orientation="horizontal" horizontalAlignment="center">
-          <Image src="~/assets/images/checked-1.png" stretch="aspectFit"></Image>
+      <GridLayout backgroundImage="~/assets/images/background_1.jpg" rows="auto, *" cols="*">
+        <StackLayout row="0" class="topSlide" height="20%" orientation="horizontal" horizontalAlignment="center">
+          <Image src="~/assets/images/trial-complete.png" stretch="aspectFit"></Image>
         </StackLayout>
 
-        //Page 4 Summary
         <ScrollView class="hero trial-scroll-view" row="1">
           <StackLayout class="hero lowerSlide" orientation="vertical" horizontalAlignment="center">
 
@@ -176,10 +169,10 @@
             <Label text="Nice Work!" class="slideDescription" textWrap="true"></Label>
 
 
-            <StackLayout class="input-field">
+            <StackLayout>
 
               //Data Fields with SmartDrive
-              <Label text="With SmartDrive" class="slideLowerLabel" textWrap="true" margin="30,0,0,0"></Label>
+              <Label text="With SmartDrive" class="sub-heading" textWrap="true" margin="30,0,0,15"></Label>
               <GridLayout  rows="auto, auto" columns="auto, *, auto, *">
                 <Label row="0" col="0" text="Pushes:" class="value-label-left" textWrap="true"></Label>
                 <Label row="0" col="1" text="0" class="value-left" textWrap="true"></Label>
@@ -196,7 +189,7 @@
               </GridLayout>
 
               //Data Fields without SmartDrive
-              <Label text="Without SmartDrive" class="slideLowerLabel" textWrap="true" margin="30,0,0,0"></Label>
+              <Label text="Without SmartDrive" class="sub-heading" textWrap="true" margin="30,0,0,15"></Label>
               <GridLayout  rows="auto, auto" columns="auto, *, auto, *">
                 <Label row="0" col="0" text="Pushes:" class="value-label-left" textWrap="true"></Label>
                 <Label row="0" col="1" text="0" class="value-left" textWrap="true"></Label>
@@ -204,7 +197,7 @@
                 <Label row="0" col="3" text=" 0.0s" class="value-right" textWrap="true"></Label>
               </GridLayout>
               
-              <GridLayout  rows="auto, auto" columns="auto, *, auto, *">
+              <GridLayout  rows="auto, auto" columns="auto, *, auto, *" margin="0,0,40,0">
                 <Label row="0" col="0" text="Time:" class="value-label-left" textWrap="true"></Label>
                 <Label row="0" col="1" text="0 min" class="value-left" textWrap="true"></Label>
                 <Label row="0" col="2" text="Distance:" class="value-label-right" textWrap="true"></Label>

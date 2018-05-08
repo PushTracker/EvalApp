@@ -1,4 +1,6 @@
-<ScrollView class="permobil-hero" height="100%">
+
+<AbsoluteLayout height="100%" width="100%">>
+<ScrollView class="permobil-hero" height="100%" width="100%">
   <GridLayout rows="auto, *, auto" class="login-page">
     <StackLayout row="0">
       <Image src="~/assets/images/permobil_logo.png" class="logo"></Image>
@@ -10,7 +12,7 @@
       <Label [text]="emailError" class="text-white" [visibility]="emailError ? 'visible' : 'collapsed'" textWrap="true"></Label>
       <TextField [(ngModel)]="user.password" class="blue-text-field" hint="Password..." secure="true"></TextField>
       <Label [text]="passwordError" class="text-white" [visibility]="passwordError ? 'visible' : 'collapsed'" textWrap="true"></Label>
-      <Button text="Sign in" class="permobil-ocean-btn m-20" (tap)="onSubmitTap()"></Button>
+      <Button text="Sign in" class="permobil-ocean-btn login-btn" (tap)="onSubmitTap()"></Button>
     </StackLayout>
     <GridLayout row="2" rows="*" columns="auto, *, auto">
       <Button col="0" text="Forgot Password" class="btn-transparent text-white forgot" (tap)="navToForgotPassword()"></Button>
@@ -18,3 +20,4 @@
     </GridLayout>
   </GridLayout>
 </ScrollView>
+</AbsoluteLayout>

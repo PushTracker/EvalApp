@@ -1,7 +1,5 @@
 // angular
 import { Component, ElementRef, OnInit, AfterViewInit, ViewChild } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { RouterExtensions } from 'nativescript-angular/router';
 // nativescript
 import { Progress } from 'tns-core-modules/ui/progress';
 import { ScrollView, ScrollEventData } from 'tns-core-modules/ui/scroll-view';
@@ -17,13 +15,17 @@ import { View } from 'tns-core-modules/ui/core/view';
 import { Animation, AnimationDefinition } from 'tns-core-modules/ui/animation';
 import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-ui-sidedrawer';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
+import { Feedback, FeedbackType, FeedbackPosition } from 'nativescript-feedback';
 import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
+import { RouterExtensions } from 'nativescript-angular/router';
 // import { Observable, Scheduler } from "rxjs";
 
 // libs
 import { CLog } from '@maxmobility/mobile';
 import { BluetoothService } from '@maxmobility/mobile';
 import { Packet, DailyInfo, PushTracker, SmartDrive } from '@maxmobility/core';
+
+const carousel = require('nativescript-carousel').Carousel;
 
 @Component({
   selector: 'Pairing',
@@ -33,26 +35,97 @@ import { Packet, DailyInfo, PushTracker, SmartDrive } from '@maxmobility/core';
 })
 export class PairingComponent implements OnInit, AfterViewInit {
   @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
-  @ViewChild('ptImage') ptImage: ElementRef;
-  @ViewChild('sdImage') sdImage: ElementRef;
-  @ViewChild('title') title: ElementRef;
-  @ViewChild('description') description: ElementRef;
+  @ViewChild('carousel') carousel: ElementRef;
+  private feedback: Feedback;
+  snackbar = new SnackBar();
 
-  show = false;
+  slides = [
+    {
+      Image: '~/assets/images/PushTracker-pairing.png',
+      Label: 'Pairing Your PushTracker to the App',
+      Bullets: [
+        'Press and hold the right flat button on your PushTracker for three seconds to enter the settings menu',
+        'Press the right button to scroll to the phone/PT icon.',
+        'Press the left raised button to innitiate pairing.'
+      ]
+    },
+    {
+      Image: '~/assets/images/PushTracker-Connecting.png',
+      Label: 'Connecting your PushTracker to the App',
+      Bullets: [
+        'With the PushTrtacker app open, press the right flat button on the PushTracker',
+        'You will see a "Success" notification in the app.'
+      ]
+    },
+    {
+      Image: '~/assets/images/PushTracker-SmartDrive-pairing.png',
+      Label: 'Tap Gesture',
+      Bullets: [
+        'Press and hold the right flat button on your PushTracker for three seconds to enter the settings menu',
+        'Press the right button to scroll to the PT-SD icon.',
+        'Press the left raised button to innitiate pairing your PushTracker to your SmartDrive.'
+      ]
+    }
+  ];
 
   private _sideDrawerTransition: DrawerTransitionBase;
 
-  constructor(private _routerExtensions: RouterExtensions, private _bluetoothService: BluetoothService) {}
+  constructor(private routerExtensions: RouterExtensions, private _bluetoothService: BluetoothService) {
+    this.feedback = new Feedback();
+  }
 
-  ngOnInit() {
+  //Connectivity Events
+  pushTrackerPairingSuccess() {
+    this.feedback.success({
+      title: 'Success!',
+      message: 'Successfully paired with PushTracker!',
+      duration: 4500,
+      // type: FeedbackType.Success, // no need to specify when using 'success' instead of 'show'
+      onTap: () => {
+        console.log('showSuccess tapped');
+      }
+    });
+  }
+
+  pushTrackerConnectionSuccess() {
+    this.feedback.success({
+      title: 'Success!',
+      message: 'Successfully connected with PushTracker!',
+      duration: 4500,
+      // type: FeedbackType.Success, // no need to specify when using 'success' instead of 'show'
+      onTap: () => {
+        console.log('showSuccess tapped');
+      }
+    });
+  }
+
+  // button events
+  onNext(): void {
+    this.routerExtensions.navigate(['/trial'], {
+      clearHistory: true,
+      transition: {
+        name: 'wipe'
+      }
+    });
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.snackbar.simple('Swipe left to view more slides.');
+    }, 1000);
+  }
+
+  onBack(): void {
+    this.routerExtensions.navigate(['/eval-entry'], {
+      clearHistory: true,
+      transition: {
+        name: 'slideRight'
+      }
+    });
+  }
+
+  ngOnInit(): void {
     this._sideDrawerTransition = new SlideInOnTopTransition();
-
-    const title = <View>this.title.nativeElement;
-    const description = <View>this.description.nativeElement;
-    const pt = (<View>this.ptImage.nativeElement) as Image;
-
-    title.opacity = 0;
-    description.opacity = 0;
 
     // TODO: cases we need to handle:
     //  - a new pushtracker we haven't seen pairs
@@ -64,7 +137,10 @@ export class PairingComponent implements OnInit, AfterViewInit {
       console.log(pt);
       pt.on(PushTracker.pushtracker_paired_event, args => {
         console.log(`PT PAIRED EVENT!`);
-        this.onConnectTap(null);
+        this.pushTrackerPairingSuccess(null);
+        pt.on(PushTracker.pushtracker_connect_event, args => {
+          this.pushTrackerConnectionSuccess();
+        });
       });
     });
     // listen for completely new pusthrackers (that we haven't seen before)
@@ -75,56 +151,14 @@ export class PairingComponent implements OnInit, AfterViewInit {
         if (pt) {
           pt.on(PushTracker.pushtracker_paired_event, args => {
             console.log(`PT PAIRED EVENT!`);
-            this.onConnectTap(null);
+            this.pushTrackerPairingSuccess();
+            pt.on(PushTracker.pushtracker_connect_event, args => {
+              this.pushTrackerConnectionSuccess();
+            });
           });
         }
       }
     });
-  }
-
-  ngAfterViewInit() {
-    console.log('ngAfterViewInit');
-    CLog('ngAfterViewInit');
-
-    const title = (<View>this.title.nativeElement) as Label;
-    const description = (<View>this.description.nativeElement) as Label;
-    const pt = (<View>this.ptImage.nativeElement) as Image;
-
-    title.opacity = 0;
-    title.text = 'PushTracker';
-    description.opacity = 0;
-    description.text = 'Press the right buton on the PushTracker to initiate pairing';
-
-    setTimeout(() => {
-      pt.animate({
-        duration: 1000,
-        curve: AnimationCurve.easeInOut,
-        opacity: 1
-      });
-    }, 500);
-
-    setTimeout(() => {
-      title.animate({
-        duration: 1000,
-        curve: AnimationCurve.easeInOut,
-        opacity: 1
-      });
-    }, 500);
-
-    setTimeout(() => {
-      description.animate({
-        duration: 1000,
-        curve: AnimationCurve.easeInOut,
-        opacity: 1
-      });
-    }, 750);
-  }
-
-  pageLoaded(args: EventData) {
-    let page = <GridLayout>args.object;
-
-    console.log('pageLoaded');
-    CLog('pageLoaded');
   }
 
   get sideDrawerTransition(): DrawerTransitionBase {
@@ -133,61 +167,5 @@ export class PairingComponent implements OnInit, AfterViewInit {
 
   onDrawerButtonTap(): void {
     this.drawerComponent.sideDrawer.showDrawer();
-  }
-
-  onConnectTap(args: EventData) {
-    const title = (<View>this.title.nativeElement) as Label;
-    const description = (<View>this.description.nativeElement) as Label;
-    const pt = (<View>this.ptImage.nativeElement) as Image;
-    const sd = (<View>this.sdImage.nativeElement) as Image;
-    pt
-      .animate({
-        duration: 1000,
-        curve: AnimationCurve.easeInOut,
-        opacity: 0
-      })
-      .then(() => {
-        setTimeout(() => {
-          sd.animate({
-            duration: 1000,
-            curve: AnimationCurve.easeInOut,
-            opacity: 1
-          });
-        }, 500);
-      });
-
-    title
-      .animate({
-        duration: 1000,
-        curve: AnimationCurve.easeInOut,
-        opacity: 0
-      })
-      .then(() => {
-        setTimeout(() => {
-          title.text = 'SmartDrive';
-          title.animate({
-            duration: 1000,
-            curve: AnimationCurve.easeInOut,
-            opacity: 1
-          });
-        }, 500);
-      });
-
-    description
-      .animate({
-        duration: 1000,
-        curve: AnimationCurve.easeInOut,
-        opacity: 0
-      })
-      .then(() => {
-        setTimeout(() => {
-          description.text = 'Press and hold the left button to enter settings.';
-          description.animate({
-            duration: 1000,
-            curve: AnimationCurve.easeInOut,
-            opacity: 1
-          });
-        }, 500);
-      });
   }
 }

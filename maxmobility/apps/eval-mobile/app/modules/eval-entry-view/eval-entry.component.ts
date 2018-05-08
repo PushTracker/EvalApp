@@ -69,7 +69,7 @@ export class EvalEntryComponent implements OnInit {
 
   // button events
   onNext(): void {
-    this.routerExtensions.navigate(["/training"]);
+    this.routerExtensions.navigate(['/training']);
   }
 
   // listPicker events

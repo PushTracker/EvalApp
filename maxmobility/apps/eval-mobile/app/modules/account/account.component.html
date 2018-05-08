@@ -11,9 +11,9 @@
   <StackLayout tkDrawerContent>
     <MyDrawer [selectedPage]="'Account'"></MyDrawer>
   </StackLayout>
-  <ScrollView tkMainContent>
-    <StackLayout class="page-content">
-      <Label class="account-icon fa" text="&#xf2be;"></Label>
+  <ScrollView  height="100%" tkMainContent>
+    <Gradient margin-top="30" direction="to bottom right" colors="rgba(250,250,250, 0.2), rgba(0,40,85, 0.3)" class="page-content hero">
+      <Label color="#fff"  class="account-icon fa" text="&#xf2be;"></Label>
       <GridLayout columns="auto, *">
         <Label col="0" text="First Name" class="account-item"></Label>
         <TextField col="1" [(ngModel)]="user.data.first_name" returnKeyType="next" class="account-text-entry" hint="First Name..."></TextField>
@@ -31,9 +31,9 @@
         <TextField col="1" [(ngModel)]="user.data.phone_number" keyboardType="phone" returnKeyType="done" class="account-text-entry"
           hint="Phone..."></TextField>
       </GridLayout>
-      <Button text="Change Password" (tap)="onChangePasswordTap()"></Button>
-      <Button text="Reset Account" (tap)="onResetAccountTap()"></Button>
-      <Button text="Sign Out" (tap)="onSignOutTap()"></Button>
-    </StackLayout>
+      <Button class="acct-btn" text="Change Password" (tap)="onChangePasswordTap()"></Button>
+      <Button class="acct-btn" text="Reset Account" (tap)="onResetAccountTap()"></Button>
+      <Button class="acct-btn" text="Sign Out" (tap)="onSignOutTap()"></Button>
+    </Gradient>
   </ScrollView>
 </RadSideDrawer>
