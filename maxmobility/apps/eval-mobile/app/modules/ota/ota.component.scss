@@ -12,10 +12,15 @@ ScrollView{
   color: $permobil-charcoal;
 }
 
+.ota {
+    padding: 5, 15, 5, 15;
+}
+
 .progress {
   color: $permobil-ocean;
   border-radius: 3;
-  margin: 0, 15, 0, 15;
+  margin: 0, 0, 0, 0;
+  padding: 0, 0, 0, 0;
 }
 
 .title {
@@ -46,7 +51,7 @@ ScrollView{
 }
 
 .otaInfo {
-    margin: 0, 0, 25, 25;
+    margin: 0, 0, 0, 0;
     padding: 0, 0, 0, 0;
 }
 
@@ -57,7 +62,7 @@ ScrollView{
 }
 
 .otaLabel {
-  margin: 0, 0, 25, 25;
+  margin: 0, 0, 0, 0;
   font-family: $os-SemiBold;
   font-size: 14;
   color: $permobil-charcoal;
@@ -66,7 +71,7 @@ ScrollView{
 .percentageLabel {
   font-family: $os-SemiBold-Italic;
   font-size: 11;
-  margin: 0, 0, 0, 15;
+  margin: 0, 0, 0, 0;
   text-align: right;
   color: $permobil-charcoal;
 }

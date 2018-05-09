@@ -18,6 +18,7 @@ enum OTAState {
 }
 
 export class SmartDrive extends Observable {
+  // STATIC:
   static readonly OTAState = OTAState;
   readonly OTAState = SmartDrive.OTAState;
 
@@ -56,6 +57,16 @@ export class SmartDrive extends Observable {
   public static smartdrive_ota_cancel_event = 'smartdrive_ota_cancel_event';
   public static smartdrive_ota_retry_event = 'smartdrive_ota_retry_event';
 
+  // static methods:
+  public static caseTicksToMiles(ticks: number): number {
+    return ticks * (2.0 * 3.14159265358 * 3.8) / (265.714 * 63360.0);
+  }
+
+  public static motorTicksToMiles(ticks: number): number {
+    return ticks * (2.0 * 3.14159265358 * 3.8) / (36.0 * 63360.0);
+  }
+
+  // NON STATIC:
   public events: any /*ISmartDriveEvents*/;
 
   // public members

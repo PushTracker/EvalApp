@@ -49,13 +49,10 @@
         </StackLayout>
       </StackLayout>
 
-      // TODO: update this to be a list view template which can show
-      //       any number of progress bars for any number of updates running
-
       //StackLayout in row 2 contains progress views for updates
       <StackLayout #otaProgressView col="0" row="3" padding="5" orientation="vertical">
         //SmartDrive OTAs
-        <StackLayout *ngFor="let sd of smartDriveOTAs._array">
+        <StackLayout class="ota" *ngFor="let sd of smartDriveOTAs._array">
 	  <Label class="title" [text]="'SmartDrive ' + sd.address"></Label>
 	  <Label class="title" [text]="sd.otaStateToString()"></Label>
 	  // SmartDrive Bluetooth Progress
@@ -68,16 +65,19 @@
           <Label class="otaLabel" text="SmartDrive Microprocessor"></Label>
 	</StackLayout>
         //PushTracker OTAs
-        <StackLayout *ngFor="let pt of pushTrackerOTAs._array">
-	  <DockLayout class="otaInfo">
-            <Label dock="left" class="otaLabel" [text]="pt.otaStateToString()"></Label>
-            <Label dock="right" class="percentageLabel" [text]="pt.otaProgress +'%'"></Label>
-	  </DockLayout>
-          <Progress [value]="pt.otaProgress" maxValue="100" class=" progress"></Progress>
-	  <DockLayout class="otaInfo">
-            <Label dock="left" class="otaLabel" [text]="'PushTracker ' + pt.address"></Label>
-            <Button dock="right" class="otaAction" [text]="pt.otaAction" (tap)="pt.onOTAActionTap()"></Button>
-	  </DockLayout>
+        <StackLayout class="ota" *ngFor="let pt of pushTrackerOTAs._array">
+	  <GridLayout class="otaInfo" rows="auto" columns="auto, *">
+            <Label col="0" class="otaLabel" text="PushTracker"></Label>
+            <Label col="1" class="percentageLabel" [text]="pt.otaProgress +'%'"></Label>
+	  </GridLayout>
+          <Progress [value]="pt.otaProgress" maxValue="100" class="progress"></Progress>
+	  <GridLayout class="otaInfo" rows="auto, auto, *" columns="auto, *">
+            <Label col="0" class="otaLabel" [text]="pt.address"></Label>
+            <Label col="0" row="1" class="otaLabel" [text]="pt.otaStateToString()"></Label>
+	    <WrapLayout orientation="horizontal" horizontalAlignment="right" rowSpan="3" col="1">
+              <Button *ngFor="let action of pt.otaActions" class="otaAction" [text]="action" (tap)="pt.onOTAActionTap(action)"></Button>
+	    </WrapLayout>
+	  </GridLayout>
 	</StackLayout>
       </StackLayout>
 
