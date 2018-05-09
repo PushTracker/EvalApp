@@ -53,16 +53,23 @@
       <StackLayout #otaProgressView col="0" row="3" padding="5" orientation="vertical">
         //SmartDrive OTAs
         <StackLayout class="ota" *ngFor="let sd of smartDriveOTAs._array">
-	  <Label class="title" [text]="'SmartDrive ' + sd.address"></Label>
-	  <Label class="title" [text]="sd.otaStateToString()"></Label>
-	  // SmartDrive Bluetooth Progress
-          <Label class="percentageLabel" [text]="sd.bleOTAProgress +'%'"></Label>
-          <Progress [value]="sd.bleOTAProgress" maxValue="100" class="progress"></Progress>
-          <Label class="otaLabel" text="SmartDrive Bluetooth"></Label>
-          // SmartDrive Microprocessor Progress
-          <Label class="percentageLabel" [text]="sd.mcuOTAProgress +'%'"></Label>
+	  <GridLayout class="otaInfo" rows="auto" columns="auto, *">
+            <Label col="0" class="otaLabel" text="SmartDrive Microcontroller"></Label>
+            <Label col="1" class="percentageLabel" [text]="sd.mcuOTAProgress +'%'"></Label>
+	  </GridLayout>
           <Progress [value]="sd.mcuOTAProgress" maxValue="100" class="progress"></Progress>
-          <Label class="otaLabel" text="SmartDrive Microprocessor"></Label>
+	  <GridLayout class="otaInfo" rows="auto" columns="auto, *">
+            <Label col="0" class="otaLabel" text="SmartDrive Bluetooth"></Label>
+            <Label col="1" class="percentageLabel" [text]="sd.bleOTAProgress +'%'"></Label>
+	  </GridLayout>
+          <Progress [value]="sd.bleOTAProgress" maxValue="100" class="progress"></Progress>
+	  <GridLayout class="otaInfo" rows="auto, auto, *" columns="auto, *">
+            <Label col="0" class="otaLabel" [text]="sd.address"></Label>
+            <Label col="0" row="1" class="otaLabel" [text]="sd.otaStateToString()"></Label>
+	    <WrapLayout orientation="horizontal" horizontalAlignment="right" rowSpan="3" col="1">
+              <Button *ngFor="let action of sd.otaActions" class="otaAction" [text]="action" (tap)="sd.onOTAActionTap(action)"></Button>
+	    </WrapLayout>
+	  </GridLayout>
 	</StackLayout>
         //PushTracker OTAs
         <StackLayout class="ota" *ngFor="let pt of pushTrackerOTAs._array">

@@ -435,7 +435,7 @@ export class BluetoothService {
     let sd = BluetoothService.SmartDrives.filter((x: SmartDrive) => x.address === address)[0];
     //console.log(`Found SD: ${sd}`);
     if (sd === null || sd === undefined) {
-      sd = new SmartDrive({ address });
+      sd = new SmartDrive(this, { address });
       BluetoothService.SmartDrives.push(sd);
     }
     //console.log(`Found or made SD: ${sd}`);
