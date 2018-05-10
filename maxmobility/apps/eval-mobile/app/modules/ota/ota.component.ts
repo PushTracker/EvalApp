@@ -26,6 +26,9 @@ import { Packet, DailyInfo, PushTracker, SmartDrive } from '@maxmobility/core';
 import { constructDependencies } from '@angular/core/src/di/reflective_provider';
 import { constants } from 'fs';
 
+// app
+import { ProgressService } from '@maxmobility/mobile';
+
 // const timeElapsed = Observable.defer(() => {
 //     const start = Scheduler.animationFrame.now();
 //     return Observable.interval(1)
@@ -92,6 +95,7 @@ export class OTAComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private routerExtensions: RouterExtensions,
+    private _progressService: ProgressService,
     private _bluetoothService: BluetoothService
   ) {
     // TODO: cases we need to handle:
@@ -238,9 +242,11 @@ export class OTAComponent implements OnInit {
         .then(otaData => {
           mcuFW = otaData;
           console.log(`got MX2+ OTA, version: 0x${Number(mcuFW[0]).toString(16)}`);
+          this._progressService.show('Searching for SmartDrives');
           return this.discoverSmartDrives();
         })
         .then(sds => {
+          this._progressService.hide();
           return this.select(sds);
         })
         .then(selectedSmartDrives => {
