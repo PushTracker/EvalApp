@@ -209,6 +209,29 @@ export class SmartDrive extends Observable {
       const smartDriveConnectionInterval = 2000;
 
       // define our functions here
+      const begin = () => {
+        paused = false;
+        cancelOTA = false;
+        hasRebooted = false;
+        index = 0;
+        // set the action
+        this.otaActions = ['Start'];
+        // now that we're starting the OTA, we are awaiting the versions
+        this.otaState = SmartDrive.OTAState.not_started;
+
+        // register for connection events
+        this.on(SmartDrive.smartdrive_connect_event, connectHandler);
+        this.on(SmartDrive.smartdrive_disconnect_event, disconnectHandler);
+        this.on(SmartDrive.smartdrive_ble_version_event, bleVersionHandler);
+        this.on(SmartDrive.smartdrive_mcu_version_event, mcuVersionHandler);
+        this.on(SmartDrive.smartdrive_ota_ready_event, otaReadyHandler);
+        this.on(SmartDrive.smartdrive_ota_start_event, otaStartHandler);
+        this.on(SmartDrive.smartdrive_ota_pause_event, otaPauseHandler);
+        this.on(SmartDrive.smartdrive_ota_resume_event, otaResumeHandler);
+        this.on(SmartDrive.smartdrive_ota_force_event, otaForceHandler);
+        this.on(SmartDrive.smartdrive_ota_retry_event, otaRetryHandler);
+        this.on(SmartDrive.smartdrive_ota_cancel_event, otaCancelHandler);
+      };
       const otaStartHandler = data => {
         // set the progresses
         this.bleOTAProgress = 0;
@@ -245,9 +268,7 @@ export class SmartDrive extends Observable {
         paused = false;
       };
       const otaCancelHandler = data => {
-        this.otaState = SmartDrive.OTAState.not_started;
-        this.otaActions = [];
-        stopOTA('OTA Cancelled');
+        this.otaState = SmartDrive.OTAState.cancelling;
       };
       const otaRetryHandler = data => {
         this.otaState = SmartDrive.OTAState.not_started;
@@ -293,7 +314,7 @@ export class SmartDrive extends Observable {
         mcuVersion = data.data.mcu;
         haveMCUVersion = true;
       };
-      const sdOTAReadyHandler = data => {
+      const otaReadyHandler = data => {
         this.otaActions = ['Pause', 'Cancel'];
         console.log(`Got OTAReady from ${this.address}`);
         if (this.otaState === SmartDrive.OTAState.awaiting_mcu_ready) {
@@ -307,7 +328,13 @@ export class SmartDrive extends Observable {
       const writeFirmwareSector = (device: string, fw: any, characteristic: any, nextState: any) => {
         //console.log('writing firmware to ' + device);
         const fileSize = fw.length;
-        if (index < fileSize) {
+        if (cancelOTA) {
+          return;
+        } else if (paused) {
+          setTimeout(() => {
+            writeFirmwareSector(device, fw, characteristic, nextState);
+          }, 100);
+        } else if (index < fileSize) {
           //console.log(`Writing ${index} / ${fileSize} of ota to ${device}`);
           let data = null;
           if (device === 'SmartDrive') {
@@ -344,7 +371,7 @@ export class SmartDrive extends Observable {
           this.otaState = nextState;
         }
       };
-      const stopOTA = (reason: string, success: boolean = false) => {
+      const stopOTA = (reason: string, success: boolean = false, doRetry: boolean = false) => {
         cancelOTA = true;
         this.otaActions = [];
         this.ableToSend = false;
@@ -358,9 +385,11 @@ export class SmartDrive extends Observable {
         this.off(SmartDrive.smartdrive_disconnect_event, disconnectHandler);
         this.off(SmartDrive.smartdrive_ble_version_event, bleVersionHandler);
         this.off(SmartDrive.smartdrive_mcu_version_event, mcuVersionHandler);
-        this.off(SmartDrive.smartdrive_ota_ready_event, sdOTAReadyHandler);
+        this.off(SmartDrive.smartdrive_ota_ready_event, otaReadyHandler);
         this.off(SmartDrive.smartdrive_ota_start_event, otaStartHandler);
         this.off(SmartDrive.smartdrive_ota_force_event, otaForceHandler);
+        this.off(SmartDrive.smartdrive_ota_pause_event, otaPauseHandler);
+        this.off(SmartDrive.smartdrive_ota_resume_event, otaResumeHandler);
         this.off(SmartDrive.smartdrive_ota_retry_event, otaRetryHandler);
         this.off(SmartDrive.smartdrive_ota_cancel_event, otaCancelHandler);
 
@@ -382,8 +411,10 @@ export class SmartDrive extends Observable {
           });
           if (success) {
             resolve(reason);
-          } else {
+          } else if (doRetry) {
             this.otaActions = ['Retry'];
+          } else {
+            reject(reason);
           }
         });
       };
@@ -544,6 +575,9 @@ export class SmartDrive extends Observable {
             stopOTA('OTA Complete', true);
             break;
           case SmartDrive.OTAState.cancelling:
+            this.otaActions = [];
+            this.mcuOTAProgress = 0;
+            this.bleOTAProgress = 0;
             this.otaState = SmartDrive.OTAState.canceled;
             break;
           case SmartDrive.OTAState.canceled:
@@ -555,24 +589,10 @@ export class SmartDrive extends Observable {
       };
       // start the timeout timer
       otaTimeoutID = timer.setTimeout(() => {
-        stopOTA('OTA Timeout');
+        stopOTA('OTA Timeout', false, true);
       }, otaTimeout);
-
-      // set the action
-      this.otaActions = ['Start'];
-      // now that we're starting the OTA, we are awaiting the versions
-      this.otaState = SmartDrive.OTAState.not_started;
-
-      // register for connection events
-      this.on(SmartDrive.smartdrive_connect_event, connectHandler);
-      this.on(SmartDrive.smartdrive_disconnect_event, disconnectHandler);
-      this.on(SmartDrive.smartdrive_ble_version_event, bleVersionHandler);
-      this.on(SmartDrive.smartdrive_mcu_version_event, mcuVersionHandler);
-      this.on(SmartDrive.smartdrive_ota_ready_event, sdOTAReadyHandler);
-      this.on(SmartDrive.smartdrive_ota_start_event, otaStartHandler);
-      this.on(SmartDrive.smartdrive_ota_force_event, otaForceHandler);
-      this.on(SmartDrive.smartdrive_ota_retry_event, otaRetryHandler);
-      this.on(SmartDrive.smartdrive_ota_cancel_event, otaCancelHandler);
+      // now actually start
+      begin();
     });
   }
 
