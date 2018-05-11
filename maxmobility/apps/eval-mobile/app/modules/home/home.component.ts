@@ -17,6 +17,7 @@ import { CLog, LoggingService } from '@maxmobility/core';
 
 import { FAQs } from '../faq/faq.component';
 import { Videos } from '../videos/videos.component';
+import { Demos } from '../demos/demos.component';
 
 @Component({
   selector: 'Home',
@@ -33,6 +34,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   
   faqItems = FAQs;
   videoItems = Videos;
+  demoItems = Demos;
     
   titles = [
     { Title: 'Pairing', 
@@ -119,65 +121,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   ];
 
-  demoItems = [
-
-    { Image: "~/assets/images/sd-demo.jpg", 
-      SerialNumber: 'SD: 00001', 
-      PTSerialNumber: 'PT: 00001', 
-      Firmware: 'SD Firmware: 0.0.01',
-      LastUsed: new Date(1988, 10, 23), 
-      Location: 'Mountain View, CA' 
-    },
-    { Image: "~/assets/images/sd-demo.jpg", 
-      SerialNumber: 'SD: 11001', 
-      PTSerialNumber: 'PT: 11001', 
-      Firmware: 'SD Firmware: 1.4',
-      LastUsed: new Date(), 
-      Location: 'Nashville, TN' 
-    },
-    { Image: "~/assets/images/sd-demo.jpg", 
-      SerialNumber: 'SD: 11002', 
-      PTSerialNumber: 'PT: 110002', 
-      Firmware: 'SD Firmware: 1.1',
-      LastUsed: new Date(), 
-      Location: 'Breckenridge, CO' 
-    },
-    { Image: "~/assets/images/sd-demo.jpg", 
-      SerialNumber: 'SD: 11003', 
-      PTSerialNumber: 'PT: 11003', 
-      Firmware: 'SD Firmware: 1.1',
-      LastUsed: new Date(), 
-      Location: 'Seattle, WA'
-    },
-    { Image: "~/assets/images/sd-demo.jpg", 
-      SerialNumber: 'SD: 11004', 
-      PTSerialNumber: 'PT: 11004', 
-      Firmware: 'SD Firmware: 1.2',
-      LastUsed: new Date(), 
-      Location: 'San Francisco, CA' 
-    },
-    { Image: "~/assets/images/sd-demo.jpg", 
-      SerialNumber: 'SD: 11005', 
-      PTSerialNumber: 'PT: 11005', 
-      Firmware: 'SD Firmware: 1.4',
-      LastUsed: new Date(), 
-      Location: 'Los Angeles, CA' 
-    },
-    { Image: "~/assets/images/sd-demo.jpg", 
-      SerialNumber: 'SD: 11006',
-      PTSerialNumber: 'PT: 11006',  
-      Firmware: 'SD Firmware: 1.2',
-      LastUsed: new Date(), 
-      Location: 'New Orleans, LA' 
-    },
-    { Image: "~/assets/images/sd-demo.jpg", 
-      SerialNumber: 'SD: 11007', 
-      PTSerialNumber: 'PT: 11007', 
-      Firmware: 'SD Firmware: 1.1',
-      LastUsed: new Date(), 
-      Location: 'New York, NY' 
-    }
-  ];
 
 
 
