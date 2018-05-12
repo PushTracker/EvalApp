@@ -6,19 +6,25 @@ $sidedrawer-list-icon-size: 22;
 
 .sidedrawer-list-item {
   // padding-left: $sidedrawer-list-item-offset-left;
-  padding: 10;
+  padding: 15, 10, 15, 10;
   label {
-    font-size: 20;
+    font-size: 18;
     vertical-align: center;
   }
+  .desc{
+    font-size: 12;
+    vertical-align: center;
+    margin: 5, 0, 0, 0;
+  }
   .fa {
+    font-size: 20;
     width: $sidedrawer-list-icon-size;
     margin-right: $sidedrawer-list-icon-offset;
   }
   &.selected {
-    background-color: $item-active-background;
+    background-color: rgba(250, 250, 250, 0.5);
     label {
-      color: $item-active-color;
+      color: $permobil-hero;
     }
   }
 }
