@@ -154,15 +154,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   }
 
-  // onRadListLoaded(event) {
-  //   const radListView = event.object;
-  //   setTimeout(() => {
-  //     radListView.scrollWithAmount(150, true);
-  //   setTimeout(() => {
-  //     radListView.scrollWithAmount(-150, true);    
-  //   }, 500);
-  //   }, 100);
-  // }
+  onRadListLoaded(event) {
+    // const radListView = event.object;
+    // setTimeout(() => {
+    //   radListView.scrollWithAmount(150, true);
+    // setTimeout(() => {
+    //   radListView.scrollWithAmount(-150, true);    
+    // }, 500);
+    // }, 100);
+  }
 
   get sideDrawerTransition(): DrawerTransitionBase {
     return this._sideDrawerTransition;
