@@ -221,6 +221,12 @@ export class PushTracker extends Observable {
           if (this.connected) {
             this.otaActions = ['Start'];
           }
+          // stop the timer
+          if (otaIntervalID) {
+            timer.clearInterval(otaIntervalID);
+          }
+          // now actually start the ota
+          otaIntervalID = timer.setInterval(runOTA, 250);
         };
         const connectHandler = () => {
           hasRebooted = true;
@@ -238,12 +244,6 @@ export class PushTracker extends Observable {
           otaTimeoutID = timer.setTimeout(() => {
             this.sendEvent(PushTracker.pushtracker_ota_timeout_event);
           }, otaTimeout);
-          // stop the timer
-          if (otaIntervalID) {
-            timer.clearInterval(otaIntervalID);
-          }
-          // now actually start the ota
-          otaIntervalID = timer.setInterval(runOTA, 250);
         };
         const otaReadyHandler = data => {
           this.otaState = PushTracker.OTAState.updating;
@@ -269,12 +269,6 @@ export class PushTracker extends Observable {
         };
         const otaRetryHandler = data => {
           begin();
-          // stop the timer
-          if (otaIntervalID) {
-            timer.clearInterval(otaIntervalID);
-          }
-          // now actually start the ota
-          otaIntervalID = timer.setInterval(runOTA, 250);
         };
         const writeFirmwareSector = (fw: any, characteristic: any, nextState: any) => {
           //console.log('writing firmware to pt');

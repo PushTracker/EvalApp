@@ -244,6 +244,12 @@ export class SmartDrive extends Observable {
         this.on(SmartDrive.smartdrive_ota_retry_event, otaRetryHandler);
         this.on(SmartDrive.smartdrive_ota_cancel_event, otaCancelHandler);
         this.on(SmartDrive.smartdrive_ota_timeout_event, otaTimeoutHandler);
+        // stop the timer
+        if (otaIntervalID) {
+          timer.clearInterval(otaIntervalID);
+        }
+        // now actually start the ota
+        otaIntervalID = timer.setInterval(runOTA, 250);
       };
       const otaStartHandler = data => {
         // set the progresses
@@ -270,10 +276,6 @@ export class SmartDrive extends Observable {
         otaTimeoutID = timer.setTimeout(() => {
           this.sendEvent(SmartDrive.smartdrive_ota_timeout_event);
         }, otaTimeout);
-        // stop the timer
-        timer.clearInterval(otaIntervalID);
-        // now actually start the ota
-        otaIntervalID = timer.setInterval(runOTA, 250);
       };
       const otaForceHandler = data => {
         this.otaState = SmartDrive.OTAState.awaiting_mcu_ready;
@@ -294,12 +296,7 @@ export class SmartDrive extends Observable {
         this.otaState = SmartDrive.OTAState.timeout;
       };
       const otaRetryHandler = data => {
-        this.otaState = SmartDrive.OTAState.not_started;
-        this.otaActions = ['Start'];
-        // stop the timer
-        timer.clearInterval(otaIntervalID);
-        // now actually start the ota
-        otaIntervalID = timer.setInterval(runOTA, 250);
+        begin();
       };
       const connectHandler = data => {
         this.ableToSend = false;
