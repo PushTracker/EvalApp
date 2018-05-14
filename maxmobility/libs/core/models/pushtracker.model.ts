@@ -15,7 +15,8 @@ enum OTAState {
   complete = 'Complete',
   cancelling = 'Cancelling',
   canceled = 'Canceled',
-  failed = 'Failed'
+  failed = 'Failed',
+  timeout = 'Timeout'
 }
 
 export class PushTracker extends Observable {
@@ -58,6 +59,8 @@ export class PushTracker extends Observable {
   public static pushtracker_ota_cancel_event = 'pushtracker_ota_cancel_event';
   public static pushtracker_ota_force_event = 'pushtracker_ota_force_event';
   public static pushtracker_ota_retry_event = 'pushtracker_ota_retry_event';
+  public static pushtracker_ota_failed_event = 'pushtracker_ota_failed_event';
+  public static pushtracker_ota_timeout_event = 'pushtracker_ota_timeout_event';
 
   // static methods:
   public static caseTicksToMiles(ticks: number): number {
@@ -209,6 +212,7 @@ export class PushTracker extends Observable {
           this.on(PushTracker.pushtracker_ota_force_event, otaForceHandler);
           this.on(PushTracker.pushtracker_ota_cancel_event, otaCancelHandler);
           this.on(PushTracker.pushtracker_ota_retry_event, otaRetryHandler);
+          this.on(PushTracker.pushtracker_ota_timeout_event, otaTimeoutHandler);
           // set the progress
           this.otaProgress = 0;
           // set the state
@@ -220,7 +224,6 @@ export class PushTracker extends Observable {
         };
         const connectHandler = () => {
           hasRebooted = true;
-          this.otaActions = ['Start'];
         };
         const disconnectHandler = () => {
           hasRebooted = true;
@@ -228,6 +231,13 @@ export class PushTracker extends Observable {
         const otaStartHandler = data => {
           this.otaState = PushTracker.OTAState.awaiting_version;
           this.otaActions = ['Cancel'];
+          // start the timeout timer
+          if (otaTimeoutID) {
+            timer.clearTimeout(otaTimeoutID);
+          }
+          otaTimeoutID = timer.setTimeout(() => {
+            this.sendEvent(PushTracker.pushtracker_ota_timeout_event);
+          }, otaTimeout);
           // stop the timer
           if (otaIntervalID) {
             timer.clearInterval(otaIntervalID);
@@ -254,6 +264,9 @@ export class PushTracker extends Observable {
         const otaCancelHandler = data => {
           this.otaState = PushTracker.OTAState.cancelling;
         };
+        const otaTimeoutHandler = data => {
+          this.otaState = PushTracker.OTAState.timeout;
+        };
         const otaRetryHandler = data => {
           begin();
           // stop the timer
@@ -265,6 +278,7 @@ export class PushTracker extends Observable {
         };
         const writeFirmwareSector = (fw: any, characteristic: any, nextState: any) => {
           //console.log('writing firmware to pt');
+          if (index < 0) index = 0;
           const fileSize = fw.length;
           if (cancelOTA) {
             return;
@@ -283,8 +297,8 @@ export class PushTracker extends Observable {
                 btService
                   .notifyPushTrackers([this.address])
                   .then(notified => {
+                    index += payloadSize;
                     setTimeout(() => {
-                      index += payloadSize;
                       writeFirmwareSector(fw, characteristic, nextState);
                     }, 30);
                   })
@@ -335,6 +349,7 @@ export class PushTracker extends Observable {
           this.off(PushTracker.pushtracker_ota_force_event, otaForceHandler);
           this.off(PushTracker.pushtracker_ota_cancel_event, otaCancelHandler);
           this.off(PushTracker.pushtracker_ota_retry_event, otaRetryHandler);
+          this.off(PushTracker.pushtracker_ota_timeout_event, otaTimeoutHandler);
 
           // TODO: do we disconnect?
           //console.log(`Disconnecting from ${this.address}`);
@@ -350,7 +365,7 @@ export class PushTracker extends Observable {
         const runOTA = () => {
           switch (this.otaState) {
             case PushTracker.OTAState.not_started:
-              if (this.connected) {
+              if (this.connected && this.ableToSend) {
                 this.otaActions = ['Start'];
               }
               break;
@@ -365,7 +380,7 @@ export class PushTracker extends Observable {
               break;
             case PushTracker.OTAState.awaiting_ready:
               // make sure the index is set to 0 for next OTA
-              index = 0;
+              index = -1;
               if (this.connected && this.ableToSend) {
                 // send start OTA
                 console.log(`Sending StartOTA::PT to ${this.address}`);
@@ -388,10 +403,8 @@ export class PushTracker extends Observable {
               if (otaTimeoutID) {
                 timer.clearTimeout(otaTimeoutID);
               }
-              if (index === 0) {
-                setTimeout(() => {
-                  writeFirmwareSector(fw, PushTracker.DataCharacteristic, PushTracker.OTAState.rebooting);
-                }, 100);
+              if (index === -1) {
+                writeFirmwareSector(fw, PushTracker.DataCharacteristic, PushTracker.OTAState.rebooting);
               }
               // update the progress bar
               this.otaProgress = Math.round((index + 16) * 100 / fw.length);
@@ -399,9 +412,7 @@ export class PushTracker extends Observable {
               hasRebooted = false;
               break;
             case PushTracker.OTAState.rebooting:
-              if (this.ableToSend) {
-                this.otaState = PushTracker.OTAState.verifying_update;
-              } else if (this.connected && !hasRebooted) {
+              if (this.ableToSend && !hasRebooted) {
                 // send stop ota command
                 console.log(`Sending StopOTA::PT to ${this.address}`);
                 const p = new Packet();
@@ -416,6 +427,8 @@ export class PushTracker extends Observable {
                   console.log(`notifying ${this.address}`);
                   btService.notifyPushTrackers([this.address]);
                 }
+              } else if (this.ableToSend && hasRebooted) {
+                this.otaState = PushTracker.OTAState.verifying_update;
               }
               break;
             case PushTracker.OTAState.verifying_update:
@@ -467,16 +480,14 @@ export class PushTracker extends Observable {
             case PushTracker.OTAState.failed:
               stopOTA('OTA Failed', false, true);
               break;
+            case PushTracker.OTAState.timeout:
+              stopOTA('OTA Timeout', false, true);
+              break;
             default:
               break;
           }
         };
-        // start the timeout timer
-        otaTimeoutID = timer.setTimeout(() => {
-          stopOTA('OTA Timeout', false, true);
-        }, otaTimeout);
-        // set the action
-        this.otaActions = [];
+        // now actually start
         begin();
       }
     });

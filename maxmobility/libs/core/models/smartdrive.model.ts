@@ -18,7 +18,8 @@ enum OTAState {
   complete = 'Complete',
   cancelling = 'Cancelling',
   canceled = 'Canceled',
-  failed = 'Failed'
+  failed = 'Failed',
+  timeout = 'Timeout'
 }
 
 export class SmartDrive extends Observable {
@@ -62,6 +63,8 @@ export class SmartDrive extends Observable {
   public static smartdrive_ota_cancel_event = 'smartdrive_ota_cancel_event';
   public static smartdrive_ota_force_event = 'smartdrive_ota_force_event';
   public static smartdrive_ota_retry_event = 'smartdrive_ota_retry_event';
+  public static smartdrive_ota_failed_event = 'smartdrive_ota_failed_event';
+  public static smartdrive_ota_timeout_event = 'smartdrive_ota_timeout_event';
 
   // static methods:
   public static caseTicksToMiles(ticks: number): number {
@@ -240,6 +243,7 @@ export class SmartDrive extends Observable {
         this.on(SmartDrive.smartdrive_ota_force_event, otaForceHandler);
         this.on(SmartDrive.smartdrive_ota_retry_event, otaRetryHandler);
         this.on(SmartDrive.smartdrive_ota_cancel_event, otaCancelHandler);
+        this.on(SmartDrive.smartdrive_ota_timeout_event, otaTimeoutHandler);
       };
       const otaStartHandler = data => {
         // set the progresses
@@ -259,6 +263,13 @@ export class SmartDrive extends Observable {
           }
         );
         this.otaState = SmartDrive.OTAState.awaiting_versions;
+        // start the timeout timer
+        if (otaTimeoutID) {
+          timer.clearTimeout(otaTimeoutID);
+        }
+        otaTimeoutID = timer.setTimeout(() => {
+          this.sendEvent(SmartDrive.smartdrive_ota_timeout_event);
+        }, otaTimeout);
         // stop the timer
         timer.clearInterval(otaIntervalID);
         // now actually start the ota
@@ -278,6 +289,9 @@ export class SmartDrive extends Observable {
       };
       const otaCancelHandler = data => {
         this.otaState = SmartDrive.OTAState.cancelling;
+      };
+      const otaTimeoutHandler = data => {
+        this.otaState = SmartDrive.OTAState.timeout;
       };
       const otaRetryHandler = data => {
         this.otaState = SmartDrive.OTAState.not_started;
@@ -336,6 +350,7 @@ export class SmartDrive extends Observable {
       };
       const writeFirmwareSector = (device: string, fw: any, characteristic: any, nextState: any) => {
         //console.log('writing firmware to ' + device);
+        if (index < 0) index = 0;
         const fileSize = fw.length;
         if (cancelOTA) {
           return;
@@ -406,6 +421,7 @@ export class SmartDrive extends Observable {
         this.off(SmartDrive.smartdrive_ota_resume_event, otaResumeHandler);
         this.off(SmartDrive.smartdrive_ota_retry_event, otaRetryHandler);
         this.off(SmartDrive.smartdrive_ota_cancel_event, otaCancelHandler);
+        this.off(SmartDrive.smartdrive_ota_timeout_event, otaTimeoutHandler);
 
         // stop notifying characteristics
         const tasks = SmartDrive.Characteristics.map(characteristic => {
@@ -449,8 +465,8 @@ export class SmartDrive extends Observable {
             }
             break;
           case SmartDrive.OTAState.awaiting_mcu_ready:
-            // make sure the index is set to 0 for next OTA
-            index = 0;
+            // make sure the index is set to -1 to start next OTA
+            index = -1;
             if (this.connected && this.ableToSend) {
               // send start OTA
               console.log(`Sending StartOTA::MCU to ${this.address}`);
@@ -472,12 +488,14 @@ export class SmartDrive extends Observable {
           case SmartDrive.OTAState.updating_mcu:
             // now that we've successfully gotten the
             // SD connected - don't timeout
-            timer.clearTimeout(otaTimeoutID);
+            if (otaTimeoutID) {
+              timer.clearTimeout(otaTimeoutID);
+            }
             // now send data to SD MCU - probably want
             // to send all the data here and cancel
             // the interval for now? - shouldn't need
             // to
-            if (index === 0) {
+            if (index === -1) {
               writeFirmwareSector(
                 'SmartDrive',
                 mcuFirmware,
@@ -489,8 +507,8 @@ export class SmartDrive extends Observable {
             this.mcuOTAProgress = Math.round((index + 16) * 100 / mcuFirmware.length);
             break;
           case SmartDrive.OTAState.awaiting_ble_ready:
-            // make sure the index is set to 0 for next OTA
-            index = 0;
+            // make sure the index is set to -1 to start next OTA
+            index = -1;
             // now send StartOTA to BLE
             if (this.connected && this.ableToSend) {
               // send start OTA
@@ -507,9 +525,11 @@ export class SmartDrive extends Observable {
           case SmartDrive.OTAState.updating_ble:
             // now that we've successfully gotten the
             // SD connected - don't timeout
-            timer.clearTimeout(otaTimeoutID);
+            if (otaTimeoutID) {
+              timer.clearTimeout(otaTimeoutID);
+            }
             // now send data to SD BLE
-            if (index === 0) {
+            if (index === -1) {
               writeFirmwareSector(
                 'SmartDriveBluetooth',
                 bleFirmware,
@@ -629,14 +649,13 @@ export class SmartDrive extends Observable {
           case SmartDrive.OTAState.failed:
             stopOTA('OTA Failed', false, true);
             break;
+          case SmartDrive.OTAState.timeout:
+            stopOTA('OTA Timeout', false, true);
+            break;
           default:
             break;
         }
       };
-      // start the timeout timer
-      otaTimeoutID = timer.setTimeout(() => {
-        stopOTA('OTA Timeout', false, true);
-      }, otaTimeout);
       // now actually start
       begin();
     });
