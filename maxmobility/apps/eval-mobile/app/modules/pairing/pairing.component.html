@@ -1,8 +1,8 @@
 <ActionBar class="action-bar" flat="true" title="Connectivity">
-<NavigationButton android.systemIcon="ic_menu_back" tap="onNavBtnTap"></NavigationButton>
-  <!-- <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton> -->
+  <NavigationButton android.systemIcon="ic_menu_back" tap="onNavBtnTap"></NavigationButton>
+
   <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem>
-  <!-- <Label class="action-bar-title" text="Pairing"></Label> -->
+
 </ActionBar>
 
 <RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
