@@ -2,7 +2,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 // nativescript
 import { confirm } from 'tns-core-modules/ui/dialogs';
-import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-ui-sidedrawer';
+import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-sidedrawer';
 import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 // app
 import { UserService, ProgressService, LoggingService } from '@maxmobility/mobile';
@@ -32,7 +32,7 @@ export class AccountComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this._sideDrawerTransition = new SlideInOnTopTransition();
+    this._sideDrawerTransition = new SlideAlongTransition();
   }
 
   get sideDrawerTransition(): DrawerTransitionBase {
