@@ -43,7 +43,7 @@
         <StackLayout #otaTitleView col="0" row="2" orientation="vertical" horizontalAlignment="center" padding="10">
 	  <Label *ngFor="let desc of otaDescription" [text]="desc" class="otaDescription" textWrap="true"></Label>
           <Button class="hero"
-		  [text]="updating ? updatingButtonText : initialButtonText"
+		  [text]="updatingButtonText"
 		  margin="15"
 		  (tap)="onStartOtaUpdate()"></Button>
         </StackLayout>

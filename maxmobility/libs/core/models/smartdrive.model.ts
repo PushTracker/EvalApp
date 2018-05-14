@@ -167,6 +167,10 @@ export class SmartDrive extends Observable {
     }
   }
 
+  public cancelOTA() {
+    this.sendEvent(SmartDrive.smartdrive_ota_cancel_event);
+  }
+
   public performOTA(
     bleFirmware: any,
     mcuFirmware: any,
@@ -589,7 +593,35 @@ export class SmartDrive extends Observable {
             this.otaActions = [];
             this.mcuOTAProgress = 0;
             this.bleOTAProgress = 0;
-            this.otaState = SmartDrive.OTAState.canceled;
+            cancelOTA = true;
+            if (this.connected && this.ableToSend) {
+              // send stop OTA command
+              console.log(`Sending StopOTA::MCU to ${this.address}`);
+              const p = new Packet();
+              p.Type('Command');
+              p.SubType('StopOTA');
+              const otaDevice = Packet.makeBoundData('PacketOTAType', 'SmartDrive');
+              p.data('OTADevice', otaDevice); // smartdrive is 0
+              const data = p.toUint8Array();
+              p.destroy();
+              this._bluetoothService
+                .write({
+                  peripheralUUID: this.address,
+                  serviceUUID: SmartDrive.ServiceUUID,
+                  characteristicUUID: SmartDrive.ControlCharacteristic,
+                  value: data
+                })
+                .then(() => {
+                  // now set state to cancelled
+                  this.otaState = SmartDrive.OTAState.canceled;
+                })
+                .catch(err => {
+                  console.log(`Couldn't cancel ota, retrying: ${err}`);
+                });
+            } else {
+              // now set state to cancelled
+              this.otaState = SmartDrive.OTAState.canceled;
+            }
             break;
           case SmartDrive.OTAState.canceled:
             stopOTA('OTA Canceled', false);

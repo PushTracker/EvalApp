@@ -1,12 +1,13 @@
 import application = require('application');
 
 // angular
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { RouterExtensions } from 'nativescript-angular/router';
 // nativescript
 import timer = require('tns-core-modules/timer');
 import { Progress } from 'tns-core-modules/ui/progress';
+import { Page } from 'tns-core-modules/ui/page';
 import { ScrollView, ScrollEventData } from 'tns-core-modules/ui/scroll-view';
 import { Color } from 'tns-core-modules/color';
 import { ObservableArray, ChangedData, ChangeType } from 'tns-core-modules/data/observable-array';
@@ -56,7 +57,7 @@ const currentApp = knownFolders.currentApp();
   templateUrl: './ota.component.html',
   styleUrls: ['./ota.component.css']
 })
-export class OTAComponent implements OnInit {
+export class OTAComponent implements OnInit, OnDestroy {
   @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
   @ViewChild('scrollView') scrollView: ElementRef;
   @ViewChild('otaTitleView') otaTitleView: ElementRef;
@@ -70,8 +71,7 @@ export class OTAComponent implements OnInit {
   initialTitleText = 'Press the right button on your PushTracker to connect. (use the one here to test)';
   connectedTitleText = 'Firmware Version 1.5';
 
-  initialButtonText = 'Begin Firmware Updates';
-  updatingButtonText = 'Updating SmartDrive firmware...';
+  updatingButtonText = 'Begin Firmware Updates';
 
   // bTSmartDriveConnectionIcon = String.fromCharCode(0xf293);
   // bTPushTrackerConnectionIcon = String.fromCharCode(0xf293);
@@ -94,6 +94,7 @@ export class OTAComponent implements OnInit {
 
   constructor(
     private http: HttpClient,
+    private page: Page,
     private routerExtensions: RouterExtensions,
     private _progressService: ProgressService,
     private _bluetoothService: BluetoothService
@@ -126,10 +127,19 @@ export class OTAComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.page.on(Page.unloadedEvent, event => {
+      this.ngOnDestroy();
+    });
+
     this.hideView(<View>this.otaTitleView.nativeElement);
     this.hideView(<View>this.otaProgressView.nativeElement);
     this.hideView(<View>this.otaFeaturesView.nativeElement);
     this._sideDrawerTransition = new SlideInOnTopTransition();
+  }
+
+  ngOnDestroy() {
+    console.log('IN NG ON DESTROY()!');
+    this.cancelOTAs();
   }
 
   // view management
@@ -224,6 +234,7 @@ export class OTAComponent implements OnInit {
     this.animateViewIn(<View>this.otaFeaturesView.nativeElement);
 
     if (!this.updating) {
+      this.updatingButtonText = 'Cancel All Firmware Updates';
       this.smartDriveOTAs.splice(0, this.smartDriveOTAs.length);
       this.pushTrackerOTAs.splice(0, this.pushTrackerOTAs.length);
       let ptFW = null;
@@ -281,9 +292,17 @@ export class OTAComponent implements OnInit {
           console.log(`Couldn't finish updating: ${err}`);
           this.updating = false;
         });
+    } else {
+      this.cancelOTAs();
     }
+    this.updating = !this.updating;
+  }
 
-    this.updating = true;
+  private cancelOTAs() {
+    console.log('Cancelling all otas!');
+    this.smartDriveOTAs.map(sd => sd.cancelOTA());
+    this.pushTrackerOTAs.map(pt => pt.cancelOTA());
+    this.updatingButtonText = 'Begin Firmware Updates';
   }
 
   private loadFile(fileName: string): Promise<any> {

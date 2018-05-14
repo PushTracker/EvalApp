@@ -156,6 +156,10 @@ export class PushTracker extends Observable {
     }
   }
 
+  public cancelOTA() {
+    this.sendEvent(PushTracker.pushtracker_ota_cancel_event);
+  }
+
   public performOTA(fw: any, fwVersion: number, timeout: number, btService: any): Promise<any> {
     // send start ota to PT
     //   - periodically sends start ota
@@ -248,8 +252,6 @@ export class PushTracker extends Observable {
           this.otaActions = ['Pause', 'Cancel'];
         };
         const otaCancelHandler = data => {
-          this.otaActions = [];
-          cancelOTA = true;
           this.otaState = PushTracker.OTAState.cancelling;
         };
         const otaRetryHandler = data => {
@@ -426,7 +428,7 @@ export class PushTracker extends Observable {
                 this.otaState = PushTracker.OTAState.complete;
               } else {
                 msg = `PushTracker OTA FAILED! ${this.version.toString(16)}`;
-                this.otaState = PushTracker.OTAState.canceled;
+                this.otaState = PushTracker.OTAState.failed;
               }
               console.log(msg);
               break;
@@ -434,19 +436,28 @@ export class PushTracker extends Observable {
               stopOTA('OTA Complete', true, false);
               break;
             case PushTracker.OTAState.cancelling:
-              // send stop ota command
-              console.log(`Sending StopOTA::PT to ${this.address}`);
-              const p = new Packet();
-              p.Type('Command');
-              p.SubType('StopOTA');
-              const otaDevice = Packet.makeBoundData('PacketOTAType', 'PushTracker');
-              p.data('OTADevice', otaDevice);
-              const data = p.toArray();
-              p.destroy();
-              console.log(`sending ${data}`);
-              if (btService.sendToPushTrackers(data)) {
-                console.log(`notifying ${this.address}`);
-                btService.notifyPushTrackers([this.address]);
+              this.otaActions = [];
+              this.otaProgress = 0;
+              cancelOTA = true;
+              if (this.connected && this.ableToSend) {
+                // send stop ota command
+                console.log(`Sending StopOTA::PT to ${this.address}`);
+                const p = new Packet();
+                p.Type('Command');
+                p.SubType('StopOTA');
+                const otaDevice = Packet.makeBoundData('PacketOTAType', 'PushTracker');
+                p.data('OTADevice', otaDevice);
+                const data = p.toArray();
+                p.destroy();
+                console.log(`sending ${data}`);
+                if (btService.sendToPushTrackers(data)) {
+                  console.log(`notifying ${this.address}`);
+                  btService.notifyPushTrackers([this.address]);
+                  // now update the ota state
+                  this.otaState = PushTracker.OTAState.canceled;
+                }
+              } else {
+                // now update the ota state
                 this.otaState = PushTracker.OTAState.canceled;
               }
               break;
