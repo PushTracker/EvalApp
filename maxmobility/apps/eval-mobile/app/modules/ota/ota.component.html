@@ -54,15 +54,10 @@
         //SmartDrive OTAs
         <StackLayout class="ota" *ngFor="let sd of smartDriveOTAs._array">
 	  <GridLayout class="otaInfo" rows="auto" columns="auto, *">
-            <Label col="0" class="otaLabel" text="SmartDrive Microcontroller"></Label>
-            <Label col="1" class="percentageLabel" [text]="sd.mcuOTAProgress +'%'"></Label>
+            <Label col="0" class="otaLabel" text="SmartDrive"></Label>
+            <Label col="1" class="percentageLabel" [text]="sd.otaProgress +'%'"></Label>
 	  </GridLayout>
-          <Progress [value]="sd.mcuOTAProgress" maxValue="100" class="progress"></Progress>
-	  <GridLayout class="otaInfo" rows="auto" columns="auto, *">
-            <Label col="0" class="otaLabel" text="SmartDrive Bluetooth"></Label>
-            <Label col="1" class="percentageLabel" [text]="sd.bleOTAProgress +'%'"></Label>
-	  </GridLayout>
-          <Progress [value]="sd.bleOTAProgress" maxValue="100" class="progress"></Progress>
+          <Progress [value]="sd.otaProgress" maxValue="100" class="progress"></Progress>
 	  <GridLayout class="otaInfo" rows="auto, auto, *" columns="auto, *">
             <Label col="0" class="otaLabel" [text]="sd.address"></Label>
             <TextView col="0" row="1" editable="false" class="otaState" textDecoration="none" [text]="sd.otaStateToString()"></TextView>

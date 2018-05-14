@@ -6,18 +6,19 @@ import { Packet, bindingTypeToString } from '@maxmobility/core';
 import { BluetoothService } from '@maxmobility/mobile';
 
 enum OTAState {
-  not_started,
-  awaiting_versions,
-  awaiting_mcu_ready,
-  updating_mcu,
-  awaiting_ble_ready,
-  updating_ble,
-  rebooting_ble,
-  rebooting_mcu,
-  verifying_update,
-  complete,
-  cancelling,
-  canceled
+  not_started = 'Not Started',
+  awaiting_versions = 'Awaiting Versions',
+  awaiting_mcu_ready = 'Waiting on MCU',
+  updating_mcu = 'Updating MCU',
+  awaiting_ble_ready = 'Waiting on BLE',
+  updating_ble = 'Updating BLE',
+  rebooting_ble = 'Rebooting BLE',
+  rebooting_mcu = 'Rebooting MCU',
+  verifying_update = 'Verifying',
+  complete = 'Complete',
+  cancelling = 'Cancelling',
+  canceled = 'Canceled',
+  failed = 'Failed'
 }
 
 export class SmartDrive extends Observable {
@@ -131,8 +132,12 @@ export class SmartDrive extends Observable {
 
   // regular methods
 
+  get otaProgress(): number {
+    return (this.mcuOTAProgress + this.bleOTAProgress) / 2;
+  }
+
   public otaStateToString(): string {
-    return SmartDrive.OTAState[this.otaState];
+    return this.otaState; //SmartDrive.OTAState[this.otaState];
   }
 
   public onOTAActionTap(action: string) {
@@ -374,11 +379,16 @@ export class SmartDrive extends Observable {
       const stopOTA = (reason: string, success: boolean = false, doRetry: boolean = false) => {
         cancelOTA = true;
         this.otaActions = [];
-        this.ableToSend = false;
         // stop timers
-        timer.clearInterval(connectionIntervalID);
-        timer.clearInterval(otaIntervalID);
-        timer.clearInterval(otaTimeoutID);
+        if (connectionIntervalID) {
+          timer.clearInterval(connectionIntervalID);
+        }
+        if (otaIntervalID) {
+          timer.clearInterval(otaIntervalID);
+        }
+        if (otaTimeoutID) {
+          timer.clearInterval(otaTimeoutID);
+        }
 
         // unregister for events
         this.off(SmartDrive.smartdrive_connect_event, connectHandler);
@@ -426,6 +436,8 @@ export class SmartDrive extends Observable {
           case SmartDrive.OTAState.awaiting_versions:
             if (haveBLEVersion && haveMCUVersion) {
               if (bleVersion == bleFWVersion && mcuVersion == mcuFWVersion) {
+                // TODO: add ability to select which FW to
+                //       force (if they're not the same)
                 this.otaActions = ['Force', 'Cancel'];
               } else {
                 this.otaState = SmartDrive.OTAState.awaiting_mcu_ready;
@@ -560,16 +572,15 @@ export class SmartDrive extends Observable {
             // of t he updates!
             // - probably add buttons so they can retry?
             let msg = '';
-            let success = false;
             if (mcuVersion == 0x15 && bleVersion == 0x15) {
               msg = `SmartDrive OTA Succeeded! ${mcuVersion.toString(16)}, ${bleVersion.toString(16)}`;
-              success = true;
+              console.log(msg);
+              this.otaState = SmartDrive.OTAState.complete;
             } else {
               msg = `SmartDrive OTA FAILED! ${mcuVersion.toString(16)}, ${bleVersion.toString(16)}`;
-              success = false;
+              console.log(msg);
+              this.otaState = SmartDrive.OTAState.failed;
             }
-            console.log(msg);
-            stopOTA(msg, success);
             break;
           case SmartDrive.OTAState.complete:
             stopOTA('OTA Complete', true);
@@ -582,6 +593,9 @@ export class SmartDrive extends Observable {
             break;
           case SmartDrive.OTAState.canceled:
             stopOTA('OTA Canceled', false);
+            break;
+          case SmartDrive.OTAState.failed:
+            stopOTA('OTA Failed', false, true);
             break;
           default:
             break;
@@ -654,6 +668,7 @@ export class SmartDrive extends Observable {
   public handleDisconnect() {
     // update state
     this.connected = false;
+    this.ableToSend = false;
     // stop notifying
     const tasks = SmartDrive.Characteristics.map(characteristic => {
       console.log(`Stop Notifying ${characteristic}`);

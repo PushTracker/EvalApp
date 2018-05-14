@@ -6,15 +6,16 @@ import timer = require('tns-core-modules/timer');
 import { Packet, bindingTypeToString } from '@maxmobility/core';
 
 enum OTAState {
-  not_started,
-  awaiting_version,
-  awaiting_ready,
-  updating,
-  rebooting,
-  verifying_update,
-  complete,
-  cancelling,
-  canceled
+  not_started = 'Not Started',
+  awaiting_version = 'Awaiting Version',
+  awaiting_ready = 'Waiting on PT',
+  updating = 'Updating',
+  rebooting = 'Rebooting',
+  verifying_update = 'Verifying',
+  complete = 'Complete',
+  cancelling = 'Cancelling',
+  canceled = 'Canceled',
+  failed = 'Failed'
 }
 
 export class PushTracker extends Observable {
@@ -125,7 +126,7 @@ export class PushTracker extends Observable {
   // regular methods
 
   public otaStateToString(): string {
-    return PushTracker.OTAState[this.otaState];
+    return this.otaState; //PushTracker.OTAState[this.otaState];
   }
 
   public onOTAActionTap(action: string) {
@@ -248,7 +249,8 @@ export class PushTracker extends Observable {
         };
         const otaCancelHandler = data => {
           this.otaActions = [];
-          stopOTA('OTA Canceled', false, false);
+          cancelOTA = true;
+          this.otaState = PushTracker.OTAState.cancelling;
         };
         const otaRetryHandler = data => {
           begin();
@@ -312,6 +314,7 @@ export class PushTracker extends Observable {
         };
         const stopOTA = (reason: string, success: boolean = false, doRetry: boolean = false) => {
           cancelOTA = true;
+          this.otaActions = [];
           // stop timers
           if (otaIntervalID) {
             timer.clearInterval(otaIntervalID);
@@ -331,21 +334,8 @@ export class PushTracker extends Observable {
           this.off(PushTracker.pushtracker_ota_cancel_event, otaCancelHandler);
           this.off(PushTracker.pushtracker_ota_retry_event, otaRetryHandler);
 
-          // send stop ota command
-          console.log(`Sending StopOTA::PT to ${this.address}`);
-          const p = new Packet();
-          p.Type('Command');
-          p.SubType('StopOTA');
-          const otaDevice = Packet.makeBoundData('PacketOTAType', 'PushTracker');
-          p.data('OTADevice', otaDevice);
-          const data = p.toArray();
-          p.destroy();
-          console.log(`sending ${data}`);
-          if (btService.sendToPushTrackers(data)) {
-            console.log(`notifying ${this.address}`);
-            btService.notifyPushTrackers([this.address]);
-          }
-          console.log(`Disconnecting from ${this.address}`);
+          // TODO: do we disconnect?
+          //console.log(`Disconnecting from ${this.address}`);
           // TODO: How do we disconnect from the PT?
           if (success) {
             resolve(reason);
@@ -430,10 +420,6 @@ export class PushTracker extends Observable {
               // TODO: this should be a part of another
               //       page - since we have to re-pair
               //       and re-connect the PT to the App
-
-              // check the version here and notify the
-              // user of the success / failure
-              // - probably add buttons so they can retry?
               let msg = '';
               if (this.version == 0x15) {
                 msg = `PushTracker OTA Succeeded! ${this.version.toString(16)}`;
@@ -445,15 +431,30 @@ export class PushTracker extends Observable {
               console.log(msg);
               break;
             case PushTracker.OTAState.complete:
-              this.otaState = PushTracker.OTAState.not_started;
               stopOTA('OTA Complete', true, false);
               break;
             case PushTracker.OTAState.cancelling:
-              this.otaState = PushTracker.OTAState.canceled;
+              // send stop ota command
+              console.log(`Sending StopOTA::PT to ${this.address}`);
+              const p = new Packet();
+              p.Type('Command');
+              p.SubType('StopOTA');
+              const otaDevice = Packet.makeBoundData('PacketOTAType', 'PushTracker');
+              p.data('OTADevice', otaDevice);
+              const data = p.toArray();
+              p.destroy();
+              console.log(`sending ${data}`);
+              if (btService.sendToPushTrackers(data)) {
+                console.log(`notifying ${this.address}`);
+                btService.notifyPushTrackers([this.address]);
+                this.otaState = PushTracker.OTAState.canceled;
+              }
               break;
             case PushTracker.OTAState.canceled:
-              this.otaState = PushTracker.OTAState.not_started;
               stopOTA('OTA Canceled', false, false);
+              break;
+            case PushTracker.OTAState.failed:
+              stopOTA('OTA Failed', false, true);
               break;
             default:
               break;
