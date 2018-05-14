@@ -43,7 +43,7 @@
       //OTA 
       <StackLayout class="list-stack-layout" row="1">
 	<StackLayout class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></StackLayout>
-	<DockLayout class="dockLayout-options" stretchLastChild="false">
+	<DockLayout (tap)="chevronButtonTapped('/ota')"  class="dockLayout-options" stretchLastChild="false">
 	  <Label text="Firmware Updates" class="heading" dock="left"></Label>
 		<Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/ota')"></Label>
 	</DockLayout>
@@ -67,7 +67,7 @@
       //Videos
       <StackLayout class="list-stack-layout" row="2">
 	<StackLayout class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></StackLayout>
-	<DockLayout class="dockLayout-options" stretchLastChild="false">
+	<DockLayout (tap)="chevronButtonTapped('/videos')"  class="dockLayout-options" stretchLastChild="false">
 	  <Label text="Videos" class="heading" dock="left"></Label>
 	  <Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/videos')"></Label>
 		
@@ -94,7 +94,7 @@
       //Evaluation 
       <StackLayout class="list-stack-layout" row="3">
 	<StackLayout class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></StackLayout>
-	<DockLayout class="dockLayout-options" stretchLastChild="false">
+	<DockLayout (tap)="chevronButtonTapped('/eval-entry')"  class="dockLayout-options" stretchLastChild="false">
 	  <Label text="Clinical Tools" class="heading" dock="left"></Label>
 		<Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/eval-entry')"></Label>
 	</DockLayout>
@@ -118,7 +118,7 @@
       //Demos 
       <StackLayout class="list-stack-layout" row="4">
 	<StackLayout class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></StackLayout>
-	<DockLayout class="dockLayout-options" textWrap="true" stretchLastChild="false">
+	<DockLayout (tap)="chevronButtonTapped('/demos')"  class="dockLayout-options" textWrap="true" stretchLastChild="false">
 	  <Label text="Demos" class="heading" dock="left"></Label>
 		<Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/demos')"></Label>
 	</DockLayout>
@@ -148,7 +148,7 @@
       //FAQ 
       <StackLayout class="list-stack-layout" row="5">
 	<StackLayout class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></StackLayout>
-	<DockLayout class="dockLayout-options" stretchLastChild="false">
+	<DockLayout (tap)="chevronButtonTapped('/faq')"  class="dockLayout-options" stretchLastChild="false">
 	  <Label text="FAQ" class="heading" dock="left"></Label>
 		<Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/faq')"></Label>
 	</DockLayout>
