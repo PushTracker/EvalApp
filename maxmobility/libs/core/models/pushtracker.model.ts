@@ -240,7 +240,7 @@ export class PushTracker extends Observable {
           this.otaActions = ['Pause', 'Cancel'];
         };
         const otaForceHandler = data => {
-          this.otaState = PushTracker.OTAState.updating;
+          this.otaState = PushTracker.OTAState.awaiting_ready;
           this.otaActions = ['Pause', 'Cancel'];
         };
         const otaPauseHandler = data => {
