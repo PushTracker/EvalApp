@@ -16,6 +16,8 @@ import { RadListViewComponent } from 'nativescript-ui-listview/angular';
 import { CLog, LoggingService } from '@maxmobility/core';
 
 import { FAQs } from '../faq/faq.component';
+import { Videos } from '../videos/videos.component';
+import { Demos } from '../demos/demos.component';
 
 import { BluetoothService } from '@maxmobility/mobile';
 
@@ -33,6 +35,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   private feedback: Feedback;
 
   faqItems = FAQs;
+  videoItems = Videos;
+  demoItems = Demos;
 
   titles = [
     {
@@ -130,129 +134,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
       Description: 'Update a PushTracker and SmartDrive together',
       Directive: 'pt-sd',
       Route: '/ota'
-    }
-  ];
-
-  demoItems = [
-    {
-      Image: '~/assets/images/sd-demo.jpg',
-      SerialNumber: 'SD: 00001',
-      PTSerialNumber: 'PT: 00001',
-      Firmware: 'SD Firmware: 0.0.01',
-      LastUsed: new Date(1988, 10, 23),
-      Location: 'Mountain View, CA'
-    },
-    {
-      Image: '~/assets/images/sd-demo.jpg',
-      SerialNumber: 'SD: 11001',
-      PTSerialNumber: 'PT: 11001',
-      Firmware: 'SD Firmware: 1.4',
-      LastUsed: new Date(),
-      Location: 'Nashville, TN'
-    },
-    {
-      Image: '~/assets/images/sd-demo.jpg',
-      SerialNumber: 'SD: 11002',
-      PTSerialNumber: 'PT: 110002',
-      Firmware: 'SD Firmware: 1.1',
-      LastUsed: new Date(),
-      Location: 'Breckenridge, CO'
-    },
-    {
-      Image: '~/assets/images/sd-demo.jpg',
-      SerialNumber: 'SD: 11003',
-      PTSerialNumber: 'PT: 11003',
-      Firmware: 'SD Firmware: 1.1',
-      LastUsed: new Date(),
-      Location: 'Seattle, WA'
-    },
-    {
-      Image: '~/assets/images/sd-demo.jpg',
-      SerialNumber: 'SD: 11004',
-      PTSerialNumber: 'PT: 11004',
-      Firmware: 'SD Firmware: 1.2',
-      LastUsed: new Date(),
-      Location: 'San Francisco, CA'
-    },
-    {
-      Image: '~/assets/images/sd-demo.jpg',
-      SerialNumber: 'SD: 11005',
-      PTSerialNumber: 'PT: 11005',
-      Firmware: 'SD Firmware: 1.4',
-      LastUsed: new Date(),
-      Location: 'Los Angeles, CA'
-    },
-    {
-      Image: '~/assets/images/sd-demo.jpg',
-      SerialNumber: 'SD: 11006',
-      PTSerialNumber: 'PT: 11006',
-      Firmware: 'SD Firmware: 1.2',
-      LastUsed: new Date(),
-      Location: 'New Orleans, LA'
-    },
-    {
-      Image: '~/assets/images/sd-demo.jpg',
-      SerialNumber: 'SD: 11007',
-      PTSerialNumber: 'PT: 11007',
-      Firmware: 'SD Firmware: 1.1',
-      LastUsed: new Date(),
-      Location: 'New York, NY'
-    }
-  ];
-
-  videoHtmlString_0 = '<iframe style="margin-bottom: 10; padding:0; border:0; width:100%; height:100%"  src="https://www.youtube.com/embed/8fn26J59WJ4"></iframe>';
-  videoHtmlString_1 = '<iframe backgroundColor=red frameborder=0 vspace=0 hspace=0 border=0 marginwidth=0 marginheight=0 width=100% seamless=seamless src="https://www.youtube.com/embed/uhA3-svjQFg" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
-  videoHtmlString_2 = '<iframe frameborder="0" vspace="0" hspace="0" marginwidth="0" marginheight="0" width="100%" seamless="seamless" src="https://www.youtube.com/embed/6_M1J8HZXIk" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
-  videoHtmlString_3 = '<iframe frameborder="0" vspace="0" hspace="0" marginwidth="0" marginheight="0" width="100%" seamless="seamless" src="https://www.youtube.com/embed/3B-6ked84us" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
-  videoHtmlString_4 = '<iframe frameborder="0" vspace="0" hspace="0" marginwidth="0" marginheight="0" width="100%" seamless="seamless" src="https://www.youtube.com/embed/3B-6ked84us" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
-  videoHtmlString_5 = '<iframe frameborder="0" vspace="0" hspace="0" marginwidth="0" marginheight="0" width="100%" seamless="seamless" src="https://www.youtube.com/embed/45Kj7zJpDcM" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
-  videoHtmlString_6 = '<iframe frameborder="0" vspace="0" hspace="0" marginwidth="0" marginheight="0" width="100%" seamless="seamless" src="https://www.youtube.com/embed/hFid9ks551A" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
-
-  videoItems = [
-    {
-      Url: this.videoHtmlString_0,
-      Description:
-        'This video is an overview of SmartDrive being used by people of varying ages and circumstances in a variety of environments.',
-      Title: 'SmartDrive Introduction',
-      Thumb: '~/assets/images/overview-thumb.jpg',
-      Route: '/video'
-    },
-    {
-      Url: this.videoHtmlString_1,
-      Description: 'This video covers the basic operation and functionality of the SmartDrive MX2+ and PushTracker.',
-      Title: 'SmartDrive MX2+ Basic Operation',
-      Thumb: '~/assets/images/sd-basic-op-thumb.jpg',
-      Route: '/video'
-    },
-    {
-      Url: this.videoHtmlString_2,
-      Description: 'PushTracker Basic Operation',
-      Thumb: '~/assets/images/pt-basic-op-thumb.jpg',
-      Route: '/video'
-    },
-    {
-      Url: this.videoHtmlString_3,
-      Description: 'Intro to the PushTracker App',
-      Thumb: '~/assets/images/intro-PushTracker-app-thumb.jpg',
-      Route: '/video'
-    },
-    {
-      Url: this.videoHtmlString_4,
-      Description: 'Intro to the Eval App',
-      Thumb: '~/assets/images/intro-PushTracker-app-thumb.jpg',
-      Route: '/video'
-    },
-    {
-      Url: this.videoHtmlString_5,
-      Description: 'SmartDrive Evaluation and Training',
-      Thumb: '~/assets/images/eval-thumb.jpg',
-      Route: '/video'
-    },
-    {
-      Url: this.videoHtmlString_6,
-      Description: 'Interview with Chels and Steph',
-      Thumb: '~/assets/images/interview-thumb.jpg',
-      Route: '/video'
     }
   ];
 
