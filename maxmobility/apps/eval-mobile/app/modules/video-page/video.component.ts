@@ -16,7 +16,7 @@ import { Label } from 'ui/label';
 import { AnimationCurve } from "ui/enums";
 import { View } from "ui/core/view";
 import { Animation, AnimationDefinition } from "ui/animation";
-import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-ui-sidedrawer';
+import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-sidedrawer';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 // import { Observable, Scheduler } from "rxjs";
@@ -50,7 +50,7 @@ export class VideoComponent implements OnInit, AfterViewInit {
 		this.title = `${query["title"]}`;
 		this.desc = `${query["desc"]}`;
 		
-		this._sideDrawerTransition = new SlideInOnTopTransition();
+		this._sideDrawerTransition = new SlideAlongTransition();
 	}
 
     ngAfterViewInit() {

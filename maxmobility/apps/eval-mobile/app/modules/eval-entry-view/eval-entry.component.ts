@@ -1,6 +1,6 @@
 import * as app from 'tns-core-modules/application';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-ui-sidedrawer';
+import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-sidedrawer';
 import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 import { SegmentedBar, SegmentedBarItem } from 'tns-core-modules/ui/segmented-bar';
 import { Observable } from 'tns-core-modules/data/observable';
@@ -99,7 +99,7 @@ export class EvalEntryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._sideDrawerTransition = new SlideInOnTopTransition();
+    this._sideDrawerTransition = new SlideAlongTransition();
     if (app.ios) {
       this.isIOS = true;
     } else if (app.android) {

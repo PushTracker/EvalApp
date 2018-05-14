@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-ui-sidedrawer';
+import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-sidedrawer';
 import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 
 const Demos = [
@@ -84,7 +84,7 @@ export class DemosComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._sideDrawerTransition = new SlideInOnTopTransition();
+    this._sideDrawerTransition = new SlideAlongTransition();
   }
 
   get sideDrawerTransition(): DrawerTransitionBase {

@@ -9,7 +9,7 @@ import { Color } from 'tns-core-modules/color';
 import { AnimationCurve } from "ui/enums";
 import { View } from "ui/core/view";
 import { Animation, AnimationDefinition } from "ui/animation";
-import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-ui-sidedrawer';
+import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-sidedrawer';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 import { Observable, Scheduler } from "rxjs";
@@ -91,7 +91,7 @@ export class OTAComponent implements OnInit {
 	const otaFeaturesView = <View>this.otaFeaturesView.nativeElement;
 	otaFeaturesView.opacity = 0;
 
-	this._sideDrawerTransition = new SlideInOnTopTransition();
+	this._sideDrawerTransition = new SlideAlongTransition();
 
     }
 
