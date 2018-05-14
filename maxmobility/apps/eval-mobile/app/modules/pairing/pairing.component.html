@@ -13,7 +13,7 @@
   
 <StackLayout backgroundImage="~/assets/images/background_1.jpg" tkMainContent class="page page-content gridImage">
 
-  <Carousel #carousel ios:indicatorOffset="0,-10" ios:finite="true" ios:bounce="true" height="100%" indicatorColor="#66ccff" indicatorColorUnselected="#cceeff">
+  <Carousel #carousel ios:indicatorOffset="0,-10" ios:finite="true" ios:bounce="false" height="100%" indicatorColor="#66ccff" indicatorColorUnselected="#cceeff">
     <CarouselItem  *ngFor="let slide of slides">
       
       <GridLayout  rows="auto, *" cols="*" class="">
