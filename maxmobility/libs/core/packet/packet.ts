@@ -75,13 +75,17 @@ export class Packet {
   // BINDING WRAPPING
 
   public makePacket(_type, subType, key, data) {
-    if (this.instance === undefined || this.instance === null) {
-      this.initialize();
-    }
-    this.instance.Type = PacketBinding.PacketType[_type];
-    this.instance[_type] = PacketBinding[`Packet${_type}Type`][subType];
-    if (key && data) {
-      this.instance[key] = data;
+    try {
+      if (this.instance === undefined || this.instance === null) {
+        this.initialize();
+      }
+      this.instance.Type = PacketBinding.PacketType[_type];
+      this.instance[_type] = PacketBinding[`Packet${_type}Type`][subType];
+      if (key && data) {
+        this.instance[key] = data;
+      }
+    } catch (err) {
+      console.log(`Couldn't make packet: ${_type}::${subType}::${key} - ${err}`);
     }
   }
 
@@ -142,10 +146,14 @@ export class Packet {
 
   public data(key: string, value?: any) {
     if (this.instance) {
-      if (value) {
-        this.instance[key] = value;
-      } else {
-        return this.instance[key];
+      try {
+        if (value) {
+          this.instance[key] = value;
+        } else {
+          return this.instance[key];
+        }
+      } catch (err) {
+        console.log(`Couldn't get/set data: ${key} - ${err}`);
       }
     }
 

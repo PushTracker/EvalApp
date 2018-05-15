@@ -36,7 +36,7 @@ export class BluetoothService {
 
   constructor() {
     // enabling `debug` will output console.logs from the bluetooth source code
-    this._bluetooth.debug = true;
+    this._bluetooth.debug = false;
 
     // setup event listeners
     this._bluetooth.on(Bluetooth.bond_status_change_event, this.onBondStatusChange.bind(this));
@@ -424,7 +424,7 @@ export class BluetoothService {
     let pt = BluetoothService.PushTrackers.filter(p => p.address === address)[0];
     //console.log(`Found PT: ${pt}`);
     if (pt === null || pt === undefined) {
-      pt = new PushTracker({ address });
+      pt = new PushTracker(this, { address });
       BluetoothService.PushTrackers.push(pt);
     }
     //console.log(`Found or made PT: ${pt}`);
@@ -529,11 +529,12 @@ export class BluetoothService {
 
   private isPushTracker(dev: any): boolean {
     const UUIDs = dev && dev.getUuids();
+    console.log(UUIDs);
     const name = dev && dev.getName();
     const isPT =
       (name && name.includes('PushTracker')) ||
       (name && name.includes('Bluegiga')) ||
-      (UUIDs && UUIDs.indexOf(PushTracker.ServiceUUID) > -1);
+      (UUIDs && UUIDs.indexOf && UUIDs.indexOf(PushTracker.ServiceUUID) > -1);
     //console.log(`isPT: ${isPT}`);
     return isPT;
   }

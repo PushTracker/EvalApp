@@ -120,10 +120,12 @@ public:
       OTAReady,
       CancelOTA,
       Wake,
+    DistanceRequest,
       StartGame,
       StopGame,
       ConnectMPGame,
-      DisconnectMPGame
+    DisconnectMPGame,
+    SetLEDColor
       };
 
   enum class OTA : uint8_t {

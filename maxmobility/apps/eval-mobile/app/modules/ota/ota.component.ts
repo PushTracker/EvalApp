@@ -3,6 +3,7 @@ import application = require('application');
 // angular
 import { Component, ElementRef, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { NavigationStart, Router } from '@angular/router';
 import { RouterExtensions } from 'nativescript-angular/router';
 // nativescript
 import timer = require('tns-core-modules/timer');
@@ -91,11 +92,13 @@ export class OTAComponent implements OnInit, OnDestroy {
   snackbar = new SnackBar();
 
   private _sideDrawerTransition: DrawerTransitionBase;
+  private routeSub: any; // subscription to route observer
 
   constructor(
     private http: HttpClient,
     private page: Page,
     private routerExtensions: RouterExtensions,
+    private router: Router,
     private _progressService: ProgressService,
     private _bluetoothService: BluetoothService
   ) {
@@ -127,8 +130,15 @@ export class OTAComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.page.on(Page.unloadedEvent, event => {
-      this.ngOnDestroy();
+    // see https://github.com/NativeScript/nativescript-angular/issues/1049
+    this.routeSub = this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        this.cancelOTAs();
+      }
+    });
+
+    this.page.on(Page.navigatingFromEvent, event => {
+      //this.ngOnDestroy();
     });
 
     this.hideView(<View>this.otaTitleView.nativeElement);
@@ -140,6 +150,7 @@ export class OTAComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     console.log('IN NG ON DESTROY()!');
     this.cancelOTAs();
+    this.routeSub.unsubscribe();
   }
 
   // view management
@@ -279,7 +290,7 @@ export class OTAComponent implements OnInit, OnDestroy {
           });
 
           const pushTrackerOTATasks = this.pushTrackerOTAs.map(pt => {
-            return pt.performOTA(ptFW, 0x15, 300000, this._bluetoothService);
+            return pt.performOTA(ptFW, 0x15, 300000);
           });
 
           return Promise.all(smartDriveOTATasks.concat(pushTrackerOTATasks));

@@ -4,6 +4,7 @@ import timer = require('tns-core-modules/timer');
 
 // libs
 import { Packet, bindingTypeToString } from '@maxmobility/core';
+import { BluetoothService } from '@maxmobility/mobile';
 
 enum OTAState {
   not_started = 'Not Started',
@@ -63,11 +64,11 @@ export class PushTracker extends Observable {
   public static pushtracker_ota_timeout_event = 'pushtracker_ota_timeout_event';
 
   // static methods:
-  public static caseTicksToMiles(ticks: number): number {
+  public static motorTicksToMiles(ticks: number): number {
     return ticks * (2.0 * 3.14159265358 * 3.8) / (265.714 * 63360.0);
   }
 
-  public static motorTicksToMiles(ticks: number): number {
+  public static caseTicksToMiles(ticks: number): number {
     return ticks * (2.0 * 3.14159265358 * 3.8) / (36.0 * 63360.0);
   }
 
@@ -91,10 +92,12 @@ export class PushTracker extends Observable {
   public ableToSend: boolean = false;
 
   // private members
+  private _bluetoothService: BluetoothService;
 
   // functions
-  constructor(obj?: any) {
+  constructor(btService: BluetoothService, obj?: any) {
     super();
+    this._bluetoothService = btService;
     if (obj !== null && obj !== undefined) {
       this.fromObject(obj);
     }
@@ -163,7 +166,7 @@ export class PushTracker extends Observable {
     this.sendEvent(PushTracker.pushtracker_ota_cancel_event);
   }
 
-  public performOTA(fw: any, fwVersion: number, timeout: number, btService: any): Promise<any> {
+  public performOTA(fw: any, fwVersion: number, timeout: number): Promise<any> {
     // send start ota to PT
     //   - periodically sends start ota
     //   - stop sending once we get ota ready from PT
@@ -176,15 +179,17 @@ export class PushTracker extends Observable {
     //   - wait for connection event
     // wait for versions and check to verify update
     return new Promise((resolve, reject) => {
-      if (!fw || !fwVersion || !btService) {
-        const msg = `Bad version (${fwVersion}), bluetooth service (${btService}) or firmware (${fw})!`;
+      if (!fw || !fwVersion) {
+        const msg = `Bad version (${fwVersion}), or firmware (${fw})!`;
         console.log(msg);
         reject(msg);
       } else {
         console.log(`Beginning OTA for PushTracker: ${this.address}`);
         // set up variables to keep track of the ota
         let cancelOTA = false;
+        let startedOTA = false;
         let hasRebooted = false;
+        let haveVersion = false;
         let paused = false;
 
         let index = 0; // tracking the pointer into the firmware
@@ -199,12 +204,15 @@ export class PushTracker extends Observable {
         const begin = () => {
           cancelOTA = false;
           hasRebooted = false;
+          haveVersion = false;
+          startedOTA = false;
           paused = false;
           index = 0;
 
           // register for events
           this.on(PushTracker.pushtracker_connect_event, connectHandler);
           this.on(PushTracker.pushtracker_disconnect_event, disconnectHandler);
+          this.on(PushTracker.pushtracker_version_event, versionHandler);
           this.on(PushTracker.pushtracker_ota_ready_event, otaReadyHandler);
           this.on(PushTracker.pushtracker_ota_start_event, otaStartHandler);
           this.on(PushTracker.pushtracker_ota_pause_event, otaPauseHandler);
@@ -219,6 +227,9 @@ export class PushTracker extends Observable {
           this.otaState = PushTracker.OTAState.not_started;
           this.otaActions = [];
           if (this.connected) {
+            if (this.version != 0xff) {
+              haveVersion = true;
+            }
             this.otaActions = ['Start'];
           }
           // stop the timer
@@ -230,9 +241,14 @@ export class PushTracker extends Observable {
         };
         const connectHandler = () => {
           hasRebooted = true;
+          haveVersion = false;
         };
         const disconnectHandler = () => {
           hasRebooted = true;
+          haveVersion = false;
+        };
+        const versionHandler = data => {
+          haveVersion = true;
         };
         const otaStartHandler = data => {
           this.otaState = PushTracker.OTAState.awaiting_version;
@@ -246,10 +262,12 @@ export class PushTracker extends Observable {
           }, otaTimeout);
         };
         const otaReadyHandler = data => {
+          startedOTA = true;
           this.otaState = PushTracker.OTAState.updating;
           this.otaActions = ['Pause', 'Cancel'];
         };
         const otaForceHandler = data => {
+          startedOTA = true;
           this.otaState = PushTracker.OTAState.awaiting_ready;
           this.otaActions = ['Pause', 'Cancel'];
         };
@@ -262,9 +280,11 @@ export class PushTracker extends Observable {
           this.otaActions = ['Pause', 'Cancel'];
         };
         const otaCancelHandler = data => {
+          startedOTA = false;
           this.otaState = PushTracker.OTAState.cancelling;
         };
         const otaTimeoutHandler = data => {
+          startedOTA = false;
           this.otaState = PushTracker.OTAState.timeout;
         };
         const otaRetryHandler = data => {
@@ -287,8 +307,8 @@ export class PushTracker extends Observable {
               p.makeOTAPacket('PushTracker', index, fw);
               const data = p.toArray();
               p.destroy();
-              if (btService.sendToPushTrackers(data)) {
-                btService
+              if (this._bluetoothService.sendToPushTrackers(data)) {
+                this._bluetoothService
                   .notifyPushTrackers([this.address])
                   .then(notified => {
                     index += payloadSize;
@@ -324,6 +344,7 @@ export class PushTracker extends Observable {
         };
         const stopOTA = (reason: string, success: boolean = false, doRetry: boolean = false) => {
           cancelOTA = true;
+          startedOTA = false;
           this.otaActions = [];
           // stop timers
           if (otaIntervalID) {
@@ -336,6 +357,7 @@ export class PushTracker extends Observable {
           // de-register for events
           this.off(PushTracker.pushtracker_connect_event, connectHandler);
           this.off(PushTracker.pushtracker_disconnect_event, disconnectHandler);
+          this.off(PushTracker.pushtracker_version_event, versionHandler);
           this.off(PushTracker.pushtracker_ota_start_event, otaStartHandler);
           this.off(PushTracker.pushtracker_ota_ready_event, otaReadyHandler);
           this.off(PushTracker.pushtracker_ota_pause_event, otaPauseHandler);
@@ -361,10 +383,12 @@ export class PushTracker extends Observable {
             case PushTracker.OTAState.not_started:
               if (this.connected && this.ableToSend) {
                 this.otaActions = ['Start'];
+              } else {
+                this.otaActions = [];
               }
               break;
             case PushTracker.OTAState.awaiting_version:
-              if (this.ableToSend && this.version != 0xff) {
+              if (this.ableToSend && haveVersion) {
                 if (this.version == fwVersion) {
                   this.otaActions = ['Force', 'Cancel'];
                 } else {
@@ -377,18 +401,7 @@ export class PushTracker extends Observable {
               index = -1;
               if (this.connected && this.ableToSend) {
                 // send start OTA
-                console.log(`Sending StartOTA::PT to ${this.address}`);
-                const p = new Packet();
-                p.Type('Command');
-                p.SubType('StartOTA');
-                const otaDevice = Packet.makeBoundData('PacketOTAType', 'PushTracker');
-                p.data('OTADevice', otaDevice);
-                console.log(`${p.toString()}`);
-                const data = p.toArray();
-                p.destroy();
-                if (btService.sendToPushTrackers(data)) {
-                  btService.notifyPushTrackers([this.address]);
-                }
+                this.sendPacket('Command', 'StartOTA', 'OTADevice', 'PacketOTAType', 'PushTracker');
               }
               break;
             case PushTracker.OTAState.updating:
@@ -404,24 +417,14 @@ export class PushTracker extends Observable {
               this.otaProgress = Math.round((index + 16) * 100 / fw.length);
               // we need to reboot after the OTA
               hasRebooted = false;
+              haveVersion = false;
               break;
             case PushTracker.OTAState.rebooting:
+              this.otaActions = [];
               if (this.ableToSend && !hasRebooted) {
                 // send stop ota command
-                console.log(`Sending StopOTA::PT to ${this.address}`);
-                const p = new Packet();
-                p.Type('Command');
-                p.SubType('StopOTA');
-                const otaDevice = Packet.makeBoundData('PacketOTAType', 'PushTracker');
-                p.data('OTADevice', otaDevice);
-                const data = p.toArray();
-                p.destroy();
-                console.log(`sending ${data}`);
-                if (btService.sendToPushTrackers(data)) {
-                  console.log(`notifying ${this.address}`);
-                  btService.notifyPushTrackers([this.address]);
-                }
-              } else if (this.ableToSend && hasRebooted) {
+                this.sendPacket('Command', 'StopOTA', 'OTADevice', 'PacketOTAType', 'PushTracker');
+              } else if (this.ableToSend && haveVersion) {
                 this.otaState = PushTracker.OTAState.verifying_update;
               }
               break;
@@ -446,23 +449,17 @@ export class PushTracker extends Observable {
               this.otaActions = [];
               this.otaProgress = 0;
               cancelOTA = true;
-              if (this.connected && this.ableToSend) {
+              if (!startedOTA) {
+                // now update the ota state
+                this.otaState = PushTracker.OTAState.canceled;
+              } else if (this.connected && this.ableToSend) {
                 // send stop ota command
-                console.log(`Sending StopOTA::PT to ${this.address}`);
-                const p = new Packet();
-                p.Type('Command');
-                p.SubType('StopOTA');
-                const otaDevice = Packet.makeBoundData('PacketOTAType', 'PushTracker');
-                p.data('OTADevice', otaDevice);
-                const data = p.toArray();
-                p.destroy();
-                console.log(`sending ${data}`);
-                if (btService.sendToPushTrackers(data)) {
-                  console.log(`notifying ${this.address}`);
-                  btService.notifyPushTrackers([this.address]);
-                  // now update the ota state
-                  this.otaState = PushTracker.OTAState.canceled;
-                }
+                this.sendPacket('Command', 'StopOTA', 'OTADevice', 'PacketOTAType', 'PushTracker').then(success => {
+                  if (success) {
+                    // now update the ota state
+                    this.otaState = PushTracker.OTAState.canceled;
+                  }
+                });
               } else {
                 // now update the ota state
                 this.otaState = PushTracker.OTAState.canceled;
@@ -485,6 +482,30 @@ export class PushTracker extends Observable {
         begin();
       }
     });
+  }
+
+  public sendPacket(Type: string, SubType: string, dataKey?: string, dataType?: string, data?: any): Promise<any> {
+    console.log(`Sending ${Type}::${SubType}::${data} to ${this.address}`);
+    const p = new Packet();
+    p.Type(Type);
+    p.SubType(SubType);
+    // if dataType is non-null and not '', then we need to transform the data
+    let boundData = data;
+    if (dataType && dataType.length) {
+      boundData = Packet.makeBoundData(dataType, data);
+    }
+    p.data(dataKey, boundData);
+    const transmitData = p.toArray();
+    p.destroy();
+    console.log(`sending ${transmitData}`);
+    if (this._bluetoothService.sendToPushTrackers(transmitData)) {
+      console.log(`notifying ${this.address}`);
+      return this._bluetoothService.notifyPushTrackers([this.address]);
+    } else {
+      return new Promise((resolve, reject) => {
+        reject(false);
+      });
+    }
   }
 
   /**
@@ -531,7 +552,7 @@ export class PushTracker extends Observable {
         case 'ErrorInfo':
           this.handleErrorInfo(p);
           break;
-        case 'TotalDistance':
+        case 'MotorDistance':
           this.handleDistance(p);
           break;
         case 'DailyInfo':
@@ -608,21 +629,23 @@ export class PushTracker extends Observable {
   }
 
   private handleDistance(p: Packet) {
-    // This is sent by the PushTracker when it connects
-    const distance = p.data('distanceInfo');
+    // This is sent by the PushTracker when it connects and when
+    // the app sends a Command::DistanceRequest
+    const motorTicks = p.data('motorDistance');
+    const caseTicks = p.data('caseDistance');
+    const motorMiles = PushTracker.motorTicksToMiles(motorTicks);
+    const caseMiles = PushTracker.caseTicksToMiles(caseTicks);
     /* DistanceInfo
            struct {
            uint64_t   motorDistance;  /** Cumulative Drive distance in ticks.
            uint64_t   caseDistance;   /** Cumulative Case distance in ticks. 
            }            distanceInfo;
         */
-    const motorMiles = PushTracker.motorTicksToMiles(distance.motorDistance);
-    const caseMiles = PushTracker.caseTicksToMiles(distance.caseDistance);
-    console.log(`Got distance info: ${distance.motorDistance}, ${distance.caseDistance}`);
+    console.log(`Got distance info: ${motorTicks}, ${caseTicks}`);
     console.log(`                 : ${motorMiles}, ${caseMiles}`);
     this.sendEvent(PushTracker.pushtracker_distance_event, {
-      driveDistance: distance.motorDistance, // TODO: make sure these accessors work
-      coastDistance: distance.caseDistance //  - may need to use p.getMotorDistance() etc.
+      driveDistance: motorTicks,
+      coastDistance: caseTicks
     });
     // TODO: update distance record for this pushtracker (locally
     // and on the server)
@@ -684,7 +707,7 @@ export class PushTracker extends Observable {
   private handleOTAReady(p: Packet) {
     // this is sent by both the PT in response to a
     // Command::StartOTA
-    const otaDevice = bindingTypeToString('PacketOTAType', p.data('otaDevice'));
+    const otaDevice = bindingTypeToString('PacketOTAType', p.data('OTADevice'));
     switch (otaDevice) {
       case 'PushTracker':
         this.sendEvent(PushTracker.pushtracker_ota_ready_event);
