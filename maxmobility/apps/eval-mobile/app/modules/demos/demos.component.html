@@ -3,8 +3,8 @@
 
   <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem>
 
-  <ActionItem>
-    <Button text="Scan" ios.position="right" (tap)="onScan()"></Button>
+  <ActionItem ios.position="right" (tap)="onScan()">
+    <Button text="Scan" (tap)="onScan()"></Button>
   </ActionItem>
 </ActionBar>
 
@@ -15,6 +15,7 @@
   </StackLayout>
 
 <Gradient tkMainContent margin-top="30" direction="to bottom" colors="#004F7E, #0070b3">
+  <!-- 
   <BarcodeScanner
       height="30%"
       class="scanner-round"
@@ -23,8 +24,9 @@
       reportDuplicates="true"
       preferFrontCamera="false"
       (scanResult)="onScanResult($event)">
-</BarcodeScanner>
-    <ListView height="70%" backgroundColor="transparent" class="" [items]="demos" (itemTap)="onDemoTap($event)">
+  </BarcodeScanner>
+  -->
+    <ListView backgroundColor="transparent" class="" [items]="demos" (itemTap)="onDemoTap($event)">
       <ng-template let-item="item">
         <GridLayout margin="10, 10, 10, 0" columns="auto, auto, *" rows="auto, auto, auto">
           <!-- Note: we should probably have model type so that we can have the image pulled from a server according to MX2+ vs MX3 vs others. -->
