@@ -312,9 +312,9 @@ export class PushTracker extends Observable {
                   .notifyPushTrackers([this.address])
                   .then(notified => {
                     index += payloadSize;
-                    setTimeout(() => {
-                      writeFirmwareSector(fw, characteristic, nextState);
-                    }, 30);
+                    //setTimeout(() => {
+                    writeFirmwareSector(fw, characteristic, nextState);
+                    //}, 30);
                   })
                   .catch(err => {
                     console.log(`couldn't notify: ${err}`);
@@ -375,7 +375,7 @@ export class PushTracker extends Observable {
           } else if (doRetry) {
             this.otaActions = ['Retry'];
           } else {
-            reject(reason);
+            resolve(reason);
           }
         };
         const runOTA = () => {

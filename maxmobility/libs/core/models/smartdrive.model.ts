@@ -471,7 +471,7 @@ export class SmartDrive extends Observable {
             } else if (doRetry) {
               this.otaActions = ['Retry'];
             } else {
-              reject(reason);
+              resolve(reason);
             }
           });
         };
@@ -697,16 +697,16 @@ export class SmartDrive extends Observable {
     const services = data.services;
     if (services) {
       // TODO: if we didn't get services then we should disconnect and re-scan!
-      console.log(services);
+      //console.log(services);
       const sdService = services.filter(s => s.UUID === SmartDrive.ServiceUUID)[0];
-      console.log(sdService);
+      //console.log(sdService);
       if (sdService) {
         // TODO: if we didn't get sdService then we should disconnect and re-scan!
         const characteristics = sdService.characteristics;
         if (characteristics) {
           // TODO: if we didn't get characteristics then we
           //       should disconnect and re-scan!
-          console.log(characteristics);
+          //console.log(characteristics);
           let i = 0;
           // TODO: find a better solution than notification interval!
           const notificationInterval = 1000;

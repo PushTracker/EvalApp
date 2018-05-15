@@ -161,7 +161,11 @@ export class BluetoothService {
     return this._bluetooth
       .disable()
       .then(() => {
-        return this._bluetooth.enable();
+        if (isAndroid) {
+          return this._bluetooth.enable();
+        } else {
+          return true;
+        }
       })
       .then(wasEnabled => {
         this.enabled = wasEnabled;
