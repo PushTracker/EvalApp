@@ -1,29 +1,13 @@
 // angular
 import { Component, ElementRef, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 // nativescript
-import { Progress } from 'tns-core-modules/ui/progress';
-import { ScrollView, ScrollEventData } from 'tns-core-modules/ui/scroll-view';
-import { Observable, EventData } from 'tns-core-modules/data/observable';
-import { ObservableArray, ChangedData, ChangeType } from 'tns-core-modules/data/observable-array';
-import { StackLayout } from 'tns-core-modules/ui/layouts/stack-layout';
-import { GridLayout } from 'tns-core-modules/ui/layouts/grid-layout';
-import { Color } from 'tns-core-modules/color';
-import { Image } from 'tns-core-modules/ui/image';
-import { Label } from 'tns-core-modules/ui/label';
-import { AnimationCurve } from 'tns-core-modules/ui/enums';
-import { View } from 'tns-core-modules/ui/core/view';
-import { Animation, AnimationDefinition } from 'tns-core-modules/ui/animation';
-import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-ui-sidedrawer';
-import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
-import { Feedback, FeedbackType, FeedbackPosition } from 'nativescript-feedback';
+import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-sidedrawer';
 import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 import { RouterExtensions } from 'nativescript-angular/router';
-// import { Observable, Scheduler } from "rxjs";
-
-// libs
-import { CLog } from '@maxmobility/mobile';
-import { BluetoothService } from '@maxmobility/mobile';
-import { Packet, DailyInfo, PushTracker, SmartDrive } from '@maxmobility/core';
+import { View } from 'ui/core/view';
+import { Color } from 'tns-core-modules/color';
+import { Feedback, FeedbackType, FeedbackPosition } from 'nativescript-feedback';
+import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 
 const carousel = require('nativescript-carousel').Carousel;
 
@@ -70,7 +54,7 @@ export class PairingComponent implements OnInit, AfterViewInit {
 
   private _sideDrawerTransition: DrawerTransitionBase;
 
-  constructor(private routerExtensions: RouterExtensions, private _bluetoothService: BluetoothService) {
+  constructor(private routerExtensions: RouterExtensions) {
     this.feedback = new Feedback();
   }
 
@@ -125,40 +109,7 @@ export class PairingComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this._sideDrawerTransition = new SlideInOnTopTransition();
-
-    // TODO: cases we need to handle:
-    //  - a new pushtracker we haven't seen pairs
-    //  - a previously paired / connected pushtracker re-pairs
-
-    // handle pushtracker pairing events for existing pushtrackers
-    console.log('registering for pairing events!');
-    BluetoothService.PushTrackers.map(pt => {
-      console.log(pt);
-      pt.on(PushTracker.pushtracker_paired_event, args => {
-        console.log(`PT PAIRED EVENT!`);
-        this.pushTrackerPairingSuccess();
-        pt.on(PushTracker.pushtracker_connect_event, args => {
-          this.pushTrackerConnectionSuccess();
-        });
-      });
-    });
-    // listen for completely new pusthrackers (that we haven't seen before)
-    BluetoothService.PushTrackers.on(ObservableArray.changeEvent, (args: ChangedData<number>) => {
-      if (args.action === 'add') {
-        console.log(`PT ADDED EVENT!`);
-        const pt = BluetoothService.PushTrackers.getItem(BluetoothService.PushTrackers.length - 1);
-        if (pt) {
-          pt.on(PushTracker.pushtracker_paired_event, args => {
-            console.log(`PT PAIRED EVENT!`);
-            this.pushTrackerPairingSuccess();
-            pt.on(PushTracker.pushtracker_connect_event, args => {
-              this.pushTrackerConnectionSuccess();
-            });
-          });
-        }
-      }
-    });
+    this._sideDrawerTransition = new SlideAlongTransition();
   }
 
   get sideDrawerTransition(): DrawerTransitionBase {

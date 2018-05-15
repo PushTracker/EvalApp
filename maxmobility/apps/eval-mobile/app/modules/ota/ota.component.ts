@@ -16,7 +16,7 @@ import { AnimationCurve } from 'tns-core-modules/ui/enums';
 import { isIOS, isAndroid } from 'tns-core-modules/platform';
 import { View } from 'tns-core-modules/ui/core/view';
 import { Animation, AnimationDefinition } from 'tns-core-modules/ui/animation';
-import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-ui-sidedrawer';
+import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-sidedrawer';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 import { Observable, Scheduler } from 'rxjs';
@@ -144,7 +144,7 @@ export class OTAComponent implements OnInit, OnDestroy {
     this.hideView(<View>this.otaTitleView.nativeElement);
     this.hideView(<View>this.otaProgressView.nativeElement);
     this.hideView(<View>this.otaFeaturesView.nativeElement);
-    this._sideDrawerTransition = new SlideInOnTopTransition();
+    this._sideDrawerTransition = new SlideAlongTransition();
   }
 
   ngOnDestroy() {

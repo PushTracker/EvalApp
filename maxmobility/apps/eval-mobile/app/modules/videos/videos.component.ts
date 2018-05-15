@@ -2,7 +2,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 // nativescript
 import { LoadEventData, WebView } from 'tns-core-modules/ui/web-view';
-import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-ui-sidedrawer';
+import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-sidedrawer';
 import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 
 const Videos = [
@@ -76,7 +76,7 @@ export class VideosComponent implements OnInit {
   private _sideDrawerTransition: DrawerTransitionBase;
 
   ngOnInit(): void {
-    this._sideDrawerTransition = new SlideInOnTopTransition();
+    this._sideDrawerTransition = new SlideAlongTransition();
   }
 
   get sideDrawerTransition(): DrawerTransitionBase {

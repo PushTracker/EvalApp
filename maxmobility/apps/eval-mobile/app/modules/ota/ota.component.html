@@ -1,7 +1,7 @@
 <ActionBar class="action-bar" flat="true" title="Firmware Updates">
-  <NavigationButton ios:visibility="collapsed"></NavigationButton>
+  <NavigationButton android.systemIcon="ic_menu_back" tap="onNavBtnTap"></NavigationButton>
+
   <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem>
-  <!-- <Label class="action-bar-title" text="OTA Update"></Label> -->
 </ActionBar>
 
 <RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">

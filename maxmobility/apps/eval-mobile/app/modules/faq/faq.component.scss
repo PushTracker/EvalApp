@@ -1,4 +1,3 @@
-// Custom common variables
 @import '../../scss/variables';
 
 .icon{
@@ -9,19 +8,16 @@
 }
 
 .faq-question{
-    font-family: $os;
-    font-weight: bold;
-    color: $permobil-ocean;
+    font-weight: 500;
+    color: #fff;
     margin: 10;
-    font-size: 25em;
+    font-size: 20;
 }
 
 .faq-answer{
-    font-family: $os-Light;
-    color: $permobil-charcoal;
+    color: #fff;
     margin: 10;
-    font-size: 20em;
-    background: #fff;
+    font-size: 16;
     horizontal-align: right;
     padding: 0;
 }

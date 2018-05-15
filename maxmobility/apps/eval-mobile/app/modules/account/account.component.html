@@ -1,18 +1,21 @@
-<ActionBar class="action-bar">
+<ActionBar class="action-bar" title="Account" flat="true">
   <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
   <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left">
   </ActionItem>
   <ActionItem ios.position="right" (tap)="onSaveAccountTap()">
     <Button text="Save" (tap)="onSaveAccountTap()" class="action-item"></Button>
   </ActionItem>
-  <Label class="action-bar-title" text="Account"></Label>
+  <!-- <Label class="action-bar-title" text="Account"></Label> -->
 </ActionBar>
+
 <RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
   <StackLayout tkDrawerContent>
     <MyDrawer [selectedPage]="'Account'"></MyDrawer>
   </StackLayout>
-  <ScrollView  height="100%" tkMainContent>
-    <Gradient margin-top="30" direction="to bottom right" colors="rgba(250,250,250, 0.2), rgba(0,40,85, 0.3)" class="page-content hero">
+
+<Gradient tkMainContent direction="to bottom" colors="#004F7E, #0070b3">
+  <ScrollView height="100%">
+    <StackLayout backgroundColor="transparent" orientation="vertical" horizontalAlignment="center">
       <Label color="#fff"  class="account-icon fa" text="&#xf2be;"></Label>
       <GridLayout columns="auto, *">
         <Label col="0" text="First Name" class="account-item"></Label>
@@ -34,6 +37,7 @@
       <Button class="acct-btn" text="Change Password" (tap)="onChangePasswordTap()"></Button>
       <Button class="acct-btn" text="Reset Account" (tap)="onResetAccountTap()"></Button>
       <Button class="acct-btn" text="Sign Out" (tap)="onSignOutTap()"></Button>
-    </Gradient>
+    </StackLayout>
   </ScrollView>
+  </Gradient>
 </RadSideDrawer>
