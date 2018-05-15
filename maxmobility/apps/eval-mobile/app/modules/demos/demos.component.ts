@@ -1,7 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-sidedrawer';
+import { alert } from 'tns-core-modules/ui/dialogs';
 import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
-
+import { BarcodeScanner } from 'nativescript-barcodescanner';
 const Demos = [
   {
     Image: '~/assets/images/PushTracker-SmartDrive-pairing.png',
@@ -78,6 +79,8 @@ export { Demos };
   styleUrls: ['./demos.component.css']
 })
 export class DemosComponent implements OnInit {
+  constructor() {}
+
   @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
 
   public demos = Demos;
@@ -86,6 +89,17 @@ export class DemosComponent implements OnInit {
 
   onDemoTap(args) {
     console.log('onDemoTap');
+  }
+
+  onScan() {
+    // this.barcodeScanner.scan({});
+    console.log('No scan. ');
+  }
+
+  onScanResult(evt) {
+    console.log(evt);
+    console.log(evt.object);
+    alert(evt.object);
   }
 
   ngOnInit() {

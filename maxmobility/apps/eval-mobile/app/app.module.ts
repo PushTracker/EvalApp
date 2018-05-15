@@ -18,6 +18,7 @@ import { AppComponent } from './app.component';
 import { NgProgressModule } from 'ngx-progressbar';
 import { DropDownModule } from 'nativescript-drop-down/angular';
 import { registerElement } from 'nativescript-angular';
+registerElement('BarcodeScanner', () => require('nativescript-barcodescanner').BarcodeScannerView);
 registerElement('Gradient', () => require('nativescript-gradient').Gradient);
 
 @NgModule({
