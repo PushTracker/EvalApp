@@ -36,7 +36,7 @@ export class BluetoothService {
 
   constructor() {
     // enabling `debug` will output console.logs from the bluetooth source code
-    this._bluetooth.debug = false;
+    this._bluetooth.debug = true;
 
     // setup event listeners
     this._bluetooth.on(Bluetooth.bond_status_change_event, this.onBondStatusChange.bind(this));
@@ -47,9 +47,8 @@ export class BluetoothService {
     this._bluetooth.on(Bluetooth.device_acl_disconnected_event, this.onDeviceAclDisconnected.bind(this));
     this._bluetooth.on(Bluetooth.server_connection_state_changed_event, this.onServerConnectionStateChanged.bind(this));
     this._bluetooth.on(Bluetooth.characteristic_write_request_event, this.onCharacteristicWriteRequest.bind(this));
-    this._bluetooth.on(Bluetooth.bluetooth_advertise_failure_event, args => {
-      console.log(Bluetooth.bluetooth_advertise_failure_event, args);
-    });
+    this._bluetooth.on(Bluetooth.bluetooth_advertise_failure_event, this.onAdvertiseFailure.bind(this));
+    this._bluetooth.on(Bluetooth.bluetooth_advertise_success_event, this.onAdvertiseSuccess.bind(this));
 
     this.advertise();
   }
@@ -189,6 +188,14 @@ export class BluetoothService {
 
   // private functions
   // event listeners
+  private onAdvertiseFailure(args: any): void {
+    console.log(`Advertise failure: ${args.data.error}`);
+  }
+
+  private onAdvertiseSuccess(args: any): void {
+    console.log(`Advertise succeeded`);
+  }
+
   private onBondStatusChange(args: any): void {
     const dev = args.data.device;
     const bondState = args.data.bs;
