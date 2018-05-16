@@ -17,6 +17,9 @@ registerElement('CarouselItem', () => NS_CAROUSEL.CarouselItem);
 // registerElement('exoplayer', () => NS_EXOPLAYER.ExoVideoPlayer);
 registerElement('exoplayer', () => ExoPlayer);
 
+import * as Platform from "platform";
+import {TranslateService} from '@ngx-translate/core';
+
 @Component({
   selector: 'ns-app',
   template: '<page-router-outlet></page-router-outlet>'
@@ -25,8 +28,11 @@ export class AppComponent {
   constructor(
     private _logService: LoggingService,
     private _userService: UserService,
-    private _router: RouterExtensions
+    private _router: RouterExtensions,
+    private translate: TranslateService
   ) {
+    this.translate.setDefaultLang("en");
+    this.translate.use(Platform.device.language);
     // application level events
     // application.on(application.uncaughtErrorEvent, (args: application.UnhandledErrorEventData) => {
     //   console.log('uncaughtException', args.error);

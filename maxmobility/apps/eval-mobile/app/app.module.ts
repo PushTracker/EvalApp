@@ -7,6 +7,12 @@ import { NativeScriptModule } from 'nativescript-angular/nativescript.module';
 import { NativeScriptHttpModule } from 'nativescript-angular/http';
 import { NativeScriptUIListViewModule } from 'nativescript-ui-listview/angular';
 import { NativeScriptUISideDrawerModule } from 'nativescript-ui-sidedrawer/angular';
+
+
+import {TranslateModule, TranslateLoader} from "@ngx-translate/core";
+import {TranslateHttpLoader} from "@ngx-translate/http-loader";
+// import {Http} from "@angular/http";
+
 // app
 import { CORE_PROVIDERS } from '@maxmobility/core';
 import { SharedModule } from './modules/shared/shared.module';
@@ -21,6 +27,10 @@ import { registerElement } from "nativescript-angular";
 registerElement("BarcodeScanner", () => require("nativescript-barcodescanner").BarcodeScannerView);
 registerElement("Gradient", () => require("nativescript-gradient").Gradient);
 
+// for AoT compilation
+export function translateLoaderFactory(http: HttpClient) {
+    return new TranslateHttpLoader(http, "/i18n/", ".json");
+};
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -35,7 +45,14 @@ registerElement("Gradient", () => require("nativescript-gradient").Gradient);
     MobileCoreModule,
     AppRoutingModule,
     HttpClientModule,
-    DropDownModule
+    DropDownModule,
+    TranslateModule.forRoot({
+    loader: {
+        provide: TranslateLoader,
+        deps: [HttpClient],
+        useFactory: (translateLoaderFactory)
+    }
+})
   ],
   declarations: [AppComponent],
   providers: [...CORE_PROVIDERS],

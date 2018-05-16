@@ -14,7 +14,6 @@ import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-side
 import { RadSideDrawerComponent, SideDrawerType } from 'nativescript-ui-sidedrawer/angular';
 import { RadListViewComponent } from 'nativescript-ui-listview/angular';
 import { CLog, LoggingService } from '@maxmobility/core';
-
 import { FAQs } from '../faq/faq.component';
 import { Videos } from '../videos/videos.component';
 import { Demos } from '../demos/demos.component';

@@ -12,7 +12,7 @@ import { NativeScriptUIListViewModule } from 'nativescript-ui-listview/angular';
 import { NativeScriptUISideDrawerModule } from 'nativescript-ui-sidedrawer/angular';
 import { TNSFontIconModule } from 'nativescript-ngx-fonticon';
 import { TNSFrescoModule } from 'nativescript-fresco/angular';
-import { TranslateModule } from '@ngx-translate/core';
+
 
 // app
 import { SHARED_COMPONENTS } from './components';
@@ -25,7 +25,6 @@ const SHARED_MODULES = [
   NativeScriptRouterModule,
   NativeScriptUIListViewModule,
   NativeScriptUISideDrawerModule,
-  TranslateModule,
   TNSFontIconModule
 ];
 
