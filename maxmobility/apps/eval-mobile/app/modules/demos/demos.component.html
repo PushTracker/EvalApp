@@ -1,10 +1,11 @@
 <ActionBar class="action-bar" flat="true" title="Demos">
-  <NavigationButton android.systemIcon="ic_menu_back" tap="onNavBtnTap"></NavigationButton>
+  <ActionItem android.systemIcon="ic_menu_back" tap="onNavBtnTap" android.position="left"></ActionItem>
 
   <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem>
 
   <ActionItem ios.position="right" (tap)="onScan()">
-    <Button text="Scan" (tap)="onScan()"></Button>
+    <Button text="&#xf072;" class="mdi icon-scan" ></Button>
+    
   </ActionItem>
 </ActionBar>
 
@@ -33,7 +34,7 @@
           <Image row="0" col="0" rowSpan="3" height="75" width="75" margin="10" [src]="item.Image"
             stretch="aspectFit"></Image>
 
-          <Label text="&#xf072;" row="0" col="1" class="mdi icon"></Label>
+          <Label text="&#xf071;" row="0" col="1" class="mdi icon"></Label>
           <Label [text]="item.SerialNumber" row="0" col="2" class="info"></Label>
 
           <Label text="&#xf5f5;" row="1" col="1" class="mdi icon"></Label>

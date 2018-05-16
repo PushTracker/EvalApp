@@ -144,13 +144,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
 
     this.drawer = this.drawerComponent.sideDrawer;
-    // if (this.drawer.ios) {
-    //   const sideDrawer: TKSideDrawer = this.drawer.ios.defaultSideDrawer;
-    //   sideDrawer.style.shadowMode = TKSideDrawerShadowMode.Hostview;
-    //   sideDrawer.style.shadowOpacity = 0.75;
-    //   sideDrawer.style.shadowRadius = 5;
-    //   sideDrawer.transitionDuration = 0.25;
-    // }
+
 
   }
 

@@ -2,6 +2,7 @@ import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-sidedrawer';
 import { alert } from 'tns-core-modules/ui/dialogs';
 import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
+import { RouterExtensions } from 'nativescript-angular/router';
 import { BarcodeScanner } from 'nativescript-barcodescanner';
 const Demos = [
     {
@@ -79,7 +80,7 @@ export { Demos };
     styleUrls: ['./demos.component.css']
 })
 export class DemosComponent implements OnInit {
-    constructor(private barcodeScanner: BarcodeScanner) {}
+    constructor(private barcodeScanner: BarcodeScanner, private routerExtensions: RouterExtensions) {}
 
     @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
 
@@ -130,4 +131,13 @@ export class DemosComponent implements OnInit {
     onDrawerButtonTap(): void {
 	this.drawerComponent.sideDrawer.showDrawer();
     }
+
+    onNavBtnTap(): void {
+    this.routerExtensions.navigate(['/home'], {
+      clearHistory: true,
+      transition: {
+        name: 'slideRight'
+      }
+    });
+  }
 }
