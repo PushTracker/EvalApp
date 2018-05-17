@@ -24,7 +24,7 @@ export class MyDrawerItemComponent implements OnInit {
   onNavItemTap(navItemRoute: string) {
     this.routerExtensions.navigate([navItemRoute], {
       transition: {
-        name: 'fade'
+        name: 'slide'
       }
     });
   }

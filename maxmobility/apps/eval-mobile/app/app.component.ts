@@ -27,7 +27,7 @@ export class AppComponent {
     private _router: RouterExtensions
   ) {
     // Brad - sets the default language for ngx-translate
-    this._translateService.setDefaultLang('en');
+    this._translateService.setDefaultLang('es');
     this._translateService.use(Platform.device.language);
 
     // application level events

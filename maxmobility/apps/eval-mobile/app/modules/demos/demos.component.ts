@@ -8,6 +8,7 @@ const Demos = [
     {
     Image: '~/assets/images/PushTracker-SmartDrive-pairing.png',
     SerialNumber: 'SD: 00001',
+    Model: "MX2 +",
     PTSerialNumber: 'PT: 00001',
     Firmware: 'SD Firmware: 0.0.01',
     LastUsed: new Date(1988, 10, 23).toLocaleDateString(),
@@ -16,6 +17,7 @@ const Demos = [
     {
     Image: '~/assets/images/PushTracker-SmartDrive-pairing.png',
     SerialNumber: 'SD: 11001',
+    Model: "MX2 +",
     PTSerialNumber: 'PT: 11001',
     Firmware: 'SD Firmware: 1.4',
     LastUsed: new Date().toLocaleDateString(),
@@ -24,6 +26,7 @@ const Demos = [
     {
     Image: '~/assets/images/PushTracker-SmartDrive-pairing.png',
     SerialNumber: 'SD: 11002',
+    Model: "MX2 +",
     PTSerialNumber: 'PT: 110002',
     Firmware: 'SD Firmware: 1.1',
     LastUsed: new Date().toLocaleDateString(),
@@ -32,6 +35,7 @@ const Demos = [
     {
     Image: '~/assets/images/PushTracker-SmartDrive-pairing.png',
     SerialNumber: 'SD: 11003',
+    Model: "MX2 +",
     PTSerialNumber: 'PT: 11003',
     Firmware: 'SD Firmware: 1.1',
     LastUsed: new Date().toLocaleDateString(),
@@ -40,6 +44,7 @@ const Demos = [
     {
     Image: '~/assets/images/PushTracker-SmartDrive-pairing.png',
     SerialNumber: 'SD: 11004',
+    Model: "MX2 +",
     PTSerialNumber: 'PT: 11004',
     Firmware: 'SD Firmware: 1.2',
     LastUsed: new Date().toLocaleDateString(),
@@ -48,6 +53,7 @@ const Demos = [
     {
     Image: '~/assets/images/PushTracker-SmartDrive-pairing.png',
     SerialNumber: 'SD: 11005',
+    Model: "MX2 +",
     PTSerialNumber: 'PT: 11005',
     Firmware: 'SD Firmware: 1.4',
     LastUsed: new Date().toLocaleDateString(),
@@ -56,6 +62,7 @@ const Demos = [
     {
     Image: '~/assets/images/PushTracker-SmartDrive-pairing.png',
     SerialNumber: 'SD: 11006',
+    Model: "MX2 +",
     PTSerialNumber: 'PT: 11006',
     Firmware: 'SD Firmware: 1.2',
     LastUsed: new Date().toLocaleDateString(),
@@ -64,6 +71,7 @@ const Demos = [
     {
     Image: '~/assets/images/PushTracker-SmartDrive-pairing.png',
     SerialNumber: 'SD: 11007',
+    Model: "MX2 +",
     PTSerialNumber: 'PT: 11007',
     Firmware: 'SD Firmware: 1.1',
     LastUsed: new Date().toLocaleDateString(),
