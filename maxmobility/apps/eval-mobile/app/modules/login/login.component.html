@@ -1,23 +1,23 @@
-
-<AbsoluteLayout height="100%" width="100%">>
-<ScrollView class="permobil-hero" height="100%" width="100%">
-  <GridLayout rows="auto, *, auto" class="login-page">
-    <StackLayout row="0">
-      <Image src="~/assets/images/permobil_logo.png" class="logo"></Image>
-      <Label class="app-logo" text="Smart Evaluation"></Label>
-      <Label class="account-icon fa text-white" text="&#xf2be;"></Label>
-      <TextField [(ngModel)]="user.email" class="blue-text-field" (textChange)="onEmailTextChange($event)" hint="Email..." keyboardType="email"
-        autocorrect="false" autocapitalizationType="none">
-      </TextField>
-      <Label [text]="emailError" class="text-white" [visibility]="emailError ? 'visible' : 'collapsed'" textWrap="true"></Label>
-      <TextField [(ngModel)]="user.password" class="blue-text-field" hint="Password..." secure="true"></TextField>
-      <Label [text]="passwordError" class="text-white" [visibility]="passwordError ? 'visible' : 'collapsed'" textWrap="true"></Label>
-      <Button text="Sign in" class="permobil-ocean-btn m-20" (tap)="onSubmitTap()"></Button>
-    </StackLayout>
-    <GridLayout row="2" rows="*" columns="auto, *, auto">
-      <Button col="0" text="Forgot Password" class="btn-transparent text-white forgot" (tap)="navToForgotPassword()"></Button>
-      <Button col="2" text="Sign up" class="btn-transparent text-white sign-up" (tap)="navToSignUp()"></Button>
+<AbsoluteLayout height="100%" width="100%">
+  >
+  <ScrollView class="permobil-hero" height="100%" width="100%">
+    <GridLayout rows="auto, *, auto" class="login-page">
+      <StackLayout row="0">
+        <Image src="~/assets/images/permobil_logo.png" class="logo"></Image>
+        <Label class="app-logo" text="Smart Evaluation"></Label>
+        <Label class="account-icon fa text-white" text="&#xf2be;"></Label>
+        <TextField [(ngModel)]="user.email" class="blue-text-field" (textChange)="onEmailTextChange($event)" hint="Email..." keyboardType="email"
+          autocorrect="false" autocapitalizationType="none">
+        </TextField>
+        <Label [text]="emailError" class="text-white" [visibility]="emailError ? 'visible' : 'collapsed'" textWrap="true"></Label>
+        <TextField [(ngModel)]="user.password" class="blue-text-field" hint="Password..." secure="true"></TextField>
+        <Label [text]="passwordError" class="text-white" [visibility]="passwordError ? 'visible' : 'collapsed'" textWrap="true"></Label>
+        <Button [text]="'user.login' | translate" class="permobil-ocean-btn m-20" (tap)="onSubmitTap()"></Button>
+      </StackLayout>
+      <GridLayout row="2" rows="*" columns="auto, *, auto">
+        <Button col="0" text="Forgot Password" class="btn-transparent text-white forgot" (tap)="navToForgotPassword()"></Button>
+        <Button col="2" text="Sign up" class="btn-transparent text-white sign-up" (tap)="navToSignUp()"></Button>
+      </GridLayout>
     </GridLayout>
-  </GridLayout>
-</ScrollView>
+  </ScrollView>
 </AbsoluteLayout>

@@ -7,8 +7,10 @@
     "start": "ng serve",
     "start.web": "ng serve --app=web",
     "start.eval.mobile.android": "cd apps/eval-mobile && tns run android --syncAllFiles",
+    "sema": "cd apps/eval-mobile && tns run android --syncAllFiles",
     "debug.eval.mobile.android": "cd apps/eval-mobile && tns debug android --syncAllFiles",
     "start.eval.mobile.ios": "cd apps/eval-mobile && tns run ios --syncAllFiles",
+    "semi": "cd apps/eval-mobile && tns run ios --syncAllFiles",
     "debug.eval.mobile.ios": "cd apps/eval-mobile && tns debug ios --syncAllFiles",
     "build": "ng build",
     "test": "ng test",
@@ -26,7 +28,8 @@
     "postinstall": "./node_modules/.bin/nx postinstall",
     "clean": "rm -rf hooks node_modules package-lock.json && npm i",
     "clean.eval.mobile": "cd apps/eval-mobile && rm -rf hooks node_modules platforms package-lock.json && npm i",
-    "clean.shared": "npx rimraf -- libs/**/*.js && npx rimraf -- libs/**/*.map && npx rimraf -- libs/**/*.d.ts && npx rimraf -- libs/**/*.ngfactory.ts && npx rimraf -- libs/**/*.ngsummary.json && npx rimraf -- libs/**/*.metadata.json && npx rimraf -- xplat/**/*.js && npx rimraf -- xplat/**/*.map && npx rimraf -- xplat/**/*.d.ts && npx rimraf -- xplat/**/*.ngfactory.ts && npx rimraf -- xplat/**/*.ngsummary.json && npx rimraf -- xplat/**/*.metadata.json",
+    "clean.shared":
+      "npx rimraf -- libs/**/*.js && npx rimraf -- libs/**/*.map && npx rimraf -- libs/**/*.d.ts && npx rimraf -- libs/**/*.ngfactory.ts && npx rimraf -- libs/**/*.ngsummary.json && npx rimraf -- libs/**/*.metadata.json && npx rimraf -- xplat/**/*.js && npx rimraf -- xplat/**/*.map && npx rimraf -- xplat/**/*.d.ts && npx rimraf -- xplat/**/*.ngfactory.ts && npx rimraf -- xplat/**/*.ngsummary.json && npx rimraf -- xplat/**/*.metadata.json",
     "nuke": "npm run clean && npm run clean.eval.mobile && npm run clean.shared"
   },
   "private": true,

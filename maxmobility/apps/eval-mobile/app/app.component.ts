@@ -1,21 +1,18 @@
-// angular
 import { Component } from '@angular/core';
-// nativescript
-import * as application from 'tns-core-modules/application';
-import { registerElement } from 'nativescript-angular/element-registry';
+import { CLog, LoggingService, UserService } from '@maxmobility/mobile';
+import { TranslateService } from '@ngx-translate/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
-import { Video as ExoPlayer } from 'nativescript-exoplayer';
-// const NS_EXOPLAYER = require('nativescript-exoplayer')
-// these modules don't have index.d.ts so TS compiler doesn't know their shape for importing
-const NS_CAROUSEL = require('nativescript-carousel');
-// app
-import { UserService, LoggingService, CLog } from '@maxmobility/mobile';
+import { registerElement } from 'nativescript-angular/element-registry';
 import { RouterExtensions } from 'nativescript-angular/router';
+import { Video as ExoPlayer } from 'nativescript-exoplayer';
 
+// Register Custom Elements for Angular
+const NS_CAROUSEL = require('nativescript-carousel');
 registerElement('Carousel', () => NS_CAROUSEL.Carousel);
 registerElement('CarouselItem', () => NS_CAROUSEL.CarouselItem);
-// registerElement('exoplayer', () => NS_EXOPLAYER.ExoVideoPlayer);
 registerElement('exoplayer', () => ExoPlayer);
+registerElement('BarcodeScanner', () => require('nativescript-barcodescanner').BarcodeScannerView);
+registerElement('Gradient', () => require('nativescript-gradient').Gradient);
 
 @Component({
   selector: 'ns-app',
@@ -23,10 +20,15 @@ registerElement('exoplayer', () => ExoPlayer);
 })
 export class AppComponent {
   constructor(
+    private _translateService: TranslateService,
     private _logService: LoggingService,
     private _userService: UserService,
     private _router: RouterExtensions
   ) {
+    // Brad - sets the default language for ngx-translate
+    // TODO: save the value locally so we can restore correct default on app start
+    this._translateService.setDefaultLang('en');
+
     // application level events
     // application.on(application.uncaughtErrorEvent, (args: application.UnhandledErrorEventData) => {
     //   console.log('uncaughtException', args.error);
