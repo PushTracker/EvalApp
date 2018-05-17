@@ -70,6 +70,7 @@ hooks/
 package-lock.json
 *.js
 **/*.js
+!*/libs/core/packet/packet_bindings.js
 !/**/nativescript-bluetooth/**
 **/*.css
 .DS_Store
@@ -102,3 +103,5 @@ e2e/*.map
 # System Files
 .DS_Store
 Thumbs.db
+
+
