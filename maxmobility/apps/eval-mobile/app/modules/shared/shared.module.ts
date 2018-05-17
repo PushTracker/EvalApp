@@ -1,21 +1,17 @@
 // nativescript
-import { NativeScriptModule } from 'nativescript-angular/nativescript.module';
-import { NativeScriptRouterModule } from 'nativescript-angular/router';
-import { NativeScriptFormsModule } from 'nativescript-angular/forms';
-import { NativeScriptCommonModule } from 'nativescript-angular/common';
-
 // angular
-import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
-
+import { NO_ERRORS_SCHEMA, NgModule } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { NativeScriptCommonModule } from 'nativescript-angular/common';
+import { NativeScriptFormsModule } from 'nativescript-angular/forms';
+import { NativeScriptRouterModule } from 'nativescript-angular/router';
+import { TNSFontIconModule } from 'nativescript-ngx-fonticon';
 // libs
 import { NativeScriptUIListViewModule } from 'nativescript-ui-listview/angular';
 import { NativeScriptUISideDrawerModule } from 'nativescript-ui-sidedrawer/angular';
-import { TNSFontIconModule } from 'nativescript-ngx-fonticon';
-import { TNSFrescoModule } from 'nativescript-fresco/angular';
-import { TranslateModule } from '@ngx-translate/core';
-
 // app
 import { SHARED_COMPONENTS } from './components';
+
 // import { SHARED_PIPES } from './pipes';
 // import { SHARED_DIRECTIVES } from './directives';
 
