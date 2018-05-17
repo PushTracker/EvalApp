@@ -1,6 +1,6 @@
 import * as app from 'tns-core-modules/application';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-ui-sidedrawer';
+import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-sidedrawer';
 import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 import { SegmentedBar, SegmentedBarItem } from 'tns-core-modules/ui/segmented-bar';
 import { Observable } from 'tns-core-modules/data/observable';
@@ -8,6 +8,7 @@ import { confirm } from 'tns-core-modules/ui/dialogs';
 import { EvaluationService } from '@maxmobility/mobile';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { DropDownModule } from 'nativescript-drop-down/angular';
+
 
 const timeInChair = ['1', '2', '3', '4', '5+', '10+', '20+', '30+'];
 const chairType = ['TiLite', 'Quckie', 'Other'];
@@ -98,7 +99,7 @@ export class EvalEntryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._sideDrawerTransition = new SlideInOnTopTransition();
+    this._sideDrawerTransition = new SlideAlongTransition();
     if (app.ios) {
       this.isIOS = true;
     } else if (app.android) {

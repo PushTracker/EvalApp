@@ -4,6 +4,9 @@
 @import '~nativescript-theme-core/scss/light';
 
 /**** Fonts *****/
+.mdi {
+  font-family: 'Material Design Icons', materialdesignicons-webfont;
+}
 $material-icon: MaterialIcons-Regular, Material Icons, 'Material Icons', 'MaterialIcons-Regular';
 $fa: FontAwesome, 'FontAwesome', fontawesome-webfont, 'fontawesome-webfont';
 $ionicon: ionicons, 'ionicons', Ionicons, 'Ionicons';
@@ -17,7 +20,8 @@ $os-SemiBold-Italic: 'OpenSans-SemiBoldItalic, Open Sans SemiBold Italic';
 $background-dark: #f8f8f8 !default;
 $background-light: #ffffff !default;
 
-$permobil-hero: rgb(0, 103, 166) !default;
+$permobil-hero: rgb(0, 79, 126) !default;
+$permobil-hero-old: rgb(0, 103, 166) !default;
 $permobil-primary: rgb(0, 103, 166) !default;
 $permobil-ocean: rgb(0, 154, 199) !default;
 $permobil-charcoal: rgb(65, 54, 66) !default;
@@ -28,6 +32,8 @@ $blue-20: rgba($permobil-hero, 0.2) !default;
 $blue-10: rgba($permobil-hero, 0.1) !default;
 
 //accents
+$permobil-orange: rgba(255, 103, 31, 1.0);
+$permobil-rose: rgba(227, 28, 121, 1.0);
 $permobil-icon-shadow-orange: rgba(255, 103, 31, 0.6);
 
 $accent-dark: rgb(41, 104, 161) !default;
@@ -71,12 +77,12 @@ $item-color-android: #737373;
 $item-active-background: #f8f8f8;
 $item-active-color: $accent;
 $item-active-icon-color: $item-active-color;
-$item-color-ios: $permobil-hero;
-$item-color-android: $permobil-hero;
+$item-color-ios: $white;
+$item-color-android: $white;
 
-$side-drawer-header-background: #fafafa;
-$side-drawer-header-brand: #737373;
-$side-drawer-background: #ffffff;
+// $side-drawer-header-background: #fafafa;
+// $side-drawer-header-brand: #737373;
+// $side-drawer-background: #ffffff;
 
 // ActionBar
 $ab-background: $accent;

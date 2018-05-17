@@ -1,6 +1,10 @@
 // Custom common variables
 @import '../../scss/variables';
 
+.hero{
+    background-color: $permobil-hero;
+}
+
 .action-item {
   color: $white;
   font-size: 18;
@@ -19,12 +23,20 @@
   text-overflow: none;
   text-align: left;
   word-wrap: normal;
-  color: $black;
+  color: $white;
   font-weight: bold;
   margin: 15;
 }
 
 .account-text-entry {
+  color: $white;
   text-align: right;
   margin: 15;
+}
+
+.acct-btn {
+  color: $white;
+  font-size: 15;
+  font-weight: 300;
+
 }

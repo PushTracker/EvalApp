@@ -1,7 +1,8 @@
-<ActionBar class="action-bar">
-  <!-- <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
-  <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem> -->
-  <Label class="action-bar-title" text="Pairing"></Label>
+<ActionBar class="action-bar" flat="true" title="Connectivity">
+  <NavigationButton android.systemIcon="ic_menu_back" tap="onNavBtnTap"></NavigationButton>
+
+  <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem>
+
 </ActionBar>
 
 <RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
@@ -12,7 +13,7 @@
   
 <StackLayout backgroundImage="~/assets/images/background_1.jpg" tkMainContent class="page page-content gridImage">
 
-  <Carousel #carousel ios:indicatorOffset="0,-10" ios:finite="true" ios:bounce="true" height="100%" indicatorColor="#66ccff" indicatorColorUnselected="#cceeff">
+  <Carousel #carousel ios:indicatorOffset="0,-10" ios:finite="true" ios:bounce="false" height="100%" indicatorColor="#66ccff" indicatorColorUnselected="#cceeff">
     <CarouselItem  *ngFor="let slide of slides">
       
       <GridLayout  rows="auto, *" cols="*" class="">

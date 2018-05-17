@@ -5,6 +5,7 @@ import { Kinvey } from 'kinvey-nativescript-sdk';
 import { registerElement } from 'nativescript-angular/element-registry';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { Video as ExoPlayer } from 'nativescript-exoplayer';
+import * as Platform from 'platform';
 
 // Register Custom Elements for Angular
 const NS_CAROUSEL = require('nativescript-carousel');
@@ -26,8 +27,8 @@ export class AppComponent {
     private _router: RouterExtensions
   ) {
     // Brad - sets the default language for ngx-translate
-    // TODO: save the value locally so we can restore correct default on app start
     this._translateService.setDefaultLang('en');
+    this._translateService.use(Platform.device.language);
 
     // application level events
     // application.on(application.uncaughtErrorEvent, (args: application.UnhandledErrorEventData) => {

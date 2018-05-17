@@ -10,6 +10,7 @@ import { CLog } from '@maxmobility/core';
 })
 export class MyDrawerItemComponent implements OnInit {
   @Input() title: string;
+  @Input() description: string;
   @Input() route: string;
   @Input() icon: string;
   @Input() isSelected: boolean;

@@ -5,18 +5,17 @@
 
     width: 135;
     height: 75;
-    margin: 5, 5, 5, 5;
+    margin: 15, 5, 15, 10;
     border: solid;
-        // border-radius: 5;
+        border-radius: 5;
         // background-color: $permobil-charcoal;
 }
 
-.description{
-    font-family: $os-Light;
+.description {
     text-align: left;
     font-size: 15;
-    font-weight: 300;
-    color: $permobil-charcoal;
+    font-weight: 400;
+    color: #fff;
     margin: 5, 5, 5, 10;
 
 }
