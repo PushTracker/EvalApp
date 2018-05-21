@@ -35,33 +35,7 @@ export class TrialComponent implements OnInit {
     private routerExtensions: RouterExtensions,
     private _progressService: ProgressService,
     private _bluetoothService: BluetoothService
-  ) {
-    // TODO: cases we need to handle:
-    //  * an already connected pushtracker exists - what do we
-    //    want to do here? should we inform the user that a
-    //    pushtracker is already connected and try to see what
-    //    version it is?
-
-    // sign up for events on PushTrackers and SmartDrives
-    // handle pushtracker connection events for existing pushtrackers
-    console.log('registering for connection events!');
-    const self = this;
-    BluetoothService.PushTrackers.map(function(pt) {
-      pt.on(PushTracker.pushtracker_connect_event, function(args) {
-        self.onPushTrackerConnected();
-      });
-    });
-
-    // listen for completely new pusthrackers (that we haven't seen before)
-    BluetoothService.PushTrackers.on(ObservableArray.changeEvent, function(args) {
-      if (args.action === 'add') {
-        const pt = BluetoothService.PushTrackers.getItem(BluetoothService.PushTrackers.length - 1);
-        pt.on(PushTracker.pushtracker_connect_event, function(arg) {
-          self.onPushTrackerConnected();
-        });
-      }
-    });
-  }
+  ) {}
 
   // button events
   onNext(): void {
@@ -84,17 +58,10 @@ export class TrialComponent implements OnInit {
 
   // tslint:disable-next-line:adjacent-overload-signatures
   onStartTrial() {
-    connectedPTs = BluetoothService.PushTrackers.filter(pt => pt.connected);
+    const connectedPTs = BluetoothService.PushTrackers.filter(pt => pt.connected);
     if (connectedPTs.length <= 0) {
       // no pushtrackers are connected - wait for them to be connected
       this.snackbar.simple('Please connect your PushTracker');
-      /*
-	    const options: SnackBarOptions = {
-		actionText: 'Connect',
-		snackText: 'Please connect your PushTracker',
-		hideDelay: 10000
-	    };
-	    */
     } else if (connectedPTs.length > 1) {
       // too many pushtrackers connected - don't know which to use!
       this.snackbar.simple('Too many PushTrackers connected - please only connect one!');
@@ -129,33 +96,6 @@ export class TrialComponent implements OnInit {
       pt.on(PushTracker.pushtracker_distance_event, distanceHandler);
       pt.on(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
     }
-
-    /*
-	this.snackbar.action(options).then(args => {
-	    if (args.command === 'Action') {
-		confirm({
-		    title: 'Connecting...',
-		    message: 'Please make sure SmartDrive is on.',
-		    okButtonText: 'It Is',
-		    cancelButtonText: 'Whoops'
-		}).then(result => {
-		    if (result) {
-			// tslint:disable-next-line:no-shadowed-variable
-			this.snackbar.simple('Connecting to SmartDrive.', 'red', '#fff').then(args => {
-			    // connect()
-			});
-		    } else {
-			// tslint:disable-next-line:no-shadowed-variable
-			this.snackbar.simple('Connecting to SmartDrive', 'red', '#fff').then(args => {
-			    // connect()
-			});
-		    }
-		});
-	    } else {
-		// dismiss
-	    }
-	});
-	*/
   }
 
   onTextChange(args) {
