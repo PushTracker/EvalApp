@@ -92,28 +92,29 @@
             //Trial Name
             <StackLayout class="input-field">
 
-              <button row="2"  text="Start" class="start-button" (tap)="onStartTrial()"></button>
+              <button [visibility]="(!startedWith && !finishedWith) ? 'visible' : 'collapse'" row="2" text="Start" class="start-button" (tap)="onStartWithTrial()"></button>
+              <button [visibility]="(startedWith && !finishedWith) ? 'visible' : 'collapse'" row="2" text="Stop" class="start-button" (tap)="onStopWithTrial()"></button>
 
               //Data Fields
               <GridLayout  rows="auto, auto" columns="auto, *, auto, *">
-                <Label row="0" col="0" text="Pushes:" class="value-label-left" textWrap="true"></Label>
-                <Label row="0" col="1" text="0" class="value-left" textWrap="true"></Label>
-                <Label row="0" col="2" text="Coast Time:" class="value-label-right" textWrap="true"></Label>
-                <Label row="0" col="3" text=" 0.0s" class="value-right" textWrap="true"></Label>
+                <Label row="0" col="0" text="Pushes: " class="value-label-left" textWrap="true"></Label>
+                <Label row="0" col="1" [text]="trial.with_pushes" class="value-left" textWrap="true"></Label>
+                <Label row="0" col="2" text="Coast Time: " class="value-label-right" textWrap="true"></Label>
+                <Label row="0" col="3" [text]="trial.with_coast.toFixed(2) + ' s'" class="value-right" textWrap="true"></Label>
               </GridLayout>
               
               <GridLayout  rows="auto, auto" columns="auto, *, auto, *">
-                <Label row="0" col="0" text="Time:" class="value-label-left" textWrap="true"></Label>
-                <Label row="0" col="1" text="0 min" class="value-left" textWrap="true"></Label>
-                <Label row="0" col="2" text="Distance:" class="value-label-right" textWrap="true"></Label>
-                <Label row="0" col="3" text=" 0.0m" class="value-right" textWrap="true"></Label>
+                <Label row="0" col="0" text="Time: " class="value-label-left" textWrap="true"></Label>
+                <Label row="0" col="1" [text]="trial.with_elapsed.toFixed(2) + ' min'" class="value-left" textWrap="true"></Label>
+                <Label row="0" col="2" text="Distance: " class="value-label-right" textWrap="true"></Label>
+                <Label row="0" col="3" [text]="trial.distance.toFixed(2)+' m'" class="value-right" textWrap="true"></Label>
               </GridLayout>
             </StackLayout>
           </StackLayout>
         </ScrollView>
       </GridLayout>
     </CarouselItem>
-
+    
     //Page 3 Without SmartDrive
     <CarouselItem class="hero" height="100%">
       <GridLayout backgroundImage="~/assets/images/background_1.jpg" rows="auto, *" cols="*">
@@ -127,26 +128,27 @@
             //Heading and description
             <Label text="Phase 2" class="slideLowerLabel" textWrap="true"></Label>
             <Label text="Without SmartDrive" class="slideLowerLabel" textWrap="true"></Label>
-            <Label text="Now perform the same course without Smart Drive - press start to begin." class="slideDescription" textWrap="true"></Label>
+            <Label text="Now redo the same trial course without the SmartDrive - press start to begin." class="slideDescription" textWrap="true"></Label>
 
-
+            //Trial Name
             <StackLayout class="input-field">
 
-              <button row="2"  text="Start" class="start-button" (tap)="onStartTrial()"></button>
+              <button [visibility]="(!startedWithout && !finishedWithout) ? 'visible' : 'collapse'" row="2" text="Start" class="start-button" (tap)="onStartWithoutTrial()"></button>
+              <button [visibility]="(startedWithout && !finishedWithout) ? 'visible' : 'collapse'" row="2" text="Stop" class="start-button" (tap)="onStopWithoutTrial()"></button>
 
               //Data Fields
               <GridLayout  rows="auto, auto" columns="auto, *, auto, *">
-                <Label row="0" col="0" text="Pushes:" class="value-label-left" textWrap="true"></Label>
-                <Label row="0" col="1" text="0" class="value-left" textWrap="true"></Label>
-                <Label row="0" col="2" text="Coast Time:" class="value-label-right" textWrap="true"></Label>
-                <Label row="0" col="3" text=" 0.0s" class="value-right" textWrap="true"></Label>
+                <Label row="0" col="0" text="Pushes: " class="value-label-left" textWrap="true"></Label>
+                <Label row="0" col="1" [text]="trial.without_pushes" class="value-left" textWrap="true"></Label>
+                <Label row="0" col="2" text="Coast Time: " class="value-label-right" textWrap="true"></Label>
+                <Label row="0" col="3" [text]="trial.without_coast.toFixed(2) + ' s'" class="value-right" textWrap="true"></Label>
               </GridLayout>
               
               <GridLayout  rows="auto, auto" columns="auto, *, auto, *">
-                <Label row="0" col="0" text="Time:" class="value-label-left" textWrap="true"></Label>
-                <Label row="0" col="1" text="0 min" class="value-left" textWrap="true"></Label>
-                <Label row="0" col="2" text="Distance:" class="value-label-right" textWrap="true"></Label>
-                <Label row="0" col="3" text=" 0.0m" class="value-right" textWrap="true"></Label>
+                <Label row="0" col="0" text="Time: " class="value-label-left" textWrap="true"></Label>
+                <Label row="0" col="1" [text]="trial.without_elapsed.toFixed(2) + ' min'" class="value-left" textWrap="true"></Label>
+                <Label row="0" col="2" text="Distance: " class="value-label-right" textWrap="true"></Label>
+                <Label row="0" col="3" [text]="trial.distance.toFixed(2)+' m'" class="value-right" textWrap="true"></Label>
               </GridLayout>
             </StackLayout>
           </StackLayout>

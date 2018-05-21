@@ -694,7 +694,17 @@ export class PushTracker extends Observable {
            }            dailyInfo;
         */
     this.sendEvent(PushTracker.pushtracker_daily_info_event, {
-      // TODO: fill this in
+      year: di.year,
+      month: di.month,
+      day: di.day,
+      pushesWith: di.pushesWith,
+      pushesWithout: di.pushesWithout,
+      coastWith: di.coastWith,
+      coastWithout: di.coastWithout,
+      distance: di.distance,
+      speed: di.speed,
+      ptBattery: di.ptBattery,
+      sdBattery: di.sdBattery
     });
     // TODO: upate daily info record for this pushtracker (locally
     // and on the server)
