@@ -489,12 +489,14 @@ export class PushTracker extends Observable {
     const p = new Packet();
     p.Type(Type);
     p.SubType(SubType);
-    // if dataType is non-null and not '', then we need to transform the data
-    let boundData = data;
-    if (dataType && dataType.length) {
-      boundData = Packet.makeBoundData(dataType, data);
+    if (dataKey) {
+      // if dataType is non-null and not '', then we need to transform the data
+      let boundData = data;
+      if (dataType && dataType.length) {
+        boundData = Packet.makeBoundData(dataType, data);
+      }
+      p.data(dataKey, boundData);
     }
-    p.data(dataKey, boundData);
     const transmitData = p.toArray();
     p.destroy();
     console.log(`sending ${transmitData}`);

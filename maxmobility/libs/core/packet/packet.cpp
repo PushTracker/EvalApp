@@ -9,9 +9,9 @@ class Motor {
 public:
   enum class State  : uint8_t {
     Off,
-      On,
-      Error
-      };
+    On,
+    Error
+  };
 };
 
 /*** Smart Drive ***/
@@ -24,32 +24,32 @@ public:
 
   enum class Error: uint8_t {
     NoError,
-      BatteryVoltage,
-      MotorPhases,
-      OverCurrent,
-      OverTemperature,
-      GyroRange,
-      OTAUnavailable,
-      BLEDisconnect
-      };
+    BatteryVoltage,
+    MotorPhases,
+    OverCurrent,
+    OverTemperature,
+    GyroRange,
+    OTAUnavailable,
+    BLEDisconnect
+  };
 
   enum class ControlMode : uint8_t {
     Beginner,
-      Intermediate,
-      Advanced,
-      Off
-      };
+    Intermediate,
+    Advanced,
+    Off
+  };
 
   enum class Units : uint8_t {
     English,
-      Metric
-      };
+    Metric
+  };
   enum class AttendantMode : uint8_t {
     Off,
-      Inactive,
-      OnePressed,
-      TwoPressed
-      };
+    Inactive,
+    OnePressed,
+    TwoPressed
+  };
 
   // settings flags values are the bit numbers 
   enum class BoolSettingFlag  : uint8_t { EZMODE = 0 };
@@ -77,11 +77,11 @@ public:
   // Main Type of the packet
   enum class Type    : uint8_t {
     None,
-      Data,
-      Command,
-      Error,
-      OTA
-      };
+    Data,
+    Command,
+    Error,
+    OTA
+  };
 
   // Subtypes of the packet
   enum class Data    : uint8_t;
@@ -90,64 +90,64 @@ public:
 
   enum class Data : uint8_t {
     MotorDistance,
-      Speed,
-      CoastTime,
-      Pushes,
-      MotorState,
-      BatteryLevel,
-      VersionInfo,
-      DailyInfo,
-      JourneyInfo,
-      MotorInfo,
-      DeviceInfo,
-      Ready,
-      ErrorInfo
-      };
+    Speed,
+    CoastTime,
+    Pushes,
+    MotorState,
+    BatteryLevel,
+    VersionInfo,
+    DailyInfo,
+    JourneyInfo,
+    MotorInfo,
+    DeviceInfo,
+    Ready,
+    ErrorInfo
+  };
 
   enum class Command : uint8_t {
     SetAcceleration,
-      SetMaxSpeed,
-      Tap, DoubleTap,
-      SetControlMode,
-      SetSettings,
-      TurnOffMotor,
-      StartJourney,
-      StopJourney,
-      PauseJourney,
-      SetTime,
-      StartOTA,
-      StopOTA,
-      OTAReady,
-      CancelOTA,
-      Wake,
+    SetMaxSpeed,
+    Tap, DoubleTap,
+    SetControlMode,
+    SetSettings,
+    TurnOffMotor,
+    StartJourney,
+    StopJourney,
+    PauseJourney,
+    SetTime,
+    StartOTA,
+    StopOTA,
+    OTAReady,
+    CancelOTA,
+    Wake,
     DistanceRequest,
-      StartGame,
-      StopGame,
-      ConnectMPGame,
+    StartGame,
+    StopGame,
+    ConnectMPGame,
     DisconnectMPGame,
     SetLEDColor
-      };
+  };
 
   enum class OTA : uint8_t {
     SmartDrive,
-      SmartDriveBluetooth,
-      PushTracker
-      };
+    SmartDriveBluetooth,
+    PushTracker
+  };
 
   enum class Device : uint8_t {
     SmartDrive,
-      SmartDriveBluetooth,
-      PushTracker
-      };
+    SmartDriveBluetooth,
+    PushTracker
+  };
 
   enum class Game : uint8_t {
     Mario,
-      Snake,
-      Sonic,
-      Tunnel,
-      FlappyBird,
-      Pong
-      };
+    Snake,
+    Sonic,
+    Tunnel,
+    FlappyBird,
+    Pong
+  };
 
   static const int numTypeBytes    = 1;
   static const int numSubTypeBytes = 1;
@@ -451,10 +451,10 @@ public:
       output.push_back((uint8_t)ota);
       dataLen = dataLength;
       /*
-      for (int i=0; i<dataLen; i++) {
+	for (int i=0; i<dataLen; i++) {
         printf("0x%.2X ", bytes[i]);
-      }
-      printf("\n");
+	}
+	printf("\n");
       */
       break;
     default:
@@ -644,10 +644,12 @@ EMSCRIPTEN_BINDINGS(packet_bindings) {
     .value("OTAReady", Packet::Command::OTAReady)
     .value("CancelOTA", Packet::Command::CancelOTA)
     .value("Wake", Packet::Command::Wake)
+    .value("DistanceRequest", Packet::Command::DistanceRequest)
     .value("StartGame", Packet::Command::StartGame)
     .value("StopGame", Packet::Command::StopGame)
     .value("ConnectMPGame", Packet::Command::ConnectMPGame)
     .value("DisconnectMPGame", Packet::Command::DisconnectMPGame)
+    .value("SetLEDColor", Packet::Command::SetLEDColor)
     ;
 
   emscripten::enum_<Packet::OTA>("PacketOTAType")
