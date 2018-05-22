@@ -37,6 +37,9 @@ export class EvalEntryComponent implements OnInit {
   private fatigues = ['Yes', 'No'];
 
   constructor(private routerExtensions: RouterExtensions) {
+    // make sure we clear out any previous evaluation info!
+    EvaluationService.evaluation = new Evaluation();
+
     this.pains.map(o => {
       const item = new SegmentedBarItem();
       item.title = o;

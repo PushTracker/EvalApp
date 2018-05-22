@@ -26,7 +26,36 @@ export class SummaryComponent implements OnInit {
   hasFlatDifficulty: boolean = false;
   hasRampDifficulty: boolean = false;
 
-  constructor(private routerExtensions: RouterExtensions) {}
+  totalPushesWith: number = 0;
+  totalPushesWithout: number = 0;
+  totalTimeWith: number = 0;
+  totalTimeWithout: number = 0;
+  totalCoastWith: number = 0;
+  totalCoastWithout: number = 0;
+  totalCadenceWith: number = 0;
+  totalCadenceWithout: number = 0;
+
+  pushDiff: number = 0;
+  coastDiff: number = 0;
+
+  cadenceThresh = 10; // pushes per minute
+
+  constructor(private routerExtensions: RouterExtensions) {
+    this.evaluation.trials.map(t => {
+      this.totalPushesWith += t.with_pushes;
+      this.totalPushesWithout += t.without_pushes;
+      this.totalTimeWith += t.with_elapsed;
+      this.totalTimeWithout += t.without_elapsed;
+    });
+    this.totalCoastWith = this.totalPushesWith ? this.totalTimeWith * 60 / this.totalPushesWith : 0;
+    this.totalCoastWithout = this.totalPushesWithout ? this.totalTimeWithout * 60 / this.totalPushesWithout : 0;
+    this.totalCadenceWith = this.totalTimeWith ? this.totalPushesWith / this.totalTimeWith : 0;
+    this.totalCadenceWithout = this.totalTimeWithout ? this.totalPushesWithout / this.totalTimeWithout : 0;
+    // pushes
+    this.pushDiff = 100 - this.totalPushesWith / this.totalPushesWithout * 100;
+    // coast
+    this.coastDiff = this.totalCoastWith / this.totalCoastWithout * 100;
+  }
 
   generateLMN(): string {
     let lmnBody = [
@@ -38,10 +67,6 @@ export class SummaryComponent implements OnInit {
       `                       ${this.evaluation.fatigue}`,
       `Impact on user's independence: ${this.evaluation.independence}`
     ];
-    let totalPushesWith = 0;
-    let totalPushesWithout = 0;
-    let totalTimeWith = 0;
-    let totalTimeWithout = 0;
     this.evaluation.trials.map(t => {
       lmnBody.push('');
       lmnBody.push(`Trial "${t.name}":`);
@@ -55,33 +80,26 @@ export class SummaryComponent implements OnInit {
       lmnBody.push(`    coast:  ${t.without_coast.toFixed(2)} s`);
       lmnBody.push(`    time:   ${Trial.timeToString(t.without_elapsed * 60)}`);
       lmnBody.push('');
-      totalPushesWith += t.with_pushes;
-      totalPushesWithout += t.without_pushes;
-      totalTimeWith += t.with_elapsed;
-      totalTimeWithout += t.without_elapsed;
     });
     lmnBody.push(`User's difficulty with ramps: ${this.evaluation.rampDifficulty}`);
     lmnBody.push(`User's difficulty with flats: ${this.evaluation.flatDifficulty}`);
-    let totalCoastWith = totalPushesWith ? totalTimeWith * 60 / totalPushesWith : 0;
-    let totalCoastWithout = totalPushesWithout ? totalTimeWithout * 60 / totalPushesWithout : 0;
-    let totalCadenceWith = totalTimeWith ? totalPushesWith / totalTimeWith : 0;
-    let totalCadenceWithout = totalTimeWithout ? totalPushesWithout / totalTimeWithout : 0;
     // pushes
     lmnBody.push('');
-    let pushDiff = 100 - totalPushesWith / totalPushesWithout * 100;
-    lmnBody.push(`User performed ${pushDiff.toFixed(0)}% ${pushDiff > 0 ? 'fewer' : 'more'} pushes with SmartDrive`);
+    lmnBody.push(
+      `User performed ${this.pushDiff.toFixed(0)}% ${this.pushDiff > 0 ? 'fewer' : 'more'} pushes with SmartDrive`
+    );
     // coast
     lmnBody.push('');
-    let coastDiff = totalCoastWith / totalCoastWithout * 100;
     lmnBody.push(
-      `Average coast time was ${coastDiff.toFixed(0)}% ${coastDiff > 100 ? 'higher' : 'lower'} with SmartDrive`
+      `Average coast time was ${this.coastDiff.toFixed(0)}% ${
+        this.coastDiff > 100 ? 'higher' : 'lower'
+      } with SmartDrive`
     );
     // cadence
     lmnBody.push('');
-    const cadenceThresh = 10;
-    if (totalCadenceWithout > cadenceThresh) {
+    if (this.totalCadenceWithout > this.cadenceThresh) {
       lmnBody.push(
-        `At ${totalCadenceWithout.toFixed(
+        `At ${this.totalCadenceWithout.toFixed(
           1
         )} pushes per minute, user's cadence is exceptionally high. Consider looking at rear wheel placement and efficient push technique.`
       );

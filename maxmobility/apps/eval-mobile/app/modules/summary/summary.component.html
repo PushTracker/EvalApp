@@ -21,8 +21,8 @@
             <Label textWrap="true" class="summaryDescription">
               <FormattedString>
                 <Span text="User performed " color= "#fff"></Span>
-                <Span text="96% " color="#43D551" fontAttributes="Bold"></Span>
-                <Span text="less pushes with SmartDrive." color= "#fff"></Span>
+                <Span [text]="pushDiff.toFixed(0) + '%'" color="#43D551" fontAttributes="Bold"></Span>
+                <Span text=" fewer pushes with SmartDrive." color="#fff"></Span>
 
               </FormattedString>
 
@@ -32,9 +32,9 @@
           <DockLayout stretchLastChild="false">
             <Label textWrap="true" class="summaryDescription">
               <FormattedString>
-                <Span text="Average coast time was " color= "#fff"></Span>
-                <Span text="98% " color="#43D551" fontAttributes="Bold"></Span>
-                <Span text="higher with SmartDrive." color= "#fff"></Span>
+                <Span text="Average coast time was " color="#fff"></Span>
+                <Span [text]="coastDiff.toFixed(0)+'%'" color="#43D551" fontAttributes="Bold"></Span>
+                <Span text=" higher with SmartDrive." color="#fff"></Span>
                 
               </FormattedString>
             </Label>
@@ -44,8 +44,8 @@
             <Label textWrap="true" class="summaryDescription">
               <FormattedString>
                 <Span text="At " color= "#fff"></Span>
-                <Span text="167 " color="#FF671F" fontAttributes="Bold"></Span>
-                <Span text="pushes per minute, user's cadence is exceptionally high. Consider looking at rear wheel placement and efficient push technique." color= "#fff"></Span>
+                <Span [text]="totalCadenceWithout.toFixed(1)" color="#FF671F" fontAttributes="Bold"></Span>
+                <Span text=" pushes per minute, user's cadence is exceptionally high. Consider looking at rear wheel placement and efficient push technique." color= "#fff"></Span>
               </FormattedString>
             </Label>
           </DockLayout>
