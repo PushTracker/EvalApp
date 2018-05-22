@@ -54,7 +54,7 @@ export class SummaryComponent implements OnInit {
     // pushes
     this.pushDiff = 100 - this.totalPushesWith / this.totalPushesWithout * 100;
     // coast
-    this.coastDiff = this.totalCoastWith / this.totalCoastWithout * 100;
+    this.coastDiff = this.totalCoastWith / this.totalCoastWithout;
   }
 
   generateLMN(): string {
@@ -91,8 +91,8 @@ export class SummaryComponent implements OnInit {
     // coast
     lmnBody.push('');
     lmnBody.push(
-      `Average coast time was ${this.coastDiff.toFixed(0)}% ${
-        this.coastDiff > 100 ? 'higher' : 'lower'
+      `Average coast time was ${this.coastDiff.toFixed(1)} times ${
+        this.coastDiff > 1.0 ? 'higher' : 'lower'
       } with SmartDrive`
     );
     // cadence
