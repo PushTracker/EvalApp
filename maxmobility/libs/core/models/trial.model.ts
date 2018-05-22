@@ -2,6 +2,14 @@
 import { Observable, EventData } from 'tns-core-modules/data/observable';
 
 export class Trial extends Observable {
+  // STATIC:
+  public static timeToString(seconds: number): string {
+    let t = new Date(null);
+    t.setSeconds(seconds);
+    return t.toISOString().substr(11, 8);
+  }
+
+  // NON STATIC:
   public name: string = '';
   // questionnaire
   public flat: boolean = false;

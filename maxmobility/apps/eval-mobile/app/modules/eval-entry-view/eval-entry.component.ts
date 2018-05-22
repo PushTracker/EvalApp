@@ -5,7 +5,7 @@ import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 import { SegmentedBar, SegmentedBarItem } from 'tns-core-modules/ui/segmented-bar';
 import { Observable } from 'tns-core-modules/data/observable';
 import { confirm } from 'tns-core-modules/ui/dialogs';
-import { EvaluationService } from '@maxmobility/mobile';
+import { Evaluation, EvaluationService } from '@maxmobility/mobile';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { DropDownModule } from 'nativescript-drop-down/angular';
 
@@ -64,7 +64,7 @@ export class EvalEntryComponent implements OnInit {
   }
 
   onSliderUpdate(key, args) {
-    this.settings.set(key, args.object.value);
+    this.evaluation.set(key, args.object.value);
   }
 
   // button events
@@ -79,22 +79,22 @@ export class EvalEntryComponent implements OnInit {
 
   // pushing pain
   getPushingPainIndex() {
-    return this.pains.indexOf(this.settings.get('PushingPain'));
+    return this.pains.indexOf(this.evaluation.get('PushingPain'));
   }
 
   onPushingPainIndexChange(args): void {
     const segmentedBar = <SegmentedBar>args.object;
-    this.settings.set('PushingPain', this.pains[segmentedBar.selectedIndex]);
+    this.evaluation.set('PushingPain', this.pains[segmentedBar.selectedIndex]);
   }
 
   // pushing fatigue
   getPushingFatigueIndex() {
-    return this.fatigues.indexOf(this.settings.get('PushingFatigue'));
+    return this.fatigues.indexOf(this.evaluation.get('PushingFatigue'));
   }
 
   onPushingFatigueIndexChange(args) {
     const segmentedBar = <SegmentedBar>args.object;
-    this.settings.set('PushingFatigue', this.fatigues[segmentedBar.selectedIndex]);
+    this.evaluation.set('PushingFatigue', this.fatigues[segmentedBar.selectedIndex]);
   }
 
   ngOnInit(): void {
@@ -110,8 +110,8 @@ export class EvalEntryComponent implements OnInit {
     return this._sideDrawerTransition;
   }
 
-  get settings(): Observable {
-    return EvaluationService.settings;
+  get evaluation(): Evaluation {
+    return EvaluationService.evaluation;
   }
 
   onDrawerButtonTap(): void {

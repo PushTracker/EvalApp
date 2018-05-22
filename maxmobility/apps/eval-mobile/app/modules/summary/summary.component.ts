@@ -10,7 +10,8 @@ import { confirm } from 'tns-core-modules/ui/dialogs';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 import * as email from 'nativescript-email';
 // app
-import { EvaluationService } from '@maxmobility/mobile';
+import { Trial } from '@maxmobility/core';
+import { Evaluation, EvaluationService } from '@maxmobility/mobile';
 
 @Component({
   selector: 'Summary',
@@ -27,6 +28,67 @@ export class SummaryComponent implements OnInit {
 
   constructor(private routerExtensions: RouterExtensions) {}
 
+  generateLMN(): string {
+    let lmnBody = [
+      'This email was generated and sent by the Smart Evaluation App.',
+      '',
+      `User had pushing pain? ${this.evaluation.PushingPain}`,
+      `                       ${this.evaluation.pain}`,
+      `User had pushing fatigue? ${this.evaluation.PushingFatigue}`,
+      `                       ${this.evaluation.fatigue}`,
+      `Impact on user's independence: ${this.evaluation.independence}`
+    ];
+    let totalPushesWith = 0;
+    let totalPushesWithout = 0;
+    let totalTimeWith = 0;
+    let totalTimeWithout = 0;
+    this.evaluation.trials.map(t => {
+      lmnBody.push('');
+      lmnBody.push(`Trial "${t.name}":`);
+      lmnBody.push(`  distance:   ${t.distance.toFixed(2)} m`);
+      lmnBody.push(`  With SD:`);
+      lmnBody.push(`    pushes: ${t.with_pushes}`);
+      lmnBody.push(`    coast:  ${t.with_coast.toFixed(2)} s`);
+      lmnBody.push(`    time:   ${Trial.timeToString(t.with_elapsed * 60)}`);
+      lmnBody.push(`  Without SD:`);
+      lmnBody.push(`    pushes: ${t.without_pushes}`);
+      lmnBody.push(`    coast:  ${t.without_coast.toFixed(2)} s`);
+      lmnBody.push(`    time:   ${Trial.timeToString(t.without_elapsed * 60)}`);
+      lmnBody.push('');
+      totalPushesWith += t.with_pushes;
+      totalPushesWithout += t.without_pushes;
+      totalTimeWith += t.with_elapsed;
+      totalTimeWithout += t.without_elapsed;
+    });
+    lmnBody.push(`User's difficulty with ramps: ${this.evaluation.rampDifficulty}`);
+    lmnBody.push(`User's difficulty with flats: ${this.evaluation.flatDifficulty}`);
+    let totalCoastWith = totalPushesWith ? totalTimeWith * 60 / totalPushesWith : 0;
+    let totalCoastWithout = totalPushesWithout ? totalTimeWithout * 60 / totalPushesWithout : 0;
+    let totalCadenceWith = totalTimeWith ? totalPushesWith / totalTimeWith : 0;
+    let totalCadenceWithout = totalTimeWithout ? totalPushesWithout / totalTimeWithout : 0;
+    // pushes
+    lmnBody.push('');
+    let pushDiff = 100 - totalPushesWith / totalPushesWithout * 100;
+    lmnBody.push(`User performed ${pushDiff.toFixed(0)}% ${pushDiff > 0 ? 'fewer' : 'more'} pushes with SmartDrive`);
+    // coast
+    lmnBody.push('');
+    let coastDiff = totalCoastWith / totalCoastWithout * 100;
+    lmnBody.push(
+      `Average coast time was ${coastDiff.toFixed(0)}% ${coastDiff > 100 ? 'higher' : 'lower'} with SmartDrive`
+    );
+    // cadence
+    lmnBody.push('');
+    const cadenceThresh = 10;
+    if (totalCadenceWithout > cadenceThresh) {
+      lmnBody.push(
+        `At ${totalCadenceWithout.toFixed(
+          1
+        )} pushes per minute, user's cadence is exceptionally high. Consider looking at rear wheel placement and efficient push technique.`
+      );
+    }
+    return lmnBody.join('\n');
+  }
+
   // button events
   onNext(): void {
     confirm({
@@ -42,12 +104,13 @@ export class SummaryComponent implements OnInit {
           .then(available => {
             console.log(`The device email status is ${available}`);
             if (available) {
+              let lmnBody = this.generateLMN();
               email
                 .compose({
-                  to: ['william.emfinger@permobil.com', 'devon.doebele@permobil.com'],
+                  to: [],
                   subject: 'Smart Evaluation LMN',
-                  body: 'This email was generated and sent by the Smart Evaluation App.',
-                  cc: ['ben.hemkens@permobil.com']
+                  body: lmnBody,
+                  cc: []
                 })
                 .then(result => {
                   console.log(result);
@@ -112,14 +175,14 @@ export class SummaryComponent implements OnInit {
   }
 
   onSliderUpdate(key, args) {
-    this.settings.set(key, args.object.value);
+    this.evaluation.set(key, args.object.value);
   }
 
   ngOnInit() {
     console.log('Summary.Component ngOnInit');
   }
 
-  get settings(): Observable {
-    return EvaluationService.settings;
+  get evaluation(): Evaluation {
+    return EvaluationService.evaluation;
   }
 }

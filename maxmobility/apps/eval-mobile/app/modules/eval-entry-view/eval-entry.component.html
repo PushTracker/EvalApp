@@ -27,10 +27,10 @@
 	</DockLayout>
 	<DockLayout *ngIf="getPushingPainIndex() == 0" stretchLastChild="false">
           <Label text="Pain Level:" class="eval-slider-label" ></Label>
-          <Label verticalAlignment="center" dock="right" class="eval-slider-value-label" style="min-width: 50" [text]="settings.pain.toFixed(0)+' / 10'" row="0" col="1"></Label>
+          <Label verticalAlignment="center" dock="right" class="eval-slider-value-label" style="min-width: 50" [text]="evaluation.pain.toFixed(0)+' / 10'" row="0" col="1"></Label>
 	</DockLayout>
 	<GridLayout *ngIf="getPushingPainIndex() == 0" rows="auto" columns="*, auto">
-          <Slider maxValue="10"  verticalAlignment="center" class="eval-slider" [value]="settings.pain" (valueChange)="onSliderUpdate('pain', $event)" row="0" col="0"></Slider>
+          <Slider maxValue="10"  verticalAlignment="center" class="eval-slider" [value]="evaluation.pain" (valueChange)="onSliderUpdate('pain', $event)" row="0" col="0"></Slider>
 	</GridLayout>
 
 	<DockLayout stretchLastChild="false" padding="30,0,0,0">
@@ -39,18 +39,18 @@
 	</DockLayout>
 	<DockLayout *ngIf="getPushingFatigueIndex() == 0" stretchLastChild="false">
           <Label text="Fatigue Level:" class="eval-slider-label" ></Label>
-          <Label verticalAlignment="center" dock="right" class="eval-slider-value-label" style="min-width: 50" [text]="settings.fatigue.toFixed(0)+' / 10'" row="0" col="1"></Label>
+          <Label verticalAlignment="center" dock="right" class="eval-slider-value-label" style="min-width: 50" [text]="evaluation.fatigue.toFixed(0)+' / 10'" row="0" col="1"></Label>
 	</DockLayout>
 	<GridLayout *ngIf="getPushingFatigueIndex() == 0" rows="auto" columns="*, auto">
-          <Slider maxValue="10"  verticalAlignment="center" class="eval-slider" [value]="settings.fatigue" (valueChange)="onSliderUpdate('fatigue', $event)" row="0" col="0"></Slider>
+          <Slider maxValue="10"  verticalAlignment="center" class="eval-slider" [value]="evaluation.fatigue" (valueChange)="onSliderUpdate('fatigue', $event)" row="0" col="0"></Slider>
 	</GridLayout>
 
 	<DockLayout stretchLastChild="false" padding="30,0,0,0">
           <Label text="Impact on independence:" class="eval-slider-label" ></Label>
-          <Label verticalAlignment="center" dock="right" class="eval-slider-value-label" style="min-width: 50" [text]="settings.independence.toFixed(0)+' / 10'" row="0" col="1"></Label>
+          <Label verticalAlignment="center" dock="right" class="eval-slider-value-label" style="min-width: 50" [text]="evaluation.independence.toFixed(0)+' / 10'" row="0" col="1"></Label>
 	</DockLayout>
 	<GridLayout rows="auto" columns="*, auto">
-          <Slider maxValue="10"  verticalAlignment="center" class="eval-slider" [value]="settings.independence" (valueChange)="onSliderUpdate('independence', $event)" row="0" col="0"></Slider>
+          <Slider maxValue="10"  verticalAlignment="center" class="eval-slider" [value]="evaluation.independence" (valueChange)="onSliderUpdate('independence', $event)" row="0" col="0"></Slider>
 	</GridLayout>
 
 	<DockLayout stretchLastChild="false" padding="30,0,0,0" width="100%">

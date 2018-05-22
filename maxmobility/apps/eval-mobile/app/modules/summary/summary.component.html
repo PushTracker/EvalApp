@@ -69,11 +69,11 @@
           </DockLayout>
           <DockLayout *ngIf="hasFlatDifficulty" stretchLastChild="false">
             <Label text="Flat Surface Difficulty" class="trial-item"></Label>
-            <Label verticalAlignment="center" dock="right" class="trial-slider-value-label" style="min-width: 50" [text]="settings.flatDifficulty.toFixed(0) +'/10'"
+            <Label verticalAlignment="center" dock="right" class="trial-slider-value-label" style="min-width: 50" [text]="evaluation.flatDifficulty.toFixed(0) +'/10'"
                    row="0" col="1"></Label>
           </DockLayout>
           <GridLayout *ngIf="hasFlatDifficulty" rows="auto" columns="*, auto">
-            <Slider maxValue="10" verticalAlignment="center" class="trial-slider" [value]="settings.flatDifficulty" (valueChange)="onSliderUpdate('flatDifficulty', $event)"
+            <Slider maxValue="10" verticalAlignment="center" class="trial-slider" [value]="evaluation.flatDifficulty" (valueChange)="onSliderUpdate('flatDifficulty', $event)"
                     row="0" col="0"></Slider>
           </GridLayout>
 
@@ -86,11 +86,11 @@
           </DockLayout>
           <DockLayout *ngIf="hasRampDifficulty" stretchLastChild="false">
             <Label text="Ramp Difficulty" class="trial-item"></Label>
-            <Label verticalAlignment="center" dock="right" class="trial-slider-value-label" style="min-width: 50" [text]="settings.rampDifficulty.toFixed(0) +'/10'"
+            <Label verticalAlignment="center" dock="right" class="trial-slider-value-label" style="min-width: 50" [text]="evaluation.rampDifficulty.toFixed(0) +'/10'"
                    row="0" col="1"></Label>
           </DockLayout>
           <GridLayout *ngIf="hasRampDifficulty" rows="auto" columns="*, auto">
-            <Slider maxValue="10" verticalAlignment="center" class="trial-slider" [value]="settings.rampDifficulty" (valueChange)="onSliderUpdate('rampDifficulty', $event)"
+            <Slider maxValue="10" verticalAlignment="center" class="trial-slider" [value]="evaluation.rampDifficulty" (valueChange)="onSliderUpdate('rampDifficulty', $event)"
                     row="0" col="0"></Slider>
           </GridLayout>
 

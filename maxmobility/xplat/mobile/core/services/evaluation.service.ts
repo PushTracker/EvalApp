@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 
 import { fromObject, Observable } from 'tns-core-modules/data/observable';
+import { ObservableArray } from 'tns-core-modules/data/observable-array';
 
-export class Settings {
+import { Trial } from '@maxmobility/core';
+
+export class Evaluation extends Observable {
   // public members
   PushingPain = 'Yes';
   PushingFatigue = 'Yes';
@@ -11,24 +14,17 @@ export class Settings {
   fatigue = 7;
   independence = 10;
 
-  maxSpeed = 50;
-  acceleration = 30;
-
-  pushCount = 0;
-  coastTime = 0.0;
-  trialDistance = 0.0;
-  trialTime = 0.0;
-  pushesPercentDifference = 0.0;
-  coastPercentDifference = 0.0;
-
   rampDifficulty = 0.0;
   flatDifficulty = 0.0;
+
+  trials: ObservableArray<Trial> = new ObservableArray();
 
   // private members
 
   // functions
 
   constructor(obj?: any) {
+    super();
     if (obj !== null && obj !== undefined) {
       this.fromObject(obj);
     }
@@ -42,16 +38,14 @@ export class Settings {
     this.fatigue = (obj && obj.fatigue) || 7;
     this.independence = (obj && obj.independence) || 10;
 
-    this.maxSpeed = (obj && obj.maxSpeed) || 50;
-    this.acceleration = (obj && obj.acceleration) || 30;
-    this.rampDifficulty = (obj && obj.rampDifficulty) || 0;
-    this.flatDifficulty = (obj && obj.flatDifficulty) || 0;
+    this.rampDifficulty = (obj && obj.rampDifficulty) || 0.0;
+    this.flatDifficulty = (obj && obj.flatDifficulty) || 0.0;
   }
 }
 
 @Injectable()
 export class EvaluationService {
-  static settings: Observable = fromObject(new Settings());
+  static evaluation: Evaluation = new Evaluation();
 
   constructor() {}
 }

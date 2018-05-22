@@ -16,7 +16,7 @@ import { Observable, fromObject } from 'tns-core-modules/data/observable';
 import { ProgressService } from '@maxmobility/mobile';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 import { Trial, PushTracker } from '@maxmobility/core';
-import { BluetoothService } from '@maxmobility/mobile';
+import { BluetoothService, EvaluationService } from '@maxmobility/mobile';
 
 @Component({
   selector: 'Trial',
@@ -71,6 +71,7 @@ export class TrialComponent implements OnInit {
 
   // button events
   onNext(): void {
+    EvaluationService.evaluation.trials.push(this.trial);
     this.routerExtensions.navigate(['/summary'], {
       clearHistory: true,
       transition: {
@@ -86,12 +87,6 @@ export class TrialComponent implements OnInit {
         name: 'slideRight'
       }
     });
-  }
-
-  timeToString(seconds: number): string {
-    let t = new Date(null);
-    t.setSeconds(seconds);
-    return t.toISOString().substr(11, 8);
   }
 
   // tslint:disable-next-line:adjacent-overload-signatures
@@ -183,7 +178,7 @@ export class TrialComponent implements OnInit {
           this.distanceDisplay = `${this.trial.distance.toFixed(2)} m`;
           this.pushWithDisplay = `${this.trial.with_pushes}`;
           this.coastWithDisplay = `${this.trial.with_coast.toFixed(2)} s`;
-          this.timeWithDisplay = this.timeToString(this.trial.with_elapsed * 60);
+          this.timeWithDisplay = Trial.timeToString(this.trial.with_elapsed * 60);
         });
       };
       const dailyInfoHandler = data => {
@@ -276,7 +271,7 @@ export class TrialComponent implements OnInit {
           this.hideView(<View>this.stopWithoutView.nativeElement);
           this.pushWithoutDisplay = `${this.trial.without_pushes}`;
           this.coastWithoutDisplay = `${this.trial.without_coast.toFixed(2)} s`;
-          this.timeWithoutDisplay = this.timeToString(this.trial.without_elapsed * 60);
+          this.timeWithoutDisplay = Trial.timeToString(this.trial.without_elapsed * 60);
         });
       };
       const dailyInfoHandler = data => {
