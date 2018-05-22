@@ -9,19 +9,19 @@
 <RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
 
   <StackLayout tkDrawerContent>
-    <MyDrawer [selectedPage]="'SmartDrive'"></MyDrawer>
+    <MyDrawer [selectedPage]="'Home'"></MyDrawer>
   </StackLayout>
 
 
 
-  <ScrollView tkMainContent class="main-scroll-view">
+  <ScrollView tkMainContent class="main-scroll-view light-background">
     <GridLayout rows="300, 340, 320, 320, 410, 280" columns="*">
 
       //Connectivity
-  <StackLayout class="list-stack-layout" row="0">
+      <StackLayout class="list-stack-layout" row="0">
 	<DockLayout (tap)="chevronButtonTapped('/pairing')" class="dockLayout-options" stretchLastChild="false">
 	  <Label text="Connectivity" class="heading" dock="left"></Label>
-		<Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/pairing')"></Label>
+	  <Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/pairing')"></Label>
 	</DockLayout>
 	<DockLayout class="dockLayout-options" stretchLastChild="false">
 	  <Label text="Connect with PushTracker and SmartDrive" class="description" textWrap="true" dock="left"></Label>
@@ -45,7 +45,7 @@
 	<StackLayout class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></StackLayout>
 	<DockLayout (tap)="chevronButtonTapped('/ota')"  class="dockLayout-options" stretchLastChild="false">
 	  <Label text="Firmware Updates" class="heading" dock="left"></Label>
-		<Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/ota')"></Label>
+	  <Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/ota')"></Label>
 	</DockLayout>
 	<DockLayout class="dockLayout-options" stretchLastChild="false">
 	  <Label text="Keep your SmartDrive up to date with over the air updates." class="description" textWrap="true" dock="left"></Label>
@@ -70,7 +70,7 @@
 	<DockLayout (tap)="chevronButtonTapped('/videos')"  class="dockLayout-options" stretchLastChild="false">
 	  <Label text="Videos" class="heading" dock="left"></Label>
 	  <Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/videos')"></Label>
-		
+	  
 	</DockLayout>
 	<DockLayout class="dockLayout-options" stretchLastChild="false">
 	  <Label text="Trianing videos for SmartDrive" class="description" textWrap="true" dock="left"></Label>
@@ -96,7 +96,7 @@
 	<StackLayout class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></StackLayout>
 	<DockLayout (tap)="chevronButtonTapped('/eval-entry')"  class="dockLayout-options" stretchLastChild="false">
 	  <Label text="Clinical Tools" class="heading" dock="left"></Label>
-		<Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/eval-entry')"></Label>
+	  <Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/eval-entry')"></Label>
 	</DockLayout>
 	<DockLayout class="dockLayout-options" stretchLastChild="false">
 	  <Label text="SmartDrive Training and Evaluation Tools" class="description" textWrap="true" dock="left"></Label>
@@ -120,7 +120,7 @@
 	<StackLayout class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></StackLayout>
 	<DockLayout (tap)="chevronButtonTapped('/demos')"  class="dockLayout-options" textWrap="true" stretchLastChild="false">
 	  <Label text="Demos" class="heading" dock="left"></Label>
-		<Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/demos')"></Label>
+	  <Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/demos')"></Label>
 	</DockLayout>
 	<DockLayout class="dockLayout-options" stretchLastChild="false">
 	  <Label text="Demo locations and statistics" class="description" textWrap="true" dock="left"></Label>
@@ -150,7 +150,7 @@
 	<StackLayout class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></StackLayout>
 	<DockLayout (tap)="chevronButtonTapped('/faq')"  class="dockLayout-options" stretchLastChild="false">
 	  <Label text="FAQ" class="heading" dock="left"></Label>
-		<Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/faq')"></Label>
+	  <Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/faq')"></Label>
 	</DockLayout>
 	<DockLayout class="dockLayout-options" stretchLastChild="false">
 	  <Label text="Some frequently asked questions" class="description" textWrap="true" dock="left"></Label>
