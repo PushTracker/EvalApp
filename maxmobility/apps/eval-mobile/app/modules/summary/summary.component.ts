@@ -8,91 +8,118 @@ import { TextField } from 'tns-core-modules/ui/text-field';
 import { Observable } from 'tns-core-modules/data/observable';
 import { confirm } from 'tns-core-modules/ui/dialogs';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
+import * as email from 'nativescript-email';
 // app
 import { EvaluationService } from '@maxmobility/mobile';
 
 @Component({
-    selector: 'Summary',
-    moduleId: module.id,
-    templateUrl: './summary.component.html',
-    styleUrls: ['./summary.component.css']
+  selector: 'Summary',
+  moduleId: module.id,
+  templateUrl: './summary.component.html',
+  styleUrls: ['./summary.component.css']
 })
 export class SummaryComponent implements OnInit {
-    trialName: string = '';
-    snackbar = new SnackBar();
+  trialName: string = '';
+  snackbar = new SnackBar();
 
-    hasFlatDifficulty: boolean = false;
-    hasRampDifficulty: boolean = false;
+  hasFlatDifficulty: boolean = false;
+  hasRampDifficulty: boolean = false;
 
-    constructor(private routerExtensions: RouterExtensions) {}
+  constructor(private routerExtensions: RouterExtensions) {}
 
-    // button events
-    onNext(): void {
-	confirm({
-	    title: 'Complete Evaluation?',
-	    message: "Are you sure you're done with the evaluation?",
-	    okButtonText: 'Yes',
-	    cancelButtonText: 'No'
-	}).then(result => {
-	    if (result) {
-		this.routerExtensions.navigate(['/home'], {
-		    clearHistory: true,
-		    transition: {
-			name: 'fade'
-		    }
-		});
-	    }
-	});
-    }
+  // button events
+  onNext(): void {
+    confirm({
+      title: 'Complete Evaluation?',
+      message: "Are you sure you're done with the evaluation?",
+      okButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then(result => {
+      if (result) {
+        // send email to user
+        email
+          .available()
+          .then(available => {
+            console.log(`The device email status is ${available}`);
+            if (available) {
+              email
+                .compose({
+                  to: ['william.emfinger@permobil.com', 'devon.doebele@permobil.com'],
+                  subject: 'Smart Evaluation LMN',
+                  body: 'This email was generated and sent by the Smart Evaluation App.',
+                  cc: ['ben.hemkens@permobil.com']
+                })
+                .then(result => {
+                  console.log(result);
+                  if (result) {
+                    console.log('the email may have been sent!');
+                  } else {
+                    console.log('the email may NOT have been sent!');
+                  }
+                })
+                .catch(error => console.error(error));
+            }
+          })
+          .catch(error => console.error(error));
+        // now go back to dashboard
+        this.routerExtensions.navigate(['/home'], {
+          clearHistory: true,
+          transition: {
+            name: 'fade'
+          }
+        });
+      }
+    });
+  }
 
-    onRampDifficultyChecked(args): void {
-	this.hasRampDifficulty = args.value;
-    }
+  onRampDifficultyChecked(args): void {
+    this.hasRampDifficulty = args.value;
+  }
 
-    onFlatDifficultyChecked(args): void {
-	this.hasFlatDifficulty = args.value;
-    }
+  onFlatDifficultyChecked(args): void {
+    this.hasFlatDifficulty = args.value;
+  }
 
-    onBack(): void {
-	this.routerExtensions.navigate(['/trial'], {
-	    clearHistory: true,
-	    transition: {
-		name: 'slideRight'
-	    }
-	});
-    }
+  onBack(): void {
+    this.routerExtensions.navigate(['/trial'], {
+      clearHistory: true,
+      transition: {
+        name: 'slideRight'
+      }
+    });
+  }
 
-    onTextChange(args) {
-	const textField = <TextField>args.object;
+  onTextChange(args) {
+    const textField = <TextField>args.object;
 
-	console.log('onTextChange');
-	this.trialName = textField.text;
-    }
+    console.log('onTextChange');
+    this.trialName = textField.text;
+  }
 
-    onReturn(args) {
-	const textField = <TextField>args.object;
+  onReturn(args) {
+    const textField = <TextField>args.object;
 
-	console.log('onReturn');
-	this.trialName = textField.text;
-    }
+    console.log('onReturn');
+    this.trialName = textField.text;
+  }
 
-    showAlert(result) {
-	alert('Text: ' + result);
-    }
+  showAlert(result) {
+    alert('Text: ' + result);
+  }
 
-    submit(result) {
-	alert('Text: ' + result);
-    }
+  submit(result) {
+    alert('Text: ' + result);
+  }
 
-    onSliderUpdate(key, args) {
-	this.settings.set(key, args.object.value);
-    }
+  onSliderUpdate(key, args) {
+    this.settings.set(key, args.object.value);
+  }
 
-    ngOnInit() {
-	console.log('Summary.Component ngOnInit');
-    }
+  ngOnInit() {
+    console.log('Summary.Component ngOnInit');
+  }
 
-    get settings(): Observable {
-	return EvaluationService.settings;
-    }
+  get settings(): Observable {
+    return EvaluationService.settings;
+  }
 }
