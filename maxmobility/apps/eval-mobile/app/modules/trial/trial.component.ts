@@ -1,11 +1,13 @@
 // angular
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 // nativescript
 import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-sidedrawer';
 import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { SegmentedBar, SegmentedBarItem } from 'tns-core-modules/ui/segmented-bar';
 import { TextField } from 'tns-core-modules/ui/text-field';
+import { View } from 'tns-core-modules/ui/core/view';
+import { Animation, AnimationDefinition } from 'tns-core-modules/ui/animation';
 import { confirm } from 'tns-core-modules/ui/dialogs';
 import * as switchModule from 'tns-core-modules/ui/switch';
 import { Observable, fromObject } from 'tns-core-modules/data/observable';
@@ -13,36 +15,8 @@ import { Observable, fromObject } from 'tns-core-modules/data/observable';
 // app
 import { ProgressService } from '@maxmobility/mobile';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
-import { Packet, DailyInfo, PushTracker, SmartDrive } from '@maxmobility/core';
+import { Trial, PushTracker } from '@maxmobility/core';
 import { BluetoothService } from '@maxmobility/mobile';
-
-export class Trial {
-  name: string = '';
-  // questionnaire
-  flat: boolean = false;
-  ramap: boolean = false;
-  inclines: boolean = false;
-  other: boolean = false;
-  // settings
-  max_speed: number = 0.7;
-  acceleration: number = 0.3;
-  // metrics
-  distance: number = 0;
-  // with SD
-  with_pushes: number = 0;
-  with_coast: number = 0;
-  with_distance: number = 0;
-  with_start: Date;
-  with_end: Date;
-  with_elapsed: number = 0;
-  // without SD
-  without_pushes: number = 0;
-  without_coast: number = 0;
-  without_distance: number = 0;
-  without_start: Date;
-  without_end: Date;
-  without_elapsed: number = 0;
-}
 
 @Component({
   selector: 'Trial',
@@ -53,13 +27,23 @@ export class Trial {
 export class TrialComponent implements OnInit {
   // NON STATIC:
   @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
+  @ViewChild('withPage') withPageView: ElementRef;
+  @ViewChild('withoutPage') withoutPageView: ElementRef;
+  @ViewChild('startWith') startWithView: ElementRef;
+  @ViewChild('stopWith') stopWithView: ElementRef;
+  @ViewChild('startWithout') startWithoutView: ElementRef;
+  @ViewChild('stopWithout') stopWithoutView: ElementRef;
 
-  trial: Observable = fromObject(new Trial());
+  trial: Trial = new Trial();
 
-  startedWith: boolean = false;
-  startedWithout: boolean = false;
-  finishedWith: boolean = false;
-  finishedWithout: boolean = false;
+  // displaying trial info
+  distanceDisplay: string = '--';
+  pushWithDisplay: string = '--';
+  coastWithDisplay: string = '--';
+  timeWithDisplay: string = '--';
+  pushWithoutDisplay: string = '--';
+  coastWithoutDisplay: string = '--';
+  timeWithoutDisplay: string = '--';
 
   snackbar = new SnackBar();
 
@@ -68,8 +52,22 @@ export class TrialComponent implements OnInit {
   constructor(
     private routerExtensions: RouterExtensions,
     private _progressService: ProgressService,
-    private _bluetoothService: BluetoothService
+    private _bluetoothService: BluetoothService,
+    private zone: NgZone
   ) {}
+
+  hideView(view: View): void {
+    view.opacity = 0;
+    view.visibility = 'collapse';
+  }
+
+  animateViewIn(view: View): void {
+    view.visibility = 'visible';
+    view.animate({
+      opacity: 1,
+      duration: 500
+    });
+  }
 
   // button events
   onNext(): void {
@@ -90,6 +88,12 @@ export class TrialComponent implements OnInit {
     });
   }
 
+  timeToString(seconds: number): string {
+    let t = new Date(null);
+    t.setSeconds(seconds);
+    return t.toISOString().substr(11, 8);
+  }
+
   // tslint:disable-next-line:adjacent-overload-signatures
   onStartWithTrial() {
     const connectedPTs = BluetoothService.PushTrackers.filter(pt => pt.connected);
@@ -99,7 +103,8 @@ export class TrialComponent implements OnInit {
     } else if (connectedPTs.length > 1) {
       // too many pushtrackers connected - don't know which to use!
       this.snackbar.simple('Too many PushTrackers connected - please only connect one!');
-    } else {
+    } else if (!this.trial.startedWith) {
+      this.hideView(<View>this.startWithView.nativeElement);
       // we have exactly one PushTracker connected
       const pt = connectedPTs[0];
       let haveDailyInfo = false;
@@ -108,15 +113,18 @@ export class TrialComponent implements OnInit {
       this._progressService.show('Starting Trial');
       // set up handlers
       const trialStartedHandler = () => {
-        this._progressService.hide();
-        this.trial.set('with_start', new Date());
-        pt.off(PushTracker.pushtracker_distance_event, distanceHandler);
-        pt.off(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
-        this.startedWith = true;
+        this.zone.run(() => {
+          this._progressService.hide();
+          this.trial.with_start = new Date();
+          pt.off(PushTracker.pushtracker_distance_event, distanceHandler);
+          pt.off(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
+          this.trial.startedWith = true;
+          this.animateViewIn(<View>this.stopWithView.nativeElement);
+        });
       };
       const dailyInfoHandler = data => {
         // get the data
-        this.trial.set('with_pushes', data.data.pushesWithout + data.data.pushesWith);
+        this.trial.with_pushes = data.data.pushesWithout + data.data.pushesWith;
         // record that we've gotten it
         haveDailyInfo = true;
         if (haveDailyInfo && haveDistance) {
@@ -125,7 +133,7 @@ export class TrialComponent implements OnInit {
       };
       const distanceHandler = data => {
         // get the data
-        this.trial.set('distance', PushTracker.caseTicksToMiles(data.data.coastDistance));
+        this.trial.distance = PushTracker.caseTicksToMiles(data.data.coastDistance);
         // record that we've gotten it
         haveDistance = true;
         if (haveDailyInfo && haveDistance) {
@@ -133,7 +141,12 @@ export class TrialComponent implements OnInit {
         }
       };
       // send command to get distance:
-      pt.sendPacket('Command', 'DistanceRequest');
+      pt
+        .sendSettings('MX2+', 'English', 0x00, 1.0, this.trial.acceleration, this.trial.max_speed)
+        .then(success => {
+          return pt.sendPacket('Command', 'DistanceRequest');
+        })
+        .then(success => {});
       // wait for push / coast data and distance:
       pt.on(PushTracker.pushtracker_distance_event, distanceHandler);
       pt.on(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
@@ -149,56 +162,54 @@ export class TrialComponent implements OnInit {
     } else if (connectedPTs.length > 1) {
       // too many pushtrackers connected - don't know which to use!
       this.snackbar.simple('Too many PushTrackers connected - please only connect one!');
-    } else {
-      if (!this.finishedWith) {
-        // we have exactly one PushTracker connected
-        const pt = connectedPTs[0];
-        let haveDailyInfo = false;
-        let haveDistance = false;
-        // let user know we're doing something
-        this._progressService.show('Stopping Trial');
-        // set up handlers
-        const trialStoppedHandler = () => {
-          this.finishedWith = true;
-          this.trial.set('with_end', new Date());
-          this.trial.set(
-            'with_elapsed',
-            (this.trial.get('with_end').getTime() - this.trial.get('with_start').getTime()) / 60000
-          ); // diff is in ms
-          this.trial.set('with_coast', this.trial.get('with_elapsed') * 60 / this.trial.get('with_pushes'));
+    } else if (!this.trial.finishedWith) {
+      this.trial.with_end = new Date();
+      // we have exactly one PushTracker connected
+      const pt = connectedPTs[0];
+      let haveDailyInfo = false;
+      let haveDistance = false;
+      // let user know we're doing something
+      this._progressService.show('Stopping Trial');
+      // set up handlers
+      const trialStoppedHandler = () => {
+        this.zone.run(() => {
+          this.trial.finishedWith = true;
+          this.trial.with_elapsed = (this.trial.with_end.getTime() - this.trial.with_start.getTime()) / 60000; // diff is in ms
+          this.trial.with_coast = this.trial.with_pushes ? this.trial.with_elapsed * 60 / this.trial.with_pushes : 0;
           pt.off(PushTracker.pushtracker_distance_event, distanceHandler);
           pt.off(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
           this._progressService.hide();
-        };
-        const dailyInfoHandler = data => {
-          // get the data
-          this.trial.set('with_pushes', data.data.pushesWithout + data.data.pushesWith - this.trial.get('with_pushes'));
-          // record that we've gotten it
-          haveDailyInfo = true;
-          if (haveDailyInfo && haveDistance) {
-            trialStoppedHandler();
-          }
-        };
-        const distanceHandler = data => {
-          // get the data
-          this.trial.set(
-            'distance',
-            PushTracker.caseTicksToMiles(data.data.coastDistance) - this.trial.get('distance')
-          );
-          this.trial.set('distance', this.trial.get('distance') * 1604); // convert to meters
-          // record that we've gotten it
-          haveDistance = true;
-          if (haveDailyInfo && haveDistance) {
-            trialStoppedHandler();
-          }
-        };
-        // send command to get distance:
-        pt.sendPacket('Command', 'DistanceRequest');
-        // wait for push / coast data and distance:
-        pt.on(PushTracker.pushtracker_distance_event, distanceHandler);
-        pt.on(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
-      } else {
-      }
+          this.hideView(<View>this.stopWithView.nativeElement);
+          this.distanceDisplay = `${this.trial.distance.toFixed(2)} m`;
+          this.pushWithDisplay = `${this.trial.with_pushes}`;
+          this.coastWithDisplay = `${this.trial.with_coast.toFixed(2)} s`;
+          this.timeWithDisplay = this.timeToString(this.trial.with_elapsed * 60);
+        });
+      };
+      const dailyInfoHandler = data => {
+        // get the data
+        this.trial.with_pushes = data.data.pushesWithout + data.data.pushesWith - this.trial.with_pushes;
+        // record that we've gotten it
+        haveDailyInfo = true;
+        if (haveDailyInfo && haveDistance) {
+          trialStoppedHandler();
+        }
+      };
+      const distanceHandler = data => {
+        // get the data
+        this.trial.distance = PushTracker.caseTicksToMiles(data.data.coastDistance) - this.trial.distance;
+        this.trial.distance = this.trial.distance * 1604; // convert to meters
+        // record that we've gotten it
+        haveDistance = true;
+        if (haveDailyInfo && haveDistance) {
+          trialStoppedHandler();
+        }
+      };
+      // send command to get distance:
+      pt.sendPacket('Command', 'DistanceRequest');
+      // wait for push / coast data and distance:
+      pt.on(PushTracker.pushtracker_distance_event, distanceHandler);
+      pt.on(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
     }
   }
 
@@ -211,21 +222,25 @@ export class TrialComponent implements OnInit {
     } else if (connectedPTs.length > 1) {
       // too many pushtrackers connected - don't know which to use!
       this.snackbar.simple('Too many PushTrackers connected - please only connect one!');
-    } else {
+    } else if (!this.trial.startedWithout) {
+      this.hideView(<View>this.startWithoutView.nativeElement);
       // we have exactly one PushTracker connected
       const pt = connectedPTs[0];
       // let user know we're doing something
       this._progressService.show('Starting Trial');
       // set up handlers
       const trialStartedHandler = () => {
-        this._progressService.hide();
-        this.startedWithout = true;
-        this.trial.set('without_start', new Date());
-        pt.off(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
+        this.zone.run(() => {
+          this._progressService.hide();
+          this.trial.startedWithout = true;
+          this.trial.without_start = new Date();
+          pt.off(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
+          this.animateViewIn(<View>this.stopWithoutView.nativeElement);
+        });
       };
       const dailyInfoHandler = data => {
         // get the data
-        this.trial.set('without_pushes', data.data.pushesWithout + data.data.pushesWith);
+        this.trial.without_pushes = data.data.pushesWithout + data.data.pushesWith;
         // record that we've gotten it
         trialStartedHandler();
       };
@@ -242,49 +257,50 @@ export class TrialComponent implements OnInit {
     } else if (connectedPTs.length > 1) {
       // too many pushtrackers connected - don't know which to use!
       this.snackbar.simple('Too many PushTrackers connected - please only connect one!');
-    } else {
-      if (!this.finishedWithout) {
-        // we have exactly one PushTracker connected
-        const pt = connectedPTs[0];
-        // let user know we're doing something
-        this._progressService.show('Stopping Trial');
-        // set up handlers
-        const trialStoppedHandler = () => {
-          this.finishedWithout = true;
-          this.trial.set('without_end', new Date());
-          this.trial.set(
-            'without_elapsed',
-            (this.trial.get('without_end').getTime() - this.trial.get('without_start').getTime()) / 60000
-          ); // diff is in ms
-          this.trial.set('without_coast', this.trial.get('without_elapsed') * 60 / this.trial.get('without_pushes'));
+    } else if (!this.trial.finishedWithout) {
+      this.trial.without_end = new Date();
+      // we have exactly one PushTracker connected
+      const pt = connectedPTs[0];
+      // let user know we're doing something
+      this._progressService.show('Stopping Trial');
+      // set up handlers
+      const trialStoppedHandler = () => {
+        this.zone.run(() => {
+          this.trial.finishedWithout = true;
+          this.trial.without_elapsed = (this.trial.without_end.getTime() - this.trial.without_start.getTime()) / 60000;
+          this.trial.without_coast = this.trial.without_pushes
+            ? this.trial.without_elapsed * 60 / this.trial.without_pushes
+            : 0;
           pt.off(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
           this._progressService.hide();
-        };
-        const dailyInfoHandler = data => {
-          // get the data
-          this.trial.set(
-            'without_pushes',
-            data.data.pushesWithout + data.data.pushesWith - this.trial.get('without_pushes')
-          );
-          // record that we've gotten it
-          trialStoppedHandler();
-        };
-        // wait for push / coast data and distance:
-        pt.on(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
-      } else {
-      }
+          this.hideView(<View>this.stopWithoutView.nativeElement);
+          this.pushWithoutDisplay = `${this.trial.without_pushes}`;
+          this.coastWithoutDisplay = `${this.trial.without_coast.toFixed(2)} s`;
+          this.timeWithoutDisplay = this.timeToString(this.trial.without_elapsed * 60);
+        });
+      };
+      const dailyInfoHandler = data => {
+        // get the data
+        this.trial.without_pushes = data.data.pushesWithout + data.data.pushesWith - this.trial.without_pushes;
+        // record that we've gotten it
+        trialStoppedHandler();
+      };
+      // wait for push / coast data and distance:
+      pt.on(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
     }
   }
 
   onTextChange(args) {
-    this.trial.set('name', args.value);
+    this.trial.name = args.value;
   }
 
   onSliderUpdate(key, args) {
-    this.trial.set(key, args.object.value / 10);
+    this.trial[key] = args.object.value / 10;
   }
 
   ngOnInit(): void {
+    this.hideView(<View>this.stopWithView.nativeElement);
+    this.hideView(<View>this.stopWithoutView.nativeElement);
     this._sideDrawerTransition = new SlideAlongTransition();
   }
 
