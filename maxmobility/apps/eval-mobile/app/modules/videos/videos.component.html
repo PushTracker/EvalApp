@@ -13,19 +13,20 @@
 </StackLayout>
 
 <Gradient tkMainContent margin-top="30" direction="to bottom" colors="#004F7E, #0070b3">
-<ListView backgroundColor="transparent" [items]="videos" (itemTap)="didSelectItemAtIndex($event)">
+<ListView backgroundColor="transparent" [items]="videos" (itemTap)="onItemTap($event)">
 
     <ng-template let-item="item">
+        <GridLayout  rows="auto" columns="145, *">
 
-         <GridLayout  rows="auto" columns="145, *">
+            <!-- <WebView class="thumb" row="0" col="0" [src]="item.Url">
+            </WebView> -->
 
-            <WebView class="thumb" row="0" col="0" [src]="item.Url">
-            </WebView>
+            <Image class="thumb" [src]="item.Thumb" row="0" col="0"></Image>
             
-            <Label class="description" editable="false" textWrap="true" row="0" col="1" class="description" [text]="item.Title "></Label>
+            <Label class="description" editable="false" textWrap="true" row="0" col="1" [text]="item.Title "></Label>
 
-                    </GridLayout>
-            </ng-template>
-        </ListView>
+         </GridLayout>
+        </ng-template>
+    </ListView>
 </Gradient>
 </RadSideDrawer>

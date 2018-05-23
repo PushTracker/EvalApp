@@ -97,7 +97,7 @@ export class DemosComponent implements OnInit {
     private _sideDrawerTransition: DrawerTransitionBase;
 
     onDemoTap(args) {
-	console.log('onDemoTap');
+	console.log('onDemoTap index: ' + args.index);
     }
 
     onScan() {

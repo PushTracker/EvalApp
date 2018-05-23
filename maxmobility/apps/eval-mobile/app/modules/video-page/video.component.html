@@ -1,14 +1,14 @@
 <ActionBar class="action-bar" flat="true" [title]="title">
-    <NavigationButton android.systemIcon="ic_menu_back" tap="onNavBtnTap"></NavigationButton>
+    <!-- <NavigationButton android.systemIcon="ic_menu_back" tap="onNavBtnTap"></NavigationButton> -->
 
   <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem>
 </ActionBar>
 
-<Gradient tkMainContent direction="to bottom" colors="#004F7E, #0097ff">  
+<Gradient tkMainContent direction="to bottom" colors="#004F7E, #0070b3">  
   <GridLayout padding="0" margin="0"  rows="auto, *" cols="auto">
-	    <WebView row="0" padding="0" margin="0" backgroundColor="yellow" height="30%" width="100%" [src]="url">
+	    <WebView row="0" padding="0" margin="0" backgroundColor="yellow" height="35%" width="100%" [src]="url">
       </WebView>
-	<ScrollView  row="1" class="" height="70%" >
+	<ScrollView  row="1" class="" height="65%" >
       <StackLayout orientation="vertical" horizontalAlignment="center" width="100%">
           <Label row="1" [text]="title" class="title" textWrap="true"></Label>
 	        <Label row="1" [text]="desc" class="bullet" textWrap="true"></Label>
