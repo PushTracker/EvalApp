@@ -2,11 +2,13 @@ import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-sidedrawer';
 import { alert } from 'tns-core-modules/ui/dialogs';
 import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
+import { RouterExtensions } from 'nativescript-angular/router';
 import { BarcodeScanner } from 'nativescript-barcodescanner';
 const Demos = [
   {
     Image: '~/assets/images/PushTracker-SmartDrive-pairing.png',
     SerialNumber: 'SD: 00001',
+    Model: 'MX2 +',
     PTSerialNumber: 'PT: 00001',
     Firmware: 'SD Firmware: 0.0.01',
     LastUsed: new Date(1988, 10, 23).toLocaleDateString(),
@@ -15,6 +17,7 @@ const Demos = [
   {
     Image: '~/assets/images/PushTracker-SmartDrive-pairing.png',
     SerialNumber: 'SD: 11001',
+    Model: 'MX2 +',
     PTSerialNumber: 'PT: 11001',
     Firmware: 'SD Firmware: 1.4',
     LastUsed: new Date().toLocaleDateString(),
@@ -23,6 +26,7 @@ const Demos = [
   {
     Image: '~/assets/images/PushTracker-SmartDrive-pairing.png',
     SerialNumber: 'SD: 11002',
+    Model: 'MX2 +',
     PTSerialNumber: 'PT: 110002',
     Firmware: 'SD Firmware: 1.1',
     LastUsed: new Date().toLocaleDateString(),
@@ -31,6 +35,7 @@ const Demos = [
   {
     Image: '~/assets/images/PushTracker-SmartDrive-pairing.png',
     SerialNumber: 'SD: 11003',
+    Model: 'MX2 +',
     PTSerialNumber: 'PT: 11003',
     Firmware: 'SD Firmware: 1.1',
     LastUsed: new Date().toLocaleDateString(),
@@ -39,6 +44,7 @@ const Demos = [
   {
     Image: '~/assets/images/PushTracker-SmartDrive-pairing.png',
     SerialNumber: 'SD: 11004',
+    Model: 'MX2 +',
     PTSerialNumber: 'PT: 11004',
     Firmware: 'SD Firmware: 1.2',
     LastUsed: new Date().toLocaleDateString(),
@@ -47,6 +53,7 @@ const Demos = [
   {
     Image: '~/assets/images/PushTracker-SmartDrive-pairing.png',
     SerialNumber: 'SD: 11005',
+    Model: 'MX2 +',
     PTSerialNumber: 'PT: 11005',
     Firmware: 'SD Firmware: 1.4',
     LastUsed: new Date().toLocaleDateString(),
@@ -55,6 +62,7 @@ const Demos = [
   {
     Image: '~/assets/images/PushTracker-SmartDrive-pairing.png',
     SerialNumber: 'SD: 11006',
+    Model: 'MX2 +',
     PTSerialNumber: 'PT: 11006',
     Firmware: 'SD Firmware: 1.2',
     LastUsed: new Date().toLocaleDateString(),
@@ -63,6 +71,7 @@ const Demos = [
   {
     Image: '~/assets/images/PushTracker-SmartDrive-pairing.png',
     SerialNumber: 'SD: 11007',
+    Model: 'MX2 +',
     PTSerialNumber: 'PT: 11007',
     Firmware: 'SD Firmware: 1.1',
     LastUsed: new Date().toLocaleDateString(),
@@ -79,7 +88,7 @@ export { Demos };
   styleUrls: ['./demos.component.css']
 })
 export class DemosComponent implements OnInit {
-  constructor(private barcodeScanner: BarcodeScanner) {}
+  constructor(private barcodeScanner: BarcodeScanner, private routerExtensions: RouterExtensions) {}
 
   @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
 
@@ -88,7 +97,7 @@ export class DemosComponent implements OnInit {
   private _sideDrawerTransition: DrawerTransitionBase;
 
   onDemoTap(args) {
-    console.log('onDemoTap');
+    console.log('onDemoTap index: ' + args.index);
   }
 
   onScan() {
@@ -134,5 +143,14 @@ export class DemosComponent implements OnInit {
 
   onDrawerButtonTap(): void {
     this.drawerComponent.sideDrawer.showDrawer();
+  }
+
+  onNavBtnTap(): void {
+    this.routerExtensions.navigate(['/home'], {
+      clearHistory: true,
+      transition: {
+        name: 'slideRight'
+      }
+    });
   }
 }

@@ -14,12 +14,9 @@ import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-side
 import { RadSideDrawerComponent, SideDrawerType } from 'nativescript-ui-sidedrawer/angular';
 import { RadListViewComponent } from 'nativescript-ui-listview/angular';
 import { CLog, LoggingService } from '@maxmobility/core';
-
 import { FAQs } from '../faq/faq.component';
 import { Videos } from '../videos/videos.component';
 import { Demos } from '../demos/demos.component';
-
-import { BluetoothService } from '@maxmobility/mobile';
 
 @Component({
   selector: 'Home',
@@ -69,12 +66,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       Description: 'Fleet management and Tracking.',
       Route: '/demos'
     },
-    {
-      Title: 'FAQ',
-      Image: String.fromCharCode(0xf059),
-      Description: 'Common SmartDrive Questions',
-      Route: '/faq'
-    }
+    { Title: 'FAQ', Image: String.fromCharCode(0xf059), Description: 'Common SmartDrive Questions', Route: '/faq' }
   ];
 
   connectivityItems = [
@@ -151,26 +143,18 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this._sideDrawerTransition = new SlideAlongTransition();
   }
 
-  onRadListLoaded(event) {
-    /*
-	  const radListView = event.object;
-	  setTimeout(() => {
-          radListView.scrollWithAmount(150, true);
-	  setTimeout(() => {
-	  radListView.scrollWithAmount(-150, true);    
-	  }, 500);
-	  }, 100);
-	*/
-  }
   ngAfterViewInit(): void {
     this.drawer = this.drawerComponent.sideDrawer;
-    // if (this.drawer.ios) {
-    //   const sideDrawer: TKSideDrawer = this.drawer.ios.defaultSideDrawer;
-    //   sideDrawer.style.shadowMode = TKSideDrawerShadowMode.Hostview;
-    //   sideDrawer.style.shadowOpacity = 0.75;
-    //   sideDrawer.style.shadowRadius = 5;
-    //   sideDrawer.transitionDuration = 0.25;
-    // }
+  }
+
+  onRadListLoaded(event) {
+    // const radListView = event.object;
+    // setTimeout(() => {
+    //   radListView.scrollWithAmount(150, true);
+    // setTimeout(() => {
+    //   radListView.scrollWithAmount(-150, true);
+    // }, 500);
+    // }, 100);
   }
 
   get sideDrawerTransition(): DrawerTransitionBase {
