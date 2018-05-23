@@ -4,7 +4,7 @@
   <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem>
 </ActionBar>
 
-<RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
+<RadSideDrawer #drawer ios:showOverNavigation="true" android:showOverNavigation="false" [drawerTransition]="sideDrawerTransition">
 
   <StackLayout tkDrawerContent>
     <MyDrawer [selectedPage]="'OTA'"></MyDrawer>

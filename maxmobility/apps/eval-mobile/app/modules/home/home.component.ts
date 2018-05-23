@@ -92,14 +92,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   evalItems = [
     {
-      Image: '~/assets/images/Training.jpg',
-      Description: 'Training how to use SmartDrive',
-      Route: '/training'
-    },
-    {
       Image: '~/assets/images/evaluation.jpg',
       Description: 'Begin SmartDrive Evaluation',
       Route: '/eval-entry'
+    },
+    {
+      Image: '~/assets/images/Training.jpg',
+      Description: 'Training how to use SmartDrive',
+      Route: '/training'
     },
     {
       Image: '~/assets/images/trial.jpg',

@@ -4,7 +4,7 @@
   <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem>
 </ActionBar>
 
-<RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
+<RadSideDrawer #drawer ios:showOverNavigation="true" android:showOverNavigation="false" [drawerTransition]="sideDrawerTransition">
 
 
   <StackLayout tkDrawerContent>
@@ -21,8 +21,8 @@
 
     <ScrollView row="1" class="" orientation="vertical">
       <StackLayout class="eval-stack-layout" width="100%">
-	<DockLayout stretchLastChild="false" >
-          <Label text="Do you have pain from pushing?" class="eval-item" dock="left" textWrap="true" width="70%"></Label>
+	<DockLayout stretchLastChild="true" >
+          <Label text="Do you have pain from pushing?" class="eval-item" dock="left" textWrap="true" width="50%"></Label>
           <SegmentedBar [items]="PushingPain" [selectedIndex]="getPushingPainIndex()" class="eval-segmentedBar" dock="right" (selectedIndexChanged)="onPushingPainIndexChange($event)"></SegmentedBar>
 	</DockLayout>
 	<DockLayout *ngIf="getPushingPainIndex() == 0" stretchLastChild="false">
@@ -33,8 +33,8 @@
           <Slider maxValue="10"  verticalAlignment="center" class="eval-slider" [value]="evaluation.pain" (valueChange)="onSliderUpdate('pain', $event)" row="0" col="0"></Slider>
 	</GridLayout>
 
-	<DockLayout stretchLastChild="false" padding="30,0,0,0">
-          <Label text="Do you have fatigue from pushing?" class="eval-item" dock="left" textWrap="true" width="75%"></Label>
+	<DockLayout stretchLastChild="true" padding="30,0,0,0">
+          <Label text="Do you have fatigue from pushing?" class="eval-item" dock="left" textWrap="true" width="50%"></Label>
           <SegmentedBar [items]="PushingFatigue" [selectedIndex]="getPushingFatigueIndex()" class="eval-segmentedBar" dock="right" (selectedIndexChanged)="onPushingFatigueIndexChange($event)"></SegmentedBar>
 	</DockLayout>
 	<DockLayout *ngIf="getPushingFatigueIndex() == 0" stretchLastChild="false">

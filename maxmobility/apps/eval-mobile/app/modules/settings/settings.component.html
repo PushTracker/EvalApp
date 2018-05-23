@@ -18,7 +18,7 @@ http://docs.telerik.com/devtools/nativescript-ui/Controls/Angular/SideDrawer/get
 The RadSideDrawer component is designed to be used as a root element and
 it shouldn't have any other siblings other than the <ActionBar> component.
 -->
-<RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
+<RadSideDrawer #drawer ios:showOverNavigation="true" android:showOverNavigation="false" [drawerTransition]="sideDrawerTransition">
     <!--
     Use the tkDrawerContent directive to display the content of the app drawer on this page.
     -->
