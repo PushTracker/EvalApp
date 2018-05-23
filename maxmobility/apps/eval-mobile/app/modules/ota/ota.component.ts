@@ -1,4 +1,4 @@
-import application = require('application');
+import * as application from 'tns-core-modules/application';
 
 // angular
 import { Component, ElementRef, OnInit, OnDestroy, ViewChild } from '@angular/core';
@@ -21,15 +21,12 @@ import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 import { Observable, Scheduler } from 'rxjs';
 
-// libs;
+// libs
 import { knownFolders, File } from 'tns-core-modules/file-system';
 import { BluetoothService } from '@maxmobility/mobile';
-import { Packet, DailyInfo, PushTracker, SmartDrive } from '@maxmobility/core';
+import { Packet, DailyInfo, PushTracker, SmartDrive, ProgressService } from '@maxmobility/core';
 import { constructDependencies } from '@angular/core/src/di/reflective_provider';
 import { constants } from 'fs';
-
-// app
-import { ProgressService } from '@maxmobility/mobile';
 
 // const timeElapsed = Observable.defer(() => {
 //     const start = Scheduler.animationFrame.now();
@@ -81,8 +78,10 @@ export class OTAComponent implements OnInit, OnDestroy {
     'Updated company logo branding when booting PT from sleep.',
     'Now show estimated drive range on the PT in DisplayInfo  battery status screen.',
     'Now show OTA status bar and percentage on PT when performing PT OTA.',
-    "When SD is not paired (e.g. after OTA) and the left button is pressed to turn 'SD On', the PT goes directly into pairing to SD mode.",
-    'When App is not paired (e.g. after OTA) and the right button is pressed to connect to the app, the PT goes directly into pairing to app mode.',
+    `When SD is not paired (e.g. after OTA) and the left button is pressed
+    to turn 'SD On', the PT goes directly into pairing to SD mode.`,
+    `When App is not paired (e.g. after OTA) and the right button is pressed
+    to connect to the app, the PT goes directly into pairing to app mode.`,
     'Bugfixes to pairing process for handling multiple devices.'
   ];
 
@@ -111,19 +110,18 @@ export class OTAComponent implements OnInit, OnDestroy {
     // sign up for events on PushTrackers and SmartDrives
     // handle pushtracker connection events for existing pushtrackers
     console.log('registering for connection events!');
-    const self = this;
-    BluetoothService.PushTrackers.map(function(pt) {
-      pt.on(PushTracker.pushtracker_connect_event, function(args) {
-        self.onPushTrackerConnected();
+    BluetoothService.PushTrackers.map(pt => {
+      pt.on(PushTracker.pushtracker_connect_event, args => {
+        this.onPushTrackerConnected();
       });
     });
 
     // listen for completely new pusthrackers (that we haven't seen before)
-    BluetoothService.PushTrackers.on(ObservableArray.changeEvent, function(args) {
+    BluetoothService.PushTrackers.on(ObservableArray.changeEvent, args => {
       if (args.action === 'add') {
         const pt = BluetoothService.PushTrackers.getItem(BluetoothService.PushTrackers.length - 1);
-        pt.on(PushTracker.pushtracker_connect_event, function(arg) {
-          self.onPushTrackerConnected();
+        pt.on(PushTracker.pushtracker_connect_event, arg => {
+          this.onPushTrackerConnected();
         });
       }
     });
@@ -138,7 +136,7 @@ export class OTAComponent implements OnInit, OnDestroy {
     });
 
     this.page.on(Page.navigatingFromEvent, event => {
-      //this.ngOnDestroy();
+      // this.ngOnDestroy();
     });
 
     this.hideView(<View>this.otaTitleView.nativeElement);
@@ -275,14 +273,14 @@ export class OTAComponent implements OnInit, OnDestroy {
           selectedSmartDrives.map(sd => {
             this.smartDriveOTAs.push(sd);
           });
-          //this.smartDriveOTAs.notify(ObservableArray.changeEvent);
-          return this.select(BluetoothService.PushTrackers); //.filter(pt => pt.connected));
+          // this.smartDriveOTAs.notify(ObservableArray.changeEvent);
+          return this.select(BluetoothService.PushTrackers); // .filter(pt => pt.connected));
         })
         .then(selectedPushTrackers => {
           selectedPushTrackers.map(pt => {
             this.pushTrackerOTAs.push(pt);
           });
-          //this.pushTrackerOTAs.notify(ObservableArray.changeEvent);
+          // this.pushTrackerOTAs.notify(ObservableArray.changeEvent);
 
           // OTA the selected smart drive(s)
           const smartDriveOTATasks = this.smartDriveOTAs.map(sd => {
