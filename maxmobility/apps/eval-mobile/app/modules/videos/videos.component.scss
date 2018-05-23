@@ -11,11 +11,20 @@
         // background-color: $permobil-charcoal;
 }
 
-.description {
+.title {
     text-align: left;
-    font-size: 16;
+    font-size: 17;
     font-weight: 350;
     color: #fff;
-    margin: 40, 5, 5, 10;
-
+    margin: 25, 5, 5, 10;
 }
+
+.desc {
+    text-align: left;
+    font-size: 14;
+    font-weight: 300;
+    color: #fff;
+    margin: 5, 5, 15, 10;
+}
+
+

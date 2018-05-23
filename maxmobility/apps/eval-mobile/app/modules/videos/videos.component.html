@@ -1,10 +1,7 @@
 <ActionBar class="action-bar" flat="true" title="Videos">
-  <!-- <NavigationButton android.systemIcon="ic_menu_back" tap="onNavBtnTap"></NavigationButton> -->
-
-  <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem>
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem>
 </ActionBar>
-
-
 
 <RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
 
@@ -14,19 +11,16 @@
 
 <Gradient tkMainContent margin-top="30" direction="to bottom" colors="#004F7E, #0070b3">
 <ListView backgroundColor="transparent" [items]="videos" (itemTap)="onItemTap($event)">
-
     <ng-template let-item="item">
         <GridLayout  rows="auto" columns="145, *">
-
-            <!-- <WebView class="thumb" row="0" col="0" [src]="item.Url">
-            </WebView> -->
-
-            <Image class="thumb" [src]="item.Thumb" row="0" col="0"></Image>
-            
-            <Label class="description" editable="false" textWrap="true" row="0" col="1" [text]="item.Title "></Label>
-
+            <Image col="0" class="thumb" [src]="item.Thumb" ></Image>
+            <GridLayout col="1" rows="auto, auto" columns="*">
+            <Label row="0" class="title" textWrap="true"  [text]="item.Title"></Label>
+            <Label row="1"  class="desc" textWrap="true"  [text]="item.Description"></Label>
+            </GridLayout>
          </GridLayout>
         </ng-template>
     </ListView>
 </Gradient>
+
 </RadSideDrawer>

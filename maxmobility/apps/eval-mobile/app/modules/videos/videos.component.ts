@@ -108,13 +108,4 @@ export class VideosComponent implements OnInit {
     );
   }
 
-  onNavBtnTap(): void {
-    this.routerExtensions.navigate(['/home'], {
-      clearHistory: true,
-      transition: {
-        name: 'slideRight'
-      }
-    });
-  }
-
 }
