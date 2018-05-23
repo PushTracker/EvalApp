@@ -110,6 +110,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   otaItems = [
     {
+      Image: '~/assets/images/pt-sd-bt.jpg',
+      Description: 'Update a PushTracker and SmartDrive together',
+      Directive: 'pt-sd',
+      Route: '/ota'
+    },
+    {
       Image: '~/assets/images/pt-bt.jpg',
       Description: 'Update the Firmware on your PushTracker',
       Directive: 'pt',
@@ -119,12 +125,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
       Image: '~/assets/images/sd-bt.jpg',
       Description: 'Update the Firmware on your SmartDrive',
       Directive: 'sd',
-      Route: '/ota'
-    },
-    {
-      Image: '~/assets/images/pt-sd-bt.jpg',
-      Description: 'Update a PushTracker and SmartDrive together',
-      Directive: 'pt-sd',
       Route: '/ota'
     }
   ];

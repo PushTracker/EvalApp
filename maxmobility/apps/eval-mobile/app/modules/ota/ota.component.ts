@@ -23,8 +23,8 @@ import { Observable, Scheduler } from 'rxjs';
 
 // libs
 import { knownFolders, File } from 'tns-core-modules/file-system';
-import { BluetoothService } from '@maxmobility/mobile';
-import { Packet, DailyInfo, PushTracker, SmartDrive, ProgressService } from '@maxmobility/core';
+import { BluetoothService, ProgressService } from '@maxmobility/mobile';
+import { Packet, DailyInfo, PushTracker, SmartDrive } from '@maxmobility/core';
 import { constructDependencies } from '@angular/core/src/di/reflective_provider';
 import { constants } from 'fs';
 
