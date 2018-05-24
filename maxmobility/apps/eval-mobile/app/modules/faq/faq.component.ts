@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-sidedrawer';
 import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
+import { isAndroid, isIOS } from "platform";
 
 const FAQs = [
     {
@@ -38,6 +39,14 @@ export { FAQs };
 })
 export class FAQComponent implements OnInit {
     @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
+
+    isIOS(): boolean {
+        return isIOS;
+    }
+
+    isAndroid(): boolean {
+        return isAndroid;
+    }
 
     public faqs = FAQs;
 

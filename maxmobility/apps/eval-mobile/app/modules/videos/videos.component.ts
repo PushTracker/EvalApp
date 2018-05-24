@@ -7,6 +7,7 @@ import { RouterExtensions } from 'nativescript-angular/router';
 import { LoadEventData, WebView } from 'tns-core-modules/ui/web-view';
 import { CLog } from '@maxmobility/core';
 import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
+import { isAndroid, isIOS } from "platform";
 
 const Videos = [
     { Url: '<iframe style="margin-bottom: 10; padding:0; border:0; width:100%; height:100%" src="https://www.youtube.com/embed/8fn26J59WJ4"></iframe>', 
@@ -67,6 +68,14 @@ export { Videos };
 export class VideosComponent implements OnInit {
 
   constructor(private _routerExtensions: RouterExtensions){};
+
+      isIOS(): boolean {
+        return isIOS;
+    }
+
+    isAndroid(): boolean {
+        return isAndroid;
+    }
 
   @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
 

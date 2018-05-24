@@ -4,6 +4,8 @@ import { alert } from 'tns-core-modules/ui/dialogs';
 import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { BarcodeScanner } from 'nativescript-barcodescanner';
+import { isAndroid, isIOS } from "platform";
+
 const Demos = [
     {
     Image: '~/assets/images/PushTracker-SmartDrive-pairing.png',
@@ -89,6 +91,14 @@ export { Demos };
 })
 export class DemosComponent implements OnInit {
     constructor(private barcodeScanner: BarcodeScanner, private routerExtensions: RouterExtensions) {}
+
+    isIOS(): boolean {
+        return isIOS;
+    }
+
+    isAndroid(): boolean {
+        return isAndroid;
+    }
 
     @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
 

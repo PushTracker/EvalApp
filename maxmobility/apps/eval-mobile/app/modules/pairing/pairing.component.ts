@@ -8,7 +8,7 @@ import { View } from "ui/core/view";
 import { Color } from "tns-core-modules/color";
 import { Feedback, FeedbackType, FeedbackPosition } from "nativescript-feedback";
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
-
+import { isAndroid, isIOS } from "platform";
 const carousel = require('nativescript-carousel').Carousel;
 
 
@@ -25,6 +25,14 @@ export class PairingComponent implements OnInit, AfterViewInit {
     @ViewChild('carousel') carousel: ElementRef;
     private feedback: Feedback;
 	snackbar = new SnackBar();
+
+        isIOS(): boolean {
+        return isIOS;
+    }
+
+    isAndroid(): boolean {
+        return isAndroid;
+    }
 
 slides = [
     {
@@ -111,6 +119,15 @@ slides = [
 
     onBack(): void {
 	this.routerExtensions.navigate(["/eval-entry"], {
+	    clearHistory: true,
+	    transition: {
+		name: "slideRight"
+	    }
+	});
+    }
+
+    onNavButtonTap(): void {
+	this.routerExtensions.navigate(["/home"], {
 	    clearHistory: true,
 	    transition: {
 		name: "slideRight"
