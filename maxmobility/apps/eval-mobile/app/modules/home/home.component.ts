@@ -8,7 +8,7 @@ import { Label } from 'ui/label';
 import { Color } from "tns-core-modules/color";
 import { Feedback, FeedbackType, FeedbackPosition } from "nativescript-feedback";
 import { WebView } from 'tns-core-modules/ui/web-view';
-import { isIOS } from 'tns-core-modules/platform';
+import { isAndroid, isIOS } from "platform";
 import { RouterExtensions } from 'nativescript-angular/router';
 import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-sidedrawer';
 import { RadSideDrawerComponent, SideDrawerType } from 'nativescript-ui-sidedrawer/angular';
@@ -27,6 +27,14 @@ import { Demos } from '../demos/demos.component';
 })
 export class HomeComponent implements OnInit, AfterViewInit {
   @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
+
+    isIOS(): boolean {
+        return isIOS;
+    }
+
+    isAndroid(): boolean {
+        return isAndroid;
+    }
 
   private drawer: SideDrawerType;
   private feedback: Feedback;

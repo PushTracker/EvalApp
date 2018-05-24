@@ -5,7 +5,7 @@
 </ActionBar>
 
 
-<RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
+<RadSideDrawer #drawer [showOverNavigation]="isIOS()" [drawerTransition]="sideDrawerTransition">
 
   <StackLayout tkDrawerContent>
     <MyDrawer [selectedPage]="'SmartDrive'"></MyDrawer>

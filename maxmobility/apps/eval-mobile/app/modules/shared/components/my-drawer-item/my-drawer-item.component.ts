@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { CLog } from '@maxmobility/core';
+import { isAndroid, isIOS } from "platform";
 
 @Component({
   selector: 'MyDrawerItem',
@@ -21,11 +22,25 @@ export class MyDrawerItemComponent implements OnInit {
     CLog('MyDrawerItemComponent OnInit');
   }
 
+    isIOS(): boolean {
+        return isIOS;
+    }
+
+    isAndroid(): boolean {
+        return isAndroid;
+    }
+
   onNavItemTap(navItemRoute: string) {
-    this.routerExtensions.navigate([navItemRoute], {
-      // transition: {
-      //   name: 'slide'
-      // }
+    if (this.isIOS){
+      this.routerExtensions.navigate([navItemRoute], {});
+    } else{
+      this.routerExtensions.navigate([navItemRoute], {
+      transition: {
+        name: 'slide'
+      }
     });
+    }
   }
+
+  
 }
