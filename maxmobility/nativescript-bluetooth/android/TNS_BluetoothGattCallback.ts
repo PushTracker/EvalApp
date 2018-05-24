@@ -69,7 +69,8 @@ export class TNS_BluetoothGattCallback extends android.bluetooth.BluetoothGattCa
             const descriptor = descriptors.get(k) as android.bluetooth.BluetoothGattCharacteristic;
             const descriptorJs = {
               UUID: this._owner.get().uuidToString(descriptor.getUuid()),
-              value: descriptor.getValue() // always empty btw
+              value: descriptor.getValue(), // always empty btw
+              permissions: {}
             };
             const descPerms = descriptor.getPermissions();
             if (descPerms > 0) {
@@ -102,7 +103,8 @@ export class TNS_BluetoothGattCallback extends android.bluetooth.BluetoothGattCa
               authenticatedSignedWrites: (props & btChar.PROPERTY_SIGNED_WRITE) !== 0,
               extendedProperties: (props & btChar.PROPERTY_EXTENDED_PROPS) !== 0
             },
-            descriptors: descriptorsJs
+            descriptors: descriptorsJs,
+            permissions: {}
           };
 
           // permissions are usually not provided, so let's not return them in that case

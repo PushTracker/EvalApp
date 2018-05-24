@@ -157,6 +157,23 @@ export class BluetoothService {
   public restart(): Promise<any> {
     this.enabled = false;
     this.initialized = false;
+    return (
+      new Promise((resolve, reject) => {
+        if (isAndroid) {
+          this._bluetooth.isBluetoothEnabled().then(enabled => {
+            if (enabled) {
+              resolve(enabled);
+            } else {
+              this._bluetooth.enable().then(enabled => {
+                resolve(enabled);
+              });
+            }
+          });
+        } else {
+          resolve(true);
+        }
+      })
+        /*
     return this._bluetooth
       .disable()
       .then(() => {
@@ -166,24 +183,26 @@ export class BluetoothService {
           return true;
         }
       })
-      .then(wasEnabled => {
-        this.enabled = wasEnabled;
-        console.log(`BLUETOOTH WAS ENABLED? ${this.enabled}`);
-        if (this.enabled) {
-          console.log('Starting GattServer');
-          this._bluetooth.startGattServer();
-        }
-        return new Promise((resolve, reject) => {
-          setTimeout(() => {
-            resolve();
-          }, 1000);
-        });
-      })
-      .catch(err => {
-        this.enabled = false;
-        this.initialized = false;
-        console.log('enable err', err);
-      });
+      */
+        .then(wasEnabled => {
+          this.enabled = wasEnabled;
+          console.log(`BLUETOOTH WAS ENABLED? ${this.enabled}`);
+          if (this.enabled) {
+            console.log('Starting GattServer');
+            this._bluetooth.startGattServer();
+          }
+          return new Promise((resolve, reject) => {
+            setTimeout(() => {
+              resolve();
+            }, 1000);
+          });
+        })
+        .catch(err => {
+          this.enabled = false;
+          this.initialized = false;
+          console.log('enable err', err);
+        })
+    );
   }
 
   // private functions
@@ -204,7 +223,6 @@ export class BluetoothService {
       case android.bluetooth.BluetoothDevice.BOND_BONDING:
         break;
       case android.bluetooth.BluetoothDevice.BOND_BONDED:
-        this._bluetooth.removeBond(dev);
         const pt = this.getOrMakePushTracker(dev.getAddress());
         pt.handlePaired();
         this.feedback.success({
@@ -229,14 +247,14 @@ export class BluetoothService {
   }
 
   private onDeviceNameChange(args: any): void {
-    //console.log(`name change!`);
+    console.log(`name change!`);
     const dev = args.data.device;
     const name = args.data.name;
     console.log(`${dev} - name change - ${name || 'None'}`);
   }
 
   private onDeviceUuidChange(args: any): void {
-    //console.log(`uuid change!`);
+    console.log(`uuid change!`);
     const dev = args.data.device;
     console.log('uuid:', args.data.uuids);
     if (!args.data.uuids) {
@@ -265,6 +283,7 @@ export class BluetoothService {
       const sd = this.getOrMakeSmartDrive(address);
       sd.handleDisconnect();
     } else if (this.isPushTracker(peripheral)) {
+      this._bluetooth.removeBond(peripheral);
       const pt = this.getOrMakePushTracker(address);
       pt.handleDisconnect();
     }
@@ -540,7 +559,6 @@ export class BluetoothService {
 
   private isPushTracker(dev: any): boolean {
     const UUIDs = dev && dev.getUuids();
-    console.log(UUIDs);
     const name = dev && dev.getName();
     const isPT =
       (name && name.includes('PushTracker')) ||

@@ -46,19 +46,19 @@ export class TNS_BroadcastReceiver extends android.content.BroadcastReceiver {
       this._owner.get().sendEvent(Bluetooth.bond_status_change_event, { device, bs });
       // _onBondStatusChangeCallback && _onBondStatusChangeCallback(device, bs);
     } else if (action === android.bluetooth.BluetoothDevice.ACTION_NAME_CHANGED) {
-      const name = intent.getIntExtra(
-        android.bluetooth.BluetoothDevice.EXTRA_NAME,
-        android.bluetooth.BluetoothDevice.ERROR
-      );
+      const name = intent.getStringExtra(android.bluetooth.BluetoothDevice.EXTRA_NAME);
       this._owner.get().sendEvent(Bluetooth.device_name_change_event, { device, name });
       // _onDeviceNameChangeCallback && _onDeviceNameChangeCallback(device, name);
     } else if (action === android.bluetooth.BluetoothDevice.ACTION_UUID) {
-      const uuids = intent.getParcelableArrayExtra(
-        android.bluetooth.BluetoothDevice.EXTRA_UUID
-      ) as android.os.Parcelable[];
-      CLog(CLogTypes.info, `${(uuids && uuids.length) || 0} UUIDs found in the ACTION_UUID action.`);
+      let uuidExtra = intent.getParcelableArrayExtra(android.bluetooth.BluetoothDevice.EXTRA_UUID);
+      if (uuidExtra && uuidExtra.length) {
+        for (let i = 0; i < uuidExtra.length; i++) {
+          console.log(uuidExtra[i].toString());
+        }
+      }
+      CLog(CLogTypes.info, `${uuidExtra || 0} UUIDs found in the ACTION_UUID action.`);
 
-      this._owner.get().sendEvent(Bluetooth.device_uuid_change_event, { device, uuids });
+      this._owner.get().sendEvent(Bluetooth.device_uuid_change_event, { device, uuidExtra });
       // _onDeviceUUIDChangeCallback && _onDeviceUUIDChangeCallback(device, uuid);
     } else if (action === android.bluetooth.BluetoothDevice.ACTION_ACL_DISCONNECTED) {
       this._owner.get().sendEvent(Bluetooth.device_acl_disconnected_event, { device });
