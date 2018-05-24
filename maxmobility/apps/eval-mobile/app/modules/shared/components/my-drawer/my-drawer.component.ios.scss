@@ -4,6 +4,10 @@
 // Drawer navigation custom styles
 $sidedrawer-header-image-size: 60;
 
+.header {
+    padding-top: 45;
+}
+
 .sidedrawer {
     &.sidedrawer-left {
         .sidedrawer-header-image {
@@ -11,7 +15,6 @@ $sidedrawer-header-image-size: 60;
             height: $sidedrawer-header-image-size;
             width: $sidedrawer-header-image-size;
             font-size: $sidedrawer-header-image-size;
-            padding: 0;
             margin: 10, 0, 5, 15;
         }
 

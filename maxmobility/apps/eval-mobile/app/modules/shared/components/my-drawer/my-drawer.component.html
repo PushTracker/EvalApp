@@ -1,13 +1,14 @@
 <Gradient padding-top="30" height="100%"  direction="to bottom" colors="#004F7E, #0070b3">
 
-    <GridLayout margin-top="30" backgroundColor="transparent"  rows="auto, *" class="sidedrawer sidedrawer-left">
+    <GridLayout backgroundColor="transparent"  rows="auto, *" class="sidedrawer sidedrawer-left header">
 
-
-    <StackLayout row="0" backgroundColor="transparent">
-        <Label class="sidedrawer-header-image fa" text="&#xf2bd;"></Label>
+    <GridLayout backgroundColor="transparent" columns="auto, *" rows="auto, auto">
+        <Label col="0" class="sidedrawer-header-image fa" text="&#xf2bd;"></Label>
+        <GridLayout col="1" columns="auto" rows="auto, auto">
         <Label class="sidedrawer-header-brand" [text]="user.data.first_name + ' ' + user.data.last_name"></Label>
-        <Label class="footnote" [text]="user.data.email"></Label>
-    </StackLayout>
+        <Label row="1" class="footnote" [text]="user.data.email"></Label>
+        </GridLayout>
+    </GridLayout>
 
     <ScrollView row="1">
         <StackLayout backgroundColor="transparent" class="sidedrawer-content">
