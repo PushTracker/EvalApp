@@ -50,31 +50,24 @@
             <Slider row="1" colSpan="2" maxValue="10" class="eval-slider" [value]="evaluation.independence" (valueChange)="onSliderUpdate('independence', $event)"></Slider>
 	  </GridLayout>
 
-	  <GridLayout class="eval-item" rows="auto" columns="*, auto">
+	  <GridLayout class="eval-item" rows="auto, auto" columns="*, *">
             <Label col="0" text="Years in manual chair:" class="eval-label" ></Label>
             <DropDown #dd 
 		      col="1"
-		      hint="years" 
+		      hint="years"
+		      class="dropdown"
 		      [items]="timeFrames" 
-		      (selectedIndexChanged)="selectedIndexChanged($event)"
-		      class="p-15 dropdown"></DropDown>
+		      (selectedIndexChanged)="selectedIndexChanged($event)"></DropDown>
 
-	  </GridLayout>
-
-	  <GridLayout class="eval-item" rows="auto" columns="*, auto">
-            <Label col="0" text="Type of chair:" class="eval-label" ></Label>
+            <Label row="1" col="0" text="Type of chair:" class="eval-label" ></Label>
             <DropDown #dd 
+		      row="1"
 		      col="1"
 		      hint="chair type" 
+		      class="dropdown"
 		      [items]="chairTypes" 
-		      (selectedIndexChanged)="selectedIndexChanged($event)" 
-		      class="dropdown"></DropDown>
+		      (selectedIndexChanged)="selectedIndexChanged($event)" ></DropDown>
 	  </GridLayout>
-
-	  <!-- <GridLayout rows="auto" columns="*, auto" >
-               <exoplayer class="videoPlayer"  src="~/assets/videos/Lesson_small.mov" autoplay="false" height="231" width="auto">
-               </exoplayer>
-	  </GridLayout> -->
 
 	  <Button (tap)="onNext()" text="Next" class="nextButton"></Button>
 
