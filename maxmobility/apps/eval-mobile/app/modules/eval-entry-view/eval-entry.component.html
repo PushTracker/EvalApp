@@ -26,7 +26,7 @@
             <Label row="0" col="0" class="eval-label" text="Do you have pain from pushing?" textWrap="true"></Label>
             <SegmentedBar row="0" col="1" class="eval-segmentedBar" [items]="PushingPain" [selectedIndex]="getPushingPainIndex()" (selectedIndexChanged)="onPushingPainIndexChange($event)"></SegmentedBar>
 	    <GridLayout row="1" colSpan="2"  *ngIf="getPushingPainIndex() == 0" class="eval-item" rows="auto, auto" columns="*, auto">
-              <Label row="0" col="0" class="eval-slider-label" text="Pain Level:"></Label>
+              <Label row="0" col="0" class="eval-slider-label" text="Pain Level:" textWrap="true"></Label>
               <Label row="0" col="1" class="eval-slider-value-label" [text]="evaluation.pain.toFixed(0)+' / 10'"></Label>
               <Slider row="1" colSpan="2" maxValue="10" class="eval-slider" [value]="evaluation.pain" (valueChange)="onSliderUpdate('pain', $event)"></Slider>
 	    </GridLayout>
@@ -37,7 +37,7 @@
             <Label row="0" col="0" class="eval-label" text="Do you have fatigue from pushing?" textWrap="true"></Label>
             <SegmentedBar row="0" col="1" class="eval-segmentedBar" [items]="PushingFatigue" [selectedIndex]="getPushingFatigueIndex()" (selectedIndexChanged)="onPushingFatigueIndexChange($event)"></SegmentedBar>
 	    <GridLayout row="1" colSpan="2"  *ngIf="getPushingFatigueIndex() == 0" class="eval-item" rows="auto, auto" columns="*, auto">
-              <Label row="0" col="0" class="eval-slider-label" text="Fatigue Level:"></Label>
+              <Label row="0" col="0" class="eval-slider-label" text="Fatigue Level:" textWrap="true"></Label>
               <Label row="0" col="1" class="eval-slider-value-label" [text]="evaluation.fatigue.toFixed(0)+' / 10'"></Label>
               <Slider row="1" colSpan="2" maxValue="10" class="eval-slider" [value]="evaluation.fatigue" (valueChange)="onSliderUpdate('fatigue', $event)"></Slider>
 	    </GridLayout>
@@ -45,13 +45,13 @@
 
 	  // INDEPENDENCE
 	  <GridLayout class="eval-item" rows="auto, auto" columns="*, auto">
-            <Label row="0" col="0" class="eval-slider-label" text="Impact on independence:"></Label>
+            <Label row="0" col="0" class="eval-slider-label" text="Impact on independence:" textWrap="true"></Label>
             <Label row="0" col="1" class="eval-slider-value-label" [text]="evaluation.independence.toFixed(0)+' / 10'"></Label>
             <Slider row="1" colSpan="2" maxValue="10" class="eval-slider" [value]="evaluation.independence" (valueChange)="onSliderUpdate('independence', $event)"></Slider>
 	  </GridLayout>
 
-	  <GridLayout class="eval-item" rows="auto, auto" columns="*, *">
-            <Label col="0" text="Years in manual chair:" class="eval-label" ></Label>
+	  <GridLayout class="eval-item" rows="auto, auto" columns="*, auto">
+            <Label col="0" text="Years in manual chair:" class="eval-label" textWrap="true"></Label>
             <DropDown #dd 
 		      col="1"
 		      hint="years"
@@ -59,7 +59,7 @@
 		      [items]="timeFrames" 
 		      (selectedIndexChanged)="selectedIndexChanged($event)"></DropDown>
 
-            <Label row="1" col="0" text="Type of chair:" class="eval-label" ></Label>
+            <Label row="1" col="0" text="Type of chair:" class="eval-label" textWrap="true"></Label>
             <DropDown #dd 
 		      row="1"
 		      col="1"
