@@ -6,11 +6,11 @@
   "repository": "<fill-your-repository-here>",
   "nativescript": {
     "id": "com.maxmobility.eval",
-    "tns-ios": {
-      "version": "3.4.1"
-    },
     "tns-android": {
       "version": "3.4.2"
+    },
+    "tns-ios": {
+      "version": "3.4.1"
     }
   },
   "scripts": {
@@ -63,14 +63,14 @@
     "nativescript-feedback": "file:../../node_modules/nativescript-feedback",
     "nativescript-fresco": "file:../../node_modules/nativescript-fresco",
     "nativescript-gradient": "file:../../node_modules/nativescript-gradient",
-    "nativescript-iqkeyboardmanager": "1.3.0",
+    "nativescript-iqkeyboardmanager": "file:../../node_modules/nativescript-iqkeyboardmanager",
     "nativescript-loading-indicator": "file:../../node_modules/nativescript-loading-indicator",
     "nativescript-localstorage": "file:../../node_modules/nativescript-localstorage",
     "nativescript-ngx-fonticon": "file:../../node_modules/nativescript-ngx-fonticon",
     "nativescript-snackbar": "file:../../node_modules/nativescript-snackbar",
     "nativescript-theme-core": "file:../../node_modules/nativescript-theme-core",
     "nativescript-toast": "file:../../node_modules/nativescript-toast",
-    "nativescript-ui-listview": "~3.5.1",
+    "nativescript-ui-listview": "~3.5.7",
     "nativescript-ui-sidedrawer": "~3.5.1",
     "ngx-progressbar": "file:../../node_modules/ngx-progressbar",
     "primeng": "file:../../node_modules/primeng",
