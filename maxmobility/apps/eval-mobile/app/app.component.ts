@@ -27,8 +27,15 @@ export class AppComponent {
     private _router: RouterExtensions
   ) {
     // Brad - sets the default language for ngx-translate
-    this._translateService.setDefaultLang('es');
-    this._translateService.use(Platform.device.language);
+    // wrapping this in try/catch due to https://github.com/PushTracker/EvalApp/issues/43
+    try {
+      this._translateService.setDefaultLang('en-US');
+      this._translateService.use(Platform.device.language.toString());
+      console.log('language', Platform.device.language);
+      console.log('type', typeof Platform.device.language);
+    } catch (error) {
+      CLog('Error trying to set the TranslateService.use() default to Platform.device.language.');
+    }
 
     // application level events
     // application.on(application.uncaughtErrorEvent, (args: application.UnhandledErrorEventData) => {
