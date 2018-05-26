@@ -1,9 +1,14 @@
 {
   "menu": {
     "home": "Home",
-    "all-events": "All Events",
-    "events": "Events",
-    "copyright": "2018 MaxMobility"
+    "connectivity": "Connectivity",
+    "con-desc": "Connect with PushTracvker and SmartDrive",
+    "pair-pt-app": "Pair app to PushTracker",
+    "connect-app": "Comnnect app with PushTracker",
+    "pair-pt-sd": "Pair a PushTracker to a SmartDrive",
+    "firmware-updates": "Firmware Updates",
+    "fw-descconnect": "Keep your SmartDrive up to date with over the air updates",
+    "connect-app": "Comnnect app with PushTracker"
   },
   "error": {
     "upload-photo-lbl": "Sorry, an error occurred uploading that photo."
