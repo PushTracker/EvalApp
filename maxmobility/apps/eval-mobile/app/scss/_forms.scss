@@ -1,10 +1,6 @@
-@import 'variables';
-
-.blue-text-field {
-  background-color: rgba(80, 135, 180, 0.5);
-  padding: 5;
+.text-field {
+  padding: 10;
   margin: 5, 20, 5, 20;
   color: $white;
-  border-radius: 2;
   placeholder-color: $permobil-titan;
 }
