@@ -85,15 +85,29 @@ export class LoginComponent implements OnInit {
   }
 
   navToForgotPassword() {
-    this._routerExtensions.navigate(['/forgot-password']);
+    this._routerExtensions.navigate(['/forgot-password'],
+       {
+        transition: {
+          name: 'slideLeft'
+       }
+     }
+    );
   }
+
+  
 
   onEmailTextChange(args) {
     this._isEmailValid(this.user.email);
   }
 
   navToSignUp() {
-    this._routerExtensions.navigate(['/sign-up']);
+    this._routerExtensions.navigate(['/sign-up'],
+        {
+          transition: {
+            name: 'slideLeft'
+        }
+      }
+     );
   }
 
   private _isEmailValid(text: string): boolean {
@@ -106,7 +120,7 @@ export class LoginComponent implements OnInit {
     // make sure it's a valid email
     const email = text.trim();
     if (!validate(email)) {
-      this.emailError = `${email} is not a valid email address.`;
+      this.emailError = `"${email}" is not a valid email address.`;
       return false;
     }
 
