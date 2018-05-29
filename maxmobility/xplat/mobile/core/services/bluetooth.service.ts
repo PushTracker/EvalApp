@@ -94,7 +94,6 @@ export class BluetoothService {
   public async initialize() {
     this.enabled = false;
     this.initialized = false;
-    this.setEventListeners();
     return this._bluetooth
       .requestCoarseLocationPermission()
       .then(() => {
@@ -201,6 +200,7 @@ export class BluetoothService {
   public restart(): Promise<any> {
     return this.stop()
       .then(() => {
+        this.setEventListeners();
         return this._bluetooth.isBluetoothEnabled();
       })
       .then(enabled => {
