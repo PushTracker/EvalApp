@@ -61,6 +61,20 @@ export class BluetoothService {
     BluetoothService.PushTrackers.splice(0, BluetoothService.PushTrackers.length);
   }
 
+  public radioEnabled(): Promise<boolean> {
+    return this._bluetooth.isBluetoothEnabled();
+  }
+
+  public available(): Promise<boolean> {
+    return this._bluetooth.isBluetoothEnabled().then(enabled => {
+      return enabled && this.isActive();
+    });
+  }
+
+  public isActive() {
+    return this.enabled && this.initialized && this._bluetooth.offersService(BluetoothService.AppServiceUUID);
+  }
+
   public async initialize() {
     this.enabled = false;
     this.initialized = false;

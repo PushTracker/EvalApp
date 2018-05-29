@@ -122,7 +122,7 @@ export class DemosComponent implements OnInit {
         // Note that this Promise is never invoked when a 'continuousScanCallback' function is provided
         const msg = `Format: ${result.format},\nValue: ${result.text}`;
         console.log(msg);
-        alert({
+        return alert({
           title: 'Scan result',
           message: msg,
           okButtonText: 'OK'

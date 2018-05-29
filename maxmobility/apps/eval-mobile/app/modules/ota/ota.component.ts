@@ -7,6 +7,7 @@ import { NavigationStart, Router } from '@angular/router';
 import { RouterExtensions } from 'nativescript-angular/router';
 // nativescript
 import timer = require('tns-core-modules/timer');
+import { alert } from 'tns-core-modules/ui/dialogs';
 import { Progress } from 'tns-core-modules/ui/progress';
 import { Page } from 'tns-core-modules/ui/page';
 import { ScrollView, ScrollEventData } from 'tns-core-modules/ui/scroll-view';
@@ -79,9 +80,9 @@ export class OTAComponent implements OnInit, OnDestroy {
     'Now show estimated drive range on the PT in DisplayInfo  battery status screen.',
     'Now show OTA status bar and percentage on PT when performing PT OTA.',
     `When SD is not paired (e.g. after OTA) and the left button is pressed
-    to turn 'SD On', the PT goes directly into pairing to SD mode.`,
+to turn 'SD On', the PT goes directly into pairing to SD mode.`,
     `When App is not paired (e.g. after OTA) and the right button is pressed
-    to connect to the app, the PT goes directly into pairing to app mode.`,
+to connect to the app, the PT goes directly into pairing to app mode.`,
     'Bugfixes to pairing process for handling multiple devices.'
   ];
 
@@ -131,7 +132,7 @@ export class OTAComponent implements OnInit, OnDestroy {
     // see https://github.com/NativeScript/nativescript-angular/issues/1049
     this.routeSub = this.router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
-        this.cancelOTAs();
+        this.cancelOTAs(true);
       }
     });
 
@@ -146,8 +147,7 @@ export class OTAComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    console.log('IN NG ON DESTROY()!');
-    this.cancelOTAs();
+    this.cancelOTAs(true);
     this.routeSub.unsubscribe();
   }
 
@@ -239,79 +239,98 @@ export class OTAComponent implements OnInit, OnDestroy {
   }
 
   onStartOtaUpdate() {
-    this.animateViewIn(<View>this.otaProgressView.nativeElement);
-    this.animateViewIn(<View>this.otaFeaturesView.nativeElement);
-
-    if (!this.updating) {
-      this.updatingButtonText = 'Cancel All Firmware Updates';
-      this.smartDriveOTAs.splice(0, this.smartDriveOTAs.length);
-      this.pushTrackerOTAs.splice(0, this.pushTrackerOTAs.length);
-      let ptFW = null;
-      let bleFW = null;
-      let mcuFW = null;
-      // load firmware files here!
-      this.loadFile('/assets/ota/PushTracker.15.ota')
-        .then(otaData => {
-          ptFW = otaData;
-          return this.loadFile('/assets/ota/SmartDriveBluetooth.15.ota');
-        })
-        .then(otaData => {
-          bleFW = otaData;
-          return this.loadFile('/assets/ota/MX2+.15.ota');
-        })
-        .then(otaData => {
-          mcuFW = otaData;
-          console.log(`got MX2+ OTA, version: 0x${Number(mcuFW[0]).toString(16)}`);
-          this._progressService.show('Searching for SmartDrives');
-          return this.discoverSmartDrives();
-        })
-        .then(sds => {
-          this._progressService.hide();
-          return this.select(sds);
-        })
-        .then(selectedSmartDrives => {
-          selectedSmartDrives.map(sd => {
-            this.smartDriveOTAs.push(sd);
-          });
-          // this.smartDriveOTAs.notify(ObservableArray.changeEvent);
-          return this.select(BluetoothService.PushTrackers); // .filter(pt => pt.connected));
-        })
-        .then(selectedPushTrackers => {
-          selectedPushTrackers.map(pt => {
-            this.pushTrackerOTAs.push(pt);
-          });
-          // this.pushTrackerOTAs.notify(ObservableArray.changeEvent);
-
-          // OTA the selected smart drive(s)
-          const smartDriveOTATasks = this.smartDriveOTAs.map(sd => {
-            return sd.performOTA(bleFW, mcuFW, 0x15, 0x15, 300000);
-          });
-
-          const pushTrackerOTATasks = this.pushTrackerOTAs.map(pt => {
-            return pt.performOTA(ptFW, 0x15, 300000);
-          });
-
-          return Promise.all(smartDriveOTATasks.concat(pushTrackerOTATasks));
-        })
-        .then(otaStatuses => {
-          console.log(`completed all otas with statuses: ${otaStatuses}`);
-          this.updating = false;
-        })
-        .catch(err => {
-          console.log(`Couldn't finish updating: ${err}`);
-          this.updating = false;
+    this._bluetoothService.available().then(available => {
+      if (available) {
+        this.animateViewIn(<View>this.otaProgressView.nativeElement);
+        this.animateViewIn(<View>this.otaFeaturesView.nativeElement);
+        if (!this.updating) {
+          // start updating
+          this.performOTAs()
+            .then(otaStatuses => {
+              console.log(`completed all otas with statuses: ${otaStatuses}`);
+              this.cancelOTAs(false);
+            })
+            .catch(err => {
+              console.log(`Couldn't finish updating: ${err}`);
+              this.cancelOTAs(true);
+            });
+        } else {
+          // we're already updating
+          this.cancelOTAs(true);
+        }
+      } else {
+        // bluetooth is not available
+        alert({
+          title: 'Bluetooth Unavailable',
+          message: 'Bluetooth service unavailable - reinitializing!',
+          okButtonText: 'OK'
+        }).then(() => {
+          this._bluetoothService.advertise();
         });
-    } else {
-      this.cancelOTAs();
-    }
-    this.updating = !this.updating;
+      }
+    });
   }
 
-  private cancelOTAs() {
-    console.log('Cancelling all otas!');
-    this.smartDriveOTAs.map(sd => sd.cancelOTA());
-    this.pushTrackerOTAs.map(pt => pt.cancelOTA());
+  private performOTAs(): Promise<any> {
+    this.updating = true;
+    this.updatingButtonText = 'Cancel All Firmware Updates';
+    this.smartDriveOTAs.splice(0, this.smartDriveOTAs.length);
+    this.pushTrackerOTAs.splice(0, this.pushTrackerOTAs.length);
+    let ptFW = null;
+    let bleFW = null;
+    let mcuFW = null;
+    // load firmware files here!
+    return this.loadFile('/assets/ota/PushTracker.15.ota')
+      .then(otaData => {
+        ptFW = otaData;
+        return this.loadFile('/assets/ota/SmartDriveBluetooth.15.ota');
+      })
+      .then(otaData => {
+        bleFW = otaData;
+        return this.loadFile('/assets/ota/MX2+.15.ota');
+      })
+      .then(otaData => {
+        mcuFW = otaData;
+        console.log(`got MX2+ OTA, version: 0x${Number(mcuFW[0]).toString(16)}`);
+        this._progressService.show('Searching for SmartDrives');
+        return this.discoverSmartDrives();
+      })
+      .then(sds => {
+        this._progressService.hide();
+        return this.select(sds);
+      })
+      .then(selectedSmartDrives => {
+        selectedSmartDrives.map(sd => {
+          this.smartDriveOTAs.push(sd);
+        });
+        return this.select(BluetoothService.PushTrackers);
+      })
+      .then(selectedPushTrackers => {
+        selectedPushTrackers.map(pt => {
+          this.pushTrackerOTAs.push(pt);
+        });
+
+        // OTA the selected smart drive(s)
+        const smartDriveOTATasks = this.smartDriveOTAs.map(sd => {
+          return sd.performOTA(bleFW, mcuFW, 0x15, 0x15, 300000);
+        });
+
+        const pushTrackerOTATasks = this.pushTrackerOTAs.map(pt => {
+          return pt.performOTA(ptFW, 0x15, 300000);
+        });
+
+        return Promise.all(smartDriveOTATasks.concat(pushTrackerOTATasks));
+      });
+  }
+
+  private cancelOTAs(doCancel: boolean) {
+    this.updating = false;
     this.updatingButtonText = 'Begin Firmware Updates';
+    if (doCancel) {
+      console.log('Cancelling all otas!');
+      this.smartDriveOTAs.map(sd => sd.cancelOTA());
+      this.pushTrackerOTAs.map(pt => pt.cancelOTA());
+    }
   }
 
   private loadFile(fileName: string): Promise<any> {
