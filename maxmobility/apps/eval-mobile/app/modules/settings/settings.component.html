@@ -29,9 +29,10 @@ it shouldn't have any other siblings other than the <ActionBar> component.
     <!--
     Use the tkMainContent directive to display the content of the page when you have an app drawer.
     -->
-    <GridLayout rows="auto, auto, auto" columns="*" class="grid-layout" tkMainContent>
+    <GridLayout rows="auto, auto, auto, auto" columns="*" class="grid-layout light-background" tkMainContent>
         <Label row="0" class="page-icon fa" text="&#xf013;"></Label>
         <Label row="1" class="page-placeholder" text="<!-- Page content goes here -->"></Label>
-        <Button row="2" text="Restart Bluetooth" class="debug-button" (tap)="onRestartBT()"></Button>
+        <Button row="2" text="Stop Bluetooth" class="debug-button" (tap)="onStopBT()"></Button>
+        <Button row="3" text="Restart Bluetooth" class="debug-button" (tap)="onRestartBT()"></Button>
     </GridLayout>
 </RadSideDrawer>

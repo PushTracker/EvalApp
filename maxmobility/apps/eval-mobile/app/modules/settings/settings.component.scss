@@ -4,7 +4,7 @@
 
 .grid-layout{
     padding: 20, 10, 20, 10;
-    background: transparent;
+    horizontal-align: center;
 }
 
 .hero {
@@ -13,9 +13,9 @@
 
 .debug-button {
     width: auto;
-    height: 40; 
+    height: auto; 
     color: #fff;
     background-color: $permobil-ocean;
     border-radius: 2;
-    //padding: 50, 10, 0, 10;
+    margin: 10;
 }

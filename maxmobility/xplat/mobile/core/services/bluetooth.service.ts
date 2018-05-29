@@ -98,7 +98,6 @@ export class BluetoothService {
     return this._bluetooth
       .requestCoarseLocationPermission()
       .then(() => {
-        this.deleteServices();
         return this.restart();
       })
       .then(() => {
@@ -186,14 +185,21 @@ export class BluetoothService {
     return this._bluetooth.write(opts);
   }
 
-  public restart(): Promise<any> {
+  public stop(): Promise<any> {
     this.enabled = false;
     this.initialized = false;
+    // remove the services
+    this.deleteServices();
     // stop the gatt server
     this._bluetooth.stopGattServer();
+    // stop listening for events
+    this.clearEventListeners();
     // stop advertising
-    return this._bluetooth
-      .stopAdvertising()
+    return this._bluetooth.stopAdvertising();
+  }
+
+  public restart(): Promise<any> {
+    return this.stop()
       .then(() => {
         return this._bluetooth.isBluetoothEnabled();
       })
