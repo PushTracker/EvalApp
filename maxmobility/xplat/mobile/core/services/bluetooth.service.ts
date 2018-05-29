@@ -67,7 +67,8 @@ export class BluetoothService {
     return this._bluetooth
       .requestCoarseLocationPermission()
       .then(() => {
-        return this.deleteServices();
+        this.deleteServices();
+        return this.restart();
       })
       .then(() => {
         if (this.enabled === true) {
@@ -157,52 +158,39 @@ export class BluetoothService {
   public restart(): Promise<any> {
     this.enabled = false;
     this.initialized = false;
-    return (
-      new Promise((resolve, reject) => {
-        if (isAndroid) {
-          this._bluetooth.isBluetoothEnabled().then(enabled => {
-            if (enabled) {
-              resolve(enabled);
-            } else {
-              this._bluetooth.enable().then(enabled => {
-                resolve(enabled);
-              });
-            }
-          });
-        } else {
-          resolve(true);
-        }
-      })
-        /*
     return this._bluetooth
-      .disable()
-      .then(() => {
-        if (isAndroid) {
-          return this._bluetooth.enable();
+      .isBluetoothEnabled()
+      .then(enabled => {
+        if (enabled) {
+          return enabled;
         } else {
-          return true;
+          if (isAndroid) {
+            return this._bluetooth.enable();
+          } else {
+            throw new String('on iOS but bluetooth not enabled!');
+          }
         }
       })
-      */
-        .then(wasEnabled => {
-          this.enabled = wasEnabled;
-          console.log(`BLUETOOTH WAS ENABLED? ${this.enabled}`);
-          if (this.enabled) {
-            console.log('Starting GattServer');
-            this._bluetooth.startGattServer();
-          }
+      .then(wasEnabled => {
+        this.enabled = wasEnabled;
+        console.log(`BLUETOOTH WAS ENABLED? ${this.enabled}`);
+        if (this.enabled) {
+          console.log('Starting GattServer');
+          this._bluetooth.startGattServer();
           return new Promise((resolve, reject) => {
             setTimeout(() => {
               resolve();
-            }, 1000);
+            }, 2000);
           });
-        })
-        .catch(err => {
-          this.enabled = false;
-          this.initialized = false;
-          console.log('enable err', err);
-        })
-    );
+        } else {
+          throw new String("Bluetooth was not enabled, couldn't start gattServer!");
+        }
+      })
+      .catch(err => {
+        this.enabled = false;
+        this.initialized = false;
+        console.log('enable err', err);
+      });
   }
 
   // private functions
@@ -223,6 +211,7 @@ export class BluetoothService {
       case android.bluetooth.BluetoothDevice.BOND_BONDING:
         break;
       case android.bluetooth.BluetoothDevice.BOND_BONDED:
+        this._bluetooth.removeBond(dev);
         const pt = this.getOrMakePushTracker(dev.getAddress());
         pt.handlePaired();
         this.feedback.success({
@@ -283,7 +272,6 @@ export class BluetoothService {
       const sd = this.getOrMakeSmartDrive(address);
       sd.handleDisconnect();
     } else if (this.isPushTracker(peripheral)) {
-      this._bluetooth.removeBond(peripheral);
       const pt = this.getOrMakePushTracker(address);
       pt.handleDisconnect();
     }
@@ -354,11 +342,10 @@ export class BluetoothService {
   private onCharacteristicReadRequest(args: any): void {}
 
   // service controls
-  private deleteServices(): Promise<any> {
+  private deleteServices() {
     console.log('deleting any existing services');
     this._bluetooth.clearServices();
     PushTracker.DataCharacteristic = null;
-    return this.restart();
   }
 
   private addServices(): void {
