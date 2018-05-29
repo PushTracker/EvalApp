@@ -37,20 +37,36 @@ export class BluetoothService {
   constructor() {
     // enabling `debug` will output console.logs from the bluetooth source code
     this._bluetooth.debug = true;
-
-    // setup event listeners
-    this._bluetooth.on(Bluetooth.bond_status_change_event, this.onBondStatusChange.bind(this));
-    this._bluetooth.on(Bluetooth.peripheral_connected_event, this.onPeripheralConnected.bind(this));
-    this._bluetooth.on(Bluetooth.device_discovered_event, this.onDeviceDiscovered.bind(this));
-    this._bluetooth.on(Bluetooth.device_name_change_event, this.onDeviceNameChange.bind(this));
-    this._bluetooth.on(Bluetooth.device_uuid_change_event, this.onDeviceUuidChange.bind(this));
-    this._bluetooth.on(Bluetooth.device_acl_disconnected_event, this.onDeviceAclDisconnected.bind(this));
-    this._bluetooth.on(Bluetooth.server_connection_state_changed_event, this.onServerConnectionStateChanged.bind(this));
-    this._bluetooth.on(Bluetooth.characteristic_write_request_event, this.onCharacteristicWriteRequest.bind(this));
-    this._bluetooth.on(Bluetooth.bluetooth_advertise_failure_event, this.onAdvertiseFailure.bind(this));
-    this._bluetooth.on(Bluetooth.bluetooth_advertise_success_event, this.onAdvertiseSuccess.bind(this));
-
     this.advertise();
+  }
+
+  public setEventListeners() {
+    this.clearEventListeners();
+    // setup event listeners
+    this._bluetooth.on(Bluetooth.bond_status_change_event, this.onBondStatusChange, this);
+    this._bluetooth.on(Bluetooth.peripheral_connected_event, this.onPeripheralConnected, this);
+    this._bluetooth.on(Bluetooth.device_discovered_event, this.onDeviceDiscovered, this);
+    this._bluetooth.on(Bluetooth.device_name_change_event, this.onDeviceNameChange, this);
+    this._bluetooth.on(Bluetooth.device_uuid_change_event, this.onDeviceUuidChange, this);
+    this._bluetooth.on(Bluetooth.device_acl_disconnected_event, this.onDeviceAclDisconnected, this);
+    this._bluetooth.on(Bluetooth.server_connection_state_changed_event, this.onServerConnectionStateChanged, this);
+    this._bluetooth.on(Bluetooth.characteristic_write_request_event, this.onCharacteristicWriteRequest, this);
+    this._bluetooth.on(Bluetooth.bluetooth_advertise_failure_event, this.onAdvertiseFailure, this);
+    this._bluetooth.on(Bluetooth.bluetooth_advertise_success_event, this.onAdvertiseSuccess, this);
+  }
+
+  public clearEventListeners() {
+    // setup event listeners
+    this._bluetooth.off(Bluetooth.bond_status_change_event);
+    this._bluetooth.off(Bluetooth.peripheral_connected_event);
+    this._bluetooth.off(Bluetooth.device_discovered_event);
+    this._bluetooth.off(Bluetooth.device_name_change_event);
+    this._bluetooth.off(Bluetooth.device_uuid_change_event);
+    this._bluetooth.off(Bluetooth.device_acl_disconnected_event);
+    this._bluetooth.off(Bluetooth.server_connection_state_changed_event);
+    this._bluetooth.off(Bluetooth.characteristic_write_request_event);
+    this._bluetooth.off(Bluetooth.bluetooth_advertise_failure_event);
+    this._bluetooth.off(Bluetooth.bluetooth_advertise_success_event);
   }
 
   public clearSmartDrives() {
@@ -78,6 +94,7 @@ export class BluetoothService {
   public async initialize() {
     this.enabled = false;
     this.initialized = false;
+    this.setEventListeners();
     return this._bluetooth
       .requestCoarseLocationPermission()
       .then(() => {
@@ -172,8 +189,14 @@ export class BluetoothService {
   public restart(): Promise<any> {
     this.enabled = false;
     this.initialized = false;
+    // stop the gatt server
+    this._bluetooth.stopGattServer();
+    // stop advertising
     return this._bluetooth
-      .isBluetoothEnabled()
+      .stopAdvertising()
+      .then(() => {
+        return this._bluetooth.isBluetoothEnabled();
+      })
       .then(enabled => {
         if (enabled) {
           return enabled;
