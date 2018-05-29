@@ -70,11 +70,11 @@ export class SmartDrive extends Observable {
 
   // static methods:
   public static motorTicksToMiles(ticks: number): number {
-    return ticks * (2.0 * 3.14159265358 * 3.8) / (265.714 * 63360.0);
+    return (ticks * (2.0 * 3.14159265358 * 3.8)) / (265.714 * 63360.0);
   }
 
   public static caseTicksToMiles(ticks: number): number {
-    return ticks * (2.0 * 3.14159265358 * 3.8) / (36.0 * 63360.0);
+    return (ticks * (2.0 * 3.14159265358 * 3.8)) / (36.0 * 63360.0);
   }
 
   // NON STATIC:
@@ -95,6 +95,7 @@ export class SmartDrive extends Observable {
   public bleOTAProgress: number = 0;
   public mcuOTAProgress: number = 0;
   public otaActions: string[] = [];
+  public notifying: boolean = false;
   public ableToSend: boolean = false;
 
   // private members
@@ -471,22 +472,28 @@ export class SmartDrive extends Observable {
           this.off(SmartDrive.smartdrive_ota_cancel_event, otaCancelHandler);
           this.off(SmartDrive.smartdrive_ota_timeout_event, otaTimeoutHandler);
 
-          // stop notifying characteristics
-          const tasks = SmartDrive.Characteristics.map(characteristic => {
-            console.log(`Stop Notifying ${characteristic}`);
-            return this._bluetoothService.stopNotifying({
-              peripheralUUID: this.address,
-              serviceUUID: SmartDrive.ServiceUUID,
-              characteristicUUID: characteristic
+          let tasks = [];
+          if (this.notifying) {
+            // stop notifying characteristics
+            tasks = SmartDrive.Characteristics.map(characteristic => {
+              console.log(`Stop Notifying ${characteristic}`);
+              return this._bluetoothService.stopNotifying({
+                peripheralUUID: this.address,
+                serviceUUID: SmartDrive.ServiceUUID,
+                characteristicUUID: characteristic
+              });
             });
-          });
+          }
           Promise.all(tasks).then(() => {
+            this.notifying = false;
             // then disconnect
-            console.log(`Disconnecting from ${this.address}`);
-            // TODO: Doesn't properly disconnect
-            this._bluetoothService.disconnect({
-              UUID: this.address
-            });
+            if (this.connected) {
+              console.log(`Disconnecting from ${this.address}`);
+              // TODO: Doesn't properly disconnect
+              this._bluetoothService.disconnect({
+                UUID: this.address
+              });
+            }
             if (success) {
               resolve(reason);
             } else if (doRetry) {
@@ -552,7 +559,7 @@ export class SmartDrive extends Observable {
                 this.otaState = nextState;
               }
               // update the progress bar
-              this.mcuOTAProgress = Math.round((index + 16) * 100 / mcuFirmware.length);
+              this.mcuOTAProgress = Math.round(((index + 16) * 100) / mcuFirmware.length);
               break;
             case SmartDrive.OTAState.awaiting_ble_ready:
               this.otaActions = ['Cancel'];
@@ -595,7 +602,7 @@ export class SmartDrive extends Observable {
                 this.otaState = this.doMCUUpdate ? SmartDrive.OTAState.rebooting_mcu : SmartDrive.OTAState.complete;
               }
               // update the progress bar
-              this.bleOTAProgress = Math.round((index + 16) * 100 / bleFirmware.length);
+              this.bleOTAProgress = Math.round(((index + 16) * 100) / bleFirmware.length);
               break;
             case SmartDrive.OTAState.rebooting_ble:
               this.otaActions = [];
@@ -754,6 +761,7 @@ export class SmartDrive extends Observable {
             if (characteristic.UUID == SmartDrive.BLEOTADongleCharacteristic) {
               return; // isn't set up to be subscribed to - we also don't use it
             }
+            this.notifying = true;
             timer.setTimeout(() => {
               console.log(`Start Notifying ${characteristic.UUID}`);
               this._bluetoothService.startNotifying({
@@ -775,14 +783,17 @@ export class SmartDrive extends Observable {
     this.connected = false;
     this.ableToSend = false;
     // stop notifying
-    const tasks = SmartDrive.Characteristics.map(characteristic => {
-      console.log(`Stop Notifying ${characteristic}`);
-      return this._bluetoothService.stopNotifying({
-        peripheralUUID: this.address,
-        serviceUUID: SmartDrive.ServiceUUID,
-        characteristicUUID: characteristic
+    let tasks = [];
+    if (this.notifying) {
+      tasks = SmartDrive.Characteristics.map(characteristic => {
+        console.log(`Stop Notifying ${characteristic}`);
+        return this._bluetoothService.stopNotifying({
+          peripheralUUID: this.address,
+          serviceUUID: SmartDrive.ServiceUUID,
+          characteristicUUID: characteristic
+        });
       });
-    });
+    }
     Promise.all(tasks).then(() => {
       // now send the event
       this.sendEvent(SmartDrive.smartdrive_disconnect_event);
@@ -792,6 +803,7 @@ export class SmartDrive extends Observable {
   public handleNotify(args: any) {
     // Notify is called when the SmartDrive sends us data, args.value is the data
     // now that we're receiving data we can definitly send data
+    this.notifying = true;
     this.ableToSend = true;
     // handle the packet here
     const value = args.value;
