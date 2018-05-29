@@ -120,13 +120,18 @@ export class DemosComponent implements OnInit {
       })
       .then(result => {
         // Note that this Promise is never invoked when a 'continuousScanCallback' function is provided
-        const msg = `Format: ${result.format},\nValue: ${result.text}`;
+        const deviceType = result.text.indexOf('B') > -1 ? 'PushTracker' : 'SmartDrive';
+        const msg = `
+Device: ${deviceType}
+S/N:    ${result.text}`;
         console.log(msg);
-        return alert({
-          title: 'Scan result',
-          message: msg,
-          okButtonText: 'OK'
-        });
+        setTimeout(() => {
+          alert({
+            title: 'Scan result',
+            message: msg,
+            okButtonText: 'OK'
+          });
+        }, 500);
       })
       .catch(errorMessage => {
         console.log('No scan. ' + errorMessage);

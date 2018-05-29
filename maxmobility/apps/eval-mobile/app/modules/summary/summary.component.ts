@@ -9,6 +9,8 @@ import { Observable } from 'tns-core-modules/data/observable';
 import { confirm } from 'tns-core-modules/ui/dialogs';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 import * as email from 'nativescript-email';
+// libs
+import * as mustache from 'mustache';
 // app
 import { Trial } from '@maxmobility/core';
 import { Evaluation, EvaluationService } from '@maxmobility/mobile';
@@ -47,64 +49,68 @@ export class SummaryComponent implements OnInit {
       this.totalTimeWith += t.with_elapsed;
       this.totalTimeWithout += t.without_elapsed;
     });
-    this.totalCoastWith = this.totalPushesWith ? this.totalTimeWith * 60 / this.totalPushesWith : 0;
-    this.totalCoastWithout = this.totalPushesWithout ? this.totalTimeWithout * 60 / this.totalPushesWithout : 0;
+    this.totalCoastWith = this.totalPushesWith ? (this.totalTimeWith * 60) / this.totalPushesWith : 0;
+    this.totalCoastWithout = this.totalPushesWithout ? (this.totalTimeWithout * 60) / this.totalPushesWithout : 0;
     this.totalCadenceWith = this.totalTimeWith ? this.totalPushesWith / this.totalTimeWith : 0;
     this.totalCadenceWithout = this.totalTimeWithout ? this.totalPushesWithout / this.totalTimeWithout : 0;
     // pushes
-    this.pushDiff = 100 - this.totalPushesWith / this.totalPushesWithout * 100;
+    this.pushDiff = 100 - (this.totalPushesWith / this.totalPushesWithout) * 100 || 0;
     // coast
-    this.coastDiff = this.totalCoastWith / this.totalCoastWithout;
+    this.coastDiff = this.totalCoastWith / this.totalCoastWithout || 0;
   }
 
   generateLMN(): string {
-    let lmnBody = [
-      'This email was generated and sent by the Smart Evaluation App.',
-      '',
-      `User had pushing pain? ${this.evaluation.PushingPain}`,
-      `                       ${this.evaluation.pain}`,
-      `User had pushing fatigue? ${this.evaluation.PushingFatigue}`,
-      `                       ${this.evaluation.fatigue}`,
-      `Impact on user's independence: ${this.evaluation.independence}`
-    ];
-    this.evaluation.trials.map(t => {
-      lmnBody.push('');
-      lmnBody.push(`Trial "${t.name}":`);
-      lmnBody.push(`  distance:   ${t.distance.toFixed(2)} m`);
-      lmnBody.push(`  With SD:`);
-      lmnBody.push(`    pushes: ${t.with_pushes}`);
-      lmnBody.push(`    coast:  ${t.with_coast.toFixed(2)} s`);
-      lmnBody.push(`    time:   ${Trial.timeToString(t.with_elapsed * 60)}`);
-      lmnBody.push(`  Without SD:`);
-      lmnBody.push(`    pushes: ${t.without_pushes}`);
-      lmnBody.push(`    coast:  ${t.without_coast.toFixed(2)} s`);
-      lmnBody.push(`    time:   ${Trial.timeToString(t.without_elapsed * 60)}`);
-      lmnBody.push('');
+    let lmnTemplate = `
+This email was generated and sent by the Smart Evaluation App.
+
+User had pushing pain? {{evaluation.PushingPain}} - {{evaluation.pain}} / 10
+User had pushing fatigue? {{evaluation.PushingFatigue}} - {{evaluation.fatigue}} / 10
+Impact on user's independence: {{evaluation.independence}} / 10
+
+{{#trials._array}}
+Trial '{{name}}':
+  distance:   {{#distance}}{{toFixed}}{{/distance}} m
+  With SD:
+    pushes: {{with_pushes}}
+    coast:  {{#with_coast}}{{toFixed}}{{/with_coast}} s
+    time:   {{#with_elapsed}}{{toTimeString}}{{/with_elapsed}}
+  Without SD:
+    pushes: {{without_pushes}}
+    coast:  {{#without_coast}}{{toFixed}}{{/without_coast}} s
+    time:   {{#without_elapsed}}{{toTimeString}}{{/without_elapsed}}
+{{/trials._array}}
+
+User's difficulty with ramps: {{evaluation.rampDifficulty}}
+User's difficulty with flats: {{evaluation.flatDifficulty}}
+
+User performed {{pushDiff}}% {{pushComparison}} pushes with SmartDrive.
+
+Average coast time was {{coastDiff}} times {{coastComparison}} with SmartDrive
+
+{{#showCadence}}
+At {{totalCadenceWithout}} pushes per minute, user's cadence is exceptionally high. Consider looking at rear wheel placement and efficient push technique.
+{{/showCadence}}
+`;
+    return mustache.render(lmnTemplate, {
+      evaluation: this.evaluation,
+      trials: this.evaluation.trials,
+      totalCadenceWithout: this.totalCadenceWithout.toFixed(1),
+      pushDiff: this.pushDiff.toFixed(0),
+      coastDiff: this.coastDiff.toFixed(1),
+      toFixed: function() {
+        return this.toFixed(2);
+      },
+      toTimeString: function() {
+        return Trial.timeToString(this * 60);
+      },
+      pushComparison: function() {
+        return this.pushDiff > 0 ? 'fewer' : 'more';
+      },
+      coastComparison: function() {
+        return this.coastDiff > 1.0 ? 'higher' : 'lower';
+      },
+      showCadence: this.totalCadenceWithout > this.cadenceThresh
     });
-    lmnBody.push(`User's difficulty with ramps: ${this.evaluation.rampDifficulty}`);
-    lmnBody.push(`User's difficulty with flats: ${this.evaluation.flatDifficulty}`);
-    // pushes
-    lmnBody.push('');
-    lmnBody.push(
-      `User performed ${this.pushDiff.toFixed(0)}% ${this.pushDiff > 0 ? 'fewer' : 'more'} pushes with SmartDrive`
-    );
-    // coast
-    lmnBody.push('');
-    lmnBody.push(
-      `Average coast time was ${this.coastDiff.toFixed(1)} times ${
-        this.coastDiff > 1.0 ? 'higher' : 'lower'
-      } with SmartDrive`
-    );
-    // cadence
-    lmnBody.push('');
-    if (this.totalCadenceWithout > this.cadenceThresh) {
-      lmnBody.push(
-        `At ${this.totalCadenceWithout.toFixed(
-          1
-        )} pushes per minute, user's cadence is exceptionally high. Consider looking at rear wheel placement and efficient push technique.`
-      );
-    }
-    return lmnBody.join('\n');
   }
 
   // button events
