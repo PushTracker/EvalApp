@@ -91,6 +91,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
       Directive:'pt-sd',
       Route: '/pairing' 
     },
+    { Image: "~/assets/images/pt-sd-bt.jpg", 
+      Description: 'Update a PushTracker and SmartDrive',
+      Directive:'pt-sd',
+      Route: '/ota' 
+    }
   ];
 
   evalItems = [
@@ -105,7 +110,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     { Image: "~/assets/images/trial.jpg", 
       Description: 'Begin a SmartDrive Trial.', 
       Route: '/trial' 
-    },
+    }
 
   ];
 
@@ -124,7 +129,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       Description: 'Update a PushTracker and SmartDrive together',
       Directive:'pt-sd',
       Route: '/ota' 
-    },
+    }
 
   ];
 

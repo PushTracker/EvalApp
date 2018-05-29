@@ -16,7 +16,7 @@ padding: 0, 10, 0, 0;
 .icon-description-group {
   padding: 0;
   width: 150;
-  margin: 0, 10, 0, 15;
+  margin: 0, 10, 10, 15;
 }
 
 .heading {
@@ -40,7 +40,7 @@ padding: 0, 10, 0, 0;
   font-family: $os-Light;
   color: $permobil-charcoal;
   width: 150;
-  height: 50;
+  // height: 50;
   font-size: 14;
   font-weight: 400;
   margin: 5, 0, 0, 0;
@@ -99,9 +99,9 @@ padding: 0, 10, 0, 0;
   width: 150;
   height: 150;
   background-color: $permobil-hero;
-  margin: 5, 0, 5, 0;
+  margin: 0, 0, 0, 0;
   border: solid;
-  border-radius: 4;
+  border-radius: 3;
 }
 
 .floor {

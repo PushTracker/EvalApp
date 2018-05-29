@@ -14,7 +14,7 @@
 
 
   <ScrollView tkMainContent class="main-scroll-view">
-    <GridLayout rows="300, 340, 320, 320, 410, 280" columns="*">
+    <GridLayout rows="300, 420, 320, 440, 300" columns="*">
 
       //Connectivity
   <StackLayout class="list-stack-layout" row="0">
@@ -29,10 +29,10 @@
 	<RadListView (loaded)="onRadListLoaded($event)" class="rad-list-view" [items]="connectivityItems">
 	  <ng-template tkListItemTemplate let-item="item">
 
-	    <AbsoluteLayout class="icon-description-group">
-	      <Image [src]="item.Image" (tap)="connectivityThumbTapped(item)" stretch="aspectFill" class="thumb" left="0" top="0"></Image>
-	      <Label class="item-description" textWrap="true" [text]="item.Description" left="0" top="150" ></Label>
-	    </AbsoluteLayout>
+	    <StackLayout class="icon-description-group">
+	      <Image [src]="item.Image" (tap)="connectivityThumbTapped(item)" stretch="aspectFill" class="thumb"></Image>
+	      <Label class="item-description" textWrap="true" [text]="item.Description"></Label>
+	    </StackLayout>
 
 	  </ng-template>
 	  <ListViewLinearLayout tkListViewLayout scrollDirection="Horizontal" ios:itemHeight="300" ios:itemWidth="165" itemInsertAnimation="Default" itemDeleteAnimation="Default"></ListViewLinearLayout>
@@ -40,7 +40,7 @@
       </StackLayout>
 
       //OTA 
-      <StackLayout class="list-stack-layout" row="1">
+      <!-- <StackLayout class="list-stack-layout" row="1">
 	<StackLayout class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></StackLayout>
 	<DockLayout (tap)="chevronButtonTapped('/ota')"  class="dockLayout-options" stretchLastChild="false">
 	  <Label text="Firmware Updates" class="heading" dock="left"></Label>
@@ -60,11 +60,11 @@
 	  </ng-template>
 	  <ListViewLinearLayout tkListViewLayout scrollDirection="Horizontal" ios:itemHeight="300" ios:itemWidth="165" itemInsertAnimation="Default" itemDeleteAnimation="Default"></ListViewLinearLayout>
 	</RadListView>
-      </StackLayout>
+      </StackLayout> -->
 
 
       //Videos
-      <StackLayout class="list-stack-layout" row="2">
+      <StackLayout class="list-stack-layout" row="1">
 	<StackLayout class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></StackLayout>
 	<DockLayout (tap)="chevronButtonTapped('/videos')"  class="dockLayout-options" stretchLastChild="false">
 	  <Label text="Videos" class="heading" dock="left"></Label>
@@ -78,10 +78,10 @@
 	<RadListView (loaded)="onRadListLoaded($event)" class="rad-list-view" [items]="videoItems">
 	  <ng-template tkListItemTemplate let-item="item">
 
-	    <AbsoluteLayout class="icon-description-group">
-	      <Image [src]="item.Thumb" (tap)="videoThumbTapped(item)" class="thumb" left="0" top="0" padding="0"></Image>
-	      <Label class="item-description" textWrap="true" [text]="item.Description" left="0" top="150" ></Label>
-	    </AbsoluteLayout>
+	    <StackLayout class="icon-description-group">
+	      <Image [src]="item.Thumb" (tap)="videoThumbTapped(item)" class="thumb"  padding="0"></Image>
+	      <Label class="item-description" textWrap="true" [text]="item.Description"  ></Label>
+	    </StackLayout>
 
 	  </ng-template>
 	  <ListViewLinearLayout tkListViewLayout scrollDirection="Horizontal" ios:itemHeight="300" ios:itemWidth="165" itemInsertAnimation="Default" itemDeleteAnimation="Default"></ListViewLinearLayout>
@@ -91,7 +91,7 @@
 
 
       //Evaluation 
-      <StackLayout class="list-stack-layout" row="3">
+      <StackLayout class="list-stack-layout" row="2">
 	<StackLayout class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></StackLayout>
 	<DockLayout (tap)="chevronButtonTapped('/eval-entry')"  class="dockLayout-options" stretchLastChild="false">
 	  <Label text="Clinical Tools" class="heading" dock="left"></Label>
@@ -104,10 +104,10 @@
 	<RadListView (loaded)="onRadListLoaded($event)" [items]="evalItems">
 	  <ng-template tkListItemTemplate let-item="item">
 
-	    <AbsoluteLayout class="icon-description-group">
-	      <Image [src]="item.Image" (tap)="evalThumbTapped(item)" class="thumb" left="0" top="0"></Image>
-	      <Label class="item-description" textWrap="true" [text]="item.Description" left="0" top="150" ></Label>
-	    </AbsoluteLayout>
+	    <StackLayout class="icon-description-group">
+	      <Image [src]="item.Image" (tap)="evalThumbTapped(item)" class="thumb" ></Image>
+	      <Label class="item-description" textWrap="true" [text]="item.Description"></Label>
+	    </StackLayout>
 
 	  </ng-template>
 	  <ListViewLinearLayout tkListViewLayout scrollDirection="Horizontal" ios:itemHeight="300" ios:itemWidth="165" itemInsertAnimation="Default" itemDeleteAnimation="Default"></ListViewLinearLayout>
@@ -115,7 +115,7 @@
       </StackLayout>
 
       //Demos 
-      <StackLayout class="list-stack-layout" row="4">
+      <StackLayout class="list-stack-layout" row="3">
 	<StackLayout class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></StackLayout>
 	<DockLayout (tap)="chevronButtonTapped('/demos')"  class="dockLayout-options" textWrap="true" stretchLastChild="false">
 	  <Label text="Demos" class="heading" dock="left"></Label>
@@ -128,16 +128,16 @@
 	<RadListView (loaded)="onRadListLoaded($event)" [items]="demoItems">
 	  <ng-template tkListItemTemplate let-item="item">
 
-	    <AbsoluteLayout class="icon-description-group">
-	      <Image [src]="item.Image" stretch="aspectFill" class="thumb" left="0" top="0"></Image>
-	      <StackLayout left="0" top="160" orintation="vertical" width="150">
+	    <StackLayout class="icon-description-group">
+	      <Image [src]="item.Image" stretch="aspectFill" class="thumb"></Image>
+	      <StackLayout orintation="vertical" width="150">
 		<Label class="demo-item-description" textWrap="true" [text]="item.SerialNumber"></Label>
 		<Label class="demo-item-description" textWrap="true" [text]="item.PTSerialNumber"></Label>
 		<Label class="demo-item-description" textWrap="true" [text]="item.LastUsed" ></Label>
 		<Label class="demo-item-description" textWrap="true" [text]="item.Location"  ></Label>
 		<Label class="demo-item-description" backgroundColor="red" textWrap="true" [text]="item.Firmware"  ></Label>
 	      </StackLayout>
-	    </AbsoluteLayout>
+	    </StackLayout>
 
 	  </ng-template>
 	  <ListViewLinearLayout tkListViewLayout scrollDirection="Horizontal" ios:itemHeight="410" ios:itemWidth="165" itemInsertAnimation="Default" itemDeleteAnimation="Default"></ListViewLinearLayout>
@@ -145,7 +145,7 @@
       </StackLayout>
 
       //FAQ 
-      <StackLayout class="list-stack-layout" row="5">
+      <StackLayout class="list-stack-layout" row="4">
 	<StackLayout class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></StackLayout>
 	<DockLayout (tap)="chevronButtonTapped('/faq')"  class="dockLayout-options" stretchLastChild="false">
 	  <Label text="FAQ" class="heading" dock="left"></Label>
@@ -158,9 +158,9 @@
 	<RadListView (loaded)="onRadListLoaded($event)" [items]="faqItems">
 	  <ng-template tkListItemTemplate let-item="item">
 
-	    <AbsoluteLayout class="icon-description-group">
-	      <Label class="thumb faq-question" stretch="aspectFill" left="0" top="0" [text]="item.question" textWrap="true"></Label>
-	    </AbsoluteLayout>
+	    <StackLayout class="icon-description-group">
+	      <Label class="thumb faq-question" stretch="aspectFill" [text]="item.question" textWrap="true"></Label>
+	    </StackLayout>
 
 	  </ng-template>
 	  <ListViewLinearLayout tkListViewLayout scrollDirection="Horizontal" ios:itemHeight="300" ios:itemWidth="165" itemInsertAnimation="Default" itemDeleteAnimation="Default"></ListViewLinearLayout>
