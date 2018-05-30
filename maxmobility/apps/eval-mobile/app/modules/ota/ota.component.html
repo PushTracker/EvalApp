@@ -11,46 +11,36 @@
   </StackLayout>
 
   <ScrollView class="hero" #scrollView tkMainContent>
-    <GridLayout columns="*" rows="auto,auto,auto,auto, *" class="page page-content">
+    <StackLayout class="page page-content">
 
-      //StackLayout in row 0 contains connectivity buttons for BT
-      <StackLayout col="0" row="0" orientation="vertical" verticalAlignment="center" margin="20,0,0,0">
-        <StackLayout orientation="horizontal" horizontalAlignment="center" height="75" >
-          <Button [class]="connected ? 'fa hero' : 'fa grayed'"
-                  text="PushTracker"
-                  margin="0, 25, 0, 15"
-                  (tap)="onPtButtonTapped()"></Button>
-          <Button [class]="connected ? 'fa hero' : 'fa grayed'"
-                  text="SmartDrive"
-                  margin="0, 25, 0, 15"
-                  (tap)="onSdButtonTapped()"></Button>
-        </StackLayout>
-      </StackLayout>
-
-      //StackLayout in row 1 contains OTA title and descriptions
-      <StackLayout   col="0" row="1" orientation="vertical" horizontalAlignment="center" padding="10">
+      //StackLayout in contains OTA title and descriptions
+      <StackLayout orientation="vertical"
+                   horizontalAlignment="center"
+                   padding="10">
 
         //OTA Title and version number
-        <DockLayout>
-          <Label class="title"
-                 [text]="ptConnected ? initialTitleText : connectedTitleText"
-                 textWrap="true"
-                 dock="top"
-                 stretchLastChild="true"></Label>
-        </DockLayout>
+        <Label class="title"
+               [text]="ptConnected ? initialTitleText : connectedTitleText"
+               textWrap="true"
+               stretchLastChild="true"></Label>
 
         //OTA Descriptions
-        <StackLayout #otaTitleView col="0" row="2" orientation="vertical" horizontalAlignment="center" padding="10">
+        <StackLayout #otaTitleView orientation="vertical" horizontalAlignment="center" padding="10">
           <Label *ngFor="let desc of otaDescription" [text]="desc" class="otaDescription" textWrap="true"></Label>
           <Button class="hero"
+                  [visibility]="updating ? 'collapse' : 'visible'"
+                  text="Refresh Device List"
+                  margin="5, 10, 5, 10"
+                  (tap)="onRefreshDeviceList()"></Button>
+          <Button class="hero"
                   [text]="updatingButtonText"
-                  margin="15"
+                  margin="5, 10, 5, 10"
                   (tap)="onStartOtaUpdate()"></Button>
         </StackLayout>
       </StackLayout>
 
-      //StackLayout in row 2 contains progress views for updates
-      <StackLayout #otaProgressView col="0" row="3" padding="5" orientation="vertical">
+      //StackLayout in contains progress views for updates
+      <StackLayout #otaProgressView padding="5" orientation="vertical">
         //SmartDrive OTAs
         <StackLayout class="ota" *ngFor="let sd of smartDriveOTAs._array">
           <GridLayout class="otaInfo" rows="auto" columns="auto, *">
@@ -83,13 +73,13 @@
         </StackLayout>
       </StackLayout>
 
-      //StackLayout in row 3 contains a view to display new features.
+      //StackLayout in contains a view to display new features.
       //TODO: Create slideshow and ability to display video and text
-      <StackLayout #otaFeaturesView class="featuresLayout" col="0" row="4" padding="5" orientation="vertical">
+      <StackLayout #otaFeaturesView class="featuresLayout" padding="5" orientation="vertical">
 
         <TextView class="features" editable="false" textWrap="true" text="Estimated drive range is a cool new feature in this update. Here's how it works-"></TextView>
 
       </StackLayout>
-    </GridLayout>
+    </StackLayout>
   </ScrollView>
 </RadSideDrawer>

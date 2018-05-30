@@ -82,32 +82,7 @@ to connect to the app, the PT goes directly into pairing to app mode.`,
     private router: Router,
     private _progressService: ProgressService,
     private _bluetoothService: BluetoothService
-  ) {
-    // TODO: cases we need to handle:
-    //  * an already connected pushtracker exists - what do we
-    //    want to do here? should we inform the user that a
-    //    pushtracker is already connected and try to see what
-    //    version it is?
-
-    // sign up for events on PushTrackers and SmartDrives
-    // handle pushtracker connection events for existing pushtrackers
-    console.log('registering for connection events!');
-    BluetoothService.PushTrackers.map(pt => {
-      pt.on(PushTracker.pushtracker_connect_event, args => {
-        this.onPushTrackerConnected();
-      });
-    });
-
-    // listen for completely new pusthrackers (that we haven't seen before)
-    BluetoothService.PushTrackers.on(ObservableArray.changeEvent, args => {
-      if (args.action === 'add') {
-        const pt = BluetoothService.PushTrackers.getItem(BluetoothService.PushTrackers.length - 1);
-        pt.on(PushTracker.pushtracker_connect_event, arg => {
-          this.onPushTrackerConnected();
-        });
-      }
-    });
-  }
+  ) {}
 
   ngOnInit() {
     // see https://github.com/NativeScript/nativescript-angular/issues/1049
@@ -121,10 +96,12 @@ to connect to the app, the PT goes directly into pairing to app mode.`,
       // this.ngOnDestroy();
     });
 
-    this.hideView(<View>this.otaTitleView.nativeElement);
-    this.hideView(<View>this.otaProgressView.nativeElement);
-    this.hideView(<View>this.otaFeaturesView.nativeElement);
+    //this.hideView(<View>this.otaTitleView.nativeElement);
+    //this.hideView(<View>this.otaProgressView.nativeElement);
+    //this.hideView(<View>this.otaFeaturesView.nativeElement);
     this._sideDrawerTransition = new SlideAlongTransition();
+
+    this.refreshDeviceList();
   }
 
   ngOnDestroy() {
@@ -162,68 +139,21 @@ to connect to the app, the PT goes directly into pairing to app mode.`,
     this.drawerComponent.sideDrawer.showDrawer();
   }
 
-  // DEBUGGING
-  onPtButtonTapped() {
-    this.onPushTrackerConnected();
-  }
-
-  onSdButtonTapped() {
-    this.onPushTrackerConnected();
-  }
-  // END DEBUGGING
-
   // Connectivity
-  onPushTrackerConnected() {
-    this.connected = true;
-    this.animateViewIn(<View>this.otaTitleView.nativeElement);
-  }
-
   discoverSmartDrives() {
-    // show list of SDs
+    this._progressService.show('Searching for SmartDrives');
     return this._bluetoothService.scanForSmartDrive().then(() => {
       console.log(`Found ${BluetoothService.SmartDrives.length} SmartDrives!`);
+      this._progressService.hide();
       return BluetoothService.SmartDrives;
     });
-  }
-
-  select(objects) {
-    // takes a list of objects and prompts the user to select
-    // which of the objects they're interested in. might be
-    // more than one
-    let selected = [];
-    if (objects && objects.length) {
-      if (objects.length > 1) {
-        // TODO: add UI for selecting one or more of the objects
-        selected = objects;
-      } else {
-        selected = objects;
-      }
-    }
-    return selected;
-  }
-
-  selectSmartDrives(smartDrives) {
-    // takes a list of smart drives and prompts the user to select
-    // which of the smartdrives they're interested in. might be
-    // more than one
-    let selectedSmartDrives = [];
-    if (smartDrives && smartDrives.length) {
-      if (smartDrives.length > 1) {
-        // select smart drive(s) here
-        // TODO: add UI for selecting one or more of the smartdrives
-        selectedSmartDrives = smartDrives;
-      } else {
-        selectedSmartDrives = smartDrives;
-      }
-    }
-    return selectedSmartDrives;
   }
 
   onStartOtaUpdate() {
     this._bluetoothService.available().then(available => {
       if (available) {
-        this.animateViewIn(<View>this.otaProgressView.nativeElement);
-        this.animateViewIn(<View>this.otaFeaturesView.nativeElement);
+        //this.animateViewIn(<View>this.otaProgressView.nativeElement);
+        //this.animateViewIn(<View>this.otaFeaturesView.nativeElement);
         if (!this.updating) {
           // start updating
           this.performOTAs()
@@ -252,11 +182,27 @@ to connect to the app, the PT goes directly into pairing to app mode.`,
     });
   }
 
+  public onRefreshDeviceList() {
+    return this.refreshDeviceList();
+  }
+
+  private refreshDeviceList(): Promise<any> {
+    if (!this.updating) {
+      this.smartDriveOTAs.splice(0, this.smartDriveOTAs.length);
+      this.pushTrackerOTAs.splice(0, this.pushTrackerOTAs.length);
+      return this.discoverSmartDrives().then(() => {
+        BluetoothService.SmartDrives.map(sd => {
+          this.smartDriveOTAs.push(sd);
+        });
+        BluetoothService.PushTrackers.map(pt => {
+          this.pushTrackerOTAs.push(pt);
+        });
+      });
+    }
+  }
+
   private performOTAs(): Promise<any> {
-    this.updating = true;
     this.updatingButtonText = 'Cancel All Firmware Updates';
-    this.smartDriveOTAs.splice(0, this.smartDriveOTAs.length);
-    this.pushTrackerOTAs.splice(0, this.pushTrackerOTAs.length);
     let ptFW = null;
     let bleFW = null;
     let mcuFW = null;
@@ -273,24 +219,6 @@ to connect to the app, the PT goes directly into pairing to app mode.`,
       .then(otaData => {
         mcuFW = otaData;
         console.log(`got MX2+ OTA, version: 0x${Number(mcuFW[0]).toString(16)}`);
-        this._progressService.show('Searching for SmartDrives');
-        return this.discoverSmartDrives();
-      })
-      .then(sds => {
-        this._progressService.hide();
-        return this.select(sds);
-      })
-      .then(selectedSmartDrives => {
-        selectedSmartDrives.map(sd => {
-          this.smartDriveOTAs.push(sd);
-        });
-        return this.select(BluetoothService.PushTrackers);
-      })
-      .then(selectedPushTrackers => {
-        selectedPushTrackers.map(pt => {
-          this.pushTrackerOTAs.push(pt);
-        });
-
         // OTA the selected smart drive(s)
         const smartDriveOTATasks = this.smartDriveOTAs.map(sd => {
           return sd.performOTA(bleFW, mcuFW, 0x15, 0x15, 300000);
@@ -300,7 +228,18 @@ to connect to the app, the PT goes directly into pairing to app mode.`,
           return pt.performOTA(ptFW, 0x15, 300000);
         });
 
-        return Promise.all(smartDriveOTATasks.concat(pushTrackerOTATasks));
+        const otaTasks = smartDriveOTATasks.concat(pushTrackerOTATasks);
+
+        if (otaTasks) {
+          this.updating = true;
+          return Promise.all(otaTasks);
+        } else {
+          return alert({
+            title: 'No Devices',
+            message: 'No PushTrackers or SmartDrives found!',
+            okButtonText: 'OK'
+          }).then(() => []);
+        }
       });
   }
 
