@@ -22,6 +22,12 @@ enum OTAState {
   timeout = 'Timeout'
 }
 
+const timeToString = function(milliseconds: number): string {
+  let t = new Date(null);
+  t.setSeconds(milliseconds / 1000.0);
+  return t.toISOString().substr(11, 8);
+};
+
 export class SmartDrive extends Observable {
   // STATIC:
   static readonly OTAState = OTAState;
@@ -97,6 +103,9 @@ export class SmartDrive extends Observable {
   public otaActions: string[] = [];
   public notifying: boolean = false;
   public ableToSend: boolean = false;
+  public otaStartTime: Date;
+  public otaCurrentTime: Date;
+  public otaEndTime: Date;
 
   // private members
   private _bluetoothService: BluetoothService;
@@ -152,8 +161,22 @@ export class SmartDrive extends Observable {
     }
   }
 
+  public otaProgressToString(): string {
+    return `${this.otaProgress.toFixed(1)} %`;
+  }
+
   public otaStateToString(): string {
-    return this.otaState; //SmartDrive.OTAState[this.otaState];
+    /*
+        if (this.otaState == SmartDrive.OTAState.updating_mcu ||
+            this.otaState == SmartDrive.OTAState.updating_ble) {
+            const time = timeToString(this.otaCurrentTime.getTime() - this.otaStartTime.getTime());
+            return `${this.otaState} ${time}`;
+        } else if (this.otaState == SmartDrive.OTAState.complete) {
+            const time = timeToString(this.otaEndTime.getTime() - this.otaStartTime.getTime());
+            return `${this.otaState} ${time}`;
+        }
+        */
+    return this.otaState;
   }
 
   public onOTAActionTap(action: string) {
@@ -293,6 +316,7 @@ export class SmartDrive extends Observable {
               this.handleDisconnect();
             }
           );
+          this.otaStartTime = new Date();
           this.otaState = SmartDrive.OTAState.awaiting_versions;
           // start the timeout timer
           if (otaTimeoutID) {
@@ -318,7 +342,6 @@ export class SmartDrive extends Observable {
           paused = false;
         };
         const otaCancelHandler = data => {
-          startedOTA = false;
           this.otaState = SmartDrive.OTAState.cancelling;
         };
         const otaTimeoutHandler = data => {
@@ -520,6 +543,10 @@ export class SmartDrive extends Observable {
               }
               break;
             case SmartDrive.OTAState.awaiting_mcu_ready:
+              startedOTA = true;
+              if (!paused) {
+                this.otaCurrentTime = new Date();
+              }
               this.otaActions = ['Cancel'];
               // make sure the index is set to -1 to start next OTA
               index = -1;
@@ -529,6 +556,9 @@ export class SmartDrive extends Observable {
               }
               break;
             case SmartDrive.OTAState.updating_mcu:
+              if (!paused) {
+                this.otaCurrentTime = new Date();
+              }
               // now that we've successfully gotten the
               // SD connected - don't timeout
               if (otaTimeoutID) {
@@ -559,9 +589,12 @@ export class SmartDrive extends Observable {
                 this.otaState = nextState;
               }
               // update the progress bar
-              this.mcuOTAProgress = Math.round(((index + 16) * 100) / mcuFirmware.length);
+              this.mcuOTAProgress = ((index + 16) * 100) / mcuFirmware.length;
               break;
             case SmartDrive.OTAState.awaiting_ble_ready:
+              if (!paused) {
+                this.otaCurrentTime = new Date();
+              }
               this.otaActions = ['Cancel'];
               // make sure the index is set to -1 to start next OTA
               index = -1;
@@ -579,6 +612,9 @@ export class SmartDrive extends Observable {
               }
               break;
             case SmartDrive.OTAState.updating_ble:
+              if (!paused) {
+                this.otaCurrentTime = new Date();
+              }
               // now that we've successfully gotten the
               // SD connected - don't timeout
               if (otaTimeoutID) {
@@ -602,9 +638,12 @@ export class SmartDrive extends Observable {
                 this.otaState = this.doMCUUpdate ? SmartDrive.OTAState.rebooting_mcu : SmartDrive.OTAState.complete;
               }
               // update the progress bar
-              this.bleOTAProgress = Math.round(((index + 16) * 100) / bleFirmware.length);
+              this.bleOTAProgress = ((index + 16) * 100) / bleFirmware.length;
               break;
             case SmartDrive.OTAState.rebooting_ble:
+              if (!paused) {
+                this.otaCurrentTime = new Date();
+              }
               this.otaActions = [];
               // if we have gotten the version, it has
               // rebooted so now we should reboot the
@@ -625,6 +664,9 @@ export class SmartDrive extends Observable {
               }
               break;
             case SmartDrive.OTAState.rebooting_mcu:
+              if (!paused) {
+                this.otaCurrentTime = new Date();
+              }
               this.otaActions = [];
               // if we have gotten the version, it has
               // rebooted so now we should reboot the
@@ -644,6 +686,7 @@ export class SmartDrive extends Observable {
               // user of the success / failure of each
               // of t he updates!
               // - probably add buttons so they can retry?
+              this.otaEndTime = new Date();
               let msg = '';
               if (mcuVersion == mcuFWVersion && bleVersion == bleFWVersion) {
                 msg = `SmartDrive OTA Succeeded! ${mcuVersion.toString(16)}, ${bleVersion.toString(16)}`;

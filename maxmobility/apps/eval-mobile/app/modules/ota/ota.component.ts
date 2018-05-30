@@ -29,25 +29,6 @@ import { Packet, DailyInfo, PushTracker, SmartDrive } from '@maxmobility/core';
 import { constructDependencies } from '@angular/core/src/di/reflective_provider';
 import { constants } from 'fs';
 
-// const timeElapsed = Observable.defer(() => {
-//     const start = Scheduler.animationFrame.now();
-//     return Observable.interval(1)
-//         .map(() => Math.floor((Date.now() - start)));
-// });
-
-// const duration = (totalMs) =>
-//     timeElapsed
-//         .map(elapsedMs => elapsedMs / totalMs)
-//         .takeWhile(t => t <= 1);
-
-// const amount = (d) => (t) => t * d;
-
-// const elasticOut = (t) =>
-//     Math.sin(-13.0 * (t + 1.0) *
-//         Math.PI / 2) *
-//     Math.pow(2.0, -10.0 * t) +
-//     1.0;
-
 const currentApp = knownFolders.currentApp();
 
 @Component({
@@ -353,14 +334,3 @@ to connect to the app, the PT goes directly into pairing to app mode.`,
     });
   }
 }
-
-/*
-  setTimeout(() => {
-  this.routerExtensions.navigate(['/pairing'], {
-  clearHistory: true
-  });
-  }, 1500);
-  }
-  }
-  }, 500);
-*/

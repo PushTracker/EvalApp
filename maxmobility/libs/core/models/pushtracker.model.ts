@@ -20,6 +20,12 @@ enum OTAState {
   timeout = 'Timeout'
 }
 
+const timeToString = function(milliseconds: number): string {
+  let t = new Date(null);
+  t.setSeconds(milliseconds / 1000.0);
+  return t.toISOString().substr(11, 8);
+};
+
 export class PushTracker extends Observable {
   // STATIC:
   static readonly OTAState = OTAState;
@@ -65,11 +71,11 @@ export class PushTracker extends Observable {
 
   // static methods:
   public static motorTicksToMiles(ticks: number): number {
-    return ticks * (2.0 * 3.14159265358 * 3.8) / (265.714 * 63360.0);
+    return (ticks * (2.0 * 3.14159265358 * 3.8)) / (265.714 * 63360.0);
   }
 
   public static caseTicksToMiles(ticks: number): number {
-    return ticks * (2.0 * 3.14159265358 * 3.8) / (36.0 * 63360.0);
+    return (ticks * (2.0 * 3.14159265358 * 3.8)) / (36.0 * 63360.0);
   }
 
   // NON STATIC:
@@ -90,6 +96,9 @@ export class PushTracker extends Observable {
   public otaProgress: number = 0;
   public otaActions: string[] = [];
   public ableToSend: boolean = false;
+  public otaStartTime: Date;
+  public otaCurrentTime: Date;
+  public otaEndTime: Date;
 
   // private members
   private _bluetoothService: BluetoothService;
@@ -131,8 +140,21 @@ export class PushTracker extends Observable {
 
   // regular methods
 
+  public otaProgressToString(): string {
+    return `${this.otaProgress.toFixed(1)} %`;
+  }
+
   public otaStateToString(): string {
-    return this.otaState; //PushTracker.OTAState[this.otaState];
+    /*
+        if (this.otaState == PushTracker.OTAState.updating) {
+            const time = timeToString(this.otaCurrentTime.getTime() - this.otaStartTime.getTime());
+            return `${this.otaState} ${time}`;
+        } else if (this.otaState == PushTracker.OTAState.complete) {
+            const time = timeToString(this.otaEndTime.getTime() - this.otaStartTime.getTime());
+            return `${this.otaState} ${time}`;
+        }
+        */
+    return this.otaState;
   }
 
   public onOTAActionTap(action: string) {
@@ -253,6 +275,7 @@ export class PushTracker extends Observable {
         const otaStartHandler = data => {
           this.otaState = PushTracker.OTAState.awaiting_version;
           this.otaActions = ['Cancel'];
+          this.otaStartTime = new Date();
           // start the timeout timer
           if (otaTimeoutID) {
             timer.clearTimeout(otaTimeoutID);
@@ -280,7 +303,6 @@ export class PushTracker extends Observable {
           this.otaActions = ['Pause', 'Cancel'];
         };
         const otaCancelHandler = data => {
-          startedOTA = false;
           this.otaState = PushTracker.OTAState.cancelling;
         };
         const otaTimeoutHandler = data => {
@@ -397,6 +419,9 @@ export class PushTracker extends Observable {
               }
               break;
             case PushTracker.OTAState.awaiting_ready:
+              if (!paused) {
+                this.otaCurrentTime = new Date();
+              }
               // make sure the index is set to 0 for next OTA
               index = -1;
               if (this.connected && this.ableToSend) {
@@ -407,6 +432,9 @@ export class PushTracker extends Observable {
             case PushTracker.OTAState.updating:
               // now that we've successfully gotten the
               // OTA started - don't timeout
+              if (!paused) {
+                this.otaCurrentTime = new Date();
+              }
               if (otaTimeoutID) {
                 timer.clearTimeout(otaTimeoutID);
               }
@@ -414,12 +442,15 @@ export class PushTracker extends Observable {
                 writeFirmwareSector(fw, PushTracker.DataCharacteristic, PushTracker.OTAState.rebooting);
               }
               // update the progress bar
-              this.otaProgress = Math.round((index + 16) * 100 / fw.length);
+              this.otaProgress = ((index + 16) * 100) / fw.length;
               // we need to reboot after the OTA
               hasRebooted = false;
               haveVersion = false;
               break;
             case PushTracker.OTAState.rebooting:
+              if (!paused) {
+                this.otaCurrentTime = new Date();
+              }
               this.otaActions = [];
               if (this.ableToSend && !hasRebooted) {
                 // send stop ota command
@@ -432,6 +463,7 @@ export class PushTracker extends Observable {
               // TODO: this should be a part of another
               //       page - since we have to re-pair
               //       and re-connect the PT to the App
+              this.otaEndTime = new Date();
               let msg = '';
               if (this.version == 0x15) {
                 msg = `PushTracker OTA Succeeded! ${this.version.toString(16)}`;

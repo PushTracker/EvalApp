@@ -17,13 +17,13 @@
       <StackLayout col="0" row="0" orientation="vertical" verticalAlignment="center" margin="20,0,0,0">
         <StackLayout orientation="horizontal" horizontalAlignment="center" height="75" >
           <Button [class]="connected ? 'fa hero' : 'fa grayed'"
-		  text="PushTracker"
-		  margin="0, 25, 0, 15"
-		  (tap)="onPtButtonTapped()"></Button>
+                  text="PushTracker"
+                  margin="0, 25, 0, 15"
+                  (tap)="onPtButtonTapped()"></Button>
           <Button [class]="connected ? 'fa hero' : 'fa grayed'"
-		  text="SmartDrive"
-		  margin="0, 25, 0, 15"
-		  (tap)="onSdButtonTapped()"></Button>
+                  text="SmartDrive"
+                  margin="0, 25, 0, 15"
+                  (tap)="onSdButtonTapped()"></Button>
         </StackLayout>
       </StackLayout>
 
@@ -33,19 +33,19 @@
         //OTA Title and version number
         <DockLayout>
           <Label class="title"
-		 [text]="ptConnected ? initialTitleText : connectedTitleText"
-		 textWrap="true"
-		 dock="top"
-		 stretchLastChild="true"></Label>
+                 [text]="ptConnected ? initialTitleText : connectedTitleText"
+                 textWrap="true"
+                 dock="top"
+                 stretchLastChild="true"></Label>
         </DockLayout>
 
         //OTA Descriptions
         <StackLayout #otaTitleView col="0" row="2" orientation="vertical" horizontalAlignment="center" padding="10">
-	  <Label *ngFor="let desc of otaDescription" [text]="desc" class="otaDescription" textWrap="true"></Label>
+          <Label *ngFor="let desc of otaDescription" [text]="desc" class="otaDescription" textWrap="true"></Label>
           <Button class="hero"
-		  [text]="updatingButtonText"
-		  margin="15"
-		  (tap)="onStartOtaUpdate()"></Button>
+                  [text]="updatingButtonText"
+                  margin="15"
+                  (tap)="onStartOtaUpdate()"></Button>
         </StackLayout>
       </StackLayout>
 
@@ -53,34 +53,34 @@
       <StackLayout #otaProgressView col="0" row="3" padding="5" orientation="vertical">
         //SmartDrive OTAs
         <StackLayout class="ota" *ngFor="let sd of smartDriveOTAs._array">
-	  <GridLayout class="otaInfo" rows="auto" columns="auto, *">
+          <GridLayout class="otaInfo" rows="auto" columns="auto, *">
             <Label col="0" class="otaLabel" text="SmartDrive"></Label>
-            <Label col="1" class="percentageLabel" [text]="sd.otaProgress +'%'"></Label>
-	  </GridLayout>
+            <Label col="1" class="percentageLabel" [text]="sd.otaProgressToString()"></Label>
+          </GridLayout>
           <Progress [value]="sd.otaProgress" maxValue="100" class="progress"></Progress>
-	  <GridLayout class="otaInfo" rows="auto, auto, *" columns="auto, *">
+          <GridLayout class="otaInfo" rows="auto, auto, *" columns="auto, *">
             <Label col="0" class="otaLabel" [text]="sd.address"></Label>
             <TextView col="0" row="1" editable="false" class="otaState" textDecoration="none" [text]="sd.otaStateToString()"></TextView>
-	    <WrapLayout orientation="horizontal" horizontalAlignment="right" rowSpan="3" col="1">
+            <WrapLayout orientation="horizontal" horizontalAlignment="right" rowSpan="3" col="1">
               <Button *ngFor="let action of sd.otaActions" class="otaAction" [text]="action" (tap)="sd.onOTAActionTap(action)"></Button>
-	    </WrapLayout>
-	  </GridLayout>
-	</StackLayout>
+            </WrapLayout>
+          </GridLayout>
+        </StackLayout>
         //PushTracker OTAs
         <StackLayout class="ota" *ngFor="let pt of pushTrackerOTAs._array">
-	  <GridLayout class="otaInfo" rows="auto" columns="auto, *">
+          <GridLayout class="otaInfo" rows="auto" columns="auto, *">
             <Label col="0" class="otaLabel" text="PushTracker"></Label>
-            <Label col="1" class="percentageLabel" [text]="pt.otaProgress +'%'"></Label>
-	  </GridLayout>
+            <Label col="1" class="percentageLabel" [text]="pt.otaProgressToString()"></Label>
+          </GridLayout>
           <Progress [value]="pt.otaProgress" maxValue="100" class="progress"></Progress>
-	  <GridLayout class="otaInfo" rows="auto, auto, *" columns="auto, *">
+          <GridLayout class="otaInfo" rows="auto, auto, *" columns="auto, *">
             <Label col="0" class="otaLabel" [text]="pt.address"></Label>
             <TextView col="0" row="1" editable="false" class="otaState" textDecoration="none" [text]="pt.otaStateToString()"></TextView>
-	    <WrapLayout orientation="horizontal" horizontalAlignment="right" rowSpan="3" col="1">
+            <WrapLayout orientation="horizontal" horizontalAlignment="right" rowSpan="3" col="1">
               <Button *ngFor="let action of pt.otaActions" class="otaAction" [text]="action" (tap)="pt.onOTAActionTap(action)"></Button>
-	    </WrapLayout>
-	  </GridLayout>
-	</StackLayout>
+            </WrapLayout>
+          </GridLayout>
+        </StackLayout>
       </StackLayout>
 
       //StackLayout in row 3 contains a view to display new features.
