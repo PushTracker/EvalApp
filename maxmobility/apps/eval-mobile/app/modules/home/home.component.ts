@@ -43,38 +43,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   videoItems = Videos;
   demoItems = Demos;
     
-  titles = [
-    { Title: 'Pairing', 
-      Image: String.fromCharCode(0xf0c1), 
-      Description: 'Connect with PaushTracker and SmartDrive', 
-      Route: '/pairing' },
-    {
-      Title: 'Videos',
-      Image: String.fromCharCode(0xf05a),
-      Description: 'Training videos and Lessons',
-      Route: '/videos'
-    },
-    {
-      Title: 'Eval',
-      Image: String.fromCharCode(0xf0ae),
-      Description: 'Walk-through evaluation and generate an LMN',
-      Route: '/eval-entry'
-    },
-    {
-      Title: 'OTA',
-      Image: String.fromCharCode(0xf019),
-      Description: 'Over the Air Firmware Updates',
-      Route: '/ota'
-    },
-    {
-      Title: 'Demos',
-      Image: String.fromCharCode(0xf02a),
-      Description: 'Fleet management and Tracking.',
-      Route: '/demos'
-    },
-    { Title: 'FAQ', Image: String.fromCharCode(0xf059), Description: 'Common SmartDrive Questions', Route: '/faq' }
-  ];
-
   connectivityItems = [
     { Image: "~/assets/images/pt-phone-home.png", 
       Description: 'Pair your app with a PushTracker', 
@@ -113,28 +81,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
   ];
-
-  otaItems = [
-    { Image: "~/assets/images/pt-bt.jpg", 
-      Description: 'Update the Firmware on your PushTracker',
-      Directive:'pt',
-      Route: '/ota'
-    },
-    { Image: "~/assets/images/sd-bt.jpg", 
-      Description: 'Update the Firmware on your SmartDrive',
-      Directive:'sd',
-      Route: '/ota' 
-    },
-    { Image: "~/assets/images/pt-sd-bt.jpg", 
-      Description: 'Update a PushTracker and SmartDrive together',
-      Directive:'pt-sd',
-      Route: '/ota' 
-    }
-
-  ];
-
-
-
 
   private _sideDrawerTransition: DrawerTransitionBase;
 

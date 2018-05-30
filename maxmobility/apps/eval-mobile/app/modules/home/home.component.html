@@ -37,29 +37,6 @@
 	</ScrollView>
       </StackLayout>
 
-      //OTA 
-      <StackLayout class="list-stack-layout" row="1">
-	<StackLayout class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></StackLayout>
-	<DockLayout (tap)="chevronButtonTapped('/ota')"  class="dockLayout-options" stretchLastChild="false">
-	  <Label text="Firmware Updates" class="heading" dock="left"></Label>
-	  <Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/ota')"></Label>
-	</DockLayout>
-	<Label text="Keep your SmartDrive up to date with over the air updates." class="description" textWrap="true"></Label>
-
-	<ScrollView orientation="horizontal" class="rad-list-view">
-	  <StackLayout orientation="horizontal">
-	    <StackLayout *ngFor="let item of otaItems" class="icon-description-group">
-	      <Image [src]="item.Image" (tap)="otaThumbTapped(item)"
-		     stretch="aspectFill"
-		     class="thumb"></Image>
-	      <Label class="item-description" textWrap="true" [text]="item.Description">
-	      </Label>
-	    </StackLayout>
-	  </StackLayout>
-	</ScrollView>
-      </StackLayout>
-
-
       //Videos
       <StackLayout class="list-stack-layout" row="2">
 	<StackLayout class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></StackLayout>
@@ -79,8 +56,6 @@
 	  </StackLayout>
 	</ScrollView>
       </StackLayout>
-
-
 
       //Evaluation 
       <StackLayout class="list-stack-layout" row="3">
