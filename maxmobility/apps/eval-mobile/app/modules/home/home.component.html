@@ -1,6 +1,6 @@
 <ActionBar class="action-bar" flat="true" title="Home">
   <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
-	
+  
   <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem>
 </ActionBar>
 
@@ -14,29 +14,27 @@
 
 
   <ScrollView tkMainContent class="main-scroll-view">
-    <GridLayout rows="300, 340, 320, 320, 410, 280" columns="*">
+    <GridLayout rows="auto, auto, auto, auto, auto, auto" columns="*">
 
       //Connectivity
-  <StackLayout class="list-stack-layout" row="0">
+      <StackLayout class="list-stack-layout" row="0">
 	<DockLayout (tap)="chevronButtonTapped('/pairing')" class="dockLayout-options" stretchLastChild="false">
 	  <Label text="Connectivity" class="heading" dock="left"></Label>
-		<Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/pairing')"></Label>
+	  <Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/pairing')"></Label>
 	</DockLayout>
-	<DockLayout class="dockLayout-options" stretchLastChild="false">
-	  <Label text="Connect with PushTracker and SmartDrive" class="description" textWrap="true" dock="left"></Label>
-	</DockLayout>
+	<Label text="Connect with PushTracker and SmartDrive" class="description" textWrap="true"></Label>
 
-	<RadListView (loaded)="onRadListLoaded($event)" class="rad-list-view" [items]="connectivityItems">
-	  <ng-template tkListItemTemplate let-item="item">
-
-	    <AbsoluteLayout class="icon-description-group">
-	      <Image [src]="item.Image" (tap)="connectivityThumbTapped(item)" stretch="aspectFill" class="thumb" left="0" top="0"></Image>
-	      <Label class="item-description" textWrap="true" [text]="item.Description" left="0" top="150" ></Label>
-	    </AbsoluteLayout>
-
-	  </ng-template>
-	  <ListViewLinearLayout tkListViewLayout scrollDirection="Horizontal" ios:itemHeight="300" ios:itemWidth="165" itemInsertAnimation="Default" itemDeleteAnimation="Default"></ListViewLinearLayout>
-	</RadListView>
+	<ScrollView orientation="horizontal" class="rad-list-view">
+	  <StackLayout orientation="horizontal">
+	    <StackLayout *ngFor="let item of connectivityItems" class="icon-description-group">
+	      <Image [src]="item.Image"
+		     (tap)="connectivityThumbTapped(item)"
+		     stretch="aspectFill"
+		     class="thumb"></Image>
+	      <Label class="item-description" textWrap="true" [text]="item.Description"></Label>
+	    </StackLayout>
+	  </StackLayout>
+	</ScrollView>
       </StackLayout>
 
       //OTA 
@@ -44,22 +42,21 @@
 	<StackLayout class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></StackLayout>
 	<DockLayout (tap)="chevronButtonTapped('/ota')"  class="dockLayout-options" stretchLastChild="false">
 	  <Label text="Firmware Updates" class="heading" dock="left"></Label>
-		<Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/ota')"></Label>
+	  <Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/ota')"></Label>
 	</DockLayout>
-	<DockLayout class="dockLayout-options" stretchLastChild="false">
-	  <Label text="Keep your SmartDrive up to date with over the air updates." class="description" textWrap="true" dock="left"></Label>
-	</DockLayout>
+	<Label text="Keep your SmartDrive up to date with over the air updates." class="description" textWrap="true"></Label>
 
-	<RadListView (loaded)="onRadListLoaded($event)" [items]="otaItems">
-	  <ng-template tkListItemTemplate let-item="item">
-
-	    <AbsoluteLayout class="icon-description-group">
-	      <Image [src]="item.Image" (tap)="otaThumbTapped(item)" stretch="aspectFill" class="thumb" left="0" top="0"></Image>
-	      <Label class="item-description" textWrap="true" [text]="item.Description" left="0" top="150" ></Label>
-	    </AbsoluteLayout>
-	  </ng-template>
-	  <ListViewLinearLayout tkListViewLayout scrollDirection="Horizontal" ios:itemHeight="300" ios:itemWidth="165" itemInsertAnimation="Default" itemDeleteAnimation="Default"></ListViewLinearLayout>
-	</RadListView>
+	<ScrollView orientation="horizontal" class="rad-list-view">
+	  <StackLayout orientation="horizontal">
+	    <StackLayout *ngFor="let item of otaItems" class="icon-description-group">
+	      <Image [src]="item.Image" (tap)="otaThumbTapped(item)"
+		     stretch="aspectFill"
+		     class="thumb"></Image>
+	      <Label class="item-description" textWrap="true" [text]="item.Description">
+	      </Label>
+	    </StackLayout>
+	  </StackLayout>
+	</ScrollView>
       </StackLayout>
 
 
@@ -69,23 +66,18 @@
 	<DockLayout (tap)="chevronButtonTapped('/videos')"  class="dockLayout-options" stretchLastChild="false">
 	  <Label text="Videos" class="heading" dock="left"></Label>
 	  <Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/videos')"></Label>
-		
+	  
 	</DockLayout>
-	<DockLayout class="dockLayout-options" stretchLastChild="false">
-	  <Label text="Trianing videos for SmartDrive" class="description" textWrap="true" dock="left"></Label>
-	</DockLayout>
+	<Label text="Trianing videos for SmartDrive" class="description" textWrap="true"></Label>
 
-	<RadListView (loaded)="onRadListLoaded($event)" class="rad-list-view" [items]="videoItems">
-	  <ng-template tkListItemTemplate let-item="item">
-
-	    <AbsoluteLayout class="icon-description-group">
-	      <Image [src]="item.Thumb" (tap)="videoThumbTapped(item)" class="thumb" left="0" top="0" padding="0"></Image>
-	      <Label class="item-description" textWrap="true" [text]="item.Description" left="0" top="150" ></Label>
-	    </AbsoluteLayout>
-
-	  </ng-template>
-	  <ListViewLinearLayout tkListViewLayout scrollDirection="Horizontal" ios:itemHeight="300" ios:itemWidth="165" itemInsertAnimation="Default" itemDeleteAnimation="Default"></ListViewLinearLayout>
-	</RadListView>
+	<ScrollView orientation="horizontal" class="rad-list-view">
+	  <StackLayout orientation="horizontal">
+	    <StackLayout *ngFor="let item of videoItems" class="icon-description-group">
+	      <Image [src]="item.Thumb" (tap)="videoThumbTapped(item)" class="thumb" padding="0"></Image>
+	      <Label class="item-description" textWrap="true" [text]="item.Description" ></Label>
+	    </StackLayout>
+	  </StackLayout>
+	</ScrollView>
       </StackLayout>
 
 
@@ -95,23 +87,18 @@
 	<StackLayout class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></StackLayout>
 	<DockLayout (tap)="chevronButtonTapped('/eval-entry')"  class="dockLayout-options" stretchLastChild="false">
 	  <Label text="Clinical Tools" class="heading" dock="left"></Label>
-		<Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/eval-entry')"></Label>
+	  <Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/eval-entry')"></Label>
 	</DockLayout>
-	<DockLayout class="dockLayout-options" stretchLastChild="false">
-	  <Label text="SmartDrive Training and Evaluation Tools" class="description" textWrap="true" dock="left"></Label>
-	</DockLayout>
+	<Label text="SmartDrive Training and Evaluation Tools" class="description" textWrap="true"></Label>
 
-	<RadListView (loaded)="onRadListLoaded($event)" [items]="evalItems">
-	  <ng-template tkListItemTemplate let-item="item">
-
-	    <AbsoluteLayout class="icon-description-group">
-	      <Image [src]="item.Image" (tap)="evalThumbTapped(item)" class="thumb" left="0" top="0"></Image>
-	      <Label class="item-description" textWrap="true" [text]="item.Description" left="0" top="150" ></Label>
-	    </AbsoluteLayout>
-
-	  </ng-template>
-	  <ListViewLinearLayout tkListViewLayout scrollDirection="Horizontal" ios:itemHeight="300" ios:itemWidth="165" itemInsertAnimation="Default" itemDeleteAnimation="Default"></ListViewLinearLayout>
-	</RadListView>
+	<ScrollView orientation="horizontal" class="rad-list-view">
+	  <StackLayout orientation="horizontal">
+	    <StackLayout *ngFor="let item of evalItems" class="icon-description-group">
+	      <Image [src]="item.Image" (tap)="evalThumbTapped(item)" class="thumb"></Image>
+	      <Label class="item-description" textWrap="true" [text]="item.Description"></Label>
+	    </StackLayout>
+	  </StackLayout>
+	</ScrollView>
       </StackLayout>
 
       //Demos 
@@ -119,29 +106,24 @@
 	<StackLayout class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></StackLayout>
 	<DockLayout (tap)="chevronButtonTapped('/demos')"  class="dockLayout-options" textWrap="true" stretchLastChild="false">
 	  <Label text="Demos" class="heading" dock="left"></Label>
-		<Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/demos')"></Label>
+	  <Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/demos')"></Label>
 	</DockLayout>
-	<DockLayout class="dockLayout-options" stretchLastChild="false">
-	  <Label text="Demo locations and statistics" class="description" textWrap="true" dock="left"></Label>
-	</DockLayout>
+	<Label text="Demo locations and statistics" class="description" textWrap="true"></Label>
 
-	<RadListView (loaded)="onRadListLoaded($event)" [items]="demoItems">
-	  <ng-template tkListItemTemplate let-item="item">
-
-	    <AbsoluteLayout class="icon-description-group">
-	      <Image [src]="item.Image" stretch="aspectFill" class="thumb" left="0" top="0"></Image>
-	      <StackLayout left="0" top="160" orintation="vertical" width="150">
+	<ScrollView orientation="horizontal" class="rad-list-view">
+	  <StackLayout orientation="horizontal">
+	    <StackLayout *ngFor="let item of demoItems" class="icon-description-group">
+	      <Image [src]="item.Image" stretch="aspectFill" class="thumb"></Image>
+	      <StackLayout>
 		<Label class="demo-item-description" textWrap="true" [text]="item.SerialNumber"></Label>
 		<Label class="demo-item-description" textWrap="true" [text]="item.PTSerialNumber"></Label>
 		<Label class="demo-item-description" textWrap="true" [text]="item.LastUsed" ></Label>
 		<Label class="demo-item-description" textWrap="true" [text]="item.Location"  ></Label>
-		<Label class="demo-item-description" backgroundColor="red" textWrap="true" [text]="item.Firmware"  ></Label>
+		<Label class="demo-item-description" [backgroundColor]="item.Firmware.includes('1.5') ? 'green' : 'red'" textWrap="true" [text]="item.Firmware"  ></Label>
 	      </StackLayout>
-	    </AbsoluteLayout>
-
-	  </ng-template>
-	  <ListViewLinearLayout tkListViewLayout scrollDirection="Horizontal" ios:itemHeight="410" ios:itemWidth="165" itemInsertAnimation="Default" itemDeleteAnimation="Default"></ListViewLinearLayout>
-	</RadListView>
+	    </StackLayout>
+	  </StackLayout>
+	</ScrollView>
       </StackLayout>
 
       //FAQ 
@@ -149,22 +131,17 @@
 	<StackLayout class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></StackLayout>
 	<DockLayout (tap)="chevronButtonTapped('/faq')"  class="dockLayout-options" stretchLastChild="false">
 	  <Label text="FAQ" class="heading" dock="left"></Label>
-		<Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/faq')"></Label>
+	  <Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/faq')"></Label>
 	</DockLayout>
-	<DockLayout class="dockLayout-options" stretchLastChild="false">
-	  <Label text="Some frequently asked questions" class="description" textWrap="true" dock="left"></Label>
-	</DockLayout>
+	<Label text="Some frequently asked questions" class="description" textWrap="true"></Label>
 
-	<RadListView (loaded)="onRadListLoaded($event)" [items]="faqItems">
-	  <ng-template tkListItemTemplate let-item="item">
-
-	    <AbsoluteLayout class="icon-description-group">
-	      <Label class="thumb faq-question" stretch="aspectFill" left="0" top="0" [text]="item.question" textWrap="true"></Label>
-	    </AbsoluteLayout>
-
-	  </ng-template>
-	  <ListViewLinearLayout tkListViewLayout scrollDirection="Horizontal" ios:itemHeight="300" ios:itemWidth="165" itemInsertAnimation="Default" itemDeleteAnimation="Default"></ListViewLinearLayout>
-	</RadListView>
+	<ScrollView orientation="horizontal" class="rad-list-view">
+	  <StackLayout orientation="horizontal">
+	    <StackLayout *ngFor="let item of faqItems" class="icon-description-group">
+	      <Label class="thumb faq-question" stretch="aspectFill" [text]="item.question" textWrap="true"></Label>
+	    </StackLayout>
+	  </StackLayout>
+	</ScrollView>
       </StackLayout>
 
 

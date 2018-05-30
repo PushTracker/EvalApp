@@ -30,7 +30,7 @@ const Demos = [
     SerialNumber: 'SD: 11002',
     Model: "MX2 +",
     PTSerialNumber: 'PT: 110002',
-    Firmware: 'SD Firmware: 1.1',
+    Firmware: 'SD Firmware: 1.5',
     LastUsed: new Date().toLocaleDateString(),
     Location: 'Breckenridge, CO'
 },
