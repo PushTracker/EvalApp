@@ -52,6 +52,9 @@ export class Bluetooth extends COMMON.BluetoothCommon {
   isPeripheralModeSupported(): Promise<boolean>;
   stopAdvertising(): Promise<any>;
   startAdvertising(advertiseOptions: any): Promise<any>;
+  getConnectedDevicesMatchingState(state: any): any;
+  getConnectedDeviceState(device: any): any;
+  getConnectedDevices(): any;
   getServerConnectedDevicesMatchingState(state: any): any;
   getServerConnectedDeviceState(device: any): any;
   getServerConnectedDevices(): any;

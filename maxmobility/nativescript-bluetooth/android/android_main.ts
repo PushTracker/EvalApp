@@ -870,18 +870,16 @@ export class Bluetooth extends BluetoothCommon {
    * Requires the BLUETOOTH permission.
    * @returns - List of Bluetooth devices. The list will be empty on error.
    */
-  public getServerConnectedDevices() {
-    if (this.gattServer && this.bluetoothManager) {
-      return this.bluetoothManager.getConnectedDevices(android.bluetooth.BluetoothProfile.GATT);
-    }
+  public getConnectedDevices() {
+    return this.bluetoothManager.getConnectedDevices(android.bluetooth.BluetoothProfile.GATT);
   }
 
   /**
    * Get the current connection state of the profile.
    * @param device [android.bluetooth.BluetoothDevice] - Remote bluetooth device.
    */
-  public getServerConnectedDeviceState(device: android.bluetooth.BluetoothDevice) {
-    if (this.gattServer && device && this.bluetoothManager) {
+  public getConnectedDeviceState(device: android.bluetooth.BluetoothDevice) {
+    if (device) {
       return this.bluetoothManager.getConnectionState(device, android.bluetooth.BluetoothProfile.GATT);
     }
   }
@@ -895,9 +893,46 @@ export class Bluetooth extends BluetoothCommon {
    * android.bluetooth.BluetoothProfile.STATE_DISCONNECTING,
    * @link - https://developer.android.com/reference/android/bluetooth/BluetoothManager.html#getDevicesMatchingConnectionStates(int,%20int[])
    */
-  public getServerConnectedDevicesMatchingState(states) {
-    if (this.gattServer && this.bluetoothManager && states) {
+  public getConnectedDevicesMatchingState(states) {
+    if (states) {
       return this.bluetoothManager.getDevicesMatchingConnectionStates(android.bluetooth.BluetoothProfile.GATT, [
+        states
+      ]);
+    }
+  }
+
+  /**
+   * Get connected devices for this specific profile.
+   * Return the set of devices which are in state STATE_CONNECTED
+   * Requires the BLUETOOTH permission.
+   * @returns - List of Bluetooth devices. The list will be empty on error.
+   */
+  public getServerConnectedDevices() {
+    return this.bluetoothManager.getConnectedDevices(android.bluetooth.BluetoothProfile.GATT_SERVER);
+  }
+
+  /**
+   * Get the current connection state of the profile.
+   * @param device [android.bluetooth.BluetoothDevice] - Remote bluetooth device.
+   */
+  public getServerConnectedDeviceState(device: android.bluetooth.BluetoothDevice) {
+    if (device) {
+      return this.bluetoothManager.getConnectionState(device, android.bluetooth.BluetoothProfile.GATT_SERVER);
+    }
+  }
+
+  /**
+   * Get a list of devices that match any of the given connection states.
+   * @param states - Array of states. States can be one of:
+   * android.bluetooth.BluetoothProfile.STATE_CONNECTED,
+   * android.bluetooth.BluetoothProfile.STATE_CONNECTING,
+   * android.bluetooth.BluetoothProfile.STATE_DISCONNECTED,
+   * android.bluetooth.BluetoothProfile.STATE_DISCONNECTING,
+   * @link - https://developer.android.com/reference/android/bluetooth/BluetoothManager.html#getDevicesMatchingConnectionStates(int,%20int[])
+   */
+  public getServerConnectedDevicesMatchingState(states) {
+    if (states) {
+      return this.bluetoothManager.getDevicesMatchingConnectionStates(android.bluetooth.BluetoothProfile.GATT_SERVER, [
         states
       ]);
     }

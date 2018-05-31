@@ -91,7 +91,7 @@ export class BluetoothService {
     return this.enabled && this.initialized && this._bluetooth.offersService(BluetoothService.AppServiceUUID);
   }
 
-  public async initialize() {
+  public async initialize(): Promise<any> {
     this.enabled = false;
     this.initialized = false;
     return this._bluetooth
@@ -112,7 +112,7 @@ export class BluetoothService {
       });
   }
 
-  public async advertise() {
+  public async advertise(): Promise<any> {
     return this.initialize()
       .then(() => {
         return this._bluetooth.startAdvertising({
@@ -163,9 +163,28 @@ export class BluetoothService {
     });
   }
 
-  public disconnect(args: any) {
-    // TODO: doesn't properly disconnect
-    this._bluetooth.disconnect(args);
+  public disconnectAll(): Promise<any> {
+    const gattDevices = this._bluetooth.getConnectedDevices();
+    const gattServerDevices = this._bluetooth.getServerConnectedDevices();
+    let tasks = [];
+    console.log(`Disconnecting from all devices: ${gattDevices}, ${gattServerDevices}`);
+    if (gattDevices && gattDevices.length) {
+      tasks = gattDevices.map(device => {
+        console.log(`disconnecting from ${device}`);
+        return this._bluetooth.disconnect({ UUID: `${device}` });
+      });
+    }
+    if (gattServerDevices && gattServerDevices.length) {
+      tasks = gattServerDevices.map(device => {
+        console.log(`disconnecting from ${device}`);
+        return this._bluetooth.cancelServerConnection(device);
+      });
+    }
+    return Promise.all(tasks);
+  }
+
+  public disconnect(args: any): Promise<any> {
+    return this._bluetooth.disconnect(args);
   }
 
   public discoverServices(opts: any) {}
@@ -194,7 +213,9 @@ export class BluetoothService {
     // stop listening for events
     this.clearEventListeners();
     // stop advertising
-    return this._bluetooth.stopAdvertising();
+    return this.disconnectAll().then(() => {
+      return this._bluetooth.stopAdvertising();
+    });
   }
 
   public restart(): Promise<any> {

@@ -513,16 +513,27 @@ export class SmartDrive extends Observable {
             if (this.connected) {
               console.log(`Disconnecting from ${this.address}`);
               // TODO: Doesn't properly disconnect
-              this._bluetoothService.disconnect({
-                UUID: this.address
-              });
-            }
-            if (success) {
-              resolve(reason);
-            } else if (doRetry) {
-              this.otaActions = ['Retry'];
+              this._bluetoothService
+                .disconnect({
+                  UUID: this.address
+                })
+                .then(() => {
+                  if (success) {
+                    resolve(reason);
+                  } else if (doRetry) {
+                    this.otaActions = ['Retry'];
+                  } else {
+                    resolve(reason);
+                  }
+                });
             } else {
-              resolve(reason);
+              if (success) {
+                resolve(reason);
+              } else if (doRetry) {
+                this.otaActions = ['Retry'];
+              } else {
+                resolve(reason);
+              }
             }
           });
         };
