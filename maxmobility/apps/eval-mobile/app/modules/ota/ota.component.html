@@ -10,34 +10,26 @@
     <MyDrawer [selectedPage]="'OTA'"></MyDrawer>
   </StackLayout>
 
-  <ScrollView class="hero" #scrollView tkMainContent>
+  <StackLayout tkMainContent class="page page-content">
+    <ScrollView class="hero" height="70%">
     <StackLayout class="page page-content">
+      <Label class="title"
+             [text]="ptConnected ? initialTitleText : connectedTitleText"
+             textWrap="true"></Label>
 
-      //StackLayout in contains OTA title and descriptions
-      <StackLayout orientation="vertical"
-                   horizontalAlignment="center"
-                   padding="10">
-
-        //OTA Title and version number
-        <Label class="title"
-               [text]="ptConnected ? initialTitleText : connectedTitleText"
-               textWrap="true"
-               stretchLastChild="true"></Label>
-
-        //OTA Descriptions
-        <StackLayout #otaTitleView orientation="vertical" horizontalAlignment="center" padding="10">
-          <Label *ngFor="let desc of otaDescription" [text]="desc" class="otaDescription" textWrap="true"></Label>
-          <Button class="hero"
-                  [visibility]="updating ? 'collapse' : 'visible'"
-                  text="Refresh Device List"
-                  margin="5, 10, 5, 10"
-                  (tap)="onRefreshDeviceList()"></Button>
-          <Button class="hero"
-                  [text]="updatingButtonText"
-                  margin="5, 10, 5, 10"
-                  (tap)="onStartOtaUpdate()"></Button>
-        </StackLayout>
-      </StackLayout>
+      <FlexboxLayout>
+        <Button class="hero"
+                [visibility]="updating ? 'collapse' : 'visible'"
+                width="50%"
+              text="Refresh Device List"
+              margin="5, 10, 5, 10"
+              (tap)="onRefreshDeviceList()"></Button>
+      <Button class="hero"
+                [width]="updating ? '100%' : '50%'"
+              [text]="updatingButtonText"
+              margin="5, 10, 5, 10"
+              (tap)="onStartOtaUpdate()"></Button>
+      </FlexboxLayout>
 
       //StackLayout in contains progress views for updates
       <StackLayout #otaProgressView padding="5" orientation="vertical">
@@ -73,13 +65,14 @@
         </StackLayout>
       </StackLayout>
 
-      //StackLayout in contains a view to display new features.
-      //TODO: Create slideshow and ability to display video and text
-      <StackLayout #otaFeaturesView class="featuresLayout" padding="5" orientation="vertical">
-
-        <TextView class="features" editable="false" textWrap="true" text="Estimated drive range is a cool new feature in this update. Here's how it works-"></TextView>
-
-      </StackLayout>
     </StackLayout>
-  </ScrollView>
+    </ScrollView>
+
+
+    <slides loop="true" pageIndicators="true" class="featuresLayout" height="30%" width="100%">
+      <slide *ngFor="let desc of otaDescription" class="featuresLayout">
+        <Label class="features" textWrap="true" [text]="desc"></Label>
+      </slide>
+    </slides>
+  </StackLayout>
 </RadSideDrawer>

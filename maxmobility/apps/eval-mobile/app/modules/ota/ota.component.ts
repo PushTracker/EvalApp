@@ -39,11 +39,8 @@ const currentApp = knownFolders.currentApp();
 })
 export class OTAComponent implements OnInit, OnDestroy {
   @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
-  @ViewChild('scrollView') scrollView: ElementRef;
-  @ViewChild('otaTitleView') otaTitleView: ElementRef;
-  @ViewChild('otaProgressView') otaProgressView: ElementRef;
-  @ViewChild('otaFeaturesView') otaFeaturesView: ElementRef;
 
+  // PUBLIC MEMBERS
   connected = false;
   updating = false;
 
@@ -52,9 +49,6 @@ export class OTAComponent implements OnInit, OnDestroy {
   connectedTitleText = 'Firmware Version 1.5';
 
   updatingButtonText = 'Begin Firmware Updates';
-
-  // bTSmartDriveConnectionIcon = String.fromCharCode(0xf293);
-  // bTPushTrackerConnectionIcon = String.fromCharCode(0xf293);
 
   otaDescription = [
     'Updated company logo branding when booting PT from sleep.',
@@ -96,40 +90,15 @@ to connect to the app, the PT goes directly into pairing to app mode.`,
       // this.ngOnDestroy();
     });
 
-    //this.hideView(<View>this.otaTitleView.nativeElement);
-    //this.hideView(<View>this.otaProgressView.nativeElement);
-    //this.hideView(<View>this.otaFeaturesView.nativeElement);
     this._sideDrawerTransition = new SlideAlongTransition();
 
-    this.refreshDeviceList();
+    //this.refreshDeviceList();
   }
 
   ngOnDestroy() {
     this.cancelOTAs(true);
     this.routeSub.unsubscribe();
   }
-
-  // view management
-  hideView(view: View): void {
-    view.opacity = 0;
-    view.visibility = 'collapse';
-  }
-
-  animateViewIn(view: View): void {
-    view.visibility = 'visible';
-    view
-      .animate({
-        opacity: 1,
-        duration: 500
-      })
-      .then(() => {
-        // scroll to the new view
-        const scrollView = this.scrollView.nativeElement as ScrollView;
-        const offset = scrollView.scrollableHeight;
-        scrollView.scrollToVerticalOffset(offset, true);
-      });
-  }
-  // end view management
 
   get sideDrawerTransition(): DrawerTransitionBase {
     return this._sideDrawerTransition;
@@ -152,8 +121,6 @@ to connect to the app, the PT goes directly into pairing to app mode.`,
   onStartOtaUpdate() {
     this._bluetoothService.available().then(available => {
       if (available) {
-        //this.animateViewIn(<View>this.otaProgressView.nativeElement);
-        //this.animateViewIn(<View>this.otaFeaturesView.nativeElement);
         if (!this.updating) {
           // start updating
           this.performOTAs()
@@ -183,21 +150,37 @@ to connect to the app, the PT goes directly into pairing to app mode.`,
   }
 
   public onRefreshDeviceList() {
-    return this.refreshDeviceList();
+    this.refreshDeviceList();
   }
 
   private refreshDeviceList(): Promise<any> {
     if (!this.updating) {
       this.smartDriveOTAs.splice(0, this.smartDriveOTAs.length);
       this.pushTrackerOTAs.splice(0, this.pushTrackerOTAs.length);
-      return this.discoverSmartDrives().then(() => {
-        BluetoothService.SmartDrives.map(sd => {
-          this.smartDriveOTAs.push(sd);
+      return this._bluetoothService
+        .available()
+        .then(available => {
+          if (available) {
+            return this.discoverSmartDrives();
+          } else {
+            // bluetooth is not available
+            return alert({
+              title: 'Bluetooth Unavailable',
+              message: 'Bluetooth service unavailable - reinitializing!',
+              okButtonText: 'OK'
+            }).then(() => {
+              return this._bluetoothService.advertise();
+            });
+          }
+        })
+        .then(() => {
+          BluetoothService.SmartDrives.map(sd => {
+            this.smartDriveOTAs.push(sd);
+          });
+          BluetoothService.PushTrackers.map(pt => {
+            this.pushTrackerOTAs.push(pt);
+          });
         });
-        BluetoothService.PushTrackers.map(pt => {
-          this.pushTrackerOTAs.push(pt);
-        });
-      });
     }
   }
 

@@ -9,6 +9,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { NativeScriptCommonModule } from 'nativescript-angular/common';
 import { NativeScriptHttpModule } from 'nativescript-angular/http';
 import { NativeScriptModule } from 'nativescript-angular/nativescript.module';
+import { SlidesModule } from 'nativescript-ngx-slides';
 import { DropDownModule } from 'nativescript-drop-down/angular';
 import { NativeScriptUIListViewModule } from 'nativescript-ui-listview/angular';
 import { NativeScriptUISideDrawerModule } from 'nativescript-ui-sidedrawer/angular';
@@ -36,6 +37,7 @@ export function createTranslateLoader() {
     MobileCoreModule,
     AppRoutingModule,
     HttpClientModule,
+    SlidesModule,
     DropDownModule,
     TranslateModule.forRoot({
       loader: {
