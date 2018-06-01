@@ -37,7 +37,18 @@ export class BluetoothService {
   constructor() {
     // enabling `debug` will output console.logs from the bluetooth source code
     this._bluetooth.debug = true;
-    this.advertise();
+    this.advertise().catch(err => {
+      const msg = `bluetooth.service::advertise error: ${err}`;
+      dialogsModule
+        .alert({
+          title: 'Bluetooth Service failure',
+          message: msg,
+          okButtonText: 'OK'
+        })
+        .then(() => {
+          console.log(msg);
+        });
+    });
   }
 
   public setEventListeners() {
@@ -91,7 +102,7 @@ export class BluetoothService {
     return this.enabled && this.initialized && this._bluetooth.offersService(BluetoothService.AppServiceUUID);
   }
 
-  public async initialize(): Promise<any> {
+  public initialize(): Promise<any> {
     this.enabled = false;
     this.initialized = false;
     return this._bluetooth
@@ -106,13 +117,10 @@ export class BluetoothService {
         } else {
           console.log('Bluetooth is not enabled.');
         }
-      })
-      .catch(ex => {
-        console.log('location permission error', ex);
       });
   }
 
-  public async advertise(): Promise<any> {
+  public advertise(): Promise<any> {
     return this.initialize()
       .then(() => {
         return this._bluetooth.startAdvertising({
@@ -128,9 +136,6 @@ export class BluetoothService {
       .then(() => {
         this._bluetooth.addService(this.AppService);
         console.log('Advertising Started!');
-      })
-      .catch(err => {
-        console.log('advertising err', err);
       });
   }
 

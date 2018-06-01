@@ -38,19 +38,35 @@ export class SettingsComponent implements OnInit {
 
   onStopBT(): void {
     this._progressService.show('Stopping Bluetooth service');
-    this._bluetoothService.stop().then(() => {
+    const stopProgress = result => {
+      console.log(`RESULT: ${result}`);
       setTimeout(() => {
         this._progressService.hide();
       }, 1000);
-    });
+    };
+    this._bluetoothService
+      .stop()
+      .then(stopProgress)
+      .catch(err => {
+        console.log(`Couldn't stop BT: ${err}`);
+        stopProgress(err);
+      });
   }
 
   onRestartBT(): void {
     this._progressService.show('Restarting Bluetooth service');
-    this._bluetoothService.advertise().then(() => {
+    const stopProgress = result => {
+      console.log(`RESULT: ${result}`);
       setTimeout(() => {
         this._progressService.hide();
       }, 1000);
-    });
+    };
+    this._bluetoothService
+      .advertise()
+      .then(stopProgress)
+      .catch(err => {
+        console.log(`Couldn't restart BT: ${err}`);
+        stopProgress(err);
+      });
   }
 }
