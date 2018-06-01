@@ -113,7 +113,7 @@
 	<ScrollView orientation="horizontal" class="rad-list-view">
 	  <StackLayout orientation="horizontal">
 	    <StackLayout *ngFor="let item of faqItems" class="icon-description-group">
-	      <Label class="thumb faq-question" stretch="aspectFill" [text]="item.question" textWrap="true"></Label>
+	      <Label (tap)="faqThumbTapped(item)" class="thumb faq-question" stretch="aspectFill" [text]="item.question" textWrap="true"></Label>
 	    </StackLayout>
 	  </StackLayout>
 	</ScrollView>

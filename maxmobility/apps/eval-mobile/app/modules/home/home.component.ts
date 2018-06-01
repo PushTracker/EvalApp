@@ -6,7 +6,6 @@ import { Page } from 'tns-core-modules/ui/page';
 import { Image } from 'ui/image';
 import { Label } from 'ui/label';
 import { Color } from "tns-core-modules/color";
-import { Feedback, FeedbackType, FeedbackPosition } from "nativescript-feedback";
 import { WebView } from 'tns-core-modules/ui/web-view';
 import { isAndroid, isIOS } from "platform";
 import { RouterExtensions } from 'nativescript-angular/router';
@@ -14,6 +13,8 @@ import { RouterExtensions } from 'nativescript-angular/router';
 // import { RadSideDrawerComponent, SideDrawerType } from 'nativescript-ui-sidedrawer/angular';
 // import { RadListViewComponent } from 'nativescript-ui-listview/angular';
 import { CLog, LoggingService } from '@maxmobility/core';
+import { Feedback, FeedbackType, FeedbackPosition } from "nativescript-feedback";
+import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 import { FAQs } from '../faq/faq.component';
 import { Videos } from '../videos/videos.component';
 import { Demos } from '../demos/demos.component';
@@ -28,6 +29,8 @@ import { Demos } from '../demos/demos.component';
 export class HomeComponent implements OnInit, AfterViewInit {
   // @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
 
+  private feedback: Feedback;
+
     isIOS(): boolean {
         return isIOS;
     }
@@ -37,7 +40,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
   // private drawer: SideDrawerType;
-  private feedback: Feedback;
   
   faqItems = FAQs;
   videoItems = Videos;
@@ -84,7 +86,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   // private _sideDrawerTransition: DrawerTransitionBase;
 
-  constructor(private _page: Page, private _routerExtensions: RouterExtensions, private _logService: LoggingService) {
+  constructor(
+    private _page: Page, 
+    private _routerExtensions: RouterExtensions, 
+    private _logService: LoggingService) {
 
     this._page.enableSwipeBackNavigation = false;
 
@@ -202,6 +207,26 @@ export class HomeComponent implements OnInit, AfterViewInit {
       }
     );
 
+  }
+
+  faqThumbTapped(item: any) {
+
+    const answer = item.answer;
+    const question = item.question;
+    console.log(item.answer);
+    console.log(item.question);
+
+    this.feedback.show({
+      title: question,
+      titleColor: new Color("#fff"),
+      message: answer,
+      messageColor: new Color("#fff"),
+      position: FeedbackPosition.Bottom,
+      duration: 14500,
+      type: FeedbackType.Info, 
+      backgroundColor: new Color("#004F7E"),
+      onTap: () => { console.log("showSuccess tapped"); }
+    });
   }
 
 }
