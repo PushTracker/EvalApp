@@ -2,6 +2,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 // nativescript
 import { confirm } from 'tns-core-modules/ui/dialogs';
+import { Page } from 'tns-core-modules/ui/page';
 // import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-sidedrawer';
 // import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 // app
@@ -28,8 +29,12 @@ export class AccountComponent implements OnInit {
     private _userService: UserService,
     private _progressService: ProgressService,
     private _loggingService: LoggingService,
-    private _router: RouterExtensions
-  ) {}
+    private _router: RouterExtensions,
+    private _page: Page
+  ) {
+
+    this._page.enableSwipeBackNavigation = false;
+  }
 
   ngOnInit() {
     // this._sideDrawerTransition = new SlideAlongTransition();

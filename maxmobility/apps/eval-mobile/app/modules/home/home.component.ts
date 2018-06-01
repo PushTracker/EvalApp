@@ -86,6 +86,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   constructor(private _page: Page, private _routerExtensions: RouterExtensions, private _logService: LoggingService) {
 
+    this._page.enableSwipeBackNavigation = false;
+
     this.feedback = new Feedback();
 
 
