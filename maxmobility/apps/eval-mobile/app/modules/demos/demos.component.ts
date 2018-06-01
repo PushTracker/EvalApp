@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-sidedrawer';
+// import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-sidedrawer';
 import { alert } from 'tns-core-modules/ui/dialogs';
-import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
+// import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { BarcodeScanner } from 'nativescript-barcodescanner';
 import { isAndroid, isIOS } from "platform";
@@ -100,11 +100,11 @@ export class DemosComponent implements OnInit {
         return isAndroid;
     }
 
-    @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
+    // @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
 
     public demos = Demos;
 
-    private _sideDrawerTransition: DrawerTransitionBase;
+    // private _sideDrawerTransition: DrawerTransitionBase;
 
     onDemoTap(args) {
 	console.log('onDemoTap index: ' + args.index);
@@ -139,15 +139,17 @@ export class DemosComponent implements OnInit {
     }
 
     ngOnInit() {
-	this._sideDrawerTransition = new SlideAlongTransition();
+	// this._sideDrawerTransition = new SlideAlongTransition();
     }
 
-    get sideDrawerTransition(): DrawerTransitionBase {
-	return this._sideDrawerTransition;
-    }
+    // get sideDrawerTransition(): DrawerTransitionBase {
+	// return this._sideDrawerTransition;
+    // }
 
     onDrawerButtonTap(): void {
-	this.drawerComponent.sideDrawer.showDrawer();
+	// this.drawerComponent.sideDrawer.showDrawer();
+
+    
     }
 
     onNavBtnTap(): void {

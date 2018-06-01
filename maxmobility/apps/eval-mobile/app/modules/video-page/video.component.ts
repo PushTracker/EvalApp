@@ -16,9 +16,9 @@ import { Label } from 'ui/label';
 import { AnimationCurve } from "ui/enums";
 import { View } from "ui/core/view";
 import { Animation, AnimationDefinition } from "ui/animation";
-import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-sidedrawer';
+// import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-sidedrawer';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
-import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
+// import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 // import { Observable, Scheduler } from "rxjs";
 import { Observable } from "data/observable";
 
@@ -31,14 +31,14 @@ import { Observable } from "data/observable";
     styleUrls: ['./video.component.css']
 })
 export class VideoComponent implements OnInit, AfterViewInit {
-    @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
+    // @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
 	@ViewChild("description") description: ElementRef;
 
     url = String();
 	title = String();
 	desc = String();
 
-    private _sideDrawerTransition: DrawerTransitionBase;
+    // private _sideDrawerTransition: DrawerTransitionBase;
 
     constructor(private _routerExtensions: RouterExtensions, private route: ActivatedRoute) {}
 
@@ -50,7 +50,7 @@ export class VideoComponent implements OnInit, AfterViewInit {
 		this.title = `${query["title"]}`;
 		this.desc = `${query["desc"]}`;
 		
-		this._sideDrawerTransition = new SlideAlongTransition();
+		// this._sideDrawerTransition = new SlideAlongTransition();
 	}
 
     ngAfterViewInit() {
@@ -88,12 +88,12 @@ export class VideoComponent implements OnInit, AfterViewInit {
 	
     }
 
-    get sideDrawerTransition(): DrawerTransitionBase {
-	return this._sideDrawerTransition;
-    }
+    // get sideDrawerTransition(): DrawerTransitionBase {
+	// return this._sideDrawerTransition;
+    // }
 
     onDrawerButtonTap(): void {
-	this.drawerComponent.sideDrawer.showDrawer();
+	// this.drawerComponent.sideDrawer.showDrawer();
     }
 
 

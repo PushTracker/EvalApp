@@ -1,12 +1,12 @@
 // angular
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-sidedrawer';
+// import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-sidedrawer';
 import { alert } from 'tns-core-modules/ui/dialogs';
 import { RouterExtensions } from 'nativescript-angular/router';
 // nativescript
 import { LoadEventData, WebView } from 'tns-core-modules/ui/web-view';
 import { CLog } from '@maxmobility/core';
-import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
+// import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 import { isAndroid, isIOS } from "platform";
 
 const Videos = [
@@ -77,22 +77,22 @@ export class VideosComponent implements OnInit {
         return isAndroid;
     }
 
-  @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
+  // @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
 
   public videos = Videos;
 
-  private _sideDrawerTransition: DrawerTransitionBase;
+  // private _sideDrawerTransition: DrawerTransitionBase;
 
   ngOnInit(): void {
-    this._sideDrawerTransition = new SlideAlongTransition();
+    // this._sideDrawerTransition = new SlideAlongTransition();
   }
 
-  get sideDrawerTransition(): DrawerTransitionBase {
-    return this._sideDrawerTransition;
-  }
+  // get sideDrawerTransition(): DrawerTransitionBase {
+  //   return this._sideDrawerTransition;
+  // }
 
   onDrawerButtonTap(): void {
-    this.drawerComponent.sideDrawer.showDrawer();
+    // this.drawerComponent.sideDrawer.showDrawer();
   }
 
   onItemTap(args) {

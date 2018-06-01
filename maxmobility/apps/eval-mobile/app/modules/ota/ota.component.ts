@@ -9,9 +9,9 @@ import { Color } from 'tns-core-modules/color';
 import { AnimationCurve } from "ui/enums";
 import { View } from "ui/core/view";
 import { Animation, AnimationDefinition } from "ui/animation";
-import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-sidedrawer';
+// import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-sidedrawer';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
-import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
+// import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 import { Observable, Scheduler } from "rxjs";
 
 // const timeElapsed = Observable.defer(() => {
@@ -40,7 +40,7 @@ import { Observable, Scheduler } from "rxjs";
     styleUrls: ['./ota.component.css']
 })
 export class OTAComponent implements OnInit {
-    @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
+    // @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
     @ViewChild('scrollView') scrollView: ElementRef;
     @ViewChild("sdConnectionButton") sdConnectionButton: ElementRef;
     @ViewChild("ptConnectionButton") ptConnectionButton: ElementRef;
@@ -69,7 +69,7 @@ export class OTAComponent implements OnInit {
 
     snackbar = new SnackBar();
 
-    private _sideDrawerTransition: DrawerTransitionBase;
+    // private _sideDrawerTransition: DrawerTransitionBase;
 
     constructor(private http: HttpClient, private routerExtensions: RouterExtensions) {}
 
@@ -91,7 +91,7 @@ export class OTAComponent implements OnInit {
 	const otaFeaturesView = <View>this.otaFeaturesView.nativeElement;
 	otaFeaturesView.opacity = 0;
 
-	this._sideDrawerTransition = new SlideAlongTransition();
+	// this._sideDrawerTransition = new SlideAlongTransition();
 
     }
 
@@ -102,11 +102,11 @@ export class OTAComponent implements OnInit {
 	console.log('New value: ' + progressBar.value);
     }
 
-    get sideDrawerTransition(): DrawerTransitionBase {
-	return this._sideDrawerTransition;
-    }
+    // get sideDrawerTransition(): DrawerTransitionBase {
+	// return this._sideDrawerTransition;
+    // }
     onDrawerButtonTap(): void {
-	this.drawerComponent.sideDrawer.showDrawer();
+	// this.drawerComponent.sideDrawer.showDrawer();
     }
 
     // Connectivity

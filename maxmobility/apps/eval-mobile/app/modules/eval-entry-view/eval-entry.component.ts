@@ -1,7 +1,7 @@
 import * as app from 'tns-core-modules/application';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-sidedrawer';
-import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
+// import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-sidedrawer';
+// import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 import { SegmentedBar, SegmentedBarItem } from 'tns-core-modules/ui/segmented-bar';
 import { Observable } from 'tns-core-modules/data/observable';
 import { confirm } from 'tns-core-modules/ui/dialogs';
@@ -20,7 +20,7 @@ const chairType = ['TiLite', 'Quckie', 'Other'];
   styleUrls: ['./eval-entry.component.css']
 })
 export class EvalEntryComponent implements OnInit {
-  @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
+  // @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
 
   yesNo: SegmentedBarItem[] = [];
   PushingPain: SegmentedBarItem[] = [];
@@ -33,7 +33,7 @@ export class EvalEntryComponent implements OnInit {
   timeIndex = 0;
   chairTypes: string[];
   chairIndex = 0;
-  private _sideDrawerTransition: DrawerTransitionBase;
+  // private _sideDrawerTransition: DrawerTransitionBase;
   private pains = ['Yes', 'No'];
   private fatigues = ['Yes', 'No'];
 
@@ -99,7 +99,7 @@ export class EvalEntryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._sideDrawerTransition = new SlideAlongTransition();
+    // this._sideDrawerTransition = new SlideAlongTransition();
     if (app.ios) {
       this.isIOS = true;
     } else if (app.android) {
@@ -107,15 +107,15 @@ export class EvalEntryComponent implements OnInit {
     }
   }
 
-  get sideDrawerTransition(): DrawerTransitionBase {
-    return this._sideDrawerTransition;
-  }
+  // get sideDrawerTransition(): DrawerTransitionBase {
+  //   return this._sideDrawerTransition;
+  // }
 
   get settings(): Observable {
     return EvaluationService.settings;
   }
 
   onDrawerButtonTap(): void {
-    this.drawerComponent.sideDrawer.showDrawer();
+    // this.drawerComponent.sideDrawer.showDrawer();
   }
 }

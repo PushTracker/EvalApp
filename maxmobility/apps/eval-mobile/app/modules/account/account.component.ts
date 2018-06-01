@@ -2,8 +2,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 // nativescript
 import { confirm } from 'tns-core-modules/ui/dialogs';
-import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-sidedrawer';
-import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
+// import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-sidedrawer';
+// import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 // app
 import { UserService, ProgressService, LoggingService } from '@maxmobility/mobile';
 import { User, CLog } from '@maxmobility/core';
@@ -18,11 +18,11 @@ import { Kinvey } from 'kinvey-nativescript-sdk';
   styleUrls: ['./account.component.css']
 })
 export class AccountComponent implements OnInit {
-  @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
+  // @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
 
   user: Kinvey.User = this._userService.user;
 
-  private _sideDrawerTransition: DrawerTransitionBase;
+  // private _sideDrawerTransition: DrawerTransitionBase;
 
   constructor(
     private _userService: UserService,
@@ -32,15 +32,26 @@ export class AccountComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this._sideDrawerTransition = new SlideAlongTransition();
+    // this._sideDrawerTransition = new SlideAlongTransition();
   }
 
-  get sideDrawerTransition(): DrawerTransitionBase {
-    return this._sideDrawerTransition;
-  }
+  // get sideDrawerTransition(): DrawerTransitionBase {
+  //   return this._sideDrawerTransition;
+  // }
 
   onDrawerButtonTap() {
-    this.drawerComponent.sideDrawer.showDrawer();
+    // this.drawerComponent.sideDrawer.showDrawer();
+
+    this._router.navigate(["/home"],
+        {
+        transition: {
+            name: "slideBottom",
+            duration: 350,
+            curve: "easeInOut",
+            clearHistory: true
+        }
+      }
+    );
   }
 
   onSaveAccountTap() {

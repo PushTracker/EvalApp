@@ -1,8 +1,8 @@
 // angular
 import { Component, ElementRef, OnInit, AfterViewInit, ViewChild } from "@angular/core";
 // nativescript
-import { DrawerTransitionBase, SlideAlongTransition } from "nativescript-ui-sidedrawer";
-import { RadSideDrawerComponent } from "nativescript-ui-sidedrawer/angular";
+// import { DrawerTransitionBase, SlideAlongTransition } from "nativescript-ui-sidedrawer";
+// import { RadSideDrawerComponent } from "nativescript-ui-sidedrawer/angular";
 import { RouterExtensions } from "nativescript-angular/router";
 import { View } from "ui/core/view";
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
@@ -16,7 +16,7 @@ const carousel = require('nativescript-carousel').Carousel;
 })
 export class TrainingComponent implements OnInit, AfterViewInit {
 
-    @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
+    // @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
     @ViewChild('carousel') carousel: ElementRef;
 
 	snackbar = new SnackBar();
@@ -86,7 +86,7 @@ export class TrainingComponent implements OnInit, AfterViewInit {
     }
 ];
 
-    private _sideDrawerTransition: DrawerTransitionBase;
+    // private _sideDrawerTransition: DrawerTransitionBase;
 
     constructor(private routerExtensions: RouterExtensions) {}
 
@@ -119,14 +119,14 @@ export class TrainingComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit(): void {
-	this._sideDrawerTransition = new SlideAlongTransition();
+	// this._sideDrawerTransition = new SlideAlongTransition();
     }
 
-    get sideDrawerTransition(): DrawerTransitionBase {
-	return this._sideDrawerTransition;
-    }
+    // get sideDrawerTransition(): DrawerTransitionBase {
+	// return this._sideDrawerTransition;
+    // }
 
     onDrawerButtonTap(): void {
-	this.drawerComponent.sideDrawer.showDrawer();
+	// this.drawerComponent.sideDrawer.showDrawer();
     }
 }

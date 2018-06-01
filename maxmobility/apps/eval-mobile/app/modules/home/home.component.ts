@@ -10,9 +10,9 @@ import { Feedback, FeedbackType, FeedbackPosition } from "nativescript-feedback"
 import { WebView } from 'tns-core-modules/ui/web-view';
 import { isAndroid, isIOS } from "platform";
 import { RouterExtensions } from 'nativescript-angular/router';
-import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-sidedrawer';
-import { RadSideDrawerComponent, SideDrawerType } from 'nativescript-ui-sidedrawer/angular';
-import { RadListViewComponent } from 'nativescript-ui-listview/angular';
+// import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-sidedrawer';
+// import { RadSideDrawerComponent, SideDrawerType } from 'nativescript-ui-sidedrawer/angular';
+// import { RadListViewComponent } from 'nativescript-ui-listview/angular';
 import { CLog, LoggingService } from '@maxmobility/core';
 import { FAQs } from '../faq/faq.component';
 import { Videos } from '../videos/videos.component';
@@ -26,7 +26,7 @@ import { Demos } from '../demos/demos.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent implements OnInit, AfterViewInit {
-  @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
+  // @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
 
     isIOS(): boolean {
         return isIOS;
@@ -36,7 +36,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         return isAndroid;
     }
 
-  private drawer: SideDrawerType;
+  // private drawer: SideDrawerType;
   private feedback: Feedback;
   
   faqItems = FAQs;
@@ -82,7 +82,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   ];
 
-  private _sideDrawerTransition: DrawerTransitionBase;
+  // private _sideDrawerTransition: DrawerTransitionBase;
 
   constructor(private _page: Page, private _routerExtensions: RouterExtensions, private _logService: LoggingService) {
 
@@ -96,12 +96,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     CLog('HomeComponent OnInit');
-    this._sideDrawerTransition = new SlideAlongTransition();    
+    // this._sideDrawerTransition = new SlideAlongTransition();    
   }
 
   ngAfterViewInit(): void {
 
-    this.drawer = this.drawerComponent.sideDrawer;
+    // this.drawer = this.drawerComponent.sideDrawer;
 
 
   }
@@ -116,12 +116,22 @@ export class HomeComponent implements OnInit, AfterViewInit {
     // }, 100);
   }
 
-  get sideDrawerTransition(): DrawerTransitionBase {
-    return this._sideDrawerTransition;
-  }
+  // get sideDrawerTransition(): DrawerTransitionBase {
+  //   return this._sideDrawerTransition;
+  // }
 
   onDrawerButtonTap(): void {
-    this.drawerComponent.sideDrawer.showDrawer();
+    // this.drawerComponent.sideDrawer.showDrawer();
+    this._routerExtensions.navigate(["/account"],
+        {
+        transition: {
+            name: "slideTop",
+            duration: 350,
+            curve: "easeInOut",
+            clearHistory: true
+        }
+      }
+    );
   }
 
   connectivityThumbTapped(item: any) {

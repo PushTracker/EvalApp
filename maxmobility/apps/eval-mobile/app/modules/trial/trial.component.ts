@@ -1,8 +1,8 @@
 // angular
 import { Component, OnInit, ViewChild } from '@angular/core';
 // nativescript
-import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-sidedrawer';
-import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
+// import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-sidedrawer';
+// import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { SegmentedBar, SegmentedBarItem } from 'tns-core-modules/ui/segmented-bar';
 import { TextField } from 'tns-core-modules/ui/text-field';
@@ -22,13 +22,13 @@ import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
   styleUrls: ['./trial.component.css']
 })
 export class TrialComponent implements OnInit {
-  @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
+  // @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
 
   trialName: string = '';
 
   snackbar = new SnackBar();
 
-  private _sideDrawerTransition: DrawerTransitionBase;
+  // private _sideDrawerTransition: DrawerTransitionBase;
 
   constructor(private routerExtensions: RouterExtensions) {}
 
@@ -112,18 +112,18 @@ export class TrialComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._sideDrawerTransition = new SlideAlongTransition();
+    // this._sideDrawerTransition = new SlideAlongTransition();
   }
 
-  get sideDrawerTransition(): DrawerTransitionBase {
-    return this._sideDrawerTransition;
-  }
+  // get sideDrawerTransition(): DrawerTransitionBase {
+  //   return this._sideDrawerTransition;
+  // }
 
   get settings(): Observable {
     return EvaluationService.settings;
   }
 
   onDrawerButtonTap(): void {
-    this.drawerComponent.sideDrawer.showDrawer();
+    // this.drawerComponent.sideDrawer.showDrawer();
   }
 }
