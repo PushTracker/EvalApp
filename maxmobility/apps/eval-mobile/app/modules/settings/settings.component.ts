@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-sidedrawer';
 import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 
-import { BluetoothService } from '@maxmobility/mobile';
+import { BluetoothService, ProgressService } from '@maxmobility/mobile';
 
 @Component({
   selector: 'Settings',
@@ -15,7 +15,7 @@ export class SettingsComponent implements OnInit {
 
   private _sideDrawerTransition: DrawerTransitionBase;
 
-  constructor(private _bluetoothService: BluetoothService) {}
+  constructor(private _bluetoothService: BluetoothService, private _progressService: ProgressService) {}
 
   /************************************************************
    * Use the sideDrawerTransition property to change the open/close animation of the drawer.
@@ -37,10 +37,20 @@ export class SettingsComponent implements OnInit {
   }
 
   onStopBT(): void {
-    this._bluetoothService.stop();
+    this._progressService.show('Stopping Bluetooth service');
+    this._bluetoothService.stop().then(() => {
+      setTimeout(() => {
+        this._progressService.hide();
+      }, 1000);
+    });
   }
 
   onRestartBT(): void {
-    this._bluetoothService.advertise();
+    this._progressService.show('Restarting Bluetooth service');
+    this._bluetoothService.advertise().then(() => {
+      setTimeout(() => {
+        this._progressService.hide();
+      }, 1000);
+    });
   }
 }

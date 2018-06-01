@@ -43,6 +43,7 @@ export class OTAComponent implements OnInit, OnDestroy {
   // PUBLIC MEMBERS
   connected = false;
   updating = false;
+  searching = false;
 
   // text for buttons and titles in different states
   initialTitleText = 'Press the right button on your PushTracker to connect. (use the one here to test)';
@@ -154,9 +155,10 @@ to connect to the app, the PT goes directly into pairing to app mode.`,
   }
 
   private refreshDeviceList(): Promise<any> {
-    if (!this.updating) {
+    if (!this.updating && !this.searching) {
       this.smartDriveOTAs.splice(0, this.smartDriveOTAs.length);
       this.pushTrackerOTAs.splice(0, this.pushTrackerOTAs.length);
+      this.searching = true;
       return this._bluetoothService
         .available()
         .then(available => {
@@ -169,17 +171,21 @@ to connect to the app, the PT goes directly into pairing to app mode.`,
               message: 'Bluetooth service unavailable - reinitializing!',
               okButtonText: 'OK'
             }).then(() => {
+              this.searching = false;
               return this._bluetoothService.advertise();
             });
           }
         })
         .then(() => {
+          this.smartDriveOTAs.splice(0, this.smartDriveOTAs.length);
+          this.pushTrackerOTAs.splice(0, this.pushTrackerOTAs.length);
           BluetoothService.SmartDrives.map(sd => {
             this.smartDriveOTAs.push(sd);
           });
           BluetoothService.PushTrackers.map(pt => {
             this.pushTrackerOTAs.push(pt);
           });
+          this.searching = false;
         });
     }
   }
