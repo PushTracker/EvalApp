@@ -42,7 +42,7 @@ export class SummaryComponent implements OnInit {
 
   cadenceThresh = 10; // pushes per minute
 
-  constructor(private routerExtensions: RouterExtensions) {
+  constructor(private routerExtensions: RouterExtensions, private _evaluationService: EvaluationService) {
     this.evaluation.trials.map(t => {
       this.totalPushesWith += t.with_pushes;
       this.totalPushesWithout += t.without_pushes;
@@ -63,8 +63,8 @@ export class SummaryComponent implements OnInit {
     let lmnTemplate = `
 This email was generated and sent by the Smart Evaluation App.
 
-User had pushing pain? {{evaluation.PushingPain}} - {{evaluation.pain}} / 10
-User had pushing fatigue? {{evaluation.PushingFatigue}} - {{evaluation.fatigue}} / 10
+User's pushing pain? {{evaluation.pushing_pain}} / 10
+User's pushing fatigue? {{evaluation.pushing_fatigue}} / 10
 Impact on user's independence: {{evaluation.independence}} / 10
 
 {{#trials._array}}
@@ -80,8 +80,8 @@ Trial '{{name}}':
     time:   {{#without_elapsed}}{{toTimeString}}{{/without_elapsed}}
 {{/trials._array}}
 
-User's difficulty with ramps: {{evaluation.rampDifficulty}}
-User's difficulty with flats: {{evaluation.flatDifficulty}}
+User's difficulty with ramps: {{evaluation.ramp_difficulty}}
+User's difficulty with flats: {{evaluation.flat_difficulty}}
 
 User performed {{pushDiff}}% {{pushComparison}} pushes with SmartDrive.
 
@@ -148,6 +148,7 @@ At {{totalCadenceWithout}} pushes per minute, user's cadence is exceptionally hi
             }
           })
           .catch(error => console.error(error));
+        this._evaluationService.save();
         // now go back to dashboard
         this.routerExtensions.navigate(['/home'], {
           clearHistory: true,
@@ -178,35 +179,23 @@ At {{totalCadenceWithout}} pushes per minute, user's cadence is exceptionally hi
 
   onTextChange(args) {
     const textField = <TextField>args.object;
-
-    console.log('onTextChange');
     this.trialName = textField.text;
   }
 
   onReturn(args) {
     const textField = <TextField>args.object;
-
-    console.log('onReturn');
     this.trialName = textField.text;
   }
 
-  showAlert(result) {
-    alert('Text: ' + result);
-  }
-
-  submit(result) {
-    alert('Text: ' + result);
-  }
-
   onSliderUpdate(key, args) {
-    this.evaluation.set(key, args.object.value);
+    this.evaluation[key] = args.object.value;
   }
 
   ngOnInit() {
     console.log('Summary.Component ngOnInit');
   }
 
-  get evaluation(): Evaluation {
-    return EvaluationService.evaluation;
+  get evaluation() {
+    return this._evaluationService.evaluation;
   }
 }

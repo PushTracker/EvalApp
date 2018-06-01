@@ -9,9 +9,6 @@ import { Evaluation, EvaluationService } from '@maxmobility/mobile';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { DropDownModule } from 'nativescript-drop-down/angular';
 
-const timeInChair = ['1', '2', '3', '4', '5+', '10+', '20+', '30+'];
-const chairType = ['TiLite', 'Quckie', 'Other'];
-
 @Component({
   selector: 'EvalEntry',
   moduleId: module.id,
@@ -21,53 +18,24 @@ const chairType = ['TiLite', 'Quckie', 'Other'];
 export class EvalEntryComponent implements OnInit {
   @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
 
-  yesNo: SegmentedBarItem[] = [];
-  PushingPain: SegmentedBarItem[] = [];
-  PushingFatigue: SegmentedBarItem[] = [];
+  hasPushingPain = false;
+  hasPushingFatigue = false;
 
   isIOS = false;
   isAndroid = false;
 
-  timeFrames: string[];
-  timeIndex = 0;
-  chairTypes: string[];
-  chairIndex = 0;
+  years = ['1', '2', '3', '4', '5+', '10+', '20+', '30+'];
+  chair = ['TiLite', 'Quckie', 'Other'];
+
   private _sideDrawerTransition: DrawerTransitionBase;
-  private pains = ['Yes', 'No'];
-  private fatigues = ['Yes', 'No'];
 
-  constructor(private routerExtensions: RouterExtensions) {
+  constructor(private routerExtensions: RouterExtensions, private _evaluationService: EvaluationService) {
     // make sure we clear out any previous evaluation info!
-    EvaluationService.evaluation = new Evaluation();
-
-    this.pains.map(o => {
-      const item = new SegmentedBarItem();
-      item.title = o;
-      this.PushingPain.push(item);
-    });
-    this.fatigues.map(o => {
-      const item = new SegmentedBarItem();
-      item.title = o;
-      this.PushingFatigue.push(item);
-    });
-
-    this.timeFrames = [];
-
-    // tslint:disable-next-line:prefer-for-of
-    for (let i = 0; i < timeInChair.length; i++) {
-      this.timeFrames.push(timeInChair[i]);
-    }
-
-    this.chairTypes = [];
-
-    // tslint:disable-next-line:prefer-for-of
-    for (let i = 0; i < chairType.length; i++) {
-      this.chairTypes.push(chairType[i]);
-    }
+    this._evaluationService.createEvaluation();
   }
 
   onSliderUpdate(key, args) {
-    this.evaluation.set(key, args.object.value);
+    this.evaluation[key] = args.object.value;
   }
 
   // button events
@@ -76,28 +44,23 @@ export class EvalEntryComponent implements OnInit {
   }
 
   // listPicker events
-  selectedIndexChanged(args) {
-    console.log('selected index changed', args);
+  selectedIndexChanged(key, args) {
+    const newValue = this[key][args.newIndex];
+    this.evaluation[key] = newValue;
   }
 
-  // pushing pain
-  getPushingPainIndex() {
-    return this.pains.indexOf(this.evaluation.get('PushingPain'));
+  onPushingPainChecked(args): void {
+    this.hasPushingPain = args.value;
+    if (!this.hasPushingPain) {
+      this.evaluation['pushing_pain'] = 0;
+    }
   }
 
-  onPushingPainIndexChange(args): void {
-    const segmentedBar = <SegmentedBar>args.object;
-    this.evaluation.set('PushingPain', this.pains[segmentedBar.selectedIndex]);
-  }
-
-  // pushing fatigue
-  getPushingFatigueIndex() {
-    return this.fatigues.indexOf(this.evaluation.get('PushingFatigue'));
-  }
-
-  onPushingFatigueIndexChange(args) {
-    const segmentedBar = <SegmentedBar>args.object;
-    this.evaluation.set('PushingFatigue', this.fatigues[segmentedBar.selectedIndex]);
+  onPushingFatigueChecked(args) {
+    this.hasPushingFatigue = args.value;
+    if (!this.hasPushingFatigue) {
+      this.evaluation['pushing_fatigue'] = 0;
+    }
   }
 
   ngOnInit(): void {
@@ -113,8 +76,8 @@ export class EvalEntryComponent implements OnInit {
     return this._sideDrawerTransition;
   }
 
-  get evaluation(): Evaluation {
-    return EvaluationService.evaluation;
+  get evaluation() {
+    return this._evaluationService.evaluation;
   }
 
   onDrawerButtonTap(): void {

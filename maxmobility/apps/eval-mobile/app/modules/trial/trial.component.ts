@@ -53,6 +53,7 @@ export class TrialComponent implements OnInit {
     private routerExtensions: RouterExtensions,
     private _progressService: ProgressService,
     private _bluetoothService: BluetoothService,
+    private _evaluationService: EvaluationService,
     private zone: NgZone
   ) {}
 
@@ -71,7 +72,7 @@ export class TrialComponent implements OnInit {
 
   // button events
   onNext(): void {
-    EvaluationService.evaluation.trials.push(this.trial);
+    this._evaluationService.evaluation.trials.push(this.trial);
     this.routerExtensions.navigate(['/summary'], {
       clearHistory: true,
       transition: {
@@ -136,8 +137,7 @@ export class TrialComponent implements OnInit {
         }
       };
       // send command to get distance:
-      pt
-        .sendSettings('MX2+', 'English', 0x00, 1.0, this.trial.acceleration, this.trial.max_speed)
+      pt.sendSettings('MX2+', 'English', 0x00, 1.0, this.trial.acceleration, this.trial.max_speed)
         .then(success => {
           return pt.sendPacket('Command', 'DistanceRequest');
         })
@@ -170,7 +170,7 @@ export class TrialComponent implements OnInit {
         this.zone.run(() => {
           this.trial.finishedWith = true;
           this.trial.with_elapsed = (this.trial.with_end.getTime() - this.trial.with_start.getTime()) / 60000; // diff is in ms
-          this.trial.with_coast = this.trial.with_pushes ? this.trial.with_elapsed * 60 / this.trial.with_pushes : 0;
+          this.trial.with_coast = this.trial.with_pushes ? (this.trial.with_elapsed * 60) / this.trial.with_pushes : 0;
           pt.off(PushTracker.pushtracker_distance_event, distanceHandler);
           pt.off(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
           this._progressService.hide();
@@ -264,7 +264,7 @@ export class TrialComponent implements OnInit {
           this.trial.finishedWithout = true;
           this.trial.without_elapsed = (this.trial.without_end.getTime() - this.trial.without_start.getTime()) / 60000;
           this.trial.without_coast = this.trial.without_pushes
-            ? this.trial.without_elapsed * 60 / this.trial.without_pushes
+            ? (this.trial.without_elapsed * 60) / this.trial.without_pushes
             : 0;
           pt.off(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
           this._progressService.hide();
@@ -283,6 +283,10 @@ export class TrialComponent implements OnInit {
       // wait for push / coast data and distance:
       pt.on(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
     }
+  }
+
+  onSwitchChecked(key, args) {
+    this.trial[key] = args.value;
   }
 
   onTextChange(args) {

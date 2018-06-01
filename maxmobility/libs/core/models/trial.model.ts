@@ -1,7 +1,6 @@
-// nativescript
-import { Observable, EventData } from 'tns-core-modules/data/observable';
+import { Kinvey } from 'kinvey-nativescript-sdk';
 
-export class Trial extends Observable {
+export class Trial implements Kinvey.Entity {
   // STATIC:
   public static timeToString(seconds: number): string {
     let t = new Date(null);
@@ -10,10 +9,12 @@ export class Trial extends Observable {
   }
 
   // NON STATIC:
+  public _id = null;
+
   public name: string = '';
   // questionnaire
   public flat: boolean = false;
-  public ramap: boolean = false;
+  public ramp: boolean = false;
   public inclines: boolean = false;
   public other: boolean = false;
   // settings
@@ -41,7 +42,25 @@ export class Trial extends Observable {
   public without_end: Date;
   public without_elapsed: number = 0;
 
-  constructor() {
-    super();
+  constructor(obj?: any) {
+    //super();
+    if (obj !== null && obj !== undefined) {
+      this.fromObject(obj);
+    }
+  }
+
+  fromObject(obj: any) {
+    Object.assign(this, obj);
+  }
+
+  data(): any {
+    var obj = {};
+    Object.keys(this).map(k => {
+      if (typeof this[k] === 'number' || typeof this[k] === 'string' || typeof this[k] === 'boolean') {
+        obj[k] = this[k];
+      }
+    });
+    console.log(obj);
+    return obj;
   }
 }
