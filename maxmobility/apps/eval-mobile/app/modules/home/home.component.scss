@@ -53,6 +53,11 @@
 }
 
 .faq-question {
+    width: 150;
+    height: 150;
+    margin: 5, 0, 5, 0;
+    border: solid;
+    border-radius: 4;
     horizontal-align: center;
     vertical-align: center;
     text-align: center;
@@ -61,12 +66,6 @@
     font-weight: 500;
     color: $white;
 }
-
-
-// .demo-orange {
-
-//   background-color: $
-// }
 
 .chev {
 

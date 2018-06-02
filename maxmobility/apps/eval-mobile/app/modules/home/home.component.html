@@ -112,9 +112,9 @@
 
 	<ScrollView orientation="horizontal" class="rad-list-view">
 	  <StackLayout orientation="horizontal">
-	    <StackLayout *ngFor="let item of faqItems" class="icon-description-group">
-	      <Label (tap)="faqThumbTapped(item)" class="thumb faq-question" stretch="aspectFill" [text]="item.question" textWrap="true"></Label>
-	    </StackLayout>
+	    <Gradient borderRadius="4" direction="to bottom right" colors="#004F7E, #0070b3" *ngFor="let item of faqItems" class="icon-description-group">
+	      <Label (tap)="faqThumbTapped(item)" class="faq-question" stretch="aspectFill" [text]="item.question" textWrap="true"></Label>
+	    </Gradient>
 	  </StackLayout>
 	</ScrollView>
       </StackLayout>
