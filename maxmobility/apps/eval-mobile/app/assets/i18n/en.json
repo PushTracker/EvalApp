@@ -1,14 +1,30 @@
 {
   "menu": {
-    "home": "Home",
+    "home": "SmartDrive",
     "connectivity": "Connectivity",
     "con-desc": "Connect with PushTracvker and SmartDrive",
     "pair-pt-app": "Pair app to PushTracker",
     "connect-app": "Comnnect app with PushTracker",
     "pair-pt-sd": "Pair a PushTracker to a SmartDrive",
-    "firmware-updates": "Firmware Updates",
-    "fw-descconnect": "Keep your SmartDrive up to date with over the air updates",
-    "connect-app": "Comnnect app with PushTracker"
+    "ota": "Update a PushTracker and SmartDrive",
+    "videos": "Videos",
+    "videos-desc": "Training and usage videos for SmartDrive and PushTracker",
+    "overview": "This video is an overview of SmartDrive being used by people of varying ages and circumstances in a variety of environments.",
+    "sd-basic-op": "This video covers the basic operation and functionality of the SmartDrive and PushTracker.",
+    "pt-basic-op": "This video covers the basic operation and functionality of the PushTracker.",
+    "pt-ap-basic-op": "This video covers the basic operation and functionality of the PushTracker App.",
+    "sea-basic-op": "This video covers the basic operation and functionality of the Smart Evaluation App.",
+    "eval-training": "This video covers the steps to perform when doing a SmartDrive Evaluation or Training",
+    "interview": "In this video, I interview Chels and Steph about the many aspects of their lives, and how they have been impacted by SmartDrive",
+    "clinical-tools": "Clinical Tools",
+    "clinical-tools-desc": "Training how to use SmartDrive",
+    "training": "SmartDrive Training",
+    "eval": "Begin SmartDrive Evaluation",
+    "trial": "Begin a SmartDrive Trial.",
+    "demos": "Demos",
+    "demos-desc": "Demo location and amanagement",
+    "faq": "FAQs",
+    "faq-desc": "Some frequently asked questions"
   },
   "error": {
     "upload-photo-lbl": "Sorry, an error occurred uploading that photo."

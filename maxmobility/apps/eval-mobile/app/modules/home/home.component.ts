@@ -47,38 +47,38 @@ export class HomeComponent implements OnInit, AfterViewInit {
     
   connectivityItems = [
     { Image: "~/assets/images/pt-phone-home.png", 
-      Description: 'Pair your app with a PushTracker', 
+      Description: 'menu.pair-pt-app', 
       Directive:'pt-phone',
       Route: '/pairing' 
     },
     { Image: "~/assets/images/pt-connect-home.png", 
-      Description: 'Connect your app with the PushTracker', 
+      Description: 'menu.connect-app', 
       Directive:'pt-phone-connect',
       Route: 'pairing' 
     },
     { Image: "~/assets/images/pt-sd-pairing-home.png", 
-      Description: 'Pair your PushTracker with a SmartDrive',
+      Description: "menu.pair-pt-sd",
       Directive:'pt-sd',
       Route: '/pairing' 
     },
     { Image: "~/assets/images/pt-sd-bt.jpg", 
-      Description: 'Update a PushTracker and SmartDrive',
-      Directive:'pt-sd',
+      Description: 'menu.ota',
+      Directive:'ota',
       Route: '/ota' 
     }
   ];
 
   evalItems = [
     { Image: "~/assets/images/Training.jpg", 
-      Description: 'Training how to use SmartDrive', 
+      Description: 'menu.training', 
       Route: '/training' 
     },
     { Image: "~/assets/images/evaluation.jpg", 
-      Description: 'Begin SmartDrive Evaluation', 
+      Description: 'menu.eval', 
       Route: '/eval-entry' 
     },
     { Image: "~/assets/images/trial.jpg", 
-      Description: 'Begin a SmartDrive Trial.', 
+      Description: 'menu.trial', 
       Route: '/trial' 
     }
 

@@ -3,6 +3,7 @@ import { Routes } from '@angular/router';
 import { NativeScriptRouterModule } from 'nativescript-angular/router';
 import { HomeComponent } from './home.component';
 import { SharedModule } from '../shared/shared.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 const routes: Routes = [
   {
@@ -12,7 +13,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [NativeScriptRouterModule.forChild(routes), SharedModule],
+  imports: [NativeScriptRouterModule.forChild(routes), SharedModule, TranslateModule],
   declarations: [HomeComponent],
   exports: [],
   schemas: [NO_ERRORS_SCHEMA]

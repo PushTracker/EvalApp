@@ -31,7 +31,7 @@ export class AppComponent {
     // wrapping this in try/catch due to https://github.com/PushTracker/EvalApp/issues/43
     try {
       this._translateService.setDefaultLang('en');
-      this._translateService.use(device.language);
+      // this._translateService.use(device.language);
       console.log(`device language: ${device.language}`);
     } catch (error) {
       CLog('Error trying to set the TranslateService.use() default to device.language.');

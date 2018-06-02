@@ -1,4 +1,4 @@
-<ActionBar class="action-bar" flat="true" title="Home">
+<ActionBar class="action-bar" flat="true" [title]="'menu.home' | translate">
   <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
   
   <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem>
@@ -19,10 +19,10 @@
       //Connectivity
       <StackLayout class="list-stack-layout" row="0">
 	<DockLayout (tap)="chevronButtonTapped('/pairing')" class="dockLayout-options" stretchLastChild="false">
-	  <Label text="Connectivity" class="heading" dock="left"></Label>
+	  <Label [text]="'menu.connectivity' | translate" class="heading" dock="left"></Label>
 	  <Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/pairing')"></Label>
 	</DockLayout>
-	<Label text="Connect with PushTracker and SmartDrive" class="description" textWrap="true"></Label>
+	<Label [text]="'menu.con-desc' | translate" class="description" textWrap="true"></Label>
 
 	<ScrollView orientation="horizontal" class="rad-list-view">
 	  <StackLayout orientation="horizontal">
@@ -31,7 +31,7 @@
 		     (tap)="connectivityThumbTapped(item)"
 		     stretch="aspectFill"
 		     class="thumb"></Image>
-	      <Label class="item-description" textWrap="true" [text]="item.Description"></Label>
+	      <Label class="item-description" textWrap="true" [text]="item.Description | translate"></Label>
 	    </StackLayout>
 	  </StackLayout>
 	</ScrollView>
@@ -41,17 +41,17 @@
       <StackLayout class="list-stack-layout" row="2">
 	<StackLayout class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></StackLayout>
 	<DockLayout (tap)="chevronButtonTapped('/videos')"  class="dockLayout-options" stretchLastChild="false">
-	  <Label text="Videos" class="heading" dock="left"></Label>
+	  <Label [text]="'menu.videos' | translate" class="heading" dock="left"></Label>
 	  <Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/videos')"></Label>
 	  
 	</DockLayout>
-	<Label text="Trianing videos for SmartDrive" class="description" textWrap="true"></Label>
+	<Label [text]="'menu.videos-desc' | translate" class="description" textWrap="true"></Label>
 
 	<ScrollView orientation="horizontal" class="rad-list-view">
 	  <StackLayout orientation="horizontal">
 	    <StackLayout *ngFor="let item of videoItems" class="icon-description-group">
 	      <Image [src]="item.Thumb" (tap)="videoThumbTapped(item)" class="thumb" padding="0"></Image>
-	      <Label class="item-description" textWrap="true" [text]="item.Description" ></Label>
+	      <Label class="item-description" textWrap="true" [text]="item.Description | translate" ></Label>
 	    </StackLayout>
 	  </StackLayout>
 	</ScrollView>
@@ -61,16 +61,16 @@
       <StackLayout class="list-stack-layout" row="3">
 	<StackLayout class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></StackLayout>
 	<DockLayout (tap)="chevronButtonTapped('/eval-entry')"  class="dockLayout-options" stretchLastChild="false">
-	  <Label text="Clinical Tools" class="heading" dock="left"></Label>
+	  <Label [text]="'menu.clinical-tools' | translate" class="heading" dock="left"></Label>
 	  <Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/eval-entry')"></Label>
 	</DockLayout>
-	<Label text="SmartDrive Training and Evaluation Tools" class="description" textWrap="true"></Label>
+	<Label [text]="'menu.clinical-tools-desc' | translate" class="description" textWrap="true"></Label>
 
 	<ScrollView orientation="horizontal" class="rad-list-view">
 	  <StackLayout orientation="horizontal">
 	    <StackLayout *ngFor="let item of evalItems" class="icon-description-group">
 	      <Image [src]="item.Image" (tap)="evalThumbTapped(item)" class="thumb"></Image>
-	      <Label class="item-description" textWrap="true" [text]="item.Description"></Label>
+	      <Label class="item-description" textWrap="true" [text]="item.Description | translate"></Label>
 	    </StackLayout>
 	  </StackLayout>
 	</ScrollView>
@@ -80,10 +80,10 @@
       <StackLayout class="list-stack-layout" row="4">
 	<StackLayout class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></StackLayout>
 	<DockLayout (tap)="chevronButtonTapped('/demos')"  class="dockLayout-options" textWrap="true" stretchLastChild="false">
-	  <Label text="Demos" class="heading" dock="left"></Label>
+	  <Label [text]="'menu.demos' | translate" class="heading" dock="left"></Label>
 	  <Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/demos')"></Label>
 	</DockLayout>
-	<Label text="Demo locations and statistics" class="description" textWrap="true"></Label>
+	<Label [text]="'menu.demos-desc' | translate" class="description" textWrap="true"></Label>
 
 	<ScrollView orientation="horizontal" class="rad-list-view">
 	  <StackLayout orientation="horizontal">
@@ -105,10 +105,10 @@
       <StackLayout class="list-stack-layout" row="5">
 	<StackLayout class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></StackLayout>
 	<DockLayout (tap)="chevronButtonTapped('/faq')"  class="dockLayout-options" stretchLastChild="false">
-	  <Label text="FAQ" class="heading" dock="left"></Label>
+	  <Label [text]="'menu.faq' | translate" class="heading" dock="left"></Label>
 	  <Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/faq')"></Label>
 	</DockLayout>
-	<Label text="Some frequently asked questions" class="description" textWrap="true"></Label>
+	<Label [text]="'menu.faq-desc' | translate" class="description" textWrap="true"></Label>
 
 	<ScrollView orientation="horizontal" class="rad-list-view">
 	  <StackLayout orientation="horizontal">
