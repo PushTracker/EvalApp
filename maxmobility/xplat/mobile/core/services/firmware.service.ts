@@ -54,7 +54,7 @@ export class FirmwareService {
     var arr = new Uint8Array(length);
     var index = 0;
     for (var i = 0; i < data.length; i++) {
-      var code = parseInt(data[i]);
+      var code = data.codePointAt(i);
       //arr[index] = code & 0xFF;
       //index++;
       do {
@@ -90,12 +90,9 @@ export class FirmwareService {
             this.firmwares[fwKey].id = file._id;
             this.firmwares[fwKey].length = file.size;
             let desc = file.description;
-            console.log(typeof desc);
             if (typeof desc === 'object') {
-              console.log(Object.keys(desc));
               this.description.push(desc);
             } else if (typeof desc === 'string') {
-              console.log(desc);
               this.description.push(JSON.parse(desc));
             }
             console.log(`${fwKey}: ${file._version} : ${file.size}`);
@@ -108,9 +105,8 @@ export class FirmwareService {
           }
         })
         .then(fileData => {
-          console.log(typeof fileData);
-          console.log(fileData.length);
           this.firmwares[fwKey].data = this.unpackFirmwareData(fileData, this.firmwares[fwKey].length);
+          console.log(`FileData: ${typeof fileData} : ${fileData.length}`);
           console.log(`${fwKey}: ${this.firmwares[fwKey].length}`);
           console.log(`${fwKey}: ${this.firmwares[fwKey].data.length}`);
         });
