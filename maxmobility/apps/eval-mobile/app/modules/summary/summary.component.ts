@@ -65,7 +65,7 @@ This email was generated and sent by the Smart Evaluation App.
 
 User's pushing pain? {{evaluation.pushing_pain}} / 10
 User's pushing fatigue? {{evaluation.pushing_fatigue}} / 10
-Impact on user's independence: {{evaluation.independence}} / 10
+Impact on user's independence: {{evaluation.impact_on_independence}} / 10
 
 {{#trials._array}}
 Trial '{{name}}':
@@ -98,7 +98,7 @@ At {{totalCadenceWithout}} pushes per minute, user's cadence is exceptionally hi
       pushDiff: this.pushDiff.toFixed(0),
       coastDiff: this.coastDiff.toFixed(1),
       toFixed: function() {
-        return this.toFixed(2);
+        return this.toFixed(2) || '0';
       },
       toTimeString: function() {
         return Trial.timeToString(this * 60);

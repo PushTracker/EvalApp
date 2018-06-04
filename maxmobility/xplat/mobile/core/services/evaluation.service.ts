@@ -109,6 +109,8 @@ export class EvaluationService {
   }
 
   createEvaluation() {
+    this.evaluation = new Evaluation();
+    /*
     return this.datastore
       .save({})
       .then(data => {
@@ -116,6 +118,7 @@ export class EvaluationService {
         this.publishUpdates();
       })
       .catch(this.handleErrors);
+        */
   }
 
   save() {
@@ -164,6 +167,8 @@ export class EvaluationService {
 
   private handleErrors(error: Response) {
     console.log(error);
+    /*
     return Observable.throw(error);
+      */
   }
 }

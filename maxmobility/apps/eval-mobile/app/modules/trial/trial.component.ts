@@ -289,8 +289,8 @@ export class TrialComponent implements OnInit {
     this.trial[key] = args.value;
   }
 
-  onTextChange(args) {
-    this.trial.name = args.value;
+  onTextChange(key, args) {
+    this.trial[key] = args.value;
   }
 
   onSliderUpdate(key, args) {

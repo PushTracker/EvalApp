@@ -49,22 +49,12 @@
               </FormattedString>
             </Label>
           </DockLayout>
-
-          <!-- <DockLayout stretchLastChild="false">
-               <Label text="Inclines" class="trial-item" dock="left"></Label>
-               <Switch dock="right" class="trial-item"></Switch>
-          </DockLayout>
-          <DockLayout stretchLastChild="false">
-            <Label text="Other" class="trial-item" dock="left"></Label>
-            <Switch dock="right" class="trial-item"></Switch>
-          </DockLayout> -->
-
-          //SmartDrive Settings 
+          
           //Flat Difficulty
           <DockLayout stretchLastChild="false">
             <Label text="Difficulty on Flat Surface?" class="trial-item" dock="left" textWrap="true" width="70%"></Label>
             <Switch (checkedChange)="onFlatDifficultyChecked($event)"
-		    (checked)="hasFlatDifficulty"
+		    [checked]="hasFlatDifficulty"
 		    dock="right"></Switch>
           </DockLayout>
           <DockLayout *ngIf="hasFlatDifficulty" stretchLastChild="false">
@@ -81,7 +71,7 @@
           <DockLayout class="dockLayout-options" stretchLastChild="false">
             <Label text="Difficulty with ramp?" class="trial-item" dock="left" textWrap="true" width="70%"></Label>
             <Switch (checkedChange)="onRampDifficultyChecked($event)"
-		    (checked)="hasRampDifficulty"
+		    [checked]="hasRampDifficulty"
 		    dock="right"></Switch>
           </DockLayout>
           <DockLayout *ngIf="hasRampDifficulty" stretchLastChild="false">

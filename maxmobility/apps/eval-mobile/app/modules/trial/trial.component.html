@@ -23,7 +23,7 @@
             <TextField hint="Enter trial name"
 		       autocorrect="false"
 		       [text]="trial.name"
-		       (textChange)="onTextChange($event)"
+		       (textChange)="onTextChange('name', $event)"
 		       class="trial-name-textfield"></TextField>
 
             //Trial options
@@ -31,24 +31,34 @@
               //Terrain Options
               <DockLayout class="dockLayout-options" stretchLastChild="false">
                 <Label text="Flat Surfaces" class="trial-item" dock="left"></Label>
-                <Switch dock="right" class="switch"
-                        (checked)="trial.flat" (checkedChange)="onSwitchChecked('flat', $event)"></Switch>
+                <Switch dock="right"
+                        [checked]="trial.flat"
+                        (checkedChange)="onSwitchChecked('flat', $event)"></Switch>
               </DockLayout>
               <DockLayout stretchLastChild="false">
                 <Label text="Ramp" class="trial-item" dock="left"></Label>
-                <Switch dock="right" class="switch"
-                        (checked)="trial.ramp" (checkedChange)="onSwitchChecked('ramp', $event)"></Switch>
+                <Switch dock="right"
+                        [checked]="trial.ramp"
+                        (checkedChange)="onSwitchChecked('ramp', $event)"></Switch>
               </DockLayout>
               <DockLayout stretchLastChild="false">
                 <Label text="Inclines" class="trial-item" dock="left"></Label>
-                <Switch dock="right" class="switch"
-                        (checked)="trial.inclines" (checkedChange)="onSwitchChecked('inclines', $event)"></Switch>
+                <Switch dock="right"
+                        [checked]="trial.inclines"
+                        (checkedChange)="onSwitchChecked('inclines', $event)"></Switch>
               </DockLayout>
               <DockLayout stretchLastChild="false" margin="0, 0, 25, 0">
                 <Label text="Other" class="trial-item" dock="left"></Label>
-                <Switch dock="right" class="switch"
-                        (checked)="trial.other" (checkedChange)="onSwitchChecked('other', $event)"></Switch>
+                <Switch dock="right"
+                        [checked]="trial.other"
+                        (checkedChange)="onSwitchChecked('other', $event)"></Switch>               
               </DockLayout>
+              <TextField hint="Trial Description"
+                         *ngIf="trial.other"
+		                 autocorrect="false"
+		                 [text]="trial.other_description"
+		                 (textChange)="onTextChange('other_description', $event)"
+		                 class="trial-name-textfield"></TextField> 
 
               //SmartDrive Settings 
               //Acceleration
