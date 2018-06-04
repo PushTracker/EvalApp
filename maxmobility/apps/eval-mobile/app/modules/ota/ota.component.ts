@@ -1,5 +1,3 @@
-import * as application from 'tns-core-modules/application';
-
 // angular
 import { Component, ElementRef, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -7,6 +5,7 @@ import { NavigationStart, Router } from '@angular/router';
 import { RouterExtensions } from 'nativescript-angular/router';
 // nativescript
 import timer = require('tns-core-modules/timer');
+import { isIOS, isAndroid } from 'tns-core-modules/platform';
 import { alert } from 'tns-core-modules/ui/dialogs';
 import { Progress } from 'tns-core-modules/ui/progress';
 import { Page } from 'tns-core-modules/ui/page';
@@ -14,22 +13,15 @@ import { ScrollView, ScrollEventData } from 'tns-core-modules/ui/scroll-view';
 import { Color } from 'tns-core-modules/color';
 import { ObservableArray, ChangedData, ChangeType } from 'tns-core-modules/data/observable-array';
 import { AnimationCurve } from 'tns-core-modules/ui/enums';
-import { isIOS, isAndroid } from 'tns-core-modules/platform';
 import { View } from 'tns-core-modules/ui/core/view';
 import { Animation, AnimationDefinition } from 'tns-core-modules/ui/animation';
 import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-sidedrawer';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
-import { Observable, Scheduler } from 'rxjs';
 
 // libs
-import { knownFolders, File } from 'tns-core-modules/file-system';
-import { BluetoothService, ProgressService } from '@maxmobility/mobile';
+import { BluetoothService, FirmwareService, ProgressService } from '@maxmobility/mobile';
 import { Packet, DailyInfo, PushTracker, SmartDrive } from '@maxmobility/core';
-import { constructDependencies } from '@angular/core/src/di/reflective_provider';
-import { constants } from 'fs';
-
-const currentApp = knownFolders.currentApp();
 
 @Component({
   selector: 'OTA',
@@ -45,22 +37,13 @@ export class OTAComponent implements OnInit, OnDestroy {
   updating = false;
   searching = false;
 
+  bluetoothReady = false;
+
   // text for buttons and titles in different states
   initialTitleText = 'Press the right button on your PushTracker to connect. (use the one here to test)';
   connectedTitleText = 'Firmware Version 1.5';
 
   updatingButtonText = 'Begin Firmware Updates';
-
-  otaDescription = [
-    'Updated company logo branding when booting PT from sleep.',
-    'Now show estimated drive range on the PT in DisplayInfo  battery status screen.',
-    'Now show OTA status bar and percentage on PT when performing PT OTA.',
-    `When SD is not paired (e.g. after OTA) and the left button is pressed
-to turn 'SD On', the PT goes directly into pairing to SD mode.`,
-    `When App is not paired (e.g. after OTA) and the right button is pressed
-to connect to the app, the PT goes directly into pairing to app mode.`,
-    'Bugfixes to pairing process for handling multiple devices.'
-  ];
 
   smartDriveOTAs: ObservableArray<SmartDrive> = new ObservableArray();
   pushTrackerOTAs: ObservableArray<PushTracker> = new ObservableArray();
@@ -76,7 +59,8 @@ to connect to the app, the PT goes directly into pairing to app mode.`,
     private routerExtensions: RouterExtensions,
     private router: Router,
     private _progressService: ProgressService,
-    private _bluetoothService: BluetoothService
+    private _bluetoothService: BluetoothService,
+    private _firmwareService: FirmwareService
   ) {}
 
   ngOnInit() {
@@ -92,13 +76,19 @@ to connect to the app, the PT goes directly into pairing to app mode.`,
     });
 
     this._sideDrawerTransition = new SlideAlongTransition();
-
-    //this.refreshDeviceList();
   }
 
   ngOnDestroy() {
     this.cancelOTAs(true);
     this.routeSub.unsubscribe();
+  }
+
+  get otaDescription(): ObservableArray<string> {
+    return this._firmwareService.description;
+  }
+
+  get ready(): boolean {
+    return this._firmwareService.haveFirmwares;
   }
 
   get sideDrawerTransition(): DrawerTransitionBase {
@@ -192,44 +182,39 @@ to connect to the app, the PT goes directly into pairing to app mode.`,
 
   private performOTAs(): Promise<any> {
     this.updatingButtonText = 'Cancel All Firmware Updates';
-    let ptFW = null;
-    let bleFW = null;
-    let mcuFW = null;
-    // load firmware files here!
-    return this.loadFile('/assets/ota/PushTracker.15.ota')
-      .then(otaData => {
-        ptFW = otaData;
-        return this.loadFile('/assets/ota/SmartDriveBluetooth.15.ota');
-      })
-      .then(otaData => {
-        bleFW = otaData;
-        return this.loadFile('/assets/ota/MX2+.15.ota');
-      })
-      .then(otaData => {
-        mcuFW = otaData;
-        console.log(`got MX2+ OTA, version: 0x${Number(mcuFW[0]).toString(16)}`);
-        // OTA the selected smart drive(s)
-        const smartDriveOTATasks = this.smartDriveOTAs.map(sd => {
-          return sd.performOTA(bleFW, mcuFW, 0x15, 0x15, 300000);
-        });
-
-        const pushTrackerOTATasks = this.pushTrackerOTAs.map(pt => {
-          return pt.performOTA(ptFW, 0x15, 300000);
-        });
-
-        const otaTasks = smartDriveOTATasks.concat(pushTrackerOTATasks);
-
-        if (otaTasks) {
-          this.updating = true;
-          return Promise.all(otaTasks);
-        } else {
-          return alert({
-            title: 'No Devices',
-            message: 'No PushTrackers or SmartDrives found!',
-            okButtonText: 'OK'
-          }).then(() => []);
-        }
+    return Promise.resolve().then(() => {
+      // OTA the selected smart drive(s)
+      const smartDriveOTATasks = this.smartDriveOTAs.map(sd => {
+        return sd.performOTA(
+          this._firmwareService.firmwares['BLE'].data,
+          this._firmwareService.firmwares['MCU'].data,
+          this._firmwareService.firmwares['BLE'].version,
+          this._firmwareService.firmwares['MCU'].version,
+          300000
+        );
       });
+
+      const pushTrackerOTATasks = this.pushTrackerOTAs.map(pt => {
+        return pt.performOTA(
+          this._firmwareService.firmwares['PT'].data,
+          this._firmwareService.firmwares['PT'].version,
+          300000
+        );
+      });
+
+      const otaTasks = smartDriveOTATasks.concat(pushTrackerOTATasks);
+
+      if (otaTasks) {
+        this.updating = true;
+        return Promise.all(otaTasks);
+      } else {
+        return alert({
+          title: 'No Devices',
+          message: 'No PushTrackers or SmartDrives found!',
+          okButtonText: 'OK'
+        }).then(() => []);
+      }
+    });
   }
 
   private cancelOTAs(doCancel: boolean) {
@@ -240,25 +225,5 @@ to connect to the app, the PT goes directly into pairing to app mode.`,
       this.smartDriveOTAs.map(sd => sd.cancelOTA());
       this.pushTrackerOTAs.map(pt => pt.cancelOTA());
     }
-  }
-
-  private loadFile(fileName: string): Promise<any> {
-    const f = currentApp.getFile(fileName);
-    return new Promise((resolve, reject) => {
-      let data = null;
-      const source = f.readSync(e => {
-        console.log("couldn't read file:");
-        console.log(e);
-        reject();
-      });
-      if (isIOS) {
-        const arr = new ArrayBuffer(source.length);
-        source.getBytes(arr);
-        data = new Uint8Array(arr);
-      } else if (isAndroid) {
-        data = new Uint8Array(source);
-      }
-      resolve(data);
-    });
   }
 }

@@ -6,6 +6,7 @@ import { StorageService } from './storage.service';
 import { LoggingService } from './logging.service';
 import { ProgressService } from './progress.service';
 import { BluetoothService } from './bluetooth.service';
+import { FirmwareService } from './firmware.service';
 import { PairingService } from './pairing.service';
 
 export const PROVIDERS: any[] = [
@@ -17,6 +18,7 @@ export const PROVIDERS: any[] = [
   LoggingService,
   ProgressService,
   BluetoothService,
+  FirmwareService,
   PairingService
 ];
 
@@ -28,4 +30,5 @@ export * from './user.service';
 export * from './storage.service';
 export * from './progress.service';
 export * from './bluetooth.service';
+export * from './firmware.service';
 export * from './pairing.service';

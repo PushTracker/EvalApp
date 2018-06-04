@@ -17,7 +17,7 @@
              [text]="ptConnected ? initialTitleText : connectedTitleText"
              textWrap="true"></Label>
 
-      <FlexboxLayout>
+      <FlexboxLayout *ngIf="ready">
         <Button class="hero"
                 [visibility]="updating ? 'collapse' : 'visible'"
                 width="50%"
@@ -70,7 +70,7 @@
 
 
     <slides loop="true" pageIndicators="true" class="featuresLayout" height="30%" width="100%">
-      <slide *ngFor="let desc of otaDescription" class="featuresLayout">
+      <slide *ngFor="let desc of otaDescription._array" class="featuresLayout">
         <Label class="features" textWrap="true" [text]="desc"></Label>
       </slide>
     </slides>

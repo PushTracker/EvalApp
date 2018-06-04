@@ -4,6 +4,11 @@ import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 
 import { BluetoothService, ProgressService } from '@maxmobility/mobile';
 
+import * as application from 'tns-core-modules/application';
+import { isIOS, isAndroid } from 'tns-core-modules/platform';
+import * as fs from 'tns-core-modules/file-system';
+import { Kinvey } from 'kinvey-nativescript-sdk';
+
 @Component({
   selector: 'Settings',
   moduleId: module.id,
@@ -34,6 +39,78 @@ export class SettingsComponent implements OnInit {
    *************************************************************/
   onDrawerButtonTap(): void {
     this.drawerComponent.sideDrawer.showDrawer();
+  }
+
+  private getFileBytes(data) {
+    let bytes = null;
+    if (isIOS) {
+      const arr = new ArrayBuffer(data.length);
+      data.getBytes(arr);
+      bytes = new Uint8Array(arr);
+    } else if (isAndroid) {
+      bytes = new Uint8Array(data);
+    }
+    return bytes;
+  }
+
+  private loadFile(fileName: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const filePath = fs.path.join(fs.knownFolders.currentApp().path, fileName);
+      const f = fs.File.fromPath(filePath);
+      resolve(f);
+    });
+  }
+
+  onUploadFiles(): Promise<void> {
+    let ptFW = null;
+    let bleFW = null;
+    let mcuFW = null;
+    // load firmware files here!
+    return this.loadFile('/assets/ota/PushTracker.15.ota')
+      .then(otaData => {
+        ptFW = otaData;
+        return this.loadFile('/assets/ota/SmartDriveBluetooth.15.ota');
+      })
+      .then(otaData => {
+        bleFW = otaData;
+        return this.loadFile('/assets/ota/MX2+.15.ota');
+      })
+      .then(otaData => {
+        mcuFW = otaData;
+      })
+      .then(() => {
+        console.log(`size: ${ptFW.readSync().length}`);
+        console.log(`size: ${mcuFW.readSync().length}`);
+        console.log(`size: ${bleFW.readSync().length}`);
+        const ptMD = {
+          filename: 'PushTracker.ota',
+          size: ptFW.readSync().length,
+          version: '1.5',
+          public: true
+        };
+        const mcuMD = {
+          filename: 'SmartDriveMCU.ota',
+          size: mcuFW.readSync().length,
+          version: '1.5',
+          public: true
+        };
+        const bleMD = {
+          filename: 'SmartDriveBLE.ota',
+          size: bleFW.readSync().length,
+          version: '1.5',
+          public: true
+        };
+        const ptPromise = Kinvey.Files.upload(ptFW, ptMD);
+        const mcuPromise = Kinvey.Files.upload(mcuFW, mcuMD);
+        const blePromise = Kinvey.Files.upload(bleFW, bleMD);
+        return Promise.all([ptPromise, mcuPromise, blePromise])
+          .then(files => {
+            console.log(`Uploaded to kinvey: ${files}`);
+          })
+          .catch(error => {
+            console.log(`Couldn't upload to kinvey: ${error}`);
+          });
+      });
   }
 
   onStopBT(): void {
