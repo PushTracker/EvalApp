@@ -1,4 +1,4 @@
-<ActionBar class="action-bar" flat="true" [title]="title">
+<ActionBar class="action-bar" flat="true" [title]="title | translate">
     <!-- <NavigationButton android.systemIcon="ic_menu_back" tap="onNavBtnTap"></NavigationButton> -->
 
   <!-- <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem> -->
@@ -10,8 +10,8 @@
       </WebView>
 	<ScrollView  row="1" class="" height="65%" >
       <StackLayout orientation="vertical" horizontalAlignment="center" width="100%">
-          <Label row="1" [text]="title" class="title" textWrap="true"></Label>
-	        <Label row="1" [text]="desc" class="bullet" textWrap="true"></Label>
+          <Label row="1" [text]="title| translate" class="title" textWrap="true"></Label>
+	        <Label row="1" [text]="desc | translate" class="bullet" textWrap="true"></Label>
           </StackLayout>
         </ScrollView>
  </GridLayout>

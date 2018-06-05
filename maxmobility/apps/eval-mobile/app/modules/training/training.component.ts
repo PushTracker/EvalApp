@@ -34,7 +34,7 @@ export class TrainingComponent implements OnInit, AfterViewInit {
 	Label: "Powering PushTracker",
 	Bullets: [
 	    "Press the left raised button on the PushTracker to power on.",
-	    'Press and hold for 3 secconds to enter sleep mode "zzz" and pwer off.'
+	    'Press and hold for 3 secconds to enter sleep mode "zzz" and power off.'
 	]
     },
 	{

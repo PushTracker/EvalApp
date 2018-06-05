@@ -5,11 +5,12 @@ import { NativeScriptRouterModule } from 'nativescript-angular/router';
 import { NativeScriptFormsModule } from 'nativescript-angular/forms';
 // import { SharedModule } from '../../shared/shared.module';
 import { ForgotPasswordComponent } from './forgot-password.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 const routes: Routes = [{ path: '', component: ForgotPasswordComponent }];
 
 @NgModule({
-  imports: [NativeScriptRouterModule.forChild(routes), NativeScriptCommonModule, NativeScriptFormsModule],
+  imports: [NativeScriptRouterModule.forChild(routes), NativeScriptCommonModule, NativeScriptFormsModule, TranslateModule],
   declarations: [ForgotPasswordComponent],
   schemas: [NO_ERRORS_SCHEMA]
 })
