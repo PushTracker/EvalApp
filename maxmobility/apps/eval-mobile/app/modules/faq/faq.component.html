@@ -1,15 +1,15 @@
-<ActionBar class="action-bar" flat="true" title="FAQ">
+<ActionBar class="action-bar" flat="true" [title]="'menu.faq' | translate">
   <!-- <NavigationButton *ngIf="isAndroid()" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton> -->
 
   <NavigationButton *ngIf="isIOS()" text="Back"></NavigationButton>
   <!-- <ActionItem *ngIf="isIOS()" icon="res://navigation/menu" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem> -->
 </ActionBar>
 
-<RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
+<!-- <RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
 
     <StackLayout tkDrawerContent>
         <MyDrawer [selectedPage]="'FAQ'"></MyDrawer>
-    </StackLayout>
+    </StackLayout> -->
 
     <Gradient tkMainContent margin-top="30" direction="to bottom" colors="#004F7E, #0070b3"  class="page-content hero">
         <ListView backgroundColor="transparent" [items]="faqs">
@@ -21,4 +21,4 @@
             </ng-template>
         </ListView>
     </Gradient>
-</RadSideDrawer>
+<!-- </RadSideDrawer> -->

@@ -85,7 +85,7 @@
     "interview-desc": "In this video, I interview Chels and Steph about the many aspects of their lives, and how they have been impacted by SmartDrive"
   },
   "error": {
-    "upload-photo-lbl": "Sorry, an error occurred uploading that photo."
+    "email": "Sorry, an error occurred uploading that photo."
   },
   "dialogs": {
     "confirm": "Confirm",
@@ -104,6 +104,8 @@
     "delete-lbl": "Delete"
   },
   "general": {
+    "title": "Smart Evaluation",
+    "submit": "Submit",
     "tip": "Tip",
     "export": "Export",
     "twitter-unknown": "Twitter unknown! So sorry!",
@@ -136,13 +138,17 @@
     "phone": "Phone",
     "company": "Company",
     "email": "Email",
+    "password": "Password",
     "updated": "Your profile was successfully updated!",
     "login": "Login",
+    "back-to-login": "Back To Login",
     "logout": "Logout",
     "sign-out": "Sign Out",
+    "sign-up": "Sign Up",
     "sign-in": "Sign In",
     "logged-in": "You are now logged in",
     "reset-acct": "Reset Account",
-    "change-pass": "Change Password"
+    "change-pass": "Change Password",
+    "reset-pass-desc": "To reset your password, enter the email for your account. You will receive an email with instructions to reset your password."
   }
 }

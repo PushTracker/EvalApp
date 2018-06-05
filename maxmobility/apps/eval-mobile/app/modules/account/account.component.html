@@ -1,10 +1,10 @@
 <ActionBar class="action-bar" [title]="'user.account' | translate" flat="true">
   <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
-  <!-- <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left">
-  </ActionItem>
+  <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left">
+  </ActionItem> 
   <ActionItem ios.position="right" (tap)="onSaveAccountTap()">
     <Button text="Save" (tap)="onSaveAccountTap()" class="action-item"></Button>
-  </ActionItem> -->
+  </ActionItem> 
   <!-- <Label class="action-bar-title" text="Account"></Label> -->
 </ActionBar>
 
@@ -34,7 +34,7 @@
         <TextField col="1" [(ngModel)]="user.data.phone_number" keyboardType="phone" returnKeyType="done" class="account-text-entry"
           [hint]="'user.phone' | translate"></TextField>
       </GridLayout>
-      <Button class="acct-btn" [text]="'user.change-pass' | translate" (tap)="onChangePasswordTap()"></Button>
+      <Button class="acct-btn " [text]="'user.change-pass' | translate" (tap)="onChangePasswordTap()"></Button>
       <Button class="acct-btn" [text]="'user.reset-acct' | translate" (tap)="onResetAccountTap()"></Button>
       <Button class="acct-btn" [text]="'user.sign-out' | translate" (tap)="onSignOutTap()"></Button>
     </StackLayout>

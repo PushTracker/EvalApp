@@ -12,6 +12,7 @@ import { User, LoggingService, CLog } from '@maxmobility/core';
 import { UserService, ProgressService, preventKeyboardFromShowing } from '@maxmobility/mobile';
 import { validate } from 'email-validator';
 
+
 @Component({
   selector: 'forgot-password',
   moduleId: module.id,
