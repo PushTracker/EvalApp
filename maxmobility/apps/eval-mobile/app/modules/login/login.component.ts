@@ -33,12 +33,16 @@ export class LoginComponent implements OnInit {
     preventKeyboardFromShowing();
   }
 
-  error_1: string = '';
-  error_2: string = '';
-  error_title: string = '';
-  error_ok: string = '';
-  password_error: string = '';
-  email_error: string = '';
+  error_1: string = this._translateService.instant('user.error-1');
+  error_2: string = this._translateService.instant('user.error-2');
+  error: string = this._translateService.instant('user.error');
+  ok: string = this._translateService.instant('user.ok');
+  signing_in: string = this._translateService.instant('user.signing-in');
+  success: string = this._translateService.instant('user.success');
+  password_error: string = this._translateService.instant('user.password-error');
+  email_error: string = this._translateService.instant('user.email-error');
+  check_email: string = this._translateService.instant('user.check-email');
+  email_required: string = this._translateService.instant('user.email-required');
 
   ngOnInit(): void {
     CLog('LoginComponent OnInit');
@@ -66,27 +70,8 @@ export class LoginComponent implements OnInit {
     if (!isPasswordValid) {
       return;
     }
-    
-    this._translateService.get('user.signing-in', {value: ''}).subscribe((res: string) => {
-    console.log(res);
-    this._progressService.show(res);
-    
-    });
 
-    this._translateService.get('user.sign-in-error-1').subscribe((res: string) => {
-    this.error_1 = res
-    });
-    this._translateService.get('user.sign-in-error-2').subscribe((res: string) => {
-    this.error_2 = res
-    });
-    this._translateService.get('user.sign-in-error-title').subscribe((res: string) => {
-    this.error_title = res
-    });
-    this._translateService.get('user.sign-in-error-ok').subscribe((res: string) => {
-    this.error_ok = res
-    });
-
-    
+    this._progressService.show(this.signing_in);
 
     // now try logging in with Kinvey user account
     this._userService
@@ -107,9 +92,9 @@ export class LoginComponent implements OnInit {
           errorMessage = this.error_2;
         }
         alert({
-          title: this.error_title,
+          title: this.error,
           message: errorMessage,
-          okButtonText: this.error_ok
+          okButtonText: this.ok
         });
         this._logService.logException(err);
       });
@@ -145,18 +130,14 @@ export class LoginComponent implements OnInit {
     // validate the email
     CLog('isEmailValid', text);
 
-    this._translateService.get('user.email-error').subscribe((res: string) => {
-    this.email_error = res
-    });
-
     if (!text) {
-      this.emailError = 'Email is required.';
+      this.emailError = this.email_required;
       return false;
     }
     // make sure it's a valid email
     const email = text.trim();
     if (!validate(email)) {
-      this.emailError = `${email}` + this.email_error;
+      this.emailError = `"${email}" ` + this.email_error;
       return false;
     }
 
@@ -166,9 +147,6 @@ export class LoginComponent implements OnInit {
 
   private _isPasswordValid(text: string): boolean {
     // validate the password
-    this._translateService.get('user.password-error').subscribe((res: string) => {
-    this.password_error = res
-    });
 
     if (!text) {
       this.passwordError = this.password_error;
