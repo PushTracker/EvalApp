@@ -9,7 +9,7 @@
         </TextField>
         <Label [text]="emailError" class="text-white error" [visibility]="emailError ? 'visible' : 'collapsed'" textWrap="true"></Label>
         <TextField [(ngModel)]="user.password" class="text-field" hint="Password..." secure="true"></TextField>
-        <Label [text]="passwordError" class="text-white" [visibility]="passwordError ? 'visible' : 'collapsed'" textWrap="true"></Label>
+        <Label [text]="passwordError" class="text-white error" [visibility]="passwordError ? 'visible' : 'collapsed'" textWrap="true"></Label>
         <Button [text]="'user.login' | translate" class="permobil-ocean-btn login-btn" (tap)="onSubmitTap()"></Button>
         <DockLayout stretchLastChild="false">
         <Button dock="left" text="Forgot Password" class="btn-transparent text-white forgot" (tap)="navToForgotPassword()"></Button>

@@ -18,19 +18,19 @@
     <StackLayout backgroundColor="transparent" orientation="vertical" horizontalAlignment="center">
       <Label color="#fff"  class="account-icon fa" text="&#xf2be;"></Label>
       <GridLayout columns="auto, *">
-        <Label col="0" [text]="'user.first-name' | translate" class="account-item"></Label>
+        <!-- <Label col="0" [text]="'user.first-name' | translate" class="account-item"></Label> -->
         <TextField col="1" [(ngModel)]="user.data.first_name" returnKeyType="next" class="account-text-entry" [hint]="'user.first-name' | translate"></TextField>
       </GridLayout>
       <GridLayout columns="auto, *">
-        <Label col="0" [text]="'user.last-name' | translate" class="account-item"></Label>
+        <!-- <Label col="0" [text]="'user.last-name' | translate" class="account-item"></Label> -->
         <TextField col="1" [(ngModel)]="user.data.last_name" returnKeyType="next" class="account-text-entry" [hint]="'user.last-name' | translate"></TextField>
       </GridLayout>
       <GridLayout columns="auto, *">
-        <Label col="0" [text]="'user.email' | translate" class="account-item"></Label>
+        <!-- <Label col="0" [text]="'user.email' | translate" class="account-item"></Label> -->
         <TextField col="1" [(ngModel)]="user.data.email" keyboardType="email" returnKeyType="next" class="account-text-entry" [hint]="'user.email' | translate"></TextField>
       </GridLayout>
       <GridLayout columns="auto, *">
-        <Label col="0" [text]="'user.phone' | translate" class="account-item"></Label>
+        <!-- <Label col="0" [text]="'user.phone' | translate" class="account-item"></Label> -->
         <TextField col="1" [(ngModel)]="user.data.phone_number" keyboardType="phone" returnKeyType="done" class="account-text-entry"
           [hint]="'user.phone' | translate"></TextField>
       </GridLayout>

@@ -23,6 +23,7 @@ export class AccountComponent implements OnInit {
 
   user: Kinvey.User = this._userService.user;
 
+
   // private _sideDrawerTransition: DrawerTransitionBase;
 
   constructor(
@@ -36,6 +37,8 @@ export class AccountComponent implements OnInit {
     this._page.enableSwipeBackNavigation = false;
   }
 
+  
+
   ngOnInit() {
     // this._sideDrawerTransition = new SlideAlongTransition();
   }
@@ -46,6 +49,7 @@ export class AccountComponent implements OnInit {
 
   onDrawerButtonTap() {
     // this.drawerComponent.sideDrawer.showDrawer();
+    
 
     this._router.navigate(["/home"],
         {

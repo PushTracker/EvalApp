@@ -8,6 +8,8 @@ import { alert } from 'tns-core-modules/ui/dialogs';
 import { User, LoggingService, CLog } from '@maxmobility/core';
 import { UserService, ProgressService, preventKeyboardFromShowing } from '@maxmobility/mobile';
 import { validate } from 'email-validator';
+import { TranslateService } from '@ngx-translate/core';
+import { device } from 'tns-core-modules/platform';
 
 @Component({
   selector: 'Login',
@@ -25,10 +27,18 @@ export class LoginComponent implements OnInit {
     private _logService: LoggingService,
     private _userService: UserService,
     private _progressService: ProgressService,
-    private _page: Page
+    private _page: Page,
+    private _translateService: TranslateService
   ) {
     preventKeyboardFromShowing();
   }
+
+  error_1: string = '';
+  error_2: string = '';
+  error_title: string = '';
+  error_ok: string = '';
+  password_error: string = '';
+  email_error: string = '';
 
   ngOnInit(): void {
     CLog('LoginComponent OnInit');
@@ -44,6 +54,8 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmitTap() {
+
+
     // validate the email
     const isEmailValid = this._isEmailValid(this.user.email);
     if (!isEmailValid) {
@@ -54,8 +66,27 @@ export class LoginComponent implements OnInit {
     if (!isPasswordValid) {
       return;
     }
+    
+    this._translateService.get('user.signing-in', {value: ''}).subscribe((res: string) => {
+    console.log(res);
+    this._progressService.show(res);
+    
+    });
 
-    this._progressService.show('Signing In...');
+    this._translateService.get('user.sign-in-error-1').subscribe((res: string) => {
+    this.error_1 = res
+    });
+    this._translateService.get('user.sign-in-error-2').subscribe((res: string) => {
+    this.error_2 = res
+    });
+    this._translateService.get('user.sign-in-error-title').subscribe((res: string) => {
+    this.error_title = res
+    });
+    this._translateService.get('user.sign-in-error-ok').subscribe((res: string) => {
+    this.error_ok = res
+    });
+
+    
 
     // now try logging in with Kinvey user account
     this._userService
@@ -71,21 +102,21 @@ export class LoginComponent implements OnInit {
         CLog('login error', err);
         this._progressService.hide();
         // parse the exceptions from kinvey sign up
-        let errorMessage = 'An error occurred during sign in. Check your email and password.';
+        let errorMessage = this.error_1;
         if (err.toString().includes('InvalidCredentialsError')) {
-          errorMessage = 'Invalid email and/or password. Please try again.';
+          errorMessage = this.error_2;
         }
         alert({
-          title: 'Error',
+          title: this.error_title,
           message: errorMessage,
-          okButtonText: 'Okay'
+          okButtonText: this.error_ok
         });
         this._logService.logException(err);
       });
   }
 
   navToForgotPassword() {
-    this._routerExtensions.navigate(['/forgot-password'],
+     this._routerExtensions.navigate(['/forgot-password'],
        {
         transition: {
           name: 'slideLeft'
@@ -113,6 +144,11 @@ export class LoginComponent implements OnInit {
   private _isEmailValid(text: string): boolean {
     // validate the email
     CLog('isEmailValid', text);
+
+    this._translateService.get('user.email-error').subscribe((res: string) => {
+    this.email_error = res
+    });
+
     if (!text) {
       this.emailError = 'Email is required.';
       return false;
@@ -120,7 +156,7 @@ export class LoginComponent implements OnInit {
     // make sure it's a valid email
     const email = text.trim();
     if (!validate(email)) {
-      this.emailError = `"${email}" is not a valid email address.`;
+      this.emailError = `${email}` + this.email_error;
       return false;
     }
 
@@ -130,8 +166,12 @@ export class LoginComponent implements OnInit {
 
   private _isPasswordValid(text: string): boolean {
     // validate the password
+    this._translateService.get('user.password-error').subscribe((res: string) => {
+    this.password_error = res
+    });
+
     if (!text) {
-      this.passwordError = 'Password is required.';
+      this.passwordError = this.password_error;
       return false;
     }
     this.passwordError = '';

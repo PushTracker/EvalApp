@@ -1,0 +1,36 @@
+// Custom common variables
+@import '../../scss/variables';
+
+.action-item {
+  color: $white;
+  font-size: 18;
+  text-transform: none;
+}
+
+.account-item {
+  vertical-align: center;
+  text-overflow: none;
+  text-align: left;
+  word-wrap: normal;
+  color: $white;
+  font-weight: 500;
+  margin: 15;
+}
+
+.account-text-entry {
+  background-color: rgba(80, 135, 180, 0.5);
+  padding: 5;
+  margin: 5, 20, 5, 20;
+  color: $white;
+  border-radius: 2;
+  placeholder-color: $permobil-titan;
+}
+
+.acct-btn {
+  height: 40;
+  background-color: $permobil-ocean;
+  margin: 10, 20, 5, 20;
+  color: $white;
+  font-size: 15;
+  font-weight: 300;
+}
