@@ -22,6 +22,17 @@ export class LoginComponent implements OnInit {
   passwordError = '';
   emailError = '';
 
+  error_1: string = this._translateService.instant('user.error-1');
+  error_2: string = this._translateService.instant('user.error-2');
+  error: string = this._translateService.instant('user.error');
+  ok: string = this._translateService.instant('dialogs.ok');
+  signing_in: string = this._translateService.instant('user.signing-in');
+  success: string = this._translateService.instant('user.success');
+  password_error: string = this._translateService.instant('user.password-error');
+  email_error: string = this._translateService.instant('user.email-error');
+  check_email: string = this._translateService.instant('user.check-email');
+  email_required: string = this._translateService.instant('user.email-required');
+
   constructor(
     private _routerExtensions: RouterExtensions,
     private _logService: LoggingService,
@@ -32,17 +43,6 @@ export class LoginComponent implements OnInit {
   ) {
     preventKeyboardFromShowing();
   }
-
-  error_1: string = this._translateService.instant('user.error-1');
-  error_2: string = this._translateService.instant('user.error-2');
-  error: string = this._translateService.instant('user.error');
-  ok: string = this._translateService.instant('user.ok');
-  signing_in: string = this._translateService.instant('user.signing-in');
-  success: string = this._translateService.instant('user.success');
-  password_error: string = this._translateService.instant('user.password-error');
-  email_error: string = this._translateService.instant('user.email-error');
-  check_email: string = this._translateService.instant('user.check-email');
-  email_required: string = this._translateService.instant('user.email-required');
 
   ngOnInit(): void {
     CLog('LoginComponent OnInit');
@@ -58,8 +58,6 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmitTap() {
-
-
     // validate the email
     const isEmailValid = this._isEmailValid(this.user.email);
     if (!isEmailValid) {
@@ -109,8 +107,6 @@ export class LoginComponent implements OnInit {
      }
     );
   }
-
-  
 
   onEmailTextChange(args) {
     this._isEmailValid(this.user.email);

@@ -13,7 +13,6 @@ import { UserService, ProgressService, preventKeyboardFromShowing } from '@maxmo
 import { validate } from 'email-validator';
 import { TranslateService } from '@ngx-translate/core';
 
-
 @Component({
   selector: 'forgot-password',
   moduleId: module.id,
@@ -23,6 +22,16 @@ import { TranslateService } from '@ngx-translate/core';
 export class ForgotPasswordComponent implements OnInit {
   email = '';
   emailError = '';
+
+  error: string = this._translateService.instant('user.error');
+  ok: string = this._translateService.instant('dialogs.ok');
+  submitting: string = this._translateService.instant('user.submitting');
+  success: string = this._translateService.instant('user.success');
+  account_error: string = this._translateService.instant('user.account-error');
+  email_error: string = this._translateService.instant('user.email-error');
+  check_email: string = this._translateService.instant('user.check-email');
+  email_required: string = this._translateService.instant('user.email-required');
+  email_sent: string = this._translateService.instant('user.email-sent');
 
   constructor(
     private _routerExtensions: RouterExtensions,
@@ -34,17 +43,6 @@ export class ForgotPasswordComponent implements OnInit {
   ) {
     preventKeyboardFromShowing();
   }
-
-  error: string = this._translateService.instant('user.error');
-  ok: string = this._translateService.instant('user.ok');
-  submitting: string = this._translateService.instant('user.submitting');
-  success: string = this._translateService.instant('user.success');
-  account_error: string = this._translateService.instant('user.account-error');
-  email_error: string = this._translateService.instant('user.email-error');
-  check_email: string = this._translateService.instant('user.check-email');
-  email_required: string = this._translateService.instant('user.email-required');
-
-
 
   ngOnInit(): void {
     CLog('ForgotPasswordComponent OnInit');
@@ -90,7 +88,7 @@ export class ForgotPasswordComponent implements OnInit {
         CLog('resp', resp);
         this._progressService.hide();
         alert({
-          title: this.success,
+          title: this.email_sent,
           message: this.check_email,
           okButtonText: this.ok
         }).then(() => {
@@ -121,7 +119,7 @@ export class ForgotPasswordComponent implements OnInit {
     this.emailError = !validate(em) ? `"${em}" ` + this.email_error : '';
   }
 
-    navToLogin() {
+  navToLogin() {
     this._routerExtensions.navigate(["/login"],
         {
         transition: {

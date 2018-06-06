@@ -16,25 +16,13 @@ import { TranslateService } from '@ngx-translate/core';
 export class SignUpComponent implements OnInit {
   user = new User();
 
-  constructor(
-    private _userService: UserService,
-    private _logService: LoggingService,
-    private _progressService: ProgressService,
-    private _page: Page,
-    private _router: RouterExtensions,
-    private _translateService: TranslateService
-  ) {
-    preventKeyboardFromShowing();
-  }
-  
   passwordError = '';
   emailError = '';
   firstNameError = '';
   lastNameError = '';
- 
 
   error: string = this._translateService.instant('user.error');
-  ok: string = this._translateService.instant('user.ok');
+  ok: string = this._translateService.instant('dialogues.ok');
   form_invalid: string = this._translateService.instant('user.form-invalid');
   email_invalid: string = this._translateService.instant('user.email-invalid');
   account_creating: string = this._translateService.instant('user.account-creating');
@@ -46,7 +34,17 @@ export class SignUpComponent implements OnInit {
   password_error: string = this._translateService.instant('user.password-error');
   email_error: string = this._translateService.instant('user.email-error');
   email_required: string = this._translateService.instant('user.email-required');
-  
+
+  constructor(
+    private _userService: UserService,
+    private _logService: LoggingService,
+    private _progressService: ProgressService,
+    private _page: Page,
+    private _router: RouterExtensions,
+    private _translateService: TranslateService
+  ) {
+    preventKeyboardFromShowing();
+  }
 
   ngOnInit() {
     CLog('SignUpComponent OnInit');
@@ -56,20 +54,6 @@ export class SignUpComponent implements OnInit {
 
   onSubmitTap() {
     // validate user form
-    // TODO: improve this with UI tips and not alerts that block the user
-    // if (!this.user.first_name || !this.user.last_name) {
-    //   CLog('form is invalid');
-    //   alert({ message: this.form_invalid, okButtonText: this.ok });
-    //   return;
-    // }
-
-    // validate the email
-    // if (!validate(this.user.email)) {
-    //   alert({ message: this.email_invalid, okButtonText: this.ok });
-    //   return;
-    // }
-
-
     const isFirstNameValid = this._isFirstNameValid(this.user.first_name);
     if (!isFirstNameValid) {
       return;
