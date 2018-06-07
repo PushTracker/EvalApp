@@ -13,7 +13,6 @@ import { NativeScriptUISideDrawerModule } from 'nativescript-ui-sidedrawer/angul
 import { TNSFontIconModule } from 'nativescript-ngx-fonticon';
 import { TNSFrescoModule } from 'nativescript-fresco/angular';
 
-
 // app
 import { SHARED_COMPONENTS } from './components';
 // import { SHARED_PIPES } from './pipes';

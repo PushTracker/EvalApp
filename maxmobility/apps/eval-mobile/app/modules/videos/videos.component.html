@@ -5,12 +5,6 @@
   <!-- <ActionItem *ngIf="isIOS()" icon="res://navigation/menu" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem> -->
 </ActionBar>
 
-<!-- <RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
-
-<StackLayout tkDrawerContent>
-    <MyDrawer [selectedPage]="'Videos'"></MyDrawer>
-</StackLayout> -->
-
 <Gradient tkMainContent margin-top="30" direction="to bottom" colors="#004F7E, #0070b3">
 <ListView backgroundColor="transparent" [items]="videos" (itemTap)="onItemTap($event)">
     <ng-template let-item="item">
@@ -24,5 +18,3 @@
         </ng-template>
     </ListView>
 </Gradient>
-
-<!-- </RadSideDrawer> -->

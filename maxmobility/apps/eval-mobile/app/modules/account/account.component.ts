@@ -3,8 +3,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 // nativescript
 import { confirm } from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
-// import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-sidedrawer';
-// import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 // app
 import { UserService, ProgressService, LoggingService } from '@maxmobility/mobile';
 import { User, CLog } from '@maxmobility/core';
@@ -19,8 +17,6 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./account.component.css']
 })
 export class AccountComponent implements OnInit {
-  // @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
-  // private _sideDrawerTransition: DrawerTransitionBase;
   constructor(
     private _userService: UserService,
     private _progressService: ProgressService,
@@ -29,7 +25,6 @@ export class AccountComponent implements OnInit {
     private _page: Page,
     private _translateService: TranslateService
   ) {
-
     this._page.enableSwipeBackNavigation = false;
   }
 
@@ -51,26 +46,17 @@ export class AccountComponent implements OnInit {
   sign_out: string = this._translateService.instant('user.sign-out');
   sign_out_confirm: string = this._translateService.instant('user.sign-out-confirm');
 
-  ngOnInit() {
-    // this._sideDrawerTransition = new SlideAlongTransition();
-  }
-
-  // get sideDrawerTransition(): DrawerTransitionBase {
-  //   return this._sideDrawerTransition;
-  // }
+  ngOnInit() {}
 
   onDrawerButtonTap() {
-    // this.drawerComponent.sideDrawer.showDrawer();
-  this._router.navigate(["/home"],
-        {
-        transition: {
-            name: "slideBottom",
-            duration: 350,
-            curve: "easeInOut",
-            clearHistory: true
-        }
+    this._router.navigate(['/home'], {
+      transition: {
+        name: 'slideBottom',
+        duration: 350,
+        curve: 'easeInOut',
+        clearHistory: true
       }
-    );
+    });
   }
 
   onSaveAccountTap() {
@@ -140,5 +126,9 @@ export class AccountComponent implements OnInit {
           });
       }
     });
+  }
+
+  onDebugMenuTap() {
+    this._router.navigate(['/settings']);
   }
 }

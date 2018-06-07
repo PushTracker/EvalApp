@@ -9,9 +9,9 @@ class Motor {
 public:
   enum class State  : uint8_t {
     Off,
-      On,
-      Error
-      };
+    On,
+    Error
+  };
 };
 
 /*** Smart Drive ***/
@@ -24,32 +24,32 @@ public:
 
   enum class Error: uint8_t {
     NoError,
-      BatteryVoltage,
-      MotorPhases,
-      OverCurrent,
-      OverTemperature,
-      GyroRange,
-      OTAUnavailable,
-      BLEDisconnect
-      };
+    BatteryVoltage,
+    MotorPhases,
+    OverCurrent,
+    OverTemperature,
+    GyroRange,
+    OTAUnavailable,
+    BLEDisconnect
+  };
 
   enum class ControlMode : uint8_t {
     Beginner,
-      Intermediate,
-      Advanced,
-      Off
-      };
+    Intermediate,
+    Advanced,
+    Off
+  };
 
   enum class Units : uint8_t {
     English,
-      Metric
-      };
+    Metric
+  };
   enum class AttendantMode : uint8_t {
     Off,
-      Inactive,
-      OnePressed,
-      TwoPressed
-      };
+    Inactive,
+    OnePressed,
+    TwoPressed
+  };
 
   // settings flags values are the bit numbers 
   enum class BoolSettingFlag  : uint8_t { EZMODE = 0 };
@@ -77,11 +77,11 @@ public:
   // Main Type of the packet
   enum class Type    : uint8_t {
     None,
-      Data,
-      Command,
-      Error,
-      OTA
-      };
+    Data,
+    Command,
+    Error,
+    OTA
+  };
 
   // Subtypes of the packet
   enum class Data    : uint8_t;
@@ -90,62 +90,64 @@ public:
 
   enum class Data : uint8_t {
     MotorDistance,
-      Speed,
-      CoastTime,
-      Pushes,
-      MotorState,
-      BatteryLevel,
-      VersionInfo,
-      DailyInfo,
-      JourneyInfo,
-      MotorInfo,
-      DeviceInfo,
-      Ready,
-      ErrorInfo
-      };
+    Speed,
+    CoastTime,
+    Pushes,
+    MotorState,
+    BatteryLevel,
+    VersionInfo,
+    DailyInfo,
+    JourneyInfo,
+    MotorInfo,
+    DeviceInfo,
+    Ready,
+    ErrorInfo
+  };
 
   enum class Command : uint8_t {
     SetAcceleration,
-      SetMaxSpeed,
-      Tap, DoubleTap,
-      SetControlMode,
-      SetSettings,
-      TurnOffMotor,
-      StartJourney,
-      StopJourney,
-      PauseJourney,
-      SetTime,
-      StartOTA,
-      StopOTA,
-      OTAReady,
-      CancelOTA,
-      Wake,
-      StartGame,
-      StopGame,
-      ConnectMPGame,
-      DisconnectMPGame
-      };
+    SetMaxSpeed,
+    Tap, DoubleTap,
+    SetControlMode,
+    SetSettings,
+    TurnOffMotor,
+    StartJourney,
+    StopJourney,
+    PauseJourney,
+    SetTime,
+    StartOTA,
+    StopOTA,
+    OTAReady,
+    CancelOTA,
+    Wake,
+    DistanceRequest,
+    StartGame,
+    StopGame,
+    ConnectMPGame,
+    DisconnectMPGame,
+    SetLEDColor
+  };
 
   enum class OTA : uint8_t {
     SmartDrive,
-      SmartDriveBluetooth,
-      PushTracker
-      };
+    SmartDriveBluetooth,
+    PushTracker
+  };
 
   enum class Device : uint8_t {
     SmartDrive,
-      SmartDriveBluetooth,
-      PushTracker
-      };
+    SmartDriveBluetooth,
+    PushTracker
+  };
 
   enum class Game : uint8_t {
     Mario,
-      Snake,
-      Sonic,
-      Tunnel,
-      FlappyBird,
-      Pong
-      };
+    Snake,
+    Sonic,
+    Tunnel,
+    FlappyBird,
+    Pong
+  };
 
   static const int numTypeBytes    = 1;
   static const int numSubTypeBytes = 1;
@@ -241,6 +243,12 @@ public:
     uint8_t    pushTrackerBatteryLevel;    /** [0,100] */
   };
 
+  // DistanceInfo: How far have the motor and case gone?
+  struct DistanceInfo {
+    uint64_t   motorDistance;  /** Cumulative Drive distance in ticks. **/
+    uint64_t   caseDistance;   /** Cumulative Case distance in ticks. **/
+  };
+
   // The length of data bytes contained in the packet
   int dataLength;
 
@@ -266,6 +274,7 @@ public:
     DeviceInfo           deviceInfo;
     ErrorInfo            errorInfo;
     BatteryInfo          batteryInfo;
+    DistanceInfo         distanceInfo;
 
     /**
      * Used with StartOTA / StopOTA commands, tells which device the
@@ -369,7 +378,7 @@ public:
       output.push_back((uint8_t)data);
       switch (data) {
       case Packet::Data::MotorDistance:
-        dataLen = sizeof(motorDistance);
+        dataLen = sizeof(distanceInfo);
         break;
       case Packet::Data::Speed:
         dataLen = sizeof(motorSpeed);
@@ -442,10 +451,10 @@ public:
       output.push_back((uint8_t)ota);
       dataLen = dataLength;
       /*
-      for (int i=0; i<dataLen; i++) {
+	for (int i=0; i<dataLen; i++) {
         printf("0x%.2X ", bytes[i]);
-      }
-      printf("\n");
+	}
+	printf("\n");
       */
       break;
     default:
@@ -475,10 +484,17 @@ public:
   }
 
   void setMotorDistance(int d) {
-    motorDistance = (uint64_t)d;
+    distanceInfo.motorDistance = (uint64_t)d;
   }
   int getMotorDistance() const {
-    return (int)motorDistance;
+    return (int)distanceInfo.motorDistance;
+  }
+    
+  void setCaseDistance(int d) {
+    distanceInfo.caseDistance = (uint64_t)d;
+  }
+  int getCaseDistance() const {
+    return (int)distanceInfo.caseDistance;
   }
     
 private:
@@ -545,8 +561,8 @@ EMSCRIPTEN_BINDINGS(packet_bindings) {
     .value("JourneyInfo", Packet::Data::JourneyInfo)
     .value("MotorInfo", Packet::Data::MotorInfo)
     .value("DeviceInfo", Packet::Data::DeviceInfo)
-    .value("Ready", Packet::Data::Ready)
     .value("ErrorInfo", Packet::Data::ErrorInfo)
+    .value("Ready", Packet::Data::Ready)
     ;
 
   emscripten::value_object<Packet::VersionInfo>("VersionInfo")
@@ -573,6 +589,11 @@ EMSCRIPTEN_BINDINGS(packet_bindings) {
     .field("pushes", &Packet::JourneyInfo::pushes)
     .field("distance", &Packet::JourneyInfo::distance)
     .field("speed", &Packet::JourneyInfo::speed)
+    ;
+
+  emscripten::value_object<Packet::DistanceInfo>("DistanceInfo")
+    .field("motorDistance", &Packet::DistanceInfo::motorDistance)
+    .field("caseDistance", &Packet::DistanceInfo::caseDistance)
     ;
 
   emscripten::value_object<Packet::MotorInfo>("MotorInfo")
@@ -623,10 +644,12 @@ EMSCRIPTEN_BINDINGS(packet_bindings) {
     .value("OTAReady", Packet::Command::OTAReady)
     .value("CancelOTA", Packet::Command::CancelOTA)
     .value("Wake", Packet::Command::Wake)
+    .value("DistanceRequest", Packet::Command::DistanceRequest)
     .value("StartGame", Packet::Command::StartGame)
     .value("StopGame", Packet::Command::StopGame)
     .value("ConnectMPGame", Packet::Command::ConnectMPGame)
     .value("DisconnectMPGame", Packet::Command::DisconnectMPGame)
+    .value("SetLEDColor", Packet::Command::SetLEDColor)
     ;
 
   emscripten::enum_<Packet::OTA>("PacketOTAType")
@@ -675,10 +698,12 @@ EMSCRIPTEN_BINDINGS(packet_bindings) {
     .property("deviceInfo", &Packet::deviceInfo)
     .property("errorInfo", &Packet::errorInfo)
     .property("batteryInfo", &Packet::batteryInfo)
+    .property("distanceInfo", &Packet::distanceInfo)
 
     .property("OTADevice", &Packet::otaDevice)
 
     .property("motorDistance", &Packet::getMotorDistance, &Packet::setMotorDistance)
+    .property("caseDistance", &Packet::getCaseDistance, &Packet::setCaseDistance)
 
     .property("bytes", &Packet::getBytes, &Packet::setBytes)
     ;

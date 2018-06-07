@@ -18,33 +18,25 @@
     The RadSideDrawer component is designed to be used as a root element and
     it shouldn't have any other siblings other than the <ActionBar> component.
   -->
-<!-- <RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition"> -->
-  <!--
-      Use the tkDrawerContent directive to display the content of the app drawer on this page.
-    -->
-  <!-- <StackLayout tkDrawerContent>
-    <MyDrawer [selectedPage]="'Evaluation'"></MyDrawer>
-  </StackLayout> -->
 
-  <!--
-      Use the tkMainContent directive to display the content of the page when you have an app drawer.
-    -->
-  <StackLayout class="page page-content" tkMainContent>
+<!--
+    Use the tkMainContent directive to display the content of the page when you have an app drawer.
+  -->
+<StackLayout class="page page-content" tkMainContent>
 
-    <Carousel indicatorColor="#66ccff" indicatorColorUnselected="#cceeff">
-      <CarouselItem *ngFor="let slide of slides">
-        <GridLayout rows="auto, *" cols="*">
-          <StackLayout row="0" class="topSlide" orientation="vertical" horizontalAlignment="center">
-            <Image [src]="slide.Image" stretch="aspectFit"></Image>
-          </StackLayout>
-          <StackLayout row="1" class="lowerSlide" orientation="vertical" horizontalAlignment="center">
-            <Label [text]="slide.Label" class="slideLowerLabel" textWrap="true"></Label>
-            <Label [text]="slide.Description" class="slideDescription" textWrap="true"></Label>
-          </StackLayout>
-        </GridLayout>
-      </CarouselItem>
-    </Carousel>
+  <Carousel indicatorColor="#66ccff" indicatorColorUnselected="#cceeff">
+    <CarouselItem *ngFor="let slide of slides">
+      <GridLayout rows="auto, *" cols="*">
+        <StackLayout row="0" class="topSlide" orientation="vertical" horizontalAlignment="center">
+          <Image [src]="slide.Image" stretch="aspectFit"></Image>
+        </StackLayout>
+        <StackLayout row="1" class="lowerSlide" orientation="vertical" horizontalAlignment="center">
+          <Label [text]="slide.Label" class="slideLowerLabel" textWrap="true"></Label>
+          <Label [text]="slide.Description" class="slideDescription" textWrap="true"></Label>
+        </StackLayout>
+      </GridLayout>
+    </CarouselItem>
+  </Carousel>
 
-  </StackLayout>
+</StackLayout>
 
-<!-- </RadSideDrawer> -->

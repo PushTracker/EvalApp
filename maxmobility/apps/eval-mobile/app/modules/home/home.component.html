@@ -4,125 +4,112 @@
   <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem>
 </ActionBar>
 
-<!-- 
-<RadSideDrawer #drawer [showOverNavigation]="isIOS()" [drawerTransition]="sideDrawerTransition">
+<ScrollView tkMainContent class="main-scroll-view">
+  <GridLayout rows="auto, auto, auto, auto, auto, auto" columns="*">
 
-  <StackLayout tkDrawerContent>
-    <MyDrawer [selectedPage]="'SmartDrive'"></MyDrawer>
-  </StackLayout> -->
+    //Connectivity
+    <StackLayout class="list-stack-layout" row="0">
+	  <DockLayout (tap)="chevronButtonTapped('/pairing')" class="dockLayout-options" stretchLastChild="false">
+	    <Label [text]="'menu.connectivity' | translate" class="heading" dock="left"></Label>
+	    <Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/pairing')"></Label>
+	  </DockLayout>
+	  <Label [text]="'menu.con-desc' | translate" class="description" textWrap="true"></Label>
 
-
-
-  <ScrollView tkMainContent class="main-scroll-view">
-    <GridLayout rows="auto, auto, auto, auto, auto, auto" columns="*">
-
-      //Connectivity
-      <StackLayout class="list-stack-layout" row="0">
-	<DockLayout (tap)="chevronButtonTapped('/pairing')" class="dockLayout-options" stretchLastChild="false">
-	  <Label [text]="'menu.connectivity' | translate" class="heading" dock="left"></Label>
-	  <Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/pairing')"></Label>
-	</DockLayout>
-	<Label [text]="'menu.con-desc' | translate" class="description" textWrap="true"></Label>
-
-	<ScrollView orientation="horizontal" class="rad-list-view">
-	  <StackLayout orientation="horizontal">
-	    <StackLayout *ngFor="let item of connectivityItems" class="icon-description-group">
-	      <Image [src]="item.Image"
-		     (tap)="connectivityThumbTapped(item)"
-		     stretch="aspectFill"
-		     class="thumb"></Image>
-	      <Label class="item-description" textWrap="true" [text]="item.Description | translate"></Label>
-	    </StackLayout>
-	  </StackLayout>
-	</ScrollView>
-      </StackLayout>
-
-      //Videos
-      <StackLayout class="list-stack-layout" row="2">
-	<StackLayout class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></StackLayout>
-	<DockLayout (tap)="chevronButtonTapped('/videos')"  class="dockLayout-options" stretchLastChild="false">
-	  <Label [text]="'videos.videos-title' | translate" class="heading" dock="left"></Label>
-	  <Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/videos')"></Label>
-	  
-	</DockLayout>
-	<Label [text]="'videos.videos-desc' | translate" class="description" textWrap="true"></Label>
-
-	<ScrollView orientation="horizontal" class="rad-list-view">
-	  <StackLayout orientation="horizontal">
-	    <StackLayout *ngFor="let item of videoItems" class="icon-description-group">
-	      <Image [src]="item.Thumb" (tap)="videoThumbTapped(item)" class="thumb" padding="0"></Image>
-	      <Label class="item-description" textWrap="true" [text]="item.Description | translate" ></Label>
-	    </StackLayout>
-	  </StackLayout>
-	</ScrollView>
-      </StackLayout>
-
-      //Evaluation 
-      <StackLayout class="list-stack-layout" row="3">
-	<StackLayout class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></StackLayout>
-	<DockLayout (tap)="chevronButtonTapped('/eval-entry')"  class="dockLayout-options" stretchLastChild="false">
-	  <Label [text]="'menu.clinical-tools' | translate" class="heading" dock="left"></Label>
-	  <Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/eval-entry')"></Label>
-	</DockLayout>
-	<Label [text]="'menu.clinical-tools-desc' | translate" class="description" textWrap="true"></Label>
-
-	<ScrollView orientation="horizontal" class="rad-list-view">
-	  <StackLayout orientation="horizontal">
-	    <StackLayout *ngFor="let item of evalItems" class="icon-description-group">
-	      <Image [src]="item.Image" (tap)="evalThumbTapped(item)" class="thumb"></Image>
-	      <Label class="item-description" textWrap="true" [text]="item.Description | translate"></Label>
-	    </StackLayout>
-	  </StackLayout>
-	</ScrollView>
-      </StackLayout>
-
-      //Demos 
-      <StackLayout class="list-stack-layout" row="4">
-	<StackLayout class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></StackLayout>
-	<DockLayout (tap)="chevronButtonTapped('/demos')"  class="dockLayout-options" textWrap="true" stretchLastChild="false">
-	  <Label [text]="'menu.demos' | translate" class="heading" dock="left"></Label>
-	  <Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/demos')"></Label>
-	</DockLayout>
-	<Label [text]="'menu.demos-desc' | translate" class="description" textWrap="true"></Label>
-
-	<ScrollView orientation="horizontal" class="rad-list-view">
-	  <StackLayout orientation="horizontal">
-	    <StackLayout *ngFor="let item of demoItems" class="icon-description-group">
-	      <Image [src]="item.Image" stretch="aspectFill" class="thumb"></Image>
-	      <StackLayout>
-		<Label class="demo-item-description" textWrap="true" [text]="item.SerialNumber"></Label>
-		<Label class="demo-item-description" textWrap="true" [text]="item.PTSerialNumber"></Label>
-		<Label class="demo-item-description" textWrap="true" [text]="item.LastUsed" ></Label>
-		<Label class="demo-item-description" textWrap="true" [text]="item.Location"  ></Label>
-		<Label class="demo-item-description" [backgroundColor]="item.Firmware.includes('1.5') ? 'green' : 'red'" textWrap="true" [text]="item.Firmware"  ></Label>
+	  <ScrollView orientation="horizontal" class="rad-list-view">
+	    <StackLayout orientation="horizontal">
+	      <StackLayout *ngFor="let item of connectivityItems" class="icon-description-group">
+	        <Image [src]="item.Image"
+		           (tap)="connectivityThumbTapped(item)"
+		           stretch="aspectFill"
+		           class="thumb"></Image>
+	        <Label class="item-description" textWrap="true" [text]="item.Description | translate"></Label>
 	      </StackLayout>
 	    </StackLayout>
-	  </StackLayout>
-	</ScrollView>
-      </StackLayout>
+	  </ScrollView>
+    </StackLayout>
 
-      //FAQ 
-      <StackLayout class="list-stack-layout" row="5">
-	<StackLayout class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></StackLayout>
-	<DockLayout (tap)="chevronButtonTapped('/faq')"  class="dockLayout-options" stretchLastChild="false">
-	  <Label [text]="'menu.faq' | translate" class="heading" dock="left"></Label>
-	  <Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/faq')"></Label>
-	</DockLayout>
-	<Label [text]="'menu.faq-desc' | translate" class="description" textWrap="true"></Label>
+    //Videos
+    <StackLayout class="list-stack-layout" row="2">
+	  <StackLayout class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></StackLayout>
+	  <DockLayout (tap)="chevronButtonTapped('/videos')"  class="dockLayout-options" stretchLastChild="false">
+	    <Label [text]="'videos.videos-title' | translate" class="heading" dock="left"></Label>
+	    <Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/videos')"></Label>
+	    
+	  </DockLayout>
+	  <Label [text]="'videos.videos-desc' | translate" class="description" textWrap="true"></Label>
 
-	<ScrollView orientation="horizontal" class="rad-list-view">
-	  <StackLayout orientation="horizontal">
-	    <Gradient borderRadius="4" direction="to bottom right" colors="#004F7E, #0070b3" *ngFor="let item of faqItems" class="icon-description-group">
-	      <Label (tap)="faqThumbTapped(item)" class="faq-question" stretch="aspectFill" [text]="item.question" textWrap="true"></Label>
-	    </Gradient>
-	  </StackLayout>
-	</ScrollView>
-      </StackLayout>
+	  <ScrollView orientation="horizontal" class="rad-list-view">
+	    <StackLayout orientation="horizontal">
+	      <StackLayout *ngFor="let item of videoItems" class="icon-description-group">
+	        <Image [src]="item.Thumb" (tap)="videoThumbTapped(item)" class="thumb" padding="0"></Image>
+	        <Label class="item-description" textWrap="true" [text]="item.Description | translate" ></Label>
+	      </StackLayout>
+	    </StackLayout>
+	  </ScrollView>
+    </StackLayout>
+
+    //Evaluation 
+    <StackLayout class="list-stack-layout" row="3">
+	  <StackLayout class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></StackLayout>
+	  <DockLayout (tap)="chevronButtonTapped('/eval-entry')"  class="dockLayout-options" stretchLastChild="false">
+	    <Label [text]="'menu.clinical-tools' | translate" class="heading" dock="left"></Label>
+	    <Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/eval-entry')"></Label>
+	  </DockLayout>
+	  <Label [text]="'menu.clinical-tools-desc' | translate" class="description" textWrap="true"></Label>
+
+	  <ScrollView orientation="horizontal" class="rad-list-view">
+	    <StackLayout orientation="horizontal">
+	      <StackLayout *ngFor="let item of evalItems" class="icon-description-group">
+	        <Image [src]="item.Image" (tap)="evalThumbTapped(item)" class="thumb"></Image>
+	        <Label class="item-description" textWrap="true" [text]="item.Description | translate"></Label>
+	      </StackLayout>
+	    </StackLayout>
+	  </ScrollView>
+    </StackLayout>
+
+    //Demos 
+    <StackLayout class="list-stack-layout" row="4">
+	  <StackLayout class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></StackLayout>
+	  <DockLayout (tap)="chevronButtonTapped('/demos')"  class="dockLayout-options" textWrap="true" stretchLastChild="false">
+	    <Label [text]="'menu.demos' | translate" class="heading" dock="left"></Label>
+	    <Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/demos')"></Label>
+	  </DockLayout>
+	  <Label [text]="'menu.demos-desc' | translate" class="description" textWrap="true"></Label>
+
+	  <ScrollView orientation="horizontal" class="rad-list-view">
+	    <StackLayout orientation="horizontal">
+	      <StackLayout *ngFor="let item of demoItems" class="icon-description-group">
+	        <Image [src]="item.Image" stretch="aspectFill" class="thumb"></Image>
+	        <StackLayout>
+		      <Label class="demo-item-description" textWrap="true" [text]="item.SerialNumber"></Label>
+		      <Label class="demo-item-description" textWrap="true" [text]="item.PTSerialNumber"></Label>
+		      <Label class="demo-item-description" textWrap="true" [text]="item.LastUsed" ></Label>
+		      <Label class="demo-item-description" textWrap="true" [text]="item.Location"  ></Label>
+		      <Label class="demo-item-description" [backgroundColor]="item.Firmware.includes('1.5') ? 'green' : 'red'" textWrap="true" [text]="item.Firmware"  ></Label>
+	        </StackLayout>
+	      </StackLayout>
+	    </StackLayout>
+	  </ScrollView>
+    </StackLayout>
+
+    //FAQ 
+    <StackLayout class="list-stack-layout" row="5">
+	  <StackLayout class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></StackLayout>
+	  <DockLayout (tap)="chevronButtonTapped('/faq')"  class="dockLayout-options" stretchLastChild="false">
+	    <Label [text]="'menu.faq' | translate" class="heading" dock="left"></Label>
+	    <Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/faq')"></Label>
+	  </DockLayout>
+	  <Label [text]="'menu.faq-desc' | translate" class="description" textWrap="true"></Label>
+
+	  <ScrollView orientation="horizontal" class="rad-list-view">
+	    <StackLayout orientation="horizontal">
+	      <Gradient borderRadius="4" direction="to bottom right" colors="#004F7E, #0070b3" *ngFor="let item of faqItems" class="icon-description-group">
+	        <Label (tap)="faqThumbTapped(item)" class="faq-question" stretch="aspectFill" [text]="item.question" textWrap="true"></Label>
+	      </Gradient>
+	    </StackLayout>
+	  </ScrollView>
+    </StackLayout>
 
 
-    </GridLayout>
-  </ScrollView>
-
-
-
-<!-- </RadSideDrawer> -->
+  </GridLayout>
+</ScrollView>

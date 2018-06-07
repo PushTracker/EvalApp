@@ -99,27 +99,24 @@ export class LoginComponent implements OnInit {
   }
 
   navToForgotPassword() {
-     this._routerExtensions.navigate(['/forgot-password'],
-       {
-        transition: {
-          name: 'slideLeft'
-       }
-     }
-    );
+    this._routerExtensions.navigate(['/forgot-password'], {
+      transition: {
+        name: 'slideLeft'
+      }
+    });
   }
 
   onEmailTextChange(args) {
+    this.user.email = args.value;
     this._isEmailValid(this.user.email);
   }
 
   navToSignUp() {
-    this._routerExtensions.navigate(['/sign-up'],
-        {
-          transition: {
-            name: 'slideLeft'
-        }
+    this._routerExtensions.navigate(['/sign-up'], {
+      transition: {
+        name: 'slideLeft'
       }
-     );
+    });
   }
 
   private _isEmailValid(text: string): boolean {

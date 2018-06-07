@@ -10,8 +10,8 @@ const routes: Routes = [{ path: '', component: DemosComponent }];
 
 @NgModule({
   imports: [NativeScriptRouterModule.forChild(routes), SharedModule, TranslateModule],
-    declarations: [DemosComponent],
-    providers: [BarcodeScanner],
+  declarations: [DemosComponent],
+  providers: [BarcodeScanner],
   schemas: [NO_ERRORS_SCHEMA]
 })
 export class DemosModule {}

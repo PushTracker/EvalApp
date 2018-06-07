@@ -1,20 +1,41 @@
 
 <Gradient tkMainContent backgroundSpanUnderStatusBar="true" direction="to bottom" colors="#004F7E, #0070b3">
   <ScrollView height="100%" width="100%">
-      <StackLayout row="0">
-        <Label class="app-logo" text="Smart Evaluation"></Label>
-        <Label class="account-icon fa text-white" text="&#xf2be;"></Label>
-        <TextField [(ngModel)]="user.email" class="text-field" (textChange)="onEmailTextChange($event)" hint="Email..." keyboardType="email"
-          autocorrect="false" autocapitalizationType="none">
-        </TextField>
-        <Label [text]="emailError" class="text-white error" [visibility]="emailError ? 'visible' : 'collapsed'" textWrap="true"></Label>
-        <TextField [(ngModel)]="user.password" class="text-field" hint="Password..." secure="true"></TextField>
-        <Label [text]="passwordError" class="text-white error" [visibility]="passwordError ? 'visible' : 'collapsed'" textWrap="true"></Label>
-        <Button [text]="'user.login' | translate" class="permobil-ocean-btn login-btn" (tap)="onSubmitTap()"></Button>
-        <DockLayout stretchLastChild="false">
-        <Button dock="left" text="Forgot Password" class="btn-transparent text-white forgot" (tap)="navToForgotPassword()"></Button>
-        <Button dock="right" text="Sign Up" class="btn-transparent text-white sign-up" (tap)="navToSignUp()"></Button>
+    <StackLayout row="0">
+      <Label class="app-logo"
+             text="Smart Evaluation"></Label>
+      <Label class="account-icon fa text-white"
+             text="&#xf2be;"></Label>
+      <TextField [text]="user.email"
+                 class="text-field"
+                 (textChange)="onEmailTextChange($event)"
+                 hint="Email..." keyboardType="email"
+                 autocorrect="false" autocapitalizationType="none"></TextField>
+      <Label [text]="emailError"
+             class="text-white error"
+             [visibility]="emailError ? 'visible' : 'collapsed'"
+             textWrap="true"></Label>
+      <TextField [(ngModel)]="user.password"
+                 class="text-field"
+                 hint="Password..."
+                 secure="true"></TextField>
+      <Label [text]="passwordError"
+             class="text-white error"
+             [visibility]="passwordError ? 'visible' : 'collapsed'"
+             textWrap="true"></Label>
+      <Button [text]="'user.login' | translate"
+              class="permobil-ocean-btn login-btn"
+              (tap)="onSubmitTap()"></Button>
+      <DockLayout stretchLastChild="false">
+        <Button dock="left"
+                text="Forgot Password"
+                class="btn-transparent text-white forgot"
+                (tap)="navToForgotPassword()"></Button>
+        <Button dock="right"
+                text="Sign Up"
+                class="btn-transparent text-white sign-up"
+                (tap)="navToSignUp()"></Button>
       </DockLayout>
-      </StackLayout>
+    </StackLayout>
   </ScrollView>
 </Gradient>

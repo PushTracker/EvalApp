@@ -1,17 +1,11 @@
 import * as app from 'tns-core-modules/application';
 import { Component, OnInit, ViewChild } from '@angular/core';
-// import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-sidedrawer';
-// import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 import { SegmentedBar, SegmentedBarItem } from 'tns-core-modules/ui/segmented-bar';
 import { Observable } from 'tns-core-modules/data/observable';
 import { confirm } from 'tns-core-modules/ui/dialogs';
-import { EvaluationService } from '@maxmobility/mobile';
+import { Evaluation, EvaluationService } from '@maxmobility/mobile';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { DropDownModule } from 'nativescript-drop-down/angular';
-
-
-const timeInChair = ['1', '2', '3', '4', '5+', '10+', '20+', '30+'];
-const chairType = ['TiLite', 'Quckie', 'Other'];
 
 @Component({
   selector: 'EvalEntry',
@@ -20,86 +14,50 @@ const chairType = ['TiLite', 'Quckie', 'Other'];
   styleUrls: ['./eval-entry.component.css']
 })
 export class EvalEntryComponent implements OnInit {
-  // @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
-
-  yesNo: SegmentedBarItem[] = [];
-  PushingPain: SegmentedBarItem[] = [];
-  PushingFatigue: SegmentedBarItem[] = [];
+  hasPushingPain = false;
+  hasPushingFatigue = false;
 
   isIOS = false;
   isAndroid = false;
 
-  timeFrames: string[];
-  timeIndex = 0;
-  chairTypes: string[];
-  chairIndex = 0;
-  // private _sideDrawerTransition: DrawerTransitionBase;
-  private pains = ['Yes', 'No'];
-  private fatigues = ['Yes', 'No'];
+  years = ['1', '2', '3', '4', '5+', '10+', '20+', '30+'];
+  chair = ['TiLite', 'Quckie', 'Other'];
 
-  constructor(private routerExtensions: RouterExtensions) {
-    this.pains.map(o => {
-      const item = new SegmentedBarItem();
-      item.title = o;
-      this.PushingPain.push(item);
-    });
-    this.fatigues.map(o => {
-      const item = new SegmentedBarItem();
-      item.title = o;
-      this.PushingFatigue.push(item);
-    });
-
-    this.timeFrames = [];
-
-    // tslint:disable-next-line:prefer-for-of
-    for (let i = 0; i < timeInChair.length; i++) {
-      this.timeFrames.push(timeInChair[i]);
-    }
-
-    this.chairTypes = [];
-
-    // tslint:disable-next-line:prefer-for-of
-    for (let i = 0; i < chairType.length; i++) {
-      this.chairTypes.push(chairType[i]);
-    }
+  constructor(private routerExtensions: RouterExtensions, private _evaluationService: EvaluationService) {
+    // make sure we clear out any previous evaluation info!
+    this._evaluationService.createEvaluation();
   }
 
   onSliderUpdate(key, args) {
-    this.settings.set(key, args.object.value);
+    this.evaluation[key] = args.object.value;
   }
 
   // button events
   onNext(): void {
-    this.routerExtensions.navigate(["/training"]);
+    this.routerExtensions.navigate(['/training']);
   }
 
   // listPicker events
-  selectedIndexChanged(args) {
-    console.log('selected index changed', args);
+  selectedIndexChanged(key, args) {
+    const newValue = this[key][args.newIndex];
+    this.evaluation[key] = newValue;
   }
 
-  // pushing pain
-  getPushingPainIndex() {
-    return this.pains.indexOf(this.settings.get('PushingPain'));
+  onPushingPainChecked(args): void {
+    this.hasPushingPain = args.value;
+    if (!this.hasPushingPain) {
+      this.evaluation['pushing_pain'] = 0;
+    }
   }
 
-  onPushingPainIndexChange(args): void {
-    const segmentedBar = <SegmentedBar>args.object;
-    this.settings.set('PushingPain', this.pains[segmentedBar.selectedIndex]);
-  }
-
-  // pushing fatigue
-  getPushingFatigueIndex() {
-    return this.fatigues.indexOf(this.settings.get('PushingFatigue'));
-  }
-
-  onPushingFatigueIndexChange(args) {
-    const segmentedBar = <SegmentedBar>args.object;
-    this.settings.set('PushingFatigue', this.fatigues[segmentedBar.selectedIndex]);
+  onPushingFatigueChecked(args) {
+    this.hasPushingFatigue = args.value;
+    if (!this.hasPushingFatigue) {
+      this.evaluation['pushing_fatigue'] = 0;
+    }
   }
 
   ngOnInit(): void {
-    // this._sideDrawerTransition = new SlideAlongTransition();
     if (app.ios) {
       this.isIOS = true;
     } else if (app.android) {
@@ -107,15 +65,9 @@ export class EvalEntryComponent implements OnInit {
     }
   }
 
-  // get sideDrawerTransition(): DrawerTransitionBase {
-  //   return this._sideDrawerTransition;
-  // }
-
-  get settings(): Observable {
-    return EvaluationService.settings;
+  get evaluation() {
+    return this._evaluationService.evaluation;
   }
 
-  onDrawerButtonTap(): void {
-    // this.drawerComponent.sideDrawer.showDrawer();
-  }
+  onDrawerButtonTap(): void {}
 }

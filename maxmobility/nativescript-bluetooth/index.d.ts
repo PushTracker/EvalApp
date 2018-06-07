@@ -1,54 +1,80 @@
-// declare module "nativescript-bluetooth" {
-/**
- * The options object passed into the startScanning function.
- */
-export interface StartScanningOptions {
+import * as COMMON from './common';
+
+export class Bluetooth extends COMMON.BluetoothCommon {
   /**
-   * Zero or more services which the peripheral needs to broadcast.
-   * Default: [], which matches any peripheral.
+   * If true console logs will be output to help debug NativeScript-Bluetooth.
    */
-  serviceUUIDs?: string[];
+  debug: boolean;
 
   /**
-   * The number of seconds to scan for services.
-   * Default: unlimited, which is not really recommended. You should stop scanning manually by calling 'stopScanning'.
+   * Property to determine if bluetooth is enabled.
    */
-  seconds?: number;
+  readonly enabled: boolean;
+
+  isBluetoothEnabled(): Promise<boolean>;
 
   /**
-   * This callback is invoked when a peripheral is found.
+   * Android only. Will return false if the user denied turning Bluetooth on.
+   * @returns {Promise<boolean>}
    */
-  onDiscovered: (data: Peripheral) => void;
-}
-
-/**
- * The options object passed into the disconnect function.
- */
-export interface DisconnectOptions {
-  /**
-   * The UUID of the peripheral to disconnect from.
-   */
-  UUID: string;
-}
-
-/**
- * The options object passed into the connect function.
- */
-export interface ConnectOptions {
-  /**
-   * The UUID of the peripheral to connect to.
-   */
-  UUID: string;
+  enable(): Promise<boolean>;
 
   /**
-   * Once the peripheral is connected this callback function is invoked.
+   * Required for Android 6+ to be able to scan for peripherals in the background.
    */
-  onConnected: (data: Peripheral) => void;
+  hasCoarseLocationPermission(): Promise<boolean>;
 
   /**
-   * Once the peripheral is disconnected this callback function is invoked.
+   * Required for Android 6+ to be able to scan for peripherals in the background.
    */
-  onDisconnected: (data: Peripheral) => void;
+  requestCoarseLocationPermission(): Promise<any>;
+
+  startScanning(options: COMMON.StartScanningOptions): Promise<any>;
+
+  stopScanning(): Promise<any>;
+
+  connect(options: COMMON.ConnectOptions): Promise<any>;
+
+  disconnect(options: COMMON.DisconnectOptions): Promise<any>;
+
+  read(options: COMMON.ReadOptions): Promise<COMMON.ReadResult>;
+
+  write(options: COMMON.WriteOptions): Promise<any>;
+
+  writeWithoutResponse(options: COMMON.WriteOptions): Promise<any>;
+
+  startNotifying(options: COMMON.StartNotifyingOptions): Promise<any>;
+
+  stopNotifying(options: COMMON.StopNotifyingOptions): Promise<any>;
+
+  // PERIPHERAL MODE FUNCTIONS
+  disable(): Promise<any>;
+  isPeripheralModeSupported(): Promise<boolean>;
+  stopAdvertising(): Promise<any>;
+  startAdvertising(advertiseOptions: any): Promise<any>;
+  getConnectedDevicesMatchingState(state: any): any;
+  getConnectedDeviceState(device: any): any;
+  getConnectedDevices(): any;
+  getServerConnectedDevicesMatchingState(state: any): any;
+  getServerConnectedDeviceState(device: any): any;
+  getServerConnectedDevices(): any;
+  cancelServerConnection(device: any);
+  clearServices();
+  offersService(uuidString: string): boolean;
+  getServerService(uuidString: string): any;
+  makeDescriptor(options: any): any;
+  makeCharacteristic(options: any): any;
+  makeService(options: any): any;
+  addService(service): any;
+  getAdvertiser(): any;
+  setDiscoverable(): Promise<any>;
+  startGattServer();
+  stopGattServer();
+  notifyCentral();
+  setGattServerCallbacks(options: any);
+  fetchUuidsWithSdp(device: any): boolean;
+  removeBond(device: any): any;
+  getAdapter(): any;
 }
 
 /**
@@ -141,18 +167,20 @@ export interface Characteristic {
 /**
  * Base properties for all CRUD actions
  */
-interface CRUDOptions {
+export interface CRUDOptions {
   peripheralUUID: string;
   serviceUUID: string;
   characteristicUUID: string;
 }
 
+// tslint:disable-next-line:no-empty-interface
 export interface ReadOptions extends CRUDOptions {}
 
 export interface WriteOptions extends CRUDOptions {
   value: any;
 }
 
+// tslint:disable-next-line:no-empty-interface
 export interface StopNotifyingOptions extends CRUDOptions {}
 
 export interface StartNotifyingOptions extends CRUDOptions {
@@ -168,69 +196,35 @@ export interface ReadResult {
   characteristicUUID: string;
 }
 
-export function isBluetoothEnabled(): Promise<boolean>;
+export interface StartAdvertisingOptions {
+  settings;
+  UUID;
+  data;
+}
+
+export interface MakeServiceOptions {
+  UUID: string;
+  primary: boolean;
+}
 
 /**
- * Android only. Will return false if the user denied turning Bluetooth on.
- * @returns {Promise<boolean>}
+ * All of the events for Bluetooth that can be emitted and listened to.
  */
-export function enable(): Promise<boolean>;
-
-/**
- * Required for Android 6+ to be able to scan for peripherals in the background.
- */
-export function hasCoarseLocationPermission(): Promise<boolean>;
-
-/**
- * Required for Android 6+ to be able to scan for peripherals in the background.
- */
-export function requestCoarseLocationPermission(): Promise<any>;
-
-/**
- * Can be used to reduce the console.log messaging for characteristic read, write, change operations
- * @param enable Set to false to reduce console.log messages
- */
-export function setCharacteristicLogging(enable: boolean);
-
-export function startScanning(options: StartScanningOptions): Promise<any>;
-
-export function stopScanning(): Promise<any>;
-
-export function connect(options: ConnectOptions): Promise<any>;
-
-export function disconnect(options: DisconnectOptions): Promise<any>;
-
-export function read(options: ReadOptions): Promise<ReadResult>;
-
-export function write(options: WriteOptions): Promise<any>;
-
-export function writeWithoutResponse(options: WriteOptions): Promise<any>;
-
-export function startNotifying(options: StartNotifyingOptions): Promise<any>;
-
-export function stopNotifying(options: StopNotifyingOptions): Promise<any>;
-
-// PERIPHERAL MODE FUNCTIONS
-export function disable(): Promise<any>;
-export function isPeripheralModeSupported(): Promise<boolean>;
-export function stopAdvertising(): Promise<any>;
-export function startAdvertising(advertiseOptions: any): Promise<any>;
-export function getServerConnectedDevicesMatchingState(state: any): any;
-export function getServerConnectedDeviceState(device: any): any;
-export function getServerConnectedDevices(): any;
-export function cancelServerConnection(device: any);
-export function clearServices();
-export function offersService(uuidString: string): boolean;
-export function getServerService(uuidString: string): any;
-export function makeDescriptor(options: any): any;
-export function makeCharacteristic(options: any): any;
-export function makeService(options: any): any;
-export function getAdvertiser(): any;
-export function setDiscoverable(): Promise<any>;
-export function startGattServer();
-export function stopGattServer();
-export function setGattServerCallbacks(options: any);
-export function fetchUuidsWithSdp(device: any): boolean;
-export function removeBond(device: any): any;
-export function getAdapter(): any;
-// }
+export interface IBluetoothEvents {
+  error_event: string = 'error_event';
+  bluetooth_enabled_event: string = 'bluetooth_enabled_event';
+  peripheral_connected_event: string = 'peripheral_connected_event';
+  bluetooth_advertise_success_event: string = 'bluetooth_advertise_success_event';
+  bluetooth_advertise_failure_event: string = 'bluetooth_advertise_failure_event';
+  server_connection_state_changed_event: string = 'server_connection_state_changed_event';
+  bond_status_change_event: string = 'bond_status_change_event';
+  device_discovered_event: string = 'device_discovered_event';
+  device_name_change_event: string = 'device_name_change_event';
+  device_uuid_change_event: string = 'device_uuid_change_event';
+  device_acl_disconnected_event: string = 'device_acl_disconnected_event';
+  characteristic_write_request_event: string = 'characteristic_write_request_event';
+  characteristic_read_request_event: string = 'characteristic_read_request_event';
+  descriptor_write_request_event: string = 'descriptor_write_request_event';
+  descriptor_read_request_event: string = 'descriptor_read_request_event';
+  execute_write_event: string = 'execute_write_event';
+}

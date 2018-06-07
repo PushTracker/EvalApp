@@ -5,7 +5,6 @@ import { NativeScriptFormsModule } from 'nativescript-angular/forms';
 import { NativeScriptRouterModule } from 'nativescript-angular/router';
 // import { SharedModule } from '../../shared/shared.module';
 import { LoginComponent } from './login.component';
-
 const routes: Routes = [{ path: '', component: LoginComponent }];
 
 @NgModule({
