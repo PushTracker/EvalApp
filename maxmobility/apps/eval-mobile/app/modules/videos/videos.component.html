@@ -1,33 +1,20 @@
-<ActionBar class="action-bar">
-    <!-- <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+<ActionBar class="action-bar" flat="true" title="Videos">
+  <!-- <NavigationButton *ngIf="isAndroid()" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton> -->
 
-    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left">
-    </ActionItem> -->
-    <Label class="action-bar-title" text="Videos"></Label>
-
+  <NavigationButton *ngIf="isIOS()" text="Back"></NavigationButton>
+  <!-- <ActionItem *ngIf="isIOS()" icon="res://navigation/menu" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem> -->
 </ActionBar>
 
-
-
-<RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
-
-<StackLayout tkDrawerContent>
-    <MyDrawer [selectedPage]="'Videos'"></MyDrawer>
-</StackLayout>
-
-<ListView tkMainContent class="list-group" [items]="videos" (itemTap)="didSelectItemAtIndex($event)">
-
+<Gradient tkMainContent margin-top="30" direction="to bottom" colors="#004F7E, #0070b3">
+<ListView backgroundColor="transparent" [items]="videos" (itemTap)="onItemTap($event)">
     <ng-template let-item="item">
-
-         <GridLayout  rows="auto" columns="145, *">
-
-            <WebView class="thumb" row="0" col="0" [src]="item.Url">
-            </WebView>
-            
-            <Label class="description" editable="false" textWrap="true" row="0" col="1" class="description" [text]="item.Description "></Label>
-
-                    </GridLayout>
-            </ng-template>
-        </ListView>
-
-</RadSideDrawer>
+        <GridLayout  rows="auto" columns="145, *">
+            <Image col="0" class="thumb" [src]="item.Thumb" ></Image>
+            <GridLayout col="1" rows="auto, auto" columns="*">
+            <Label row="0" class="title" textWrap="true"  [text]="'item.Title' | translate"></Label>
+            <Label row="1"  class="desc" textWrap="true"  [text]="'item.Description' | translate"></Label>
+            </GridLayout>
+         </GridLayout>
+        </ng-template>
+    </ListView>
+</Gradient>

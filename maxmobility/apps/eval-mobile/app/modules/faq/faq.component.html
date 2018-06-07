@@ -1,19 +1,22 @@
-<ActionBar class="action-bar">
-    <!-- <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+<ActionBar class="action-bar" flat="true" [title]="'menu.faq' | translate">
+  <!-- <NavigationButton *ngIf="isAndroid()" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton> -->
 
-    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left">
-    </ActionItem> -->
-    <Label class="action-bar-title" text="FAQ"></Label>
+  <NavigationButton *ngIf="isIOS()" text="Back"></NavigationButton>
+  <!-- <ActionItem *ngIf="isIOS()" icon="res://navigation/menu" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem> -->
 </ActionBar>
 
-<RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
+<<<<<<< HEAD
+<!-- <RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
+=======
+<RadSideDrawer #drawer ios:showOverNavigation="true" android:showOverNavigation="false" [drawerTransition]="sideDrawerTransition">
+>>>>>>> issue-6
 
     <StackLayout tkDrawerContent>
         <MyDrawer [selectedPage]="'FAQ'"></MyDrawer>
-    </StackLayout>
+    </StackLayout> -->
 
-    <GridLayout class="page page-content" tkMainContent>
-        <ListView class="list-group" [items]="faqs">
+    <Gradient tkMainContent margin-top="30" direction="to bottom" colors="#004F7E, #0070b3"  class="page-content hero">
+        <ListView backgroundColor="transparent" [items]="faqs">
             <ng-template let-item="item">
                 <DockLayout>
                     <Label dock="top" [text]="item.question" textWrap="true" class="faq-question"></Label>
@@ -21,5 +24,5 @@
                 </DockLayout>
             </ng-template>
         </ListView>
-    </GridLayout>
-</RadSideDrawer>
+    </Gradient>
+<!-- </RadSideDrawer> -->

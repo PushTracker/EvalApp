@@ -1,73 +1,69 @@
-<ActionBar class="action-bar">
-  <!-- <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
-  <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem> -->
-  <Label class="action-bar-title" text="OTA Update"></Label>
+<ActionBar class="action-bar" flat="true" title="Firmware Updates">
+  <NavigationButton android.systemIcon="ic_menu_back" tap="onNavBtnTap"></NavigationButton>
+
+  <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem>
 </ActionBar>
 
-<RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
+<StackLayout tkMainContent class="page page-content">
+  <ScrollView class="hero" height="70%">
+    <StackLayout class="page page-content">
+      <Label class="title"
+             [text]="ptConnected ? initialTitleText : connectedTitleText"
+             textWrap="true"></Label>
 
-  <StackLayout tkDrawerContent>
-    <MyDrawer [selectedPage]="'OTA'"></MyDrawer>
-  </StackLayout>
+      <FlexboxLayout *ngIf="ready">
+        <Button class="hero"
+                [visibility]="updating ? 'collapse' : 'visible'"
+                width="50%"
+                text="Refresh Device List"
+                margin="5, 10, 5, 10"
+                (tap)="onRefreshDeviceList()"></Button>
+        <Button class="hero"
+                [width]="updating ? '100%' : '50%'"
+                [text]="updatingButtonText"
+                margin="5, 10, 5, 10"
+                (tap)="onStartOtaUpdate()"></Button>
+      </FlexboxLayout>
 
-  <ScrollView class="hero" #scrollView tkMainContent>
-    <GridLayout columns="*" rows="auto,auto,auto,auto, *" class="page page-content">
-
-      //StackLayout in row 0 contains connectivity buttons for BT
-      <StackLayout col="0" row="0" orientation="vertical" verticalAlignment="center" margin="20,0,0,0">
-        <StackLayout orientation="horizontal" horizontalAlignment="center" height="75" >
-          <Button [class]="ptConnectionButtonClass" [text]="'PushTracker:  ' + bTPushTrackerConnectionIcon" margin="0, 25, 0, 15" (tap)="onPtButtonTapped()"></Button>
-          <Button [class]="sdConnectionButtonClass" [text]="'SmartDrive:  ' + bTSmartDriveConnectionIcon" margin="0, 25, 0, 15" (tap)="onSdButtonTapped()"></Button>
+      //StackLayout in contains progress views for updates
+      <StackLayout #otaProgressView padding="5" orientation="vertical">
+        //SmartDrive OTAs
+        <StackLayout class="ota" *ngFor="let sd of smartDriveOTAs._array">
+          <GridLayout class="otaInfo" rows="auto" columns="auto, *">
+            <Label col="0" class="otaLabel" text="SmartDrive"></Label>
+            <Label col="1" class="percentageLabel" [text]="sd.otaProgressToString()"></Label>
+          </GridLayout>
+          <Progress [value]="sd.otaProgress" maxValue="100" class="progress"></Progress>
+          <GridLayout class="otaInfo" rows="auto, auto, *" columns="auto, *">
+            <Label col="0" class="otaLabel" [text]="sd.address"></Label>
+            <TextView col="0" row="1" editable="false" class="otaState" textDecoration="none" [text]="sd.otaStateToString()"></TextView>
+            <WrapLayout orientation="horizontal" horizontalAlignment="right" rowSpan="3" col="1">
+              <Button *ngFor="let action of sd.otaActions" class="otaAction" [text]="action" (tap)="sd.onOTAActionTap(action)"></Button>
+            </WrapLayout>
+          </GridLayout>
+        </StackLayout>
+        //PushTracker OTAs
+        <StackLayout class="ota" *ngFor="let pt of pushTrackerOTAs._array">
+          <GridLayout class="otaInfo" rows="auto" columns="auto, *">
+            <Label col="0" class="otaLabel" text="PushTracker"></Label>
+            <Label col="1" class="percentageLabel" [text]="pt.otaProgressToString()"></Label>
+          </GridLayout>
+          <Progress [value]="pt.otaProgress" maxValue="100" class="progress"></Progress>
+          <GridLayout class="otaInfo" rows="auto, auto, *" columns="auto, *">
+            <Label col="0" class="otaLabel" [text]="pt.address"></Label>
+            <TextView col="0" row="1" editable="false" class="otaState" textDecoration="none" [text]="pt.otaStateToString()"></TextView>
+            <WrapLayout orientation="horizontal" horizontalAlignment="right" rowSpan="3" col="1">
+              <Button *ngFor="let action of pt.otaActions" class="otaAction" [text]="action" (tap)="pt.onOTAActionTap(action)"></Button>
+            </WrapLayout>
+          </GridLayout>
         </StackLayout>
       </StackLayout>
 
-      //StackLayout in row 1 contains OTA title and descriptions
-      <StackLayout   col="0" row="1" orientation="vertical" horizontalAlignment="center" padding="10">
-
-        //OTA Title and version number
-        <DockLayout>
-          <Label class="title" [text]="titleText" textWrap="true" dock="top" stretchLastChild="true"></Label>
-        </DockLayout>
-
-        //OTA Descriptions
-        <StackLayout #otaTitleView col="0" row="2" orientation="vertical" horizontalAlignment="center" padding="10">
-          <label class="otaDescription" textWrap="true" text="Updated company logo branding when booting PT from sleep."></label>
-          <label class="otaDescription" textWrap="true" text="Now show estimated drive range on the PT in DisplayInfo  battery status screen."></label>
-          <label class="otaDescription" textWrap="true" text="Now show OTA status bar and percentage on PT when performing PT OTA."></label>
-          <label class="otaDescription" textWrap="true" text="When SD is not paired (e.g. after OTA) and the left button is pressed to turn 'SD On', the PT goes directly into pairing to SD mode."></label>
-          <label class="otaDescription" textWrap="true" text="When App is not paired (e.g. after OTA) and the right button is pressed to connect to the app, the PT goes directly into pairing to app mode."></label>
-          <label class="otaDescription" textWrap="true" ext="Bugfixes to pairing process for handling multiple devices."></label>
-          <Button class="hero" [text]="otaButtonText" margin="15" (tap)="onStartOtaUpdate()"></Button>
-        </StackLayout>
-      </StackLayout>
-
-      //StackLayout in row 2 contains progress views for updates
-      <StackLayout col="0" row="3" padding="5" orientation="vertical">
-        //SmartDrive BT Progress
-        <StackLayout #otaProgressViewSD>
-          <Label class="percentagLabel" [text]="sdBtProgressValue +'%'" (valueChanged)="onValueChanged($event)"></Label>
-          <Progress [value]="sdBtProgressValue" (valueChanged)="onValueChanged($event)" maxValue="100" class="progress"></Progress>
-          <Label class="otaLabel" text="SmartDrive Bluetooth"></Label>
-          //SmartDrive Microprocessor Progress
-          <Label class="percentagLabel" [text]="sdMpProgressValue +'%'" (valueChanged)="onValueChanged($event)"></Label>
-          <Progress [value]="sdMpProgressValue" (valueChanged)="onValueChanged($event)" maxValue="100" class="progress"></Progress>
-          <Label class="otaLabel" text="SmartDrive Microprocessor"></Label>
-	</StackLayout>
-	<StackLayout  #otaProgressViewPT>
-          //PushTracker BT Progress
-          <Label class="percentagLabel" [text]="ptBtProgressValue +'%'" (valueChanged)="onValueChanged($event)"></Label>
-          <Progress [value]="ptBtProgressValue" (valueChanged)="onValueChanged($event)" maxValue="100" class=" progress"></Progress>
-          <Label class="otaLabel" text="PushTracker"></Label>
-	</StackLayout>
-      </StackLayout>
-
-      //StackLayout in row 3 contains a view to display new features.
-      //TODO: Create slideshow and ability to display video and text
-      <StackLayout #otaFeaturesView class="featuresLayout" col="0" row="4" padding="5" orientation="vertical">
-
-        <TextView class="features" editable="false" textWrap="true" text="Estimated drive range is a cool new feature in this update. Here's how it works-"></TextView>
-
-      </StackLayout>
-    </GridLayout>
+    </StackLayout>
   </ScrollView>
-</RadSideDrawer>
+  <slides loop="true" pageIndicators="true" class="featuresLayout" height="30%" width="100%">
+    <slide *ngFor="let desc of otaDescription._array" class="featuresLayout">
+      <Label class="features" textWrap="true" [text]="desc"></Label>
+    </slide>
+  </slides>
+</StackLayout>

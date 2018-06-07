@@ -7,24 +7,28 @@
   text-transform: none;
 }
 
-// .account-icon {
-//   color: #0067a6;
-//   font-size: 100;
-//   text-align: center;
-//   margin: 10;
-// }
-
 .account-item {
   vertical-align: center;
   text-overflow: none;
   text-align: left;
   word-wrap: normal;
-  color: $black;
-  font-weight: bold;
+  color: $white;
+  font-weight: 500;
   margin: 15;
 }
 
 .account-text-entry {
+  color: $white;
   text-align: right;
   margin: 15;
+}
+
+.acct-btn {
+  height: auto;
+  width: auto;
+  background-color: $permobil-ocean;
+  margin: 10, 20, 5, 20;
+  color: $white;
+  font-size: 15;
+  font-weight: 300;
 }

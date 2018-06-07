@@ -1,225 +1,216 @@
 // angular
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { NavigationStart, Router } from '@angular/router';
 import { RouterExtensions } from 'nativescript-angular/router';
 // nativescript
+import timer = require('tns-core-modules/timer');
+import { isIOS, isAndroid } from 'tns-core-modules/platform';
+import { alert } from 'tns-core-modules/ui/dialogs';
 import { Progress } from 'tns-core-modules/ui/progress';
-import { ScrollView, ScrollEventData } from "ui/scroll-view";
+import { Page } from 'tns-core-modules/ui/page';
+import { ScrollView, ScrollEventData } from 'tns-core-modules/ui/scroll-view';
 import { Color } from 'tns-core-modules/color';
-import { AnimationCurve } from "ui/enums";
-import { View } from "ui/core/view";
-import { Animation, AnimationDefinition } from "ui/animation";
-import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-ui-sidedrawer';
+import { ObservableArray, ChangedData, ChangeType } from 'tns-core-modules/data/observable-array';
+import { AnimationCurve } from 'tns-core-modules/ui/enums';
+import { View } from 'tns-core-modules/ui/core/view';
+import { Animation, AnimationDefinition } from 'tns-core-modules/ui/animation';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
-import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
-import { Observable, Scheduler } from "rxjs";
 
-// const timeElapsed = Observable.defer(() => {
-//     const start = Scheduler.animationFrame.now();
-//     return Observable.interval(1)
-//         .map(() => Math.floor((Date.now() - start)));
-// });
-
-// const duration = (totalMs) =>
-//     timeElapsed
-//         .map(elapsedMs => elapsedMs / totalMs)
-//         .takeWhile(t => t <= 1);
-
-// const amount = (d) => (t) => t * d;
-
-// const elasticOut = (t) =>
-//     Math.sin(-13.0 * (t + 1.0) *
-//         Math.PI / 2) *
-//     Math.pow(2.0, -10.0 * t) +
-//     1.0;
+// libs
+import { BluetoothService, FirmwareService, ProgressService } from '@maxmobility/mobile';
+import { Packet, DailyInfo, PushTracker, SmartDrive } from '@maxmobility/core';
 
 @Component({
-    selector: 'OTA',
-    moduleId: module.id,
-    templateUrl: './ota.component.html',
-    styleUrls: ['./ota.component.css']
+  selector: 'OTA',
+  moduleId: module.id,
+  templateUrl: './ota.component.html',
+  styleUrls: ['./ota.component.css']
 })
-export class OTAComponent implements OnInit {
-    @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
-    @ViewChild('scrollView') scrollView: ElementRef;
-    @ViewChild("sdConnectionButton") sdConnectionButton: ElementRef;
-    @ViewChild("ptConnectionButton") ptConnectionButton: ElementRef;
-    @ViewChild("otaTitleView") otaTitleView: ElementRef;
-    @ViewChild("otaProgressViewSD") otaProgressViewSD: ElementRef;
-    @ViewChild("otaProgressViewPT") otaProgressViewPT: ElementRef;
-    @ViewChild("otaFeaturesView") otaFeaturesView: ElementRef;
+export class OTAComponent implements OnInit, OnDestroy {
+  // PUBLIC MEMBERS
+  connected = false;
+  updating = false;
+  searching = false;
 
-    // blah$: Observable<number> = Observable.of(25);
+  bluetoothReady = false;
 
-    titleText = "Press the right button on your PushTracker to connect. (use the one up to the left to test)";
-    otaButtonText = "Begin Firmware Updates";
+  // text for buttons and titles in different states
+  initialTitleText = 'Press the right button on your PushTracker to connect. (use the one here to test)';
+  connectedTitleText = 'Firmware Version 1.5';
 
-    sdBtConnected = false;
-    ptBtConnected = false;
+  updatingButtonText = 'Begin Firmware Updates';
 
-    ptConnectionButtonClass = "fa grayed";
-    sdConnectionButtonClass = "fa grayed";
+  smartDriveOTAs: ObservableArray<SmartDrive> = new ObservableArray();
+  pushTrackerOTAs: ObservableArray<PushTracker> = new ObservableArray();
 
-    bTSmartDriveConnectionIcon = String.fromCharCode(0xf293);
-    bTPushTrackerConnectionIcon = String.fromCharCode(0xf293);
+  snackbar = new SnackBar();
 
-    sdBtProgressValue = 0;
-    sdMpProgressValue = 0;
-    ptBtProgressValue = 0;
+  private routeSub: any; // subscription to route observer
 
-    snackbar = new SnackBar();
+  constructor(
+    private http: HttpClient,
+    private page: Page,
+    private routerExtensions: RouterExtensions,
+    private router: Router,
+    private _progressService: ProgressService,
+    private _bluetoothService: BluetoothService,
+    private _firmwareService: FirmwareService
+  ) {}
 
-    private _sideDrawerTransition: DrawerTransitionBase;
+  ngOnInit() {
+    // see https://github.com/NativeScript/nativescript-angular/issues/1049
+    this.routeSub = this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        this.cancelOTAs(true);
+      }
+    });
 
-    constructor(private http: HttpClient, private routerExtensions: RouterExtensions) {}
+    this.page.on(Page.navigatingFromEvent, event => {
+      // this.ngOnDestroy();
+    });
+  }
 
-    ngOnInit(): void {
+  ngOnDestroy() {
+    this.cancelOTAs(true);
+    this.routeSub.unsubscribe();
+  }
 
-	// start discovering smartDrives here; given a list of
-	// available smartDrives - ask the user which one they want to
-	// update
+  get otaDescription(): ObservableArray<string> {
+    return this._firmwareService.description;
+  }
 
-	const otaTitleView = <View>this.otaTitleView.nativeElement;
-	otaTitleView.opacity = 0;
+  get ready(): boolean {
+    return this._firmwareService.haveFirmwares;
+  }
 
-	const otaProgressViewSD = <View>this.otaProgressViewSD.nativeElement;
-	otaProgressViewSD.opacity = 0;
+  onDrawerButtonTap(): void {}
 
-	const otaProgressViewPT = <View>this.otaProgressViewPT.nativeElement;
-	otaProgressViewPT.opacity = 0;
+  // Connectivity
+  discoverSmartDrives() {
+    this._progressService.show('Searching for SmartDrives');
+    return this._bluetoothService.scanForSmartDrive().then(() => {
+      console.log(`Found ${BluetoothService.SmartDrives.length} SmartDrives!`);
+      this._progressService.hide();
+      return BluetoothService.SmartDrives;
+    });
+  }
 
-	const otaFeaturesView = <View>this.otaFeaturesView.nativeElement;
-	otaFeaturesView.opacity = 0;
+  onStartOtaUpdate() {
+    this._bluetoothService.available().then(available => {
+      if (available) {
+        if (!this.updating) {
+          // start updating
+          this.performOTAs()
+            .then(otaStatuses => {
+              console.log(`completed all otas with statuses: ${otaStatuses}`);
+              this.cancelOTAs(false);
+            })
+            .catch(err => {
+              console.log(`Couldn't finish updating: ${err}`);
+              this.cancelOTAs(true);
+            });
+        } else {
+          // we're already updating
+          this.cancelOTAs(true);
+        }
+      } else {
+        // bluetooth is not available
+        alert({
+          title: 'Bluetooth Unavailable',
+          message: 'Bluetooth service unavailable - reinitializing!',
+          okButtonText: 'OK'
+        }).then(() => {
+          this._bluetoothService.advertise();
+        });
+      }
+    });
+  }
 
-	this._sideDrawerTransition = new SlideInOnTopTransition();
+  public onRefreshDeviceList() {
+    this.refreshDeviceList();
+  }
 
+  private refreshDeviceList(): Promise<any> {
+    if (!this.updating && !this.searching) {
+      this.smartDriveOTAs.splice(0, this.smartDriveOTAs.length);
+      this.pushTrackerOTAs.splice(0, this.pushTrackerOTAs.length);
+      this.searching = true;
+      return this._bluetoothService
+        .available()
+        .then(available => {
+          if (available) {
+            return this.discoverSmartDrives();
+          } else {
+            // bluetooth is not available
+            return alert({
+              title: 'Bluetooth Unavailable',
+              message: 'Bluetooth service unavailable - reinitializing!',
+              okButtonText: 'OK'
+            }).then(() => {
+              this.searching = false;
+              return this._bluetoothService.advertise();
+            });
+          }
+        })
+        .then(() => {
+          this.smartDriveOTAs.splice(0, this.smartDriveOTAs.length);
+          this.pushTrackerOTAs.splice(0, this.pushTrackerOTAs.length);
+          BluetoothService.SmartDrives.map(sd => {
+            this.smartDriveOTAs.push(sd);
+          });
+          BluetoothService.PushTrackers.map(pt => {
+            this.pushTrackerOTAs.push(pt);
+          });
+          this.searching = false;
+        });
     }
+  }
 
-    onValueChanged(args) {
-	const progressBar = <Progress>args.object;
+  private performOTAs(): Promise<any> {
+    this.updatingButtonText = 'Cancel All Firmware Updates';
+    return Promise.resolve().then(() => {
+      // OTA the selected smart drive(s)
+      const smartDriveOTATasks = this.smartDriveOTAs.map(sd => {
+        return sd.performOTA(
+          this._firmwareService.firmwares['BLE'].data,
+          this._firmwareService.firmwares['MCU'].data,
+          this._firmwareService.firmwares['BLE'].version,
+          this._firmwareService.firmwares['MCU'].version,
+          300000
+        );
+      });
 
-	console.log('Value changed for ' + progressBar);
-	console.log('New value: ' + progressBar.value);
+      const pushTrackerOTATasks = this.pushTrackerOTAs.map(pt => {
+        return pt.performOTA(
+          this._firmwareService.firmwares['PT'].data,
+          this._firmwareService.firmwares['PT'].version,
+          300000
+        );
+      });
+
+      const otaTasks = smartDriveOTATasks.concat(pushTrackerOTATasks);
+
+      if (otaTasks) {
+        this.updating = true;
+        return Promise.all(otaTasks);
+      } else {
+        return alert({
+          title: 'No Devices',
+          message: 'No PushTrackers or SmartDrives found!',
+          okButtonText: 'OK'
+        }).then(() => []);
+      }
+    });
+  }
+
+  private cancelOTAs(doCancel: boolean) {
+    this.updating = false;
+    this.updatingButtonText = 'Begin Firmware Updates';
+    if (doCancel) {
+      console.log('Cancelling all otas!');
+      this.smartDriveOTAs.map(sd => sd.cancelOTA());
+      this.pushTrackerOTAs.map(pt => pt.cancelOTA());
     }
-
-    get sideDrawerTransition(): DrawerTransitionBase {
-	return this._sideDrawerTransition;
-    }
-    onDrawerButtonTap(): void {
-	this.drawerComponent.sideDrawer.showDrawer();
-    }
-
-    // Connectivity
-    didConnectPushTracker(connected) {
-
-	this.bTPushTrackerConnectionIcon = connected = true ? String.fromCharCode(0xf294) : String.fromCharCode(0xf293);
-
-	this.ptConnectionButtonClass = connected = true ? "fa hero" : "fa grayed";
-
-	// tslint:disable-next-line:max-line-length
-	this.titleText = connected = true ? "Firmware Version 1.5" : "Press the right button on your PushTracker to connect. (use the one here to test)";
-
-	// tslint:disable-next-line:max-line-length
-	this.otaButtonText = connected = true ? "Begin Firmware Updates" : "Press the right button on your PushTracker to connect. (use the one here to test)";
-
-	const otaTitleView = <View>this.otaTitleView.nativeElement;
-	otaTitleView.animate({
-	    opacity: 1,
-	    duration: 500
-	});
-
-	// this.blah$ = duration(800)
-	// .map(elasticOut)
-	// .map(amount(150));
-
-    }
-    didConnectSmartDrive(connected) {
-
-	this.bTSmartDriveConnectionIcon = connected = true ? String.fromCharCode(0xf294) : String.fromCharCode(0xf293);
-
-	this.sdConnectionButtonClass = connected = true ? "fa hero" : "fa grayed";
-    }
-
-    discoverSmartDrives() {
-	// show list of SDs
-    }
-
-    onPtButtonTapped() {
-	this.didConnectPushTracker(true);
-    }
-
-    onSdButtonTapped() {
-	this.didConnectSmartDrive(true);
-    }
-
-    onStartOtaUpdate() {
-
-	this.otaButtonText = "updating SmartDrive firmware...";
-
-	const scrollView = this.scrollView.nativeElement as ScrollView;
-
-	// const scrollView = new ScrollView();
-
-	const offset = scrollView.scrollableHeight;
-	console.log(offset);
-
-	scrollView.scrollToVerticalOffset(offset, true);
-
-	const otaProgressViewSD = <View>this.otaProgressViewSD.nativeElement;
-	otaProgressViewSD.animate({
-	    opacity: 1,
-	    duration: 500
-	});
-
-	const otaFeaturesView = <View>this.otaFeaturesView.nativeElement;
-	otaFeaturesView.animate({
-	    opacity: 1,
-	    duration: 500
-	});
-
-	let intervalID = null;
-	let updatingPT = false;
-	intervalID = setInterval(() => {
-
-	    this.sdBtProgressValue += 15;
-	    if (this.sdBtProgressValue > 100) {
-		this.sdBtProgressValue = 100;
-	    }
-	    this.sdMpProgressValue += 25;
-	    if (this.sdMpProgressValue > 100) {
-		this.sdMpProgressValue = 100;
-	    }
-
-	    if (this.sdMpProgressValue >= 100 && this.sdBtProgressValue >= 100) {
-
-		this.ptBtProgressValue += 25;
-		if (this.ptBtProgressValue > 100) {
-		    this.ptBtProgressValue = 100;
-		}
-
-		if (!updatingPT) {
-		    const otaProgressViewPT = <View>this.otaProgressViewPT.nativeElement;
-		    otaProgressViewPT.animate({
-			opacity: 1,
-			duration: 500
-		    });
-		    this.otaButtonText = "updating PushTracker";
-		    updatingPT = true;
-		}
-
-		if (this.ptBtProgressValue >= 100) {
-		    this.otaButtonText = "Update Complete";
-		    // cancel the interval we have set
-		    clearInterval(intervalID);
-
-		    setTimeout(() => {
-			this.routerExtensions.navigate(['/pairing'], {
-			    clearHistory: true
-			});
-		    }, 1500)
-		    
-		}
-	    }
-	}, 500);
-    }
+  }
 }

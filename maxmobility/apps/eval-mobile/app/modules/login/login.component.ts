@@ -8,6 +8,8 @@ import { alert } from 'tns-core-modules/ui/dialogs';
 import { User, LoggingService, CLog } from '@maxmobility/core';
 import { UserService, ProgressService, preventKeyboardFromShowing } from '@maxmobility/mobile';
 import { validate } from 'email-validator';
+import { TranslateService } from '@ngx-translate/core';
+import { device } from 'tns-core-modules/platform';
 
 @Component({
   selector: 'Login',
@@ -20,12 +22,24 @@ export class LoginComponent implements OnInit {
   passwordError = '';
   emailError = '';
 
+  error_1: string = this._translateService.instant('user.error-1');
+  error_2: string = this._translateService.instant('user.error-2');
+  error: string = this._translateService.instant('user.error');
+  ok: string = this._translateService.instant('dialogs.ok');
+  signing_in: string = this._translateService.instant('user.signing-in');
+  success: string = this._translateService.instant('user.success');
+  password_error: string = this._translateService.instant('user.password-error');
+  email_error: string = this._translateService.instant('user.email-error');
+  check_email: string = this._translateService.instant('user.check-email');
+  email_required: string = this._translateService.instant('user.email-required');
+
   constructor(
     private _routerExtensions: RouterExtensions,
     private _logService: LoggingService,
     private _userService: UserService,
     private _progressService: ProgressService,
-    private _page: Page
+    private _page: Page,
+    private _translateService: TranslateService
   ) {
     preventKeyboardFromShowing();
   }
@@ -55,7 +69,7 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    this._progressService.show('Signing In...');
+    this._progressService.show(this.signing_in);
 
     // now try logging in with Kinvey user account
     this._userService
@@ -71,42 +85,52 @@ export class LoginComponent implements OnInit {
         CLog('login error', err);
         this._progressService.hide();
         // parse the exceptions from kinvey sign up
-        let errorMessage = 'An error occurred during sign in. Check your email and password.';
+        let errorMessage = this.error_1;
         if (err.toString().includes('InvalidCredentialsError')) {
-          errorMessage = 'Invalid email and/or password. Please try again.';
+          errorMessage = this.error_2;
         }
         alert({
-          title: 'Error',
+          title: this.error,
           message: errorMessage,
-          okButtonText: 'Okay'
+          okButtonText: this.ok
         });
         this._logService.logException(err);
       });
   }
 
   navToForgotPassword() {
-    this._routerExtensions.navigate(['/forgot-password']);
+    this._routerExtensions.navigate(['/forgot-password'], {
+      transition: {
+        name: 'slideLeft'
+      }
+    });
   }
 
   onEmailTextChange(args) {
+    this.user.email = args.value;
     this._isEmailValid(this.user.email);
   }
 
   navToSignUp() {
-    this._routerExtensions.navigate(['/sign-up']);
+    this._routerExtensions.navigate(['/sign-up'], {
+      transition: {
+        name: 'slideLeft'
+      }
+    });
   }
 
   private _isEmailValid(text: string): boolean {
     // validate the email
     CLog('isEmailValid', text);
+
     if (!text) {
-      this.emailError = 'Email is required.';
+      this.emailError = this.email_required;
       return false;
     }
     // make sure it's a valid email
     const email = text.trim();
     if (!validate(email)) {
-      this.emailError = `${email} is not a valid email address.`;
+      this.emailError = `"${email}" ` + this.email_error;
       return false;
     }
 
@@ -116,8 +140,9 @@ export class LoginComponent implements OnInit {
 
   private _isPasswordValid(text: string): boolean {
     // validate the password
+
     if (!text) {
-      this.passwordError = 'Password is required.';
+      this.passwordError = this.password_error;
       return false;
     }
     this.passwordError = '';

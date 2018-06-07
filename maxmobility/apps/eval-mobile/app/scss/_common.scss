@@ -27,14 +27,14 @@
 
 // Branding
 .logo {
-  margin: 50, 50, 30, 50;
+  margin: 100, 50, 30, 50;
 }
 
 .app-logo {
   font-size: 20;
   font-family: $os;
-  color: $permobil-titan;
-  margin: 20, 0, 0, 0;
+  color: #fff;
+  margin: 100, 0, 0, 0;
   text-align: center;
 }
 
@@ -51,6 +51,10 @@
 
 label {
   font-family: $os-Light;
+}
+
+.light-background {
+    background-color: $background-light;
 }
 
 .firmWareCheckButton {

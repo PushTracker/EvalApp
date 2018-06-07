@@ -1,20 +1,41 @@
-<ScrollView class="permobil-hero" height="100%">
-  <GridLayout rows="auto, *, auto" class="login-page">
+
+<Gradient tkMainContent backgroundSpanUnderStatusBar="true" direction="to bottom" colors="#004F7E, #0070b3">
+  <ScrollView height="100%" width="100%">
     <StackLayout row="0">
-      <Image src="~/assets/images/permobil_logo.png" class="logo"></Image>
-      <Label class="app-logo" text="Smart Evaluation"></Label>
-      <Label class="account-icon fa text-white" text="&#xf2be;"></Label>
-      <TextField [(ngModel)]="user.email" class="blue-text-field" (textChange)="onEmailTextChange($event)" hint="Email..." keyboardType="email"
-        autocorrect="false" autocapitalizationType="none">
-      </TextField>
-      <Label [text]="emailError" class="text-white" [visibility]="emailError ? 'visible' : 'collapsed'" textWrap="true"></Label>
-      <TextField [(ngModel)]="user.password" class="blue-text-field" hint="Password..." secure="true"></TextField>
-      <Label [text]="passwordError" class="text-white" [visibility]="passwordError ? 'visible' : 'collapsed'" textWrap="true"></Label>
-      <Button text="Sign in" class="permobil-ocean-btn m-20" (tap)="onSubmitTap()"></Button>
+      <Label class="app-logo"
+             text="Smart Evaluation"></Label>
+      <Label class="account-icon fa text-white"
+             text="&#xf2be;"></Label>
+      <TextField [text]="user.email"
+                 class="text-field"
+                 (textChange)="onEmailTextChange($event)"
+                 hint="Email..." keyboardType="email"
+                 autocorrect="false" autocapitalizationType="none"></TextField>
+      <Label [text]="emailError"
+             class="text-white error"
+             [visibility]="emailError ? 'visible' : 'collapsed'"
+             textWrap="true"></Label>
+      <TextField [(ngModel)]="user.password"
+                 class="text-field"
+                 hint="Password..."
+                 secure="true"></TextField>
+      <Label [text]="passwordError"
+             class="text-white error"
+             [visibility]="passwordError ? 'visible' : 'collapsed'"
+             textWrap="true"></Label>
+      <Button [text]="'user.login' | translate"
+              class="permobil-ocean-btn login-btn"
+              (tap)="onSubmitTap()"></Button>
+      <DockLayout stretchLastChild="false">
+        <Button dock="left"
+                text="Forgot Password"
+                class="btn-transparent text-white forgot"
+                (tap)="navToForgotPassword()"></Button>
+        <Button dock="right"
+                text="Sign Up"
+                class="btn-transparent text-white sign-up"
+                (tap)="navToSignUp()"></Button>
+      </DockLayout>
     </StackLayout>
-    <GridLayout row="2" rows="*" columns="auto, *, auto">
-      <Button col="0" text="Forgot Password" class="btn-transparent text-white forgot" (tap)="navToForgotPassword()"></Button>
-      <Button col="2" text="Sign up" class="btn-transparent text-white sign-up" (tap)="navToSignUp()"></Button>
-    </GridLayout>
-  </GridLayout>
-</ScrollView>
+  </ScrollView>
+</Gradient>

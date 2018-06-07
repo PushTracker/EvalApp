@@ -9,6 +9,9 @@ android {
   defaultConfig {  
     generatedDensities = []
     applicationId = "com.maxmobility.eval"  
+    jackOptions {
+        enabled true
+    }
   }  
   aaptOptions {  
     additionalParameters "--no-version-vectors"  

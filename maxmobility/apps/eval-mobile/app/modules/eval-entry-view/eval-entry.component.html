@@ -1,79 +1,79 @@
-<ActionBar class="action-bar">
-  <!-- <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+<ActionBar class="action-bar" flat="true" title="Eval">
+  <NavigationButton android.systemIcon="ic_menu_back" tap="onNavBtnTap"></NavigationButton>
 
-       <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()"
-		   ios.position="left">
-       </ActionItem> -->
-  <Label class="action-bar-title" text="Evaluation"></Label>
+  <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem>
 </ActionBar>
 
-<RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
 
-
-  <StackLayout tkDrawerContent>
-    <MyDrawer [selectedPage]="'Evaluation'"></MyDrawer>
-  </StackLayout>
-
-  <GridLayout tkMainContent backgroundColor="#fff" rows="auto, *" cols="*">
-    <StackLayout row="0" class="topSlide" height="30%" orientation="horizontal" horizontalAlignment="center">
-      <Image src="~/assets/images/controls-4.png" stretch="aspectFit"></Image>
+<Gradient tkMainContent direction="to bottom" colors="#004F7E, #0070b3">
+  <GridLayout rows="auto, *" cols="*" width="100%">
+    <StackLayout
+	   backgroundImage="~/assets/images/background_1.jpg"  
+	   row="0" class="gridImage" height="20%" width="100%" orientation="horizontal" horizontalAlignment="center">
+	  <Image src="~/assets/images/evaluation-start.png" 
+	         stretch="aspectFit"></Image>
     </StackLayout>
-    
-    <ScrollView row="1" class="hero" orientation="vertical">
-      <StackLayout class="eval-stack-layout hero">
-	<DockLayout stretchLastChild="false" >
-          <Label text="Do you have pain from pushing?" class="eval-item" dock="left" textWrap="true" width="50%"></Label>
-          <SegmentedBar [items]="PushingPain" [selectedIndex]="getPushingPainIndex()" class="eval-segmentedBar" dock="right" (selectedIndexChanged)="onPushingPainIndexChange($event)"></SegmentedBar>
-	</DockLayout>
-	<DockLayout *ngIf="getPushingPainIndex() == 0" stretchLastChild="false">
-          <Label text="Pain Level:" class="eval-item" ></Label>
-          <Label verticalAlignment="center" dock="right" class="eval-slider-value-label" style="min-width: 50" [text]="settings.pain.toFixed(0)+' / 10'" row="0" col="1"></Label>
-	</DockLayout>
-	<GridLayout *ngIf="getPushingPainIndex() == 0" rows="auto" columns="*, auto">
-          <Slider maxValue="10"  verticalAlignment="center" class="eval-slider" [value]="settings.pain" (valueChange)="onSliderUpdate('pain', $event)" row="0" col="0"></Slider>
-	</GridLayout>
 
-	<DockLayout stretchLastChild="false" padding="30,0,0,0">
-          <Label text="Do you have fatigue from pushing?" class="eval-item" dock="left" textWrap="true" width="50%"></Label>
-          <SegmentedBar [items]="PushingFatigue" [selectedIndex]="getPushingFatigueIndex()" class="eval-segmentedBar" dock="right" (selectedIndexChanged)="onPushingFatigueIndexChange($event)"></SegmentedBar>
-	</DockLayout>
-	<DockLayout *ngIf="getPushingFatigueIndex() == 0" stretchLastChild="false">
-          <Label text="Fatigue Level:" class="eval-item" ></Label>
-          <Label verticalAlignment="center" dock="right" class="eval-slider-value-label" style="min-width: 50" [text]="settings.fatigue.toFixed(0)+' / 10'" row="0" col="1"></Label>
-	</DockLayout>
-	<GridLayout *ngIf="getPushingFatigueIndex() == 0" rows="auto" columns="*, auto">
-          <Slider maxValue="10"  verticalAlignment="center" class="eval-slider" [value]="settings.fatigue" (valueChange)="onSliderUpdate('fatigue', $event)" row="0" col="0"></Slider>
-	</GridLayout>
+    <ScrollView row="1" class="" orientation="vertical">
+	  <StackLayout class="eval-stack-layout" width="100%">
+	    // PAIN
+	    <GridLayout class="eval-item" rows="auto, auto" columns="*, auto">
+          <Label row="0" col="0" class="eval-label" text="Do you have pain from pushing?" textWrap="true"></Label>
+          <Switch
+             row="0" col="1"
+             (checkedChange)="onPushingPainChecked($event)"
+		     [checked]="hasPushingPain"></Switch>
+	      <GridLayout row="1" colSpan="2"  *ngIf="hasPushingPain" class="eval-item" rows="auto, auto" columns="*, auto">
+            <Label row="0" col="0" class="eval-slider-label" text="Pain Level:" textWrap="true"></Label>
+            <Label row="0" col="1" class="eval-slider-value-label" [text]="evaluation.pushing_pain.toFixed(0)+' / 10'"></Label>
+            <Slider row="1" colSpan="2" maxValue="10" class="eval-slider" [value]="evaluation.pushing_pain" (valueChange)="onSliderUpdate('pushing_pain', $event)"></Slider>
+	      </GridLayout>
+	    </GridLayout>
 
-	<DockLayout stretchLastChild="false" padding="30,0,0,0">
-          <Label text="Impact on independence:" class="eval-item" ></Label>
-          <Label verticalAlignment="center" dock="right" class="eval-slider-value-label" style="min-width: 50" [text]="settings.independence.toFixed(0)+' / 10'" row="0" col="1"></Label>
-	</DockLayout>
-	<GridLayout rows="auto" columns="*, auto">
-          <Slider maxValue="10"  verticalAlignment="center" class="eval-slider" [value]="settings.independence" (valueChange)="onSliderUpdate('independence', $event)" row="0" col="0"></Slider>
-	</GridLayout>
+	    // FATIGUE
+	    <GridLayout class="eval-item" rows="auto, auto" columns="*, auto">
+          <Label row="0" col="0" class="eval-label" text="Do you have fatigue from pushing?" textWrap="true"></Label>
+          <Switch
+             row="0" col="1"
+             (checkedChange)="onPushingFatigueChecked($event)"
+		     [checked]="hasPushingFatigue"></Switch>
+	      <GridLayout row="1" colSpan="2"  *ngIf="hasPushingFatigue" class="eval-item" rows="auto, auto" columns="*, auto">
+            <Label row="0" col="0" class="eval-slider-label" text="Fatigue Level:" textWrap="true"></Label>
+            <Label row="0" col="1" class="eval-slider-value-label" [text]="evaluation.pushing_fatigue.toFixed(0)+' / 10'"></Label>
+            <Slider row="1" colSpan="2" maxValue="10" class="eval-slider" [value]="evaluation.pushing_fatigue" (valueChange)="onSliderUpdate('pushing_fatigue', $event)"></Slider>
+	      </GridLayout>
+	    </GridLayout>
 
-	<DockLayout stretchLastChild="true" padding="30,0,0,0">
-          <Label dock="left" text="Years in manual chair:" class="eval-item" ></Label>
-          <DropDown #dd dock="right" hint="years" [items]="timeFrames" (selectedIndexChanged)="selectedIndexChanged($event)" horizontalAlignment="right" class="p-15"></DropDown>
+	    // INDEPENDENCE
+	    <GridLayout class="eval-item" rows="auto, auto" columns="*, auto">
+          <Label row="0" col="0" class="eval-slider-label" text="Impact on independence:" textWrap="true"></Label>
+          <Label row="0" col="1" class="eval-slider-value-label" [text]="evaluation.impact_on_independence.toFixed(0)+' / 10'"></Label>
+          <Slider row="1" colSpan="2" maxValue="10" class="eval-slider" [value]="evaluation.impact_on_independence" (valueChange)="onSliderUpdate('impact_on_independence', $event)"></Slider>
+	    </GridLayout>
 
-	</DockLayout>
+	    <GridLayout class="eval-item" rows="auto, auto" columns="*, auto">
+          <Label col="0" text="Years in manual chair:" class="eval-label" textWrap="true"></Label>
+          <DropDown
+		     col="1"
+		     hint="years"
+		     class="dropdown"
+		     [items]="years" 
+		     (selectedIndexChanged)="selectedIndexChanged('years',$event)"></DropDown>
 
-	<DockLayout stretchLastChild="true" padding="30,0,0,0">
-          <Label dock="left" text="Type of chair:" class="eval-item" ></Label>
-          <DropDown #dd dock="right" hint="chair type" [items]="chairTypes" (selectedIndexChanged)="selectedIndexChanged($event)" horizontalAlignment="right" class="p-15"></DropDown>
+          <Label row="1" col="0" text="Type of chair:" class="eval-label" textWrap="true"></Label>
+          <DropDown
+		     row="1"
+		     col="1"
+		     hint="chair type" 
+		     class="dropdown"
+		     [items]="chair" 
+		     (selectedIndexChanged)="selectedIndexChanged('chair',$event)" ></DropDown>
+	    </GridLayout>
 
-	</DockLayout>
+	    <Button (tap)="onNext()" text="Next" class="nextButton"></Button>
 
-
-	<!-- <GridLayout rows="auto" columns="*, auto" >
-             <exoplayer class="videoPlayer"  src="~/assets/videos/Lesson_small.mov" autoplay="false" height="231" width="auto">
-             </exoplayer>
-	</GridLayout> -->
-
-	<Button (tap)="onNext()" text="Next" class="nextButton"></Button>
-
-      </StackLayout>
+	  </StackLayout>
     </ScrollView>
+    
   </GridLayout>
-</RadSideDrawer>
+</Gradient>

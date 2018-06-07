@@ -1,56 +1,25 @@
 // Custom common variables
 @import '../../scss/variables';
+@import '../../scss/_carousel';
 
 .hero{
     background-color: $permobil-hero;
 }
 
-.top{
-
-    background: #fff;
+.gridImage {
+    background-image: "~/assets/images/background_1.jpg";
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
 }
 
-.slideLowerLabel {
-    text-align: left;
-    // width: 100%;
-    font-family: $os-Light;
-    font-size: 25;
-    margin: 20, 0, 10, 10;
-    color: $white;
-}
-
-.slideLowerLabel_2 {
-    text-align: left;
-    width: 100%;
-    font-family: $os-Light;
-    font-size: 25;
-    // margin-top: 15;
-    color: $white;
-}
-.slideDescription {
-    color: $white;
-    font-family: $os-SemiBold;
-    font-size: 15;
-    text-align: left;
-    margin: 0, 0, 0, 10;
-}
-
-.topSlide {
-    background-color: $white;
-    height: 30%;
-}
-
-.lowerSlide {
-    background-color: $permobil-hero;
-    margin-bottom: 0;
-}
-.start-button{
+.next-button{
     width: 150;
     height: 40; 
     color: #fff;
     background-color: $permobil-ocean;
     border-radius: 2;
-    margin: 5, 10, 50, 10;
+    margin: 45, 10, 50, 10;
 }
 .back-button{
     width: 150;
@@ -58,7 +27,7 @@
     color: $permobil-charcoal;
     background-color: $permobil-ocean;
     border-radius: 2;
-    margin: 5, 10, 50, 10;
+    margin: 45, 10, 50, 10;
 }
 .submit-button {
     background-color: $permobil-ocean;
@@ -72,6 +41,7 @@ Image {
     display: block;
     margin-left: auto;
     margin-right: auto;
+    margin: 20, 0, 20, 0;
     // width: 50%;
     // height: 50%;
 }
@@ -88,7 +58,7 @@ Image {
     font-family: $os-Light;
     font-size:13;
     text-align:left;
-    margin:10, 20, 0, 10;
+    margin:10, 20, 10, 15;
 }
 
 

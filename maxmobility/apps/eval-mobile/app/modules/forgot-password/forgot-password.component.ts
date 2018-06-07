@@ -11,6 +11,7 @@ import { alert } from 'tns-core-modules/ui/dialogs';
 import { User, LoggingService, CLog } from '@maxmobility/core';
 import { UserService, ProgressService, preventKeyboardFromShowing } from '@maxmobility/mobile';
 import { validate } from 'email-validator';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'forgot-password',
@@ -22,12 +23,23 @@ export class ForgotPasswordComponent implements OnInit {
   email = '';
   emailError = '';
 
+  error: string = this._translateService.instant('user.error');
+  ok: string = this._translateService.instant('dialogs.ok');
+  submitting: string = this._translateService.instant('user.submitting');
+  success: string = this._translateService.instant('user.success');
+  account_error: string = this._translateService.instant('user.account-error');
+  email_error: string = this._translateService.instant('user.email-error');
+  check_email: string = this._translateService.instant('user.check-email');
+  email_required: string = this._translateService.instant('user.email-required');
+  email_sent: string = this._translateService.instant('user.email-sent');
+
   constructor(
     private _routerExtensions: RouterExtensions,
     private _logService: LoggingService,
     private _progressService: ProgressService,
     private _userService: UserService,
-    private _page: Page
+    private _page: Page,
+    private _translateService: TranslateService
   ) {
     preventKeyboardFromShowing();
   }
@@ -53,21 +65,22 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   onSubmitTap() {
+
     // validate the email
     if (!this.email) {
-      this.emailError = 'Email is required.';
+      this.emailError = this.email_required ;
       return;
     }
     // make sure it's a valid email
     const em = this.email.trim();
     if (!validate(em)) {
-      this.emailError = `${em} is not a valid email address!`;
+      this.emailError =  `"${em} "` + this.email_error;
       return;
     }
 
     this.emailError = '';
 
-    this._progressService.show('Submitting...');
+    this._progressService.show(this.submitting);
 
     this._userService
       .resetPassword(this.email)
@@ -75,9 +88,9 @@ export class ForgotPasswordComponent implements OnInit {
         CLog('resp', resp);
         this._progressService.hide();
         alert({
-          title: 'Success',
-          message: 'Check your email for instructions on resetting your password.',
-          okButtonText: 'Okay'
+          title: this.email_sent,
+          message: this.check_email,
+          okButtonText: this.ok
         }).then(() => {
           this._routerExtensions.navigate(["/login"],
         {
@@ -92,9 +105,9 @@ export class ForgotPasswordComponent implements OnInit {
         this._logService.logException(err);
         this._progressService.hide();
         alert({
-          title: 'Error',
-          message: 'An error occurred trying to retrieve your account information. Try again later.',
-          okButtonText: 'Okay'
+          title: this.error,
+          message: this.account_error,
+          okButtonText: this.ok
         });
       });
   }
@@ -103,10 +116,10 @@ export class ForgotPasswordComponent implements OnInit {
     CLog('args', args.value);
     // make sure it's a valid email
     const em = this.email.trim();
-    this.emailError = !validate(em) ? `${em} is not a valid email address.` : '';
+    this.emailError = !validate(em) ? `"${em}" ` + this.email_error : '';
   }
 
-    navToLogin() {
+  navToLogin() {
     this._routerExtensions.navigate(["/login"],
         {
         transition: {

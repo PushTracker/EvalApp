@@ -2,111 +2,101 @@
 @import '../../scss/common';
 @import '../../scss/variables';
 
-// .icon {
-//   font-size: 60em;
-//   padding: 15, 0, 0, 15;
-//   color: $permobil-ocean;
-//   text-shadow: 5px, 5px, 5px, $permobil-icon-shadow-orange;
-// }
 .rad-list-view {
-padding: 0, 10, 0, 0;
-
+    padding: 0, 10, 0, 0;
+    height: auto;
+    width: 100%;
 }
 
 .icon-description-group {
-  padding: 0;
-  width: 150;
-  margin: 0, 10, 0, 15;
+    padding: 0;
+    margin: 0, 10, 15, 15;
+    width: 150;
 }
 
 .heading {
-  font-family: $os-SemiBold;
-  text-align: left;
-  font-size: 20;
-  font-weight: 600;
-  margin: 5, 0, 5, 15;
-  color: $permobil-charcoal;
+    font-family: $os-SemiBold;
+    text-align: left;
+    font-size: 20;
+    font-weight: 400;
+    margin: 5, 0, 5, 15;
+    color: $permobil-charcoal;
 }
 
 .description {
-  font-family: $os-Light;
-  color: $permobil-charcoal;
-  font-size: 15;
-  font-weight: 400;
-  margin: 5, 0, 5, 15;
+    font-family: $os-Light;
+    color: $permobil-charcoal;
+    font-size: 15;
+    font-weight: 400;
+    margin: 5, 0, 5, 15;
 }
 
 .item-description {
-  font-family: $os-Light;
-  color: $permobil-charcoal;
-  width: 150;
-  height: 50;
-  font-size: 14;
-  font-weight: 400;
-  margin: 5, 0, 0, 0;
+    font-family: $os-Light;
+    color: $permobil-charcoal;
+    font-size: 14;
+    font-weight: 400;
+    margin: 5, 0, 0, 0;
 }
 
 .demo-item-description {
-  font-family: $os-Light;
-  color: #fff;
-  width: 150;
-  height: 25;
-  font-size: 15;
-  font-weight: 400;
-  padding: 0, 0, 0, 5;
-  margin: 3, 0, 0, 0;
-  background-color: $permobil-ocean;
-  border: solid;
-  border-radius: 3;
+    font-family: $os-Light;
+    color: #fff;
+    width: 150;
+    font-size: 15;
+    font-weight: 400;
+    padding: 0, 0, 0, 5;
+    margin: 3, 0, 0, 0;
+    background-color: $permobil-ocean;
+    border: solid;
+    border-radius: 3;
 }
 
 .faq-question {
+    width: 150;
+    height: 150;
+    margin: 5, 0, 5, 0;
+    border: solid;
+    border-radius: 4;
     horizontal-align: center;
     vertical-align: center;
     text-align: center;
     padding: 15;
     font-size: 18;
-    font-weight: 700;
+    font-weight: 500;
     color: $white;
 }
 
-
-// .demo-orange {
-
-//   background-color: $
-// }
-
 .chev {
 
-  width: 22em;
-  height: 22em;
-  margin: 5, 10, 0, 0;
+    font-size: 32;
+    margin: 5, 5, 0, 0;
 
 }
 
 .list-stack-layout {
-  margin: 10, 0, 10, 0;
-
+    margin: 10, 0, 10, 0;
 }
 
 .main-scroll-view {
-  padding: 0, 30, 0, 30;
-  margin: 0, 0, 0, 0;
-  height: 100%;
+    background-color: #fff;
+    padding: 0, 30, 0, 30;
+    margin: 0, 0, 0, 0;
+    height: 100%;
 }
 
 .thumb {
-  width: 150;
-  height: 150;
-  background-color: $permobil-hero;
-  margin: 5, 0, 5, 0;
-  border: solid;
-  border-radius: 4;
+    width: 150;
+    height: 150;
+    background-color: $permobil-hero;
+    margin: 5, 0, 5, 0;
+    border: solid;
+    border-radius: 4;
 }
 
 .floor {
 
-  margin: 5, 0, 10, 0;
+    margin: 5, 0, 10, 0;
 
 }
 

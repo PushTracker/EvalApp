@@ -2,13 +2,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 // nativescript
 import { confirm } from 'tns-core-modules/ui/dialogs';
-import { DrawerTransitionBase, SlideInOnTopTransition } from 'nativescript-ui-sidedrawer';
-import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
+import { Page } from 'tns-core-modules/ui/page';
 // app
 import { UserService, ProgressService, LoggingService } from '@maxmobility/mobile';
 import { User, CLog } from '@maxmobility/core';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { Kinvey } from 'kinvey-nativescript-sdk';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'Account',
@@ -17,37 +17,54 @@ import { Kinvey } from 'kinvey-nativescript-sdk';
   styleUrls: ['./account.component.css']
 })
 export class AccountComponent implements OnInit {
-  @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
-
-  user: Kinvey.User = this._userService.user;
-
-  private _sideDrawerTransition: DrawerTransitionBase;
-
   constructor(
     private _userService: UserService,
     private _progressService: ProgressService,
     private _loggingService: LoggingService,
-    private _router: RouterExtensions
-  ) {}
-
-  ngOnInit() {
-    this._sideDrawerTransition = new SlideInOnTopTransition();
+    private _router: RouterExtensions,
+    private _page: Page,
+    private _translateService: TranslateService
+  ) {
+    this._page.enableSwipeBackNavigation = false;
   }
 
-  get sideDrawerTransition(): DrawerTransitionBase {
-    return this._sideDrawerTransition;
-  }
+  // tslint:disable-next-line:member-ordering
+  user: Kinvey.User = this._userService.user;
+
+  yes: string = this._translateService.instant('dialogs.yes');
+  no: string = this._translateService.instant('dialogs.no');
+  success: string = this._translateService.instant('user.success');
+  ok: string = this._translateService.instant('dialogs.ok');
+  account_update: string = this._translateService.instant('user.account-update');
+  account_update_confirm: string = this._translateService.instant('user.account-update-confirm');
+  account_update_complete: string = this._translateService.instant('user.account-update-complete');
+  account_reset: string = this._translateService.instant('user.account-reset');
+  account_reset_confirm: string = this._translateService.instant('user.account-reset-confirm');
+  password_change: string = this._translateService.instant('user.password-change');
+  password_change_confirm: string = this._translateService.instant('user.password-change-confirm');
+  // tslint:disable-next-line:member-ordering
+  sign_out: string = this._translateService.instant('user.sign-out');
+  sign_out_confirm: string = this._translateService.instant('user.sign-out-confirm');
+
+  ngOnInit() {}
 
   onDrawerButtonTap() {
-    this.drawerComponent.sideDrawer.showDrawer();
+    this._router.navigate(['/home'], {
+      transition: {
+        name: 'slideBottom',
+        duration: 350,
+        curve: 'easeInOut',
+        clearHistory: true
+      }
+    });
   }
 
   onSaveAccountTap() {
     confirm({
-      title: 'Update User Account?',
-      message: 'Send these settings to the Server?',
-      okButtonText: 'Yes',
-      cancelButtonText: 'No'
+      title: this.account_update,
+      message: this.account_update_confirm,
+      okButtonText: this.yes,
+      cancelButtonText: this.no
     }).then(result => {
       if (result) {
         this.user
@@ -58,7 +75,7 @@ export class AccountComponent implements OnInit {
           })
           .then(resp => {
             CLog('update response', JSON.stringify(resp));
-            alert({ title: 'Success', message: 'Your profile has been updated.', okButtonText: 'Okay' });
+            alert({ title: this.success, message: this.account_update_complete, okButtonText: this.ok });
           })
           .catch(err => {
             this._loggingService.logException(err);
@@ -69,19 +86,19 @@ export class AccountComponent implements OnInit {
 
   onChangePasswordTap() {
     confirm({
-      title: 'Change Password?',
-      message: 'Are you sure you want to change your password?',
-      okButtonText: 'Yes',
-      cancelButtonText: 'No'
+      title: this.password_change,
+      message: this.password_change_confirm,
+      okButtonText: this.yes,
+      cancelButtonText: this.no
     });
   }
 
   onResetAccountTap() {
     confirm({
-      title: 'Reset Account?',
-      message: 'Are you sure you want to reset your account (remove all your data / settings)?',
-      okButtonText: 'Yes',
-      cancelButtonText: 'No'
+      title: this.account_reset,
+      message: this.account_reset_confirm,
+      okButtonText: this.yes,
+      cancelButtonText: this.no
     });
   }
 
@@ -90,10 +107,10 @@ export class AccountComponent implements OnInit {
    */
   onSignOutTap() {
     confirm({
-      title: 'Sign Out?',
-      message: 'Are you sure you want to sign out?',
-      okButtonText: 'Yes',
-      cancelButtonText: 'No'
+      title: this.sign_out,
+      message: this.sign_out_confirm,
+      okButtonText: this.yes,
+      cancelButtonText: this.no
     }).then(result => {
       CLog('signout confirm result', result);
       if (result) {
@@ -109,5 +126,9 @@ export class AccountComponent implements OnInit {
           });
       }
     });
+  }
+
+  onDebugMenuTap() {
+    this._router.navigate(['/settings']);
   }
 }

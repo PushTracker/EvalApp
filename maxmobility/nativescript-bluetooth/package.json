@@ -16,6 +16,9 @@
       "category": "Processing"
     }
   },
+  "scripts": {
+    "build": "tsc"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/eddyverbruggen/nativescript-bluetooth.git"
@@ -33,6 +36,13 @@
     "name": "Eddy Verbruggen",
     "email": "eddyverbruggen@gmail.com"
   },
+  "contributors": [
+    {
+      "name": "Brad Martin",
+      "email": "bmartin@nstudio.io",
+      "url": "https://github.com/bradmartin"
+    }
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/eddyverbruggen/nativescript-bluetooth/issues"
@@ -40,6 +50,7 @@
   "homepage": "https://github.com/eddyverbruggen/nativescript-bluetooth",
   "devDependencies": {
     "tns-core-modules": "^3.1.0",
-    "tns-platform-declarations": "^3.1.0"
+    "tns-platform-declarations": "^3.1.0",
+    "typescript": "~2.8.1"
   }
 }
