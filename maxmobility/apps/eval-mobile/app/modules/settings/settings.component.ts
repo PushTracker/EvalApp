@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-sidedrawer';
 import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
 
-import { BluetoothService, ProgressService } from '@maxmobility/mobile';
+import { BluetoothService, FirmwareService, ProgressService } from '@maxmobility/mobile';
 
 import * as application from 'tns-core-modules/application';
 import { isIOS, isAndroid } from 'tns-core-modules/platform';
@@ -20,7 +20,11 @@ export class SettingsComponent implements OnInit {
 
   private _sideDrawerTransition: DrawerTransitionBase;
 
-  constructor(private _bluetoothService: BluetoothService, private _progressService: ProgressService) {}
+  constructor(
+    private _bluetoothService: BluetoothService,
+    private _firmwareService: FirmwareService,
+    private _progressService: ProgressService
+  ) {}
 
   /************************************************************
    * Use the sideDrawerTransition property to change the open/close animation of the drawer.
@@ -59,6 +63,14 @@ export class SettingsComponent implements OnInit {
       const f = fs.File.fromPath(filePath);
       resolve(f);
     });
+  }
+
+  onReload() {
+    this._firmwareService.loadFromFS();
+  }
+
+  onRedownload() {
+    this._firmwareService.downloadFirmwares();
   }
 
   onUploadFiles(): Promise<void> {
