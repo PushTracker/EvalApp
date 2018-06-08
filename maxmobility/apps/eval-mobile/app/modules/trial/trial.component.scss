@@ -16,8 +16,8 @@ Switch[checked=false] {
     background-color: $permobil-charcoal;
 }
 
-.hero {
-  background-color: $permobil-hero;
+Image {
+  margin: 10, 0, 10, 0;
 }
 
 .top {
@@ -31,7 +31,7 @@ TextField {
 
 .trial-stack-layout {
     margin: 20, 0, 0, 0;
-    background-color: $permobil-hero;
+    // background-color: $permobil-hero;
 }
 
 .docklayout-options {
@@ -40,7 +40,7 @@ TextField {
 
 .trial-scroll-view {
     height:80%;
-    background-color: $permobil-hero;
+    // background-color: $permobil-hero;
 }
 
 .trial-item {
