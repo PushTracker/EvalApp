@@ -1,6 +1,7 @@
 // angular
 import { Component, OnInit, ViewChild } from '@angular/core';
 // nativescript
+import { isAndroid, isIOS } from 'platform';
 import * as switchModule from 'tns-core-modules/ui/switch';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { SegmentedBar, SegmentedBarItem } from 'tns-core-modules/ui/segmented-bar';
@@ -57,6 +58,14 @@ export class SummaryComponent implements OnInit {
     this.pushDiff = 100 - (this.totalPushesWith / this.totalPushesWithout) * 100 || 0;
     // coast
     this.coastDiff = this.totalCoastWith / this.totalCoastWithout || 0;
+  }
+
+  isIOS(): boolean {
+    return isIOS;
+  }
+
+  isAndroid(): boolean {
+    return isAndroid;
   }
 
   generateLMN(): string {

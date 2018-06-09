@@ -5,6 +5,7 @@ import { RouterExtensions } from 'nativescript-angular/router';
 import { View } from 'ui/core/view';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 const carousel = require('nativescript-carousel').Carousel;
+import { isAndroid, isIOS } from 'platform';
 
 @Component({
   selector: 'Training',
@@ -81,6 +82,14 @@ export class TrainingComponent implements OnInit, AfterViewInit {
   ];
 
   constructor(private routerExtensions: RouterExtensions) {}
+
+  isIOS(): boolean {
+    return isIOS;
+  }
+
+  isAndroid(): boolean {
+    return isAndroid;
+  }
 
   // button events
   onNext(): void {

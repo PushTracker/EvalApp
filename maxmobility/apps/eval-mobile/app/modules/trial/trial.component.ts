@@ -9,6 +9,7 @@ import { Animation, AnimationDefinition } from 'tns-core-modules/ui/animation';
 import { confirm } from 'tns-core-modules/ui/dialogs';
 import * as switchModule from 'tns-core-modules/ui/switch';
 import { Observable, fromObject } from 'tns-core-modules/data/observable';
+import { isAndroid, isIOS } from 'platform';
 
 // app
 import { ProgressService } from '@maxmobility/mobile';
@@ -51,6 +52,14 @@ export class TrialComponent implements OnInit {
     private _evaluationService: EvaluationService,
     private zone: NgZone
   ) {}
+
+  isIOS(): boolean {
+    return isIOS;
+  }
+
+  isAndroid(): boolean {
+    return isAndroid;
+  }
 
   hideView(view: View): void {
     view.opacity = 0;

@@ -73,6 +73,8 @@ export { Videos };
   styleUrls: ['./videos.component.css']
 })
 export class VideosComponent implements OnInit {
+  videos = Videos;
+
   constructor(private _routerExtensions: RouterExtensions) {}
 
   isIOS(): boolean {
@@ -82,8 +84,6 @@ export class VideosComponent implements OnInit {
   isAndroid(): boolean {
     return isAndroid;
   }
-
-  videos = Videos;
 
   ngOnInit(): void {}
 

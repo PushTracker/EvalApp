@@ -15,10 +15,6 @@ Switch[checked=false] {
     background-color: $permobil-charcoal;
 }
 
-.hero{
-    background-color: $permobil-hero;
-}
-
 .top{
 
     background: #fff;
@@ -96,18 +92,14 @@ Button, TextField {
 .back-button{
     width: 150;
     height: 40; 
-    color: $permobil-charcoal;
-    background-color: $permobil-steel;
+    color: white;
+    background-color: $permobil-charcoal;
     border-radius: 2;
     margin: 25, 10, 30, 10;
 }
 
 Image {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 50%;
-    height: auto;
+    margin: 10, 0, 10, 10;
 }
 
 .icon{
