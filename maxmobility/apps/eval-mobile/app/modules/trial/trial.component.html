@@ -1,8 +1,8 @@
-<ActionBar class="action-bar" flat="true" title="Trial">
+<ActionBar class="action-bar" flat="true" [title]="'menu.trail' | translate">
   <NavigationButton *ngIf="isIOS()"></NavigationButton>
 </ActionBar>
 
-<Gradient tkMainContent direction="to bottom" colors="#004F7E, #0070b3" tkMainContent>
+<Gradient tkMainContent direction="to bottom" colors="#004F7E, #0070b3">
 
   <Carousel ios:indicatorOffset="0,-10" indicatorColor="#66ccff" indicatorColorUnselected="#cceeff" height="100%">
     <CarouselItem  height="100%">
