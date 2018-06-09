@@ -10,6 +10,7 @@ import { Observable } from 'tns-core-modules/data/observable';
 import { confirm } from 'tns-core-modules/ui/dialogs';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 import * as email from 'nativescript-email';
+import { TranslateService } from '@ngx-translate/core';
 // libs
 import * as mustache from 'mustache';
 // app
@@ -43,7 +44,23 @@ export class SummaryComponent implements OnInit {
 
   cadenceThresh = 10; // pushes per minute
 
-  constructor(private routerExtensions: RouterExtensions, private _evaluationService: EvaluationService) {
+  error: string = this._translateService.instant('user.error');
+  ok: string = this._translateService.instant('dialogs.ok');
+  yes: string = this._translateService.instant('dialogs.yes');
+  no: string = this._translateService.instant('dialogs.no');
+  complete: string = this._translateService.instant('summary.complete');
+  confirm: string = this._translateService.instant('summary.confirm');
+  summary_email_subject: string = this._translateService.instant('summary-email-subject');
+  fewer: string = this._translateService.instant('fewer');
+  more: string = this._translateService.instant('more');
+  higher: string = this._translateService.instant('higher');
+  lower: string = this._translateService.instant('lower');
+
+  constructor(
+    private routerExtensions: RouterExtensions,
+    private _evaluationService: EvaluationService,
+    private _translateService: TranslateService
+  ) {
     this.evaluation.trials.map(t => {
       this.totalPushesWith += t.with_pushes;
       this.totalPushesWithout += t.without_pushes;
@@ -113,10 +130,10 @@ At {{totalCadenceWithout}} pushes per minute, user's cadence is exceptionally hi
         return Trial.timeToString(this * 60);
       },
       pushComparison: function() {
-        return this.pushDiff > 0 ? 'fewer' : 'more';
+        return this.pushDiff > 0 ? this.fewer : this.more;
       },
       coastComparison: function() {
-        return this.coastDiff > 1.0 ? 'higher' : 'lower';
+        return this.coastDiff > 1.0 ? this.higher : this.lower;
       },
       showCadence: this.totalCadenceWithout > this.cadenceThresh
     });
@@ -125,10 +142,10 @@ At {{totalCadenceWithout}} pushes per minute, user's cadence is exceptionally hi
   // button events
   onNext(): void {
     confirm({
-      title: 'Complete Evaluation?',
-      message: "Are you sure you're done with the evaluation?",
-      okButtonText: 'Yes',
-      cancelButtonText: 'No'
+      title: this.complete,
+      message: this.confirm,
+      okButtonText: this.yes,
+      cancelButtonText: this.no
     }).then(result => {
       if (result) {
         // send email to user
@@ -141,7 +158,7 @@ At {{totalCadenceWithout}} pushes per minute, user's cadence is exceptionally hi
               email
                 .compose({
                   to: [],
-                  subject: 'Smart Evaluation LMN',
+                  subject: this.email_subject,
                   body: lmnBody,
                   cc: []
                 })

@@ -1,4 +1,4 @@
-<ActionBar class="action-bar" flat="true" [title]="'menu.summarry' | translate">
+<ActionBar class="action-bar" flat="true" [title]="'menu.summary' | translate">
   <NavigationButton *ngIf="isIOS()"></NavigationButton>
 </ActionBar>
 
@@ -14,16 +14,16 @@
       <StackLayout  class="lowerSlide" orientation="vertical" horizontalAlignment="center">
 
         //Heading and description
-        <Label text="Summary" class="slideLowerLabel" textWrap="true"></Label>
+        <Label [text]="'menu.summary' | translate" class="slideLowerLabel" textWrap="true"></Label>
 
         //Stats and Questionaire
         <StackLayout class="trial-stack-layout">
           <DockLayout stretchLastChild="false">
             <Label textWrap="true" class="summaryDescription">
               <FormattedString>
-                <Span text="User performed " color= "#fff"></Span>
+                <Span [text]="'summary.user-performed' | translate" color= "#fff"></Span>
                 <Span [text]="pushDiff.toFixed(0) + '%'" color="#43D551" fontAttributes="Bold"></Span>
-                <Span text=" fewer pushes with SmartDrive." color="#fff"></Span>
+                <Span [text]="'summary.pushes' | translate" color="#fff"></Span>
 
               </FormattedString>
 
@@ -33,9 +33,9 @@
           <DockLayout stretchLastChild="false">
             <Label textWrap="true" class="summaryDescription">
               <FormattedString>
-                <Span text="Average coast time was " color="#fff"></Span>
-                <Span [text]="coastDiff.toFixed(1)+' times ' + ((coastDiff > 1.0) ? 'higher' : 'lower')" color="#43D551" fontAttributes="Bold"></Span>
-                <Span text=" with SmartDrive." color="#fff"></Span>
+                <Span [text]="'summary.coast-time' | translate" color="#fff"></Span>
+                <Span [text]="coastDiff.toFixed(1)+' times ' + ((coastDiff > 1.0) ? this.higher : this.lower)" color="#43D551" fontAttributes="Bold"></Span>
+                <Span [text]="'summary.with-sd' | translate" color="#fff"></Span>
                 
               </FormattedString>
             </Label>
@@ -44,22 +44,22 @@
             
             <Label textWrap="true" class="summaryDescription">
               <FormattedString>
-                <Span text="At " color= "#fff"></Span>
+                <Span [text]="'summary.at' | translate" color= "#fff"></Span>
                 <Span [text]="totalCadenceWithout.toFixed(1)" color="#FF671F" fontAttributes="Bold"></Span>
-                <Span text=" pushes per minute, user's cadence is exceptionally high. Consider looking at rear wheel placement and efficient push technique." color= "#fff"></Span>
+                <Span [text]="'summary.cadence' | translate" color= "#fff"></Span>
               </FormattedString>
             </Label>
           </DockLayout>
           
           //Flat Difficulty
           <DockLayout stretchLastChild="false">
-            <Label text="Difficulty on Flat Surface?" class="trial-item" dock="left" textWrap="true" width="70%"></Label>
+            <Label [text]="'summary.difficulty-flat' | translate" class="trial-item" dock="left" textWrap="true" width="70%"></Label>
             <Switch (checkedChange)="onFlatDifficultyChecked($event)"
 		    [checked]="hasFlatDifficulty"
 		    dock="right"></Switch>
           </DockLayout>
           <DockLayout *ngIf="hasFlatDifficulty" stretchLastChild="false">
-            <Label text="Flat Surface Difficulty" class="trial-item"></Label>
+            <Label [text]="'summary.flat-surface-difficulty' | translate" class="trial-item"></Label>
             <Label verticalAlignment="center" dock="right" class="trial-slider-value-label" style="min-width: 50" [text]="evaluation.flat_difficulty.toFixed(0) +'/10'"
                    row="0" col="1"></Label>
           </DockLayout>
@@ -70,13 +70,13 @@
 
           //Ramp Difficulty
           <DockLayout class="dockLayout-options" stretchLastChild="false">
-            <Label text="Difficulty with ramp?" class="trial-item" dock="left" textWrap="true" width="70%"></Label>
+            <Label [text]="'summary.difficulty-ramp' | translate"  class="trial-item" dock="left" textWrap="true" width="70%"></Label>
             <Switch (checkedChange)="onRampDifficultyChecked($event)"
 		    [checked]="hasRampDifficulty"
 		    dock="right"></Switch>
           </DockLayout>
           <DockLayout *ngIf="hasRampDifficulty" stretchLastChild="false">
-            <Label text="Ramp Difficulty" class="trial-item"></Label>
+            <Label [text]="'summary.ramp-difficulty' | translate"  class="trial-item"></Label>
             <Label verticalAlignment="center" dock="right" class="trial-slider-value-label" style="min-width: 50" [text]="evaluation.ramp_difficulty.toFixed(0) +'/10'"
                    row="0" col="1"></Label>
           </DockLayout>
@@ -89,8 +89,8 @@
         </StackLayout>
 
         <StackLayout orientation="horizontal" horizontalAlignment="center">
-          <button text="Back" class="back-button" (tap)="onBack()"></button>
-          <button text="Complete" class="start-button" (tap)="onNext()"></button>
+          <button [text]="'general.back' | translate"  class="back-button" (tap)="onBack()"></button>
+          <button [text]="'general.complete' | translate" class="start-button" (tap)="onNext()"></button>
         </StackLayout>
 
       </StackLayout>

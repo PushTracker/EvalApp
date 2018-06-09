@@ -12,6 +12,7 @@
     "training": "SmartDrive Training",
     "eval": "Begin SmartDrive Evaluation",
     "trial": "Begin a SmartDrive Trial.",
+    "summary": "Summary",
     "demos": "Demos",
     "demos-desc": "Demo location and amanagement",
     "faq": "FAQs",
@@ -111,6 +112,7 @@
     "twitter-unknown": "Twitter unknown! So sorry!",
     "picture": "Picture",
     "back": "Back",
+    "complete": "Complete",
     "need-help": "Need Help?",
     "help": "Help",
     "email-us": "Email us at info@sketchpoints.io",
@@ -177,5 +179,25 @@
     "reset-acct": "Reset Account",
     "change-pass": "Change Password",
     "reset-pass-desc": "To reset your password, enter the email for your account. You will receive an email with instructions to reset your password."
+  },
+  "summary": {
+    "user-performed": "User performed ",
+    "pushes": " fewer pushes with SmartDrive.",
+    "coast-time": "Average coast time was ",
+    "with-sd": " with SmartDrive.",
+    "at": "At ",
+    "cadence": " pushes per minute, user's cadence is exceptionally high. Consider looking at rear wheel placement and efficient push technique.",
+    "difficulty-flat": "Difficulty on Flat Surface?",
+    "flat-surface-difficulty": "Flat Surface Difficulty",
+    "difficulty-ramp": "Difficulty with ramp?",
+    "ramp-difficulty": "Ramp Difficulty",
+    "complete": "Complete Evaluation?",
+    "confirm": "Are you sure you're done with the evaluation?",
+    "email-subject": "Smart Evaluation LMN",
+    "fewer": "fewer",
+    "more": "more",
+    "higher": "higher",
+    "lower": "lower"
+
   }
 }
