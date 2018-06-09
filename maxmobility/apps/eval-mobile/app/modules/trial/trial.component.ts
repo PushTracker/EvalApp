@@ -16,6 +16,7 @@ import { ProgressService } from '@maxmobility/mobile';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 import { Trial, PushTracker } from '@maxmobility/core';
 import { BluetoothService, EvaluationService } from '@maxmobility/mobile';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'Trial',
@@ -45,12 +46,18 @@ export class TrialComponent implements OnInit {
 
   snackbar = new SnackBar();
 
+  please_connect_pt: string = this._translateService.instant('trial.please-connect-pt');
+  too_many_pts: string = this._translateService.instant('trial.to-many-pts');
+  starting_trial: string = this._translateService.instant('trial.starting-trial');
+  stopping_trial: string = this._translateService.instant('trial.stopping-trial');
+
   constructor(
     private routerExtensions: RouterExtensions,
     private _progressService: ProgressService,
     private _bluetoothService: BluetoothService,
     private _evaluationService: EvaluationService,
-    private zone: NgZone
+    private zone: NgZone,
+    private _translateService: TranslateService
   ) {}
 
   isIOS(): boolean {
@@ -99,10 +106,10 @@ export class TrialComponent implements OnInit {
     const connectedPTs = BluetoothService.PushTrackers.filter(pt => pt.connected);
     if (connectedPTs.length <= 0) {
       // no pushtrackers are connected - wait for them to be connected
-      this.snackbar.simple('Please connect your PushTracker');
+      this.snackbar.simple(this.please_connect_pt);
     } else if (connectedPTs.length > 1) {
       // too many pushtrackers connected - don't know which to use!
-      this.snackbar.simple('Too many PushTrackers connected - please only connect one!');
+      this.snackbar.simple(this.too_many_pts);
     } else if (!this.trial.startedWith) {
       this.hideView(<View>this.startWithView.nativeElement);
       // we have exactly one PushTracker connected
@@ -110,7 +117,7 @@ export class TrialComponent implements OnInit {
       let haveDailyInfo = false;
       let haveDistance = false;
       // let user know we're doing something
-      this._progressService.show('Starting Trial');
+      this._progressService.show(this.starting_trial);
       // set up handlers
       const trialStartedHandler = () => {
         this.zone.run(() => {
@@ -157,10 +164,10 @@ export class TrialComponent implements OnInit {
     const connectedPTs = BluetoothService.PushTrackers.filter(pt => pt.connected);
     if (connectedPTs.length <= 0) {
       // no pushtrackers are connected - wait for them to be connected
-      this.snackbar.simple('Please connect your PushTracker');
+      this.snackbar.simple(this.please_connect_pt);
     } else if (connectedPTs.length > 1) {
       // too many pushtrackers connected - don't know which to use!
-      this.snackbar.simple('Too many PushTrackers connected - please only connect one!');
+      this.snackbar.simple(this.too_many_pts);
     } else if (!this.trial.finishedWith) {
       this.trial.with_end = new Date();
       // we have exactly one PushTracker connected
@@ -217,16 +224,16 @@ export class TrialComponent implements OnInit {
     const connectedPTs = BluetoothService.PushTrackers.filter(pt => pt.connected);
     if (connectedPTs.length <= 0) {
       // no pushtrackers are connected - wait for them to be connected
-      this.snackbar.simple('Please connect your PushTracker');
+      this.snackbar.simple(this.please_connect_pt);
     } else if (connectedPTs.length > 1) {
       // too many pushtrackers connected - don't know which to use!
-      this.snackbar.simple('Too many PushTrackers connected - please only connect one!');
+      this.snackbar.simple(this.too_many_pts);
     } else if (!this.trial.startedWithout) {
       this.hideView(<View>this.startWithoutView.nativeElement);
       // we have exactly one PushTracker connected
       const pt = connectedPTs[0];
       // let user know we're doing something
-      this._progressService.show('Starting Trial');
+      this._progressService.show(this.starting_trial);
       // set up handlers
       const trialStartedHandler = () => {
         this.zone.run(() => {
@@ -252,16 +259,16 @@ export class TrialComponent implements OnInit {
     const connectedPTs = BluetoothService.PushTrackers.filter(pt => pt.connected);
     if (connectedPTs.length <= 0) {
       // no pushtrackers are connected - wait for them to be connected
-      this.snackbar.simple('Please connect your PushTracker');
+      this.snackbar.simple(this.please_connect_pt);
     } else if (connectedPTs.length > 1) {
       // too many pushtrackers connected - don't know which to use!
-      this.snackbar.simple('Too many PushTrackers connected - please only connect one!');
+      this.snackbar.simple(this.too_many_pts);
     } else if (!this.trial.finishedWithout) {
       this.trial.without_end = new Date();
       // we have exactly one PushTracker connected
       const pt = connectedPTs[0];
       // let user know we're doing something
-      this._progressService.show('Stopping Trial');
+      this._progressService.show(this.stopping_trial);
       // set up handlers
       const trialStoppedHandler = () => {
         this.zone.run(() => {

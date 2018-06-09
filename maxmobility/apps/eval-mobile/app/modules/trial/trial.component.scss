@@ -9,7 +9,7 @@ Switch {
 }
 
 Switch[checked=true] {
-    background-color: $success-light;//$permobil-ocean;
+    background-color: $success-orange;//$permobil-ocean;
 }
 
 Switch[checked=false] {
@@ -90,7 +90,7 @@ TextField {
   width: 150;
   height: 40;
   color: #fff;
-  background-color: $permobil-ocean;
+  background-color: $permobil-hero;
   border-radius: 2;
   margin: 25, 10, 50, 10;
 }
