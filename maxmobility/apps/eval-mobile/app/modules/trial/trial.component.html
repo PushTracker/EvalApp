@@ -28,8 +28,12 @@
 
             //Trial options
             <StackLayout class="trial-stack-layout">
+              <Label [text]="'trial.recommendation' | translate"
+                     textWrap="true"
+                     class="trial-recommendation"></Label>
+
               //Terrain Options
-              <DockLayout class="dockLayout-options" stretchLastChild="false">
+              <DockLayout stretchLastChild="false">
                 <Label [text]="'trial.flat-surfaces' | translate" class="trial-item" dock="left"></Label>
                 <Switch dock="right"
                         [checked]="trial.flat"
@@ -47,7 +51,7 @@
                         [checked]="trial.inclines"
                         (checkedChange)="onSwitchChecked('inclines', $event)"></Switch>
               </DockLayout>
-              <DockLayout stretchLastChild="false" margin="0, 0, 25, 0">
+              <DockLayout stretchLastChild="false">
                 <Label [text]="'trial.other' | translate" class="trial-item" dock="left"></Label>
                 <Switch dock="right"
                         [checked]="trial.other"
@@ -58,7 +62,7 @@
 		                 autocorrect="false"
 		                 [text]="trial.other_description"
 		                 (textChange)="onTextChange('other_description', $event)"
-		                 class="trial-name-textfield"></TextField> 
+		                 class="trial-description-textfield"></TextField> 
 
               //SmartDrive Settings 
               //Acceleration
