@@ -70,6 +70,7 @@
     "nativescript-localstorage": "file:../../node_modules/nativescript-localstorage",
     "nativescript-ngx-fonticon": "file:../../node_modules/nativescript-ngx-fonticon",
     "nativescript-ngx-slides": "^1.0.0",
+    "nativescript-push-notifications": "^1.1.4",
     "nativescript-snackbar": "file:../../node_modules/nativescript-snackbar",
     "nativescript-theme-core": "file:../../node_modules/nativescript-theme-core",
     "nativescript-toast": "file:../../node_modules/nativescript-toast",

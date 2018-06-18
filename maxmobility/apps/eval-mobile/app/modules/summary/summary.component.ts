@@ -122,7 +122,6 @@ export class SummaryComponent implements OnInit {
         email
           .available()
           .then(available => {
-            console.log(`The device email status is ${available}`);
             if (available) {
               let lmnBody = this.generateLMN();
               email
@@ -133,9 +132,7 @@ export class SummaryComponent implements OnInit {
                   cc: []
                 })
                 .then(result => {
-                  console.log(result);
                   if (result) {
-                    console.log('the email may have been sent!');
                   } else {
                     console.log('the email may NOT have been sent!');
                   }
@@ -187,9 +184,7 @@ export class SummaryComponent implements OnInit {
     this.evaluation[key] = args.object.value;
   }
 
-  ngOnInit() {
-    console.log('Summary.Component ngOnInit');
-  }
+  ngOnInit() {}
 
   get evaluation() {
     return this._evaluationService.evaluation;
