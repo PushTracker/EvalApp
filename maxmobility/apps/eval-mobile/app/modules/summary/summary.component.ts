@@ -50,11 +50,12 @@ export class SummaryComponent implements OnInit {
   no: string = this._translateService.instant('dialogs.no');
   complete: string = this._translateService.instant('summary.complete');
   confirm: string = this._translateService.instant('summary.confirm');
-  summary_email_subject: string = this._translateService.instant('summary-email-subject');
-  fewer: string = this._translateService.instant('fewer');
-  more: string = this._translateService.instant('more');
-  higher: string = this._translateService.instant('higher');
-  lower: string = this._translateService.instant('lower');
+  summary_email_subject: string = this._translateService.instant('summary.email-subject');
+  fewer: string = this._translateService.instant('summary.fewer');
+  more: string = this._translateService.instant('summary.more');
+  higher: string = this._translateService.instant('summary.higher');
+  lower: string = this._translateService.instant('summary.lower');
+  lmnTemplate: string = this._translateService.instant('summary.lmnTemplate').join('\n');
 
   constructor(
     private routerExtensions: RouterExtensions,
@@ -86,38 +87,7 @@ export class SummaryComponent implements OnInit {
   }
 
   generateLMN(): string {
-    let lmnTemplate = `
-This email was generated and sent by the Smart Evaluation App.
-
-User's pushing pain? {{evaluation.pushing_pain}} / 10
-User's pushing fatigue? {{evaluation.pushing_fatigue}} / 10
-Impact on user's independence: {{evaluation.impact_on_independence}} / 10
-
-{{#trials._array}}
-Trial '{{name}}':
-  distance:   {{#distance}}{{toFixed}}{{/distance}} m
-  With SD:
-    pushes: {{with_pushes}}
-    coast:  {{#with_coast}}{{toFixed}}{{/with_coast}} s
-    time:   {{#with_elapsed}}{{toTimeString}}{{/with_elapsed}}
-  Without SD:
-    pushes: {{without_pushes}}
-    coast:  {{#without_coast}}{{toFixed}}{{/without_coast}} s
-    time:   {{#without_elapsed}}{{toTimeString}}{{/without_elapsed}}
-{{/trials._array}}
-
-User's difficulty with ramps: {{evaluation.ramp_difficulty}}
-User's difficulty with flats: {{evaluation.flat_difficulty}}
-
-User performed {{pushDiff}}% {{pushComparison}} pushes with SmartDrive.
-
-Average coast time was {{coastDiff}} times {{coastComparison}} with SmartDrive
-
-{{#showCadence}}
-At {{totalCadenceWithout}} pushes per minute, user's cadence is exceptionally high. Consider looking at rear wheel placement and efficient push technique.
-{{/showCadence}}
-`;
-    return mustache.render(lmnTemplate, {
+    return mustache.render(this.lmnTemplate, {
       evaluation: this.evaluation,
       trials: this.evaluation.trials,
       totalCadenceWithout: this.totalCadenceWithout.toFixed(1),
@@ -158,7 +128,7 @@ At {{totalCadenceWithout}} pushes per minute, user's cadence is exceptionally hi
               email
                 .compose({
                   to: [],
-                  subject: this.email_subject,
+                  subject: this.summary_email_subject,
                   body: lmnBody,
                   cc: []
                 })
