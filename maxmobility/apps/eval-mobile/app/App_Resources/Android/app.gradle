@@ -8,7 +8,7 @@
 android {  
   defaultConfig {  
     generatedDensities = []
-    applicationId = "com.maxmobility.eval"  
+    applicationId = "com.permobile.smarteval"  
     jackOptions {
         enabled true
     }
