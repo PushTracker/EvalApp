@@ -1,4 +1,4 @@
-import { Observable, EventData } from 'tns-core-modules/data/observable';
+import { Observable } from 'tns-core-modules/data/observable';
 
 declare var require;
 
@@ -42,6 +42,28 @@ export class BluetoothCommon extends Observable {
    * String value for hooking into the peripheral_connected_event. This event fires when a peripheral is connected to Bluetooth.
    */
   public static peripheral_connected_event = 'peripheral_connected_event';
+
+  /*
+   * String value for hooking into the peripheral_connected_event. This event fires when a peripheral is disconnected
+   */
+  public static peripheral_disconnected_event = 'peripheral_disconnected_event';
+
+  /*
+   * String value for hooking into the peripheral_failed_to_connect_event
+   */
+  public static peripheral_failed_to_connect_event = 'peripheral_failed_to_connect_event';
+
+  public static centralmanager_updated_state_event = 'centralmanager_updated_state_event';
+  public static centralmanager_restore_state_event = 'centralmanager_restore_state_event';
+  public static peripheralmanager_restore_state_event = 'peripheralmanager_restore_state_event';
+  public static peripheralmanager_update_state_event = 'peripheralmanager_update_state_event';
+  public static peripheralmanager_did_add_event = 'peripheralmanager_did_add_event';
+  public static peripheralmanager_subscribe_characteristic_event = 'peripheralmanager_subscribe_characteristic_event';
+  public static peripheralmanager_unsubscribe_characteristic_event =
+    'peripheralmanager_unsubscribe_characteristic_event';
+  public static peripheralmanager_ready_update_subscribers_event = 'peripheralmanager_ready_update_subscribers_event';
+  public static peripheralmanager_read_request_event = 'peripheralmanager_read_request_event';
+  public static peripheralmanager_write_request_event = 'peripheralmanager_write_request_event';
 
   /*
    * String value for hooking into the bluetooth_enabled_event. This event fires when the bluetooth is enabled.
@@ -417,6 +439,18 @@ export interface IBluetoothEvents {
   error_event: string;
   bluetooth_enabled_event: string;
   peripheral_connected_event: string;
+  peripheral_disconnected_event: string;
+  peripheral_failed_to_connect_event: string;
+  centralmanager_updated_state_event: string;
+  centralmanager_restore_state_event: string;
+  peripheralmanager_restore_state_event: string;
+  peripheralmanager_update_state_event: string;
+  peripheralmanager_did_add_event: string;
+  peripheralmanager_subscribe_characteristic_event: string;
+  peripheralmanager_unsubscribe_characteristic_event: string;
+  peripheralmanager_ready_update_subscribers_event: string;
+  peripheralmanager_read_request_event: string;
+  peripheralmanager_write_request_event: string;
   bluetooth_advertise_success_event: string;
   bluetooth_advertise_failure_event: string;
   server_connection_state_changed_event: string;
