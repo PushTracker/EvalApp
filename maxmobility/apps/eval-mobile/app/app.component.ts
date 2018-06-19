@@ -7,9 +7,6 @@ import { RouterExtensions } from 'nativescript-angular/router';
 import { Video as ExoPlayer } from 'nativescript-exoplayer';
 import { device } from 'tns-core-modules/platform';
 
-import { Push } from 'kinvey-nativescript-sdk/push';
-import * as pushPlugin from 'nativescript-push-notifications';
-
 // Register Custom Elements for Angular
 const NS_CAROUSEL = require('nativescript-carousel');
 registerElement('Carousel', () => NS_CAROUSEL.Carousel);
@@ -54,77 +51,8 @@ export class AppComponent {
       .then(res => {
         CLog(`Kinvey ping successful, SDK is active ${String.fromCodePoint(0x1f60e)}`);
         if (this._userService.user) {
-          const usePUSH = false;
-          if (usePUSH) {
-            const promise = Push.register({
-              android: {
-                senderID: '1053576736707'
-              },
-              ios: {
-                alert: true,
-                badge: true,
-                sound: true
-              }
-            })
-              .then((deviceToken: string) => {
-                console.log(`registered push notifications: ${deviceToken}`);
-                Push.onNotification((data: any) => {
-                  alert(`Message received!\n${JSON.stringify(data)}`);
-                });
-              })
-              .catch((error: Error) => {
-                console.log(`Couldn't register push notifications: ${error}`);
-              });
-          } else {
-            pushPlugin.register(
-              {
-                // android specific
-                senderID: '1053576736707',
-                notificationCallbackAndroid: (stringifiedData: string, fcmNotification: any) => {
-                  console.log('GOT NOTIFICATION');
-                  console.log(`Got notification: ${stringifiedData}`);
-                },
-                // ios specific
-                alert: true,
-                badge: true,
-                sound: true,
-                interactiveSettings: {
-                  actions: [
-                    {
-                      identifier: 'READ_IDENTIFIER',
-                      title: 'Read',
-                      activationMode: 'foreground',
-                      destructive: false,
-                      authenticationRequired: true
-                    },
-                    {
-                      identifier: 'CANCEL_IDENTIFIER',
-                      title: 'Cancel',
-                      activationMode: 'foreground',
-                      destructive: true,
-                      authenticationRequired: true
-                    }
-                  ],
-                  categories: [
-                    {
-                      identifier: 'READ_CATEGORY',
-                      actionsForDefaultContext: ['READ_IDENTIFIER', 'CANCEL_IDENTIFIER'],
-                      actionsForMinimalContext: ['READ_IDENTIFIER', 'CANCEL_IDENTIFIER']
-                    }
-                  ]
-                },
-                notificationCallbackIOS: (message: any) => {
-                  alert('Message received!\n' + JSON.stringify(message));
-                }
-              },
-              token => {
-                console.log(`registered push notifications: ${token}`);
-              },
-              error => {
-                console.log(`Couldn't register push notifications: ${error}`);
-              }
-            );
-          }
+          // REGISTER FOR PUSH NOTIFICATIONS
+          this._userService.registerForPushNotifications();
         }
       })
       .catch(err => {
