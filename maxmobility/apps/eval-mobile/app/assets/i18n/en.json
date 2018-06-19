@@ -70,8 +70,8 @@
     }
   ],
   "videos": {
-    "videos-title": "Videos",
-    "videos-desc": "Training and usage videos for SmartDrive and PushTracker",
+    "title": "Videos",
+    "description": "Training and usage videos for SmartDrive and PushTracker",
     "overview-title": "SmartDrive Introduction",
     "overview-desc": "This video is an overview of SmartDrive being used by people of varying ages and circumstances in a variety of environments.",
     "sd-basic-op-title": "SmartDrive MX2+ Basic Operation",
