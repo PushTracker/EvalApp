@@ -1,4 +1,5 @@
 import { EvaluationService } from './evaluation.service';
+import { DemoService } from './demo.service';
 import { UserService } from './user.service';
 import { KeyboardService } from './keyboard.service';
 import { AuthGuardService } from './auth-guard.service';
@@ -11,6 +12,7 @@ import { PairingService } from './pairing.service';
 
 export const PROVIDERS: any[] = [
   EvaluationService,
+  DemoService,
   UserService,
   KeyboardService,
   AuthGuardService,
@@ -24,6 +26,7 @@ export const PROVIDERS: any[] = [
 
 export * from './auth-guard.service';
 export * from './evaluation.service';
+export * from './demo.service';
 export * from './keyboard.service';
 export * from './logging.service';
 export * from './user.service';
