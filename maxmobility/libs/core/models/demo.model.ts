@@ -46,6 +46,7 @@ export class Demo extends Observable {
   public id = null;
   public geo = [];
   public model: string = '';
+  public location: string = '';
   public smartdrive_serial_number: string = '';
   public pushtracker_serial_number: string = '';
   public pt_version: string = '';

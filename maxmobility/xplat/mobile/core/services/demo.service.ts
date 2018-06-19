@@ -12,7 +12,11 @@ import { Demo } from '@maxmobility/core';
 @Injectable()
 export class DemoService {
   private static cloneUpdateModel(demo: Demo): object {
-    return Demo.editableProperties.reduce((a, e) => ((a[e] = demo[e]), a), { _id: demo.id, _geo: demo.geo });
+    return Demo.editableProperties.reduce((a, e) => ((a[e] = demo[e]), a), {
+      _id: demo.id,
+      _geo: demo.geo,
+      usage: demo.usage.map(r => r.data())
+    });
   }
 
   demos: Array<Demo> = [];
