@@ -78,14 +78,17 @@
 
 	  <ScrollView orientation="horizontal" class="rad-list-view">
 	    <StackLayout orientation="horizontal">
-	      <StackLayout *ngFor="let item of demoItems" class="icon-description-group">
-	        <Image [src]="item.Image" stretch="aspectFill" class="thumb"></Image>
+	      <StackLayout *ngFor="let item of demoItems._array" class="icon-description-group">
+	        <Image src="~/assets/images/PushTracker-SmartDrive-pairing.png"
+                   stretch="aspectFill" class="thumb"></Image>
 	        <StackLayout>
-		      <Label class="demo-item-description" textWrap="true" [text]="item.SerialNumber"></Label>
-		      <Label class="demo-item-description" textWrap="true" [text]="item.PTSerialNumber"></Label>
-		      <Label class="demo-item-description" textWrap="true" [text]="item.LastUsed" ></Label>
-		      <Label class="demo-item-description" textWrap="true" [text]="item.Location"  ></Label>
-		      <Label class="demo-item-description" [backgroundColor]="item.SDFirmware.includes('1.5') ? 'green' : 'red'" textWrap="true" [text]="item.SDFirmware"  ></Label>
+		      <Label class="demo-item-description" textWrap="true" [text]="item.smartdrive_serial_number"></Label>
+		      <Label class="demo-item-description" textWrap="true" [text]="item.pushtracker_serial_number"></Label>
+		      <Label class="demo-item-description"
+                     textWrap="true"
+                     [text]="(item.usage && item.usage[0] && item.usage[0].time) || 'unkown'"></Label>
+		      <Label class="demo-item-description" textWrap="true" [text]="item.location"  ></Label>
+		      <Label class="demo-item-description" [backgroundColor]="item.pt_version.includes('1.5') ? 'green' : 'red'" textWrap="true" [text]="item.pt_version"  ></Label>
 	        </StackLayout>
 	      </StackLayout>
 	    </StackLayout>

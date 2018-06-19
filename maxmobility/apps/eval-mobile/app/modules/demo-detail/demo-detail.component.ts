@@ -13,9 +13,11 @@ import { BluetoothService } from '@maxmobility/mobile';
 import { CLog, LoggingService } from '@maxmobility/core';
 import { Feedback, FeedbackType, FeedbackPosition } from 'nativescript-feedback';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
-import { Demos } from '../demos/demos.component';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
+
+import { Demo } from '@maxmobility/core';
+import { DemoService } from '@maxmobility/mobile';
 
 @Component({
   selector: 'Demo',
@@ -25,7 +27,6 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class DemoDetailComponent implements OnInit {
   demos = Demos;
-  demo = Array();
   index: number;
   checked_out: boolean = 0;
   sd_serial_number: string = '';
@@ -41,8 +42,13 @@ export class DemoDetailComponent implements OnInit {
   detected_location = 'Craig Hospital';
   // array of previous lications
   //  locations: ObservableArray<Location> = new ObservableArray();
+  public demo: Demo = new Demo();
 
-  constructor(private _route: ActivatedRoute, private barcodeScanner: BarcodeScanner) {}
+  constructor(
+    private _route: ActivatedRoute,
+    private barcodeScanner: BarcodeScanner,
+    private _demoService: DemoService
+  ) {}
 
   isIOS(): boolean {
     return isIOS;
@@ -53,20 +59,15 @@ export class DemoDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    const query = this._route.snapshot.queryParams;
-    this.index = query.index;
-    const demo = this.demos[this.index];
-
-    this.sd_serial_number = demo.SerialNumber;
-    this.pt_serial_number = demo.PTSerialNumber;
-    this.model = demo.Model;
-    this.sd_firmware = demo.SDFirmware;
-    this.sd_bt_firmware = demo.SDBTFirmware;
-    this.pt_firmware = demo.PTFirmware;
-    this.current_location = demo.Location;
-    this.sd_image = demo.SDImage;
-    this.pt_image = demo.PTImage;
-    this.last_used = demo.LastUsed;
+    this._demoService
+      .load()
+      .then((demos: Array<Demo>) => {
+        const query = this._route.snapshot.queryParams;
+        this.demo = demos[query.index];
+      })
+      .catch(err => {
+        console.log(`Couldn't load demos: ${err}`);
+      });
   }
 
   onScan() {

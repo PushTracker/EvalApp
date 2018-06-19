@@ -64,6 +64,7 @@
     "nativescript-exoplayer": "file:../../node_modules/nativescript-exoplayer",
     "nativescript-feedback": "file:../../node_modules/nativescript-feedback",
     "nativescript-fresco": "file:../../node_modules/nativescript-fresco",
+    "nativescript-geolocation": "^4.2.6",
     "nativescript-gradient": "file:../../node_modules/nativescript-gradient",
     "nativescript-iqkeyboardmanager": "file:../../node_modules/nativescript-iqkeyboardmanager",
     "nativescript-loading-indicator": "file:../../node_modules/nativescript-loading-indicator",

@@ -1,118 +1,18 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { ObservableArray } from 'tns-core-modules/data/observable-array';
 import { alert } from 'tns-core-modules/ui/dialogs';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { BarcodeScanner } from 'nativescript-barcodescanner';
 import { isAndroid, isIOS } from 'platform';
 import { BluetoothService } from '@maxmobility/mobile';
 
-const Demos = [
-  {
-    Image: '~/assets/images/PushTracker-SmartDrive-pairing.png',
-    SDImage: '~/assets/images/smartDriveFull.png',
-    PTImage: '~/assets/images/pushTrackerFull.png',
-    SerialNumber: 'SD: 00001',
-    Model: 'MX2 +',
-    PTSerialNumber: 'PT: 00001',
-    SDFirmware: 'SD Firmware: 1.4',
-    SDBTFirmware: 'SD BT Firmware: 1.4',
-    PTFirmware: 'PT Firmware: 1.4',
-    LastUsed: new Date(1988, 10, 23).toLocaleDateString(),
-    Location: 'Mountain View, CA'
-  },
-  {
-    Image: '~/assets/images/PushTracker-SmartDrive-pairing.png',
-    SDImage: '~/assets/images/smartDriveFull.png',
-    PTImage: '~/assets/images/pushTrackerFull.png',
-    SerialNumber: 'SD: 11001',
-    Model: 'MX2 +',
-    PTSerialNumber: 'PT: 11001',
-    SDFirmware: 'SD Firmware: 1.4',
-    SDBTFirmware: 'SD BT Firmware: 1.4',
-    PTFirmware: 'PT Firmware: 1.4',
-    LastUsed: new Date().toLocaleDateString(),
-    Location: 'Nashville, TN'
-  },
-  {
-    Image: '~/assets/images/PushTracker-SmartDrive-pairing.png',
-    SDImage: '~/assets/images/smartDriveFull.png',
-    PTImage: '~/assets/images/pushTrackerFull.png',
-    SerialNumber: 'SD: 11002',
-    Model: 'MX2 +',
-    PTSerialNumber: 'PT: 110002',
-    SDFirmware: 'SD Firmware: 1.4',
-    SDBTFirmware: 'SD BT Firmware: 1.4',
-    PTFirmware: 'PT Firmware: 1.4',
-    LastUsed: new Date().toLocaleDateString(),
-    Location: 'Breckenridge, CO'
-  },
-  {
-    Image: '~/assets/images/PushTracker-SmartDrive-pairing.png',
-    SDImage: '~/assets/images/smartDriveFull.png',
-    PTImage: '~/assets/images/pushTrackerFull.png',
-    SerialNumber: 'SD: 11003',
-    Model: 'MX2 +',
-    PTSerialNumber: 'PT: 11003',
-    SDFirmware: 'SD Firmware: 1.4',
-    SDBTFirmware: 'SD BT Firmware: 1.4',
-    PTFirmware: 'PT Firmware: 1.4',
-    LastUsed: new Date().toLocaleDateString(),
-    Location: 'Seattle, WA'
-  },
-  {
-    Image: '~/assets/images/PushTracker-SmartDrive-pairing.png',
-    SDImage: '~/assets/images/smartDriveFull.png',
-    PTImage: '~/assets/images/pushTrackerFull.png',
-    SerialNumber: 'SD: 11004',
-    Model: 'MX2 +',
-    PTSerialNumber: 'PT: 11004',
-    SDFirmware: 'SD Firmware: 1.4',
-    SDBTFirmware: 'SD BT Firmware: 1.4',
-    PTFirmware: 'PT Firmware: 1.4',
-    LastUsed: new Date().toLocaleDateString(),
-    Location: 'San Francisco, CA'
-  },
-  {
-    Image: '~/assets/images/PushTracker-SmartDrive-pairing.png',
-    SDImage: '~/assets/images/smartDriveFull.png',
-    PTImage: '~/assets/images/pushTrackerFull.png',
-    SerialNumber: 'SD: 11005',
-    Model: 'MX2 +',
-    PTSerialNumber: 'PT: 11005',
-    SDFirmware: 'SD Firmware: 1.4',
-    SDBTFirmware: 'SD BT Firmware: 1.4',
-    PTFirmware: 'PT Firmware: 1.4',
-    LastUsed: new Date().toLocaleDateString(),
-    Location: 'Los Angeles, CA'
-  },
-  {
-    Image: '~/assets/images/PushTracker-SmartDrive-pairing.png',
-    SDImage: '~/assets/images/smartDriveFull.png',
-    PTImage: '~/assets/images/pushTrackerFull.png',
-    SerialNumber: 'SD: 11006',
-    Model: 'MX2 +',
-    PTSerialNumber: 'PT: 11006',
-    SDFirmware: 'SD Firmware: 1.4',
-    SDBTFirmware: 'SD BT Firmware: 1.4',
-    PTFirmware: 'PT Firmware: 1.4',
-    LastUsed: new Date().toLocaleDateString(),
-    Location: 'New Orleans, LA'
-  },
-  {
-    Image: '~/assets/images/PushTracker-SmartDrive-pairing.png',
-    SDImage: '~/assets/images/smartDriveFull.png',
-    PTImage: '~/assets/images/pushTrackerFull.png',
-    SerialNumber: 'SD: 11007',
-    Model: 'MX2 +',
-    PTSerialNumber: 'PT: 11007',
-    SDFirmware: 'SD Firmware: 1.4',
-    SDBTFirmware: 'SD BT Firmware: 1.4',
-    PTFirmware: 'PT Firmware: 1.4',
-    LastUsed: new Date().toLocaleDateString(),
-    Location: 'New York, NY'
-  }
-];
+import * as geolocation from 'nativescript-geolocation';
+import { Accuracy } from 'ui/enums'; // used to describe at what accuracy the location should be get
+const httpModule = require('http');
+var api_key = 'pk.eyJ1IjoiZmluZ2VyNTYzIiwiYSI6ImNqYXZmYTZ0bDVtYmcyd28yZ2ZwandxYWcifQ.ROCLEdkuzALMsVQedcIeAQ';
 
-export { Demos };
+import { Demo } from '@maxmobility/core';
+import { DemoService } from '@maxmobility/mobile';
 
 @Component({
   selector: 'Demos',
@@ -121,10 +21,13 @@ export { Demos };
   styleUrls: ['./demos.component.css']
 })
 export class DemosComponent implements OnInit {
-  ngOnInit(): void {
-    console.log('HomeComponent OnInit');
-  }
-  constructor(private barcodeScanner: BarcodeScanner, private _routerExtensions: RouterExtensions) {}
+  public demos: ObservableArray<Demo> = new ObservableArray<Demo>([]);
+
+  constructor(
+    private barcodeScanner: BarcodeScanner,
+    private routerExtensions: RouterExtensions,
+    private _demoService: DemoService
+  ) {}
 
   isIOS(): boolean {
     return isIOS;
@@ -134,14 +37,9 @@ export class DemosComponent implements OnInit {
     return isAndroid;
   }
 
-  public demos = Demos;
-
   onDemoTap(args) {
-    console.log('onDemoTap index: ' + args.index);
-
     const index = args.index;
-
-    this._routerExtensions.navigate(['/demo-detail'], {
+    this.routerExtensions.navigate(['/demo-detail'], {
       queryParams: {
         index
       }
@@ -149,41 +47,159 @@ export class DemosComponent implements OnInit {
   }
 
   onScan() {
-    this.barcodeScanner
-      .scan({
-        formats: 'QR_CODE, EAN_13',
-        cancelLabel: 'EXIT. Also, try the volume buttons!', // iOS only, default 'Close'
-        cancelLabelBackgroundColor: '#333333', // iOS only, default '#000000' (black)
-        message: 'Use the volume buttons for extra light', // Android only, default is 'Place a barcode inside the viewfinder rectangle to scan it.'
-        showFlipCameraButton: true, // default false
-        preferFrontCamera: false, // default false
-        showTorchButton: true, // default false
-        beepOnScan: true, // Play or Suppress beep on scan (default true)
-        torchOn: false, // launch with the flashlight on (default false)
-        closeCallback: () => {
-          console.log('Scanner closed');
-        }, // invoked when the scanner was closed (success or abort)
-        resultDisplayDuration: 500, // Android only, default 1500 (ms), set to 0 to disable echoing the scanned text
-        openSettingsIfPermissionWasPreviouslyDenied: true // On iOS you can send the user to the settings app if access was previously denied
-      })
-      .then(result => {
-        // Note that this Promise is never invoked when a 'continuousScanCallback' function is provided
-        const deviceType = result.text.indexOf('B') > -1 ? 'PushTracker' : 'SmartDrive';
-        const msg = `
+    let ptSN = '';
+    let sdSN = '';
+    let nextDevice = '';
+
+    return new Promise((resolve, reject) => {
+      this.barcodeScanner
+        .scan({
+          formats: 'QR_CODE, EAN_13',
+          cancelLabel: 'EXIT', // iOS only
+          cancelLabelBackgroundColor: '#333333', // iOS only
+          message: 'Scan a SmartDrive or PushTracker', // Android only
+          showFlipCameraButton: true,
+          preferFrontCamera: false,
+          showTorchButton: true,
+          beepOnScan: true,
+          torchOn: false,
+          closeCallback: () => {
+            setTimeout(() => {
+              resolve();
+            }, 500);
+          },
+          resultDisplayDuration: 0, // Android only
+          openSettingsIfPermissionWasPreviouslyDenied: true
+        })
+        .then(result => {
+          let deviceType = result.text.indexOf('B') > -1 ? 'PushTracker' : 'SmartDrive';
+          let msg = `
 Device: ${deviceType}
 S/N:    ${result.text}`;
-        console.log(msg);
-        setTimeout(() => {
-          alert({
-            title: 'Scan result',
-            message: msg,
-            okButtonText: 'OK'
+          if (deviceType === 'PushTracker') {
+            ptSN = result.text;
+            nextDevice = 'SmartDrive';
+          } else {
+            sdSN = result.text;
+            nextDevice = 'PushTracker';
+          }
+          console.log(msg);
+        });
+    })
+      .then(() => {
+        return new Promise((resolve, reject) => {
+          this.barcodeScanner
+            .scan({
+              formats: 'QR_CODE, EAN_13',
+              cancelLabel: 'EXIT',
+              cancelLabelBackgroundColor: '#333333',
+              message: 'Scan a ' + nextDevice,
+              showFlipCameraButton: true,
+              preferFrontCamera: false,
+              showTorchButton: true,
+              beepOnScan: true,
+              torchOn: false,
+              closeCallback: () => {
+                setTimeout(() => {
+                  resolve();
+                }, 500);
+              },
+              resultDisplayDuration: 0,
+              openSettingsIfPermissionWasPreviouslyDenied: true
+            })
+            .then(result => {
+              console.log(`result: ${result}`);
+              let deviceType = result.text.indexOf('B') > -1 ? 'PushTracker' : 'SmartDrive';
+              let msg = `
+Device: ${deviceType}
+S/N:    ${result.text}`;
+              if (deviceType === 'PushTracker') {
+                ptSN = result.text;
+              } else {
+                sdSN = result.text;
+              }
+            });
+        });
+      })
+      .then(() => {
+        // Get current location with high accuracy
+        return geolocation.getCurrentLocation({
+          desiredAccuracy: Accuracy.high,
+          maximumAge: 5000,
+          timeout: 20000
+        });
+      })
+      .then(location => {
+        // now make the demo
+        console.log(`Registered SD: ${sdSN}, PT: ${ptSN}`);
+        const coord = [location.longitude, location.latitude];
+        return this.coordToLocation(location).then(location => {
+          console.log(`Got location '${location}' from ${coord}`);
+          const demo = new Demo({
+            geo: coord,
+            location: location,
+            model: 'MX2+',
+            smartdrive_serial_number: sdSN,
+            pushtracker_serial_number: ptSN
           });
-        }, 500);
+          demo.use(coord, location);
+          return this._demoService.create(demo);
+        });
+      })
+      .then(() => {
+        return this._demoService
+          .load()
+          .then((_demos: Array<Demo>) => {
+            this.demos.splice(0, this.demos.length, ..._demos);
+          })
+          .catch(err => {
+            console.log(`Couldn't load demos: ${err}`);
+          });
       })
       .catch(errorMessage => {
         console.log('No scan. ' + errorMessage);
       });
+  }
+
+  private coordToLocation(coord: any): Promise<string> {
+    // see https://www.mapbox.com/api-documentation/?language=cURL#retrieve-places-near-a-location
+    return new Promise((resolve, reject) => {
+      let userLoc = `${coord.longitude},${coord.latitude}`;
+      httpModule
+        .getJSON('https://api.mapbox.com/geocoding/v5/mapbox.places/' + userLoc + '.json?access_token=' + api_key)
+        .then(
+          function(r) {
+            const location = r.features[0].place_name; //JSON.stringify(r, null, 2);
+            resolve(location);
+          },
+          function(e) {
+            reject(`Couldn't get location: ${e}`);
+          }
+        );
+    });
+  }
+
+  ngOnInit() {
+    geolocation.enableLocationRequest();
+    this._demoService
+      .load()
+      .then((_demos: Array<Demo>) => {
+        this.demos.splice(0, this.demos.length, ..._demos);
+      })
+      .catch(err => {
+        console.log(`Couldn't load demos: ${err}`);
+      });
+  }
+
+  onDrawerButtonTap(): void {}
+
+  onNavBtnTap(): void {
+    this.routerExtensions.navigate(['/home'], {
+      clearHistory: true,
+      transition: {
+        name: 'slideRight'
+      }
+    });
   }
 
   addDemo() {

@@ -19,21 +19,22 @@
     <ng-template let-item="item">
       <GridLayout margin="10, 10, 10, 0" columns="auto, auto, *" rows="auto, auto, auto">
         <!-- Note: we should probably have model type so that we can have the image pulled from a server according to MX2+ vs MX3 vs others. -->
-        <Image row="0" col="0" rowSpan="3" height="100" width="100" margin="10" [src]="item.Image"
+        <Image row="0" col="0" rowSpan="3" height="100" width="100" margin="10"
+               src="~/assets/images/PushTracker-SmartDrive-pairing.png"
                stretch="aspectFit"></Image>
 
         <DockLayout row="0" col="1" stretchLastChild="true" margin="10, 10, 5, 0">
           <Label text="&#xf071;" row="0" col="1" class="mdi icon" dock="left"></Label>
-          <Label [text]="item.SerialNumber" row="0" col="2" class="info" dock="left"></Label>
-          <Label [text]="item.Model" row="0" col="2" class="info" dock="right"></Label>
+          <Label [text]="item.smartdrive_serial_number" row="0" col="2" class="info" dock="left"></Label>
+          <Label [text]="item.model" row="0" col="2" class="info" dock="right"></Label>
         </DockLayout>
         <DockLayout row="1" col="1" stretchLastChild="true" margin="5, 10, 5, 0">
           <Label text="&#xf5f5;" row="1" col="1" class="mdi icon"></Label>
-          <Label [text]="item.Location" row="1" col="2" class="info"></Label>
+          <Label [text]="item.location" row="1" col="2" class="info"></Label>
         </DockLayout>
         <DockLayout row="2" col="1" stretchLastChild="true" margin="5, 10, 10, 0">
           <Label text="&#xf150;" row="2" col="1" class="mdi icon"></Label>
-          <Label [text]="item.LastUsed" row="2" col="2" class="info"></Label>
+          <Label [text]="(item.usage && item.usage[0] && item.usage[0].time) || 'unkown'" row="2" col="2" class="info"></Label>
         </DockLayout>
       </GridLayout>
     </ng-template>
