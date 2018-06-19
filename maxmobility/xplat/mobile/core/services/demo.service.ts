@@ -87,7 +87,7 @@ export class DemoService {
     if (!!Kinvey.User.getActiveUser()) {
       return Promise.resolve();
     } else {
-      return Promise.reject();
+      return Promise.reject('No active user!');
     }
   }
 
