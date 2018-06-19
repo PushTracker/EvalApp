@@ -6,7 +6,7 @@ import { AuthGuardService } from '@maxmobility/mobile';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/summary',
+    redirectTo: '/login',
     pathMatch: 'full'
   },
   {
