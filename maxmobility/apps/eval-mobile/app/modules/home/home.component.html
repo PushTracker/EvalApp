@@ -78,7 +78,7 @@
 
 	  <ScrollView orientation="horizontal" class="rad-list-view">
 	    <StackLayout orientation="horizontal">
-	      <StackLayout *ngFor="let item of demoItems" class="icon-description-group">
+	      <StackLayout *ngFor="let item of demoItems._array" class="icon-description-group">
 	        <Image [src]="item.Image" stretch="aspectFill" class="thumb"></Image>
 	        <StackLayout>
 		      <Label class="demo-item-description" textWrap="true" [text]="item.SerialNumber"></Label>

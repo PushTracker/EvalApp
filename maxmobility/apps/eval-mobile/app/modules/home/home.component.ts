@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, ElementRef, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { EventData } from 'tns-core-modules/data/observable';
+import { ObservableArray } from 'tns-core-modules/data/observable-array';
 import { topmost } from 'tns-core-modules/ui/frame';
 import { View } from 'ui/core/view';
 import { Page } from 'tns-core-modules/ui/page';
@@ -9,12 +10,12 @@ import { Color } from 'tns-core-modules/color';
 import { WebView } from 'tns-core-modules/ui/web-view';
 import { isAndroid, isIOS } from 'platform';
 import { RouterExtensions } from 'nativescript-angular/router';
-import { CLog, LoggingService } from '@maxmobility/core';
+import { CLog, LoggingService, Demo } from '@maxmobility/core';
+import { DemoService } from '@maxmobility/mobile';
 import { Feedback, FeedbackType, FeedbackPosition } from 'nativescript-feedback';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 import { FAQs } from '../faq/faq.component';
 import { Videos } from '../videos/videos.component';
-import { Demos } from '../demos/demos.component';
 
 @Component({
   selector: 'Home',
@@ -36,7 +37,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   faqItems = FAQs;
   videoItems = Videos;
-  demoItems = Demos;
+  demoItems: ObservableArray<Demo> = new ObservableArray<Demo>([]);
 
   connectivityItems = [
     {
@@ -83,14 +84,26 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
   ];
 
-  constructor(private _page: Page, private _routerExtensions: RouterExtensions, private _logService: LoggingService) {
+  constructor(
+    private _page: Page,
+    private _routerExtensions: RouterExtensions,
+    private _logService: LoggingService,
+    private _demoService: DemoService
+  ) {
     this._page.enableSwipeBackNavigation = false;
 
     this.feedback = new Feedback();
   }
 
   ngOnInit(): void {
-    CLog('HomeComponent OnInit');
+    this._demoService
+      .load()
+      .then((demos: Array<Demo>) => {
+        this.demoItems.splice(0, this.demoItems.length, ...demos);
+      })
+      .catch(err => {
+        console.log(`Couldn't load demos: ${err}`);
+      });
   }
 
   ngAfterViewInit(): void {}

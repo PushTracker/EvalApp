@@ -1,9 +1,6 @@
 // Add your native dependencies here:
-
-// Uncomment to add recyclerview-v7 dependency
-//dependencies {
-//	compile 'com.android.support:recyclerview-v7:+'
-//}
+dependencies {
+}
 
 android {  
   defaultConfig {  
@@ -15,5 +12,9 @@ android {
   }  
   aaptOptions {  
     additionalParameters "--no-version-vectors"  
-  }  
+  }
+  project.ext {
+    googlePlayServicesVersion = "11.6.+"
+    firebaseMessagingVersion = "11.6.+"
+  }
 } 

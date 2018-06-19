@@ -2,7 +2,7 @@ import { Observable } from 'tns-core-modules/data/observable';
 
 export class Record extends Observable {
   time: Date;
-  geo: Array;
+  geo: Array<number>;
   location: string;
   user_id: string;
 
@@ -45,6 +45,7 @@ export class Demo extends Observable {
   // NON STATIC:
   public id = null;
   public geo = [];
+  public owner_id: string = '';
   public model: string = '';
   public location: string = '';
   public smartdrive_serial_number: string = '';
@@ -70,7 +71,7 @@ export class Demo extends Observable {
   data(): any {
     var obj = {
       geo: this.geo,
-      usage: this.usage.data()
+      usage: this.usage.map(r => r.data())
     };
     Object.keys(this).map(k => {
       if (typeof this[k] === 'number' || typeof this[k] === 'string' || typeof this[k] === 'boolean') {

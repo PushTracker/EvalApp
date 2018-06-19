@@ -5,7 +5,6 @@ import 'rxjs/add/operator/toPromise';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 
 import { fromObject, Observable } from 'tns-core-modules/data/observable';
-import { ObservableArray } from 'tns-core-modules/data/observable-array';
 
 import { Demo } from '@maxmobility/core';
 
@@ -14,7 +13,8 @@ export class DemoService {
   private static cloneUpdateModel(demo: Demo): object {
     return Demo.editableProperties.reduce((a, e) => ((a[e] = demo[e]), a), {
       _id: demo.id,
-      _geo: demo.geo,
+      _geoloc: demo.geo,
+      owner_id: Kinvey.User.getActiveUser()._id,
       usage: demo.usage.map(r => r.data())
     });
   }
@@ -33,10 +33,30 @@ export class DemoService {
     })[0];
   }
 
+  getDemoByPushTrackerSerialNumber(sn: string): Demo {
+    if (!sn) {
+      return;
+    }
+    return this.demos.filter(demo => {
+      return demo.pushtracker_serial_number === sn;
+    })[0];
+  }
+
+  getDemoBySmartDriveSerialNumber(sn: string): Demo {
+    if (!sn) {
+      return;
+    }
+    return this.demos.filter(demo => {
+      return demo.smartdrive_serial_number === sn;
+    })[0];
+  }
+
   constructor(private zone: NgZone) {}
 
-  createDemo() {
-    this.demos.push(new Demo());
+  create(demoModel: Demo): Promise<any> {
+    return this.update(demoModel).then(() => {
+      return this.load();
+    });
   }
 
   save() {
@@ -58,9 +78,10 @@ export class DemoService {
         return this.datastore.sync();
       })
       .then(() => {
-        const sortByNameQuery = new Kinvey.Query();
-        sortByNameQuery.ascending('name');
-        const stream = this.datastore.find(sortByNameQuery);
+        const query = new Kinvey.Query();
+        query.equalTo('owner_id', Kinvey.User.getActiveUser()._id);
+        query.ascending('smartdrive_serial_number');
+        const stream = this.datastore.find(query);
 
         return stream.toPromise();
       })
