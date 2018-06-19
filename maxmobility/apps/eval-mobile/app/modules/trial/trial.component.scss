@@ -1,15 +1,14 @@
 // Custom common variables
 @import '../../scss/carousel';
-@import '../../scss/_carousel';
 
 Switch {
     color: #fff;
-    margin: 5, 5, 5, 5;
+    margin: 5, 10, 5, 5;
     padding: 10, 15, 10, 0;
 }
 
 Switch[checked=true] {
-    background-color: $success-orange;//$permobil-ocean;
+    background-color: $permobil-orange;//$permobil-ocean;
 }
 
 Switch[checked=false] {
@@ -70,14 +69,6 @@ TextField {
   background-color: $permobil-orange;
 }
 
-.trial-name-textfield {
-  background-color: rgba(255, 255, 255, 0.2);
-  padding: 7;
-  margin: 5, 15, 5, 15;
-  color: #fff;
-  border-radius: 2;
-  placeholder-color: lightgray;
-}
 .start-button {
   width: 150;
   height: 40;

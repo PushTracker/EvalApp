@@ -1,7 +1,11 @@
 <ActionBar class="action-bar" flat="true" [title]="'menu.demos' | translate">
   <!-- <NavigationButton *ngIf="isAndroid()" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton> -->
-  <NavigationButton *ngIf="isIOS()" text="Back"></NavigationButton>
+  <NavigationButton *ngIf="isIOS()"></NavigationButton>
   <!-- <ActionItem *ngIf="isIOS()" icon="res://navigation/menu" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem> -->
+
+  <ActionItem (tap)="addDemo()"
+      ios.systemIcon="4" ios.position="right"
+      text="add" color="#fff"></ActionItem>
 
   <ActionItem ios.position="right" (tap)="onScan()">
     <Button text="&#xf072;" class="mdi icon-scan" ></Button>
@@ -36,3 +40,6 @@
   </ListView>
 
 </Gradient>
+
+
+

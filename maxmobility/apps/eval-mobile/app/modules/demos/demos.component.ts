@@ -3,77 +3,110 @@ import { alert } from 'tns-core-modules/ui/dialogs';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { BarcodeScanner } from 'nativescript-barcodescanner';
 import { isAndroid, isIOS } from 'platform';
+import { BluetoothService } from '@maxmobility/mobile';
 
 const Demos = [
   {
     Image: '~/assets/images/PushTracker-SmartDrive-pairing.png',
+    SDImage: '~/assets/images/smartDriveFull.png',
+    PTImage: '~/assets/images/pushTrackerFull.png',
     SerialNumber: 'SD: 00001',
     Model: 'MX2 +',
     PTSerialNumber: 'PT: 00001',
-    Firmware: 'SD Firmware: 0.0.01',
+    SDFirmware: 'SD Firmware: 1.4',
+    SDBTFirmware: 'SD BT Firmware: 1.4',
+    PTFirmware: 'PT Firmware: 1.4',
     LastUsed: new Date(1988, 10, 23).toLocaleDateString(),
     Location: 'Mountain View, CA'
   },
   {
     Image: '~/assets/images/PushTracker-SmartDrive-pairing.png',
+    SDImage: '~/assets/images/smartDriveFull.png',
+    PTImage: '~/assets/images/pushTrackerFull.png',
     SerialNumber: 'SD: 11001',
     Model: 'MX2 +',
     PTSerialNumber: 'PT: 11001',
-    Firmware: 'SD Firmware: 1.4',
+    SDFirmware: 'SD Firmware: 1.4',
+    SDBTFirmware: 'SD BT Firmware: 1.4',
+    PTFirmware: 'PT Firmware: 1.4',
     LastUsed: new Date().toLocaleDateString(),
     Location: 'Nashville, TN'
   },
   {
     Image: '~/assets/images/PushTracker-SmartDrive-pairing.png',
+    SDImage: '~/assets/images/smartDriveFull.png',
+    PTImage: '~/assets/images/pushTrackerFull.png',
     SerialNumber: 'SD: 11002',
     Model: 'MX2 +',
     PTSerialNumber: 'PT: 110002',
-    Firmware: 'SD Firmware: 1.5',
+    SDFirmware: 'SD Firmware: 1.4',
+    SDBTFirmware: 'SD BT Firmware: 1.4',
+    PTFirmware: 'PT Firmware: 1.4',
     LastUsed: new Date().toLocaleDateString(),
     Location: 'Breckenridge, CO'
   },
   {
     Image: '~/assets/images/PushTracker-SmartDrive-pairing.png',
+    SDImage: '~/assets/images/smartDriveFull.png',
+    PTImage: '~/assets/images/pushTrackerFull.png',
     SerialNumber: 'SD: 11003',
     Model: 'MX2 +',
     PTSerialNumber: 'PT: 11003',
-    Firmware: 'SD Firmware: 1.1',
+    SDFirmware: 'SD Firmware: 1.4',
+    SDBTFirmware: 'SD BT Firmware: 1.4',
+    PTFirmware: 'PT Firmware: 1.4',
     LastUsed: new Date().toLocaleDateString(),
     Location: 'Seattle, WA'
   },
   {
     Image: '~/assets/images/PushTracker-SmartDrive-pairing.png',
+    SDImage: '~/assets/images/smartDriveFull.png',
+    PTImage: '~/assets/images/pushTrackerFull.png',
     SerialNumber: 'SD: 11004',
     Model: 'MX2 +',
     PTSerialNumber: 'PT: 11004',
-    Firmware: 'SD Firmware: 1.2',
+    SDFirmware: 'SD Firmware: 1.4',
+    SDBTFirmware: 'SD BT Firmware: 1.4',
+    PTFirmware: 'PT Firmware: 1.4',
     LastUsed: new Date().toLocaleDateString(),
     Location: 'San Francisco, CA'
   },
   {
     Image: '~/assets/images/PushTracker-SmartDrive-pairing.png',
+    SDImage: '~/assets/images/smartDriveFull.png',
+    PTImage: '~/assets/images/pushTrackerFull.png',
     SerialNumber: 'SD: 11005',
     Model: 'MX2 +',
     PTSerialNumber: 'PT: 11005',
-    Firmware: 'SD Firmware: 1.4',
+    SDFirmware: 'SD Firmware: 1.4',
+    SDBTFirmware: 'SD BT Firmware: 1.4',
+    PTFirmware: 'PT Firmware: 1.4',
     LastUsed: new Date().toLocaleDateString(),
     Location: 'Los Angeles, CA'
   },
   {
     Image: '~/assets/images/PushTracker-SmartDrive-pairing.png',
+    SDImage: '~/assets/images/smartDriveFull.png',
+    PTImage: '~/assets/images/pushTrackerFull.png',
     SerialNumber: 'SD: 11006',
     Model: 'MX2 +',
     PTSerialNumber: 'PT: 11006',
-    Firmware: 'SD Firmware: 1.2',
+    SDFirmware: 'SD Firmware: 1.4',
+    SDBTFirmware: 'SD BT Firmware: 1.4',
+    PTFirmware: 'PT Firmware: 1.4',
     LastUsed: new Date().toLocaleDateString(),
     Location: 'New Orleans, LA'
   },
   {
     Image: '~/assets/images/PushTracker-SmartDrive-pairing.png',
+    SDImage: '~/assets/images/smartDriveFull.png',
+    PTImage: '~/assets/images/pushTrackerFull.png',
     SerialNumber: 'SD: 11007',
     Model: 'MX2 +',
     PTSerialNumber: 'PT: 11007',
-    Firmware: 'SD Firmware: 1.1',
+    SDFirmware: 'SD Firmware: 1.4',
+    SDBTFirmware: 'SD BT Firmware: 1.4',
+    PTFirmware: 'PT Firmware: 1.4',
     LastUsed: new Date().toLocaleDateString(),
     Location: 'New York, NY'
   }
@@ -88,7 +121,10 @@ export { Demos };
   styleUrls: ['./demos.component.css']
 })
 export class DemosComponent implements OnInit {
-  constructor(private barcodeScanner: BarcodeScanner, private routerExtensions: RouterExtensions) {}
+  ngOnInit(): void {
+    console.log('HomeComponent OnInit');
+  }
+  constructor(private barcodeScanner: BarcodeScanner, private _routerExtensions: RouterExtensions) {}
 
   isIOS(): boolean {
     return isIOS;
@@ -102,6 +138,14 @@ export class DemosComponent implements OnInit {
 
   onDemoTap(args) {
     console.log('onDemoTap index: ' + args.index);
+
+    const index = args.index;
+
+    this._routerExtensions.navigate(['/demo-detail'], {
+      queryParams: {
+        index
+      }
+    });
   }
 
   onScan() {
@@ -142,16 +186,8 @@ S/N:    ${result.text}`;
       });
   }
 
-  ngOnInit() {}
-
-  onDrawerButtonTap(): void {}
-
-  onNavBtnTap(): void {
-    this.routerExtensions.navigate(['/home'], {
-      clearHistory: true,
-      transition: {
-        name: 'slideRight'
-      }
-    });
+  addDemo() {
+    // add a new demo
+    console.log('add a new demo');
   }
 }

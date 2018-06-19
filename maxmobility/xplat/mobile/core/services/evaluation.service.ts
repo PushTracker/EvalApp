@@ -55,6 +55,7 @@ export class Evaluation extends Observable {
   }
 }
 
+// tslint:disable-next-line:max-classes-per-file
 @Injectable()
 export class EvaluationService {
   evaluation: Evaluation = new Evaluation();
@@ -106,6 +107,7 @@ export class EvaluationService {
     });
   }
 
+  // tslint:disable-next-line:member-ordering
   createEvaluation() {
     this.evaluation = new Evaluation();
     /*
