@@ -6,7 +6,7 @@ import { DemoDetailViewService } from './shared/demo-detail-view.service';
 import { View } from 'ui/core/view';
 import { Image } from 'ui/image';
 import { Label } from 'ui/label';
-import { alert } from 'tns-core-modules/ui/dialogs';
+import * as dialogs from 'ui/dialogs';
 import { BarcodeScanner } from 'nativescript-barcodescanner';
 import { isAndroid, isIOS } from 'platform';
 import { BluetoothService } from '@maxmobility/mobile';
