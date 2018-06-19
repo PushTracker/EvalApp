@@ -4,6 +4,7 @@ import { alert } from 'tns-core-modules/ui/dialogs';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { BarcodeScanner } from 'nativescript-barcodescanner';
 import { isAndroid, isIOS } from 'platform';
+import { BluetoothService } from '@maxmobility/mobile';
 
 import * as geolocation from 'nativescript-geolocation';
 import { Accuracy } from 'ui/enums'; // used to describe at what accuracy the location should be get
@@ -37,7 +38,12 @@ export class DemosComponent implements OnInit {
   }
 
   onDemoTap(args) {
-    console.log('onDemoTap index: ' + args.index);
+    const index = args.index;
+    this.routerExtensions.navigate(['/demo-detail'], {
+      queryParams: {
+        index
+      }
+    });
   }
 
   onScan() {
@@ -136,6 +142,7 @@ S/N:    ${result.text}`;
             smartdrive_serial_number: sdSN,
             pushtracker_serial_number: ptSN
           });
+          demo.use(coord, location);
           return this._demoService.create(demo);
         });
       })
@@ -193,5 +200,10 @@ S/N:    ${result.text}`;
         name: 'slideRight'
       }
     });
+  }
+
+  addDemo() {
+    // add a new demo
+    console.log('add a new demo');
   }
 }

@@ -1,7 +1,11 @@
 <ActionBar class="action-bar" flat="true" [title]="'menu.demos' | translate">
   <!-- <NavigationButton *ngIf="isAndroid()" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton> -->
-  <NavigationButton *ngIf="isIOS()" text="Back"></NavigationButton>
+  <NavigationButton *ngIf="isIOS()"></NavigationButton>
   <!-- <ActionItem *ngIf="isIOS()" icon="res://navigation/menu" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem> -->
+
+  <ActionItem (tap)="addDemo()"
+      ios.systemIcon="4" ios.position="right"
+      text="add" color="#fff"></ActionItem>
 
   <ActionItem ios.position="right" (tap)="onScan()">
     <Button text="&#xf072;" class="mdi icon-scan" ></Button>
@@ -30,10 +34,13 @@
         </DockLayout>
         <DockLayout row="2" col="1" stretchLastChild="true" margin="5, 10, 10, 0">
           <Label text="&#xf150;" row="2" col="1" class="mdi icon"></Label>
-          <Label [text]="(item.usage && item.usage[0] && item.usage[0].time.toISOString()) || 'unkown'" row="2" col="2" class="info"></Label>
+          <Label [text]="(item.usage && item.usage[0] && item.usage[0].time) || 'unkown'" row="2" col="2" class="info"></Label>
         </DockLayout>
       </GridLayout>
     </ng-template>
   </ListView>
 
 </Gradient>
+
+
+

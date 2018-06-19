@@ -1,4 +1,5 @@
 import { Observable } from 'tns-core-modules/data/observable';
+import { Kinvey } from 'kinvey-nativescript-sdk';
 
 export class Record extends Observable {
   time: Date;
@@ -50,9 +51,9 @@ export class Demo extends Observable {
   public location: string = '';
   public smartdrive_serial_number: string = '';
   public pushtracker_serial_number: string = '';
-  public pt_version: string = '';
-  public ble_version: string = '';
-  public mcu_version: string = '';
+  public pt_version: string = 'unknown';
+  public ble_version: string = 'unknown';
+  public mcu_version: string = 'unknown';
   public pt_mac_addr: string = '';
   public sd_mac_addr: string = '';
   public usage: Array<Record> = [];
@@ -79,5 +80,15 @@ export class Demo extends Observable {
       }
     });
     return obj;
+  }
+
+  use(geo, location) {
+    const record = new Record({
+      time: new Date(),
+      geo: geo,
+      location: location,
+      user_id: Kinvey.User.getActiveUser()._id
+    });
+    this.usage.push(record);
   }
 }

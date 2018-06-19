@@ -4,6 +4,7 @@ import { RouterExtensions } from 'nativescript-angular/router';
 import { LoadEventData, WebView } from 'tns-core-modules/ui/web-view';
 import { CLog } from '@maxmobility/core';
 import { isAndroid, isIOS } from 'platform';
+import { TranslateService } from '@ngx-translate/core';
 
 const Videos = [
   {
@@ -75,7 +76,7 @@ export { Videos };
 export class VideosComponent implements OnInit {
   videos = Videos;
 
-  constructor(private _routerExtensions: RouterExtensions) {}
+  constructor(private _routerExtensions: RouterExtensions, private _translateService: TranslateService) {}
 
   isIOS(): boolean {
     return isIOS;

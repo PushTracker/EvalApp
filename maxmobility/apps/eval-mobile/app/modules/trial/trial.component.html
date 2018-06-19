@@ -36,6 +36,7 @@
               <DockLayout stretchLastChild="false">
                 <Label [text]="'trial.flat-surfaces' | translate" class="trial-item" dock="left"></Label>
                 <Switch dock="right"
+                class=""
                         [checked]="trial.flat"
                         (checkedChange)="onSwitchChecked('flat', $event)"></Switch>
               </DockLayout>

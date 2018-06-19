@@ -7,10 +7,9 @@ import { DemoDetailView } from './demo-detail-view.model';
 
 @Injectable()
 export class DemoDetailViewService {
+  constructor(private http: Http) {}
 
-	constructor(private http: Http) { }
-
-	getList(): Observable<DemoDetailView[]> {
-		return this.http.get('/api/list').map(res => res.json() as DemoDetailView[]);
-	}
+  getList(): Observable<DemoDetailView[]> {
+    return this.http.get('/api/list').map(res => res.json() as DemoDetailView[]);
+  }
 }
