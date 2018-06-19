@@ -15,7 +15,6 @@ import { Feedback, FeedbackType, FeedbackPosition } from 'nativescript-feedback'
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 import { Demos } from '../demos/demos.component';
 import { TranslateService } from '@ngx-translate/core';
-import { isAndroid, isIOS } from 'platform';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -28,6 +27,7 @@ export class DemoDetailComponent implements OnInit {
   demos = Demos;
   demo = Array();
   index: number;
+  checked_out: boolean = 0;
   sd_serial_number: string = '';
   pt_serial_number: string = '';
   model: string = '';
@@ -38,6 +38,7 @@ export class DemoDetailComponent implements OnInit {
   sd_image: string = '';
   pt_image: string = '';
   last_used: string = '';
+  detected_location = 'Craig Hospital';
   // array of previous lications
   //  locations: ObservableArray<Location> = new ObservableArray();
 
@@ -107,12 +108,28 @@ S/N:    ${result.text}`;
   }
 
   onSdTap() {
-    // take a image of SD
+    // take an image of SD
     console.log('sd image tapped');
   }
 
   onPtTap() {
-    // take a image of PT
+    // take an image of PT
     console.log('pt image tapped');
+  }
+
+  onSDRowTapped() {
+    // this.checked_out ? "Deliver" : "Pick Up";
+
+    dialogs
+      .confirm({
+        title: 'Transfer ' + this.sd_serial_number,
+        message: 'Would you like to transfer to ' + this.detected_location,
+        okButtonText: 'Transfer',
+        cancelButtonText: 'Cancel'
+      })
+      .then(result => {
+        // result argument is boolean
+        console.log('Dialog result: ' + result);
+      });
   }
 }
