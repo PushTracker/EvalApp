@@ -1,0 +1,76 @@
+<ActionBar class="action-bar" flat="true" [title]="sd_serial_number">
+    <NavigationButton *ngIf="isIOS()"></NavigationButton>
+
+  <ActionItem ios.position="right" (tap)="onScan()">
+    <Button text="&#xf072;" class="mdi icon-scan" ></Button>
+  </ActionItem>
+</ActionBar>
+
+<Gradient tkMainContent direction="to bottom" colors="#004F7E, #0070b3">  
+  <GridLayout padding="0" margin="0"  rows="auto, *" cols="auto">
+    <StackLayout backgroundImage="~/assets/images/background_1.jpg" row="0"  height="30%" width="100%" orientation="horizontal" horizontalAlignment="center">
+      <Image [src]="sd_image" stretch="aspectFit" (tap)="onSdTap()"></Image>
+      <Image [src]="pt_image" stretch="aspectFit" (tap)="onPtTap()"></Image>
+    </StackLayout>
+
+	<ScrollView  row="1" class="" height="70%">
+      <StackLayout orientation="vertical" width ="100%">
+
+
+        <DockLayout stretchLastChild="true" margin="15, 10, 5, 0">
+          <Label text="&#xf071;" class="mdi icon" dock="left"></Label>
+          <Label [text]="sd_serial_number" class="info" dock="left"></Label>
+          <Label [text]="model" class="info" dock="left"></Label>
+        </DockLayout>
+
+          <StackLayout class="hr-light m-10" backgroundColor="#FFF" width="100%"></StackLayout>
+
+        <DockLayout stretchLastChild="true" margin="5, 10, 5, 0">
+          <Label text="&#xf071;" class="mdi icon" dock="left"></Label>
+          <Label [text]="pt_serial_number" class="info" dock="left"></Label>
+        </DockLayout>
+
+          <StackLayout class="hr-light m-10" backgroundColor="#FFF" width="100%"></StackLayout>
+
+          <DockLayout stretchLastChild="true" margin="5, 10, 5, 0">
+              <Label text="&#xf5f5;" class="mdi icon"></Label>
+              <Label [text]="current_location" class="info"></Label>
+          </DockLayout>
+
+          <StackLayout class="hr-light m-10" backgroundColor="#FFF" width="100%"></StackLayout>
+
+          <DockLayout stretchLastChild="true" margin="5, 10, 10, 0">
+              <Label text="&#xf150;" class="mdi icon"></Label>
+              <Label [text]="last_used" class="info"></Label>
+            </DockLayout>
+
+          <StackLayout class="hr-light m-10" backgroundColor="#FFF" width="100%"></StackLayout>
+
+          <DockLayout stretchLastChild="true" margin="5, 10, 10, 0">
+              <Label text="&#xf628;" class="mdi icon"></Label>
+              <Label [text]="sd_firmware" class="info"></Label>
+            </DockLayout>
+
+          <StackLayout class="hr-light m-10" backgroundColor="#FFF" width="100%"></StackLayout>
+
+          <DockLayout stretchLastChild="true" margin="5, 10, 10, 0">
+              <Label text="&#xf628;" class="mdi icon"></Label>
+              <Label [text]="sd_bt_firmware" class="info"></Label>
+            </DockLayout>
+
+          <StackLayout class="hr-light m-10" backgroundColor="#FFF" width="100%"></StackLayout>
+
+          <DockLayout stretchLastChild="true" margin="5, 10, 10, 0">
+              <Label text="&#xf628;" class="mdi icon"></Label>
+              <Label [text]="pt_firmware" class="info"></Label>
+            </DockLayout>
+
+          <StackLayout class="hr-light m-10" backgroundColor="#FFF" width="100%"></StackLayout>
+
+        </StackLayout>  
+	</ScrollView>
+
+ </GridLayout>
+</Gradient>
+
+

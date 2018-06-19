@@ -32,11 +32,11 @@
     <StackLayout class="list-stack-layout" row="2">
 	  <StackLayout class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></StackLayout>
 	  <DockLayout (tap)="chevronButtonTapped('/videos')"  class="dockLayout-options" stretchLastChild="false">
-	    <Label [text]="'videos.videos-title' | translate" class="heading" dock="left"></Label>
+	    <Label [text]="'videos.title' | translate" class="heading" dock="left"></Label>
 	    <Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/videos')"></Label>
 	    
 	  </DockLayout>
-	  <Label [text]="'videos.videos-desc' | translate" class="description" textWrap="true"></Label>
+	  <Label [text]="'videos.description' | translate" class="description" textWrap="true"></Label>
 
 	  <ScrollView orientation="horizontal" class="rad-list-view">
 	    <StackLayout orientation="horizontal">

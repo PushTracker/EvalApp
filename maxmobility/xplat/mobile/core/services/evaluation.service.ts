@@ -50,7 +50,6 @@ export class Evaluation extends Observable {
     this.trials.map(t => {
       obj.trials.push(t.data());
     });
-    console.log(obj);
     return obj;
   }
 }

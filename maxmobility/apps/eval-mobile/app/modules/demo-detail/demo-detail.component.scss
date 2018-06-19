@@ -1,0 +1,26 @@
+@import '../../scss/variables';
+
+.icon{
+    font-size: 24;
+    padding: 0, 0, 0, 15;
+    color: #fff;
+    horizontal-align: center;
+    vertical-align: center;
+}
+
+.icon-scan{
+    font-size: 24;
+    border: none;
+    background-color: transparent;
+    color: #FF671F;
+    background-color: transparent;
+    border-color: transparent;
+    border-width: 1 1 1 1;
+}
+
+.info{
+    padding: 0, 0, 0, 15;
+    color: #fff;
+    font-size: 16;
+    vertical-align: center;
+}

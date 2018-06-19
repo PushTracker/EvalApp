@@ -1,27 +1,74 @@
 {
   "project_info": {
-    "project_number": "246955533823",
-    "firebase_url": "https://pushtracker-e0792.firebaseio.com",
-    "project_id": "pushtracker-e0792",
-    "storage_bucket": "pushtracker-e0792.appspot.com"
+    "project_number": "1053576736707",
+    "firebase_url": "https://max-mobility-smart-evaluation.firebaseio.com",
+    "project_id": "max-mobility-smart-evaluation",
+    "storage_bucket": "max-mobility-smart-evaluation.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:246955533823:android:00fa7b543ea6c835",
+        "mobilesdk_app_id": "1:1053576736707:android:2c95dfb39962ce7b",
         "android_client_info": {
-          "package_name": "org.nativescript.nspushtrackertest"
+          "package_name": "com.maxmobility.eval"
         }
       },
       "oauth_client": [
         {
-          "client_id": "246955533823-k6j1mctdbt5p5qsk8egnmv3j7ko1v51j.apps.googleusercontent.com",
+          "client_id": "1053576736707-3e35mt9ur9stfhavspe39cdm67s3jfi0.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "1053576736707-ajsk8pi8dr9maom63nki6tk1nrm1iifv.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "1053576736707-3e35mt9ur9stfhavspe39cdm67s3jfi0.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBVOyTRsnx87HuSX-GpZmwMFmRBbrQjhNU"
+          "current_key": "AIzaSyBLlWMu4GcwFcUmcBtK7R9gWBtloBswfHg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1053576736707:android:fe53ed569d353ff9",
+        "android_client_info": {
+          "package_name": "com.permobil.smarteval"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1053576736707-3e35mt9ur9stfhavspe39cdm67s3jfi0.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "1053576736707-ajsk8pi8dr9maom63nki6tk1nrm1iifv.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "1053576736707-3e35mt9ur9stfhavspe39cdm67s3jfi0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLlWMu4GcwFcUmcBtK7R9gWBtloBswfHg"
         }
       ],
       "services": {

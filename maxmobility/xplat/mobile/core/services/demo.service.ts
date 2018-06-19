@@ -3,118 +3,96 @@ import { Http, Headers, Response, ResponseOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 import { Kinvey } from 'kinvey-nativescript-sdk';
-import { Image } from 'tns-core-modules/ui/image';
+
 import { fromObject, Observable } from 'tns-core-modules/data/observable';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
 
-export class Demo extends Observable {
-  //  members
-   _id = null;
+import { Demo } from '@maxmobility/core';
 
-   sd_serial_number: string = '';
-   pt_serial_number: string = '';
-   model: string = '';
-   firmware: string = '';
-   current_location: string = '';
-   image: Image;
-  //  locations: ObservableArray<Location> = new ObservableArray();
-  //  date: Date().toLocaleDateString();
-
-   constructor(obj?: any) {
-    super();
-    if (obj !== null && obj !== undefined) {
-      this.fromObject(obj);
-    }
-  }
-
-//    fromObject(obj: any) {
-//     Object.assign(this, obj);
-//   }
-
-//    data(): any {
-//     var obj = {
-//       trials: []
-//     };
-//     Object.keys(this).map(k => {
-//       if (typeof this[k] === 'number' || typeof this[k] === 'string') {
-//         obj[k] = this[k];
-//       }
-//     });
-//     this.trials.map(t => {
-//       obj.trials.push(t.data());
-//     });
-//     console.log(obj);
-//     return obj;
-//   }
-// }
-
-// tslint:disable-next-line:max-classes-per-file
-   @Injectable()
+@Injectable()
 export class DemoService {
-  demo: Demo = new Demo();
-
-  private datastore = Kinvey.DataStore.collection<Demo>('Demos');
-
-  constructor(private zone: NgZone) {}
-
-  private updateDemo(_demo) {
-    this.demo = new Demo({
-      _id: _demo._id,
-      date: new Date().toLocaleDateString(),
-      sd_serial_number: _demo.sd_serial_number,
-      pt_serial_number: _demo.pt_serial_number,
-      model: _demo.model,
-      firmware: _demo.firmware,
-      current_location: _demo.location,
-      image: _demo.image,
-      trials: _demo.trials,
-      locations: _demo.locations
+  private static cloneUpdateModel(demo: Demo): object {
+    return Demo.editableProperties.reduce((a, e) => ((a[e] = demo[e]), a), {
+      _id: demo.id,
+      _geo: demo.geo,
+      usage: demo.usage.map(r => r.data())
     });
   }
 
+  demos: Array<Demo> = [];
+
+  private datastore = Kinvey.DataStore.collection<any>('SmartDrives');
+
+  getDemoById(id: string): Demo {
+    if (!id) {
+      return;
+    }
+
+    return this.demos.filter(demo => {
+      return demo.id === id;
+    })[0];
+  }
+
+  constructor(private zone: NgZone) {}
+
   createDemo() {
-    this.demo = new Demo();
-    /*
-    return this.datastore
-      .save({})
-      .then(data => {
-        this.updateDemo(data);
-        this.publishUpdates();
-      })
-      .catch(this.handleErrors);
-        */
+    this.demos.push(new Demo());
   }
 
   save() {
-    return this.datastore
-      .save(this.demo.data())
-      .then(data => {
-        this.updateDemo(data);
-        this.publishUpdates();
-      })
-      .catch(this.handleErrors);
+    const tasks = this.demos.map(demo => {
+      return this.datastore
+        .save(demo.data())
+        .then(data => {
+          this.update(data);
+          this.publishUpdates();
+        })
+        .catch(this.handleErrors);
+    });
+    return Promise.all(tasks);
   }
 
-  load() {
-    const promise = Promise.resolve();
-    return promise
+  load(): Promise<any> {
+    return this.login()
       .then(() => {
-        var stream = this.datastore.find();
+        return this.datastore.sync();
+      })
+      .then(() => {
+        const sortByNameQuery = new Kinvey.Query();
+        sortByNameQuery.ascending('name');
+        const stream = this.datastore.find(sortByNameQuery);
+
         return stream.toPromise();
       })
       .then(data => {
-        data.forEach(_demo => {
-          this.updateDemo(_demo);
-          this.publishUpdates();
+        this.demos = [];
+        data.forEach((demoData: any) => {
+          demoData.id = demoData._id;
+          const demo = new Demo(demoData);
+
+          this.demos.push(demo);
         });
-      })
-      .catch(error => {
-        this.handleErrors;
+
+        return this.demos;
       });
+  }
+
+  private update(demoModel: Demo): Promise<any> {
+    const updateModel = DemoService.cloneUpdateModel(demoModel);
+
+    return this.datastore.save(updateModel);
   }
 
   private put(data: Object) {
     return this.datastore.save(data).catch(this.handleErrors);
+  }
+
+  private login(): Promise<any> {
+    if (!!Kinvey.User.getActiveUser()) {
+      return Promise.resolve();
+    } else {
+      return Promise.reject('No active user!');
+    }
   }
 
   private publishUpdates() {}

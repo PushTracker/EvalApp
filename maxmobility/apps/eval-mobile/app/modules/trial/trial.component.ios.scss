@@ -1,5 +1,4 @@
 // Custom common variables
-@import '../../scss/variables';
 @import '../../scss/carousel';
 
 Switch {
@@ -29,17 +28,13 @@ TextField {
   margin: 15, 15, 75, 15;
 }
 
-.trial-recommendation {
-    color: $white;
-  font-family: $os-SemiBold;
-  font-size: 13;
-  text-align: left;
-  margin: 0, 15, 0, 15;
-}
-
 .trial-stack-layout {
     margin: 20, 0, 0, 0;
     // background-color: $permobil-hero;
+}
+
+.docklayout-options {
+  // padding: 5, 10, 5, 5; 
 }
 
 .trial-scroll-view {
@@ -52,7 +47,7 @@ TextField {
     text-overflow: none;
     word-wrap: normal;
     color: #fff;
-    font-weight: 500;
+    ffont-weight: 500;
     margin: 10, 0, 10, 15;
 }
 
@@ -74,17 +69,6 @@ TextField {
   background-color: $permobil-orange;
 }
 
-<<<<<<< HEAD
-=======
-.trial-description-textfield {
-  background-color: rgba(255, 255, 255, 0.2);
-  padding: 7;
-  font-size: 14;
-  margin: 5, 15, 5, 15;
-  color: #fff;
-  border-radius: 2;
-  placeholder-color: lightgray;
-}
 .trial-name-textfield {
   background-color: rgba(255, 255, 255, 0.2);
   padding: 7;
@@ -93,7 +77,6 @@ TextField {
   border-radius: 2;
   placeholder-color: lightgray;
 }
->>>>>>> 2a85a4ce0424dd9cc9cb3f8f6fb97de9591afa74
 .start-button {
   width: 150;
   height: 40;

@@ -59,7 +59,6 @@ export class Trial extends Observable {
         obj[k] = this[k];
       }
     });
-    console.log(obj);
     return obj;
   }
 }

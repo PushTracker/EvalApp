@@ -4,7 +4,11 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { validate } from 'email-validator';
 
+import { File } from 'file-system';
 import * as Kinvey from 'kinvey-nativescript-sdk';
+import { Push } from 'kinvey-nativescript-sdk/push';
+import * as pushPlugin from 'nativescript-push-notifications';
+
 import { User } from '@maxmobility/core';
 
 @Injectable()
@@ -40,6 +44,118 @@ export class UserService {
 
   resetPassword(email: string) {
     return Kinvey.User.resetPassword(email);
+  }
+
+  uploadImage(remoteFullPath: string, localFullPath: string): Promise<any> {
+    const imageFile = File.fromPath(localFullPath);
+    const imageContent = imageFile.readSync();
+
+    const metadata = {
+      filename: imageFile.name,
+      mimeType: this.getMimeType(imageFile.extension),
+      size: imageContent.length,
+      public: true
+    };
+
+    return Kinvey.Files.upload(imageFile, metadata, { timeout: 2147483647 })
+      .then((uploadedFile: any) => {
+        const query = new Kinvey.Query();
+        query.equalTo('_id', uploadedFile._id);
+
+        return Kinvey.Files.find(query);
+      })
+      .then((files: Array<any>) => {
+        if (files && files.length) {
+          const file = files[0];
+          file.url = file._downloadURL;
+
+          return file;
+        } else {
+          Promise.reject(new Error('No items with the given ID could be found.'));
+        }
+      });
+  }
+
+  private getMimeType(imageExtension: string): string {
+    const extension = imageExtension === 'jpg' ? 'jpeg' : imageExtension;
+
+    return 'image/' + extension.replace(/\./g, '');
+  }
+
+  unregisterForPushNotifications() {}
+
+  registerForPushNotifications() {
+    const usePUSH = false;
+    if (usePUSH) {
+      const promise = Push.register({
+        android: {
+          senderID: '1053576736707'
+        },
+        ios: {
+          alert: true,
+          badge: true,
+          sound: true
+        }
+      })
+        .then((deviceToken: string) => {
+          console.log(`registered push notifications: ${deviceToken}`);
+          Push.onNotification((data: any) => {
+            alert(`Message received!\n${JSON.stringify(data)}`);
+          });
+        })
+        .catch((error: Error) => {
+          console.log(`Couldn't register push notifications: ${error}`);
+        });
+    } else {
+      pushPlugin.register(
+        {
+          // android specific
+          senderID: '1053576736707',
+          notificationCallbackAndroid: (stringifiedData: string, fcmNotification: any) => {
+            console.log('GOT NOTIFICATION');
+            console.log(`Got notification: ${stringifiedData}`);
+          },
+          // ios specific
+          alert: true,
+          badge: true,
+          sound: true,
+          interactiveSettings: {
+            actions: [
+              {
+                identifier: 'READ_IDENTIFIER',
+                title: 'Read',
+                activationMode: 'foreground',
+                destructive: false,
+                authenticationRequired: true
+              },
+              {
+                identifier: 'CANCEL_IDENTIFIER',
+                title: 'Cancel',
+                activationMode: 'foreground',
+                destructive: true,
+                authenticationRequired: true
+              }
+            ],
+            categories: [
+              {
+                identifier: 'READ_CATEGORY',
+                actionsForDefaultContext: ['READ_IDENTIFIER', 'CANCEL_IDENTIFIER'],
+                actionsForMinimalContext: ['READ_IDENTIFIER', 'CANCEL_IDENTIFIER']
+              }
+            ]
+          },
+          notificationCallbackIOS: (message: any) => {
+            alert('Message received!\n' + JSON.stringify(message));
+          }
+        },
+        token => {
+          console.log(`registered push notifications: ${token}`);
+        },
+        error => {
+          console.log(`Couldn't register push notifications: ${error}`);
+        }
+      );
+    }
   }
 
   // getUserDetails() {

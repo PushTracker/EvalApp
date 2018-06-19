@@ -137,8 +137,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     const route = item.Route;
     const title = item.Title;
     const desc = item.Description;
-    console.log(item.Url);
-    console.log(item.Route);
 
     this._routerExtensions.navigate([route], {
       transition: {
@@ -153,8 +151,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   evalThumbTapped(item: any) {
-    console.log(item.Route);
-
     this._routerExtensions.navigate([item.Route], {
       transition: {
         name: ''
@@ -163,8 +159,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   chevronButtonTapped(route: string) {
-    console.log(route);
-
     this._routerExtensions.navigate([route], {
       transition: {
         name: ''
@@ -175,9 +169,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   faqThumbTapped(item: any) {
     const answer = item.answer;
     const question = item.question;
-    console.log(item.answer);
-    console.log(item.question);
-
     this.feedback.show({
       title: question,
       titleColor: new Color('#fff'),

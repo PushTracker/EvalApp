@@ -3,6 +3,6 @@
     "v8Flags": "--expose_gc"
   },
   "main": "main.js",
-  "name": "tns-template-drawer-navigation-ng",
+  "name": "Smart Evaluation",
   "version": "3.4.3"
 }
