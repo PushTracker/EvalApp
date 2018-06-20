@@ -25,7 +25,7 @@
 
         <DockLayout (tap)="onSDRowTapped()"  stretchLastChild="true" margin="15, 10, 5, 0">
           <Label text="&#xf071;" class="mdi icon" dock="left"></Label>
-          <Label [text]="demo.smartdrive_serial_number" class="info" dock="left"></Label>
+          <Label [text]="(demo.smartdrive_serial_number.length && demo.smartdrive_serial_number ) || 'press scan button to enter'" class="info" dock="left"></Label>
           <Label [text]="demo.model" class="info" dock="left"></Label>
         </DockLayout>
 
@@ -33,21 +33,21 @@
 
         <DockLayout stretchLastChild="true" margin="5, 10, 5, 0">
           <Label text="&#xf071;" class="mdi icon" dock="left"></Label>
-          <Label [text]="demo.pushtracker_serial_number" class="info" dock="left"></Label>
+          <Label [text]="(demo.pushtracker_serial_number.length && demo.pushtracker_serial_number) || 'press scan button to enter'" class="info" dock="left"></Label>
         </DockLayout>
 
         <StackLayout class="hr-light m-10" backgroundColor="#FFF" width="100%"></StackLayout>
 
         <DockLayout stretchLastChild="true" margin="5, 10, 5, 0">
           <Label text="&#xf5f5;" class="mdi icon"></Label>
-          <Label [text]="demo.location" class="info"></Label>
+          <Label [text]="(demo.location.length && demo.location) || 'unused'" class="info"></Label>
         </DockLayout>
 
         <StackLayout class="hr-light m-10" backgroundColor="#FFF" width="100%"></StackLayout>
 
         <DockLayout stretchLastChild="true" margin="5, 10, 10, 0">
           <Label text="&#xf150;" class="mdi icon"></Label>
-          <Label [text]="(demo.usage && demo.usage[0] && demo.usage[0].time) || 'unkown'" class="info"></Label>
+          <Label [text]="demo.getTime()" class="info"></Label>
         </DockLayout>
 
         <StackLayout class="hr-light m-10" backgroundColor="#FFF" width="100%"></StackLayout>

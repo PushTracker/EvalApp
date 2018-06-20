@@ -77,6 +77,7 @@ export class Demo extends Observable {
   fromObject(obj: any) {
     Object.assign(this, obj);
     this.usage = this.usage.map(r => new Record(r));
+    this.sortUsage();
   }
 
   data(): any {
@@ -92,6 +93,20 @@ export class Demo extends Observable {
       }
     });
     return obj;
+  }
+
+  versionsAreEqualTo(version: string): boolean {
+    return (
+      this.pt_version.includes(version) && this.mcu_version.includes(version) && this.ble_version.includes(version)
+    );
+  }
+
+  getTime(): string {
+    let str = 'unused';
+    if (this.usage && this.usage.length) {
+      str = this.usage[0].getTime().toISOString();
+    }
+    return str;
   }
 
   update(demo: any) {
