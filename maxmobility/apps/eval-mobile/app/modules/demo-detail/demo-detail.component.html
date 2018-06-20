@@ -19,7 +19,7 @@
       <StackLayout orientation="vertical" width ="100%">
 
 
-        <DockLayout stretchLastChild="true" margin="15, 10, 5, 0">
+        <DockLayout (tap)="onSDRowTapped()"  stretchLastChild="true" margin="15, 10, 5, 0">
           <Label text="&#xf071;" class="mdi icon" dock="left"></Label>
           <Label [text]="demo.smartdrive_serial_number" class="info" dock="left"></Label>
           <Label [text]="demo.model" class="info" dock="left"></Label>

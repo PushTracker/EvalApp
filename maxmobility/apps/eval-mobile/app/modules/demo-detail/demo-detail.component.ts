@@ -26,6 +26,22 @@ import { DemoService } from '@maxmobility/mobile';
   styleUrls: ['./demo-detail.component.css']
 })
 export class DemoDetailComponent implements OnInit {
+  demos = Demos;
+  index: number;
+  checked_out: boolean = 0;
+  sd_serial_number: string = '';
+  pt_serial_number: string = '';
+  model: string = '';
+  sd_firmware: string = '';
+  sd_bt_firmware: string = '';
+  pt_firmware: string = '';
+  current_location: string = '';
+  sd_image: string = '';
+  pt_image: string = '';
+  last_used: string = '';
+  detected_location = 'Craig Hospital';
+  // array of previous lications
+  //  locations: ObservableArray<Location> = new ObservableArray();
   public demo: Demo = new Demo();
 
   constructor(
@@ -93,12 +109,28 @@ S/N:    ${result.text}`;
   }
 
   onSdTap() {
-    // take a image of SD
+    // take an image of SD
     console.log('sd image tapped');
   }
 
   onPtTap() {
-    // take a image of PT
+    // take an image of PT
     console.log('pt image tapped');
+  }
+
+  onSDRowTapped() {
+    // this.checked_out ? "Deliver" : "Pick Up";
+
+    dialogs
+      .confirm({
+        title: 'Transfer ' + this.sd_serial_number,
+        message: 'Would you like to transfer to ' + this.detected_location,
+        okButtonText: 'Transfer',
+        cancelButtonText: 'Cancel'
+      })
+      .then(result => {
+        // result argument is boolean
+        console.log('Dialog result: ' + result);
+      });
   }
 }
