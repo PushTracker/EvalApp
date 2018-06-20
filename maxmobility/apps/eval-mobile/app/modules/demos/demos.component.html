@@ -15,7 +15,7 @@
 
 
 <Gradient tkMainContent margin-top="30" direction="to bottom" colors="#004F7E, #0070b3">
-  <ListView backgroundColor="transparent" class="" [items]="demos" (itemTap)="onDemoTap($event)">
+  <ListView backgroundColor="transparent" class="" [items]="Demos" (itemTap)="onDemoTap($event)">
     <ng-template let-item="item">
       <GridLayout margin="10, 10, 10, 0" columns="auto, auto, *" rows="auto, auto, auto">
         <!-- Note: we should probably have model type so that we can have the image pulled from a server according to MX2+ vs MX3 vs others. -->

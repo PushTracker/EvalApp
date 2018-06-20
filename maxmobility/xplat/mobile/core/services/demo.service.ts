@@ -52,9 +52,22 @@ export class DemoService {
     })[0];
   }
 
-  constructor(private zone: NgZone) {}
+  constructor() {}
 
   create(demoModel: Demo): Promise<any> {
+    const foundSD = this.getDemoBySmartDriveSerialNumber(demoModel.smartdrive_serial_number);
+    const foundPT = this.getDemoByPushTrackerSerialNumber(demoModel.pushtracker_serial_number);
+    if (foundSD) {
+      console.log('Found SD');
+      foundSD.update(demoModel);
+      demoModel = foundSD;
+    } else if (foundPT) {
+      console.log('Found PT');
+      foundPT.update(demoModel);
+      demoModel = foundPT;
+    } else {
+      console.log('New PT and SD S/N');
+    }
     return this.update(demoModel).then(() => {
       return this.load();
     });
@@ -91,7 +104,7 @@ export class DemoService {
           demoData.id = demoData._id;
           return new Demo(demoData);
         });
-        DemoService.Demos.splice(0, DemoService.Demos.length, demos);
+        DemoService.Demos.splice(0, DemoService.Demos.length, ...demos);
       });
   }
 

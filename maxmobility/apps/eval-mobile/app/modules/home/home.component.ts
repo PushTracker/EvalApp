@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, ElementRef, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  NgZone,
+  OnInit,
+  AfterViewInit,
+  ViewChild
+} from '@angular/core';
 import { EventData } from 'tns-core-modules/data/observable';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
 import { topmost } from 'tns-core-modules/ui/frame';
@@ -37,7 +45,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   faqItems = FAQs;
   videoItems = Videos;
-  demoItems: ObservableArray<Demo> = DemoService.Demos;
+
+  get Demos(): ObservableArray<Demo> {
+    return DemoService.Demos;
+  }
 
   connectivityItems = [
     {
@@ -88,7 +99,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     private _page: Page,
     private _routerExtensions: RouterExtensions,
     private _logService: LoggingService,
-    private _demoService: DemoService
+    private _demoService: DemoService,
+    private zone: NgZone
   ) {
     this._page.enableSwipeBackNavigation = false;
 
@@ -96,8 +108,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this._demoService.load().catch(err => {
-      console.log(`Couldn't load demos: ${err}`);
+    this.zone.run(() => {
+      this._demoService.load().catch(err => {
+        console.log(`Couldn't load demos: ${err}`);
+      });
     });
   }
 

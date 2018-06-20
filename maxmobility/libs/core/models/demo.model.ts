@@ -1,6 +1,8 @@
 import { Observable } from 'tns-core-modules/data/observable';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 
+import { LocationService } from '@maxmobility/mobile';
+
 export class Record extends Observable {
   time: Date;
   geo: Array<number>;
@@ -33,6 +35,7 @@ export class Demo extends Observable {
   // STATIC:
   public static editableProperties = [
     'model',
+    'geo',
     'location',
     'smartdrive_serial_number',
     'pushtracker_serial_number',
@@ -67,12 +70,15 @@ export class Demo extends Observable {
 
   fromObject(obj: any) {
     Object.assign(this, obj);
+    this.usage = this.usage.map(r => new Record(r));
   }
 
   data(): any {
     var obj = {
       geo: this.geo,
-      usage: this.usage.map(r => r.data())
+      usage: this.usage.map(r => {
+        return r.data();
+      })
     };
     Object.keys(this).map(k => {
       if (typeof this[k] === 'number' || typeof this[k] === 'string' || typeof this[k] === 'boolean') {
@@ -82,13 +88,26 @@ export class Demo extends Observable {
     return obj;
   }
 
-  use(geo, location) {
-    const record = new Record({
-      time: new Date(),
-      geo: geo,
-      location: location,
-      user_id: Kinvey.User.getActiveUser()._id
+  update(demo: any) {
+    Demo.editableProperties.map(p => {
+      this[p] = demo[p];
     });
-    this.usage.push(record);
+    this.usage.push(...demo.usage);
+  }
+
+  use(): Promise<any> {
+    return LocationService.getLocationData().then(locationData => {
+      const geo = [locationData.longitude, locationData.latitude];
+      const location = locationData.place_name;
+      const record = new Record({
+        time: new Date(),
+        geo: geo,
+        location: location,
+        user_id: Kinvey.User.getActiveUser()._id
+      });
+      this.usage.push(record);
+      this.geo = geo;
+      this.location = location;
+    });
   }
 }

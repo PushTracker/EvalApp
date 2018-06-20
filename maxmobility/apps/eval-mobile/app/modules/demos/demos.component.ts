@@ -6,11 +6,6 @@ import { BarcodeScanner } from 'nativescript-barcodescanner';
 import { isAndroid, isIOS } from 'platform';
 import { BluetoothService } from '@maxmobility/mobile';
 
-import * as geolocation from 'nativescript-geolocation';
-import { Accuracy } from 'ui/enums'; // used to describe at what accuracy the location should be get
-const httpModule = require('http');
-var api_key = 'pk.eyJ1IjoiZmluZ2VyNTYzIiwiYSI6ImNqYXZmYTZ0bDVtYmcyd28yZ2ZwandxYWcifQ.ROCLEdkuzALMsVQedcIeAQ';
-
 import { Demo } from '@maxmobility/core';
 import { DemoService } from '@maxmobility/mobile';
 
@@ -21,7 +16,9 @@ import { DemoService } from '@maxmobility/mobile';
   styleUrls: ['./demos.component.css']
 })
 export class DemosComponent implements OnInit {
-  public demos: ObservableArray<Demo> = DemoService.Demos;
+  get Demos(): ObservableArray<Demo> {
+    return DemoService.Demos;
+  }
 
   constructor(
     private barcodeScanner: BarcodeScanner,
@@ -122,27 +119,14 @@ S/N:    ${result.text}`;
         });
       })
       .then(() => {
-        // Get current location with high accuracy
-        return geolocation.getCurrentLocation({
-          desiredAccuracy: Accuracy.high,
-          maximumAge: 5000,
-          timeout: 20000
-        });
-      })
-      .then(location => {
         // now make the demo
         console.log(`Registered SD: ${sdSN}, PT: ${ptSN}`);
-        const coord = [location.longitude, location.latitude];
-        return this.coordToLocation(location).then(location => {
-          console.log(`Got location '${location}' from ${coord}`);
-          const demo = new Demo({
-            geo: coord,
-            location: location,
-            model: 'MX2+',
-            smartdrive_serial_number: sdSN,
-            pushtracker_serial_number: ptSN
-          });
-          demo.use(coord, location);
+        const demo = new Demo({
+          model: 'MX2+',
+          smartdrive_serial_number: sdSN,
+          pushtracker_serial_number: ptSN
+        });
+        return demo.use().then(() => {
           return this._demoService.create(demo);
         });
       })
@@ -156,26 +140,7 @@ S/N:    ${result.text}`;
       });
   }
 
-  private coordToLocation(coord: any): Promise<string> {
-    // see https://www.mapbox.com/api-documentation/?language=cURL#retrieve-places-near-a-location
-    return new Promise((resolve, reject) => {
-      let userLoc = `${coord.longitude},${coord.latitude}`;
-      httpModule
-        .getJSON('https://api.mapbox.com/geocoding/v5/mapbox.places/' + userLoc + '.json?access_token=' + api_key)
-        .then(
-          function(r) {
-            const location = r.features[0].place_name; //JSON.stringify(r, null, 2);
-            resolve(location);
-          },
-          function(e) {
-            reject(`Couldn't get location: ${e}`);
-          }
-        );
-    });
-  }
-
   ngOnInit() {
-    geolocation.enableLocationRequest();
     this._demoService.load().catch(err => {
       console.log(`Couldn't load demos: ${err}`);
     });
