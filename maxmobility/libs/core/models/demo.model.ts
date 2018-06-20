@@ -3,6 +3,8 @@ import { Kinvey } from 'kinvey-nativescript-sdk';
 
 import { LocationService } from '@maxmobility/mobile';
 
+import * as _ from 'underscore';
+
 export class Record extends Observable {
   time: Date;
   geo: Array<number>;
@@ -28,6 +30,10 @@ export class Record extends Observable {
       user_id: this.user_id
     };
     return obj;
+  }
+
+  getTime(): Date {
+    return typeof this.time === 'string' ? new Date(this.time) : this.time;
   }
 }
 
@@ -93,6 +99,16 @@ export class Demo extends Observable {
       this[p] = demo[p];
     });
     this.usage.push(...demo.usage);
+    this.sortUsage();
+  }
+
+  sortUsage() {
+    this.usage.sort((a, b) => {
+      const aDate = a.getTime();
+      const bDate = b.getTime();
+      return aDate < bDate ? 1 : -1;
+    });
+    this.usage = _.uniq(this.usage, true, o => o.getTime().toISOString());
   }
 
   use(): Promise<any> {
@@ -105,7 +121,8 @@ export class Demo extends Observable {
         location: location,
         user_id: Kinvey.User.getActiveUser()._id
       });
-      this.usage.push(record);
+      this.usage.unshift(record);
+      this.sortUsage();
       this.geo = geo;
       this.location = location;
     });

@@ -83,6 +83,7 @@
     "rxjs": "file:../../node_modules/rxjs",
     "tns-core-modules": "file:../../node_modules/tns-core-modules",
     "ts-md5": "file:../../node_modules/ts-md5",
+      "underscore": "file:../../node_modules/underscore",
     "zone.js": "file:../../node_modules/zone.js"
   },
   "devDependencies": {

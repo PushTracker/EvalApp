@@ -88,7 +88,7 @@
                      textWrap="true"
                      [text]="(item.usage && item.usage[0] && item.usage[0].time) || 'unkown'"></Label>
 		      <Label class="demo-item-description" textWrap="true" [text]="item.location"  ></Label>
-		      <Label class="demo-item-description" [backgroundColor]="item.pt_version.includes('1.5') ? 'green' : 'red'" textWrap="true" [text]="item.pt_version"  ></Label>
+		      <Label class="demo-item-description" [backgroundColor]="(item.pt_version.includes('1.5') && item.mcu_version.includes('1.5') && item.ble_version.includes('1.5')) ? 'green' : 'red'" textWrap="true" [text]="[item.pt_version, item.mcu_version, item.ble_version].join(', ')"  ></Label>
 	        </StackLayout>
 	      </StackLayout>
 	    </StackLayout>
