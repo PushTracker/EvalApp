@@ -43,108 +43,7 @@ export class DemosComponent implements OnInit {
     });
   }
 
-  onScan() {
-    let ptSN = '';
-    let sdSN = '';
-    let nextDevice = '';
-
-    return new Promise((resolve, reject) => {
-      this.barcodeScanner
-        .scan({
-          formats: 'QR_CODE, EAN_13',
-          cancelLabel: 'EXIT', // iOS only
-          cancelLabelBackgroundColor: '#333333', // iOS only
-          message: 'Scan a SmartDrive or PushTracker', // Android only
-          showFlipCameraButton: true,
-          preferFrontCamera: false,
-          showTorchButton: true,
-          beepOnScan: true,
-          torchOn: false,
-          closeCallback: () => {
-            setTimeout(() => {
-              resolve();
-            }, 500);
-          },
-          resultDisplayDuration: 0, // Android only
-          openSettingsIfPermissionWasPreviouslyDenied: true
-        })
-        .then(result => {
-          let deviceType = result.text.indexOf('B') > -1 ? 'PushTracker' : 'SmartDrive';
-          let msg = `
-Device: ${deviceType}
-S/N:    ${result.text}`;
-          if (deviceType === 'PushTracker') {
-            ptSN = result.text;
-            nextDevice = 'SmartDrive';
-          } else {
-            sdSN = result.text;
-            nextDevice = 'PushTracker';
-          }
-          console.log(msg);
-        });
-    })
-      .then(() => {
-        return new Promise((resolve, reject) => {
-          this.barcodeScanner
-            .scan({
-              formats: 'QR_CODE, EAN_13',
-              cancelLabel: 'EXIT',
-              cancelLabelBackgroundColor: '#333333',
-              message: 'Scan a ' + nextDevice,
-              showFlipCameraButton: true,
-              preferFrontCamera: false,
-              showTorchButton: true,
-              beepOnScan: true,
-              torchOn: false,
-              closeCallback: () => {
-                setTimeout(() => {
-                  resolve();
-                }, 500);
-              },
-              resultDisplayDuration: 0,
-              openSettingsIfPermissionWasPreviouslyDenied: true
-            })
-            .then(result => {
-              console.log(`result: ${result}`);
-              let deviceType = result.text.indexOf('B') > -1 ? 'PushTracker' : 'SmartDrive';
-              let msg = `
-Device: ${deviceType}
-S/N:    ${result.text}`;
-              if (deviceType === 'PushTracker') {
-                ptSN = result.text;
-              } else {
-                sdSN = result.text;
-              }
-            });
-        });
-      })
-      .then(() => {
-        // now make the demo
-        console.log(`Registered SD: ${sdSN}, PT: ${ptSN}`);
-        const demo = new Demo({
-          model: 'MX2+',
-          smartdrive_serial_number: sdSN,
-          pushtracker_serial_number: ptSN
-        });
-        return demo.use().then(() => {
-          return this._demoService.create(demo);
-        });
-      })
-      .then(() => {
-        return this._demoService.load().catch(err => {
-          console.log(`Couldn't load demos: ${err}`);
-        });
-      })
-      .catch(errorMessage => {
-        console.log('No scan. ' + errorMessage);
-      });
-  }
-
-  ngOnInit() {
-    this._demoService.load().catch(err => {
-      console.log(`Couldn't load demos: ${err}`);
-    });
-  }
+  ngOnInit() {}
 
   onDrawerButtonTap(): void {}
 
@@ -160,5 +59,6 @@ S/N:    ${result.text}`;
   addDemo() {
     // add a new demo
     console.log('add a new demo');
+    this.routerExtensions.navigate(['/demo-detail'], {});
   }
 }

@@ -52,7 +52,9 @@ export class DemoService {
     })[0];
   }
 
-  constructor() {}
+  constructor() {
+    this.load();
+  }
 
   create(demoModel: Demo): Promise<any> {
     const foundSD = this.getDemoBySmartDriveSerialNumber(demoModel.smartdrive_serial_number);

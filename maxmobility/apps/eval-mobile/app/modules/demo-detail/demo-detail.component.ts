@@ -9,15 +9,13 @@ import { Label } from 'ui/label';
 import * as dialogs from 'ui/dialogs';
 import { BarcodeScanner } from 'nativescript-barcodescanner';
 import { isAndroid, isIOS } from 'platform';
-import { BluetoothService } from '@maxmobility/mobile';
-import { CLog, LoggingService } from '@maxmobility/core';
 import { Feedback, FeedbackType, FeedbackPosition } from 'nativescript-feedback';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { Demo } from '@maxmobility/core';
-import { DemoService } from '@maxmobility/mobile';
+import { CLog, LoggingService, Demo, Packet, DailyInfo, PushTracker, SmartDrive } from '@maxmobility/core';
+import { DemoService, BluetoothService, FirmwareService, ProgressService } from '@maxmobility/mobile';
 
 @Component({
   selector: 'Demo',
@@ -31,7 +29,8 @@ export class DemoDetailComponent implements OnInit {
   constructor(
     private _route: ActivatedRoute,
     private barcodeScanner: BarcodeScanner,
-    private _demoService: DemoService
+    private _demoService: DemoService,
+    private _bluetoothService: BluetoothService
   ) {}
 
   isIOS(): boolean {
@@ -43,14 +42,31 @@ export class DemoDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._demoService
-      .load()
+    const query = this._route.snapshot.queryParams;
+    if (query.index) {
+      this._demoService
+        .load()
+        .then(() => {
+          this.demo = DemoService.Demos.getItem(query.index);
+        })
+        .catch(err => {
+          console.log(`Couldn't load demos: ${err}`);
+        });
+    } else {
+    }
+  }
+
+  onSave() {
+    return this.demo
+      .use()
       .then(() => {
-        const query = this._route.snapshot.queryParams;
-        this.demo = DemoService.Demos.getItem(query.index);
+        return this._demoService.create(this.demo);
+      })
+      .then(() => {
+        //return this._demoService.load();
       })
       .catch(err => {
-        console.log(`Couldn't load demos: ${err}`);
+        console.log(`Couldn't create / load demos: ${err}`);
       });
   }
 
@@ -58,34 +74,28 @@ export class DemoDetailComponent implements OnInit {
     this.barcodeScanner
       .scan({
         formats: 'QR_CODE, EAN_13',
-        cancelLabel: 'EXIT. Also, try the volume buttons!', // iOS only, default 'Close'
-        cancelLabelBackgroundColor: '#333333', // iOS only, default '#000000' (black)
-        message: 'Use the volume buttons for extra light', // Android only, default is 'Place a barcode inside the viewfinder rectangle to scan it.'
-        showFlipCameraButton: true, // default false
-        preferFrontCamera: false, // default false
-        showTorchButton: true, // default false
-        beepOnScan: true, // Play or Suppress beep on scan (default true)
-        torchOn: false, // launch with the flashlight on (default false)
+        cancelLabel: 'Cancel Scan', // iOS only
+        cancelLabelBackgroundColor: '#333333', // iOS only
+        message: 'Scan a PushTracker or SmartDrive', // Android only
+        showFlipCameraButton: true,
+        preferFrontCamera: false,
+        showTorchButton: true,
+        beepOnScan: true,
+        torchOn: false,
         closeCallback: () => {
           console.log('Scanner closed');
         }, // invoked when the scanner was closed (success or abort)
-        resultDisplayDuration: 500, // Android only, default 1500 (ms), set to 0 to disable echoing the scanned text
-        openSettingsIfPermissionWasPreviouslyDenied: true // On iOS you can send the user to the settings app if access was previously denied
+        resultDisplayDuration: 500, // Android only
+        openSettingsIfPermissionWasPreviouslyDenied: true
       })
       .then(result => {
-        // Note that this Promise is never invoked when a 'continuousScanCallback' function is provided
         const deviceType = result.text.indexOf('B') > -1 ? 'PushTracker' : 'SmartDrive';
-        const msg = `
-Device: ${deviceType}
-S/N:    ${result.text}`;
-        console.log(msg);
-        setTimeout(() => {
-          alert({
-            title: 'Scan result',
-            message: msg,
-            okButtonText: 'OK'
-          });
-        }, 500);
+        const serialNumber = result.text;
+        if (deviceType === 'PushTracker') {
+          this.demo.pushtracker_serial_number = serialNumber;
+        } else {
+          this.demo.smartdrive_serial_number = serialNumber;
+        }
       })
       .catch(errorMessage => {
         console.log('No scan. ' + errorMessage);
@@ -103,8 +113,6 @@ S/N:    ${result.text}`;
   }
 
   onSDRowTapped() {
-    // this.checked_out ? "Deliver" : "Pick Up";
-
     dialogs
       .confirm({
         title: 'Transfer ' + this.demo.smartdrive_serial_number,

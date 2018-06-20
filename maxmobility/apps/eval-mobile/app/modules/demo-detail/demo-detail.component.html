@@ -1,5 +1,9 @@
-<ActionBar class="action-bar" flat="true" [title]="demo.smartdrive_serial_number">
+<ActionBar class="action-bar" flat="true" [title]="'Demo Unit ' + demo.smartdrive_serial_number">
   <NavigationButton *ngIf="isIOS()"></NavigationButton>
+
+  <ActionItem (tap)="onSave()"
+      ios.systemIcon="4" ios.position="right"
+      text="Save" color="#fff"></ActionItem>
 
   <ActionItem ios.position="right" (tap)="onScan()">
     <Button text="&#xf072;" class="mdi icon-scan" ></Button>
