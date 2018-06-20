@@ -30,7 +30,7 @@ import { Videos } from '../videos/videos.component';
   moduleId: module.id,
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class HomeComponent implements OnInit, AfterViewInit {
   private feedback: Feedback;
