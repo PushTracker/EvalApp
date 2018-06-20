@@ -45,9 +45,9 @@ export class DemoDetailComponent implements OnInit {
   ngOnInit() {
     this._demoService
       .load()
-      .then((demos: Array<Demo>) => {
+      .then(() => {
         const query = this._route.snapshot.queryParams;
-        this.demo = demos[query.index];
+        this.demo = DemoService.Demos[query.index];
       })
       .catch(err => {
         console.log(`Couldn't load demos: ${err}`);

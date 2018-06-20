@@ -5,11 +5,14 @@ import 'rxjs/add/operator/toPromise';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 
 import { fromObject, Observable } from 'tns-core-modules/data/observable';
+import { ObservableArray } from 'tns-core-modules/data/observable-array';
 
 import { Demo } from '@maxmobility/core';
 
 @Injectable()
 export class DemoService {
+  public static Demos: ObservableArray<Demo> = new ObservableArray<Demo>([]);
+
   private static cloneUpdateModel(demo: Demo): object {
     return Demo.editableProperties.reduce((a, e) => ((a[e] = demo[e]), a), {
       _id: demo.id,
@@ -19,8 +22,6 @@ export class DemoService {
     });
   }
 
-  demos: Array<Demo> = [];
-
   private datastore = Kinvey.DataStore.collection<any>('SmartDrives');
 
   getDemoById(id: string): Demo {
@@ -28,7 +29,7 @@ export class DemoService {
       return;
     }
 
-    return this.demos.filter(demo => {
+    return DemoService.Demos.filter(demo => {
       return demo.id === id;
     })[0];
   }
@@ -37,7 +38,7 @@ export class DemoService {
     if (!sn) {
       return;
     }
-    return this.demos.filter(demo => {
+    return DemoService.Demos.filter(demo => {
       return demo.pushtracker_serial_number === sn;
     })[0];
   }
@@ -46,7 +47,7 @@ export class DemoService {
     if (!sn) {
       return;
     }
-    return this.demos.filter(demo => {
+    return DemoService.Demos.filter(demo => {
       return demo.smartdrive_serial_number === sn;
     })[0];
   }
@@ -60,7 +61,7 @@ export class DemoService {
   }
 
   save() {
-    const tasks = this.demos.map(demo => {
+    const tasks = DemoService.Demos.map(demo => {
       return this.datastore
         .save(demo.data())
         .then(data => {
@@ -86,15 +87,11 @@ export class DemoService {
         return stream.toPromise();
       })
       .then(data => {
-        this.demos = [];
-        data.forEach((demoData: any) => {
+        let demos = data.map((demoData: any) => {
           demoData.id = demoData._id;
-          const demo = new Demo(demoData);
-
-          this.demos.push(demo);
+          return new Demo(demoData);
         });
-
-        return this.demos;
+        DemoService.Demos.splice(0, DemoService.Demos.length, demos);
       });
   }
 

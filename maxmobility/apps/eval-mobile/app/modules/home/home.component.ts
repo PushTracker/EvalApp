@@ -37,7 +37,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   faqItems = FAQs;
   videoItems = Videos;
-  demoItems: ObservableArray<Demo> = new ObservableArray<Demo>([]);
+  demoItems: ObservableArray<Demo> = DemoService.Demos;
 
   connectivityItems = [
     {
@@ -96,14 +96,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this._demoService
-      .load()
-      .then((demos: Array<Demo>) => {
-        this.demoItems.splice(0, this.demoItems.length, ...demos);
-      })
-      .catch(err => {
-        console.log(`Couldn't load demos: ${err}`);
-      });
+    this._demoService.load().catch(err => {
+      console.log(`Couldn't load demos: ${err}`);
+    });
   }
 
   ngAfterViewInit(): void {}

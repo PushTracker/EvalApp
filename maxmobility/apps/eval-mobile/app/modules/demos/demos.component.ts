@@ -21,7 +21,7 @@ import { DemoService } from '@maxmobility/mobile';
   styleUrls: ['./demos.component.css']
 })
 export class DemosComponent implements OnInit {
-  public demos: ObservableArray<Demo> = new ObservableArray<Demo>([]);
+  public demos: ObservableArray<Demo> = DemoService.Demos;
 
   constructor(
     private barcodeScanner: BarcodeScanner,
@@ -147,14 +147,9 @@ S/N:    ${result.text}`;
         });
       })
       .then(() => {
-        return this._demoService
-          .load()
-          .then((_demos: Array<Demo>) => {
-            this.demos.splice(0, this.demos.length, ..._demos);
-          })
-          .catch(err => {
-            console.log(`Couldn't load demos: ${err}`);
-          });
+        return this._demoService.load().catch(err => {
+          console.log(`Couldn't load demos: ${err}`);
+        });
       })
       .catch(errorMessage => {
         console.log('No scan. ' + errorMessage);
@@ -181,14 +176,9 @@ S/N:    ${result.text}`;
 
   ngOnInit() {
     geolocation.enableLocationRequest();
-    this._demoService
-      .load()
-      .then((_demos: Array<Demo>) => {
-        this.demos.splice(0, this.demos.length, ..._demos);
-      })
-      .catch(err => {
-        console.log(`Couldn't load demos: ${err}`);
-      });
+    this._demoService.load().catch(err => {
+      console.log(`Couldn't load demos: ${err}`);
+    });
   }
 
   onDrawerButtonTap(): void {}
