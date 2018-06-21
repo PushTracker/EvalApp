@@ -1,8 +1,11 @@
 /// <reference path="../node_modules/tns-platform-declarations/ios.d.ts" />
-declare var NSMakeRange; // not recognized by platform-declarations
 
 import { CLog, CLogTypes } from '../common';
+import { CBPeripheralDelegateImpl } from './CBPeripheralDelegateImpl';
 import { Bluetooth } from './ios_main';
+
+declare var NSMakeRange; // not recognized by platform-declarations
+declare var DataView; // not recognized by platform-declarations
 
 /**
  * @link - https://developer.apple.com/documentation/corebluetooth/cbcentralmanagerdelegate
@@ -15,16 +18,23 @@ export class CBCentralManagerDelegateImpl extends NSObject implements CBCentralM
 
   private _owner: WeakRef<Bluetooth>;
 
-  private _callback: (result?) => void;
+  // private _callback: (result?) => void;
 
   static new(): CBCentralManagerDelegateImpl {
     return <CBCentralManagerDelegateImpl>super.new();
   }
 
-  public initWithCallback(owner: WeakRef<Bluetooth>, callback: (result?) => void): CBCentralManagerDelegateImpl {
+  // public initWithCallback(owner: WeakRef<Bluetooth>, callback: (result?) => void): CBCentralManagerDelegateImpl {
+  //   this._owner = owner;
+  //   CLog(CLogTypes.info, `CBCentralManagerDelegateImpl.initWithCallback ---- this._owner: ${this._owner}`);
+  //   this._callback = callback;
+  //   return this;
+  // }
+
+  public initWithOwner(owner: WeakRef<Bluetooth>): CBCentralManagerDelegateImpl {
     this._owner = owner;
-    CLog(CLogTypes.info, `CBCentralManagerDelegateImpl.initWithCallback ---- this._owner: ${this._owner}`);
-    this._callback = callback;
+    CLog(CLogTypes.info, `CBCentralManagerDelegateImpl.initWithOwner ---- this._owner: ${this._owner}`);
+    // this._callback = callback;
     return this;
   }
 
@@ -45,8 +55,12 @@ export class CBCentralManagerDelegateImpl extends NSObject implements CBCentralM
       `----- CBCentralManagerDelegateImpl centralManager:didConnectPeripheral: cached perio: ${peri}`
     );
 
-    const cb = this._owner.get()._connectCallbacks[peripheral.identifier.UUIDString];
-    const delegate = CBCentralManagerDelegateImpl.new().initWithCallback(this._owner, cb);
+    const owner = this._owner.get();
+    if (!owner) {
+      return;
+    }
+    const cb = owner._connectCallbacks[peripheral.identifier.UUIDString];
+    const delegate = CBPeripheralDelegateImpl.new().initWithCallback(this._owner, cb);
     CFRetain(delegate);
     peri.delegate = delegate;
 
@@ -55,6 +69,7 @@ export class CBCentralManagerDelegateImpl extends NSObject implements CBCentralM
       "----- CBCentralManagerDelegateImpl centralManager:didConnectPeripheral, let's discover service"
     );
     peri.discoverServices(null);
+    owner.sendEvent('peripheral_connected_event', { peripheral });
   }
 
   /**
@@ -72,8 +87,12 @@ export class CBCentralManagerDelegateImpl extends NSObject implements CBCentralM
     peripheral: CBPeripheral,
     error?: NSError
   ) {
+    const owner = this._owner.get();
+    if (!owner) {
+      return;
+    }
     // this event needs to be honored by the client as any action afterwards crashes the app
-    const cb = this._owner.get()._disconnectCallbacks[peripheral.identifier.UUIDString];
+    const cb = owner._disconnectCallbacks[peripheral.identifier.UUIDString];
     if (cb) {
       cb({
         UUID: peripheral.identifier.UUIDString,
@@ -82,8 +101,8 @@ export class CBCentralManagerDelegateImpl extends NSObject implements CBCentralM
     } else {
       CLog(CLogTypes.info, `***** centralManagerDidDisconnectPeripheralError() no disconnect callback found *****`);
     }
-    const foundAt = this._owner.get()._peripheralArray.indexOfObject(peripheral);
-    this._owner.get()._peripheralArray.removeObject(foundAt);
+    owner.removePeripheral(peripheral);
+    owner.sendEvent('peripheral_disconnected_event', { peripheral, error });
   }
 
   /**
@@ -106,6 +125,12 @@ export class CBCentralManagerDelegateImpl extends NSObject implements CBCentralM
       peripheral,
       error
     );
+
+    const owner = this._owner.get();
+    if (!owner) {
+      return;
+    }
+    owner.sendEvent('peripheral_failed_to_connect_event', { peripheral, error });
   }
 
   /**
@@ -130,38 +155,45 @@ export class CBCentralManagerDelegateImpl extends NSObject implements CBCentralM
         peripheral.name
       } @ ${RSSI}`
     );
-    const peri = this._owner.get().findPeripheral(peripheral.identifier.UUIDString);
-    if (!peri) {
-      this._owner.get()._peripheralArray.addObject(peripheral);
-      if (this._owner.get()._onDiscovered) {
-        let manufacturerId;
-        let manufacturerData;
-        if (advData.objectForKey(CBAdvertisementDataManufacturerDataKey)) {
-          const manufacturerIdBuffer = this._owner
-            .get()
-            .toArrayBuffer(
-              advData.objectForKey(CBAdvertisementDataManufacturerDataKey).subdataWithRange(NSMakeRange(0, 2))
-            );
-          manufacturerId = new DataView(manufacturerIdBuffer, 0).getUint16(0, true);
-          manufacturerData = this._owner
-            .get()
-            .toArrayBuffer(
-              advData
-                .objectForKey(CBAdvertisementDataManufacturerDataKey)
-                .subdataWithRange(
-                  NSMakeRange(2, advData.objectForKey(CBAdvertisementDataManufacturerDataKey).length - 2)
-                )
-            );
-        }
 
-        this._owner.get()._onDiscovered({
-          UUID: peripheral.identifier.UUIDString,
-          name: peripheral.name,
-          RSSI: RSSI,
-          state: this._owner.get()._getState(peripheral.state),
-          manufacturerId: manufacturerId,
-          manufacturerData: manufacturerData
-        });
+    const owner = this._owner.get();
+    if (!owner) {
+      return;
+    }
+
+    const peri = owner.findPeripheral(peripheral.identifier.UUIDString);
+    if (!peri) {
+      owner.addPeripheral(peripheral);
+      let manufacturerId;
+      let manufacturerData;
+      if (advData.objectForKey(CBAdvertisementDataManufacturerDataKey)) {
+        const manufacturerIdBuffer = this._owner
+          .get()
+          .toArrayBuffer(
+            advData.objectForKey(CBAdvertisementDataManufacturerDataKey).subdataWithRange(NSMakeRange(0, 2))
+          );
+        manufacturerId = new DataView(manufacturerIdBuffer, 0).getUint16(0, true);
+        manufacturerData = this._owner
+          .get()
+          .toArrayBuffer(
+            advData
+              .objectForKey(CBAdvertisementDataManufacturerDataKey)
+              .subdataWithRange(NSMakeRange(2, advData.objectForKey(CBAdvertisementDataManufacturerDataKey).length - 2))
+          );
+      }
+
+      const eventData = {
+        UUID: peripheral.identifier.UUIDString,
+        name: peripheral.name,
+        RSSI: RSSI,
+        state: owner._getState(peripheral.state),
+        manufacturerId: manufacturerId,
+        manufacturerData: manufacturerData
+      };
+
+      owner.sendEvent(Bluetooth.device_discovered_event, eventData);
+      if (owner._onDiscovered) {
+        owner._onDiscovered(eventData);
       } else {
         CLog(
           CLogTypes.warning,
@@ -181,13 +213,18 @@ export class CBCentralManagerDelegateImpl extends NSObject implements CBCentralM
    * @param central [CBCentralManager] - The central manager providing this information.
    */
   public centralManagerDidUpdateState(central: CBCentralManager) {
-    // if (central.state === CBCentralManagerStateUnsupported) {
     if (central.state === CBManagerState.Unsupported) {
       CLog(
         CLogTypes.warning,
         `CBCentralManagerDelegateImpl.centralManagerDidUpdateState ---- This hardware does not support Bluetooth Low Energy.`
       );
     }
+
+    const owner = this._owner.get();
+    if (!owner) {
+      return;
+    }
+    owner.sendEvent('centralmanager_updated_state_event', { manager: central });
   }
 
   /**
@@ -202,5 +239,34 @@ export class CBCentralManagerDelegateImpl extends NSObject implements CBCentralM
       CLogTypes.info,
       `CBCentralManagerDelegateImpl.centralManagerWillRestoreState ---- central: ${central}, dict: ${dict}`
     );
+
+    const owner = this._owner.get();
+    if (!owner) {
+      return;
+    }
+
+    // Get all restored Peripherals
+    const peripheralArray = dict.objectForKey(CBCentralManagerRestoredStatePeripheralsKey);
+    CLog(CLogTypes.info, 'Restoring ', peripheralArray.count);
+    for (let i = 0; i < peripheralArray.count; i++) {
+      const peripheral = peripheralArray.objectAtIndex(i);
+      owner.addPeripheral(peripheral);
+
+      const eventData = {
+        UUID: peripheral.identifier.UUIDString,
+        name: peripheral.name,
+        RSSI: null,
+        state: owner._getState(peripheral.state),
+        manufacturerId: null,
+        manufacturerData: null
+      };
+
+      owner.sendEvent(Bluetooth.device_discovered_event, eventData);
+      if (owner._onDiscovered) {
+        owner._onDiscovered(eventData);
+      }
+    }
+
+    owner.sendEvent('centralmanager_restore_state_event', { manager: central, dict });
   }
 }

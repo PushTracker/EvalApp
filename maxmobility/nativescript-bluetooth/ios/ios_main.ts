@@ -20,22 +20,95 @@ import { CBPeripheralManagerDelegateImpl } from './CBPeripheralManagerDelegateIm
 import { CBPeripheralDelegateImpl } from './CBPeripheralDelegateImpl';
 import { CBCentralManagerDelegateImpl } from './CBCentralManagerDelegateImpl';
 
+// These are global for the entire Bluetooth class
+let singleton: WeakRef<Bluetooth> = null;
+const peripheralArray: any = NSMutableArray.new();
+
 export class Bluetooth extends BluetoothCommon {
-  private _centralDelegate = CBCentralManagerDelegateImpl.new().initWithCallback(new WeakRef(this), obj => {
-    CLog(CLogTypes.info, `---- centralDelegate ---- obj: ${obj}`);
-  });
-  private _centralPeripheralMgrDelegate = CBPeripheralManagerDelegateImpl.new().init();
-  private _centralManager = CBCentralManager.alloc().initWithDelegateQueue(this._centralDelegate, null);
-  public _peripheralManager = CBPeripheralManager.new().initWithDelegateQueue(this._centralPeripheralMgrDelegate, null);
+  private readonly _centralDelegate = null;
+  private readonly _centralPeripheralMgrDelegate = null;
+  private readonly _centralManager = null;
+  private readonly _peripheralManager = null;
 
   private _data_service: CBMutableService;
-  public _peripheralArray = null;
   public _connectCallbacks = {};
   public _disconnectCallbacks = {};
   public _onDiscovered = null;
 
-  constructor() {
+  // private _centralDelegate = CBCentralManagerDelegateImpl.new().initWithCallback(new WeakRef(this), obj => {
+  //   CLog(CLogTypes.info, `---- centralDelegate ---- obj: ${obj}`);
+  // });
+  // private _centralPeripheralMgrDelegate = CBPeripheralManagerDelegateImpl.new().init();
+  // private _centralManager = CBCentralManager.alloc().initWithDelegateQueue(this._centralDelegate, null);
+  // public _peripheralManager = CBPeripheralManager.new().initWithDelegateQueue(this._centralPeripheralMgrDelegate, null);
+
+  // private _data_service: CBMutableService;
+  // public _peripheralArray = null;
+  // public _connectCallbacks = {};
+  // public _disconnectCallbacks = {};
+  // public _onDiscovered = null;
+
+  constructor(options?: any) {
     super();
+
+    const weakref = new WeakRef(this);
+
+    // Old behavior was to return basically a singleton object, events were shared
+    if (singleton) {
+      if (!options || options.singleton !== false) {
+        console.log('Returning singleton');
+        const ref = singleton.get();
+        if (ref) {
+          return ref;
+        }
+      }
+    } else {
+      singleton = weakref;
+    }
+
+    const centralKeys = [],
+      centralValues = [];
+    const peripheralKeys = [],
+      peripheralValues = [];
+
+    this._centralPeripheralMgrDelegate = CBPeripheralManagerDelegateImpl.new().initWithOwner(weakref);
+    this._centralDelegate = CBCentralManagerDelegateImpl.new().initWithOwner(weakref);
+
+    if (options) {
+      if (options.centralPreservation) {
+        centralValues.push(options.centralPreservation);
+        centralKeys.push(CBCentralManagerOptionRestoreIdentifierKey);
+      }
+      if (options.peripheralPreservation) {
+        peripheralValues.push(options.peripheralPreservation);
+        peripheralKeys.push(CBPeripheralManagerOptionRestoreIdentifierKey);
+      }
+    }
+
+    if (centralKeys.length > 0) {
+      const _cmoptions = NSDictionary.dictionaryWithObjectsForKeys(<any>centralValues, <any>centralKeys);
+      this._centralManager = CBCentralManager.alloc().initWithDelegateQueueOptions(this._centralDelegate, null, <any>(
+        _cmoptions
+      ));
+    } else {
+      this._centralManager = CBCentralManager.alloc().initWithDelegateQueue(this._centralDelegate, null);
+    }
+
+    if (peripheralKeys.length > 0) {
+      const _poptions = NSDictionary.dictionaryWithObjectsForKeys(<any>peripheralValues, <any>peripheralKeys);
+
+      this._peripheralManager = CBPeripheralManager.new().initWithDelegateQueueOptions(
+        this._centralPeripheralMgrDelegate,
+        null,
+        <any>_poptions
+      );
+    } else {
+      this._peripheralManager = CBPeripheralManager.new().initWithDelegateQueue(
+        this._centralPeripheralMgrDelegate,
+        null
+      );
+    }
+
     CLog(CLogTypes.info, '*** iOS Bluetooth Constructor ***');
     CLog(CLogTypes.info, `this._centralManager: ${this._centralManager}`);
     CLog(CLogTypes.info, `this._peripheralManager: ${this._peripheralManager}`);
@@ -50,6 +123,15 @@ export class Bluetooth extends BluetoothCommon {
     } else {
       return false;
     }
+  }
+
+  public removePeripheral(peripheral) {
+    const foundAt = peripheralArray.indexOfObject(peripheral);
+    peripheralArray.removeObject(foundAt);
+  }
+
+  public addPeripheral(peripheral) {
+    peripheralArray.addObject(peripheral);
   }
 
   public _getState(state: CBPeripheralState) {
@@ -89,7 +171,7 @@ export class Bluetooth extends BluetoothCommon {
           return;
         }
 
-        this._peripheralArray = NSMutableArray.new();
+        // this._peripheralArray = NSMutableArray.new();
         this._onDiscovered = arg.onDiscovered;
         const serviceUUIDs = arg.serviceUUIDs || [];
 
@@ -100,6 +182,9 @@ export class Bluetooth extends BluetoothCommon {
             services.push(CBUUID.UUIDWithString(serviceUUIDs[s]));
           }
         }
+
+        // Clear array to restart scanning
+        peripheralArray.removeAllObjects();
 
         // TODO: check on the services as any casting
         this._centralManager.scanForPeripheralsWithServicesOptions(services as any, null);
@@ -321,18 +406,31 @@ export class Bluetooth extends BluetoothCommon {
           return;
         }
 
+        if (this._peripheralManager.isAdvertising) {
+          this._peripheralManager.stopAdvertising();
+        }
+
         const uuid = CBUUID.UUIDWithString(args.UUID);
 
         CLog(CLogTypes.info, `Bluetooth.startAdvertising ---- creating advertisement`);
         const advertisement = NSDictionary.dictionaryWithObjectsForKeys(
-          [[uuid], 'data_service'],
-          [CBAdvertisementDataServiceUUIDsKey, CBAdvertisementDataLocalNameKey]
+          <any>[uuid, 'data_service'],
+          <any>[CBAdvertisementDataServiceUUIDsKey, CBAdvertisementDataLocalNameKey]
         );
 
         // invokes the Peripheral Managers peripheralManagerDidStartAdvertising:error method
-        this._peripheralManager.startAdvertising(advertisement);
-        CLog(CLogTypes.info, 'Bluetooth.startAdvertising ---- started advertising');
-        resolve();
+        // Brad - wrapping in timeout, without this the iOS API call will fail and trigger an API Misuse warning from iOS
+        // due to the peripheralManager.state being unknown outside of this timeout
+        CLog(CLogTypes.info, `peripheral manager state ${this._getManagerStateString(this._peripheralManager.state)}`);
+        setTimeout(() => {
+          CLog(
+            CLogTypes.info,
+            `peripheral manager state ${this._getManagerStateString(this._peripheralManager.state)}`
+          );
+          this._peripheralManager.startAdvertising(advertisement);
+          CLog(CLogTypes.info, 'Bluetooth.startAdvertising ---- started advertising');
+          resolve();
+        }, 1000);
       } catch (error) {
         CLog(CLogTypes.error, `Bluetooth.startAdvertising ---- ${error}`);
         reject(error);
@@ -436,6 +534,7 @@ export class Bluetooth extends BluetoothCommon {
         }
       } catch (ex) {
         CLog(CLogTypes.error, `Bluetooth.connect ---- ${ex}`);
+        console.log('Stack:', ex.stack);
         reject(ex);
       }
     });
@@ -498,8 +597,14 @@ export class Bluetooth extends BluetoothCommon {
   }
 
   public findPeripheral(UUID): CBPeripheral {
-    for (let i = 0; i < this._peripheralArray.count; i++) {
-      const peripheral = this._peripheralArray.objectAtIndex(i);
+    // for (let i = 0; i < this._peripheralArray.count; i++) {
+    //   const peripheral = this._peripheralArray.objectAtIndex(i);
+    //   if (UUID === peripheral.identifier.UUIDString) {
+    //     return peripheral;
+    //   }
+    // }
+    for (let i = 0; i < peripheralArray.count; i++) {
+      const peripheral = peripheralArray.objectAtIndex(i);
       if (UUID === peripheral.identifier.UUIDString) {
         return peripheral;
       }
@@ -914,6 +1019,34 @@ export class Bluetooth extends BluetoothCommon {
     // data_service.characteristics = [data_control_characteristic, app_data_characteristic, ota_data_characteristic, wb_data_characteristic, du_data_characteristic]
 
     // peripheral.add(data_service)
+  }
+
+  public _getManagerStateString(state: CBManagerState): string {
+    let result: string;
+    switch (state) {
+      case CBManagerState.Unknown: // 0
+        result = 'unknown';
+        break;
+      case CBManagerState.PoweredOn: // 5
+        result = 'on';
+        break;
+      case CBManagerState.PoweredOff: // 4
+        result = 'off';
+        break;
+      case CBManagerState.Resetting: // 1
+        result = 'resetting';
+        break;
+      case CBManagerState.Unauthorized: // 3
+        result = 'resetting';
+        break;
+      case CBManagerState.Unsupported: // 2
+        result = 'resetting';
+        break;
+      default:
+        result = 'WTF state is the manager?!?';
+    }
+
+    return result;
   }
 }
 

@@ -17,6 +17,12 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
     return <CBPeripheralManagerDelegateImpl>super.new();
   }
 
+  public initWithOwner(owner: WeakRef<Bluetooth>): CBPeripheralManagerDelegateImpl {
+    this._owner = owner;
+    CLog(CLogTypes.info, `CBPeripheralManagerDelegateImpl.initWithCallback ---- this._owner: ${this._owner}`);
+    return this;
+  }
+
   public initWithCallback(owner: WeakRef<Bluetooth>, callback: (result?) => void): CBPeripheralManagerDelegateImpl {
     this._owner = owner;
     CLog(CLogTypes.info, `CBPeripheralManagerDelegateImpl.initWithCallback ---- this._owner: ${this._owner}`);
@@ -28,7 +34,17 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
    * @param mgr [CBPeripheralManager] - The peripheral manager whose state has changed.
    */
   public peripheralManagerDidUpdateState(mgr: CBPeripheralManager) {
-    CLog(CLogTypes.info, `CBPeripheralManagerDelegateImpl.peripheralManagerDidUpdateState ----`, mgr);
+    CLog(CLogTypes.info, 'peripheralManagerDidUpdateState');
+
+    const owner = this._owner.get();
+    if (!owner) {
+      return;
+    }
+
+    const state = owner._getManagerStateString(mgr.state);
+    CLog(CLogTypes.info, `current peripheral manager state = ${state}`);
+
+    owner.sendEvent(Bluetooth.peripheralmanager_update_state_event, { manager: mgr, state });
   }
 
   /**
@@ -39,6 +55,12 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
    */
   public peripheralManagerWillRestoreState(peripheral: CBPeripheralManager, dict?: NSDictionary<string, any>) {
     CLog(CLogTypes.info, 'CBPeripheralManagerDelegateImpl.peripheralManagerWillRestoreState ---- ', dict);
+
+    const owner = this._owner.get();
+    if (!owner) {
+      return;
+    }
+    owner.sendEvent(Bluetooth.peripheralmanager_restore_state_event, { manager: peripheral, dict: dict });
   }
 
   /**
@@ -52,6 +74,16 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
    */
   public peripheralManagerDidAddError(peripheral: CBPeripheralManager, service: CBService, error?: NSError) {
     CLog(CLogTypes.info, 'CBPeripheralManagerDelegateImpl.peripheralManagerDidAddError ---- ', error);
+
+    const owner = this._owner.get();
+    if (!owner) {
+      return;
+    }
+    owner.sendEvent(Bluetooth.peripheralmanager_did_add_event, {
+      manager: peripheral,
+      service: service,
+      error: error
+    });
   }
 
   /**
@@ -61,6 +93,11 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
    */
   public peripheralManagerDidStartAdvertisingError(peripheralMgr: CBPeripheralManager, error?: NSError) {
     CLog(CLogTypes.info, 'CBPeripheralManagerDelegateImpl.peripheralManagerDidStartAdvertisingError ----', error);
+    const owner = this._owner.get();
+    if (!owner) {
+      return;
+    }
+
     if (error) {
       CLog(CLogTypes.warning, 'TODO: we may need to parse out the error value here for parity with Android.');
       this._owner.get().sendEvent(Bluetooth.bluetooth_advertise_failure_event, { error: error });
@@ -89,6 +126,16 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
       'CBPeripheralManagerDelegateImpl.peripheralManagerCentralDidSubscribeToCharacteristic ----',
       characteristic
     );
+
+    const owner = this._owner.get();
+    if (!owner) {
+      return;
+    }
+    owner.sendEvent(Bluetooth.peripheralmanager_subscribe_characteristic_event, {
+      manager: peripheral,
+      central: central,
+      characteristic: characteristic
+    });
   }
 
   /**
@@ -110,6 +157,16 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
       central,
       characteristic
     );
+
+    const owner = this._owner.get();
+    if (!owner) {
+      return;
+    }
+    owner.sendEvent(Bluetooth.peripheralmanager_unsubscribe_characteristic_event, {
+      manager: peripheral,
+      central: central,
+      characteristic: characteristic
+    });
   }
 
   /**
@@ -124,6 +181,14 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
       'CBPeripheralManagerDelegateImpl.peripheralManagerIsReadyToUpdateSubscribers ----',
       peripheral
     );
+
+    const owner = this._owner.get();
+    if (!owner) {
+      return;
+    }
+    owner.sendEvent(Bluetooth.peripheralmanager_ready_update_subscribers_event, {
+      manager: peripheral
+    });
   }
 
   /**
@@ -139,6 +204,15 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
       peripheral,
       request
     );
+
+    const owner = this._owner.get();
+    if (!owner) {
+      return;
+    }
+    owner.sendEvent(Bluetooth.peripheralmanager_read_request_event, {
+      manager: peripheral,
+      request: request
+    });
   }
 
   /**
@@ -158,5 +232,14 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
       peripheral,
       requests
     );
+
+    const owner = this._owner.get();
+    if (!owner) {
+      return;
+    }
+    owner.sendEvent(Bluetooth.peripheralmanager_write_request_event, {
+      manager: peripheral,
+      requests: requests
+    });
   }
 }
