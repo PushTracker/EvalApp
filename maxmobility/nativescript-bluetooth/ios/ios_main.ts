@@ -414,8 +414,8 @@ export class Bluetooth extends BluetoothCommon {
 
         CLog(CLogTypes.info, `Bluetooth.startAdvertising ---- creating advertisement`);
         const advertisement = NSDictionary.dictionaryWithObjectsForKeys(
-          <any>[uuid, 'data_service'],
-          <any>[CBAdvertisementDataServiceUUIDsKey, CBAdvertisementDataLocalNameKey]
+          [[uuid], 'data_service'],
+          [CBAdvertisementDataServiceUUIDsKey, CBAdvertisementDataLocalNameKey]
         );
 
         // invokes the Peripheral Managers peripheralManagerDidStartAdvertising:error method
@@ -423,10 +423,6 @@ export class Bluetooth extends BluetoothCommon {
         // due to the peripheralManager.state being unknown outside of this timeout
         CLog(CLogTypes.info, `peripheral manager state ${this._getManagerStateString(this._peripheralManager.state)}`);
         setTimeout(() => {
-          CLog(
-            CLogTypes.info,
-            `peripheral manager state ${this._getManagerStateString(this._peripheralManager.state)}`
-          );
           this._peripheralManager.startAdvertising(advertisement);
           CLog(CLogTypes.info, 'Bluetooth.startAdvertising ---- started advertising');
           resolve();
