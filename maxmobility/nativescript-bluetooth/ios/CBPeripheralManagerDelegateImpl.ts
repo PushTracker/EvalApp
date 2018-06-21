@@ -34,13 +34,17 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
    * @param mgr [CBPeripheralManager] - The peripheral manager whose state has changed.
    */
   public peripheralManagerDidUpdateState(mgr: CBPeripheralManager) {
-    CLog(CLogTypes.info, `CBPeripheralManagerDelegateImpl.peripheralManagerDidUpdateState ----`, mgr);
+    CLog(CLogTypes.info, 'peripheralManagerDidUpdateState');
 
     const owner = this._owner.get();
     if (!owner) {
       return;
     }
-    owner.sendEvent(Bluetooth.peripheralmanager_update_state_event, { manager: mgr });
+
+    const state = owner._getManagerStateString(mgr.state);
+    CLog(CLogTypes.info, `current peripheral manager state = ${state}`);
+
+    owner.sendEvent(Bluetooth.peripheralmanager_update_state_event, { manager: mgr, state });
   }
 
   /**

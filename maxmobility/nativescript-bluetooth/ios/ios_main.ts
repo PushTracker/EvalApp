@@ -406,6 +406,10 @@ export class Bluetooth extends BluetoothCommon {
           return;
         }
 
+        if (this._peripheralManager.isAdvertising) {
+          this._peripheralManager.stopAdvertising();
+        }
+
         const uuid = CBUUID.UUIDWithString(args.UUID);
 
         CLog(CLogTypes.info, `Bluetooth.startAdvertising ---- creating advertisement`);
@@ -415,9 +419,18 @@ export class Bluetooth extends BluetoothCommon {
         );
 
         // invokes the Peripheral Managers peripheralManagerDidStartAdvertising:error method
-        this._peripheralManager.startAdvertising(advertisement);
-        CLog(CLogTypes.info, 'Bluetooth.startAdvertising ---- started advertising');
-        resolve();
+        // Brad - wrapping in timeout, without this the iOS API call will fail and trigger an API Misuse warning from iOS
+        // due to the peripheralManager.state being unknown outside of this timeout
+        CLog(CLogTypes.info, `peripheral manager state ${this._getManagerStateString(this._peripheralManager.state)}`);
+        setTimeout(() => {
+          CLog(
+            CLogTypes.info,
+            `peripheral manager state ${this._getManagerStateString(this._peripheralManager.state)}`
+          );
+          this._peripheralManager.startAdvertising(advertisement);
+          CLog(CLogTypes.info, 'Bluetooth.startAdvertising ---- started advertising');
+          resolve();
+        }, 1000);
       } catch (error) {
         CLog(CLogTypes.error, `Bluetooth.startAdvertising ---- ${error}`);
         reject(error);
@@ -1006,6 +1019,34 @@ export class Bluetooth extends BluetoothCommon {
     // data_service.characteristics = [data_control_characteristic, app_data_characteristic, ota_data_characteristic, wb_data_characteristic, du_data_characteristic]
 
     // peripheral.add(data_service)
+  }
+
+  public _getManagerStateString(state: CBManagerState): string {
+    let result: string;
+    switch (state) {
+      case CBManagerState.Unknown: // 0
+        result = 'unknown';
+        break;
+      case CBManagerState.PoweredOn: // 5
+        result = 'on';
+        break;
+      case CBManagerState.PoweredOff: // 4
+        result = 'off';
+        break;
+      case CBManagerState.Resetting: // 1
+        result = 'resetting';
+        break;
+      case CBManagerState.Unauthorized: // 3
+        result = 'resetting';
+        break;
+      case CBManagerState.Unsupported: // 2
+        result = 'resetting';
+        break;
+      default:
+        result = 'WTF state is the manager?!?';
+    }
+
+    return result;
   }
 }
 
