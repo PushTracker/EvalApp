@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Page } from 'tns-core-modules/ui/page';
-import { alert } from 'tns-core-modules/ui/dialogs';
-import { RouterExtensions } from 'nativescript-angular/router';
-import { UserService, ProgressService, preventKeyboardFromShowing } from '@maxmobility/mobile';
-import { User, LoggingService, CLog } from '@maxmobility/core';
-import { validate } from 'email-validator';
+import { CLog, LoggingService, User } from '@maxmobility/core';
+import { preventKeyboardFromShowing, ProgressService, UserService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
+import { validate } from 'email-validator';
+import { RouterExtensions } from 'nativescript-angular/router';
+import { alert } from 'tns-core-modules/ui/dialogs';
+import { Page } from 'tns-core-modules/ui/page';
+import { setMarginForNoActionBarOnPage } from '~/utils';
 
 @Component({
   selector: 'eval-login',
@@ -50,6 +51,7 @@ export class SignUpComponent implements OnInit {
     CLog('SignUpComponent OnInit');
     this._page.actionBarHidden = true;
     this._page.backgroundSpanUnderStatusBar = true;
+    setMarginForNoActionBarOnPage(this._page);
   }
 
   onSubmitTap() {
@@ -116,6 +118,14 @@ export class SignUpComponent implements OnInit {
     this._isEmailValid(this.user.email);
   }
 
+  navToLogin() {
+    this._router.navigate(['/login'], {
+      transition: {
+        name: 'slideRight'
+      }
+    });
+  }
+
   private _isEmailValid(text: string): boolean {
     // validate the email
     CLog('isEmailValid', text);
@@ -166,16 +176,5 @@ export class SignUpComponent implements OnInit {
     }
     this.lastNameError = '';
     return true;
-  }
-  
-
-  navToLogin() {
-    this._router.navigate(["/login"],
-        {
-        transition: {
-          name: 'slideRight'
-        }
-      }
-    );
   }
 }

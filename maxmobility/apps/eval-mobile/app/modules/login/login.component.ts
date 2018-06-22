@@ -1,15 +1,12 @@
-// angular
 import { Component, OnInit } from '@angular/core';
-// nativescript
-import { RouterExtensions } from 'nativescript-angular/router';
-import { Page } from 'tns-core-modules/ui/page';
-import { alert } from 'tns-core-modules/ui/dialogs';
-// app
-import { User, LoggingService, CLog } from '@maxmobility/core';
-import { UserService, ProgressService, preventKeyboardFromShowing } from '@maxmobility/mobile';
-import { validate } from 'email-validator';
+import { CLog, LoggingService } from '@maxmobility/core';
+import { preventKeyboardFromShowing, ProgressService, UserService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
-import { device } from 'tns-core-modules/platform';
+import { validate } from 'email-validator';
+import { RouterExtensions } from 'nativescript-angular/router';
+import { alert } from 'tns-core-modules/ui/dialogs';
+import { Page } from 'tns-core-modules/ui/page';
+import { setMarginForNoActionBarOnPage } from '~/utils';
 
 @Component({
   selector: 'Login',
@@ -48,6 +45,7 @@ export class LoginComponent implements OnInit {
     CLog('LoginComponent OnInit');
     this._page.actionBarHidden = true;
     this._page.backgroundSpanUnderStatusBar = true;
+    setMarginForNoActionBarOnPage(this._page);
 
     // if we get to the login page, no user should be logged in
     CLog(
