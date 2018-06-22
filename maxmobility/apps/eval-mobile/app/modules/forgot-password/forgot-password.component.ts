@@ -1,17 +1,13 @@
-// angular
 import { Component, OnInit } from '@angular/core';
-// nativescript
+import { CLog, LoggingService } from '@maxmobility/core';
+import { preventKeyboardFromShowing, ProgressService, UserService } from '@maxmobility/mobile';
+import { TranslateService } from '@ngx-translate/core';
+import { validate } from 'email-validator';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { PropertyChangeData } from 'tns-core-modules/data/observable';
-import { Page } from 'tns-core-modules/ui/page';
-import { Color } from 'tns-core-modules/color';
-import { TextField } from 'tns-core-modules/ui/text-field';
 import { alert } from 'tns-core-modules/ui/dialogs';
-// app
-import { User, LoggingService, CLog } from '@maxmobility/core';
-import { UserService, ProgressService, preventKeyboardFromShowing } from '@maxmobility/mobile';
-import { validate } from 'email-validator';
-import { TranslateService } from '@ngx-translate/core';
+import { Page } from 'tns-core-modules/ui/page';
+import { setMarginForNoActionBarOnPage } from '~/utils';
 
 @Component({
   selector: 'forgot-password',
@@ -48,33 +44,31 @@ export class ForgotPasswordComponent implements OnInit {
     CLog('ForgotPasswordComponent OnInit');
     this._page.actionBarHidden = true;
     this._page.backgroundSpanUnderStatusBar = true;
+    setMarginForNoActionBarOnPage(this._page);
   }
 
   goBack() {
     if (this._routerExtensions.canGoBack()) {
       this._routerExtensions.back();
     } else {
-      this._routerExtensions.navigate(["/login"],
-        {
+      this._routerExtensions.navigate(['/login'], {
         transition: {
           name: 'slideRight'
         }
-      }
-    );
+      });
     }
   }
 
   onSubmitTap() {
-
     // validate the email
     if (!this.email) {
-      this.emailError = this.email_required ;
+      this.emailError = this.email_required;
       return;
     }
     // make sure it's a valid email
     const em = this.email.trim();
     if (!validate(em)) {
-      this.emailError =  `"${em} "` + this.email_error;
+      this.emailError = `"${em} "` + this.email_error;
       return;
     }
 
@@ -92,13 +86,11 @@ export class ForgotPasswordComponent implements OnInit {
           message: this.check_email,
           okButtonText: this.ok
         }).then(() => {
-          this._routerExtensions.navigate(["/login"],
-        {
-        transition: {
-          name: 'slideRight'
-        }
-      }
-    );
+          this._routerExtensions.navigate(['/login'], {
+            transition: {
+              name: 'slideRight'
+            }
+          });
         });
       })
       .catch(err => {
@@ -120,13 +112,10 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   navToLogin() {
-    this._routerExtensions.navigate(["/login"],
-        {
-        transition: {
-          name: 'slideRight'
-        }
+    this._routerExtensions.navigate(['/login'], {
+      transition: {
+        name: 'slideRight'
       }
-    );
+    });
   }
-
 }
