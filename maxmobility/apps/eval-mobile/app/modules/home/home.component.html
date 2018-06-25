@@ -80,6 +80,7 @@
 	    <StackLayout orientation="horizontal">
 	      <StackLayout *ngFor="let item of Demos._array" class="icon-description-group">
 	        <Image src="~/assets/images/PushTracker-SmartDrive-pairing.png"
+                   (tap)="demoThumbTapped(item)" 
                    stretch="aspectFill" class="thumb"></Image>
 	        <StackLayout>
 		      <Label class="demo-item-description" textWrap="true" [text]="item.smartdrive_serial_number"></Label>
