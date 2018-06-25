@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 
 import { DemoDetailView } from './shared/demo-detail-view.model';
 import { DemoDetailViewService } from './shared/demo-detail-view.service';
@@ -26,10 +26,12 @@ import { DemoService, BluetoothService, FirmwareService, ProgressService } from 
 export class DemoDetailComponent implements OnInit {
   public demo: Demo = new Demo();
 
-  private index: number = -1;
+  private index: number = -1; // index into DemoService.Demos
+  private snackbar = new SnackBar();
 
   constructor(
     private _route: ActivatedRoute,
+    private zone: NgZone,
     private barcodeScanner: BarcodeScanner,
     private _progressService: ProgressService,
     private _demoService: DemoService,
@@ -149,6 +151,40 @@ export class DemoDetailComponent implements OnInit {
           }
         }
       });
+  }
+
+  onVersionTap() {
+    this.zone.run(() => {
+      const connectedPTs = BluetoothService.PushTrackers.filter(pt => pt.connected);
+      if (connectedPTs.length > 1) {
+        const pts = connectedPTs.map(pt => pt.address);
+        dialogs
+          .action({
+            message:
+              'Select PushTracker' + this.demo.pushtracker_serial_number.length
+                ? ` ${this.demo.pushtracker_serial_number}`
+                : '',
+            cancelButtonText: 'Cancel',
+            actions: pts
+          })
+          .then(r => {
+            console.log(r);
+            const pt = connectedPTs.filter(pt => pt.address == r)[0];
+            this.demo.pt_version = PushTracker.versionByteToString(pt.version);
+            this.demo.mcu_version = PushTracker.versionByteToString(pt.mcu_version);
+            this.demo.ble_version = PushTracker.versionByteToString(pt.ble_version);
+            this.demo.pt_mac_addr = pt.address;
+          });
+      } else if (connectedPTs.length == 1) {
+        const pt = connectedPTs[0];
+        this.demo.pt_version = PushTracker.versionByteToString(pt.version);
+        this.demo.mcu_version = PushTracker.versionByteToString(pt.mcu_version);
+        this.demo.ble_version = PushTracker.versionByteToString(pt.ble_version);
+        this.demo.pt_mac_addr = pt.address;
+      } else {
+        this.snackbar.simple('Please connect a PushTracker');
+      }
+    });
   }
 
   onSdTap() {
