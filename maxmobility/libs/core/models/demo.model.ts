@@ -102,6 +102,7 @@ export class Demo extends Observable {
       return '??';
     }
   }
+
   constructor(obj?: any) {
     super();
     if (obj !== null && obj !== undefined) {
@@ -137,7 +138,7 @@ export class Demo extends Observable {
   }
 
   getTime(): string {
-    let str = 'unused';
+    let str = '??';
     if (this.usage && this.usage.length) {
       str = this.usage[0].getTime().toISOString();
     }

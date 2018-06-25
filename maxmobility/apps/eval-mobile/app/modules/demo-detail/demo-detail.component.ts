@@ -55,29 +55,39 @@ export class DemoDetailComponent implements OnInit {
 
   ngOnInit() {}
 
+  haveSerial(): boolean {
+    let sdSN = this.demo.smartdrive_serial_number.trim();
+    //let ptSN = this.demo.pushtracker_serial_number.trim();
+    return sdSN && sdSN.length;
+  }
+
   onSave() {
-    this._progressService.show('Saving');
-    return this.demo
-      .use()
-      .then(() => {
-        return this._demoService.create(this.demo);
-      })
-      .then(() => {
-        // the demo service calls load() at the end ofa create
-        // now re-load our data from the service
-        if (this.index > -1) {
-        } else {
-          this.index = DemoService.Demos.indexOf(
-            this._demoService.getDemoBySmartDriveSerialNumber(this.demo.smartdrive_serial_number)
-          );
-        }
-        this.demo = DemoService.Demos.getItem(this.index);
-        this._progressService.hide();
-      })
-      .catch(err => {
-        this._progressService.hide();
-        console.log(`Couldn't create / load demos: ${err}`);
-      });
+    if (!this.haveSerial()) {
+      dialogs.alert('You must enter a SmartDrive serial number!');
+    } else {
+      this._progressService.show('Saving');
+      return this.demo
+        .use()
+        .then(() => {
+          return this._demoService.create(this.demo);
+        })
+        .then(() => {
+          // the demo service calls load() at the end ofa create
+          // now re-load our data from the service
+          if (this.index > -1) {
+          } else {
+            this.index = DemoService.Demos.indexOf(
+              this._demoService.getDemoBySmartDriveSerialNumber(this.demo.smartdrive_serial_number)
+            );
+          }
+          this.demo = DemoService.Demos.getItem(this.index);
+          this._progressService.hide();
+        })
+        .catch(err => {
+          this._progressService.hide();
+          console.log(`Couldn't create / load demos: ${err}`);
+        });
+    }
   }
 
   onScan(deviceName) {
