@@ -53,7 +53,18 @@ export class DemoDetailComponent implements OnInit {
     return isAndroid;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    dialogs
+      .action({
+        message: 'Demo Unit Model',
+        cancelButtonText: 'Cancel',
+        actions: ['MX2+', 'MX2']
+      })
+      .then(r => {
+        if (r.indexOf('Cancel') > -1) this.demo.model = 'MX2+';
+        else this.demo.model = r;
+      });
+  }
 
   haveSerial(): boolean {
     let sdSN = this.demo.smartdrive_serial_number.trim();
@@ -178,7 +189,7 @@ export class DemoDetailComponent implements OnInit {
             actions: pts
           })
           .then(r => {
-            console.log(r);
+            if (r.indexOf('Cancel') > -1) return;
             const pt = connectedPTs.filter(pt => pt.address == r)[0];
             this.demo.pt_version = PushTracker.versionByteToString(pt.version);
             this.demo.mcu_version = PushTracker.versionByteToString(pt.mcu_version);
