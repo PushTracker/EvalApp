@@ -1,5 +1,12 @@
 @import '../../scss/variables';
 
+
+.button {
+    background-color: $permobil-hero;
+    border-color: transparent;
+    border-width: 1;
+}
+
 .icon{
     font-size: 24;
     padding: 0, 0, 0, 15;

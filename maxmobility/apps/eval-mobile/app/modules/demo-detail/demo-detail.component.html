@@ -1,16 +1,14 @@
-<ActionBar class="action-bar" flat="true" [title]="'Demo Unit ' + demo.smartdrive_serial_number">
+<ActionBar class="action-bar" flat="true" [title]="demo.model + ' Demo ' + demo.smartdrive_serial_number">
   <NavigationButton *ngIf="isIOS()"></NavigationButton>
 
   <ActionItem (tap)="onSave()"
-      ios.systemIcon="4" ios.position="right"
-      text="Save" color="#fff"></ActionItem>
-
-  <ActionItem ios.position="right" (tap)="onScan()">
-    <Button text="&#xf072;" class="mdi icon-scan" ></Button>
+              ios.systemIcon="3" ios.position="right"
+              ios:text="Save" color="white">
+    <Button text="Save" class="button"></Button>
   </ActionItem>
 </ActionBar>
 
-<Gradient tkMainContent direction="to bottom" colors="#004F7E, #0070b3">  
+<Gradient tkMainContent direction="to bottom" colors="#004F7E, #0070b3">
   <GridLayout padding="0" margin="0"  rows="auto, *" cols="auto">
     <StackLayout backgroundImage="~/assets/images/background_1.jpg" row="0"  height="30%" width="100%" orientation="horizontal" horizontalAlignment="center">
       <Image src="~/assets/images/smartDriveFull.png"
@@ -24,23 +22,32 @@
 
 
         <DockLayout (tap)="onSDRowTapped()"  stretchLastChild="true" margin="15, 10, 5, 0">
-          <Label text="&#xf071;" class="mdi icon" dock="left"></Label>
-          <Label [text]="(demo.smartdrive_serial_number.length && demo.smartdrive_serial_number ) || 'press scan button to enter'" class="info" dock="left"></Label>
-          <Label [text]="demo.model" class="info" dock="left"></Label>
+          <Label dock="left"
+                 text="&#xf072;" class="mdi icon" ></Label>
+          <Label dock="left" (tap)="onScan('smartdrive')"
+                 text="&#xf100;" class="mdi icon-scan" ></Label>
+          <Label dock="left" (tap)="onEditSD()"
+                 text="&#xf3ed;" class="mdi icon-scan" ></Label>
+          <Label [text]="(demo.smartdrive_serial_number.length && demo.smartdrive_serial_number ) || 'press scan or edit button'" class="info" dock="left"></Label>
         </DockLayout>
 
         <StackLayout class="hr-light m-10" backgroundColor="#FFF" width="100%"></StackLayout>
 
         <DockLayout stretchLastChild="true" margin="5, 10, 5, 0">
-          <Label text="&#xf071;" class="mdi icon" dock="left"></Label>
-          <Label [text]="(demo.pushtracker_serial_number.length && demo.pushtracker_serial_number) || 'press scan button to enter'" class="info" dock="left"></Label>
+          <Label dock="left"
+                 text="&#xf072;" class="mdi icon" ></Label>
+          <Label dock="left" (tap)="onScan('pushtracker')"
+                 text="&#xf100;" class="mdi icon-scan" ></Label>
+          <Label dock="left" (tap)="onEditPT()"
+                 text="&#xf3ed;" class="mdi icon-scan" ></Label>
+          <Label [text]="(demo.pushtracker_serial_number.length && demo.pushtracker_serial_number) || 'press scan or edit button'" class="info" dock="left"></Label>
         </DockLayout>
 
         <StackLayout class="hr-light m-10" backgroundColor="#FFF" width="100%"></StackLayout>
 
         <DockLayout stretchLastChild="true" margin="5, 10, 5, 0">
           <Label text="&#xf5f5;" class="mdi icon"></Label>
-          <Label [text]="(demo.location.length && demo.location) || 'unused'" class="info"></Label>
+          <Label [text]="demo.location_string" class="info"></Label>
         </DockLayout>
 
         <StackLayout class="hr-light m-10" backgroundColor="#FFF" width="100%"></StackLayout>
@@ -54,21 +61,24 @@
 
         <DockLayout stretchLastChild="true" margin="5, 10, 10, 0">
           <Label text="&#xf628;" class="mdi icon"></Label>
-          <Label [text]="demo.mcu_version" class="info"></Label>
+          <Label [text]="demo.mcu_version_string" class="info"></Label>
+          <Label text="SmartDrive MCU Version" class="info"></Label>
         </DockLayout>
 
         <StackLayout class="hr-light m-10" backgroundColor="#FFF" width="100%"></StackLayout>
 
         <DockLayout stretchLastChild="true" margin="5, 10, 10, 0">
           <Label text="&#xf628;" class="mdi icon"></Label>
-          <Label [text]="demo.ble_version" class="info"></Label>
+          <Label [text]="demo.ble_version_string" class="info"></Label>
+          <Label text="SmartDrive BLE Version" class="info"></Label>
         </DockLayout>
 
         <StackLayout class="hr-light m-10" backgroundColor="#FFF" width="100%"></StackLayout>
 
         <DockLayout stretchLastChild="true" margin="5, 10, 10, 0">
           <Label text="&#xf628;" class="mdi icon"></Label>
-          <Label [text]="demo.pt_version" class="info"></Label>
+          <Label [text]="demo.pt_version_string" class="info"></Label>
+          <Label text="PushTracker Version" class="info"></Label>
         </DockLayout>
 
         <StackLayout class="hr-light m-10" backgroundColor="#FFF" width="100%"></StackLayout>
