@@ -178,27 +178,23 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
 
     this._subscribedCharacteristics.add(characteristic.UUID);
 
-    peripheral.stopAdvertising();
-    //         setHasPairedToWristband(true)
+    // peripheral.stopAdvertising();
+    // //         setHasPairedToWristband(true)
 
-    const x = CBUUID.UUIDWithString('68208ebf-f655-4a2d-98f4-20d7d860c471');
-    if (x === characteristic.UUID) {
-      this.sendSetTime();
+    // const x = CBUUID.UUIDWithString('68208ebf-f655-4a2d-98f4-20d7d860c471');
+    // if (x === characteristic.UUID) {
+    //   this.sendSetTime();
 
-      console.log('sent the set time event');
+    //   console.log('sent the set time event');
 
-      this.checkIfBandSupportsWake();
-    }
+    //   this.checkIfBandSupportsWake();
+    // }
 
     const owner = this._owner.get();
     if (!owner) {
       return;
     }
-    // owner.sendEvent(Bluetooth.peripheralmanager_subscribe_characteristic_event, {
-    //   manager: peripheral,
-    //   central: central,
-    //   characteristic: characteristic
-    // });
+
     owner.sendEvent(Bluetooth.server_connection_state_changed_event, {
       manager: peripheral,
       central: central,
@@ -280,7 +276,16 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
       characteristic
     );
 
+    this._subscribedCharacteristics.delete(characteristic.UUID);
+
+    if (this._subscribedCharacteristics.size <= 0) {
+      this._isConnected = false;
+      console.log(`this._isConnected = ${this._isConnected}`);
+      // start advertising again ...?
+    }
+
     const owner = this._owner.get();
+    console.log('owner', owner);
     if (!owner) {
       return;
     }
@@ -300,11 +305,13 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
    * @param error - If an error occurred, the cause of the failure.
    */
   public peripheralManagerDidAddServiceError(peripheral: CBPeripheralManager, service: CBService, error: NSError) {
-    CLog(CLogTypes.info, 'CBPeripheralManagerDelegateImpl.peripheralManagerDidAddServiceError ----', peripheral);
-
-    alert('Did Add Service Error');
-
-    console.log('error', error);
+    CLog(
+      CLogTypes.info,
+      'CBPeripheralManagerDelegateImpl.peripheralManagerDidAddServiceError ----',
+      peripheral,
+      service,
+      `error: ${error}`
+    );
   }
 
   /**

@@ -44,6 +44,8 @@ export class BluetoothService {
           console.log(msg);
         });
     });
+
+    this.setEventListeners();
   }
 
   public setEventListeners() {
@@ -55,7 +57,18 @@ export class BluetoothService {
     this._bluetooth.on(Bluetooth.device_name_change_event, this.onDeviceNameChange, this);
     this._bluetooth.on(Bluetooth.device_uuid_change_event, this.onDeviceUuidChange, this);
     this._bluetooth.on(Bluetooth.device_acl_disconnected_event, this.onDeviceAclDisconnected, this);
-    this._bluetooth.on(Bluetooth.server_connection_state_changed_event, this.onServerConnectionStateChanged, this);
+
+    this._bluetooth.on(Bluetooth.centralmanager_updated_state_event, args => {
+      console.log('centralmanager_updated_state_event');
+    });
+
+    // BRAD - testing the iOS pairing so using this right now to see if the connection is firing when subscribing to characteristics
+    this._bluetooth.on(Bluetooth.server_connection_state_changed_event, args => {
+      console.log('server_connection_state_changed_event');
+      alert('server_connection_state_changed_event');
+    });
+
+    // this._bluetooth.on(Bluetooth.server_connection_state_changed_event, this.onServerConnectionStateChanged, this);
     this._bluetooth.on(Bluetooth.characteristic_write_request_event, this.onCharacteristicWriteRequest, this);
     this._bluetooth.on(Bluetooth.bluetooth_advertise_failure_event, this.onAdvertiseFailure, this);
     this._bluetooth.on(Bluetooth.bluetooth_advertise_success_event, this.onAdvertiseSuccess, this);
@@ -374,6 +387,7 @@ export class BluetoothService {
 
   private onServerConnectionStateChanged(args: any): void {
     //console.log(`server connection state change!`);
+    alert('server connection state change!');
     const newState = args.data.newState;
     const device = args.data.device;
     console.log(`state change - ${device} - ${newState}`);
