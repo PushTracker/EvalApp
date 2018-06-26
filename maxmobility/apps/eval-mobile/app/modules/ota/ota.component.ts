@@ -16,6 +16,7 @@ import { AnimationCurve } from 'tns-core-modules/ui/enums';
 import { View } from 'tns-core-modules/ui/core/view';
 import { Animation, AnimationDefinition } from 'tns-core-modules/ui/animation';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
+import { TranslateService } from '@ngx-translate/core';
 
 // libs
 import { BluetoothService, FirmwareService, ProgressService } from '@maxmobility/mobile';
@@ -35,11 +36,8 @@ export class OTAComponent implements OnInit, OnDestroy {
 
   bluetoothReady = false;
 
-  // text for buttons and titles in different states
-  initialTitleText = 'Press the right button on your PushTracker to connect. (use the one here to test)';
-  connectedTitleText = 'Firmware Version 1.5';
-
-  updatingButtonText = 'Begin Firmware Updates';
+  // text
+  updatingButtonText = this._translateService.instant('ota.begin');
 
   smartDriveOTAs: ObservableArray<SmartDrive> = new ObservableArray();
   pushTrackerOTAs: ObservableArray<PushTracker> = new ObservableArray();
@@ -53,6 +51,7 @@ export class OTAComponent implements OnInit, OnDestroy {
     private page: Page,
     private routerExtensions: RouterExtensions,
     private router: Router,
+    private _translateService: TranslateService,
     private _progressService: ProgressService,
     private _bluetoothService: BluetoothService,
     private _firmwareService: FirmwareService
@@ -76,6 +75,10 @@ export class OTAComponent implements OnInit, OnDestroy {
     this.routeSub.unsubscribe();
   }
 
+  get currentVersion(): string {
+    return PushTracker.versionByteToString(this._firmwareService.firmwares.PT.version);
+  }
+
   get otaDescription(): ObservableArray<string> {
     return this._firmwareService.description;
   }
@@ -88,7 +91,7 @@ export class OTAComponent implements OnInit, OnDestroy {
 
   // Connectivity
   discoverSmartDrives() {
-    this._progressService.show('Searching for SmartDrives');
+    this._progressService.show(this._translateService.instant('bluetooth.searching'));
     return this._bluetoothService.scanForSmartDrive().then(() => {
       console.log(`Found ${BluetoothService.SmartDrives.length} SmartDrives!`);
       this._progressService.hide();
@@ -144,9 +147,9 @@ export class OTAComponent implements OnInit, OnDestroy {
           } else {
             // bluetooth is not available
             return alert({
-              title: 'Bluetooth Unavailable',
-              message: 'Bluetooth service unavailable - reinitializing!',
-              okButtonText: 'OK'
+              title: this._translateService.instant('bluetooth.errors.unavailable.title'),
+              message: this._translateService.instant('bluetooth.errors.unavailable.message'),
+              okButtonText: this._translateService.instant('dialogs.ok')
             }).then(() => {
               this.searching = false;
               return this._bluetoothService.advertise();
@@ -168,7 +171,7 @@ export class OTAComponent implements OnInit, OnDestroy {
   }
 
   private performOTAs(): Promise<any> {
-    this.updatingButtonText = 'Cancel All Firmware Updates';
+    this.updatingButtonText = this._translateService.instant('ota.cancel');
     return Promise.resolve().then(() => {
       // OTA the selected smart drive(s)
       const smartDriveOTATasks = this.smartDriveOTAs.map(sd => {
@@ -191,14 +194,14 @@ export class OTAComponent implements OnInit, OnDestroy {
 
       const otaTasks = smartDriveOTATasks.concat(pushTrackerOTATasks);
 
-      if (otaTasks) {
+      if (otaTasks && otaTasks.length) {
         this.updating = true;
         return Promise.all(otaTasks);
       } else {
         return alert({
-          title: 'No Devices',
-          message: 'No PushTrackers or SmartDrives found!',
-          okButtonText: 'OK'
+          title: this._translateService.instant('ota.errors.devices.title'),
+          message: this._translateService.instant('ota.errors.devices.message'),
+          okButtonText: this._translateService.instant('dialogs.ok')
         }).then(() => []);
       }
     });
@@ -206,7 +209,7 @@ export class OTAComponent implements OnInit, OnDestroy {
 
   private cancelOTAs(doCancel: boolean) {
     this.updating = false;
-    this.updatingButtonText = 'Begin Firmware Updates';
+    this.updatingButtonText = this._translateService.instant('ota.begin');
     if (doCancel) {
       console.log('Cancelling all otas!');
       this.smartDriveOTAs.map(sd => sd.cancelOTA());

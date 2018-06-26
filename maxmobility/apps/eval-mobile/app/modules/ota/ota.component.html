@@ -1,18 +1,18 @@
-<ActionBar class="action-bar" flat="true" title="Firmware Updates">
+<ActionBar class="action-bar" flat="true" [title]="'ota.title' | translate">
 </ActionBar>
 
 <StackLayout tkMainContent class="page page-content">
   <ScrollView class="hero" height="70%">
     <StackLayout class="page page-content">
       <Label class="title"
-             [text]="ptConnected ? initialTitleText : connectedTitleText"
+             [text]="('ota.version' | translate) + ' ' + (currentVersion || '??')"
              textWrap="true"></Label>
 
       <FlexboxLayout *ngIf="ready">
         <Button class="hero"
                 [visibility]="updating ? 'collapse' : 'visible'"
                 width="50%"
-                text="Refresh Device List"
+                [text]="'ota.refresh' | translate"
                 margin="5, 10, 5, 10"
                 (tap)="onRefreshDeviceList()"></Button>
         <Button class="hero"
@@ -21,6 +21,10 @@
                 margin="5, 10, 5, 10"
                 (tap)="onStartOtaUpdate()"></Button>
       </FlexboxLayout>
+      <Label class="otaDescription"
+             *ngIf="!ready"
+             textWrap="true"
+             [text]="'ota.downloading' | translate"></Label>
 
       //StackLayout in contains progress views for updates
       <StackLayout #otaProgressView padding="5" orientation="vertical">

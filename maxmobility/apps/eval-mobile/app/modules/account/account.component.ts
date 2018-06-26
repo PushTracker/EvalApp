@@ -60,7 +60,7 @@ export class AccountComponent implements OnInit {
 
   onLanguageChanged(args) {
     const newLanguage = this.languages[args.newIndex] || 'en';
-    this.user.data.language = newLanguage;
+    (this.user.data as any).language = newLanguage;
     this._translateService.use(newLanguage);
   }
 
