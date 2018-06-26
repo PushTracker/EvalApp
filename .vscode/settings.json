@@ -7,6 +7,8 @@
     "**/platforms/**": true,
     "**/node_modules/**": true,
     "maxmobility/node_modules/**": true,
-    "maxmobility/apps/eval-mobile/node_modules/**": true
+    "maxmobility/apps/eval-mobile/node_modules/**": true,
+    "maxmobility/nativescript-bluetooth/node_modules/**": true,
+    "maxmobility/nativescript-bluetooth/typings/**": true
   }
 }
