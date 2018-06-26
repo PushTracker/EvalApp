@@ -106,3 +106,5 @@ Thumbs.db
 maxmobility/nativescript-bluetooth/**/*.js
 !maxmobility/nativescript-bluetooth/base64.js
 !**/typings/*.d.ts
+
+!maxmobility/tools/**/*.js
