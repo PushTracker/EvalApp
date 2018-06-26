@@ -4,9 +4,11 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { confirm } from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
 import { Image } from 'tns-core-modules/ui/image';
+import * as fileSystemModule from 'tns-core-modules/file-system';
 import * as imageSource from 'tns-core-modules/image-source';
 import * as camera from 'nativescript-camera';
 import { ImageCropper } from 'nativescript-imagecropper';
+import * as LS from 'nativescript-localstorage';
 // app
 import { ValueList } from 'nativescript-drop-down';
 import { DropDownModule } from 'nativescript-drop-down/angular';
@@ -23,6 +25,9 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./account.component.css']
 })
 export class AccountComponent implements OnInit {
+  public fsKeyPrefix: string = 'AccountComponent.';
+  public fsKeyProfilePicture: string = 'ProfilePicture';
+
   private imageCropper: ImageCropper;
 
   constructor(
@@ -59,10 +64,43 @@ export class AccountComponent implements OnInit {
   sign_out_confirm: string = this._translateService.instant('user.sign-out-confirm');
 
   ngOnInit() {
+    this.loadProfilePicture();
     this.selectedLanguageIndex =
       this.languages.indexOf((this.user.data as any).language) > -1
         ? this.languages.indexOf((this.user.data as any).language)
         : 0;
+  }
+
+  getProfilePictureFSKey(): string {
+    return this.fsKeyPrefix + this.user.data._id + '.' + this.fsKeyProfilePicture;
+  }
+
+  saveProfilePicture(source) {
+    try {
+      const picKey = this.getProfilePictureFSKey();
+      const b64 = source.toBase64String('png');
+      const pic = LS.setItem(picKey, b64);
+      this.user.data.profile_picture = source;
+      return Promise.resolve();
+    } catch (err) {
+      return Promise.reject(`Couldn't save profile picture: ${err}`);
+    }
+  }
+
+  loadProfilePicture() {
+    try {
+      const picKey = this.getProfilePictureFSKey();
+      const pic = LS.getItem(picKey);
+      if (pic) {
+        let source = new imageSource.fromBase64(pic);
+        this.user.data.profile_picture = source;
+      } else {
+        this.user.data.profile_picture = undefined;
+      }
+      return Promise.resolve();
+    } catch (err) {
+      return Promise.reject(`Couldn't load profile picture: ${err}`);
+    }
   }
 
   onUpdateProfilePictureTap() {
@@ -92,8 +130,7 @@ export class AccountComponent implements OnInit {
                   .show(source, options)
                   .then(args => {
                     if (args.image !== null) {
-                      console.log('got image!');
-                      this.user.data.profile_picture = args.image;
+                      this.saveProfilePicture(args.image);
                     }
                   })
                   .catch(function(e) {
