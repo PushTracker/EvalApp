@@ -142,12 +142,17 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
     );
 
     console.log('characteristic.uuid', characteristic.UUID);
+    console.log('central.identifer', central.identifier);
 
     let isNewCentral = false;
 
     const oldCentral = this._central;
-    if (oldCentral === this._central) {
-      console.log('oldCentral.identifier', oldCentral.identifier, 'central.identifier', central.identifier);
+    if (!oldCentral || !oldCentral.identifier) {
+      console.log('oldCentral is null');
+    }
+
+    if (oldCentral && oldCentral.identifier && oldCentral === this._central) {
+      console.log(`oldCentral.identifier = ${oldCentral.identifier}`, 'central.identifier', central.identifier);
       if (oldCentral.identifier !== central.identifier) {
         console.log(
           `changing central from ${oldCentral.identifier} to ${
