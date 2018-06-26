@@ -25,10 +25,10 @@ let singleton: WeakRef<Bluetooth> = null;
 const peripheralArray: any = NSMutableArray.new();
 
 export class Bluetooth extends BluetoothCommon {
-  private readonly _centralDelegate = null;
-  private readonly _centralPeripheralMgrDelegate = null;
-  private readonly _centralManager = null;
-  private readonly _peripheralManager = null;
+  private readonly _centralDelegate: CBCentralManagerDelegate = null;
+  private readonly _centralPeripheralMgrDelegate: CBPeripheralManagerDelegateImpl = null;
+  private readonly _centralManager: CBCentralManager = null;
+  private readonly _peripheralManager: CBPeripheralManager = null;
 
   private _data_service: CBMutableService;
   public _connectCallbacks = {};
@@ -355,16 +355,23 @@ export class Bluetooth extends BluetoothCommon {
     // }
   }
 
+  /**
+   * Get connected devices for this specific profile.
+   * Return the set of devices which are in state STATE_CONNECTED
+   * Requires the BLUETOOTH permission.
+   * @returns - List of Bluetooth devices. The list will be empty on error.
+   */
+  public getConnectedDevices() {
+    console.log('getConnectedDevices', peripheralArray);
+    return peripheralArray;
+  }
+
   public getServerConnectedDevices() {
-    // if (
-    //   gattServer !== null &&
-    //   gattServer !== undefined &&
-    //   bluetoothManager !== null &&
-    //   bluetoothManager !== undefined
-    // ) {
-    //   // return bluetoothManager.getConnectedDevices(android.bluetooth.BluetoothGattServer.GATT);
-    //   return null;
-    // }
+    console.log('BEGIN getServerConnectedDevices');
+    if (peripheralArray) {
+      console.log('peripheralArray', peripheralArray);
+      return peripheralArray;
+    }
   }
 
   public getServerConnectedDeviceState(device) {
@@ -414,8 +421,8 @@ export class Bluetooth extends BluetoothCommon {
 
         CLog(CLogTypes.info, `Bluetooth.startAdvertising ---- creating advertisement`);
         const advertisement = NSDictionary.dictionaryWithObjectsForKeys(
-          <any>[uuid, 'data_service'],
-          <any>[CBAdvertisementDataServiceUUIDsKey, CBAdvertisementDataLocalNameKey]
+          [[uuid], 'data_service'],
+          [CBAdvertisementDataServiceUUIDsKey, CBAdvertisementDataLocalNameKey]
         );
 
         // invokes the Peripheral Managers peripheralManagerDidStartAdvertising:error method
@@ -423,12 +430,17 @@ export class Bluetooth extends BluetoothCommon {
         // due to the peripheralManager.state being unknown outside of this timeout
         CLog(CLogTypes.info, `peripheral manager state ${this._getManagerStateString(this._peripheralManager.state)}`);
         setTimeout(() => {
-          CLog(
-            CLogTypes.info,
-            `peripheral manager state ${this._getManagerStateString(this._peripheralManager.state)}`
-          );
+          console.log('before setup_data_service');
+          this.setup_data_service(this._peripheralManager);
+          console.log('after setup_data_service');
           this._peripheralManager.startAdvertising(advertisement);
           CLog(CLogTypes.info, 'Bluetooth.startAdvertising ---- started advertising');
+
+          setTimeout(() => {
+            console.log('timeout executing');
+            // this.getServerConnectedDevices();
+            // console.log(this._centralManager.retrievePeripheralsWithIdentifiers());
+          }, 3000);
           resolve();
         }, 1000);
       } catch (error) {
@@ -451,8 +463,10 @@ export class Bluetooth extends BluetoothCommon {
       if (this._peripheralManager.isAdvertising) {
         CLog(CLogTypes.info, 'Peripheral manager is advertising.');
         this._peripheralManager.stopAdvertising();
-        resolve();
       }
+
+      // always resolve
+      resolve();
     });
   }
 
@@ -933,73 +947,93 @@ export class Bluetooth extends BluetoothCommon {
   }
 
   public setup_data_service(peripheral: CBPeripheralManager) {
-    this._data_service.includedServices = NSArray.array();
-    //  iOS_Utils.collections.jsArrayToNSArray([]);
-    this._peripheralManager.removeService(this._data_service);
-    this._peripheralManager.stopAdvertising();
+    try {
+      console.log('*** SETUP_DATA_SERVICE ***', peripheral);
+      console.log('this.data_service', this._data_service);
+      // this._data_service.includedServices = NSArray.array();
+      // //  iOS_Utils.collections.jsArrayToNSArray([]);
+      // this._peripheralManager.removeService(this._data_service);
+      // this._peripheralManager.stopAdvertising();
 
-    const data_service = CBMutableService.alloc().initWithTypePrimary(
-      CBUUID.UUIDWithString(PushTrackerServiceID.data_service),
-      true
-    );
-    CLog(CLogTypes.info, `data_service: ${data_service}`);
-    this._data_service = data_service;
+      const data_service = CBMutableService.alloc().initWithTypePrimary(
+        CBUUID.UUIDWithString(PushTrackerServiceID.data_service),
+        true
+      );
+      CLog(CLogTypes.info, `data_service: ${data_service}`);
+      this._data_service = data_service;
 
-    // data_control characterstic
-    const data_control_characteristic = CBMutableCharacteristic.alloc().initWithTypePropertiesValuePermissions(
-      CBUUID.UUIDWithString(PushTrackerServiceID.data_control),
-      CBCharacteristicProperties.PropertyWrite |
-        CBCharacteristicProperties.PropertyRead |
-        CBCharacteristicProperties.PropertyNotify,
-      null,
-      CBAttributePermissions.Writeable | CBAttributePermissions.Readable
-    );
+      console.log('before data_control_characteristic');
+      // data_control characterstic
+      const data_control_characteristic = CBMutableCharacteristic.alloc().initWithTypePropertiesValuePermissions(
+        CBUUID.UUIDWithString(PushTrackerServiceID.data_control),
+        CBCharacteristicProperties.PropertyWrite |
+          CBCharacteristicProperties.PropertyRead |
+          CBCharacteristicProperties.PropertyNotify,
+        null,
+        CBAttributePermissions.Writeable | CBAttributePermissions.Readable
+      );
+      console.log('after data_control_characteristic', data_control_characteristic);
 
-    // app_data characteristic
-    const app_data_characteristic = CBMutableCharacteristic.alloc().initWithTypePropertiesValuePermissions(
-      CBUUID.UUIDWithString(PushTrackerServiceID.app_data),
-      CBCharacteristicProperties.PropertyWrite |
-        CBCharacteristicProperties.PropertyRead |
-        CBCharacteristicProperties.PropertyNotify,
-      null,
-      CBAttributePermissions.Readable | CBAttributePermissions.Writeable
-    );
+      // app_data characteristic
+      console.log('before app_data_characteristic');
+      const app_data_characteristic = CBMutableCharacteristic.alloc().initWithTypePropertiesValuePermissions(
+        CBUUID.UUIDWithString(PushTrackerServiceID.app_data),
+        CBCharacteristicProperties.PropertyWrite |
+          CBCharacteristicProperties.PropertyRead |
+          CBCharacteristicProperties.PropertyNotify,
+        null,
+        CBAttributePermissions.Readable | CBAttributePermissions.Writeable
+      );
+      console.log('after app_data_characteristic', app_data_characteristic);
 
-    // ota characteristic
-    const ota_data_characteristic = CBMutableCharacteristic.alloc().initWithTypePropertiesValuePermissions(
-      CBUUID.UUIDWithString(PushTrackerServiceID.ota_data),
-      CBCharacteristicProperties.PropertyWrite |
-        CBCharacteristicProperties.PropertyRead |
-        CBCharacteristicProperties.PropertyNotify,
-      null,
-      CBAttributePermissions.Readable | CBAttributePermissions.Writeable
-    );
+      console.log('before ota_data_characteristic');
+      // ota characteristic
+      const ota_data_characteristic = CBMutableCharacteristic.alloc().initWithTypePropertiesValuePermissions(
+        CBUUID.UUIDWithString(PushTrackerServiceID.ota_data),
+        CBCharacteristicProperties.PropertyWrite |
+          CBCharacteristicProperties.PropertyRead |
+          CBCharacteristicProperties.PropertyNotify,
+        null,
+        CBAttributePermissions.Readable | CBAttributePermissions.Writeable
+      );
+      console.log('after ota_data_characteristic', ota_data_characteristic);
 
-    // wb_data characteristic
-    const wb_data_characteristic = CBMutableCharacteristic.alloc().initWithTypePropertiesValuePermissions(
-      CBUUID.UUIDWithString(PushTrackerServiceID.wb_data),
-      CBCharacteristicProperties.PropertyWrite |
-        CBCharacteristicProperties.PropertyRead |
-        CBCharacteristicProperties.PropertyNotify,
-      null,
-      CBAttributePermissions.Readable | CBAttributePermissions.Writeable
-    );
+      console.log('before wb_data_characteristic');
+      // wb_data characteristic
+      const wb_data_characteristic = CBMutableCharacteristic.alloc().initWithTypePropertiesValuePermissions(
+        CBUUID.UUIDWithString(PushTrackerServiceID.wb_data),
+        CBCharacteristicProperties.PropertyWrite |
+          CBCharacteristicProperties.PropertyRead |
+          CBCharacteristicProperties.PropertyNotify,
+        null,
+        CBAttributePermissions.Readable | CBAttributePermissions.Writeable
+      );
+      console.log('after wb_data_characteristic', wb_data_characteristic);
 
-    // du_data characteristic
-    const du_data_characteristic = CBMutableCharacteristic.alloc().initWithTypePropertiesValuePermissions(
-      CBUUID.UUIDWithString(PushTrackerServiceID.du_data),
-      CBCharacteristicProperties.PropertyWrite |
-        CBCharacteristicProperties.PropertyRead |
-        CBCharacteristicProperties.PropertyNotify,
-      null,
-      CBAttributePermissions.Readable | CBAttributePermissions.Writeable
-    );
+      console.log('before du_data_characteristic');
+      // du_data characteristic
+      const du_data_characteristic = CBMutableCharacteristic.alloc().initWithTypePropertiesValuePermissions(
+        CBUUID.UUIDWithString(PushTrackerServiceID.du_data),
+        CBCharacteristicProperties.PropertyWrite |
+          CBCharacteristicProperties.PropertyRead |
+          CBCharacteristicProperties.PropertyNotify,
+        null,
+        CBAttributePermissions.Readable | CBAttributePermissions.Writeable
+      );
+      console.log('after du_data_characteristic', du_data_characteristic);
 
-    // assign the characteristics
-    data_service.characteristics = [data_control_characteristic, app_data_characteristic] as any;
+      console.log('before characteristics');
+      // assign the characteristics
+      data_service.characteristics = [data_control_characteristic, app_data_characteristic] as any;
+      console.log('after data_service.characteristics', data_service.characteristics);
 
-    // add the service to the peripheral manager
-    peripheral.addService(data_service);
+      console.log('before addService');
+      // add the service to the peripheral manager
+      peripheral.addService(data_service);
+      console.log('after addService');
+    } catch (e) {
+      console.log('error', e);
+    }
 
     // let data_control_characteristic = CBMutableCharacteristic(type: PushTrackerServiceID.data_control.cb_uuid, properties: [.write, .read, .notify], value: nil, permissions: [.readable, .writeable])
     // self.data_control_characteristic = data_control_characteristic;

@@ -1,20 +1,15 @@
 /// <reference path="../../../typings/android27.d.ts" />
 
-// angular
 import { Injectable } from '@angular/core';
-
-// nativescript
 import * as dialogsModule from 'tns-core-modules/ui/dialogs';
 import { isAndroid } from 'tns-core-modules/platform';
 import { fromObject } from 'tns-core-modules/data/observable';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
-
-// libs
+import { Packet, DailyInfo, PushTracker, SmartDrive } from '@maxmobility/core';
 import * as Toast from 'nativescript-toast';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 import { Feedback, FeedbackType, FeedbackPosition } from 'nativescript-feedback';
 import { Bluetooth, CharacteristicProperties } from 'nativescript-bluetooth';
-import { Packet, DailyInfo, PushTracker, SmartDrive } from '@maxmobility/core';
 
 @Injectable()
 export class BluetoothService {
@@ -92,51 +87,79 @@ export class BluetoothService {
     return this._bluetooth.isBluetoothEnabled();
   }
 
-  public available(): Promise<boolean> {
-    return this._bluetooth.isBluetoothEnabled().then(enabled => {
-      return enabled && this.isActive();
-    });
+  public async available(): Promise<boolean> {
+    const enabled = await this._bluetooth.isBluetoothEnabled();
+    return enabled && this.isActive();
+
+    // return this._bluetooth.isBluetoothEnabled().then(enabled => {
+    //   return enabled && this.isActive();
+    // });
   }
 
   public isActive() {
     return this.enabled && this.initialized && this._bluetooth.offersService(BluetoothService.AppServiceUUID);
   }
 
-  public initialize(): Promise<any> {
+  public async initialize(): Promise<any> {
     this.enabled = false;
     this.initialized = false;
-    return this._bluetooth
-      .requestCoarseLocationPermission()
-      .then(() => {
-        return this.restart();
-      })
-      .then(() => {
-        if (this.enabled === true) {
-          this.addServices();
-          this.initialized = true;
-        } else {
-          console.log('Bluetooth is not enabled.');
-        }
-      });
+    const x = await this._bluetooth.requestCoarseLocationPermission().catch(error => {
+      console.log('requestCoarseLocationPermission error', error);
+    });
+
+    if (this.enabled === true) {
+      this.addServices();
+      this.initialized = true;
+    } else {
+      console.log('Bluetooth is not enabled.');
+    }
+
+    // return this._bluetooth
+    //   .requestCoarseLocationPermission()
+    //   .then(() => {
+    //     // return this.restart();
+    //   })
+    //   .then(() => {
+    //     if (this.enabled === true) {
+    //       this.addServices();
+    //       this.initialized = true;
+    //     } else {
+    //       console.log('Bluetooth is not enabled.');
+    //     }
+    //   });
   }
 
-  public advertise(): Promise<any> {
-    return this.initialize()
-      .then(() => {
-        return this._bluetooth.startAdvertising({
-          UUID: BluetoothService.AppServiceUUID,
-          settings: {
-            connectable: true
-          },
-          data: {
-            includeDeviceName: true
-          }
-        });
-      })
-      .then(() => {
-        this._bluetooth.addService(this.AppService);
-        console.log('Advertising Started!');
-      });
+  public async advertise(): Promise<any> {
+    await this.initialize();
+    await this._bluetooth.startAdvertising({
+      UUID: BluetoothService.AppServiceUUID,
+      settings: {
+        connectable: true
+      },
+      data: {
+        includeDeviceName: true
+      }
+    });
+
+    this._bluetooth.addService(this.AppService);
+    console.log('Advertising Started!');
+
+    // return this.initialize()
+    //   .then(() => {
+    //     return this._bluetooth.startAdvertising({
+    //       UUID: BluetoothService.AppServiceUUID,
+    //       settings: {
+    //         connectable: true
+    //       },
+    //       data: {
+    //         includeDeviceName: true
+    //       }
+    //     });
+    //   })
+    //   .then(() => {
+    //     this._bluetooth.addService(this.AppService);
+    //     console.log('Advertising Started!');
+    //   });
   }
 
   public scanForAny(timeout: number = 4): Promise<any> {
@@ -208,7 +231,7 @@ export class BluetoothService {
     return this._bluetooth.write(opts);
   }
 
-  public stop(): Promise<any> {
+  public async stop(): Promise<any> {
     this.enabled = false;
     this.initialized = false;
     // remove the services
@@ -218,9 +241,11 @@ export class BluetoothService {
     // stop listening for events
     this.clearEventListeners();
     // stop advertising
-    return this.disconnectAll().then(() => {
-      return this._bluetooth.stopAdvertising();
-    });
+    await this.disconnectAll();
+    this._bluetooth.stopAdvertising();
+    // return this.disconnectAll().then(() => {
+    //   return this._bluetooth.stopAdvertising();
+    // });
   }
 
   public restart(): Promise<any> {
@@ -544,8 +569,8 @@ export class BluetoothService {
 
   public notifyPushTrackers(addresses: any): Promise<any> {
     const connectedDevices = this._bluetooth.getServerConnectedDevices();
-    let jsConnDev = [];
-    let length = connectedDevices.size();
+    const jsConnDev = [];
+    const length = connectedDevices.size();
     for (let i = 0; i < length; i++) {
       jsConnDev.push(`${connectedDevices.get(i)}`);
     }
@@ -554,7 +579,7 @@ export class BluetoothService {
     const notify = addr => {
       return new Promise((resolve, reject) => {
         const dev = jsConnDev.filter(d => {
-          return d == addr;
+          return d === addr;
         });
         if (dev.length) {
           const timeoutID = setTimeout(() => {

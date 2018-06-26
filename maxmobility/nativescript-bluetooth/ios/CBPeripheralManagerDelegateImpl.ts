@@ -131,7 +131,12 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
     if (!owner) {
       return;
     }
-    owner.sendEvent(Bluetooth.peripheralmanager_subscribe_characteristic_event, {
+    // owner.sendEvent(Bluetooth.peripheralmanager_subscribe_characteristic_event, {
+    //   manager: peripheral,
+    //   central: central,
+    //   characteristic: characteristic
+    // });
+    owner.sendEvent(Bluetooth.server_connection_state_changed_event, {
       manager: peripheral,
       central: central,
       characteristic: characteristic
