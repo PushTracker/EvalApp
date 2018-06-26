@@ -3,20 +3,67 @@
     <StackLayout>
       <Label class="app-logo" [text]="'general.title' | translate"></Label>
       <Label class="account-icon fa text-white" text="&#xf2be;"></Label>
-      <TextField #firstName [(ngModel)]="user.first_name" class="text-field" [hint]="'user.first-name' | translate"  autocorrect="true" autocapitalizationType="words"
+      <DockLayout>
+        <Label dock="left" [text]="'user.language' | translate" class="text-field label"></Label>
+        <DropDown
+           dock="right"
+		   [hint]="'user.language' | translate"
+           [selectedIndex]="selectedLanguageIndex"
+		   class="text-field dropdown"
+		   [items]="languages"
+		   (selectedIndexChanged)="onLanguageChanged($event)"></DropDown>
+      </DockLayout>
+      <TextField #firstName
+                 [(ngModel)]="user.first_name"
+                 class="text-field"
+                 [hint]="'user.first-name' | translate"
+                 autocorrect="true"
+                 autocapitalizationType="words"
                  (returnPress)="onReturnPress($event)"></TextField>
-      <Label [text]="firstNameError" class="text-white error" [visibility]="firstNameError ? 'visible' : 'collapsed'" textWrap="true"></Label>
-      <TextField #lastName [(ngModel)]="user.last_name" class="text-field" [hint]="'user.last-name' | translate" autocorrect="true" autocapitalizationType="words"
+      <Label [text]="firstNameError"
+             class="text-white error"
+             [visibility]="firstNameError ? 'visible' : 'collapsed'"
+             textWrap="true"></Label>
+      <TextField #lastName
+                 [(ngModel)]="user.last_name"
+                 class="text-field"
+                 [hint]="'user.last-name' | translate"
+                 autocorrect="true"
+                 autocapitalizationType="words"
                  (returnPress)="onReturnPress($event)"></TextField>
-      <Label [text]="lastNameError" class="text-white error" [visibility]="lastNameError ? 'visible' : 'collapsed'" textWrap="true"></Label>
-      <TextField #email [(ngModel)]="user.email" class="text-field" [hint]="'user.email' | translate" keyboardType="email" autocorrect="false"
-                 autocapitalizationType="none" (textChange)="onEmailTextChange($event)"></TextField>
-      <Label [text]="emailError" class="text-white error" [visibility]="emailError ? 'visible' : 'collapsed'" textWrap="true"></Label>
-      <TextField #password [(ngModel)]="user.password" class="text-field" [hint]="'user.password' | translate" secure="true" autocorrect="false"
+      <Label [text]="lastNameError"
+             class="text-white error"
+             [visibility]="lastNameError ? 'visible' : 'collapsed'"
+             textWrap="true"></Label>
+      <TextField #email
+                 [(ngModel)]="user.email"
+                 class="text-field"
+                 [hint]="'user.email' | translate"
+                 keyboardType="email"
+                 autocorrect="false"
+                 autocapitalizationType="none"
+                 (textChange)="onEmailTextChange($event)"></TextField>
+      <Label [text]="emailError"
+             class="text-white error"
+             [visibility]="emailError ? 'visible' : 'collapsed'"
+             textWrap="true"></Label>
+      <TextField #password
+                 [(ngModel)]="user.password"
+                 class="text-field"
+                 [hint]="'user.password' | translate"
+                 secure="true"
+                 autocorrect="false"
                  (returnPress)="onReturnPress($event)"></TextField>
-      <Label [text]="passwordError" class="text-white error" [visibility]="passwordError ? 'visible' : 'collapsed'" textWrap="true"></Label>
-      <Button [text]="'user.sign-up' | translate" class="permobil-ocean-btn submit" (tap)="onSubmitTap()"></Button>
-      <Button [text]="'user.back-to-login' | translate" class="btn-transparent text-white" (tap)="navToLogin()"></Button>
+      <Label [text]="passwordError"
+             class="text-white error"
+             [visibility]="passwordError ? 'visible' : 'collapsed'"
+             textWrap="true"></Label>
+      <Button [text]="'user.sign-up' | translate"
+              class="permobil-ocean-btn submit"
+              (tap)="onSubmitTap()"></Button>
+      <Button [text]="'user.back-to-login' | translate"
+              class="btn-transparent text-white"
+              (tap)="navToLogin()"></Button>
     </StackLayout>
   </ScrollView>
 </Gradient>

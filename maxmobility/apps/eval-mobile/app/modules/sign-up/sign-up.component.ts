@@ -6,6 +6,7 @@ import { validate } from 'email-validator';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { alert } from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
+import { DropDownModule } from 'nativescript-drop-down/angular';
 import { setMarginForNoActionBarOnPage } from '~/utils';
 
 @Component({
@@ -21,6 +22,9 @@ export class SignUpComponent implements OnInit {
   emailError = '';
   firstNameError = '';
   lastNameError = '';
+
+  languages: Array<string> = this._translateService.getLangs();
+  selectedLanguageIndex: number = 0;
 
   error: string = this._translateService.instant('user.error');
   ok: string = this._translateService.instant('dialogues.ok');
@@ -52,6 +56,12 @@ export class SignUpComponent implements OnInit {
     this._page.actionBarHidden = true;
     this._page.backgroundSpanUnderStatusBar = true;
     setMarginForNoActionBarOnPage(this._page);
+  }
+
+  onLanguageChanged(args) {
+    const newLanguage = this.languages[args.newIndex] || 'en';
+    this.user.language = newLanguage;
+    this._translateService.use(newLanguage);
   }
 
   onSubmitTap() {
