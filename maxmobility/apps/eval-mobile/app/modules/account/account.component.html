@@ -11,7 +11,15 @@
 <Gradient  direction="to bottom" colors="#004F7E, #0070b3">
   <ScrollView>
     <StackLayout class="account-layout" orientation="vertical">
-      <Label color="#fff"  class="account-icon fa" text="&#xf2be;"></Label>
+      <Image *ngIf="user.data.profile_picture"
+             [src]="user.data.profile_picture"
+             (tap)="onUpdateProfilePictureTap()"
+             class="account-picture"></Image>
+      <Label color="#fff"
+             *ngIf="!user.data.profile_picture"
+             (tap)="onUpdateProfilePictureTap()"
+             class="account-icon fa"
+             text="&#xf2be;"></Label>
       <DropDown
 		 [hint]="'user.language' | translate"
          [selectedIndex]="selectedLanguageIndex"

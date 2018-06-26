@@ -3,6 +3,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 // nativescript
 import { confirm } from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
+import { Image } from 'tns-core-modules/ui/image';
+import * as imageSource from 'tns-core-modules/image-source';
+import * as camera from 'nativescript-camera';
+import { ImageCropper } from 'nativescript-imagecropper';
 // app
 import { ValueList } from 'nativescript-drop-down';
 import { DropDownModule } from 'nativescript-drop-down/angular';
@@ -19,6 +23,8 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./account.component.css']
 })
 export class AccountComponent implements OnInit {
+  private imageCropper: ImageCropper;
+
   constructor(
     private _userService: UserService,
     private _progressService: ProgressService,
@@ -28,6 +34,7 @@ export class AccountComponent implements OnInit {
     private _translateService: TranslateService
   ) {
     this._page.enableSwipeBackNavigation = false;
+    this.imageCropper = new ImageCropper();
   }
 
   // tslint:disable-next-line:member-ordering
@@ -56,6 +63,54 @@ export class AccountComponent implements OnInit {
       this.languages.indexOf((this.user.data as any).language) > -1
         ? this.languages.indexOf((this.user.data as any).language)
         : 0;
+  }
+
+  onUpdateProfilePictureTap() {
+    if (camera.isAvailable()) {
+      camera
+        .requestPermissions()
+        .then(() => {
+          console.log('Updating profile picture!');
+
+          const options = {
+            width: 256,
+            height: 256,
+            lockSquare: true
+          };
+
+          camera
+            .takePicture({
+              width: 500,
+              height: 500,
+              keepAspectRatio: true,
+              cameraFacing: 'front'
+            })
+            .then(imageAsset => {
+              let source = new imageSource.ImageSource();
+              source.fromAsset(imageAsset).then(source => {
+                this.imageCropper
+                  .show(source, options)
+                  .then(args => {
+                    if (args.image !== null) {
+                      console.log('got image!');
+                      this.user.data.profile_picture = args.image;
+                    }
+                  })
+                  .catch(function(e) {
+                    console.dir(e);
+                  });
+              });
+            })
+            .catch(err => {
+              console.log('Error -> ' + err.message);
+            });
+        })
+        .catch(err => {
+          console.log('Error -> ' + err.message);
+        });
+    } else {
+      console.log('No camera available');
+    }
   }
 
   onLanguageChanged(args) {

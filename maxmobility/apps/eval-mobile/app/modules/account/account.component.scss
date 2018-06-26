@@ -23,6 +23,24 @@
   margin: 15;
 }
 
+.account-icon {
+  margin: 15 0 20 0;
+  color: $permobil-ocean;
+  font-size: 60;
+  text-align: center;
+}
+
+.account-picture {
+  margin: 15 0 20 0;
+  color: $permobil-ocean;
+  horizontal-align: center;
+  border-color: $permobil-ocean;
+  border-width: 10;
+  border-radius: 100;
+  width: 100;
+  height: 100;
+}
+
 .account-text-entry {
   color: $white;
   text-align: right;
