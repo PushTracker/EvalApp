@@ -60,12 +60,48 @@ export class Demo extends Observable {
   public location: string = '';
   public smartdrive_serial_number: string = '';
   public pushtracker_serial_number: string = '';
-  public pt_version: string = 'unknown';
-  public ble_version: string = 'unknown';
-  public mcu_version: string = 'unknown';
+  public pt_version: string = '';
+  public ble_version: string = '';
+  public mcu_version: string = '';
   public pt_mac_addr: string = '';
   public sd_mac_addr: string = '';
   public usage: Array<Record> = [];
+
+  get location_string(): string {
+    if (this.location && this.location.length) {
+      return this.location.trim();
+    } else {
+      return '??';
+    }
+  }
+
+  get version_string(): string {
+    return [this.pt_version_string, this.mcu_version_string, this.ble_version_string].join(', ');
+  }
+
+  get pt_version_string(): string {
+    if (this.pt_version && this.pt_version.length && this.pt_version.includes('.')) {
+      return this.pt_version.trim();
+    } else {
+      return '??';
+    }
+  }
+
+  get ble_version_string(): string {
+    if (this.ble_version && this.ble_version.length && this.ble_version.includes('.')) {
+      return this.ble_version.trim();
+    } else {
+      return '??';
+    }
+  }
+
+  get mcu_version_string(): string {
+    if (this.mcu_version && this.mcu_version.length && this.mcu_version.includes('.')) {
+      return this.mcu_version.trim();
+    } else {
+      return '??';
+    }
+  }
 
   constructor(obj?: any) {
     super();
@@ -102,7 +138,7 @@ export class Demo extends Observable {
   }
 
   getTime(): string {
-    let str = 'unused';
+    let str = '??';
     if (this.usage && this.usage.length) {
       str = this.usage[0].getTime().toISOString();
     }

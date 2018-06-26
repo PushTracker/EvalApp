@@ -28,32 +28,37 @@ export class DemoService {
     if (!id) {
       return;
     }
-
-    return DemoService.Demos.filter(demo => {
+    let o = DemoService.Demos.filter(demo => {
       return demo.id === id;
-    })[0];
+    });
+    let obj = o && o.length ? o[0] : null;
+    return obj;
   }
 
   getDemoByPushTrackerSerialNumber(sn: string): Demo {
-    if (!sn) {
+    if (!sn || !sn.length || !sn.trim().length) {
       return;
     }
-    return DemoService.Demos.filter(demo => {
+    let o = DemoService.Demos.filter(demo => {
       return demo.pushtracker_serial_number === sn;
-    })[0];
+    });
+    let obj = o && o.length ? o[0] : null;
+    return obj;
   }
 
   getDemoBySmartDriveSerialNumber(sn: string): Demo {
-    if (!sn) {
+    if (!sn || !sn.length || !sn.trim().length) {
       return;
     }
-    return DemoService.Demos.filter(demo => {
+    let o = DemoService.Demos.filter(demo => {
       return demo.smartdrive_serial_number === sn;
-    })[0];
+    });
+    let obj = o && o.length ? o[0] : null;
+    return obj;
   }
 
   constructor() {
-    //this.load();
+    this.load();
   }
 
   create(demoModel: Demo): Promise<any> {
