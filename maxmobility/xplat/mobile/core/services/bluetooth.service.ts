@@ -387,7 +387,6 @@ export class BluetoothService {
 
   private onServerConnectionStateChanged(args: any): void {
     //console.log(`server connection state change!`);
-    alert('server connection state change!');
     const newState = args.data.newState;
     const device = args.data.device;
     console.log(`state change - ${device} - ${newState}`);

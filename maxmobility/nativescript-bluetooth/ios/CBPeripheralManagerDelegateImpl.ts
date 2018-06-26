@@ -285,7 +285,6 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
     }
 
     const owner = this._owner.get();
-    console.log('owner', owner);
     if (!owner) {
       return;
     }
