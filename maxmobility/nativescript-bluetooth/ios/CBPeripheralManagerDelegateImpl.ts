@@ -12,6 +12,15 @@ import { Bluetooth } from './ios_main';
 export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPeripheralManagerDelegate {
   public static ObjCProtocols = [CBPeripheralManagerDelegate];
   private _owner: WeakRef<Bluetooth>;
+  private _central?: CBCentral;
+  private _isConnected = false;
+  private _otaInProgress = false;
+  private _lastObservedPeripheralState?: CBManagerState;
+  private _subscribedCharacteristics = new Set<CBUUID>();
+  private _forceUpdate = false;
+  private _isWakeSupportCheck = false;
+  private _bandSupportsWake = false;
+  private _isSendingTime = false;
 
   static new(): CBPeripheralManagerDelegateImpl {
     return <CBPeripheralManagerDelegateImpl>super.new();
@@ -40,6 +49,8 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
     if (!owner) {
       return;
     }
+
+    this._lastObservedPeripheralState = mgr.state;
 
     const state = owner._getManagerStateString(mgr.state);
     CLog(CLogTypes.info, `current peripheral manager state = ${state}`);
@@ -74,6 +85,9 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
    */
   public peripheralManagerDidAddError(peripheral: CBPeripheralManager, service: CBService, error?: NSError) {
     CLog(CLogTypes.info, 'CBPeripheralManagerDelegateImpl.peripheralManagerDidAddError ---- ', error);
+
+    alert('Peripheral Manager Did Add Error');
+    console.log(peripheral, service, error);
 
     const owner = this._owner.get();
     if (!owner) {
@@ -127,6 +141,50 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
       characteristic
     );
 
+    console.log('characteristic.uuid', characteristic.UUID);
+
+    let isNewCentral = false;
+
+    const oldCentral = this._central;
+    if (oldCentral === this._central) {
+      console.log('oldCentral.identifier', oldCentral.identifier, 'central.identifier', central.identifier);
+      if (oldCentral.identifier !== central.identifier) {
+        console.log(
+          `changing central from ${oldCentral.identifier} to ${
+            central.identifier
+          } and clearing characteristic subscriptions.`
+        );
+        isNewCentral = true;
+      } else if (oldCentral !== central) {
+        console.log(`New central but same identifier. Clearing characteristic subscriptions.`);
+        isNewCentral = true;
+      }
+    } else {
+      isNewCentral = true;
+    }
+
+    if (isNewCentral) {
+      this._central = central;
+      this._subscribedCharacteristics = new Set<CBUUID>();
+    }
+
+    this._isConnected = true;
+    console.log(`this._isConnected = ${this._isConnected}`);
+
+    this._subscribedCharacteristics.add(characteristic.UUID);
+
+    peripheral.stopAdvertising();
+    //         setHasPairedToWristband(true)
+
+    const x = CBUUID.UUIDWithString('68208ebf-f655-4a2d-98f4-20d7d860c471');
+    if (x === characteristic.UUID) {
+      this.sendSetTime();
+
+      console.log('sent the set time event');
+
+      this.checkIfBandSupportsWake();
+    }
+
     const owner = this._owner.get();
     if (!owner) {
       return;
@@ -141,6 +199,60 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
       central: central,
       characteristic: characteristic
     });
+  }
+
+  private sendSetTime() {
+    console.log('send set time');
+    this._isSendingTime = true;
+
+    // let date = Date()
+    // let calendar = Calendar.current
+
+    // let year = UInt16(calendar.component(.year, from: date))
+    // let month = UInt8(calendar.component(.month, from: date))
+    // let day = UInt8(calendar.component(.day, from: date))
+    // let hours = UInt8(calendar.component(.hour, from: date))
+    // let minutes = UInt8(calendar.component(.minute, from: date))
+    // let seconds = UInt8(calendar.component(.second, from: date))
+
+    // let time = PushTrackerPacketTimeInfo(year: year, month: month, day: day, hours: hours, minutes: minutes, seconds: seconds)
+    // let packet = PushTrackerPacket.command(subtype: .setTime(time: time))
+
+    // if sendPacket(packet) {
+    //     isSendingTime = false
+    // }
+  }
+
+  private checkIfBandSupportsWake() {
+    if (this._bandSupportsWake) {
+      this.startWakePolling();
+      return;
+    }
+
+    this._isWakeSupportCheck = true;
+
+    console.log('checkIfBandSupportsWake isWakeSupportCheck', this._isWakeSupportCheck);
+
+    // DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+    //     self.checkForConnection(completionCallback: { supported in
+    //         self.isWakeSupportCheck = false
+    //         self.bandSupportsWake = supported
+
+    //         if supported {
+    //             self.startWakePolling()
+    //         }
+    //     })
+    // })
+  }
+
+  private startWakePolling() {
+    if (!this._isConnected && !this._bandSupportsWake) {
+      return;
+    }
+
+    // const x = NSTimer.scheduledTimerWithTimeIntervalTargetSelectorUserInfoRepeats(30.0, this, )
+
+    // this.wakePollingTimer = Timer.scheduledTimer(timeInterval: 30.0, target: self, selector: #selector(wake), userInfo: nil, repeats: true)
   }
 
   /**
@@ -172,6 +284,22 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
       central: central,
       characteristic: characteristic
     });
+  }
+
+  /**
+   * This method is invoked when your app calls the addService: method to publish a service to the local peripheral’s
+   * GATT database. If the service is successfully published to the local database, the error parameter is nil.
+   * If unsuccessful, the error parameter returns the cause of the failure.
+   * @param peripheral - The peripheral manager providing this information.
+   * @param service - The service that was added to the local GATT database.
+   * @param error - If an error occurred, the cause of the failure.
+   */
+  public peripheralManagerDidAddServiceError(peripheral: CBPeripheralManager, service: CBService, error: NSError) {
+    CLog(CLogTypes.info, 'CBPeripheralManagerDelegateImpl.peripheralManagerDidAddServiceError ----', peripheral);
+
+    alert('Did Add Service Error');
+
+    console.log('error', error);
   }
 
   /**
