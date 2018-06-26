@@ -4,6 +4,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { confirm } from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
 // app
+import { ValueList } from 'nativescript-drop-down';
+import { DropDownModule } from 'nativescript-drop-down/angular';
 import { UserService, ProgressService, LoggingService } from '@maxmobility/mobile';
 import { User, CLog } from '@maxmobility/core';
 import { RouterExtensions } from 'nativescript-angular/router';
@@ -31,6 +33,9 @@ export class AccountComponent implements OnInit {
   // tslint:disable-next-line:member-ordering
   user: Kinvey.User = this._userService.user;
 
+  languages: Array<string> = this._translateService.getLangs();
+  selectedLanguageIndex: number = 0;
+
   yes: string = this._translateService.instant('dialogs.yes');
   no: string = this._translateService.instant('dialogs.no');
   success: string = this._translateService.instant('user.success');
@@ -46,7 +51,18 @@ export class AccountComponent implements OnInit {
   sign_out: string = this._translateService.instant('user.sign-out');
   sign_out_confirm: string = this._translateService.instant('user.sign-out-confirm');
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.selectedLanguageIndex =
+      this.languages.indexOf((this.user.data as any).language) > -1
+        ? this.languages.indexOf((this.user.data as any).language)
+        : 0;
+  }
+
+  onLanguageChanged(args) {
+    const newLanguage = this.languages[args.newIndex] || 'en';
+    this.user.data.language = newLanguage;
+    this._translateService.use(newLanguage);
+  }
 
   onDrawerButtonTap() {
     this._router.navigate(['/home'], {
@@ -70,8 +86,10 @@ export class AccountComponent implements OnInit {
         this.user
           .update({
             email: (this.user.data as any).email,
+            language: (this.user.data as any).language,
             first_name: (this.user.data as any).first_name,
-            last_name: (this.user.data as any).last_name
+            last_name: (this.user.data as any).last_name,
+            phone_number: (this.user.data as any).phone_number
           })
           .then(resp => {
             CLog('update response', JSON.stringify(resp));
