@@ -1,5 +1,6 @@
 import { Injectable, NgZone } from '@angular/core';
 
+import { Kinvey } from 'kinvey-nativescript-sdk';
 import * as geolocation from 'nativescript-geolocation';
 import { Accuracy } from 'ui/enums'; // used to describe at what accuracy the location should be get
 const httpModule = require('http');
@@ -39,7 +40,11 @@ export class LocationService {
   public static coordToLocation(coord: any): Promise<string> {
     return new Promise((resolve, reject) => {
       let userLoc = `${coord.longitude},${coord.latitude}`;
-      let query = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + userLoc + '.json?access_token=' + api_key;
+      let user = Kinvey.User.getActiveUser();
+      let userData = ((user && user.data) || {}) as any;
+      let lang = userData.language ? '&language=' + userData.language : '';
+      let query =
+        'https://api.mapbox.com/geocoding/v5/mapbox.places/' + userLoc + '.json?access_token=' + api_key + lang;
       httpModule.getJSON(query).then(
         function(r) {
           const location = r.features[0].place_name;

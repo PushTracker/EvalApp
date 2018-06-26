@@ -1,187 +1,187 @@
 {
-  "menu": {
-    "home": "SmartDrive",
-    "connectivity": "Connectivity",
-    "con-desc": "Connect with PushTracker and SmartDrive",
-    "pair-pt-app": "Pair app to PushTracker",
-    "connect-app": "Comnnect app with PushTracker",
-    "pair-pt-sd": "Pair a PushTracker to a SmartDrive",
-    "ota": "Update a PushTracker and SmartDrive",
-    "clinical-tools": "Clinical Tools",
-    "clinical-tools-desc": "Training how to use SmartDrive",
-    "training": "SmartDrive Training",
-    "eval": "Begin SmartDrive Evaluation",
-    "eval-title": "Begin SmartDrive Evaluation",
-    "trial": "Begin a SmartDrive Trial.",
-    "trial-title": "Begin a SmartDrive Trial.",
-    "summary": "Summary",
-    "demos": "Demos",
-    "demos-desc": "Demo location and amanagement",
-    "faq": "FAQs",
-    "faq-desc": "Some frequently asked questions"
-  },
-  "training": [
-    {
-      "Label": "Powering SmartDrive",
-      "Bullets": [ 
-         "Press back on the rocker switch to power on the SmartDrive, and forward to power off."
-      ]
+    "menu": {
+        "home": "SmartDrive",
+        "connectivity": "Connectivity",
+        "con-desc": "Connect with PushTracker and SmartDrive",
+        "pair-pt-app": "Pair app to PushTracker",
+        "connect-app": "Comnnect app with PushTracker",
+        "pair-pt-sd": "Pair a PushTracker to a SmartDrive",
+        "ota": "Update a PushTracker and SmartDrive",
+        "clinical-tools": "Clinical Tools",
+        "clinical-tools-desc": "Training how to use SmartDrive",
+        "training": "SmartDrive Training",
+        "eval": "Begin SmartDrive Evaluation",
+        "eval-title": "Begin SmartDrive Evaluation",
+        "trial": "Begin a SmartDrive Trial.",
+        "trial-title": "Begin a SmartDrive Trial.",
+        "summary": "Summary",
+        "demos": "Demos",
+        "demos-desc": "Demo location and amanagement",
+        "faq": "FAQs",
+        "faq-desc": "Some frequently asked questions"
     },
-    {
-      "Label": "Powering PushTracker",
-      "Bullets": [ 
-         "Press the left raised button on the PushTracker to power on.",
-	       "Press and hold for 3 secconds to enter sleep mode 'zzz' and power off."
-      ]
+    "training": [
+        {
+            "Label": "Powering SmartDrive",
+            "Bullets": [ 
+                "Press back on the rocker switch to power on the SmartDrive, and forward to power off."
+            ]
+        },
+        {
+            "Label": "Powering PushTracker",
+            "Bullets": [ 
+                "Press the left raised button on the PushTracker to power on.",
+	            "Press and hold for 3 secconds to enter sleep mode 'zzz' and power off."
+            ]
+        },
+        {
+            "Label": "Tap Gesture",
+            "Bullets": [ 
+                "Keeping your wrist straight, make contact on the pushrim with the palm of your hand.",
+	            "A red light will alluminate upon succesful tap.",
+	            "Tip: You do not need to make contact with the PushTracker band.",
+	            "Tip: Avoid moving your hand in a 'fishtail' like motion. This will lead to inconsistant tap recognition."
+            ]
+        },
+        {
+            "Label": "Starting & Setting Speed",
+            "Bullets": [ 
+                "Double-tap to initiate the SmartDrive. It will then begin to accelerate.",
+	            "Then, single-tap to set your desired speed.",
+	            "To increase speed, give a faster push and then single tap to set your desired speed."
+            ]
+        },
+        {
+            "Label": "Steering",
+            "Bullets": [ 
+                "To steer, gently grip the pushrim of the direction you want to go.",
+	            "Light grip will allow you to veer.",
+	            "Allow the pushrim to slide through your hands."
+            ]
+        },
+        {
+            "Label": "Turning",
+            "Bullets": [ 
+                "To turn, firmly grip the pushrim of the direction you want to go.",
+	            "Firm grip will allow you to turn.",
+	            "The tighter you grip, the sharper you will turn.",
+	            "Tip: An optimal center of gravity position of the reer wheels will reduce the grip needed to make sharp turns."
+            ]
+        }
+    ],
+    "videos": {
+        "title": "Videos",
+        "description": "Training and usage videos for SmartDrive and PushTracker",
+        "overview-title": "SmartDrive Introduction",
+        "overview-desc": "This video is an overview of SmartDrive being used by people of varying ages and circumstances in a variety of environments.",
+        "sd-basic-op-title": "SmartDrive MX2+ Basic Operation",
+        "sd-basic-op-desc": "This video covers the basic operation and functionality of the SmartDrive and PushTracker.",
+        "pt-basic-op-title": "PushTracker Basic Operation",
+        "pt-basic-op-desc": "This video covers the basic operation and functionality of the PushTracker.",
+        "pt-ap-basic-op-title":"Intro to the PushTracker App",
+        "pt-ap-basic-op-desc": "This video covers the basic operation and functionality of the PushTracker App.",
+        "sea-basic-op-title": "Intro to the Smart Evaluation App'",
+        "sea-basic-op-desc": "This video covers the basic operation and functionality of the Smart Evaluation App.",
+        "eval-training-tite": "SmartDrive Evaluation and Training",
+        "eval-training-desc": "This video covers the steps to perform when doing a SmartDrive Evaluation or Training",
+        "interview-title": "Interview with Chels and Steph",
+        "interview-desc": "In this video, I interview Chels and Steph about the many aspects of their lives, and how they have been impacted by SmartDrive"
     },
-    {
-      "Label": "Tap Gesture",
-      "Bullets": [ 
-         "Keeping your wrist straight, make contact on the pushrim with the palm of your hand.",
-	    "A red light will alluminate upon succesful tap.",
-	    "Tip: You do not need to make contact with the PushTracker band.",
-	    "Tip: Avoid moving your hand in a 'fishtail' like motion. This will lead to inconsistant tap recognition."
-      ]
+    "error": {
+        "email": "Sorry, an error occurred uploading that photo."
     },
-    {
-      "Label": "Starting & Setting Speed",
-      "Bullets": [ 
-         "Double-tap to initiate the SmartDrive. It will then begin to accelerate.",
-	    "Then, single-tap to set your desired speed.",
-	    "To increase speed, give a faster push and then single tap to set your desired speed."
-      ]
+    "dialogs": {
+        "confirm": "Confirm",
+        "yes": "Yes",
+        "yes-login": "Yes, login!",
+        "yes-delete": "Yes, delete",
+        "ok": "Ok",
+        "cancel": "Cancel",
+        "no": "No",
+        "camera": "Camera",
+        "confirm-photo-delete": "Are you sure you want to remove this photo?",
+        "close": "Close",
+        "sms": "Text message"
     },
-    {
-      "Label": "Steering",
-      "Bullets": [ 
-         "To steer, gently grip the pushrim of the direction you want to go.",
-	    "Light grip will allow you to veer.",
-	    "Allow the pushrim to slide through your hands."
-      ]
+    "item": {
+        "delete-lbl": "Delete"
     },
-    {
-      "Label": "Turning",
-      "Bullets": [ 
-         "To turn, firmly grip the pushrim of the direction you want to go.",
-	    "Firm grip will allow you to turn.",
-	    "The tighter you grip, the sharper you will turn.",
-	    "Tip: An optimal center of gravity position of the reer wheels will reduce the grip needed to make sharp turns."
-      ]
-    }
-  ],
-  "videos": {
-    "title": "Videos",
-    "description": "Training and usage videos for SmartDrive and PushTracker",
-    "overview-title": "SmartDrive Introduction",
-    "overview-desc": "This video is an overview of SmartDrive being used by people of varying ages and circumstances in a variety of environments.",
-    "sd-basic-op-title": "SmartDrive MX2+ Basic Operation",
-    "sd-basic-op-desc": "This video covers the basic operation and functionality of the SmartDrive and PushTracker.",
-    "pt-basic-op-title": "PushTracker Basic Operation",
-    "pt-basic-op-desc": "This video covers the basic operation and functionality of the PushTracker.",
-    "pt-ap-basic-op-title":"Intro to the PushTracker App",
-    "pt-ap-basic-op-desc": "This video covers the basic operation and functionality of the PushTracker App.",
-    "sea-basic-op-title": "Intro to the Smart Evaluation App'",
-    "sea-basic-op-desc": "This video covers the basic operation and functionality of the Smart Evaluation App.",
-    "eval-training-tite": "SmartDrive Evaluation and Training",
-    "eval-training-desc": "This video covers the steps to perform when doing a SmartDrive Evaluation or Training",
-    "interview-title": "Interview with Chels and Steph",
-    "interview-desc": "In this video, I interview Chels and Steph about the many aspects of their lives, and how they have been impacted by SmartDrive"
-  },
-  "error": {
-    "email": "Sorry, an error occurred uploading that photo."
-  },
-  "dialogs": {
-    "confirm": "Confirm",
-    "yes": "Yes",
-    "yes-login": "Yes, login!",
-    "yes-delete": "Yes, delete",
-    "ok": "Ok",
-    "cancel": "Cancel",
-    "no": "No",
-    "camera": "Camera",
-    "confirm-photo-delete": "Are you sure you want to remove this photo?",
-    "close": "Close",
-    "sms": "Text message"
-  },
-  "item": {
-    "delete-lbl": "Delete"
-  },
-  "general": {
-    "title": "Smart Evaluation",
-    "submit": "Submit",
-    "tip": "Tip",
-    "export": "Export",
-    "twitter-unknown": "Twitter unknown! So sorry!",
-    "picture": "Picture",
-    "back": "Back",
-    "complete": "Complete",
-    "need-help": "Need Help?",
-    "help": "Help",
-    "email-us": "Email us at info@sketchpoints.io",
-    "tweet-us": "Tweet at us",
-    "error": "We're sorry an error occurred.",
-    "photo-album-tle": "Photo Album",
-    "edit": "Edit",
-    "save": "Save",
-    "update": "Update",
-    "profile": "Profile",
-    "heading": "Sketch key points for the following:"
-  },
-  "help": {
-    "intro":
-      "As an artist you can now live stream your own unique perspective in a sketch. Tap anywhere to view current areas you can sketch on...",
-    "item":
-      "This area groups a collection of topics together you can create sketches and artwork for. Tap to get started!"
-  },
-  "user": {
-    "account": "Account",
-    "account-creating": "Creating Acount...",
-    "account-update": "Update User Account?", 
-    "account-update-confirm": "Send these settings to the Server?",
-    "account-update-complete": "Your profile has been updated.",
-    "account-reset": "Reset Account?",
-    "account-reset-confirm": "Are you sure you want to reset your account (remove all your data / settings)?",
-    "account-error": "An error occurred trying to retrieve your account information. Try again later.",
-    "language": "Language",
-    "unsaved": "You have unsaved changes. Are you sure you want to exit without saving?",
-    "first-name": "First Name",
-    "first-name-error": "First Name is required",
-    "last-name-error": "Last Name is required",
-    "last-name": "Last Name",
-    "phone": "Phone",
-    "company": "Company",
-    "email": "Email",
-    "email-required": "Email is required.",
-    "email-error": "is not a valid email address.",
-    "email-invalid": "Email is invalid",
-    "email-sent": "Email Sent",
-    "check-email": "Check your email for instructions on resetting your password.",
-    "password": "Password",
-    "password-error": "Password is required.",
-    "password-change": "Change Password?",
-    "password-change-confirm": "Are you sure you want to change your password?",
-    "updated": "Your profile was successfully updated!",
-    "login": "Login",
-    "back-to-login": "Back To Login",
-    "logout": "Logout",
-    "sign-out": "Sign Out",
-    "sign-out-confirm": "Are you sure you want to sign out?",
-    "sign-up": "Sign Up",
-    "sign-up-success": "Your username is:",
-    "sign-in": "Sign In",
-    "signing-in": "Signing in...",
-    "submitting": "Submitting...",
-    "success": "Success",
-    "sign-in-error-1": "An error occurred during sign in. Check your email and password.",
-    "sign-in-error-2": "Invalid email and/or password. Please try again.",
-    "error": "Error",
-    "ok": "OK",
-    "form-invalid": "The form is invalid. Please fill in all fields.",
-    "logged-in": "You are now logged in",
-    "reset-acct": "Reset Account",
-    "change-pass": "Change Password",
-    "reset-pass-desc": "To reset your password, enter the email for your account. You will receive an email with instructions to reset your password."
-  },
+    "general": {
+        "title": "Smart Evaluation",
+        "submit": "Submit",
+        "tip": "Tip",
+        "export": "Export",
+        "twitter-unknown": "Twitter unknown! So sorry!",
+        "picture": "Picture",
+        "back": "Back",
+        "complete": "Complete",
+        "need-help": "Need Help?",
+        "help": "Help",
+        "email-us": "Email us at info@sketchpoints.io",
+        "tweet-us": "Tweet at us",
+        "error": "We're sorry an error occurred.",
+        "photo-album-tle": "Photo Album",
+        "edit": "Edit",
+        "save": "Save",
+        "update": "Update",
+        "profile": "Profile",
+        "heading": "Sketch key points for the following:"
+    },
+    "help": {
+        "intro":
+        "As an artist you can now live stream your own unique perspective in a sketch. Tap anywhere to view current areas you can sketch on...",
+        "item":
+        "This area groups a collection of topics together you can create sketches and artwork for. Tap to get started!"
+    },
+    "user": {
+        "account": "Account",
+        "account-creating": "Creating Acount...",
+        "account-update": "Update User Account?", 
+        "account-update-confirm": "Send these settings to the Server?",
+        "account-update-complete": "Your profile has been updated.",
+        "account-reset": "Reset Account?",
+        "account-reset-confirm": "Are you sure you want to reset your account (remove all your data / settings)?",
+        "account-error": "An error occurred trying to retrieve your account information. Try again later.",
+        "language": "Language",
+        "unsaved": "You have unsaved changes. Are you sure you want to exit without saving?",
+        "first-name": "First Name",
+        "first-name-error": "First Name is required",
+        "last-name-error": "Last Name is required",
+        "last-name": "Last Name",
+        "phone": "Phone",
+        "company": "Company",
+        "email": "Email",
+        "email-required": "Email is required.",
+        "email-error": "is not a valid email address.",
+        "email-invalid": "Email is invalid",
+        "email-sent": "Email Sent",
+        "check-email": "Check your email for instructions on resetting your password.",
+        "password": "Password",
+        "password-error": "Password is required.",
+        "password-change": "Change Password?",
+        "password-change-confirm": "Are you sure you want to change your password?",
+        "updated": "Your profile was successfully updated!",
+        "login": "Login",
+        "back-to-login": "Back To Login",
+        "logout": "Logout",
+        "sign-out": "Sign Out",
+        "sign-out-confirm": "Are you sure you want to sign out?",
+        "sign-up": "Sign Up",
+        "sign-up-success": "Your username is:",
+        "sign-in": "Sign In",
+        "signing-in": "Signing in...",
+        "submitting": "Submitting...",
+        "success": "Success",
+        "sign-in-error-1": "An error occurred during sign in. Check your email and password.",
+        "sign-in-error-2": "Invalid email and/or password. Please try again.",
+        "error": "Error",
+        "ok": "OK",
+        "form-invalid": "The form is invalid. Please fill in all fields.",
+        "logged-in": "You are now logged in",
+        "reset-acct": "Reset Account",
+        "change-pass": "Change Password",
+        "reset-pass-desc": "To reset your password, enter the email for your account. You will receive an email with instructions to reset your password."
+    },
     "summary": {
         "lmnTemplate": [
             "This email was generated and sent by the Smart Evaluation App.",
@@ -214,55 +214,79 @@
             "At {{totalCadenceWithout}} pushes per minute, user's cadence is exceptionally high. Consider looking at rear wheel placement and efficient push technique.",
             "{{/showCadence}}"
         ],
-    "user-performed": "User performed ",
-    "pushes": " fewer pushes with SmartDrive.",
-    "coast-time": "Average coast time was ",
-    "with-sd": " with SmartDrive.",
-    "at": "At ",
-    "cadence": " pushes per minute, user's cadence is exceptionally high. Consider looking at rear wheel placement and efficient push technique.",
-    "difficulty-flat": "Difficulty on Flat Surface?",
-    "flat-surface-difficulty": "Flat Surface Difficulty",
-    "difficulty-ramp": "Difficulty with ramp?",
-    "ramp-difficulty": "Ramp Difficulty",
-    "complete": "Complete Evaluation?",
-    "confirm": "Are you sure you're done with the evaluation?",
-    "email-subject": "Smart Evaluation LMN",
-    "fewer": "fewer",
-    "more": "more",
-    "higher": "higher",
-    "lower": "lower"
-  },
-  "trial": {
-    "title": "Trial",
-    "set-up": "Trial Set-Up",
-    "select-options": "Select options and settings for SmartDrive trial.",
-    "name": "Enter trial name",
-    "flat-surfaces": "Flat Surfaces",
-    "ramp": "Ramp",
-    "inclines": "Inclines",
-    "other": "Other",
-      "description": "Course or Obstacle Description",
-      "recommendation": "Note: trials are recommended to contain ramps, multiple surface types, and should last at least a few minutes or 100 yards / 100 meters.",
-    "accelleration": "Acceleration",
-    "max-speed": "Max Speed",
-    "phase-1": "Phase 1",
-    "phase-2": "Phase 2",
-    "with-sd": "With SmartDrive",
-    "without-sd": "With SmartDrive",
-    "phase-1-desc": "Go through the trial course with the SmartDrive - press start to begin.",
-    "phase-2-desc": "Now redo the same trial course without the SmartDrive - press start to begin.",
-    "start": "Start",
-    "stop": "Stop",
-    "pushes": "Pushes: ",
-    "coast-time": "Coast Time: ",
-    "time": "Time: ",
-    "distance": "Distance: ",
-    "complete": "Trial Complete",
-    "summary": "Summary",
-    "please-connect-pt": "Please connect your PushTracker",
-    "too-many-pts": "Too many PushTrackers connected - please only connect one!",
-    "starting-trail": "Starting Trial",
-    "stopping-trial:": "Stopping Trial"
+        "user-performed": "User performed ",
+        "pushes": " fewer pushes with SmartDrive.",
+        "coast-time": "Average coast time was ",
+        "with-sd": " with SmartDrive.",
+        "at": "At ",
+        "cadence": " pushes per minute, user's cadence is exceptionally high. Consider looking at rear wheel placement and efficient push technique.",
+        "difficulty-flat": "Difficulty on Flat Surface?",
+        "flat-surface-difficulty": "Flat Surface Difficulty",
+        "difficulty-ramp": "Difficulty with ramp?",
+        "ramp-difficulty": "Ramp Difficulty",
+        "complete": "Complete Evaluation?",
+        "confirm": "Are you sure you're done with the evaluation?",
+        "email-subject": "Smart Evaluation LMN",
+        "fewer": "fewer",
+        "more": "more",
+        "higher": "higher",
+        "lower": "lower"
+    },
+    "trial": {
+        "title": "Trial",
+        "set-up": "Trial Set-Up",
+        "select-options": "Select options and settings for SmartDrive trial.",
+        "name": "Enter trial name",
+        "flat-surfaces": "Flat Surfaces",
+        "ramp": "Ramp",
+        "inclines": "Inclines",
+        "other": "Other",
+        "description": "Course or Obstacle Description",
+        "recommendation": "Note: trials are recommended to contain ramps, multiple surface types, and should last at least a few minutes or 100 yards / 100 meters.",
+        "accelleration": "Acceleration",
+        "max-speed": "Max Speed",
+        "phase-1": "Phase 1",
+        "phase-2": "Phase 2",
+        "with-sd": "With SmartDrive",
+        "without-sd": "With SmartDrive",
+        "phase-1-desc": "Go through the trial course with the SmartDrive - press start to begin.",
+        "phase-2-desc": "Now redo the same trial course without the SmartDrive - press start to begin.",
+        "start": "Start",
+        "stop": "Stop",
+        "pushes": "Pushes: ",
+        "coast-time": "Coast Time: ",
+        "time": "Time: ",
+        "distance": "Distance: ",
+        "complete": "Trial Complete",
+        "summary": "Summary",
+        "please-connect-pt": "Please connect your PushTracker",
+        "too-many-pts": "Too many PushTrackers connected - please only connect one!",
+        "starting-trail": "Starting Trial",
+        "stopping-trial:": "Stopping Trial"
 
-  }
+    },
+    "ota": {
+        "title": "Firmware Updates",
+        "version": "Version",
+        "refresh": "Refresh Device List",
+        "begin": "Begin Firmware Updates",
+        "cancel": "Cancel All Firmware Updates",
+        "downloading": "Fetching latest firmware data from the server",
+        "errors": {
+            "devices": {
+                "title": "No Devices",
+                "message": "No PushTrackers or SmartDrives found!"
+            }
+        }
+    },
+    "bluetooth": {
+        "searching": "Searching for SmartDrives",
+        "waiting": "Waiting for bluetooth to initialize",
+        "errors": {
+            "unavailable": {
+                "title": "Bluetooth Unavailable",
+                "message": "Belutooth service unavailable - reinitializing!"
+            }
+        }
+    }
 }

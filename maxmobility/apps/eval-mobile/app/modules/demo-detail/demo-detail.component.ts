@@ -54,22 +54,25 @@ export class DemoDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    dialogs
-      .action({
-        message: 'Demo Unit Model',
-        cancelButtonText: 'Cancel',
-        actions: ['MX2+', 'MX2']
-      })
-      .then(r => {
-        if (r.indexOf('Cancel') > -1) this.demo.model = 'MX2+';
-        else this.demo.model = r;
-      });
+    let models = ['MX2+', 'MX2'];
+    if (models.indexOf(this.demo.model) == -1) {
+      dialogs
+        .action({
+          message: 'Demo Unit Model',
+          cancelButtonText: 'Cancel',
+          actions: models
+        })
+        .then(r => {
+          if (models.indexOf(r) > -1) this.demo.model = r;
+          else this.demo.model = 'MX2+';
+        });
+    }
   }
 
   haveSerial(): boolean {
     let sdSN = this.demo.smartdrive_serial_number.trim();
     //let ptSN = this.demo.pushtracker_serial_number.trim();
-    return sdSN && sdSN.length;
+    return sdSN && sdSN.length && true;
   }
 
   onSave() {

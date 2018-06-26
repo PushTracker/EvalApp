@@ -3,7 +3,15 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 // nativescript
 import { confirm } from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
+import { Image } from 'tns-core-modules/ui/image';
+import * as fileSystemModule from 'tns-core-modules/file-system';
+import * as imageSource from 'tns-core-modules/image-source';
+import * as camera from 'nativescript-camera';
+import { ImageCropper } from 'nativescript-imagecropper';
+import * as LS from 'nativescript-localstorage';
 // app
+import { ValueList } from 'nativescript-drop-down';
+import { DropDownModule } from 'nativescript-drop-down/angular';
 import { UserService, ProgressService, LoggingService } from '@maxmobility/mobile';
 import { User, CLog } from '@maxmobility/core';
 import { RouterExtensions } from 'nativescript-angular/router';
@@ -17,6 +25,11 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./account.component.css']
 })
 export class AccountComponent implements OnInit {
+  public fsKeyPrefix: string = 'AccountComponent.';
+  public fsKeyProfilePicture: string = 'ProfilePicture';
+
+  private imageCropper: ImageCropper;
+
   constructor(
     private _userService: UserService,
     private _progressService: ProgressService,
@@ -26,10 +39,14 @@ export class AccountComponent implements OnInit {
     private _translateService: TranslateService
   ) {
     this._page.enableSwipeBackNavigation = false;
+    this.imageCropper = new ImageCropper();
   }
 
   // tslint:disable-next-line:member-ordering
   user: Kinvey.User = this._userService.user;
+
+  languages: Array<string> = this._translateService.getLangs();
+  selectedLanguageIndex: number = 0;
 
   yes: string = this._translateService.instant('dialogs.yes');
   no: string = this._translateService.instant('dialogs.no');
@@ -46,7 +63,98 @@ export class AccountComponent implements OnInit {
   sign_out: string = this._translateService.instant('user.sign-out');
   sign_out_confirm: string = this._translateService.instant('user.sign-out-confirm');
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.loadProfilePicture();
+    this.selectedLanguageIndex =
+      this.languages.indexOf((this.user.data as any).language) > -1
+        ? this.languages.indexOf((this.user.data as any).language)
+        : 0;
+  }
+
+  getProfilePictureFSKey(): string {
+    return this.fsKeyPrefix + this.user.data._id + '.' + this.fsKeyProfilePicture;
+  }
+
+  saveProfilePicture(source) {
+    try {
+      const picKey = this.getProfilePictureFSKey();
+      const b64 = source.toBase64String('png');
+      const pic = LS.setItem(picKey, b64);
+      this.user.data.profile_picture = source;
+      return Promise.resolve();
+    } catch (err) {
+      return Promise.reject(`Couldn't save profile picture: ${err}`);
+    }
+  }
+
+  loadProfilePicture() {
+    try {
+      const picKey = this.getProfilePictureFSKey();
+      const pic = LS.getItem(picKey);
+      if (pic) {
+        let source = new imageSource.fromBase64(pic);
+        this.user.data.profile_picture = source;
+      } else {
+        this.user.data.profile_picture = undefined;
+      }
+      return Promise.resolve();
+    } catch (err) {
+      return Promise.reject(`Couldn't load profile picture: ${err}`);
+    }
+  }
+
+  onUpdateProfilePictureTap() {
+    if (camera.isAvailable()) {
+      camera
+        .requestPermissions()
+        .then(() => {
+          console.log('Updating profile picture!');
+
+          const options = {
+            width: 256,
+            height: 256,
+            lockSquare: true
+          };
+
+          camera
+            .takePicture({
+              width: 500,
+              height: 500,
+              keepAspectRatio: true,
+              cameraFacing: 'front'
+            })
+            .then(imageAsset => {
+              let source = new imageSource.ImageSource();
+              source.fromAsset(imageAsset).then(source => {
+                this.imageCropper
+                  .show(source, options)
+                  .then(args => {
+                    if (args.image !== null) {
+                      this.saveProfilePicture(args.image);
+                    }
+                  })
+                  .catch(function(e) {
+                    console.dir(e);
+                  });
+              });
+            })
+            .catch(err => {
+              console.log('Error -> ' + err.message);
+            });
+        })
+        .catch(err => {
+          console.log('Error -> ' + err.message);
+        });
+    } else {
+      console.log('No camera available');
+    }
+  }
+
+  onLanguageChanged(args) {
+    const newLanguage = this.languages[args.newIndex] || 'en';
+    (this.user.data as any).language = newLanguage;
+    this._translateService.use(newLanguage);
+  }
 
   onDrawerButtonTap() {
     this._router.navigate(['/home'], {
@@ -70,8 +178,10 @@ export class AccountComponent implements OnInit {
         this.user
           .update({
             email: (this.user.data as any).email,
+            language: (this.user.data as any).language,
             first_name: (this.user.data as any).first_name,
-            last_name: (this.user.data as any).last_name
+            last_name: (this.user.data as any).last_name,
+            phone_number: (this.user.data as any).phone_number
           })
           .then(resp => {
             CLog('update response', JSON.stringify(resp));
