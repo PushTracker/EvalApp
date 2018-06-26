@@ -20,12 +20,16 @@
              (tap)="onUpdateProfilePictureTap()"
              class="account-icon fa"
              text="&#xf2be;"></Label>
-      <DropDown
-		 [hint]="'user.language' | translate"
-         [selectedIndex]="selectedLanguageIndex"
-		 class="dropdown"
-		 [items]="languages"
-		 (selectedIndexChanged)="onLanguageChanged($event)"></DropDown>
+      <DockLayout>
+        <Label dock="left" [text]="'user.language' | translate" class="text-field label"></Label>
+        <DropDown
+           dock="right"
+		   [hint]="'user.language' | translate"
+           [selectedIndex]="selectedLanguageIndex"
+		   class="text-field dropdown"
+		   [items]="languages"
+		   (selectedIndexChanged)="onLanguageChanged($event)"></DropDown>
+      </DockLayout>
       <TextField [(ngModel)]="user.data.first_name"
                  returnKeyType="next"
                  class="account-text-entry"
