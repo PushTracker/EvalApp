@@ -5,6 +5,7 @@ import { Observable, EventData } from 'tns-core-modules/data/observable';
 import { Packet, bindingTypeToString } from '@maxmobility/core';
 import { BluetoothService } from '@maxmobility/mobile';
 
+// TODO: TRANSLATE
 enum OTAState {
   not_started = 'Not Started',
   awaiting_versions = 'Awaiting Versions',
@@ -81,6 +82,23 @@ export class SmartDrive extends Observable {
 
   public static caseTicksToMiles(ticks: number): number {
     return (ticks * (2.0 * 3.14159265358 * 3.8)) / (36.0 * 63360.0);
+  }
+
+  public static versionStringToByte(version: string): number {
+    if (version.includes('.')) {
+      const [major, minor] = version.split('.');
+      return (parseInt(major) << 4) | parseInt(minor);
+    } else {
+      return 0xff;
+    }
+  }
+
+  public static versionByteToString(version: number): string {
+    if (version == 0xff || version == 0x00) {
+      return 'unknown';
+    } else {
+      return `${(version & 0xf0) >> 4}.${version & 0x0f}`;
+    }
   }
 
   // NON STATIC:

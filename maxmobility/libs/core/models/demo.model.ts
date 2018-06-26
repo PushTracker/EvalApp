@@ -71,7 +71,7 @@ export class Demo extends Observable {
     if (this.location && this.location.length) {
       return this.location.trim();
     } else {
-      return 'unknown';
+      return '??';
     }
   }
 
@@ -83,7 +83,7 @@ export class Demo extends Observable {
     if (this.pt_version && this.pt_version.length && this.pt_version.includes('.')) {
       return this.pt_version.trim();
     } else {
-      return 'unknown';
+      return '??';
     }
   }
 
@@ -91,7 +91,7 @@ export class Demo extends Observable {
     if (this.ble_version && this.ble_version.length && this.ble_version.includes('.')) {
       return this.ble_version.trim();
     } else {
-      return 'unknown';
+      return '??';
     }
   }
 
@@ -99,9 +99,10 @@ export class Demo extends Observable {
     if (this.mcu_version && this.mcu_version.length && this.mcu_version.includes('.')) {
       return this.mcu_version.trim();
     } else {
-      return 'unknown';
+      return '??';
     }
   }
+
   constructor(obj?: any) {
     super();
     if (obj !== null && obj !== undefined) {
@@ -137,7 +138,7 @@ export class Demo extends Observable {
   }
 
   getTime(): string {
-    let str = 'unused';
+    let str = '??';
     if (this.usage && this.usage.length) {
       str = this.usage[0].getTime().toISOString();
     }

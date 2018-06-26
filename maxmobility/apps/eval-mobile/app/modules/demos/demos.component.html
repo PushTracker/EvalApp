@@ -15,26 +15,48 @@
 <Gradient tkMainContent margin-top="30" direction="to bottom" colors="#004F7E, #0070b3">
   <ListView backgroundColor="transparent" class="" [items]="Demos" (itemTap)="onDemoTap($event)">
     <ng-template let-item="item">
-      <GridLayout margin="10, 10, 10, 0" columns="auto, auto, *" rows="auto, auto, auto">
+      <GridLayout rows="auto" columns="auto, *">
         <!-- Note: we should probably have model type so that we can have the image pulled from a server according to MX2+ vs MX3 vs others. -->
-        <Image backgroundColor="white" row="0" col="0" rowSpan="3" height="100" width="100" class="demo-image"
+        <Image backgroundColor="white" col="0"  height="100" width="100" class="demo-image"
                src="~/assets/images/PushTracker-SmartDrive-pairing.png"
                stretch="aspectFit"></Image>
 
-        <DockLayout row="0" col="1" stretchLastChild="true">
-          <Label text="&#xf071;" row="0" col="1" class="mdi icon" dock="left"></Label>
-          <Label [text]="item.smartdrive_serial_number" row="0" col="2" class="info" dock="left"></Label>
-          <Label [text]="item.model" row="0" col="2" class="info" dock="right"></Label>
-        </DockLayout>
-        <DockLayout row="1" col="1" stretchLastChild="true">
-          <Label text="&#xf5f5;" row="1" col="1" class="mdi icon"></Label>
-          <Label [text]="item.location_string" row="1" col="2" class="info" wordWrap="true"></Label>
-        </DockLayout>
-        <DockLayout row="2" col="1" stretchLastChild="true">
-          <Label text="&#xf150;" row="2" col="1" class="mdi icon"></Label>
-          <Label [text]="item.getTime()" row="2" col="2" class="info"></Label>
-        </DockLayout>
+        <GridLayout col="1" rows="auto, auto, auto" columns="auto, *, auto">
+          <Label text="&#xf071;" row="0" col="0" class="mdi icon" ></Label>
+          <Label [text]="item.smartdrive_serial_number" row="0" col="1" colSpan="2" class="info"></Label>
+          <Label [text]="item.model" row="0" col="2" class="info"></Label>
+        
+        
+          <Label text="&#xf5f5;" row="1" col="0" class="mdi icon"></Label>
+          <Label  [text]="item.location_string" row="1" col="1" colSpan="2" class="info" textWrap="true"></Label>
+       
+        
+          <Label text="&#xf150;" row="2" col="0" class="mdi icon"></Label>
+          <Label [text]="item.getTime()" row="2" col="1" colSpan="2" class="info"></Label>
+        
       </GridLayout>
+
+    </GridLayout>
+
+      <!-- <GridLayout  rows="auto" columns="145, *">
+          <Image backgroundColor="white" col="0" class="thumb" [src]="~/assets/images/PushTracker-SmartDrive-pairing.png" ></Image>
+
+          <GridLayout col="1" rows="auto, auto, auto" columns="*">
+
+          <Label text="&#xf071;" row="0" col="0" class="mdi icon" ></Label>
+          <Label [text]="item.smartdrive_serial_number" row="0" col="" class="info"></Label>
+          <Label [text]="item.model" row="0" col="1" class="info"></Label>
+
+          <Label text="&#xf5f5;" row="1" col="0" class="mdi icon"></Label>
+          <Label [text]="item.location_string" row="1" col="1" class="info" wordWrap="true"></Label>
+
+          <Label text="&#xf150;" row="2" col="0" class="mdi icon"></Label>
+          <Label [text]="item.getTime()" row="2" col="1" class="info"></Label>
+          </GridLayout>
+
+       </GridLayout> -->
+
+
     </ng-template>
   </ListView>
 

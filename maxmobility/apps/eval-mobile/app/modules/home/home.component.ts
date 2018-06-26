@@ -108,11 +108,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    /*
     this.zone.run(() => {
       this._demoService.load().catch(err => {
         console.log(`Couldn't load demos: ${err}`);
       });
     });
+      */
   }
 
   ngAfterViewInit(): void {}
@@ -176,6 +178,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this._routerExtensions.navigate([item.Route], {
       transition: {
         name: ''
+      }
+    });
+  }
+
+  demoThumbTapped(item: any) {
+    const index = DemoService.Demos.indexOf(item);
+    this._routerExtensions.navigate(['/demo-detail'], {
+      queryParams: {
+        index
       }
     });
   }
