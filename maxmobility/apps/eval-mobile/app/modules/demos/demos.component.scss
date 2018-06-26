@@ -9,7 +9,7 @@
 
 .icon{
     font-size: 24;
-    padding: 0, 0, 0, 15;
+    margin: 5, 5, 5, 5;
     color: #fff;
     horizontal-align: center;
     vertical-align: center;
@@ -25,10 +25,17 @@
     border-width: 1 1 1 1;
 }
 
+.demo-image {
+
+    margin: 5, 5, 0, 10;
+
+}
+
 .info{
-    padding: 0, 0, 0, 15;
+    margin: 0, 10, 0, 0;
     color: #fff;
-    font-size: 16;
+    font-size: 14;
+    text-wrap: true;
     vertical-align: center;
 }
 
