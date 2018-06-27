@@ -423,14 +423,14 @@ export class BluetoothService {
         if (this.isPushTracker(device)) {
           const pt = this.getOrMakePushTracker(device.address);
           pt.handleConnect();
-          this.notify(`${device.name}::${device.address} connected`);
+          this.notify(`${device.name || 'PushTracker'}::${device.address} connected`);
         }
         break;
       case ConnectionState.disconnected:
         if (this.isPushTracker(device)) {
           const pt = this.getOrMakePushTracker(device.address);
           pt.handleDisconnect();
-          this.notify(`${device.name}::${device.address} disconnected`);
+          this.notify(`${device.name || 'PushTracker'}::${device.address} disconnected`);
         }
         break;
       default:
