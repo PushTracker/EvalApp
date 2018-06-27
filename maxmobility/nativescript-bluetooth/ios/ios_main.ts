@@ -34,7 +34,7 @@ export function deviceToCentral(dev: CBCentral): Central {
     android: null,
     UUIDs: [], // TODO: fix
     address: dev.identifier.UUIDString,
-    name: 'TEST NAME', // TODO: fix
+    name: dev.name,
     RSSI: null,
     manufacturerId: null,
     manufacturerData: null
