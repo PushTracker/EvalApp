@@ -186,8 +186,11 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
     // get return data for cross-platform use
     const connection_state = ConnectionState.connected;
 
+    const dev = deviceToCentral(central);
+    dev.UUIDs = ['1d14d6ee-fd63-4fa1-bfa4-8f47b42119f0'.toUpperCase()]; // hard code pt uuid for now
+
     owner.sendEvent(Bluetooth.server_connection_state_changed_event, {
-      device: deviceToCentral(central),
+      device: dev,
       manager: peripheral,
       central: central,
       connection_state
@@ -236,9 +239,11 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
 
     // get return data for cross-platform use
     const connection_state = ConnectionState.disconnected;
+    const dev = deviceToCentral(central);
+    dev.UUIDs = ['1d14d6ee-fd63-4fa1-bfa4-8f47b42119f0'.toUpperCase()]; // hard code pt uuid for now
 
     owner.sendEvent(Bluetooth.server_connection_state_changed_event, {
-      device: deviceToCentral(central),
+      device: dev,
       manager: peripheral,
       central: central,
       connection_state
