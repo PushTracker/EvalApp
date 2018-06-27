@@ -4,6 +4,10 @@
 import * as utils from 'tns-core-modules/utils/utils';
 import * as application from 'tns-core-modules/application';
 import {
+  Central,
+  Peripheral,
+  BondState,
+  ConnectionState,
   BluetoothCommon,
   CLog,
   CLogTypes,
@@ -28,6 +32,42 @@ import { TNS_ScanCallback } from './TNS_ScanCallback';
 const ACCESS_COARSE_LOCATION_PERMISSION_REQUEST_CODE = 222;
 const ACTION_REQUEST_ENABLE_BLUETOOTH_REQUEST_CODE = 223;
 const ACTION_REQUEST_BLUETOOTH_DISCOVERABLE_REQUEST_CODE = 224;
+
+export function deviceToCentral(dev: android.bluetooth.BluetoothDevice): Central {
+  const uuids = [];
+  const us = dev.getUuids();
+  if (us) {
+    for (let i = 0; i < us.length; i++) {
+      uuids.push(us[i].toString());
+    }
+  }
+  return {
+    ios: null,
+    android: dev,
+    UUIDs: uuids,
+    address: dev.getAddress(),
+    name: dev.getName(),
+    RSSI: null,
+    manufacturerId: null,
+    manufacturerData: null
+  };
+}
+
+export function deviceToPeripheral(dev: android.bluetooth.BluetoothDevice): Peripheral {
+  const uuid = dev.getUuids()[0].toString();
+  return {
+    ios: null,
+    android: dev,
+    UUID: uuid,
+    name: dev.getName(),
+    RSSI: null,
+    services: null, // TODO: fix
+    manufacturerId: null,
+    manufacturerData: null
+  };
+}
+
+export { Central, Peripheral, BondState, ConnectionState } from '../common';
 
 export class Bluetooth extends BluetoothCommon {
   // @link - https://developer.android.com/reference/android/content/Context.html#BLUETOOTH_SERVICE

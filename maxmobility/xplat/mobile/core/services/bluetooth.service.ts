@@ -6,10 +6,9 @@ import { isAndroid } from 'tns-core-modules/platform';
 import { fromObject } from 'tns-core-modules/data/observable';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
 import { Packet, DailyInfo, PushTracker, SmartDrive } from '@maxmobility/core';
-import * as Toast from 'nativescript-toast';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 import { Feedback, FeedbackType, FeedbackPosition } from 'nativescript-feedback';
-import { Bluetooth, CharacteristicProperties } from 'nativescript-bluetooth';
+import { Bluetooth, BondState, ConnectionState } from 'nativescript-bluetooth';
 
 @Injectable()
 export class BluetoothService {
@@ -94,29 +93,37 @@ export class BluetoothService {
     return this._bluetooth.isBluetoothEnabled();
   }
 
-  public async available(): Promise<boolean> {
-    const enabled = await this._bluetooth.isBluetoothEnabled();
-    return enabled && this.isActive();
+  public available(): Promise<boolean> {
+    return this.isActive();
 
     // return this._bluetooth.isBluetoothEnabled().then(enabled => {
     //   return enabled && this.isActive();
     // });
   }
 
-  public isActive() {
-    return this.enabled && this.initialized && this._bluetooth.offersService(BluetoothService.AppServiceUUID);
+  public isActive(): Promise<boolean> {
+    return Promise.resolve(this.enabled && this.initialized); // && this._bluetooth.offersService(BluetoothService.AppServiceUUID);
   }
 
   public async initialize(): Promise<any> {
     this.enabled = false;
     this.initialized = false;
+
+    this.clearEventListeners();
+    this.setEventListeners();
+
     const x = await this._bluetooth.requestCoarseLocationPermission().catch(error => {
       console.log('requestCoarseLocationPermission error', error);
     });
+    this.enabled = true;
+
+    this._bluetooth.startGattServer();
+
+    this.addServices();
+
+    this.initialized = true;
 
     // if (this.enabled === true) {
-    this.addServices();
-    this.initialized = true;
     // } else {
     //   console.log('Bluetooth is not enabled.');
     // }
@@ -202,23 +209,30 @@ export class BluetoothService {
   }
 
   public disconnectAll(): Promise<any> {
-    const gattDevices = this._bluetooth.getConnectedDevices();
-    const gattServerDevices = this._bluetooth.getServerConnectedDevices();
-    let tasks = [];
-    console.log(`Disconnecting from all devices: ${gattDevices}, ${gattServerDevices}`);
-    if (gattDevices && gattDevices.length) {
-      tasks = gattDevices.map(device => {
-        console.log(`disconnecting from ${device}`);
-        return this._bluetooth.disconnect({ UUID: `${device}` });
-      });
-    }
-    if (gattServerDevices && gattServerDevices.length) {
-      tasks = gattServerDevices.map(device => {
-        console.log(`disconnecting from ${device}`);
-        return this._bluetooth.cancelServerConnection(device);
-      });
-    }
-    return Promise.all(tasks);
+    // TODO: the android implementation of these functions don't
+    //       work
+
+    // TODO: update to be cross-platform
+    return Promise.resolve();
+    /*
+        let tasks = [];
+        const gattDevices = this._bluetooth.getConnectedDevices();
+        const gattServerDevices = this._bluetooth.getServerConnectedDevices();
+        console.log(`Disconnecting from all devices: ${gattDevices}, ${gattServerDevices}`);
+        if (gattDevices && gattDevices.length) {
+            tasks = gattDevices.map(device => {
+                console.log(`disconnecting from ${device}`);
+                return this._bluetooth.disconnect({ UUID: `${device}` });
+            });
+        }
+        if (gattServerDevices && gattServerDevices.length) {
+            tasks = gattServerDevices.map(device => {
+                console.log(`disconnecting from ${device}`);
+                return this._bluetooth.cancelServerConnection(device);
+            });
+        }
+        return Promise.all(tasks);
+        */
   }
 
   public disconnect(args: any): Promise<any> {
@@ -261,7 +275,6 @@ export class BluetoothService {
   public restart(): Promise<any> {
     return this.stop()
       .then(() => {
-        this.setEventListeners();
         return this._bluetooth.isBluetoothEnabled();
       })
       .then(enabled => {
@@ -279,13 +292,7 @@ export class BluetoothService {
         this.enabled = wasEnabled;
         console.log(`BLUETOOTH WAS ENABLED? ${this.enabled}`);
         if (this.enabled) {
-          console.log('Starting GattServer');
-          this._bluetooth.startGattServer();
-          return new Promise((resolve, reject) => {
-            setTimeout(() => {
-              resolve();
-            }, 2000);
-          });
+          return this.advertise();
         } else {
           throw new String("Bluetooth was not enabled, couldn't start gattServer!");
         }
@@ -308,22 +315,24 @@ export class BluetoothService {
   }
 
   private onBondStatusChange(args: any): void {
-    const dev = args.data.device;
-    const bondState = args.data.bs;
-    console.log(`${dev} - bond state - ${bondState}`);
+    const dev = args.data.device as Central;
+    const bondState = args.data.bondState;
+    console.log(`${dev.address} - bond state - ${bondState}`);
     switch (bondState) {
-      case android.bluetooth.BluetoothDevice.BOND_BONDING:
+      case BondState.bonding:
         break;
-      case android.bluetooth.BluetoothDevice.BOND_BONDED:
-        this._bluetooth.removeBond(dev);
-        const pt = this.getOrMakePushTracker(dev.getAddress());
+      case BondState.bonded:
+        if (isAndroid) {
+          this._bluetooth.removeBond(dev.android);
+        }
+        const pt = this.getOrMakePushTracker(dev.address);
         pt.handlePaired();
         this.feedback.success({
           title: 'Successfully Paired',
           message: `PushTracker ${pt.address} now paired`
         });
         break;
-      case android.bluetooth.BluetoothDevice.BOND_NONE:
+      case BondState.none:
         break;
       default:
         break;
@@ -343,40 +352,42 @@ export class BluetoothService {
     console.log(`name change!`);
     const dev = args.data.device;
     const name = args.data.name;
-    console.log(`${dev} - name change - ${name || 'None'}`);
+    console.log(`${dev.address} - name change - ${name || 'None'}`);
   }
 
   private onDeviceUuidChange(args: any): void {
     console.log(`uuid change!`);
-    const dev = args.data.device;
-    console.log('uuid:', args.data.uuids);
-    if (!args.data.uuids) {
-      console.log('no uuid returned');
-      return;
-    }
-    const newUUID = args.data.uuids[0].toString();
-    console.log(`${dev} - uuid change - ${newUUID || 'None'}`);
-    if (this.isSmartDrive(dev)) {
-      const address = dev.UUID;
-      const sd = this.getOrMakeSmartDrive(address);
-    } else if (this.isPushTracker(dev)) {
-      const address = dev.getAddress();
-      const pt = this.getOrMakePushTracker(address);
-    }
+    // TODO: This function doesn't work (android BT impl returns null)
+    /*
+        const dev = args.data.device;
+        console.log('uuid:', args.data.uuids);
+        if (!args.data.uuids) {
+            console.log('no uuid returned');
+            return;
+        }
+        const newUUID = args.data.uuids[0].toString();
+        console.log(`${dev} - uuid change - ${newUUID || 'None'}`);
+        if (this.isSmartDrive(dev)) {
+            const address = dev.UUID;
+            const sd = this.getOrMakeSmartDrive(address);
+        } else if (this.isPushTracker(dev)) {
+            const address = dev.getAddress();
+            const pt = this.getOrMakePushTracker(address);
+        }
+        */
     //console.log('finished uuid change');
   }
 
   private onDeviceAclDisconnected(args: any): void {
     //console.log(`acl disconnect!`);
-    const peripheral = args.data.device; // of type Peripheral
-    const address = peripheral.address || peripheral.getAddress();
-    const name = peripheral.name || peripheral.getName();
-    console.log(`${name}::${address} - disconnected`);
-    if (this.isSmartDrive(peripheral)) {
-      const sd = this.getOrMakeSmartDrive(address);
+    // TODO: should be only of type Peripheral
+    const device = args.data.device;
+    console.log(`${device.name}::${device.address} - disconnected`);
+    if (this.isSmartDrive(device)) {
+      const sd = this.getOrMakeSmartDrive(device.address);
       sd.handleDisconnect();
-    } else if (this.isPushTracker(peripheral)) {
-      const pt = this.getOrMakePushTracker(address);
+    } else if (this.isPushTracker(device)) {
+      const pt = this.getOrMakePushTracker(device.address);
       pt.handleDisconnect();
     }
     //console.log('finished acl disconnect');
@@ -388,11 +399,14 @@ export class BluetoothService {
     const device = args.data.device;
     console.log(`state change - ${device} - ${connection_state}`);
     switch (connection_state) {
-      case 0:
-        // NOTE :
-        // need to figure out the iOS piece for this since this is android method for the device
-        // could be something we move into the bluetooth layer
-        device.fetchUuidsWithSdp();
+      case ConnectionState.connected:
+        // NOTE : need to figure out the iOS piece for this
+        // since this is android method for the device - could
+        // be something we move into the bluetooth layer
+
+        // TODO: move this into the bluetooth layer!
+        //device.fetchUuidsWithSdp();
+
         // TODO: use BluetoothGatt to get the service (by UUID 1800)
 
         // TODO: use the returned service to get the characteristic
@@ -402,16 +416,16 @@ export class BluetoothService {
         //       'getStringValue()' to read the characteristic to get
         //       the name
         if (this.isPushTracker(device)) {
-          const pt = this.getOrMakePushTracker(device.getAddress());
+          const pt = this.getOrMakePushTracker(device.address);
           pt.handleConnect();
-          this.notify(`${device.getName()}::${device} connected`);
+          this.notify(`${device.name}::${device.address} connected`);
         }
         break;
-      case 1:
+      case ConnectionState.disconnected:
         if (this.isPushTracker(device)) {
-          const pt = this.getOrMakePushTracker(device.getAddress());
+          const pt = this.getOrMakePushTracker(device.address);
           pt.handleDisconnect();
-          this.notify(`${device.getName()}::${device} disconnected`);
+          this.notify(`${device.name}::${device.address} disconnected`);
         }
         break;
       default:
@@ -423,7 +437,7 @@ export class BluetoothService {
   private onPeripheralConnected(args: any): void {
     console.log('peripheral discovered!');
     const peripheral = args.data.device;
-    // TODO: this event is not emitted by the bluetooth library
+    // TODO: this event is not emitted by the android part of the bluetooth library
     //console.log('finished peripheral discovered!');
   }
 
@@ -435,7 +449,7 @@ export class BluetoothService {
     p.initialize(data);
 
     if (this.isPushTracker(device)) {
-      const pt = this.getOrMakePushTracker(device.getAddress());
+      const pt = this.getOrMakePushTracker(device.address);
       pt.handlePacket(p);
     }
     console.log(`${p.Type()}::${p.SubType()} ${p.toString()}`);
@@ -571,6 +585,7 @@ export class BluetoothService {
   }
 
   public sendToPushTrackers(data: any) {
+    // TODO: this is android specific code - need an iOS version
     if (PushTracker.DataCharacteristic) {
       return PushTracker.DataCharacteristic.setValue(data);
     } else {
@@ -579,6 +594,7 @@ export class BluetoothService {
   }
 
   public notifyPushTrackers(addresses: any): Promise<any> {
+    // TODO: this is android specific code - need an iOS version
     const connectedDevices = this._bluetooth.getServerConnectedDevices();
     const jsConnDev = [];
     const length = connectedDevices.size();
@@ -650,8 +666,8 @@ export class BluetoothService {
   }
 
   private isPushTracker(dev: any): boolean {
-    const UUIDs = dev && dev.getUuids();
-    const name = dev && dev.getName();
+    const UUIDs = dev && dev.UUIDs;
+    const name = dev && dev.name;
     const isPT =
       (name && name.includes('PushTracker')) ||
       (name && name.includes('Bluegiga')) ||
@@ -662,23 +678,5 @@ export class BluetoothService {
 
   private notify(text: string): void {
     this.snackbar.simple(text);
-  }
-
-  private selectDialog(options: any): Promise<any> {
-    // options should be of form....
-    return new Promise((resolve, reject) => {
-      dialogsModule
-        .action({
-          message: options.message || 'Select',
-          cancelButtonText: options.cancelButtonText || 'Cancel',
-          actions: options.actions || []
-        })
-        .then(result => {
-          resolve(result !== 'Cancel' ? result : null);
-        })
-        .catch(err => {
-          reject(err);
-        });
-    });
   }
 }

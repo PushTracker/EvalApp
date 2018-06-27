@@ -1,7 +1,7 @@
 /// <reference path="../node_modules/tns-platform-declarations/ios.d.ts" />
 
 import { CLog, CLogTypes, ConnectionState } from '../common';
-import { Bluetooth } from './ios_main';
+import { Bluetooth, deviceToCentral, deviceToPeripheral } from './ios_main';
 
 /**
  * @link - https://developer.apple.com/documentation/corebluetooth/cbperipheralmanagerdelegate
@@ -178,90 +178,20 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
 
     this._subscribedCharacteristics.add(characteristic.UUID);
 
-    // peripheral.stopAdvertising();
-    // //         setHasPairedToWristband(true)
-
-    // const x = CBUUID.UUIDWithString('68208ebf-f655-4a2d-98f4-20d7d860c471');
-    // if (x === characteristic.UUID) {
-    //   this.sendSetTime();
-
-    //   console.log('sent the set time event');
-
-    //   this.checkIfBandSupportsWake();
-    // }
-
     const owner = this._owner.get();
     if (!owner) {
       return;
     }
 
-    // owner.sendEvent(Bluetooth.server_connection_state_changed_event, {
-    //   manager: peripheral,
-    //   central: central,
-    //   characteristic: characteristic
-    // });
-
     // get return data for cross-platform use
     const connection_state = ConnectionState.connected;
 
     owner.sendEvent(Bluetooth.server_connection_state_changed_event, {
-      device: peripheral,
+      device: deviceToCentral(central),
+      manager: peripheral,
+      central: central,
       connection_state
     });
-  }
-
-  private sendSetTime() {
-    console.log('send set time');
-    this._isSendingTime = true;
-
-    // let date = Date()
-    // let calendar = Calendar.current
-
-    // let year = UInt16(calendar.component(.year, from: date))
-    // let month = UInt8(calendar.component(.month, from: date))
-    // let day = UInt8(calendar.component(.day, from: date))
-    // let hours = UInt8(calendar.component(.hour, from: date))
-    // let minutes = UInt8(calendar.component(.minute, from: date))
-    // let seconds = UInt8(calendar.component(.second, from: date))
-
-    // let time = PushTrackerPacketTimeInfo(year: year, month: month, day: day, hours: hours, minutes: minutes, seconds: seconds)
-    // let packet = PushTrackerPacket.command(subtype: .setTime(time: time))
-
-    // if sendPacket(packet) {
-    //     isSendingTime = false
-    // }
-  }
-
-  private checkIfBandSupportsWake() {
-    if (this._bandSupportsWake) {
-      this.startWakePolling();
-      return;
-    }
-
-    this._isWakeSupportCheck = true;
-
-    console.log('checkIfBandSupportsWake isWakeSupportCheck', this._isWakeSupportCheck);
-
-    // DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
-    //     self.checkForConnection(completionCallback: { supported in
-    //         self.isWakeSupportCheck = false
-    //         self.bandSupportsWake = supported
-
-    //         if supported {
-    //             self.startWakePolling()
-    //         }
-    //     })
-    // })
-  }
-
-  private startWakePolling() {
-    if (!this._isConnected && !this._bandSupportsWake) {
-      return;
-    }
-
-    // const x = NSTimer.scheduledTimerWithTimeIntervalTargetSelectorUserInfoRepeats(30.0, this, )
-
-    // this.wakePollingTimer = Timer.scheduledTimer(timeInterval: 30.0, target: self, selector: #selector(wake), userInfo: nil, repeats: true)
   }
 
   /**
@@ -296,10 +226,22 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
     if (!owner) {
       return;
     }
-    owner.sendEvent(Bluetooth.peripheralmanager_unsubscribe_characteristic_event, {
+    /*
+        owner.sendEvent(Bluetooth.peripheralmanager_unsubscribe_characteristic_event, {
+            manager: peripheral,
+            central: central,
+            characteristic: characteristic
+        });
+        */
+
+    // get return data for cross-platform use
+    const connection_state = ConnectionState.disconnected;
+
+    owner.sendEvent(Bluetooth.server_connection_state_changed_event, {
+      device: deviceToCentral(central),
       manager: peripheral,
       central: central,
-      characteristic: characteristic
+      connection_state
     });
   }
 
@@ -365,6 +307,8 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
       manager: peripheral,
       request: request
     });
+
+    peripheral.respond(request, CBATTError.Success);
   }
 
   /**
@@ -393,5 +337,7 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
       manager: peripheral,
       requests: requests
     });
+
+    peripheral.respond(requests[0], CBATTError.Success);
   }
 }

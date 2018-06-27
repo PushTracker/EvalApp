@@ -77,6 +77,8 @@ export class Bluetooth extends COMMON.BluetoothCommon {
   getAdapter(): any;
 }
 
+export { BondState, ConnectionState } from './common';
+
 /**
  * The returned object in several callback functions.
  */
@@ -102,6 +104,47 @@ export interface Peripheral {
    * Once connected to the peripheral a list of services will be set.
    */
   services?: Service[];
+
+  manufacturerId?: number;
+
+  manufacturerData?: ArrayBuffer;
+}
+
+/**
+ * The returned object in several callback functions.
+ */
+export interface Central {
+  /**
+   * Underlying ios object
+   */
+  ios: any;
+
+  /**
+   * Underlying android object
+   */
+  android: any;
+
+  /**
+   * The UUIDs of the Central.
+   */
+  UUIDs: Array<string>;
+
+  /**
+   * The MAC Address of the Central
+   */
+  address: string;
+
+  /**
+   * A friendly description of the Central as provided by the manufacturer.
+   */
+  name: string;
+
+  // state: string; // TODO not sure we'll keep this, so not adding it here for now
+
+  /**
+   * The relative signal strength which more or less can be used to determine how far away the central is.
+   */
+  RSSI: number;
 
   manufacturerId?: number;
 

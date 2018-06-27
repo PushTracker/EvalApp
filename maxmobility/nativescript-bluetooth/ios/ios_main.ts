@@ -4,6 +4,10 @@ declare var NSMakeRange;
 
 import { ios as iOS_Utils } from 'tns-core-modules/utils/utils';
 import {
+  Central,
+  Peripheral,
+  BondState,
+  ConnectionState,
   BluetoothCommon,
   CLog,
   StopNotifyingOptions,
@@ -23,6 +27,34 @@ import { CBCentralManagerDelegateImpl } from './CBCentralManagerDelegateImpl';
 // These are global for the entire Bluetooth class
 let singleton: WeakRef<Bluetooth> = null;
 const peripheralArray: any = NSMutableArray.new();
+
+export function deviceToCentral(dev: CBCentral): Central {
+  return {
+    ios: dev,
+    android: null,
+    UUIDs: [], // TODO: fix
+    address: dev.identifier.UUIDString,
+    name: 'TEST NAME', // TODO: fix
+    RSSI: null,
+    manufacturerId: null,
+    manufacturerData: null
+  };
+}
+
+export function deviceToPeripheral(dev: CBPeripheral): Peripheral {
+  return {
+    ios: dev,
+    android: null,
+    UUID: dev.identifier.UUIDString,
+    name: null, // TODO: fix
+    RSSI: null,
+    services: null, // TODO: fix
+    manufacturerId: null,
+    manufacturerData: null
+  };
+}
+
+export { Central, Peripheral, BondState, ConnectionState } from '../common';
 
 export class Bluetooth extends BluetoothCommon {
   private readonly _centralDelegate: CBCentralManagerDelegate = null;
