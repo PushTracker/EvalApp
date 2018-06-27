@@ -40,7 +40,7 @@ ScrollView{
 
 .features {
     padding: 15, 15, 15, 15;
-    height: 100%;
+    height: 30%;
     font-family: $os-Light;
     font-size: 20;
     color: #fff;
@@ -51,6 +51,7 @@ ScrollView{
 .featuresLayout {
     color: $permobil-hero;
     background-color: $permobil-hero;
+    height: 30%;
 }
 
 .otaInfo {
@@ -66,6 +67,7 @@ ScrollView{
 
 .otaLabel {
     margin: 0, 0, 0, 0;
+    width: 75%;
     font-family: $os-SemiBold;
     font-size: 14;
     color: $permobil-charcoal;
@@ -73,6 +75,7 @@ ScrollView{
 
 .otaState {
     border-color: white;
+    width: 75%;
     color: white;
     background-color: white;
     border-bottom-width: 0;
@@ -91,7 +94,7 @@ ScrollView{
 }
 
 .slide-indicator-inactive{
-    background-color: #000;
+    background-color: #fff;
     opacity : 0.4;
     width : 10;
     height : 10;
@@ -102,7 +105,7 @@ ScrollView{
 }
 
 .slide-indicator-active{
-    background-color: #000;
+    background-color: #fff;
     opacity : 0.9;
     width : 10;
     height : 10;
