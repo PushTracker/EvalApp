@@ -8,7 +8,7 @@ import { ObservableArray } from 'tns-core-modules/data/observable-array';
 import { Packet, DailyInfo, PushTracker, SmartDrive } from '@maxmobility/core';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 import { Feedback, FeedbackType, FeedbackPosition } from 'nativescript-feedback';
-import { Bluetooth, BondState, ConnectionState } from 'nativescript-bluetooth';
+import { Bluetooth, BondState, ConnectionState, Central, Peripheral } from 'nativescript-bluetooth';
 
 @Injectable()
 export class BluetoothService {
@@ -251,7 +251,7 @@ export class BluetoothService {
     return this._bluetooth.stopNotifying(opts);
   }
 
-  public write(opts: Bluetooth.WriteOptions) {
+  public write(opts: any) {
     return this._bluetooth.write(opts);
   }
 
@@ -340,7 +340,12 @@ export class BluetoothService {
   }
 
   private onDeviceDiscovered(args: any): void {
-    const peripheral = args.data.data; // of type Peripheral
+    console.log('device discovered!');
+    console.dir(args);
+    const peripheral = {
+      UUID: args.data.UUID,
+      name: args.data.name
+    };
     console.log(`${peripheral.UUID}::${peripheral.name} - discovered`);
     if (this.isSmartDrive(peripheral)) {
       const address = peripheral.UUID;
@@ -397,7 +402,7 @@ export class BluetoothService {
     console.log(`server connection state change`);
     const connection_state = args.data.connection_state;
     const device = args.data.device;
-    console.log(`state change - ${device} - ${connection_state}`);
+    console.log(`state change - ${device.name}::${device.address} - ${connection_state}`);
     switch (connection_state) {
       case ConnectionState.connected:
         // NOTE : need to figure out the iOS piece for this
@@ -660,7 +665,7 @@ export class BluetoothService {
   private isSmartDrive(dev: any): boolean {
     const name = dev && dev.name;
     const uuid = dev && dev.UUID;
-    const isSD = (name && name.includes('Smart Drive DU')) || (uuid && uuid === SmartDrive.ServiceUUID);
+    const isSD = (name && name.includes('Smart Drive DU')) || (uuid && uuid === SmartDrive.ServiceUUID.toUpperCase());
     //console.log(`isSD: ${isSD}`);
     return isSD;
   }
@@ -668,10 +673,11 @@ export class BluetoothService {
   private isPushTracker(dev: any): boolean {
     const UUIDs = dev && dev.UUIDs;
     const name = dev && dev.name;
+    console.log(`isPushTracker - uuids: ${UUIDs}, name: ${name}`);
     const isPT =
       (name && name.includes('PushTracker')) ||
       (name && name.includes('Bluegiga')) ||
-      (UUIDs && UUIDs.indexOf && UUIDs.indexOf(PushTracker.ServiceUUID) > -1);
+      (UUIDs && UUIDs.indexOf && UUIDs.indexOf(PushTracker.ServiceUUID.toUpperCase()) > -1);
     //console.log(`isPT: ${isPT}`);
     return isPT;
   }

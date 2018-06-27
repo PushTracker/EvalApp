@@ -353,23 +353,8 @@ export class Bluetooth extends BluetoothCommon {
   }
 
   public getServerService(uuidString) {
-    //     if (gattServer !== null && gattServer !== undefined) {
-    //       const pUuid = this._stringToUuid(uuidString);
-    //       const services = gattServer.getServices();
-    //       /*
-    //   CLog(services);
-    //   CLog(services.length);
-    //   CLog(services.size());
-    //   for (let i=0; i<services.size(); i++) {
-    //       CLog(services.get(i));
-    //       CLog(services.get(i).getUuid());
-    //   }
-    //   */
-    //       const s = gattServer.getService(pUuid);
-    //       CLog(`---- gattServer.getService: ${s} - ${s && s.getUuid()}`);
-    //       return s;
-    //     }
-    //     return null;
+    // TODO: figure out how to query services from the peripheral
+    //       manager or other BT subsystem
   }
 
   public offersService(uuidString) {
@@ -377,15 +362,19 @@ export class Bluetooth extends BluetoothCommon {
   }
 
   public clearServices() {
-    // if (gattServer !== null && gattServer !== undefined) {
-    //   // gattServer.clearServices();
-    // }
+    this._peripheralManager.removeAllServices();
   }
 
   public cancelServerConnection(device) {
-    // if (gattServer !== null && gattServer !== undefined && device !== null && device !== undefined) {
-    //   // gattServer.cancelConnection(device);
-    // }
+    // TODO: figure out if this is possible on ios
+  }
+
+  /**
+   * https://developer.apple.com/documentation/corebluetooth/cbperipheralmanager/1393281-updatevalue?changes=_2&language=objc
+   */
+  public notifyCentral(devices, characteristic) {
+    //
+    // TODO: implement this as this._peripheralManager.updateValue()
   }
 
   /**
@@ -408,31 +397,12 @@ export class Bluetooth extends BluetoothCommon {
   }
 
   public getServerConnectedDeviceState(device) {
-    // if (
-    //   gattServer !== null &&
-    //   gattServer !== undefined &&
-    //   device !== null &&
-    //   device !== undefined &&
-    //   bluetoothManager !== null &&
-    //   bluetoothManager !== undefined
-    // ) {
-    //   // return bluetoothManager.getConnectionState(device, android.bluetooth.BluetoothGattServer.GATT);
-    //   return null;
-    // }
+    // TODO: figure out if we can query centrals that are connected
+    //       or their state
   }
 
   public getServerConnectedDevicesMatchingState(state) {
-    // if (
-    //   gattServer !== null &&
-    //   gattServer !== undefined &&
-    //   state !== null &&
-    //   state !== undefined &&
-    //   bluetoothManager !== null &&
-    //   bluetoothManager !== undefined
-    // ) {
-    //   // return bluetoothManager.getDevicesMatchingConnectionState(android.bluetooth.BluetoothGattServer.GATT, state);
-    //   return null;
-    // }
+    // TODO: figure out if we can query attached cdntrals
   }
 
   /**

@@ -500,11 +500,13 @@ export class SmartDrive extends Observable {
             // stop notifying characteristics
             tasks = SmartDrive.Characteristics.map(characteristic => {
               console.log(`Stop Notifying ${characteristic}`);
-              return this._bluetoothService.stopNotifying({
-                peripheralUUID: this.address,
-                serviceUUID: SmartDrive.ServiceUUID,
-                characteristicUUID: characteristic
-              });
+              return this._bluetoothService
+                .stopNotifying({
+                  peripheralUUID: this.address,
+                  serviceUUID: SmartDrive.ServiceUUID,
+                  characteristicUUID: characteristic
+                })
+                .catch(err => {});
             });
           }
           Promise.all(tasks).then(() => {
@@ -614,12 +616,14 @@ export class SmartDrive extends Observable {
                 // send start OTA
                 console.log(`Sending StartOTA::BLE to ${this.address}`);
                 const data = Uint8Array.from([0x06]); // this is the start command
-                this._bluetoothService.write({
-                  peripheralUUID: this.address,
-                  serviceUUID: SmartDrive.ServiceUUID,
-                  characteristicUUID: SmartDrive.BLEOTAControlCharacteristic,
-                  value: data
-                });
+                this._bluetoothService
+                  .write({
+                    peripheralUUID: this.address,
+                    serviceUUID: SmartDrive.ServiceUUID,
+                    characteristicUUID: SmartDrive.BLEOTAControlCharacteristic,
+                    value: data
+                  })
+                  .catch(err => {});
               }
               break;
             case SmartDrive.OTAState.updating_ble:
@@ -666,12 +670,14 @@ export class SmartDrive extends Observable {
                 // send BLE stop ota command
                 console.log(`Sending StopOTA::BLE to ${this.address}`);
                 const data = Uint8Array.from([0x03]); // this is the stop command
-                this._bluetoothService.write({
-                  peripheralUUID: this.address,
-                  serviceUUID: SmartDrive.ServiceUUID,
-                  characteristicUUID: SmartDrive.BLEOTAControlCharacteristic,
-                  value: data
-                });
+                this._bluetoothService
+                  .write({
+                    peripheralUUID: this.address,
+                    serviceUUID: SmartDrive.ServiceUUID,
+                    characteristicUUID: SmartDrive.BLEOTAControlCharacteristic,
+                    value: data
+                  })
+                  .catch(err => {});
               }
               break;
             case SmartDrive.OTAState.rebooting_mcu:
@@ -754,26 +760,30 @@ export class SmartDrive extends Observable {
   }
 
   public sendPacket(Type: string, SubType: string, dataKey?: string, dataType?: string, data?: any): Promise<any> {
-    console.log(`Sending ${Type}::${SubType}::${data} to ${this.address}`);
-    const p = new Packet();
-    p.Type(Type);
-    p.SubType(SubType);
-    // if dataType is non-null and not '', then we need to transform the data
-    let boundData = data;
-    if (dataType && dataType.length) {
-      boundData = Packet.makeBoundData(dataType, data);
-    }
-    p.data(dataKey, boundData);
-    const transmitData = p.toUint8Array();
-    p.destroy();
-    console.log(`sending ${transmitData}`);
+    if (this.ableToSend) {
+      console.log(`Sending ${Type}::${SubType}::${data} to ${this.address}`);
+      const p = new Packet();
+      p.Type(Type);
+      p.SubType(SubType);
+      // if dataType is non-null and not '', then we need to transform the data
+      let boundData = data;
+      if (dataType && dataType.length) {
+        boundData = Packet.makeBoundData(dataType, data);
+      }
+      p.data(dataKey, boundData);
+      const transmitData = p.toUint8Array();
+      p.destroy();
+      console.log(`sending ${transmitData}`);
 
-    return this._bluetoothService.write({
-      peripheralUUID: this.address,
-      serviceUUID: SmartDrive.ServiceUUID,
-      characteristicUUID: SmartDrive.ControlCharacteristic,
-      value: transmitData
-    });
+      return this._bluetoothService.write({
+        peripheralUUID: this.address,
+        serviceUUID: SmartDrive.ServiceUUID,
+        characteristicUUID: SmartDrive.ControlCharacteristic,
+        value: transmitData
+      });
+    } else {
+      return Promise.reject('Smartdrive is unable to send');
+    }
   }
 
   /**
@@ -791,6 +801,7 @@ export class SmartDrive extends Observable {
   // handlers
 
   public handleConnect(data?: any) {
+    console.log(`connected to smartdrive!`);
     // TODO: update state and spawn events
     this.connected = true;
     this.sendEvent(SmartDrive.smartdrive_connect_event, data);
@@ -798,21 +809,22 @@ export class SmartDrive extends Observable {
     const services = data.services;
     if (services) {
       // TODO: if we didn't get services then we should disconnect and re-scan!
-      //console.log(services);
-      const sdService = services.filter(s => s.UUID === SmartDrive.ServiceUUID)[0];
-      //console.log(sdService);
+      console.log('services:');
+      services.map(s => console.dir(s));
+      const sdService = services.filter(s => s.UUID.toUpperCase() === SmartDrive.ServiceUUID.toUpperCase())[0];
+      console.dir(sdService);
       if (sdService) {
         // TODO: if we didn't get sdService then we should disconnect and re-scan!
         const characteristics = sdService.characteristics;
         if (characteristics) {
           // TODO: if we didn't get characteristics then we
           //       should disconnect and re-scan!
-          //console.log(characteristics);
+          console.log(characteristics);
           let i = 0;
           // TODO: find a better solution than notification interval!
           const notificationInterval = 1000;
           characteristics.map(characteristic => {
-            if (characteristic.UUID == SmartDrive.BLEOTADongleCharacteristic) {
+            if (characteristic.UUID.toUpperCase() == SmartDrive.BLEOTADongleCharacteristic.toUpperCase()) {
               return; // isn't set up to be subscribed to - we also don't use it
             }
             this.notifying = true;
@@ -841,11 +853,13 @@ export class SmartDrive extends Observable {
     if (this.notifying) {
       tasks = SmartDrive.Characteristics.map(characteristic => {
         console.log(`Stop Notifying ${characteristic}`);
-        return this._bluetoothService.stopNotifying({
-          peripheralUUID: this.address,
-          serviceUUID: SmartDrive.ServiceUUID,
-          characteristicUUID: characteristic
-        });
+        return this._bluetoothService
+          .stopNotifying({
+            peripheralUUID: this.address,
+            serviceUUID: SmartDrive.ServiceUUID,
+            characteristicUUID: characteristic
+          })
+          .catch(err => {});
       });
     }
     Promise.all(tasks).then(() => {

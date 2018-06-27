@@ -61,7 +61,10 @@
 
     </StackLayout>
   </ScrollView>
-  <slides loop="true" pageIndicators="true" class="featuresLayout" height="30%" width="100%">
+  <slides *ngIf="otaDescription && otaDescription.length" loop="true" pageIndicators="true" class="featuresLayout" height="30%" width="100%">
+    <slide class="featuresLayout">
+      <Label class="features" textWrap="true" text="Here is a slide text"></Label>
+    </slide>
     <slide *ngFor="let desc of otaDescription._array" class="featuresLayout">
       <Label class="features" textWrap="true" [text]="desc"></Label>
     </slide>
