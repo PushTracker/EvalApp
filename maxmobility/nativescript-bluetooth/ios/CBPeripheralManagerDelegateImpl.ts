@@ -1,6 +1,6 @@
 /// <reference path="../node_modules/tns-platform-declarations/ios.d.ts" />
 
-import { CLog, CLogTypes } from '../common';
+import { CLog, CLogTypes, ConnectionState } from '../common';
 import { Bluetooth } from './ios_main';
 
 /**
@@ -195,10 +195,18 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
       return;
     }
 
+    // owner.sendEvent(Bluetooth.server_connection_state_changed_event, {
+    //   manager: peripheral,
+    //   central: central,
+    //   characteristic: characteristic
+    // });
+
+    // get return data for cross-platform use
+    const connection_state = ConnectionState.connected;
+
     owner.sendEvent(Bluetooth.server_connection_state_changed_event, {
-      manager: peripheral,
-      central: central,
-      characteristic: characteristic
+      device: peripheral,
+      connection_state
     });
   }
 

@@ -312,8 +312,9 @@ export class Bluetooth extends BluetoothCommon {
    * https://developer.apple.com/documentation/corebluetooth/cbperipheralmanager/1393255-addservice
    */
   public addService(service) {
-    // TODO: add a check against the type service is
+    console.log('ios bluetooth addService', service);
     if (service && this._peripheralManager) {
+      // this._createDataService(this._peripheralManager);
       // create a CBMutableService - https://developer.apple.com/documentation/corebluetooth/cbmutableservice?language=objc
       this._peripheralManager.addService(service);
     }
@@ -430,19 +431,14 @@ export class Bluetooth extends BluetoothCommon {
         // due to the peripheralManager.state being unknown outside of this timeout
         CLog(CLogTypes.info, `peripheral manager state ${this._getManagerStateString(this._peripheralManager.state)}`);
         setTimeout(() => {
-          console.log('before setup_data_service');
-          this.setup_data_service(this._peripheralManager);
-          console.log('after setup_data_service');
+          console.log('before _createDataService');
+          this._createDataService(this._peripheralManager);
+          console.log('after _createDataService');
           this._peripheralManager.startAdvertising(advertisement);
           CLog(CLogTypes.info, 'Bluetooth.startAdvertising ---- started advertising');
 
-          setTimeout(() => {
-            console.log('timeout executing');
-            // this.getServerConnectedDevices();
-            // console.log(this._centralManager.retrievePeripheralsWithIdentifiers());
-          }, 3000);
           resolve();
-        }, 1000);
+        }, 750);
       } catch (error) {
         CLog(CLogTypes.error, `Bluetooth.startAdvertising ---- ${error}`);
         reject(error);
@@ -946,9 +942,9 @@ export class Bluetooth extends BluetoothCommon {
     return result.buffer;
   }
 
-  public setup_data_service(peripheral: CBPeripheralManager) {
+  private _createDataService(peripheral: CBPeripheralManager) {
     try {
-      console.log('*** SETUP_DATA_SERVICE ***', peripheral);
+      console.log('*** _createDataService ***', peripheral);
       console.log('this.data_service', this._data_service);
       // this._data_service.includedServices = NSArray.array();
       // //  iOS_Utils.collections.jsArrayToNSArray([]);

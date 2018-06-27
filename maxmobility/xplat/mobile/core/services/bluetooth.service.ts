@@ -62,13 +62,7 @@ export class BluetoothService {
       console.log('centralmanager_updated_state_event');
     });
 
-    // BRAD - testing the iOS pairing so using this right now to see if the connection is firing when subscribing to characteristics
-    this._bluetooth.on(Bluetooth.server_connection_state_changed_event, args => {
-      console.log('server_connection_state_changed_event');
-      alert('server_connection_state_changed_event');
-    });
-
-    // this._bluetooth.on(Bluetooth.server_connection_state_changed_event, this.onServerConnectionStateChanged, this);
+    this._bluetooth.on(Bluetooth.server_connection_state_changed_event, this.onServerConnectionStateChanged, this);
     this._bluetooth.on(Bluetooth.characteristic_write_request_event, this.onCharacteristicWriteRequest, this);
     this._bluetooth.on(Bluetooth.bluetooth_advertise_failure_event, this.onAdvertiseFailure, this);
     this._bluetooth.on(Bluetooth.bluetooth_advertise_success_event, this.onAdvertiseSuccess, this);
@@ -120,12 +114,12 @@ export class BluetoothService {
       console.log('requestCoarseLocationPermission error', error);
     });
 
-    if (this.enabled === true) {
-      this.addServices();
-      this.initialized = true;
-    } else {
-      console.log('Bluetooth is not enabled.');
-    }
+    // if (this.enabled === true) {
+    this.addServices();
+    this.initialized = true;
+    // } else {
+    //   console.log('Bluetooth is not enabled.');
+    // }
 
     // return this._bluetooth
     //   .requestCoarseLocationPermission()
@@ -144,6 +138,9 @@ export class BluetoothService {
 
   public async advertise(): Promise<any> {
     await this.initialize();
+
+    this._bluetooth.addService(this.AppService);
+
     await this._bluetooth.startAdvertising({
       UUID: BluetoothService.AppServiceUUID,
       settings: {
@@ -154,7 +151,7 @@ export class BluetoothService {
       }
     });
 
-    this._bluetooth.addService(this.AppService);
+    // this._bluetooth.addService(this.AppService);
     console.log('Advertising Started!');
 
     // return this.initialize()
@@ -386,12 +383,15 @@ export class BluetoothService {
   }
 
   private onServerConnectionStateChanged(args: any): void {
-    //console.log(`server connection state change!`);
-    const newState = args.data.newState;
+    console.log(`server connection state change`);
+    const connection_state = args.data.connection_state;
     const device = args.data.device;
-    console.log(`state change - ${device} - ${newState}`);
-    switch (newState) {
-      case android.bluetooth.BluetoothProfile.STATE_CONNECTED:
+    console.log(`state change - ${device} - ${connection_state}`);
+    switch (connection_state) {
+      case 0:
+        // NOTE :
+        // need to figure out the iOS piece for this since this is android method for the device
+        // could be something we move into the bluetooth layer
         device.fetchUuidsWithSdp();
         // TODO: use BluetoothGatt to get the service (by UUID 1800)
 
@@ -407,16 +407,12 @@ export class BluetoothService {
           this.notify(`${device.getName()}::${device} connected`);
         }
         break;
-      case android.bluetooth.BluetoothProfile.STATE_CONNECTING:
-        break;
-      case android.bluetooth.BluetoothProfile.STATE_DISCONNECTED:
+      case 1:
         if (this.isPushTracker(device)) {
           const pt = this.getOrMakePushTracker(device.getAddress());
           pt.handleDisconnect();
           this.notify(`${device.getName()}::${device} disconnected`);
         }
-        break;
-      case android.bluetooth.BluetoothProfile.STATE_DISCONNECTING:
         break;
       default:
         break;
@@ -472,6 +468,8 @@ export class BluetoothService {
         UUID: BluetoothService.AppServiceUUID,
         primary: true
       });
+
+      console.log('this.AppService', this.AppService);
 
       const descriptorUUIDs = ['2900', '2902'];
       PushTracker.Characteristics.map(cuuid => {

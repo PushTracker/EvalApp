@@ -2,7 +2,7 @@
 /// <reference path="../typings/android27.d.ts" />
 
 import { Bluetooth } from './android_main';
-import { CLog, CLogTypes } from '../common';
+import { CLog, CLogTypes, ConnectionState } from '../common';
 
 @JavaProxy('com.nativescript.TNS_BluetoothGattServerCallback')
 // tslint:disable-next-line:class-name
@@ -113,9 +113,13 @@ export class TNS_BluetoothGattServerCallback extends android.bluetooth.Bluetooth
       `---- TNS_BluetoothGattServerCallback.onConnectionStateChange ---- device: ${device}, status: ${status}, newState: ${newState}`
     );
 
-    this._owner.get().sendEvent(Bluetooth.server_connection_state_changed_event, { device, status, newState });
+    // setup return data values for cross-platform use
+    const connection_state =
+      newState === android.bluetooth.BluetoothProfile.STATE_CONNECTED
+        ? ConnectionState.connected
+        : ConnectionState.disconnected;
 
-    // this._owner.get()._onServerConnectionStateChangeCallback(device, status, newState);
+    this._owner.get().sendEvent(Bluetooth.server_connection_state_changed_event, { device, connection_state });
   }
 
   /**

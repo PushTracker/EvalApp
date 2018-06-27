@@ -193,6 +193,14 @@ export class BluetoothCommon extends Observable {
 }
 
 /**
+ * Enum to return the current connection state.
+ */
+export enum ConnectionState {
+  connected,
+  disconnected
+}
+
+/**
  * The options object passed into the startScanning function.
  */
 export interface StartScanningOptions {
