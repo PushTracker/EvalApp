@@ -61,13 +61,13 @@ ScrollView{
 
 .otaAction {
     font-size: 14;
-    margin: 0, 0, 0, 0;
+    margin: 0, 10, 0, 10;
     color: $permobil-hero;
 }
 
 .otaLabel {
     margin: 0, 0, 0, 0;
-    width: 75%;
+    width: 60%;
     font-family: $os-SemiBold;
     font-size: 14;
     color: $permobil-charcoal;
@@ -75,7 +75,6 @@ ScrollView{
 
 .otaState {
     border-color: white;
-    width: 75%;
     color: white;
     background-color: white;
     border-bottom-width: 0;
