@@ -44,7 +44,11 @@ export class TNS_LeScanCallback extends android.bluetooth.BluetoothAdapter.LeSca
             CLog(CLogTypes.info, `---- TNS_LeScanCallback.onLeScan ---- manufacturerData: ${manufacturerData}`);
           }
 
-          const payload = {
+          CLog(
+            CLogTypes.info,
+            `---- TNS_LeScanCallback.scanCallback ---- payload: ${device.getAddress()}::${device.getName()}`
+          );
+          this._owner.get().sendEvent(Bluetooth.device_discovered_event, {
             type: 'scanResult', // TODO or use different callback functions?
             UUID: device.getAddress(), // TODO consider renaming to id (and iOS as well)
             name: device.getName(),
@@ -52,9 +56,7 @@ export class TNS_LeScanCallback extends android.bluetooth.BluetoothAdapter.LeSca
             state: 'disconnected',
             manufacturerId: manufacturerId,
             manufacturerData: manufacturerData
-          };
-          CLog(CLogTypes.info, `---- TNS_LeScanCallback.scanCallback ---- payload: ${JSON.stringify(payload)}`);
-          this._owner.get().sendEvent(Bluetooth.device_discovered_event, payload);
+          });
         }
       }
     });

@@ -316,7 +316,7 @@ export class BluetoothService {
   }
 
   private onBondStatusChange(args: any): void {
-    const argdata = isAndroid ? args.data.data : args.data;
+    const argdata = args.data;
     const dev = argdata.device as Central;
     const bondState = argdata.bondState;
     console.log(`${dev.address} - bond state - ${bondState}`);
@@ -343,7 +343,7 @@ export class BluetoothService {
 
   private onDeviceDiscovered(args: any): void {
     //console.log('device discovered!');
-    const argdata = isAndroid ? args.data.data : args.data;
+    const argdata = args.data;
     const peripheral = {
       UUID: argdata.UUID,
       name: argdata.name
@@ -357,7 +357,7 @@ export class BluetoothService {
 
   private onDeviceNameChange(args: any): void {
     //console.log(`name change!`);
-    const argdata = isAndroid ? args.data.data : args.data;
+    const argdata = args.data;
     const dev = argdata.device;
     const name = argdata.name;
     console.log(`${dev.address} - name change - ${name || 'None'}`);
@@ -389,7 +389,7 @@ export class BluetoothService {
   private onDeviceAclDisconnected(args: any): void {
     //console.log(`acl disconnect!`);
     // TODO: should be only of type Peripheral
-    const argdata = isAndroid ? args.data.data : args.data;
+    const argdata = args.data;
     const device = argdata.device;
     console.log(`${device.name}::${device.address} - disconnected`);
     if (this.isSmartDrive(device)) {
@@ -404,7 +404,7 @@ export class BluetoothService {
 
   private onServerConnectionStateChanged(args: any): void {
     //console.log(`server connection state change`);
-    const argdata = isAndroid ? args.data.data : args.data;
+    const argdata = args.data;
     const connection_state = argdata.connection_state;
     const device = argdata.device;
     console.log(`state change - ${device.name}::${device.address} - ${connection_state}`);
@@ -446,7 +446,7 @@ export class BluetoothService {
 
   private onPeripheralConnected(args: any): void {
     console.log('peripheral discovered!');
-    const argdata = isAndroid ? args.data.data : args.data;
+    const argdata = args.data;
     const peripheral = argdata.device;
     // TODO: this event is not emitted by the android part of the bluetooth library
     //console.log('finished peripheral discovered!');
@@ -454,7 +454,7 @@ export class BluetoothService {
 
   private onCharacteristicWriteRequest(args: any): void {
     //console.log(`Got characteristic write request!`);
-    const argdata = isAndroid ? args.data.data : args.data;
+    const argdata = args.data;
     const value = argdata.value;
     const device = argdata.device;
     let data = null;
@@ -635,7 +635,7 @@ export class BluetoothService {
           // handle when the notification is sent
           const notificationSent = args => {
             clearTimeout(timeoutID);
-            const argdata = isAndroid ? args.data.data : args.data;
+            const argdata = args.data;
             const device = argdata.device;
             const status = argdata.status;
             //console.log(`notificationSent: ${device} : ${status}`);
