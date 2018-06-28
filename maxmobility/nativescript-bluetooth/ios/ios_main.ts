@@ -34,7 +34,7 @@ export function deviceToCentral(dev: CBCentral): Central {
     android: null,
     UUIDs: [], // TODO: fix
     address: dev.identifier.UUIDString,
-    name: dev.name,
+    name: dev.name || 'PushTracker', // TODO: fix
     RSSI: null,
     manufacturerId: null,
     manufacturerData: null
@@ -946,6 +946,7 @@ export class Bluetooth extends BluetoothCommon {
 
   private _createDataService(peripheral: CBPeripheralManager) {
     try {
+      peripheral.removeAllServices();
       console.log('*** _createDataService ***', peripheral);
       console.log('this.data_service', this._data_service);
       // this._data_service.includedServices = NSArray.array();
@@ -1022,7 +1023,13 @@ export class Bluetooth extends BluetoothCommon {
 
       console.log('before characteristics');
       // assign the characteristics
-      data_service.characteristics = [data_control_characteristic, app_data_characteristic] as any;
+      data_service.characteristics = [
+        data_control_characteristic,
+        app_data_characteristic,
+        ota_data_characteristic,
+        wb_data_characteristic,
+        du_data_characteristic
+      ] as any;
       console.log('after data_service.characteristics', data_service.characteristics);
 
       console.log('before addService');

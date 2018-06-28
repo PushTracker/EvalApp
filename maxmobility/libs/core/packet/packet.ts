@@ -24,6 +24,8 @@ export class Packet {
     return PacketBinding[bindingType][data];
   }
 
+  public static maxSize = 18;
+
   // private members
   private instance: any;
   private _bytes: any;

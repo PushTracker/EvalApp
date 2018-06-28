@@ -184,9 +184,9 @@ export class BluetoothCommon extends Observable {
    */
   sendEvent(eventName: string, data?: any, msg?: string) {
     this.notify({
-      eventName,
+      eventName: eventName,
       object: this,
-      data,
+      data: data,
       message: msg
     });
   }

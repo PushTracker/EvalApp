@@ -2,7 +2,7 @@
 
 import { Injectable } from '@angular/core';
 import * as dialogsModule from 'tns-core-modules/ui/dialogs';
-import { isAndroid } from 'tns-core-modules/platform';
+import { isIOS, isAndroid } from 'tns-core-modules/platform';
 import { fromObject } from 'tns-core-modules/data/observable';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
 import { Packet, DailyInfo, PushTracker, SmartDrive } from '@maxmobility/core';
@@ -261,12 +261,13 @@ export class BluetoothService {
     // remove the services
     this.deleteServices();
     // stop the gatt server
-    this._bluetooth.stopGattServer();
+    //this._bluetooth.stopGattServer();
     // stop listening for events
     this.clearEventListeners();
     // stop advertising
-    await this.disconnectAll();
+    //await this.disconnectAll();
     this._bluetooth.stopAdvertising();
+    return Promise.resolve();
     // return this.disconnectAll().then(() => {
     //   return this._bluetooth.stopAdvertising();
     // });
@@ -315,8 +316,9 @@ export class BluetoothService {
   }
 
   private onBondStatusChange(args: any): void {
-    const dev = args.data.device as Central;
-    const bondState = args.data.bondState;
+    const argdata = isAndroid ? args.data.data : args.data;
+    const dev = argdata.device as Central;
+    const bondState = argdata.bondState;
     console.log(`${dev.address} - bond state - ${bondState}`);
     switch (bondState) {
       case BondState.bonding:
@@ -340,11 +342,11 @@ export class BluetoothService {
   }
 
   private onDeviceDiscovered(args: any): void {
-    console.log('device discovered!');
-    console.dir(args);
+    //console.log('device discovered!');
+    const argdata = isAndroid ? args.data.data : args.data;
     const peripheral = {
-      UUID: args.data.data.UUID,
-      name: args.data.data.name
+      UUID: argdata.UUID,
+      name: argdata.name
     };
     console.log(`${peripheral.UUID}::${peripheral.name} - discovered`);
     if (this.isSmartDrive(peripheral)) {
@@ -354,9 +356,10 @@ export class BluetoothService {
   }
 
   private onDeviceNameChange(args: any): void {
-    console.log(`name change!`);
-    const dev = args.data.device;
-    const name = args.data.name;
+    //console.log(`name change!`);
+    const argdata = isAndroid ? args.data.data : args.data;
+    const dev = argdata.device;
+    const name = argdata.name;
     console.log(`${dev.address} - name change - ${name || 'None'}`);
   }
 
@@ -386,7 +389,8 @@ export class BluetoothService {
   private onDeviceAclDisconnected(args: any): void {
     //console.log(`acl disconnect!`);
     // TODO: should be only of type Peripheral
-    const device = args.data.device;
+    const argdata = isAndroid ? args.data.data : args.data;
+    const device = argdata.device;
     console.log(`${device.name}::${device.address} - disconnected`);
     if (this.isSmartDrive(device)) {
       const sd = this.getOrMakeSmartDrive(device.address);
@@ -399,9 +403,10 @@ export class BluetoothService {
   }
 
   private onServerConnectionStateChanged(args: any): void {
-    console.log(`server connection state change`);
-    const connection_state = args.data.connection_state;
-    const device = args.data.device;
+    //console.log(`server connection state change`);
+    const argdata = isAndroid ? args.data.data : args.data;
+    const connection_state = argdata.connection_state;
+    const device = argdata.device;
     console.log(`state change - ${device.name}::${device.address} - ${connection_state}`);
     switch (connection_state) {
       case ConnectionState.connected:
@@ -441,15 +446,25 @@ export class BluetoothService {
 
   private onPeripheralConnected(args: any): void {
     console.log('peripheral discovered!');
-    const peripheral = args.data.device;
+    const argdata = isAndroid ? args.data.data : args.data;
+    const peripheral = argdata.device;
     // TODO: this event is not emitted by the android part of the bluetooth library
     //console.log('finished peripheral discovered!');
   }
 
   private onCharacteristicWriteRequest(args: any): void {
-    const value = args.data.value;
-    const device = args.data.device;
-    const data = new Uint8Array(value);
+    //console.log(`Got characteristic write request!`);
+    const argdata = isAndroid ? args.data.data : args.data;
+    const value = argdata.value;
+    const device = argdata.device;
+    let data = null;
+    if (isIOS) {
+      const tmp = new ArrayBuffer(Packet.maxSize);
+      value.getBytes(tmp);
+      data = new Uint8Array(tmp);
+    } else {
+      data = new Uint8Array(value);
+    }
     const p = new Packet();
     p.initialize(data);
 
@@ -620,8 +635,9 @@ export class BluetoothService {
           // handle when the notification is sent
           const notificationSent = args => {
             clearTimeout(timeoutID);
-            const device = args.data.device;
-            const status = args.data.status;
+            const argdata = isAndroid ? args.data.data : args.data;
+            const device = argdata.device;
+            const status = argdata.status;
             //console.log(`notificationSent: ${device} : ${status}`);
             this._bluetooth.off(Bluetooth.notification_sent_event, notificationSent);
             if (status) {
@@ -674,7 +690,7 @@ export class BluetoothService {
   private isPushTracker(dev: any): boolean {
     const UUIDs = (dev && dev.UUIDs) || [];
     const name = dev && dev.name;
-    console.log(`isPushTracker - uuids: ${UUIDs}, name: ${name}`);
+    //console.log(`isPushTracker - uuids: ${UUIDs}, name: ${name}`);
     const hasUUID = UUIDs.reduce((a, e) => a || e.toUpperCase() === PushTracker.ServiceUUID.toUpperCase(), false);
     const isPT = (name && name.includes('PushTracker')) || (name && name.includes('Bluegiga')) || hasUUID;
     //console.log(`isPT: ${isPT}`);

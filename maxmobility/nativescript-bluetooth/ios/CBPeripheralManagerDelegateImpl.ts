@@ -313,7 +313,7 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
       request: request
     });
 
-    peripheral.respond(request, CBATTError.Success);
+    //peripheral.respond(request, CBATTError.Success);
   }
 
   /**
@@ -343,6 +343,20 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
       requests: requests
     });
 
-    peripheral.respond(requests[0], CBATTError.Success);
+    for (let i = 0; i < requests.count; i++) {
+      const r = requests.objectAtIndex(i);
+      const dev = deviceToCentral(r.central);
+      owner.sendEvent(Bluetooth.characteristic_write_request_event, {
+        device: dev,
+        requestId: 0, // TODO: see if we need to change it
+        characteristic: r.characteristic,
+        preparedWrite: null,
+        responseNeeded: false,
+        offset: r.offset,
+        value: r.value
+      });
+    }
+
+    //peripheral.respond(requests[0], CBATTError.Success);
   }
 }
