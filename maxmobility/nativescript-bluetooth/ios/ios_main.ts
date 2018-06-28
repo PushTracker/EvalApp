@@ -30,8 +30,7 @@ const peripheralArray: any = NSMutableArray.new();
 
 export function deviceToCentral(dev: CBCentral): Central {
   return {
-    ios: dev,
-    android: null,
+    device: dev,
     UUIDs: [], // TODO: fix
     address: dev.identifier.UUIDString,
     name: dev.name || 'PushTracker', // TODO: fix
@@ -43,8 +42,7 @@ export function deviceToCentral(dev: CBCentral): Central {
 
 export function deviceToPeripheral(dev: CBPeripheral): Peripheral {
   return {
-    ios: dev,
-    android: null,
+    device: dev,
     UUID: dev.identifier.UUIDString,
     name: null, // TODO: fix
     RSSI: null,
@@ -372,9 +370,14 @@ export class Bluetooth extends BluetoothCommon {
   /**
    * https://developer.apple.com/documentation/corebluetooth/cbperipheralmanager/1393281-updatevalue?changes=_2&language=objc
    */
-  public notifyCentral(devices, characteristic) {
-    //
-    // TODO: implement this as this._peripheralManager.updateValue()
+  public notifyCentrals(value, characteristic, centrals) {
+    console.dir(this._peripheralManager);
+    const didUpdate = this._peripheralManager.updateValue(value, characteristic, centrals);
+    if (didUpdate) {
+      return Promise.resolve(true);
+    } else {
+      return Promise.reject();
+    }
   }
 
   /**

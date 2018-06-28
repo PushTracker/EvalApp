@@ -5,7 +5,7 @@ import * as dialogsModule from 'tns-core-modules/ui/dialogs';
 import { isIOS, isAndroid } from 'tns-core-modules/platform';
 import { fromObject } from 'tns-core-modules/data/observable';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
-import { Packet, DailyInfo, PushTracker, SmartDrive } from '@maxmobility/core';
+import { Packet, toArray, toUint8Array, DailyInfo, PushTracker, SmartDrive } from '@maxmobility/core';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 import { Feedback, FeedbackType, FeedbackPosition } from 'nativescript-feedback';
 import { Bluetooth, BondState, ConnectionState, Central, Peripheral } from 'nativescript-bluetooth';
@@ -327,7 +327,7 @@ export class BluetoothService {
         if (isAndroid) {
           this._bluetooth.removeBond(dev.android);
         }
-        const pt = this.getOrMakePushTracker(dev.address);
+        const pt = this.getOrMakePushTracker(dev);
         pt.handlePaired();
         this.feedback.success({
           title: 'Successfully Paired',
@@ -345,13 +345,14 @@ export class BluetoothService {
     //console.log('device discovered!');
     const argdata = args.data;
     const peripheral = {
+      device: argdata.device,
       UUID: argdata.UUID,
       name: argdata.name
     };
     console.log(`${peripheral.UUID}::${peripheral.name} - discovered`);
     if (this.isSmartDrive(peripheral)) {
       const address = peripheral.UUID;
-      const sd = this.getOrMakeSmartDrive(address);
+      const sd = this.getOrMakeSmartDrive(peripheral);
     }
   }
 
@@ -393,10 +394,10 @@ export class BluetoothService {
     const device = argdata.device;
     console.log(`${device.name}::${device.address} - disconnected`);
     if (this.isSmartDrive(device)) {
-      const sd = this.getOrMakeSmartDrive(device.address);
+      const sd = this.getOrMakeSmartDrive(device);
       sd.handleDisconnect();
     } else if (this.isPushTracker(device)) {
-      const pt = this.getOrMakePushTracker(device.address);
+      const pt = this.getOrMakePushTracker(device);
       pt.handleDisconnect();
     }
     //console.log('finished acl disconnect');
@@ -426,14 +427,14 @@ export class BluetoothService {
         //       'getStringValue()' to read the characteristic to get
         //       the name
         if (this.isPushTracker(device)) {
-          const pt = this.getOrMakePushTracker(device.address);
+          const pt = this.getOrMakePushTracker(device);
           pt.handleConnect();
           this.notify(`${device.name || 'PushTracker'}::${device.address} connected`);
         }
         break;
       case ConnectionState.disconnected:
         if (this.isPushTracker(device)) {
-          const pt = this.getOrMakePushTracker(device.address);
+          const pt = this.getOrMakePushTracker(device);
           pt.handleDisconnect();
           this.notify(`${device.name || 'PushTracker'}::${device.address} disconnected`);
         }
@@ -469,7 +470,7 @@ export class BluetoothService {
     p.initialize(data);
 
     if (this.isPushTracker(device)) {
-      const pt = this.getOrMakePushTracker(device.address);
+      const pt = this.getOrMakePushTracker(device);
       pt.handlePacket(p);
     }
     console.log(`${p.Type()}::${p.SubType()} ${p.toString()}`);
@@ -576,25 +577,27 @@ export class BluetoothService {
     }
   }
 
-  private getOrMakePushTracker(address: string): PushTracker {
-    let pt = BluetoothService.PushTrackers.filter(p => p.address === address)[0];
+  private getOrMakePushTracker(device: any): PushTracker {
+    let pt = BluetoothService.PushTrackers.filter(p => p.address === device.address)[0];
     //console.log(`Found PT: ${pt}`);
     if (pt === null || pt === undefined) {
-      pt = new PushTracker(this, { address });
+      pt = new PushTracker(this, { address: device.address });
       BluetoothService.PushTrackers.push(pt);
     }
+    pt.device = device.device;
     //console.log(`Found or made PT: ${pt}`);
     return pt;
   }
 
-  private getOrMakeSmartDrive(address: string): SmartDrive {
-    let sd = BluetoothService.SmartDrives.filter((x: SmartDrive) => x.address === address)[0];
+  private getOrMakeSmartDrive(device: any): SmartDrive {
+    let sd = BluetoothService.SmartDrives.filter((x: SmartDrive) => x.address === device.address)[0];
     //console.log(`Found SD: ${sd}`);
     if (sd === null || sd === undefined) {
-      sd = new SmartDrive(this, { address });
+      sd = new SmartDrive(this, { address: device.address });
       BluetoothService.SmartDrives.push(sd);
     }
     //console.log(`Found or made SD: ${sd}`);
+    sd.device = device.device;
     return sd;
   }
 
@@ -604,70 +607,14 @@ export class BluetoothService {
     });
   }
 
-  public sendToPushTrackers(data: any) {
-    // TODO: this is android specific code - need an iOS version
-    if (PushTracker.DataCharacteristic) {
-      return PushTracker.DataCharacteristic.setValue(data);
-    } else {
-      return false;
+  public sendToPushTrackers(data: any, devices?: any): Promise<any> {
+    let d = data;
+    if (isIOS) {
+      d = NSArray.arrayWithArray(data);
+    } else if (isAndroid) {
+      d = toArray(data);
     }
-  }
-
-  public notifyPushTrackers(addresses: any): Promise<any> {
-    // TODO: this is android specific code - need an iOS version
-    const connectedDevices = this._bluetooth.getServerConnectedDevices();
-    const jsConnDev = [];
-    const length = connectedDevices.size();
-    for (let i = 0; i < length; i++) {
-      jsConnDev.push(`${connectedDevices.get(i)}`);
-    }
-    //console.log(`Notifying pushtrackers: ${addresses}`);
-
-    const notify = addr => {
-      return new Promise((resolve, reject) => {
-        const dev = jsConnDev.filter(d => {
-          return d === addr;
-        });
-        if (dev.length) {
-          const timeoutID = setTimeout(() => {
-            reject('notify timeout!');
-          }, 10000);
-          // handle when the notification is sent
-          const notificationSent = args => {
-            clearTimeout(timeoutID);
-            const argdata = args.data;
-            const device = argdata.device;
-            const status = argdata.status;
-            //console.log(`notificationSent: ${device} : ${status}`);
-            this._bluetooth.off(Bluetooth.notification_sent_event, notificationSent);
-            if (status) {
-              // GATT_SUCCESS is 0x00
-              reject(`notify status error: ${status}`);
-            } else {
-              resolve();
-            }
-          };
-          // register for when notification is sent
-          this._bluetooth.on(Bluetooth.notification_sent_event, notificationSent);
-          //console.log(`notifying ${addr}!`);
-          // tell it to send the notification
-          this._bluetooth.notifyCentral(
-            connectedDevices.get(jsConnDev.indexOf(dev[0])),
-            PushTracker.DataCharacteristic,
-            true
-          );
-        } else {
-          reject();
-        }
-      });
-    };
-
-    // return the promise chain from last element
-    return addresses.reduce(function(chain, item) {
-      // bind item to first argument of function handle, replace `null` context as necessary
-      return chain.then(notify.bind(null, item));
-      // start chain with promise of first item
-    }, notify(addresses.shift()));
+    return this._bluetooth.notifyCentrals(d, PushTracker.DataCharacteristic, devices);
   }
 
   public getPushTracker(address: string) {

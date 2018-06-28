@@ -42,8 +42,7 @@ export function deviceToCentral(dev: android.bluetooth.BluetoothDevice): Central
     }
   }
   return {
-    ios: null,
-    android: dev,
+    device: dev,
     UUIDs: uuids,
     address: dev.getAddress(),
     name: dev.getName(),
@@ -56,8 +55,7 @@ export function deviceToCentral(dev: android.bluetooth.BluetoothDevice): Central
 export function deviceToPeripheral(dev: android.bluetooth.BluetoothDevice): Peripheral {
   const uuid = dev.getUuids()[0].toString();
   return {
-    ios: null,
-    android: dev,
+    device: dev,
     UUID: uuid,
     name: dev.getName(),
     RSSI: null,
@@ -797,13 +795,46 @@ export class Bluetooth extends BluetoothCommon {
    * This function should be invoked for every client that requests notifications/indications by writing to the "Client Configuration" descriptor for the given characteristic.
    * https://developer.android.com/reference/android/bluetooth/BluetoothGattServer.html#notifyCharacteristicChanged(android.bluetooth.BluetoothDevice,%20android.bluetooth.BluetoothGattCharacteristic,%20boolean)
    */
-  public notifyCentral(
-    device: android.bluetooth.BluetoothDevice,
-    char: android.bluetooth.BluetoothGattCharacteristic,
-    confirm: boolean = true
-  ) {
-    const result = this.gattServer.notifyCharacteristicChanged(device, char, confirm);
-    return result;
+  public notifyCentrals(value: any, characteristic: android.bluetooth.BluetoothGattCharacteristic, devices: any) {
+    const didSetValue = characteristic && characteristic.setValue(value);
+    if (didSetValue) {
+      const notify = dev => {
+        return new Promise((resolve, reject) => {
+          const timeoutID = setTimeout(() => {
+            reject('notify timeout!');
+          }, 10000);
+          // handle when the notification is sent
+          const notificationSent = args => {
+            clearTimeout(timeoutID);
+            const argdata = args.data;
+            const device = argdata.device;
+            const status = argdata.status;
+            //console.log(`notificationSent: ${device} : ${status}`);
+            this.off(Bluetooth.notification_sent_event, notificationSent);
+            if (status) {
+              // GATT_SUCCESS is 0x00
+              reject(`notify status error: ${status}`);
+            } else {
+              resolve();
+            }
+          };
+          // register for when notification is sent
+          this.on(Bluetooth.notification_sent_event, notificationSent);
+          //console.log(`notifying ${addr}!`);
+          // tell it to send the notification
+          this.gattServer.notifyCharacteristicChanged(dev, characteristic, true);
+        });
+      };
+
+      // return the promise chain from last element
+      return devices.reduce(function(chain, item) {
+        // bind item to first argument of function handle, replace `null` context as necessary
+        return chain.then(notify.bind(null, item));
+        // start chain with promise of first item
+      }, notify(devices.shift()));
+    } else {
+      return Promise.reject(`Couldn't set value on ${characteristic}`);
+    }
   }
 
   /**

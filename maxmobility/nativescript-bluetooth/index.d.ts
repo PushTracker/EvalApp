@@ -70,7 +70,7 @@ export class Bluetooth extends COMMON.BluetoothCommon {
   setDiscoverable(): Promise<any>;
   startGattServer();
   stopGattServer();
-  notifyCentral();
+  notifyCentrals(value: any, characteristic: any, addresses?: Array<any>);
   setGattServerCallbacks(options: any);
   fetchUuidsWithSdp(device: any): boolean;
   removeBond(device: any): any;

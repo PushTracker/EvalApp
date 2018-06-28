@@ -177,14 +177,14 @@ export class Packet {
 
 // Utility functions:
 
-function decimalToHex(d) {
+export function decimalToHex(d) {
   const hex = Number(d).toString(16);
   const hexStr = '00'.substring(0, 2 - hex.length) + hex;
 
   return hexStr.toUpperCase();
 }
 
-function toString(data) {
+export function toString(data) {
   let dataStr = '';
   data.map(d => {
     dataStr += ` ${decimalToHex(d)}`;
@@ -194,11 +194,11 @@ function toString(data) {
   return str;
 }
 
-function toUint8Array(data) {
+export function toUint8Array(data) {
   return Uint8Array.from(data);
 }
 
-function toArray(data) {
+export function toArray(data) {
   const length = data.length || (data.size && data.size());
   const arr = Array.create('byte', length);
   for (let i = 0; i < length; i++) {
@@ -207,7 +207,7 @@ function toArray(data) {
   return arr;
 }
 
-function makePacketData(_type, subtype, key, data) {
+export function makePacketData(_type, subtype, key, data) {
   const p = new Packet();
   p.makePacket(_type, subtype, key, data);
   const dataBuffer = p.writableBuffer();
@@ -216,7 +216,7 @@ function makePacketData(_type, subtype, key, data) {
   return bufferToHex(dataBuffer);
 }
 
-function bufferToHex(dataArray) {
+export function bufferToHex(dataArray) {
   const str = dataArray.map(d => {
     return `0x${d.toString(16).toUpperCase()}`;
   });

@@ -348,6 +348,7 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
       const dev = deviceToCentral(r.central);
       owner.sendEvent(Bluetooth.characteristic_write_request_event, {
         device: dev,
+        manager: peripheral,
         requestId: 0, // TODO: see if we need to change it
         characteristic: r.characteristic,
         preparedWrite: null,
