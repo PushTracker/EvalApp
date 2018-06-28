@@ -343,8 +343,8 @@ export class BluetoothService {
     console.log('device discovered!');
     console.dir(args);
     const peripheral = {
-      UUID: args.data.UUID,
-      name: args.data.name
+      UUID: args.data.data.UUID,
+      name: args.data.data.name
     };
     console.log(`${peripheral.UUID}::${peripheral.name} - discovered`);
     if (this.isSmartDrive(peripheral)) {
@@ -665,19 +665,18 @@ export class BluetoothService {
   private isSmartDrive(dev: any): boolean {
     const name = dev && dev.name;
     const uuid = dev && dev.UUID;
-    const isSD = (name && name.includes('Smart Drive DU')) || (uuid && uuid === SmartDrive.ServiceUUID.toUpperCase());
+    const hasUUID = uuid && uuid.toUpperCase() === SmartDrive.ServiceUUID.toUpperCase();
+    const isSD = (name && name.includes('Smart Drive DU')) || hasUUID;
     //console.log(`isSD: ${isSD}`);
     return isSD;
   }
 
   private isPushTracker(dev: any): boolean {
-    const UUIDs = dev && dev.UUIDs;
+    const UUIDs = (dev && dev.UUIDs) || [];
     const name = dev && dev.name;
     console.log(`isPushTracker - uuids: ${UUIDs}, name: ${name}`);
-    const isPT =
-      (name && name.includes('PushTracker')) ||
-      (name && name.includes('Bluegiga')) ||
-      (UUIDs && UUIDs.indexOf && UUIDs.indexOf(PushTracker.ServiceUUID.toUpperCase()) > -1);
+    const hasUUID = UUIDs.reduce((a, e) => a || e.toUpperCase() === PushTracker.ServiceUUID.toUpperCase(), false);
+    const isPT = (name && name.includes('PushTracker')) || (name && name.includes('Bluegiga')) || hasUUID;
     //console.log(`isPT: ${isPT}`);
     return isPT;
   }
