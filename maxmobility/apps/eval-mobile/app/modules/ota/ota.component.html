@@ -34,8 +34,8 @@
             <Label col="1" class="percentageLabel" [text]="sd.otaProgressToString()"></Label>
           </GridLayout>
           <Progress [value]="sd.otaProgress" maxValue="100" class="progress"></Progress>
-          <GridLayout class="otaInfo" rows="auto, auto, *" columns="auto, *">
-            <Label col="0" class="otaLabel" [text]="sd.address"></Label>
+          <GridLayout class="otaInfo" rows="auto, auto, *" columns="2*, *">
+            <Label col="0" textWrap="true" class="otaLabel" [text]="sd.address"></Label>
             <TextView col="0" row="1" editable="false" class="otaState" textDecoration="none" [text]="sd.otaStateToString()"></TextView>
             <WrapLayout orientation="horizontal" horizontalAlignment="right" rowSpan="3" col="1">
               <Button *ngFor="let action of sd.otaActions" class="otaAction" [text]="action" (tap)="sd.onOTAActionTap(action)"></Button>
@@ -49,7 +49,7 @@
             <Label col="1" class="percentageLabel" [text]="pt.otaProgressToString()"></Label>
           </GridLayout>
           <Progress [value]="pt.otaProgress" maxValue="100" class="progress"></Progress>
-          <GridLayout class="otaInfo" rows="auto, auto, *" columns="*, *">
+          <GridLayout class="otaInfo" rows="auto, auto, *" columns="2*, *">
             <Label col="0" textWrap="true" class="otaLabel" [text]="pt.address"></Label>
             <TextView col="0" row="1" editable="false" class="otaState" textDecoration="none" [text]="pt.otaStateToString()"></TextView>
             <WrapLayout orientation="horizontal" horizontalAlignment="right" rowSpan="3" col="1">
