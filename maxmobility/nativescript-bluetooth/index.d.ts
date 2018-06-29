@@ -84,6 +84,11 @@ export { BondState, ConnectionState } from './common';
  */
 export interface Peripheral {
   /**
+   * Underlying object (CBCentral, BluetoothDevice)
+   */
+  device: any;
+
+  /**
    * The UUID of the peripheral.
    */
   UUID: string;
@@ -115,14 +120,9 @@ export interface Peripheral {
  */
 export interface Central {
   /**
-   * Underlying ios object
+   * Underlying object (CBCentral, BluetoothDevice)
    */
-  ios: any;
-
-  /**
-   * Underlying android object
-   */
-  android: any;
+  device: any;
 
   /**
    * The UUIDs of the Central.

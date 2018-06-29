@@ -312,14 +312,9 @@ export interface ConnectOptions {
  */
 export interface Peripheral {
   /**
-   * Underlying ios object
+   * Underlying object (CBPeripheral, BluetoothDevice
    */
-  ios: any;
-
-  /**
-   * Underlying android object
-   */
-  android: any;
+  device: any;
 
   /**
    * The UUID of the peripheral.
@@ -353,14 +348,9 @@ export interface Peripheral {
  */
 export interface Central {
   /**
-   * Underlying ios object
+   * Underlying object (CBCentral, BluetoothDevice)
    */
-  ios: any;
-
-  /**
-   * Underlying android object
-   */
-  android: any;
+  device: any;
 
   /**
    * The UUIDs of the Central.

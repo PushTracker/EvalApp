@@ -372,11 +372,15 @@ export class Bluetooth extends BluetoothCommon {
    */
   public notifyCentrals(value, characteristic, centrals) {
     console.dir(this._peripheralManager);
-    const didUpdate = this._peripheralManager.updateValue(value, characteristic, centrals);
+    const didUpdate = this._peripheralManager.updateValueForCharacteristicOnSubscribedCentrals(
+      value,
+      characteristic,
+      centrals
+    );
     if (didUpdate) {
       return Promise.resolve(true);
     } else {
-      return Promise.reject();
+      return Promise.reject('Could not update centrals');
     }
   }
 
