@@ -436,8 +436,10 @@ export class SmartDrive extends Observable {
           }
         };
         const writeFirmwareSector = (device: string, fw: any, characteristic: any, nextState: any) => {
-          //console.log('writing firmware to ' + device);
-          if (index < 0) index = 0;
+          if (index < 0) {
+            console.log('writing firmware to ' + device + ' at ' + characteristic);
+            index = 0;
+          }
           const fileSize = fw.length;
           if (cancelOTA) {
             return;
@@ -522,7 +524,7 @@ export class SmartDrive extends Observable {
                 .stopNotifying({
                   peripheralUUID: this.address,
                   serviceUUID: SmartDrive.ServiceUUID,
-                  characteristicUUID: characteristic
+                  characteristicUUID: characteristic.toUpperCase()
                 })
                 .catch(err => {});
             });
@@ -613,7 +615,12 @@ export class SmartDrive extends Observable {
                 // the interval for now? - shouldn't need
                 // to
                 if (index === -1) {
-                  writeFirmwareSector('SmartDrive', mcuFirmware, SmartDrive.ControlCharacteristic, nextState);
+                  writeFirmwareSector(
+                    'SmartDrive',
+                    mcuFirmware,
+                    SmartDrive.ControlCharacteristic.toUpperCase(),
+                    nextState
+                  );
                 }
               } else {
                 // go to next state
@@ -638,7 +645,7 @@ export class SmartDrive extends Observable {
                   .write({
                     peripheralUUID: this.address,
                     serviceUUID: SmartDrive.ServiceUUID,
-                    characteristicUUID: SmartDrive.BLEOTAControlCharacteristic,
+                    characteristicUUID: SmartDrive.BLEOTAControlCharacteristic.toUpperCase(),
                     value: data
                   })
                   .catch(err => {});
@@ -663,7 +670,7 @@ export class SmartDrive extends Observable {
                   writeFirmwareSector(
                     'SmartDriveBluetooth',
                     bleFirmware,
-                    SmartDrive.BLEOTADataCharacteristic,
+                    SmartDrive.BLEOTADataCharacteristic.toUpperCase(),
                     SmartDrive.OTAState.rebooting_ble
                   );
                 }
@@ -692,7 +699,7 @@ export class SmartDrive extends Observable {
                   .write({
                     peripheralUUID: this.address,
                     serviceUUID: SmartDrive.ServiceUUID,
-                    characteristicUUID: SmartDrive.BLEOTAControlCharacteristic,
+                    characteristicUUID: SmartDrive.BLEOTAControlCharacteristic.toUpperCase(),
                     value: data
                   })
                   .catch(err => {});
@@ -796,7 +803,7 @@ export class SmartDrive extends Observable {
       return this._bluetoothService.write({
         peripheralUUID: this.address,
         serviceUUID: SmartDrive.ServiceUUID,
-        characteristicUUID: SmartDrive.ControlCharacteristic,
+        characteristicUUID: SmartDrive.ControlCharacteristic.toUpperCase(),
         value: transmitData
       });
     } else {
@@ -874,7 +881,7 @@ export class SmartDrive extends Observable {
           .stopNotifying({
             peripheralUUID: this.address,
             serviceUUID: SmartDrive.ServiceUUID,
-            characteristicUUID: characteristic
+            characteristicUUID: characteristic.toUpperCase()
           })
           .catch(err => {});
       });
