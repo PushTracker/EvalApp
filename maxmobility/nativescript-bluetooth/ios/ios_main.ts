@@ -313,7 +313,10 @@ export class Bluetooth extends BluetoothCommon {
     // }
 
     const props =
-      (opts && opts.properties) || CBCharacteristicProperties.PropertyRead | CBCharacteristicProperties.PropertyWrite;
+      (opts && opts.properties) ||
+      CBCharacteristicProperties.PropertyRead |
+        CBCharacteristicProperties.PropertyWrite |
+        CBCharacteristicProperties.PropertyNotify;
 
     const permissions =
       (opts && opts.permissions) || CBAttributePermissions.Writeable | CBAttributePermissions.Readable;
@@ -344,7 +347,6 @@ export class Bluetooth extends BluetoothCommon {
   public addService(service) {
     console.log('ios bluetooth addService', service);
     if (service && this._peripheralManager) {
-      // this._createDataService(this._peripheralManager);
       // create a CBMutableService - https://developer.apple.com/documentation/corebluetooth/cbmutableservice?language=objc
       this._peripheralManager.addService(service);
     }
@@ -353,6 +355,7 @@ export class Bluetooth extends BluetoothCommon {
   public getServerService(uuidString) {
     // TODO: figure out how to query services from the peripheral
     //       manager or other BT subsystem
+    return null;
   }
 
   public offersService(uuidString) {
@@ -370,18 +373,38 @@ export class Bluetooth extends BluetoothCommon {
   /**
    * https://developer.apple.com/documentation/corebluetooth/cbperipheralmanager/1393281-updatevalue?changes=_2&language=objc
    */
-  public notifyCentrals(value, characteristic, centrals) {
-    console.dir(this._peripheralManager);
-    const didUpdate = this._peripheralManager.updateValueForCharacteristicOnSubscribedCentrals(
-      value,
-      characteristic,
-      centrals
-    );
-    if (didUpdate) {
-      return Promise.resolve(true);
-    } else {
-      return Promise.reject('Could not update centrals');
-    }
+  public notifyCentrals(value: any, characteristic: any, centrals: any) {
+    return new Promise((resolve, reject) => {
+      let resendTimeoutID = null;
+      // handle when we've timed out
+      const timeoutID = setTimeout(() => {
+        if (resendTimeoutID) {
+          clearTimeout(resendTimeoutID);
+        }
+        reject('Notify Timeout!');
+      }, 10000);
+      // handle when the notification fails
+      const readyToUpdate = args => {
+        this.off(Bluetooth.peripheralmanager_ready_update_subscribers_event, readyToUpdate);
+        if (resendTimeoutID) {
+          clearTimeout(resendTimeoutID);
+        }
+        resendTimeoutID = setTimeout(sendUpdate, 30);
+      };
+      // send data function
+      const sendUpdate = () => {
+        this.on(Bluetooth.peripheralmanager_ready_update_subscribers_event, readyToUpdate);
+        const didUpdate = this._peripheralManager.updateValueForCharacteristicOnSubscribedCentrals(
+          value,
+          characteristic,
+          centrals
+        );
+        if (didUpdate) {
+          resolve(true);
+        }
+      };
+      sendUpdate();
+    });
   }
 
   /**
@@ -440,9 +463,11 @@ export class Bluetooth extends BluetoothCommon {
         // due to the peripheralManager.state being unknown outside of this timeout
         CLog(CLogTypes.info, `peripheral manager state ${this._getManagerStateString(this._peripheralManager.state)}`);
         setTimeout(() => {
+          /*
           console.log('before _createDataService');
           this._createDataService(this._peripheralManager);
           console.log('after _createDataService');
+	    */
           this._peripheralManager.startAdvertising(advertisement);
           CLog(CLogTypes.info, 'Bluetooth.startAdvertising ---- started advertising');
 
@@ -951,122 +976,6 @@ export class Bluetooth extends BluetoothCommon {
     return result.buffer;
   }
 
-  private _createDataService(peripheral: CBPeripheralManager) {
-    try {
-      peripheral.removeAllServices();
-      console.log('*** _createDataService ***', peripheral);
-      console.log('this.data_service', this._data_service);
-      // this._data_service.includedServices = NSArray.array();
-      // //  iOS_Utils.collections.jsArrayToNSArray([]);
-      // this._peripheralManager.removeService(this._data_service);
-      // this._peripheralManager.stopAdvertising();
-
-      const data_service = CBMutableService.alloc().initWithTypePrimary(
-        CBUUID.UUIDWithString(PushTrackerServiceID.data_service),
-        true
-      );
-      CLog(CLogTypes.info, `data_service: ${data_service}`);
-      this._data_service = data_service;
-
-      console.log('before data_control_characteristic');
-      // data_control characterstic
-      const data_control_characteristic = CBMutableCharacteristic.alloc().initWithTypePropertiesValuePermissions(
-        CBUUID.UUIDWithString(PushTrackerServiceID.data_control),
-        CBCharacteristicProperties.PropertyWrite |
-          CBCharacteristicProperties.PropertyRead |
-          CBCharacteristicProperties.PropertyNotify,
-        null,
-        CBAttributePermissions.Writeable | CBAttributePermissions.Readable
-      );
-      console.log('after data_control_characteristic', data_control_characteristic);
-
-      // app_data characteristic
-      console.log('before app_data_characteristic');
-      const app_data_characteristic = CBMutableCharacteristic.alloc().initWithTypePropertiesValuePermissions(
-        CBUUID.UUIDWithString(PushTrackerServiceID.app_data),
-        CBCharacteristicProperties.PropertyWrite |
-          CBCharacteristicProperties.PropertyRead |
-          CBCharacteristicProperties.PropertyNotify,
-        null,
-        CBAttributePermissions.Readable | CBAttributePermissions.Writeable
-      );
-      console.log('after app_data_characteristic', app_data_characteristic);
-
-      console.log('before ota_data_characteristic');
-      // ota characteristic
-      const ota_data_characteristic = CBMutableCharacteristic.alloc().initWithTypePropertiesValuePermissions(
-        CBUUID.UUIDWithString(PushTrackerServiceID.ota_data),
-        CBCharacteristicProperties.PropertyWrite |
-          CBCharacteristicProperties.PropertyRead |
-          CBCharacteristicProperties.PropertyNotify,
-        null,
-        CBAttributePermissions.Readable | CBAttributePermissions.Writeable
-      );
-      console.log('after ota_data_characteristic', ota_data_characteristic);
-
-      console.log('before wb_data_characteristic');
-      // wb_data characteristic
-      const wb_data_characteristic = CBMutableCharacteristic.alloc().initWithTypePropertiesValuePermissions(
-        CBUUID.UUIDWithString(PushTrackerServiceID.wb_data),
-        CBCharacteristicProperties.PropertyWrite |
-          CBCharacteristicProperties.PropertyRead |
-          CBCharacteristicProperties.PropertyNotify,
-        null,
-        CBAttributePermissions.Readable | CBAttributePermissions.Writeable
-      );
-      console.log('after wb_data_characteristic', wb_data_characteristic);
-
-      console.log('before du_data_characteristic');
-      // du_data characteristic
-      const du_data_characteristic = CBMutableCharacteristic.alloc().initWithTypePropertiesValuePermissions(
-        CBUUID.UUIDWithString(PushTrackerServiceID.du_data),
-        CBCharacteristicProperties.PropertyWrite |
-          CBCharacteristicProperties.PropertyRead |
-          CBCharacteristicProperties.PropertyNotify,
-        null,
-        CBAttributePermissions.Readable | CBAttributePermissions.Writeable
-      );
-      console.log('after du_data_characteristic', du_data_characteristic);
-
-      console.log('before characteristics');
-      // assign the characteristics
-      data_service.characteristics = [
-        data_control_characteristic,
-        app_data_characteristic,
-        ota_data_characteristic,
-        wb_data_characteristic,
-        du_data_characteristic
-      ] as any;
-      console.log('after data_service.characteristics', data_service.characteristics);
-
-      console.log('before addService');
-      // add the service to the peripheral manager
-      peripheral.addService(data_service);
-      console.log('after addService');
-    } catch (e) {
-      console.log('error', e);
-    }
-
-    // let data_control_characteristic = CBMutableCharacteristic(type: PushTrackerServiceID.data_control.cb_uuid, properties: [.write, .read, .notify], value: nil, permissions: [.readable, .writeable])
-    // self.data_control_characteristic = data_control_characteristic;
-
-    // let app_data_characteristic = CBMutableCharacteristic(type: PushTrackerServiceID.app_data.cb_uuid, properties: [.write, .read, .notify], value: nil, permissions: [.readable, .writeable])
-    // self.app_data_characteristic = app_data_characteristic
-
-    // let ota_data_characteristic = CBMutableCharacteristic(type: PushTrackerServiceID.ota_data.cb_uuid, properties: [.write, .read, .notify], value: nil, permissions: [.readable, .writeable])
-    // self.ota_data_characteristic = ota_data_characteristic
-
-    // let wb_data_characteristic = CBMutableCharacteristic(type: PushTrackerServiceID.wb_data.cb_uuid, properties: [.write, .read, .notify], value: nil, permissions: [.readable, .writeable])
-    // self.wb_data_characteristic = wb_data_characteristic
-
-    // let du_data_characteristic = CBMutableCharacteristic(type: PushTrackerServiceID.du_data.cb_uuid, properties: [.write, .read, .notify], value: nil, permissions: [.readable, .writeable])
-    // self.du_data_characteristic = du_data_characteristic
-
-    // data_service.characteristics = [data_control_characteristic, app_data_characteristic, ota_data_characteristic, wb_data_characteristic, du_data_characteristic]
-
-    // peripheral.add(data_service)
-  }
-
   public _getManagerStateString(state: CBManagerState): string {
     let result: string;
     switch (state) {
@@ -1095,33 +1004,3 @@ export class Bluetooth extends BluetoothCommon {
     return result;
   }
 }
-
-/// MAX MOBILITY PRIVATE STUFF
-
-const PushTrackerServiceID = {
-  data_service: '9358ac8f-6343-4a31-b4e0-4b13a2b45d86',
-  data_control: '58daaa15-f2b2-4cd9-b827-5807b267dae1',
-  app_data: '68208ebf-f655-4a2d-98f4-20d7d860c471',
-  ota_data: '9272e309-cd33-4d83-a959-b54cc7a54d1f',
-  wb_data: '8489625f-6c73-4fc0-8bcc-735bb173a920',
-  du_data: '5177fda8-1003-4254-aeb9-7f9edb3cc9cf'
-};
-
-const _string_uuid = (value): string => {
-  switch (value) {
-    case PushTrackerServiceID.data_service: //base service id
-      return '9358ac8f-6343-4a31-b4e0-4b13a2b45d86';
-    case PushTrackerServiceID.wb_data: //characteristic used by the band to send data to the app
-      return '8489625f-6c73-4fc0-8bcc-735bb173a920';
-    case PushTrackerServiceID.app_data: //characteristic used by the app to send data to the band
-      return '68208ebf-f655-4a2d-98f4-20d7d860c471';
-    //legacy characteristics
-    case PushTrackerServiceID.data_control:
-      return '58daaa15-f2b2-4cd9-b827-5807b267dae1';
-    case PushTrackerServiceID.ota_data:
-      return '9272e309-cd33-4d83-a959-b54cc7a54d1f';
-    case PushTrackerServiceID.du_data:
-      return '5177fda8-1003-4254-aeb9-7f9edb3cc9cf';
-    default:
-  }
-};

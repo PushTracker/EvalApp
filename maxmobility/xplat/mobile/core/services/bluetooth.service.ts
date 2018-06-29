@@ -5,7 +5,7 @@ import * as dialogsModule from 'tns-core-modules/ui/dialogs';
 import { isIOS, isAndroid } from 'tns-core-modules/platform';
 import { fromObject } from 'tns-core-modules/data/observable';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
-import { Packet, toArray, toUint8Array, DailyInfo, PushTracker, SmartDrive } from '@maxmobility/core';
+import { Packet, DailyInfo, PushTracker, SmartDrive } from '@maxmobility/core';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 import { Feedback, FeedbackType, FeedbackPosition } from 'nativescript-feedback';
 import { Bluetooth, BondState, ConnectionState, Central, Peripheral } from 'nativescript-bluetooth';
@@ -146,8 +146,6 @@ export class BluetoothService {
   public async advertise(): Promise<any> {
     await this.initialize();
 
-    this._bluetooth.addService(this.AppService);
-
     await this._bluetooth.startAdvertising({
       UUID: BluetoothService.AppServiceUUID,
       settings: {
@@ -158,8 +156,9 @@ export class BluetoothService {
       }
     });
 
-    // this._bluetooth.addService(this.AppService);
-    console.log('Advertising Started!');
+    this._bluetooth.addService(this.AppService);
+
+    return Promise.resolve();
 
     // return this.initialize()
     //   .then(() => {
@@ -215,23 +214,23 @@ export class BluetoothService {
     // TODO: update to be cross-platform
     return Promise.resolve();
     /*
-        let tasks = [];
-        const gattDevices = this._bluetooth.getConnectedDevices();
-        const gattServerDevices = this._bluetooth.getServerConnectedDevices();
-        console.log(`Disconnecting from all devices: ${gattDevices}, ${gattServerDevices}`);
-        if (gattDevices && gattDevices.length) {
-            tasks = gattDevices.map(device => {
-                console.log(`disconnecting from ${device}`);
-                return this._bluetooth.disconnect({ UUID: `${device}` });
-            });
-        }
-        if (gattServerDevices && gattServerDevices.length) {
-            tasks = gattServerDevices.map(device => {
-                console.log(`disconnecting from ${device}`);
-                return this._bluetooth.cancelServerConnection(device);
-            });
-        }
-        return Promise.all(tasks);
+          let tasks = [];
+          const gattDevices = this._bluetooth.getConnectedDevices();
+          const gattServerDevices = this._bluetooth.getServerConnectedDevices();
+          console.log(`Disconnecting from all devices: ${gattDevices}, ${gattServerDevices}`);
+          if (gattDevices && gattDevices.length) {
+          tasks = gattDevices.map(device => {
+          console.log(`disconnecting from ${device}`);
+          return this._bluetooth.disconnect({ UUID: `${device}` });
+          });
+          }
+          if (gattServerDevices && gattServerDevices.length) {
+          tasks = gattServerDevices.map(device => {
+          console.log(`disconnecting from ${device}`);
+          return this._bluetooth.cancelServerConnection(device);
+          });
+          }
+          return Promise.all(tasks);
         */
   }
 
@@ -261,16 +260,14 @@ export class BluetoothService {
     // remove the services
     this.deleteServices();
     // stop the gatt server
-    //this._bluetooth.stopGattServer();
+    this._bluetooth.stopGattServer(); // TODO: android only for now
     // stop listening for events
     this.clearEventListeners();
+    // disconnect
+    //await this.disconnectAll(); // TODO: doesn't work right now
     // stop advertising
-    //await this.disconnectAll();
     this._bluetooth.stopAdvertising();
     return Promise.resolve();
-    // return this.disconnectAll().then(() => {
-    //   return this._bluetooth.stopAdvertising();
-    // });
   }
 
   public restart(): Promise<any> {
@@ -325,7 +322,7 @@ export class BluetoothService {
         break;
       case BondState.bonded:
         if (isAndroid) {
-          this._bluetooth.removeBond(dev.android);
+          this._bluetooth.removeBond(dev.device);
         }
         const pt = this.getOrMakePushTracker(dev);
         pt.handlePaired();
@@ -346,12 +343,11 @@ export class BluetoothService {
     const argdata = args.data;
     const peripheral = {
       device: argdata.device,
-      UUID: argdata.UUID,
+      address: argdata.UUID,
       name: argdata.name
     };
-    console.log(`${peripheral.UUID}::${peripheral.name} - discovered`);
+    console.log(`${peripheral.name}::${peripheral.address} - discovered`);
     if (this.isSmartDrive(peripheral)) {
-      const address = peripheral.UUID;
       const sd = this.getOrMakeSmartDrive(peripheral);
     }
   }
@@ -368,21 +364,21 @@ export class BluetoothService {
     console.log(`uuid change!`);
     // TODO: This function doesn't work (android BT impl returns null)
     /*
-        const dev = args.data.device;
-        console.log('uuid:', args.data.uuids);
-        if (!args.data.uuids) {
-            console.log('no uuid returned');
-            return;
-        }
-        const newUUID = args.data.uuids[0].toString();
-        console.log(`${dev} - uuid change - ${newUUID || 'None'}`);
-        if (this.isSmartDrive(dev)) {
-            const address = dev.UUID;
-            const sd = this.getOrMakeSmartDrive(address);
-        } else if (this.isPushTracker(dev)) {
-            const address = dev.getAddress();
-            const pt = this.getOrMakePushTracker(address);
-        }
+          const dev = args.data.device;
+          console.log('uuid:', args.data.uuids);
+          if (!args.data.uuids) {
+          console.log('no uuid returned');
+          return;
+          }
+          const newUUID = args.data.uuids[0].toString();
+          console.log(`${dev} - uuid change - ${newUUID || 'None'}`);
+          if (this.isSmartDrive(dev)) {
+          const address = dev.UUID;
+          const sd = this.getOrMakeSmartDrive(address);
+          } else if (this.isPushTracker(dev)) {
+          const address = dev.getAddress();
+          const pt = this.getOrMakePushTracker(address);
+          }
         */
     //console.log('finished uuid change');
   }
@@ -494,11 +490,7 @@ export class BluetoothService {
       }
       console.log('making service');
 
-      // this.AppService = this._bluetooth.makeService({
-      //   UUID: BluetoothService.AppServiceUUID,
-      //   serviceType: android.bluetooth.BluetoothGattService.SERVICE_TYPE_PRIMARY
-      // });
-
+      // make the service
       this.AppService = this._bluetooth.makeService({
         UUID: BluetoothService.AppServiceUUID,
         primary: true
@@ -507,61 +499,40 @@ export class BluetoothService {
       console.log('this.AppService', this.AppService);
 
       const descriptorUUIDs = ['2900', '2902'];
-      PushTracker.Characteristics.map(cuuid => {
-        console.log('Making characteristic: ' + cuuid);
-        // const c = this._bluetooth.makeCharacteristic({
-        //   UUID: cuuid,
-        //   gattProperty:
-        //     android.bluetooth.BluetoothGattCharacteristic.PROPERTY_READ |
-        //     android.bluetooth.BluetoothGattCharacteristic.PROPERTY_WRITE |
-        //     android.bluetooth.BluetoothGattCharacteristic.PROPERTY_NOTIFY,
-        //   gattPermissions:
-        //     android.bluetooth.BluetoothGattCharacteristic.PERMISSION_WRITE |
-        //     android.bluetooth.BluetoothGattCharacteristic.PERMISSION_READ
-        // });
 
+      // make the characteristics
+      const characteristics = PushTracker.Characteristics.map(cuuid => {
+        console.log('Making characteristic: ' + cuuid);
         //  defaults props are set READ/WRITE/NOTIFY, perms are set to READ/WRITE
         const c = this._bluetooth.makeCharacteristic({
           UUID: cuuid
         });
 
-        console.log('making descriptors');
-        const descriptors = descriptorUUIDs.map(duuid => {
-          // const d = this._bluetooth.makeDescriptor({
-          //   UUID: duuid,
-          //   permissions:
-          //     android.bluetooth.BluetoothGattDescriptor.PERMISSION_READ |
-          //     android.bluetooth.BluetoothGattDescriptor.PERMISSION_WRITE
-          // });
+        if (isAndroid) {
+          console.log('making descriptors');
+          const descriptors = descriptorUUIDs.map(duuid => {
+            //  defaults perms are set to READ/WRITE
+            const d = this._bluetooth.makeDescriptor({
+              UUID: duuid
+            });
 
-          const d = this._bluetooth.makeDescriptor({
-            UUID: duuid
+            d.setValue(new Array([0x00, 0x00]));
+            console.log('Making descriptor: ' + duuid);
+            return d;
           });
 
-          if (isAndroid) {
-            d.setValue(new Array([0x00, 0x00]));
-          } else {
-            d.value = new Array([0x00, 0x00]);
-          }
-
-          console.log('Making descriptor: ' + duuid);
-          return d;
-        });
-
-        // need to test this, mainly iOS part
-        if (isAndroid) {
           descriptors.map(d => {
             c.addDescriptor(d);
           });
         } else {
-          c.descriptors = descriptors;
+          // TODO: don't need ios impl apparrently?
         }
 
         if (isAndroid) {
           c.setValue(0, android.bluetooth.BluetoothGattCharacteristic.FORMAT_UINT8, 0);
           c.setWriteType(android.bluetooth.BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT);
         } else {
-          // TODO: write iOS impl here!
+          // TODO: don't need ios impl apparrently?
         }
 
         // store the characteristic here
@@ -569,9 +540,14 @@ export class BluetoothService {
           PushTracker.DataCharacteristic = c;
         }
 
-        console.log('Adding characteristic to service!');
-        this.AppService.addCharacteristic(c);
+        return c;
       });
+      console.log('Adding characteristics to service!');
+      if (isAndroid) {
+        characteristics.map(c => this.AppService.addCharacteristic(c));
+      } else {
+        this.AppService.characteristics = characteristics;
+      }
     } catch (ex) {
       console.log(ex);
     }
@@ -610,9 +586,15 @@ export class BluetoothService {
   public sendToPushTrackers(data: any, devices?: any): Promise<any> {
     let d = data;
     if (isIOS) {
-      d = NSArray.arrayWithArray(data);
+      d = NSData.dataWithData(data);
+      console.log(`Sending to Pushtracker: ${d}`);
     } else if (isAndroid) {
-      d = toArray(data);
+      const length = data.length || (data.size && data.size());
+      const arr = Array.create('byte', length);
+      for (let i = 0; i < length; i++) {
+        arr[i] = data[i];
+      }
+      d = arr;
     }
     return this._bluetooth.notifyCentrals(d, PushTracker.DataCharacteristic, devices);
   }

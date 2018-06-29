@@ -6,7 +6,7 @@ import { SegmentedBar, SegmentedBarItem } from 'tns-core-modules/ui/segmented-ba
 import { TextField } from 'tns-core-modules/ui/text-field';
 import { View } from 'tns-core-modules/ui/core/view';
 import { Animation, AnimationDefinition } from 'tns-core-modules/ui/animation';
-import { confirm } from 'tns-core-modules/ui/dialogs';
+import { alert, confirm } from 'tns-core-modules/ui/dialogs';
 import * as switchModule from 'tns-core-modules/ui/switch';
 import { Observable, fromObject } from 'tns-core-modules/data/observable';
 import { isAndroid, isIOS } from 'platform';
@@ -111,9 +111,18 @@ export class TrialComponent implements OnInit {
       // too many pushtrackers connected - don't know which to use!
       this.snackbar.simple(this.too_many_pts);
     } else if (!this.trial.startedWith) {
-      this.hideView(<View>this.startWithView.nativeElement);
       // we have exactly one PushTracker connected
       const pt = connectedPTs[0];
+      // check the version here (must be >= 1.5)
+      if (pt.version == 0xff || pt.version < 0x15) {
+        alert({
+          title: 'PushTracker Version Error',
+          message: 'Your Pushtracker version (' + pt.version + ') is out of date, please perform an OTA!',
+          okButtonText: 'Ok'
+        });
+        return;
+      }
+      this.hideView(<View>this.startWithView.nativeElement);
       let haveDailyInfo = false;
       let haveDistance = false;
       // let user know we're doing something
@@ -147,12 +156,39 @@ export class TrialComponent implements OnInit {
           trialStartedHandler();
         }
       };
+      let distanceTimeout = null;
+      const sendDistance = () => {
+        if (distanceTimeout) {
+          clearTimeout(distanceTimeout);
+        }
+        return pt.sendPacket('Command', 'DistanceRequest').catch(err => {
+          distanceTimeout = setTimeout(sendDistance, 500);
+        });
+      };
+      let settingsTimeout = null;
+      const sendSettings = () => {
+        if (settingsTimeout) {
+          clearTimeout(settingsTimeout);
+        }
+        return pt
+          .sendSettings('MX2+', 'English', 0x00, 1.0, this.trial.acceleration, this.trial.max_speed)
+          .catch(err => {
+            settingsTimeout = setTimeout(sendDistance, 500);
+          });
+      };
+
+      sendSettings().then(() => {
+        sendDistance();
+      });
+
+      /*
       // send command to get distance:
       pt.sendSettings('MX2+', 'English', 0x00, 1.0, this.trial.acceleration, this.trial.max_speed)
         .then(success => {
           return pt.sendPacket('Command', 'DistanceRequest');
         })
         .then(success => {});
+	*/
       // wait for push / coast data and distance:
       pt.on(PushTracker.pushtracker_distance_event, distanceHandler);
       pt.on(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
@@ -229,9 +265,18 @@ export class TrialComponent implements OnInit {
       // too many pushtrackers connected - don't know which to use!
       this.snackbar.simple(this.too_many_pts);
     } else if (!this.trial.startedWithout) {
-      this.hideView(<View>this.startWithoutView.nativeElement);
       // we have exactly one PushTracker connected
       const pt = connectedPTs[0];
+      // check the version here (must be >= 1.5)
+      if (pt.version == 0xff || pt.version < 0x15) {
+        alert({
+          title: 'PushTracker Version Error',
+          message: 'Your Pushtracker version (' + pt.version + ') is out of date, please perform an OTA!',
+          okButtonText: 'Ok'
+        });
+        return;
+      }
+      this.hideView(<View>this.startWithoutView.nativeElement);
       // let user know we're doing something
       this._progressService.show(this.starting_trial);
       // set up handlers

@@ -173,6 +173,10 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
       this._subscribedCharacteristics = new Set<CBUUID>();
     }
 
+    // set low connection latency
+    console.log('Setting desired connection latency to low!');
+    peripheral.setDesiredConnectionLatencyForCentral(CBPeripheralManagerConnectionLatency.Low, central);
+
     this._isConnected = true;
     console.log(`this._isConnected = ${this._isConnected}`);
 
