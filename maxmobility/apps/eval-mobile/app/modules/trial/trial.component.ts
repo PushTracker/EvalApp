@@ -117,7 +117,10 @@ export class TrialComponent implements OnInit {
       if (pt.version == 0xff || pt.version < 0x15) {
         alert({
           title: 'PushTracker Version Error',
-          message: 'Your Pushtracker version (' + pt.version + ') is out of date, please perform an OTA!',
+          message:
+            'Your Pushtracker version (' +
+            PushTracker.versionByteToString(pt.version) +
+            ') is out of date, please perform an OTA!',
           okButtonText: 'Ok'
         });
         return;
@@ -271,7 +274,10 @@ export class TrialComponent implements OnInit {
       if (pt.version == 0xff || pt.version < 0x15) {
         alert({
           title: 'PushTracker Version Error',
-          message: 'Your Pushtracker version (' + pt.version + ') is out of date, please perform an OTA!',
+          message:
+            'Your Pushtracker version (' +
+            PushTracker.versionByteToString(pt.version) +
+            ') is out of date, please perform an OTA!',
           okButtonText: 'Ok'
         });
         return;
