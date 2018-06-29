@@ -4,6 +4,10 @@
 import * as utils from 'tns-core-modules/utils/utils';
 import * as application from 'tns-core-modules/application';
 import {
+  Central,
+  Peripheral,
+  BondState,
+  ConnectionState,
   BluetoothCommon,
   CLog,
   CLogTypes,
@@ -28,6 +32,40 @@ import { TNS_ScanCallback } from './TNS_ScanCallback';
 const ACCESS_COARSE_LOCATION_PERMISSION_REQUEST_CODE = 222;
 const ACTION_REQUEST_ENABLE_BLUETOOTH_REQUEST_CODE = 223;
 const ACTION_REQUEST_BLUETOOTH_DISCOVERABLE_REQUEST_CODE = 224;
+
+export function deviceToCentral(dev: android.bluetooth.BluetoothDevice): Central {
+  const uuids = [];
+  const us = dev.getUuids();
+  if (us) {
+    for (let i = 0; i < us.length; i++) {
+      uuids.push(us[i].toString());
+    }
+  }
+  return {
+    device: dev,
+    UUIDs: uuids,
+    address: dev.getAddress(),
+    name: dev.getName(),
+    RSSI: null,
+    manufacturerId: null,
+    manufacturerData: null
+  };
+}
+
+export function deviceToPeripheral(dev: android.bluetooth.BluetoothDevice): Peripheral {
+  const uuid = dev.getUuids()[0].toString();
+  return {
+    device: dev,
+    UUID: uuid,
+    name: dev.getName(),
+    RSSI: null,
+    services: null, // TODO: fix
+    manufacturerId: null,
+    manufacturerData: null
+  };
+}
+
+export { Central, Peripheral, BondState, ConnectionState } from '../common';
 
 export class Bluetooth extends BluetoothCommon {
   // @link - https://developer.android.com/reference/android/content/Context.html#BLUETOOTH_SERVICE
@@ -757,13 +795,47 @@ export class Bluetooth extends BluetoothCommon {
    * This function should be invoked for every client that requests notifications/indications by writing to the "Client Configuration" descriptor for the given characteristic.
    * https://developer.android.com/reference/android/bluetooth/BluetoothGattServer.html#notifyCharacteristicChanged(android.bluetooth.BluetoothDevice,%20android.bluetooth.BluetoothGattCharacteristic,%20boolean)
    */
-  public notifyCentral(
-    device: android.bluetooth.BluetoothDevice,
-    char: android.bluetooth.BluetoothGattCharacteristic,
-    confirm: boolean = true
-  ) {
-    const result = this.gattServer.notifyCharacteristicChanged(device, char, confirm);
-    return result;
+  public notifyCentrals(value: any, characteristic: android.bluetooth.BluetoothGattCharacteristic, devices: any) {
+    const didSetValue = characteristic && characteristic.setValue(value);
+    if (didSetValue) {
+      const notify = dev => {
+        return new Promise((resolve, reject) => {
+          const timeoutID = setTimeout(() => {
+            this.off(Bluetooth.notification_sent_event, notificationSent);
+            reject('notify timeout!');
+          }, 10000);
+          // handle when the notification is sent
+          const notificationSent = args => {
+            clearTimeout(timeoutID);
+            const argdata = args.data;
+            const device = argdata.device;
+            const status = argdata.status;
+            //console.log(`notificationSent: ${device} : ${status}`);
+            this.off(Bluetooth.notification_sent_event, notificationSent);
+            if (status) {
+              // GATT_SUCCESS is 0x00
+              reject(`notify status error: ${status}`);
+            } else {
+              resolve();
+            }
+          };
+          // register for when notification is sent
+          this.on(Bluetooth.notification_sent_event, notificationSent);
+          //console.log(`notifying ${addr}!`);
+          // tell it to send the notification
+          this.gattServer.notifyCharacteristicChanged(dev, characteristic, true);
+        });
+      };
+
+      // return the promise chain from last element
+      return devices.reduce(function(chain, item) {
+        // bind item to first argument of function handle, replace `null` context as necessary
+        return chain.then(notify.bind(null, item));
+        // start chain with promise of first item
+      }, notify(devices.shift()));
+    } else {
+      return Promise.reject(`Couldn't set value on ${characteristic}`);
+    }
   }
 
   /**

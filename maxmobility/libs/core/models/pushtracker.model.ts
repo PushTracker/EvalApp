@@ -1,4 +1,5 @@
 // nativescript
+import { isIOS, isAndroid } from 'tns-core-modules/platform';
 import { Observable, EventData } from 'tns-core-modules/data/observable';
 import timer = require('tns-core-modules/timer');
 
@@ -110,6 +111,7 @@ export class PushTracker extends Observable {
   public connected: boolean = false; // Is this PushTracker connected?
 
   // not serialized
+  public device: any = null; // the actual device (ios:CBCentral, android:BluetoothDevice)
   public otaState: OTAState = OTAState.not_started;
   public otaProgress: number = 0;
   public otaActions: string[] = [];
@@ -345,29 +347,27 @@ export class PushTracker extends Observable {
               //console.log(`Writing ${index} / ${fileSize} of ota to pt`);
               const p = new Packet();
               p.makeOTAPacket('PushTracker', index, fw);
-              const data = p.toArray();
+              const data = p.writableBuffer();
               p.destroy();
-              if (this._bluetoothService.sendToPushTrackers(data)) {
-                this._bluetoothService
-                  .notifyPushTrackers([this.address])
-                  .then(notified => {
-                    index += payloadSize;
-                    //setTimeout(() => {
-                    writeFirmwareSector(fw, characteristic, nextState);
-                    //}, 30);
-                  })
-                  .catch(err => {
-                    console.log(`couldn't notify: ${err}`);
-                    console.log('retrying');
+              this._bluetoothService
+                .sendToPushTrackers(data, [this.device])
+                .then(notified => {
+                  index += payloadSize;
+                  if (isIOS) {
                     setTimeout(() => {
                       writeFirmwareSector(fw, characteristic, nextState);
-                    }, 500);
-                  });
-              } else {
-                setTimeout(() => {
-                  writeFirmwareSector(fw, characteristic, nextState);
-                }, 500);
-              }
+                    }, 30);
+                  } else {
+                    writeFirmwareSector(fw, characteristic, nextState);
+                  }
+                })
+                .catch(err => {
+                  console.log(`couldn't notify: ${err}`);
+                  console.log('retrying');
+                  setTimeout(() => {
+                    writeFirmwareSector(fw, characteristic, nextState);
+                  }, 100);
+                });
             } else {
               setTimeout(() => {
                 writeFirmwareSector(fw, characteristic, nextState);
@@ -547,17 +547,10 @@ export class PushTracker extends Observable {
       }
       p.data(dataKey, boundData);
     }
-    const transmitData = p.toArray();
+    const transmitData = p.writableBuffer();
     p.destroy();
     console.log(`sending ${transmitData}`);
-    if (this._bluetoothService.sendToPushTrackers(transmitData)) {
-      console.log(`notifying ${this.address}`);
-      return this._bluetoothService.notifyPushTrackers([this.address]);
-    } else {
-      return new Promise((resolve, reject) => {
-        reject(false);
-      });
-    }
+    return this._bluetoothService.sendToPushTrackers(transmitData, [this.device]);
   }
 
   public sendSettings(

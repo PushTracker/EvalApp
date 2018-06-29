@@ -4,6 +4,10 @@ declare var NSMakeRange;
 
 import { ios as iOS_Utils } from 'tns-core-modules/utils/utils';
 import {
+  Central,
+  Peripheral,
+  BondState,
+  ConnectionState,
   BluetoothCommon,
   CLog,
   StopNotifyingOptions,
@@ -24,11 +28,37 @@ import { CBCentralManagerDelegateImpl } from './CBCentralManagerDelegateImpl';
 let singleton: WeakRef<Bluetooth> = null;
 const peripheralArray: any = NSMutableArray.new();
 
+export function deviceToCentral(dev: CBCentral): Central {
+  return {
+    device: dev,
+    UUIDs: [], // TODO: fix
+    address: dev.identifier.UUIDString,
+    name: dev.name || 'PushTracker', // TODO: fix
+    RSSI: null,
+    manufacturerId: null,
+    manufacturerData: null
+  };
+}
+
+export function deviceToPeripheral(dev: CBPeripheral): Peripheral {
+  return {
+    device: dev,
+    UUID: dev.identifier.UUIDString,
+    name: null, // TODO: fix
+    RSSI: null,
+    services: null, // TODO: fix
+    manufacturerId: null,
+    manufacturerData: null
+  };
+}
+
+export { Central, Peripheral, BondState, ConnectionState } from '../common';
+
 export class Bluetooth extends BluetoothCommon {
-  private readonly _centralDelegate = null;
-  private readonly _centralPeripheralMgrDelegate = null;
-  private readonly _centralManager = null;
-  private readonly _peripheralManager = null;
+  private readonly _centralDelegate: CBCentralManagerDelegate = null;
+  private readonly _centralPeripheralMgrDelegate: CBPeripheralManagerDelegateImpl = null;
+  private readonly _centralManager: CBCentralManager = null;
+  private readonly _peripheralManager: CBPeripheralManager = null;
 
   private _data_service: CBMutableService;
   public _connectCallbacks = {};
@@ -283,7 +313,10 @@ export class Bluetooth extends BluetoothCommon {
     // }
 
     const props =
-      (opts && opts.properties) || CBCharacteristicProperties.PropertyRead | CBCharacteristicProperties.PropertyWrite;
+      (opts && opts.properties) ||
+      CBCharacteristicProperties.PropertyRead |
+        CBCharacteristicProperties.PropertyWrite |
+        CBCharacteristicProperties.PropertyNotify;
 
     const permissions =
       (opts && opts.permissions) || CBAttributePermissions.Writeable | CBAttributePermissions.Readable;
@@ -312,7 +345,6 @@ export class Bluetooth extends BluetoothCommon {
    * https://developer.apple.com/documentation/corebluetooth/cbperipheralmanager/1393255-addservice
    */
   public addService(service) {
-    // TODO: add a check against the type service is
     if (service && this._peripheralManager) {
       // create a CBMutableService - https://developer.apple.com/documentation/corebluetooth/cbmutableservice?language=objc
       this._peripheralManager.addService(service);
@@ -320,23 +352,9 @@ export class Bluetooth extends BluetoothCommon {
   }
 
   public getServerService(uuidString) {
-    //     if (gattServer !== null && gattServer !== undefined) {
-    //       const pUuid = this._stringToUuid(uuidString);
-    //       const services = gattServer.getServices();
-    //       /*
-    //   CLog(services);
-    //   CLog(services.length);
-    //   CLog(services.size());
-    //   for (let i=0; i<services.size(); i++) {
-    //       CLog(services.get(i));
-    //       CLog(services.get(i).getUuid());
-    //   }
-    //   */
-    //       const s = gattServer.getService(pUuid);
-    //       CLog(`---- gattServer.getService: ${s} - ${s && s.getUuid()}`);
-    //       return s;
-    //     }
-    //     return null;
+    // TODO: figure out how to query services from the peripheral
+    //       manager or other BT subsystem
+    return null;
   }
 
   public offersService(uuidString) {
@@ -344,55 +362,77 @@ export class Bluetooth extends BluetoothCommon {
   }
 
   public clearServices() {
-    // if (gattServer !== null && gattServer !== undefined) {
-    //   // gattServer.clearServices();
-    // }
+    this._peripheralManager.removeAllServices();
   }
 
   public cancelServerConnection(device) {
-    // if (gattServer !== null && gattServer !== undefined && device !== null && device !== undefined) {
-    //   // gattServer.cancelConnection(device);
-    // }
+    // TODO: figure out if this is possible on ios
+  }
+
+  /**
+   * https://developer.apple.com/documentation/corebluetooth/cbperipheralmanager/1393281-updatevalue?changes=_2&language=objc
+   */
+  public notifyCentrals(value: any, characteristic: any, centrals: any) {
+    return new Promise((resolve, reject) => {
+      let resendTimeoutID = null;
+      // handle when we've timed out
+      const timeoutID = setTimeout(() => {
+        this.off(Bluetooth.peripheralmanager_ready_update_subscribers_event, readyToUpdate);
+        if (resendTimeoutID) {
+          clearTimeout(resendTimeoutID);
+        }
+        reject('Notify Timeout!');
+      }, 10000);
+      // handle when the notification fails
+      const readyToUpdate = args => {
+        this.off(Bluetooth.peripheralmanager_ready_update_subscribers_event, readyToUpdate);
+        if (resendTimeoutID) {
+          clearTimeout(resendTimeoutID);
+        }
+        resendTimeoutID = setTimeout(sendUpdate, 30);
+      };
+      // send data function
+      const sendUpdate = () => {
+        this.on(Bluetooth.peripheralmanager_ready_update_subscribers_event, readyToUpdate);
+        const didUpdate = this._peripheralManager.updateValueForCharacteristicOnSubscribedCentrals(
+          value,
+          characteristic,
+          centrals
+        );
+        if (didUpdate) {
+          resolve(true);
+        }
+      };
+      sendUpdate();
+    });
+  }
+
+  /**
+   * Get connected devices for this specific profile.
+   * Return the set of devices which are in state STATE_CONNECTED
+   * Requires the BLUETOOTH permission.
+   * @returns - List of Bluetooth devices. The list will be empty on error.
+   */
+  public getConnectedDevices() {
+    //console.log('getConnectedDevices', peripheralArray);
+    return peripheralArray;
   }
 
   public getServerConnectedDevices() {
-    // if (
-    //   gattServer !== null &&
-    //   gattServer !== undefined &&
-    //   bluetoothManager !== null &&
-    //   bluetoothManager !== undefined
-    // ) {
-    //   // return bluetoothManager.getConnectedDevices(android.bluetooth.BluetoothGattServer.GATT);
-    //   return null;
-    // }
+    //console.log('BEGIN getServerConnectedDevices');
+    if (peripheralArray) {
+      //console.log('peripheralArray', peripheralArray);
+      return peripheralArray;
+    }
   }
 
   public getServerConnectedDeviceState(device) {
-    // if (
-    //   gattServer !== null &&
-    //   gattServer !== undefined &&
-    //   device !== null &&
-    //   device !== undefined &&
-    //   bluetoothManager !== null &&
-    //   bluetoothManager !== undefined
-    // ) {
-    //   // return bluetoothManager.getConnectionState(device, android.bluetooth.BluetoothGattServer.GATT);
-    //   return null;
-    // }
+    // TODO: figure out if we can query centrals that are connected
+    //       or their state
   }
 
   public getServerConnectedDevicesMatchingState(state) {
-    // if (
-    //   gattServer !== null &&
-    //   gattServer !== undefined &&
-    //   state !== null &&
-    //   state !== undefined &&
-    //   bluetoothManager !== null &&
-    //   bluetoothManager !== undefined
-    // ) {
-    //   // return bluetoothManager.getDevicesMatchingConnectionState(android.bluetooth.BluetoothGattServer.GATT, state);
-    //   return null;
-    // }
+    // TODO: figure out if we can query attached cdntrals
   }
 
   /**
@@ -425,8 +465,9 @@ export class Bluetooth extends BluetoothCommon {
         setTimeout(() => {
           this._peripheralManager.startAdvertising(advertisement);
           CLog(CLogTypes.info, 'Bluetooth.startAdvertising ---- started advertising');
+
           resolve();
-        }, 1000);
+        }, 750);
       } catch (error) {
         CLog(CLogTypes.error, `Bluetooth.startAdvertising ---- ${error}`);
         reject(error);
@@ -447,8 +488,10 @@ export class Bluetooth extends BluetoothCommon {
       if (this._peripheralManager.isAdvertising) {
         CLog(CLogTypes.info, 'Peripheral manager is advertising.');
         this._peripheralManager.stopAdvertising();
-        resolve();
       }
+
+      // always resolve
+      resolve();
     });
   }
 
@@ -928,95 +971,6 @@ export class Bluetooth extends BluetoothCommon {
     return result.buffer;
   }
 
-  public setup_data_service(peripheral: CBPeripheralManager) {
-    this._data_service.includedServices = NSArray.array();
-    //  iOS_Utils.collections.jsArrayToNSArray([]);
-    this._peripheralManager.removeService(this._data_service);
-    this._peripheralManager.stopAdvertising();
-
-    const data_service = CBMutableService.alloc().initWithTypePrimary(
-      CBUUID.UUIDWithString(PushTrackerServiceID.data_service),
-      true
-    );
-    CLog(CLogTypes.info, `data_service: ${data_service}`);
-    this._data_service = data_service;
-
-    // data_control characterstic
-    const data_control_characteristic = CBMutableCharacteristic.alloc().initWithTypePropertiesValuePermissions(
-      CBUUID.UUIDWithString(PushTrackerServiceID.data_control),
-      CBCharacteristicProperties.PropertyWrite |
-        CBCharacteristicProperties.PropertyRead |
-        CBCharacteristicProperties.PropertyNotify,
-      null,
-      CBAttributePermissions.Writeable | CBAttributePermissions.Readable
-    );
-
-    // app_data characteristic
-    const app_data_characteristic = CBMutableCharacteristic.alloc().initWithTypePropertiesValuePermissions(
-      CBUUID.UUIDWithString(PushTrackerServiceID.app_data),
-      CBCharacteristicProperties.PropertyWrite |
-        CBCharacteristicProperties.PropertyRead |
-        CBCharacteristicProperties.PropertyNotify,
-      null,
-      CBAttributePermissions.Readable | CBAttributePermissions.Writeable
-    );
-
-    // ota characteristic
-    const ota_data_characteristic = CBMutableCharacteristic.alloc().initWithTypePropertiesValuePermissions(
-      CBUUID.UUIDWithString(PushTrackerServiceID.ota_data),
-      CBCharacteristicProperties.PropertyWrite |
-        CBCharacteristicProperties.PropertyRead |
-        CBCharacteristicProperties.PropertyNotify,
-      null,
-      CBAttributePermissions.Readable | CBAttributePermissions.Writeable
-    );
-
-    // wb_data characteristic
-    const wb_data_characteristic = CBMutableCharacteristic.alloc().initWithTypePropertiesValuePermissions(
-      CBUUID.UUIDWithString(PushTrackerServiceID.wb_data),
-      CBCharacteristicProperties.PropertyWrite |
-        CBCharacteristicProperties.PropertyRead |
-        CBCharacteristicProperties.PropertyNotify,
-      null,
-      CBAttributePermissions.Readable | CBAttributePermissions.Writeable
-    );
-
-    // du_data characteristic
-    const du_data_characteristic = CBMutableCharacteristic.alloc().initWithTypePropertiesValuePermissions(
-      CBUUID.UUIDWithString(PushTrackerServiceID.du_data),
-      CBCharacteristicProperties.PropertyWrite |
-        CBCharacteristicProperties.PropertyRead |
-        CBCharacteristicProperties.PropertyNotify,
-      null,
-      CBAttributePermissions.Readable | CBAttributePermissions.Writeable
-    );
-
-    // assign the characteristics
-    data_service.characteristics = [data_control_characteristic, app_data_characteristic] as any;
-
-    // add the service to the peripheral manager
-    peripheral.addService(data_service);
-
-    // let data_control_characteristic = CBMutableCharacteristic(type: PushTrackerServiceID.data_control.cb_uuid, properties: [.write, .read, .notify], value: nil, permissions: [.readable, .writeable])
-    // self.data_control_characteristic = data_control_characteristic;
-
-    // let app_data_characteristic = CBMutableCharacteristic(type: PushTrackerServiceID.app_data.cb_uuid, properties: [.write, .read, .notify], value: nil, permissions: [.readable, .writeable])
-    // self.app_data_characteristic = app_data_characteristic
-
-    // let ota_data_characteristic = CBMutableCharacteristic(type: PushTrackerServiceID.ota_data.cb_uuid, properties: [.write, .read, .notify], value: nil, permissions: [.readable, .writeable])
-    // self.ota_data_characteristic = ota_data_characteristic
-
-    // let wb_data_characteristic = CBMutableCharacteristic(type: PushTrackerServiceID.wb_data.cb_uuid, properties: [.write, .read, .notify], value: nil, permissions: [.readable, .writeable])
-    // self.wb_data_characteristic = wb_data_characteristic
-
-    // let du_data_characteristic = CBMutableCharacteristic(type: PushTrackerServiceID.du_data.cb_uuid, properties: [.write, .read, .notify], value: nil, permissions: [.readable, .writeable])
-    // self.du_data_characteristic = du_data_characteristic
-
-    // data_service.characteristics = [data_control_characteristic, app_data_characteristic, ota_data_characteristic, wb_data_characteristic, du_data_characteristic]
-
-    // peripheral.add(data_service)
-  }
-
   public _getManagerStateString(state: CBManagerState): string {
     let result: string;
     switch (state) {
@@ -1045,33 +999,3 @@ export class Bluetooth extends BluetoothCommon {
     return result;
   }
 }
-
-/// MAX MOBILITY PRIVATE STUFF
-
-const PushTrackerServiceID = {
-  data_service: '9358ac8f-6343-4a31-b4e0-4b13a2b45d86',
-  data_control: '58daaa15-f2b2-4cd9-b827-5807b267dae1',
-  app_data: '68208ebf-f655-4a2d-98f4-20d7d860c471',
-  ota_data: '9272e309-cd33-4d83-a959-b54cc7a54d1f',
-  wb_data: '8489625f-6c73-4fc0-8bcc-735bb173a920',
-  du_data: '5177fda8-1003-4254-aeb9-7f9edb3cc9cf'
-};
-
-const _string_uuid = (value): string => {
-  switch (value) {
-    case PushTrackerServiceID.data_service: //base service id
-      return '9358ac8f-6343-4a31-b4e0-4b13a2b45d86';
-    case PushTrackerServiceID.wb_data: //characteristic used by the band to send data to the app
-      return '8489625f-6c73-4fc0-8bcc-735bb173a920';
-    case PushTrackerServiceID.app_data: //characteristic used by the app to send data to the band
-      return '68208ebf-f655-4a2d-98f4-20d7d860c471';
-    //legacy characteristics
-    case PushTrackerServiceID.data_control:
-      return '58daaa15-f2b2-4cd9-b827-5807b267dae1';
-    case PushTrackerServiceID.ota_data:
-      return '9272e309-cd33-4d83-a959-b54cc7a54d1f';
-    case PushTrackerServiceID.du_data:
-      return '5177fda8-1003-4254-aeb9-7f9edb3cc9cf';
-    default:
-  }
-};

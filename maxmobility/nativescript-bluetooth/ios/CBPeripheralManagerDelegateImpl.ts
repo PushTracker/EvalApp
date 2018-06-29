@@ -1,7 +1,7 @@
 /// <reference path="../node_modules/tns-platform-declarations/ios.d.ts" />
 
-import { CLog, CLogTypes } from '../common';
-import { Bluetooth } from './ios_main';
+import { CLog, CLogTypes, ConnectionState } from '../common';
+import { Bluetooth, deviceToCentral, deviceToPeripheral } from './ios_main';
 
 /**
  * @link - https://developer.apple.com/documentation/corebluetooth/cbperipheralmanagerdelegate
@@ -12,6 +12,15 @@ import { Bluetooth } from './ios_main';
 export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPeripheralManagerDelegate {
   public static ObjCProtocols = [CBPeripheralManagerDelegate];
   private _owner: WeakRef<Bluetooth>;
+  private _central?: CBCentral;
+  private _isConnected = false;
+  private _otaInProgress = false;
+  private _lastObservedPeripheralState?: CBManagerState;
+  private _subscribedCharacteristics = new Set<CBUUID>();
+  private _forceUpdate = false;
+  private _isWakeSupportCheck = false;
+  private _bandSupportsWake = false;
+  private _isSendingTime = false;
 
   static new(): CBPeripheralManagerDelegateImpl {
     return <CBPeripheralManagerDelegateImpl>super.new();
@@ -40,6 +49,8 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
     if (!owner) {
       return;
     }
+
+    this._lastObservedPeripheralState = mgr.state;
 
     const state = owner._getManagerStateString(mgr.state);
     CLog(CLogTypes.info, `current peripheral manager state = ${state}`);
@@ -74,6 +85,8 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
    */
   public peripheralManagerDidAddError(peripheral: CBPeripheralManager, service: CBService, error?: NSError) {
     CLog(CLogTypes.info, 'CBPeripheralManagerDelegateImpl.peripheralManagerDidAddError ---- ', error);
+
+    alert('Peripheral Manager Did Add Error');
 
     const owner = this._owner.get();
     if (!owner) {
@@ -127,14 +140,53 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
       characteristic
     );
 
+    let isNewCentral = false;
+
+    const oldCentral = this._central;
+    if (!oldCentral || !oldCentral.identifier) {
+      //console.log('oldCentral is null');
+    }
+
+    if (oldCentral && oldCentral.identifier && oldCentral === this._central) {
+      //console.log(`oldCentral.identifier = ${oldCentral.identifier}`, 'central.identifier', central.identifier);
+      if (oldCentral.identifier !== central.identifier) {
+        isNewCentral = true;
+      } else if (oldCentral !== central) {
+        //console.log(`New central but same identifier. Clearing characteristic subscriptions.`);
+        isNewCentral = true;
+      }
+    } else {
+      isNewCentral = true;
+    }
+
+    if (isNewCentral) {
+      this._central = central;
+      this._subscribedCharacteristics = new Set<CBUUID>();
+    }
+
+    // set low connection latency
+    //console.log('Setting desired connection latency to low!');
+    peripheral.setDesiredConnectionLatencyForCentral(CBPeripheralManagerConnectionLatency.Low, central);
+
+    this._isConnected = true;
+    this._subscribedCharacteristics.add(characteristic.UUID);
+
     const owner = this._owner.get();
     if (!owner) {
       return;
     }
-    owner.sendEvent(Bluetooth.peripheralmanager_subscribe_characteristic_event, {
+
+    // get return data for cross-platform use
+    const connection_state = ConnectionState.connected;
+
+    const dev = deviceToCentral(central);
+    dev.UUIDs = ['1d14d6ee-fd63-4fa1-bfa4-8f47b42119f0'.toUpperCase()]; // hard code pt uuid for now
+
+    owner.sendEvent(Bluetooth.server_connection_state_changed_event, {
+      device: dev,
       manager: peripheral,
       central: central,
-      characteristic: characteristic
+      connection_state
     });
   }
 
@@ -158,15 +210,54 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
       characteristic
     );
 
+    this._subscribedCharacteristics.delete(characteristic.UUID);
+
+    if (this._subscribedCharacteristics.size <= 0) {
+      this._isConnected = false;
+      // start advertising again ...?
+    }
+
     const owner = this._owner.get();
     if (!owner) {
       return;
     }
-    owner.sendEvent(Bluetooth.peripheralmanager_unsubscribe_characteristic_event, {
+    /*
+        owner.sendEvent(Bluetooth.peripheralmanager_unsubscribe_characteristic_event, {
+            manager: peripheral,
+            central: central,
+            characteristic: characteristic
+        });
+        */
+
+    // get return data for cross-platform use
+    const connection_state = ConnectionState.disconnected;
+    const dev = deviceToCentral(central);
+    dev.UUIDs = ['1d14d6ee-fd63-4fa1-bfa4-8f47b42119f0'.toUpperCase()]; // hard code pt uuid for now
+
+    owner.sendEvent(Bluetooth.server_connection_state_changed_event, {
+      device: dev,
       manager: peripheral,
       central: central,
-      characteristic: characteristic
+      connection_state
     });
+  }
+
+  /**
+   * This method is invoked when your app calls the addService: method to publish a service to the local peripheral’s
+   * GATT database. If the service is successfully published to the local database, the error parameter is nil.
+   * If unsuccessful, the error parameter returns the cause of the failure.
+   * @param peripheral - The peripheral manager providing this information.
+   * @param service - The service that was added to the local GATT database.
+   * @param error - If an error occurred, the cause of the failure.
+   */
+  public peripheralManagerDidAddServiceError(peripheral: CBPeripheralManager, service: CBService, error: NSError) {
+    CLog(
+      CLogTypes.info,
+      'CBPeripheralManagerDelegateImpl.peripheralManagerDidAddServiceError ----',
+      peripheral,
+      service,
+      `error: ${error}`
+    );
   }
 
   /**
@@ -213,6 +304,8 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
       manager: peripheral,
       request: request
     });
+
+    //peripheral.respond(request, CBATTError.Success);
   }
 
   /**
@@ -241,5 +334,22 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
       manager: peripheral,
       requests: requests
     });
+
+    for (let i = 0; i < requests.count; i++) {
+      const r = requests.objectAtIndex(i);
+      const dev = deviceToCentral(r.central);
+      owner.sendEvent(Bluetooth.characteristic_write_request_event, {
+        device: dev,
+        manager: peripheral,
+        requestId: 0, // TODO: see if we need to change it
+        characteristic: r.characteristic,
+        preparedWrite: null,
+        responseNeeded: false,
+        offset: r.offset,
+        value: r.value
+      });
+    }
+
+    //peripheral.respond(requests[0], CBATTError.Success);
   }
 }

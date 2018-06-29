@@ -84,7 +84,11 @@ export class TNS_ScanCallback extends android.bluetooth.le.ScanCallback {
         CLog(CLogTypes.info, `---- TNS_ScanCallback.onScanResult ---- manufacturerData: ${manufacturerData}`);
       }
 
-      const payload = {
+      CLog(
+        CLogTypes.info,
+        `---- Lollipop+ scanCallback result: ${result.getDevice().getName()}::${result.getDevice().getAddress()}`
+      );
+      this._owner.get().sendEvent(Bluetooth.device_discovered_event, {
         type: 'scanResult', // TODO or use different callback functions?
         UUID: result.getDevice().getAddress(),
         name: result.getDevice().getName(),
@@ -96,9 +100,7 @@ export class TNS_ScanCallback extends android.bluetooth.le.ScanCallback {
         ),
         manufacturerId: manufacturerId,
         manufacturerData: manufacturerData
-      };
-      CLog(CLogTypes.info, '---- Lollipop+ scanCallback result: ' + JSON.stringify(payload));
-      this._owner.get().sendEvent(Bluetooth.device_discovered_event, { data: payload });
+      });
     }
   }
 }
