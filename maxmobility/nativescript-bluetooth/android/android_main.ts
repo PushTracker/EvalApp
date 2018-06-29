@@ -823,7 +823,11 @@ export class Bluetooth extends BluetoothCommon {
           this.on(Bluetooth.notification_sent_event, notificationSent);
           //console.log(`notifying ${addr}!`);
           // tell it to send the notification
-          this.gattServer.notifyCharacteristicChanged(dev, characteristic, true);
+          if (dev && characteristic) {
+            this.gattServer.notifyCharacteristicChanged(dev, characteristic, true);
+          } else {
+            reject('Device or characteristic closed unexpectedly!');
+          }
         });
       };
 
