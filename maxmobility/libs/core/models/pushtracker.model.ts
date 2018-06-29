@@ -1,4 +1,5 @@
 // nativescript
+import { isIOS, isAndroid } from 'tns-core-modules/platform';
 import { Observable, EventData } from 'tns-core-modules/data/observable';
 import timer = require('tns-core-modules/timer');
 
@@ -334,16 +335,20 @@ export class PushTracker extends Observable {
                 .sendToPushTrackers(data, [this.device])
                 .then(notified => {
                   index += payloadSize;
-                  //setTimeout(() => {
-                  writeFirmwareSector(fw, characteristic, nextState);
-                  //}, 30);
+                  if (isIOS) {
+                    setTimeout(() => {
+                      writeFirmwareSector(fw, characteristic, nextState);
+                    }, 30);
+                  } else {
+                    writeFirmwareSector(fw, characteristic, nextState);
+                  }
                 })
                 .catch(err => {
                   console.log(`couldn't notify: ${err}`);
                   console.log('retrying');
                   setTimeout(() => {
                     writeFirmwareSector(fw, characteristic, nextState);
-                  }, 500);
+                  }, 100);
                 });
             } else {
               setTimeout(() => {

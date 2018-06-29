@@ -87,7 +87,6 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
     CLog(CLogTypes.info, 'CBPeripheralManagerDelegateImpl.peripheralManagerDidAddError ---- ', error);
 
     alert('Peripheral Manager Did Add Error');
-    console.log(peripheral, service, error);
 
     const owner = this._owner.get();
     if (!owner) {
@@ -141,27 +140,19 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
       characteristic
     );
 
-    console.log('characteristic.uuid', characteristic.UUID);
-    console.log('central.identifer', central.identifier);
-
     let isNewCentral = false;
 
     const oldCentral = this._central;
     if (!oldCentral || !oldCentral.identifier) {
-      console.log('oldCentral is null');
+      //console.log('oldCentral is null');
     }
 
     if (oldCentral && oldCentral.identifier && oldCentral === this._central) {
-      console.log(`oldCentral.identifier = ${oldCentral.identifier}`, 'central.identifier', central.identifier);
+      //console.log(`oldCentral.identifier = ${oldCentral.identifier}`, 'central.identifier', central.identifier);
       if (oldCentral.identifier !== central.identifier) {
-        console.log(
-          `changing central from ${oldCentral.identifier} to ${
-            central.identifier
-          } and clearing characteristic subscriptions.`
-        );
         isNewCentral = true;
       } else if (oldCentral !== central) {
-        console.log(`New central but same identifier. Clearing characteristic subscriptions.`);
+        //console.log(`New central but same identifier. Clearing characteristic subscriptions.`);
         isNewCentral = true;
       }
     } else {
@@ -174,12 +165,10 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
     }
 
     // set low connection latency
-    console.log('Setting desired connection latency to low!');
+    //console.log('Setting desired connection latency to low!');
     peripheral.setDesiredConnectionLatencyForCentral(CBPeripheralManagerConnectionLatency.Low, central);
 
     this._isConnected = true;
-    console.log(`this._isConnected = ${this._isConnected}`);
-
     this._subscribedCharacteristics.add(characteristic.UUID);
 
     const owner = this._owner.get();
@@ -225,7 +214,6 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
 
     if (this._subscribedCharacteristics.size <= 0) {
       this._isConnected = false;
-      console.log(`this._isConnected = ${this._isConnected}`);
       // start advertising again ...?
     }
 

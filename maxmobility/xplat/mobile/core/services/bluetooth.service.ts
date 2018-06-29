@@ -30,7 +30,7 @@ export class BluetoothService {
 
   constructor() {
     // enabling `debug` will output console.logs from the bluetooth source code
-    this._bluetooth.debug = true;
+    this._bluetooth.debug = false;
     this.advertise().catch(err => {
       const msg = `bluetooth.service::advertise error: ${err}`;
       dialogsModule
@@ -57,9 +57,11 @@ export class BluetoothService {
     this._bluetooth.on(Bluetooth.device_uuid_change_event, this.onDeviceUuidChange, this);
     this._bluetooth.on(Bluetooth.device_acl_disconnected_event, this.onDeviceAclDisconnected, this);
 
+    /*
     this._bluetooth.on(Bluetooth.centralmanager_updated_state_event, args => {
       console.log('centralmanager_updated_state_event');
     });
+      */
 
     this._bluetooth.on(Bluetooth.server_connection_state_changed_event, this.onServerConnectionStateChanged, this);
     this._bluetooth.on(Bluetooth.characteristic_write_request_event, this.onCharacteristicWriteRequest, this);
@@ -496,20 +498,18 @@ export class BluetoothService {
         primary: true
       });
 
-      console.log('this.AppService', this.AppService);
-
       const descriptorUUIDs = ['2900', '2902'];
 
       // make the characteristics
       const characteristics = PushTracker.Characteristics.map(cuuid => {
-        console.log('Making characteristic: ' + cuuid);
+        //console.log('Making characteristic: ' + cuuid);
         //  defaults props are set READ/WRITE/NOTIFY, perms are set to READ/WRITE
         const c = this._bluetooth.makeCharacteristic({
           UUID: cuuid
         });
 
         if (isAndroid) {
-          console.log('making descriptors');
+          //console.log('making descriptors');
           const descriptors = descriptorUUIDs.map(duuid => {
             //  defaults perms are set to READ/WRITE
             const d = this._bluetooth.makeDescriptor({
@@ -517,7 +517,7 @@ export class BluetoothService {
             });
 
             d.setValue(new Array([0x00, 0x00]));
-            console.log('Making descriptor: ' + duuid);
+            //console.log('Making descriptor: ' + duuid);
             return d;
           });
 
@@ -587,7 +587,7 @@ export class BluetoothService {
     let d = data;
     if (isIOS) {
       d = NSData.dataWithData(data);
-      console.log(`Sending to Pushtracker: ${d}`);
+      //console.log(`Sending to Pushtracker: ${d}`);
     } else if (isAndroid) {
       const length = data.length || (data.size && data.size());
       const arr = Array.create('byte', length);

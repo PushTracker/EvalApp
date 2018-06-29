@@ -345,7 +345,6 @@ export class Bluetooth extends BluetoothCommon {
    * https://developer.apple.com/documentation/corebluetooth/cbperipheralmanager/1393255-addservice
    */
   public addService(service) {
-    console.log('ios bluetooth addService', service);
     if (service && this._peripheralManager) {
       // create a CBMutableService - https://developer.apple.com/documentation/corebluetooth/cbmutableservice?language=objc
       this._peripheralManager.addService(service);
@@ -378,6 +377,7 @@ export class Bluetooth extends BluetoothCommon {
       let resendTimeoutID = null;
       // handle when we've timed out
       const timeoutID = setTimeout(() => {
+        this.off(Bluetooth.peripheralmanager_ready_update_subscribers_event, readyToUpdate);
         if (resendTimeoutID) {
           clearTimeout(resendTimeoutID);
         }
@@ -414,14 +414,14 @@ export class Bluetooth extends BluetoothCommon {
    * @returns - List of Bluetooth devices. The list will be empty on error.
    */
   public getConnectedDevices() {
-    console.log('getConnectedDevices', peripheralArray);
+    //console.log('getConnectedDevices', peripheralArray);
     return peripheralArray;
   }
 
   public getServerConnectedDevices() {
-    console.log('BEGIN getServerConnectedDevices');
+    //console.log('BEGIN getServerConnectedDevices');
     if (peripheralArray) {
-      console.log('peripheralArray', peripheralArray);
+      //console.log('peripheralArray', peripheralArray);
       return peripheralArray;
     }
   }

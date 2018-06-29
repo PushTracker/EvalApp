@@ -801,6 +801,7 @@ export class Bluetooth extends BluetoothCommon {
       const notify = dev => {
         return new Promise((resolve, reject) => {
           const timeoutID = setTimeout(() => {
+            this.off(Bluetooth.notification_sent_event, notificationSent);
             reject('notify timeout!');
           }, 10000);
           // handle when the notification is sent
