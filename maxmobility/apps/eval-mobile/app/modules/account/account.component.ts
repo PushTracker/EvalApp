@@ -72,7 +72,7 @@ export class AccountComponent implements OnInit {
   }
 
   getProfilePictureFSKey(): string {
-    return this.fsKeyPrefix + this.user.data._id + '.' + this.fsKeyProfilePicture;
+    return this.fsKeyPrefix + (this.user.data as any)._id + '.' + this.fsKeyProfilePicture;
   }
 
   saveProfilePicture(source) {
@@ -80,7 +80,7 @@ export class AccountComponent implements OnInit {
       const picKey = this.getProfilePictureFSKey();
       const b64 = source.toBase64String('png');
       const pic = LS.setItem(picKey, b64);
-      this.user.data.profile_picture = source;
+      (this.user.data as any).profile_picture = source;
       return Promise.resolve();
     } catch (err) {
       return Promise.reject(`Couldn't save profile picture: ${err}`);
@@ -92,10 +92,10 @@ export class AccountComponent implements OnInit {
       const picKey = this.getProfilePictureFSKey();
       const pic = LS.getItem(picKey);
       if (pic) {
-        let source = new imageSource.fromBase64(pic);
-        this.user.data.profile_picture = source;
+        let source = imageSource.fromBase64(pic);
+        (this.user.data as any).profile_picture = source;
       } else {
-        this.user.data.profile_picture = undefined;
+        (this.user.data as any).profile_picture = undefined;
       }
       return Promise.resolve();
     } catch (err) {
