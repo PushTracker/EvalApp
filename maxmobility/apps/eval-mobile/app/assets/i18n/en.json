@@ -261,8 +261,8 @@
         "summary": "Summary",
         "please-connect-pt": "Please connect your PushTracker",
         "too-many-pts": "Too many PushTrackers connected - please only connect one!",
-        "starting-trail": "Starting Trial",
-        "stopping-trial:": "Stopping Trial"
+        "starting-trial": "Starting Trial",
+        "stopping-trial": "Stopping Trial"
 
     },
     "ota": {
