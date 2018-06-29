@@ -199,7 +199,6 @@ export class SmartDrive extends Observable {
   }
 
   public onOTAActionTap(action: string) {
-    console.log(`OTA Action`);
     console.log(`OTA Action: ${action}`);
     switch (action) {
       case 'Start':
@@ -820,25 +819,24 @@ export class SmartDrive extends Observable {
   // handlers
 
   public handleConnect(data?: any) {
-    console.log(`connected to smartdrive!`);
-    // TODO: update state and spawn events
+    //console.log(`connected to smartdrive!`);
     this.connected = true;
     this.sendEvent(SmartDrive.smartdrive_connect_event, data);
     // now that we're connected, subscribe to the characteristics
     const services = data.services;
     if (services) {
       // TODO: if we didn't get services then we should disconnect and re-scan!
-      console.log('services:');
-      services.map(s => console.dir(s));
+      //console.log('services:');
+      //services.map(s => console.dir(s));
       const sdService = services.filter(s => s.UUID.toUpperCase() === SmartDrive.ServiceUUID.toUpperCase())[0];
-      console.dir(sdService);
+      //console.dir(sdService);
       if (sdService) {
         // TODO: if we didn't get sdService then we should disconnect and re-scan!
         const characteristics = sdService.characteristics;
         if (characteristics) {
           // TODO: if we didn't get characteristics then we
           //       should disconnect and re-scan!
-          console.log(characteristics);
+          //console.log(characteristics);
           let i = 0;
           // TODO: find a better solution than notification interval!
           const notificationInterval = 1000;

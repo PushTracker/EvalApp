@@ -178,7 +178,6 @@ export class PushTracker extends Observable {
   }
 
   public onOTAActionTap(action: string) {
-    console.log(`OTA Action`);
     console.log(`OTA Action: ${action}`);
     switch (action) {
       case 'Start':
