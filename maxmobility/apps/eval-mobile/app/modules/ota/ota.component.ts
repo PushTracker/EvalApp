@@ -90,9 +90,9 @@ export class OTAComponent implements OnInit, OnDestroy {
   onDrawerButtonTap(): void {}
 
   rssiToColor(rssi): string {
-    if (rssi < 70) return 'green';
-    if (rssi < 80) return 'yellow';
-    if (rssi < 90) return 'orange';
+    if (rssi > -70) return 'green';
+    if (rssi > -80) return 'yellow';
+    if (rssi > -90) return 'orange';
     return 'red';
   }
 
