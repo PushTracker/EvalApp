@@ -586,7 +586,7 @@ export class SmartDrive extends Observable {
               index = -1;
               if (this.connected && this.ableToSend) {
                 // send start OTA
-                this.sendPacket('Command', 'StartOTA', 'OTADevice', 'PacketOTAType', 'SmartDrive');
+                this.sendPacket('Command', 'StartOTA', 'OTADevice', 'PacketOTAType', 'SmartDrive').catch(err => {});
               }
               break;
             case SmartDrive.OTAState.updating_mcu:
@@ -720,7 +720,7 @@ export class SmartDrive extends Observable {
               } else if (this.connected && !hasRebooted) {
                 // send MCU stop ota command
                 // send stop OTA
-                this.sendPacket('Command', 'StopOTA', 'OTADevice', 'PacketOTAType', 'SmartDrive');
+                this.sendPacket('Command', 'StopOTA', 'OTADevice', 'PacketOTAType', 'SmartDrive').catch(() => {});
               }
               break;
             case SmartDrive.OTAState.verifying_update:
