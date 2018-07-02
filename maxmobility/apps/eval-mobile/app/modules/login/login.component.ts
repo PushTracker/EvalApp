@@ -19,8 +19,8 @@ export class LoginComponent implements OnInit {
   passwordError = '';
   emailError = '';
 
-  error_1: string = this._translateService.instant('user.error-1');
-  error_2: string = this._translateService.instant('user.error-2');
+  error_1: string = this._translateService.instant('user.sign-in-error-1');
+  error_2: string = this._translateService.instant('user.sign-in-error-2');
   error: string = this._translateService.instant('user.error');
   ok: string = this._translateService.instant('dialogs.ok');
   signing_in: string = this._translateService.instant('user.signing-in');
