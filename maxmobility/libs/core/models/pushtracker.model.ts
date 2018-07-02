@@ -548,7 +548,7 @@ export class PushTracker extends Observable {
     }
     const transmitData = p.writableBuffer();
     p.destroy();
-    console.log(`sending ${transmitData}`);
+    //console.log(`sending ${transmitData}`);
     return this._bluetoothService.sendToPushTrackers(transmitData, [this.device]);
   }
 

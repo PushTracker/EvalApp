@@ -799,7 +799,7 @@ export class SmartDrive extends Observable {
       p.data(dataKey, boundData);
       const transmitData = p.toUint8Array();
       p.destroy();
-      console.log(`sending ${transmitData}`);
+      //console.log(`sending ${transmitData}`);
 
       return this._bluetoothService.write({
         peripheralUUID: this.address,
