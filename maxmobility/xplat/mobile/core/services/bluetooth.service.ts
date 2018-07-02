@@ -344,6 +344,7 @@ export class BluetoothService {
     //console.log('device discovered!');
     const argdata = args.data;
     const peripheral = {
+      rssi: argdata.RSSI,
       device: argdata.device,
       address: argdata.UUID,
       name: argdata.name
@@ -574,6 +575,9 @@ export class BluetoothService {
     }
     //console.log(`Found or made SD: ${sd}`);
     sd.device = device.device;
+    if (device.rssi) {
+      sd.rssi = device.rssi;
+    }
     return sd;
   }
 

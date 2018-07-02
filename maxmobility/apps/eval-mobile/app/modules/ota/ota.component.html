@@ -31,7 +31,7 @@
         //SmartDrive OTAs
         <StackLayout class="ota" *ngFor="let sd of smartDriveOTAs._array">
           <GridLayout class="otaInfo" rows="auto" columns="auto, *">
-            <Label col="0" class="otaLabel" text="SmartDrive"></Label>
+            <Label col="0" class="otaLabel" [text]="'SmartDrive RSSI:' + sd.rssi"></Label>
             <Label col="1" class="percentageLabel" [text]="sd.otaProgressToString()"></Label>
           </GridLayout>
           <Progress [value]="sd.otaProgress" maxValue="100" class="progress"></Progress>

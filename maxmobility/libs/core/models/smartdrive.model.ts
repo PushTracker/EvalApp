@@ -115,6 +115,7 @@ export class SmartDrive extends Observable {
   public connected: boolean = false;
 
   // not serialized
+  public rssi: number = null; // the received signal strength indicator (how close is it?)
   public device: any = null; // the actual device (ios:CBPeripheral, android:BluetoothDevice)
   public otaState: OTAState = OTAState.not_started;
   public bleOTAProgress: number = 0;
