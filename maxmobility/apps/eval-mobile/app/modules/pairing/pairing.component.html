@@ -1,8 +1,5 @@
 <ActionBar class="action-bar" flat="true" title="Connectivity">
-  <!-- <NavigationButton *ngIf="isAndroid()" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton> -->
-
-  <NavigationButton *ngIf="isIOS()" text="Back"></NavigationButton>
-  <!-- <ActionItem *ngIf="isIOS()" icon="res://navigation/menu" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem> -->
+  <NavigationButton android:visibility="collapse"></NavigationButton>
 </ActionBar>
 
 <StackLayout backgroundImage="~/assets/images/background_1.jpg" tkMainContent class="page page-content gridImage">
@@ -11,15 +8,15 @@
     <CarouselItem  *ngFor="let slide of slides">
       
       <GridLayout  rows="auto, *" cols="*" class="">
-	    
-	    <StackLayout row="0" class="topSlide" height="35%" width="100%" orientation="horizontal" horizontalAlignment="center">
-	      <Image [src]="slide.Image" stretch="aspectFit"></Image>
-	    </StackLayout>
+	
+	<StackLayout row="0" class="topSlide" height="35%" width="100%" orientation="horizontal" horizontalAlignment="center">
+	  <Image [src]="slide.Image" stretch="aspectFit"></Image>
+	</StackLayout>
 
-	    <ScrollView  row="1" class="lowerSlide hero" height="65%" >
+	<ScrollView  row="1" class="lowerSlide hero" height="65%" >
           <StackLayout class="hero" orientation="vertical" horizontalAlignment="center" width="100%">
             <Label [text]="slide.Label" class="slideLowerLabel" textWrap="true"></Label>
-	        <Label *ngFor="let bullet of slide.Bullets" [text]="bullet" class="bullet" textWrap="true"></Label>
+	    <Label *ngFor="let bullet of slide.Bullets" [text]="bullet" class="bullet" textWrap="true"></Label>
             <DockLayout *ngIf="slides.indexOf(slide) == 0" stretchLastChild="false">
               <!-- <Button  class="icon fa" (tap)="onChevronTapped()" text="&#xf054;" dock="right"></Button> -->
             </DockLayout>

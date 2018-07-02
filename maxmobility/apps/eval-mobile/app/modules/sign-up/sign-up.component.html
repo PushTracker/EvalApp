@@ -3,16 +3,19 @@
     <StackLayout>
       <Label class="app-logo" [text]="'general.title' | translate"></Label>
       <Label class="account-icon fa text-white" text="&#xf2be;"></Label>
-      <DockLayout>
-        <Label dock="left" [text]="'user.language' | translate" class="text-field label"></Label>
+      <GridLayout rows="auto" columns="auto, *">
+        <Label
+	  col="0"
+	  [text]="'user.language' | translate"
+	  class="text-field label"></Label>
         <DropDown
-           dock="right"
-		   [hint]="'user.language' | translate"
-           [selectedIndex]="selectedLanguageIndex"
-		   class="text-field dropdown"
-		   [items]="languages"
-		   (selectedIndexChanged)="onLanguageChanged($event)"></DropDown>
-      </DockLayout>
+	  col="1"
+	  class="dropdown"
+	  [hint]="'user.language' | translate"
+          [selectedIndex]="selectedLanguageIndex"
+	  [items]="languages"
+	  (selectedIndexChanged)="onLanguageChanged($event)"></DropDown>
+      </GridLayout>
       <TextField #firstName
                  [(ngModel)]="user.first_name"
                  class="text-field"

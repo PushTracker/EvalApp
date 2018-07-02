@@ -1,5 +1,5 @@
 <ActionBar class="action-bar" flat="true" [title]="demo.model + ' Demo ' + demo.smartdrive_serial_number">
-  <NavigationButton *ngIf="isIOS()"></NavigationButton>
+  <NavigationButton android:visibility="collapse"></NavigationButton>
 
   <ActionItem (tap)="onSave()"
               ios.systemIcon="3" ios.position="right"
