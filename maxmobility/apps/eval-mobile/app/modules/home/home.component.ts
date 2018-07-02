@@ -141,11 +141,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   connectivityThumbTapped(item: any) {
+    const index = this.connectivityItems.indexOf(item);
     const route = item.Route;
     //Determines the pairing processs to perform
     const directive = item.Directive;
 
-    this._routerExtensions.navigate([route]);
+    this._routerExtensions.navigate([route], {
+      queryParams: {
+        index
+      }
+    });
   }
 
   otaThumbTapped(item: any) {

@@ -12,7 +12,8 @@ import { isAndroid, isIOS } from 'platform';
 import { Feedback, FeedbackType, FeedbackPosition } from 'nativescript-feedback';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 import { TranslateService } from '@ngx-translate/core';
-import { ActivatedRoute } from '@angular/router';
+import { PageRoute } from 'nativescript-angular/router';
+import { switchMap } from 'rxjs/operators';
 
 import { CLog, LoggingService, Demo, Packet, DailyInfo, PushTracker, SmartDrive } from '@maxmobility/core';
 import { DemoService, BluetoothService, FirmwareService, ProgressService } from '@maxmobility/mobile';
@@ -30,19 +31,19 @@ export class DemoDetailComponent implements OnInit {
   private snackbar = new SnackBar();
 
   constructor(
-    private _route: ActivatedRoute,
+    private pageRoute: PageRoute,
     private zone: NgZone,
     private barcodeScanner: BarcodeScanner,
     private _progressService: ProgressService,
     private _demoService: DemoService,
     private _bluetoothService: BluetoothService
   ) {
-    const query = this._route.snapshot.queryParams;
-    if (query.index) {
-      this.index = query.index;
-      this.demo = DemoService.Demos.getItem(this.index);
-    } else {
-    }
+    this.pageRoute.activatedRoute.pipe(switchMap(activatedRoute => activatedRoute.queryParams)).forEach(params => {
+      if (params.index) {
+        this.index = params.index;
+        this.demo = DemoService.Demos.getItem(this.index);
+      }
+    });
   }
 
   isIOS(): boolean {

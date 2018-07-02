@@ -2,13 +2,13 @@
 import { Component, ElementRef, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 // nativescript
 import { ObservableArray, ChangedData, ChangeType } from 'tns-core-modules/data/observable-array';
-import { RouterExtensions } from 'nativescript-angular/router';
+import { PageRoute, RouterExtensions } from 'nativescript-angular/router';
+import { switchMap } from 'rxjs/operators';
 import { View } from 'ui/core/view';
 import { Color } from 'tns-core-modules/color';
 import { Feedback, FeedbackType, FeedbackPosition } from 'nativescript-feedback';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
-import { isAndroid, isIOS } from 'platform';
-const carousel = require('nativescript-carousel').Carousel;
+const Carousel = require('nativescript-carousel').Carousel;
 // libs
 import { BluetoothService } from '@maxmobility/mobile';
 import { PushTracker } from '@maxmobility/core';
@@ -23,14 +23,8 @@ export class PairingComponent implements OnInit, AfterViewInit {
   @ViewChild('carousel') carousel: ElementRef;
   private feedback: Feedback;
   snackbar = new SnackBar();
+  selectedPage = 0;
 
-  isIOS(): boolean {
-    return isIOS;
-  }
-
-  isAndroid(): boolean {
-    return isAndroid;
-  }
   slides = [
     {
       Image: '~/assets/images/PushTracker-pairing.png',
@@ -60,7 +54,19 @@ export class PairingComponent implements OnInit, AfterViewInit {
     }
   ];
 
-  constructor(private routerExtensions: RouterExtensions, private _bluetoothService: BluetoothService) {
+  constructor(
+    private pageRoute: PageRoute,
+    private routerExtensions: RouterExtensions,
+    private _bluetoothService: BluetoothService
+  ) {
+    // figure out which slide we're going to
+    this.pageRoute.activatedRoute.pipe(switchMap(activatedRoute => activatedRoute.queryParams)).forEach(params => {
+      if (params.index) {
+        this.selectedPage = params.index;
+        console.log(this.selectedPage);
+      }
+    });
+
     this.feedback = new Feedback();
     // handle pushtracker pairing events for existing pushtrackers
     console.log('registering for pairing events!');
@@ -125,6 +131,14 @@ export class PairingComponent implements OnInit, AfterViewInit {
         name: 'wipe'
       }
     });
+  }
+
+  onCarouselLoad() {
+    setTimeout(() => {
+      this.carousel.nativeElement.selectedPage = this.selectedPage;
+      this.carousel.nativeElement.refresh();
+      console.log('Carousel loaded to ' + this.selectedPage);
+    }, 100);
   }
 
   ngAfterViewInit() {
