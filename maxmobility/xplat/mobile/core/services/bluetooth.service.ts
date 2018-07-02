@@ -52,6 +52,7 @@ export class BluetoothService {
     // setup event listeners
     this._bluetooth.on(Bluetooth.bond_status_change_event, this.onBondStatusChange, this);
     this._bluetooth.on(Bluetooth.peripheral_connected_event, this.onPeripheralConnected, this);
+    this._bluetooth.on(Bluetooth.peripheral_disconnected_event, this.onPeripheralDisconnected, this);
     this._bluetooth.on(Bluetooth.device_discovered_event, this.onDeviceDiscovered, this);
     this._bluetooth.on(Bluetooth.device_name_change_event, this.onDeviceNameChange, this);
     this._bluetooth.on(Bluetooth.device_uuid_change_event, this.onDeviceUuidChange, this);
@@ -73,6 +74,7 @@ export class BluetoothService {
     // setup event listeners
     this._bluetooth.off(Bluetooth.bond_status_change_event);
     this._bluetooth.off(Bluetooth.peripheral_connected_event);
+    this._bluetooth.off(Bluetooth.peripheral_disconnected_event);
     this._bluetooth.off(Bluetooth.device_discovered_event);
     this._bluetooth.off(Bluetooth.device_name_change_event);
     this._bluetooth.off(Bluetooth.device_uuid_change_event);
@@ -425,11 +427,39 @@ export class BluetoothService {
   }
 
   private onPeripheralConnected(args: any): void {
-    console.log('peripheral discovered!');
+    //console.log('peripheral connected!');
     const argdata = args.data;
-    const peripheral = argdata.device;
+    const device = {
+      rssi: argdata.RSSI,
+      device: argdata.device,
+      address: argdata.UUID,
+      name: argdata.name
+    };
+    console.log(`peripheral connected - ${device.name}::${device.address}`);
+    if (device.address && this.isSmartDrive(device)) {
+      const sd = this.getOrMakeSmartDrive(device);
+      sd.handleConnect();
+    }
     // TODO: this event is not emitted by the android part of the bluetooth library
-    //console.log('finished peripheral discovered!');
+    //console.log('finished peripheral connected!');
+  }
+
+  private onPeripheralDisconnected(args: any): void {
+    //console.log('peripheral disconnected!');
+    const argdata = args.data;
+    const device = {
+      rssi: argdata.RSSI,
+      device: argdata.device,
+      address: argdata.UUID,
+      name: argdata.name
+    };
+    console.log(`peripheral disconnected - ${device.name}::${device.address}`);
+    if (device.addres && this.isSmartDrive(device)) {
+      const sd = this.getOrMakeSmartDrive(device);
+      sd.handleDisconnect();
+    }
+    // TODO: this event is not emitted by the android part of the bluetooth library
+    //console.log('finished peripheral disconnected!');
   }
 
   private onCharacteristicWriteRequest(args: any): void {

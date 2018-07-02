@@ -855,12 +855,18 @@ export class SmartDrive extends Observable {
             this.notifying = true;
             timer.setTimeout(() => {
               console.log(`Start Notifying ${characteristic.UUID}`);
-              this._bluetoothService.startNotifying({
-                peripheralUUID: this.address,
-                serviceUUID: SmartDrive.ServiceUUID,
-                characteristicUUID: characteristic.UUID,
-                onNotify: this.handleNotify.bind(this)
-              });
+              this._bluetoothService
+                .startNotifying({
+                  peripheralUUID: this.address,
+                  serviceUUID: SmartDrive.ServiceUUID,
+                  characteristicUUID: characteristic.UUID,
+                  onNotify: this.handleNotify.bind(this)
+                })
+                .catch(err => {
+                  console.log(`Couldn't start notifying: ${err}`);
+                  this.notifying = false;
+                  this.connected = false;
+                });
             }, i * notificationInterval);
             i++;
           });

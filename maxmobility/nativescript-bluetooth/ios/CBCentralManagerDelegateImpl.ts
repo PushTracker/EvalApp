@@ -69,7 +69,16 @@ export class CBCentralManagerDelegateImpl extends NSObject implements CBCentralM
       "----- CBCentralManagerDelegateImpl centralManager:didConnectPeripheral, let's discover service"
     );
     peri.discoverServices(null);
-    owner.sendEvent('peripheral_connected_event', { peripheral });
+    const eventData = {
+      device: peripheral,
+      UUID: peripheral.identifier.UUIDString,
+      name: peripheral.name,
+      RSSI: null,
+      state: owner._getState(peripheral.state),
+      manufacturerId: null,
+      manufacturerData: null
+    };
+    owner.sendEvent('peripheral_connected_event', eventData);
   }
 
   /**
@@ -102,7 +111,17 @@ export class CBCentralManagerDelegateImpl extends NSObject implements CBCentralM
       CLog(CLogTypes.info, `***** centralManagerDidDisconnectPeripheralError() no disconnect callback found *****`);
     }
     owner.removePeripheral(peripheral);
-    owner.sendEvent('peripheral_disconnected_event', { peripheral, error });
+    const eventData = {
+      device: peripheral,
+      UUID: peripheral.identifier.UUIDString,
+      name: peripheral.name,
+      RSSI: null,
+      state: owner._getState(peripheral.state),
+      manufacturerId: null,
+      manufacturerData: null,
+      error: error
+    };
+    owner.sendEvent('peripheral_disconnected_event', eventData);
   }
 
   /**
@@ -130,7 +149,17 @@ export class CBCentralManagerDelegateImpl extends NSObject implements CBCentralM
     if (!owner) {
       return;
     }
-    owner.sendEvent('peripheral_failed_to_connect_event', { peripheral, error });
+    const eventData = {
+      device: peripheral,
+      UUID: peripheral.identifier.UUIDString,
+      name: peripheral.name,
+      RSSI: null,
+      state: owner._getState(peripheral.state),
+      manufacturerId: null,
+      manufacturerData: null,
+      error: error
+    };
+    owner.sendEvent('peripheral_failed_to_connect_event', eventData);
   }
 
   /**
@@ -183,6 +212,7 @@ export class CBCentralManagerDelegateImpl extends NSObject implements CBCentralM
       }
 
       const eventData = {
+        device: peripheral,
         UUID: peripheral.identifier.UUIDString,
         name: peripheral.name,
         RSSI: RSSI,
@@ -253,6 +283,7 @@ export class CBCentralManagerDelegateImpl extends NSObject implements CBCentralM
       owner.addPeripheral(peripheral);
 
       const eventData = {
+        device: peripheral,
         UUID: peripheral.identifier.UUIDString,
         name: peripheral.name,
         RSSI: null,
