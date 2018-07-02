@@ -15,12 +15,7 @@
              class="account-picture"
 	     *ngIf="user.data.profile_picture"
              [src]="user.data.profile_picture"
-             (tap)="onUpdateProfilePictureTap()"
-	     width="100"
-	     height="100"
-	     borderRadius="100"
-	     borderWidth="10"
-	     borderColor="#009ac7"></Image>
+             (tap)="onUpdateProfilePictureTap()"></Image>
       <Label color="#fff"
              *ngIf="!user.data.profile_picture"
              (tap)="onUpdateProfilePictureTap()"
@@ -29,19 +24,11 @@
       <GridLayout rows="auto" columns="auto, *">
         <Label
 	  col="0"
-	  class="text-field label"
-	  margin="10"
+	  class="label"
 	  [text]="'user.language' | translate"></Label>
         <DropDown
 	  col="1"
-	  class="text-field dropdown"
-	  backgroundColor="#009ac7"
-	  padding="5"
-	  margin="20"
-	  placeholderColor="gray"
-	  color="LightGray"
-	  borderRadius="2"
-	  textAlign="right"
+	  class="dropdown"
 	  [hint]="'user.language' | translate"
           [selectedIndex]="selectedLanguageIndex"
 	  [items]="languages"
