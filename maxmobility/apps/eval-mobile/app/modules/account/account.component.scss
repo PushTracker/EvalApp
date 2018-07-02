@@ -57,15 +57,6 @@
   font-weight: 300;
 }
 
-.label {
-    margin: 5, 15, 5, 15;
-    padding: 10;
-    font-size: 18;
-    width: auto;
-    height: auto;
-    vertical-align: middle;
-    color: $white;
-}
 .error {
   font-size: 15;
   font-weight: 300;
@@ -73,13 +64,22 @@
   margin: 5, 20, 5, 35;
 }
 
+.label {
+    color: $white;
+    padding: 5;
+    margin: 10 20;
+    font-size: 18;
+    vertical-align: center;
+    text-align: left;
+}
+
 .dropdown {
     background-color: $permobil-hero;
-    padding: 5;
-    margin: 5;
+    placeholder-color: rgba(250, 250, 250, 0.5);
     color: $background-light;
     border-radius: 2;
-    text-align: center;
+    padding: 5;
+    margin: 10 20;
     vertical-align: center;
-    horizontal-align: right;
+    text-align: right;
 }
