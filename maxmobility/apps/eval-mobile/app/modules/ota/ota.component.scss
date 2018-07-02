@@ -1,4 +1,5 @@
 @import '../../scss/variables';
+@import '../../scss/buttons';
 
 ScrollView{
     background-color: $permobil-hero;
@@ -14,6 +15,7 @@ ScrollView{
 
 .ota {
     padding: 5, 15, 5, 15;
+    margin: 5, 15, 5, 15;
 }
 
 .progress {

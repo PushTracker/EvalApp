@@ -9,19 +9,18 @@
              [text]="('ota.version' | translate) + ' ' + (currentVersion || '??')"
              textWrap="true"></Label>
 
-      <FlexboxLayout *ngIf="ready">
-        <Button class="hero"
-                [visibility]="updating ? 'collapse' : 'visible'"
-                width="50%"
+      <GridLayout *ngIf="ready" columns="*, *" rows="*">
+        <Button class="permobil-ocean-btn ota"
+                col="0"
+                *ngIf="!updating"
                 [text]="'ota.refresh' | translate"
-                margin="5, 10, 5, 10"
                 (tap)="onRefreshDeviceList()"></Button>
-        <Button class="hero"
-                [width]="updating ? '100%' : '50%'"
+        <Button class="permobil-ocean-btn ota"
+                [col]="updating ? '0' : '1'"
+                [colSpan]="updating ? '2' : '1'"
                 [text]="updatingButtonText"
-                margin="5, 10, 5, 10"
                 (tap)="onStartOtaUpdate()"></Button>
-      </FlexboxLayout>
+      </GridLayout>
       <Label class="otaDescription"
              *ngIf="!ready"
              textWrap="true"
@@ -33,12 +32,12 @@
         <StackLayout class="ota" *ngFor="let sd of smartDriveOTAs._array">
           <GridLayout class="otaInfo" rows="auto" columns="auto, *">
             <Label col="0" class="otaLabel" textWrap="true">
-	      <FormattedString>
-		<Span text="SmartDrive"></Span>
-		<Span [text]="'\nRSSI:'" color="#004f7e"></Span>
-		<Span [text]="sd.rssi" [color]="rssiToColor(sd.rssi)"></Span>
-	      </FormattedString>
-	    </Label>
+	          <FormattedString>
+		        <Span text="SmartDrive"></Span>
+		        <Span [text]="'\nRSSI:'" color="#004f7e"></Span>
+		        <Span [text]="sd.rssi" [color]="rssiToColor(sd.rssi)"></Span>
+	          </FormattedString>
+	        </Label>
             <Label col="1" class="percentageLabel" [text]="sd.otaProgressToString()"></Label>
           </GridLayout>
           <Progress [value]="sd.otaProgress" maxValue="100" class="progress"></Progress>
