@@ -457,7 +457,7 @@ export class SmartDrive extends Observable {
               p.destroy();
             } else if (device === 'SmartDriveBluetooth') {
               const length = Math.min(fw.length - index, 16);
-              data = fw.subarray(index, index + length);
+              data = Uint8Array.from(fw.subarray(index, index + length));
             } else {
               throw `ERROR: ${device} should be either 'SmartDrive' or 'SmartDriveBluetooth'`;
             }
