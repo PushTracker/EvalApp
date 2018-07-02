@@ -29,11 +29,19 @@
       <GridLayout rows="auto" columns="auto, *">
         <Label
 	  col="0"
-	  [text]="'user.language' | translate"
-	  class="text-field label"></Label>
+	  class="text-field label"
+	  margin="10"
+	  [text]="'user.language' | translate"></Label>
         <DropDown
 	  col="1"
-	  class="dropdown"
+	  class="text-field dropdown"
+	  backgroundColor="#009ac7"
+	  padding="5"
+	  margin="20"
+	  placeholderColor="gray"
+	  color="LightGray"
+	  borderRadius="2"
+	  textAlign="right"
 	  [hint]="'user.language' | translate"
           [selectedIndex]="selectedLanguageIndex"
 	  [items]="languages"
