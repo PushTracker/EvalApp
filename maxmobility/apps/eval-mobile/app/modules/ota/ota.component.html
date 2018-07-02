@@ -10,12 +10,16 @@
              textWrap="true"></Label>
 
       <GridLayout *ngIf="ready" columns="*, *" rows="*">
-        <Button class="permobil-ocean-btn ota"
+        <Button android:class="permobil-ocean-btn ota"
+		ios:class="ota"
                 col="0"
+		textWrap="true"
                 *ngIf="!updating"
                 [text]="'ota.refresh' | translate"
                 (tap)="onRefreshDeviceList()"></Button>
-        <Button class="permobil-ocean-btn ota"
+        <Button android:class="permobil-ocean-btn ota"
+		ios:class="ota"
+		textWrap="true"
                 [col]="updating ? '0' : '1'"
                 [colSpan]="updating ? '2' : '1'"
                 [text]="updatingButtonText"

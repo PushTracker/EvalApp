@@ -89,7 +89,14 @@ export class OTAComponent implements OnInit, OnDestroy {
 
   onDrawerButtonTap(): void {}
 
-  rssiToColor(rssi): string {
+  rssiToColor(_rssi): string {
+    let rssi = null;
+    try {
+      rssi = parseInt(_rssi);
+    } catch (err) {
+      console.log(`Couldn't parse RSSI(${_rssi}): ${err}`);
+    }
+    if (rssi === null) return 'red';
     if (rssi > -70) return 'green';
     if (rssi > -80) return 'yellow';
     if (rssi > -90) return 'orange';
