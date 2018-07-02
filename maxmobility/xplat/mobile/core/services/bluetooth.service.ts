@@ -438,7 +438,7 @@ export class BluetoothService {
     console.log(`peripheral connected - ${device.name}::${device.address}`);
     if (device.address && this.isSmartDrive(device)) {
       const sd = this.getOrMakeSmartDrive(device);
-      sd.handleConnect();
+      //sd.handleConnect();
     }
     // TODO: this event is not emitted by the android part of the bluetooth library
     //console.log('finished peripheral connected!');
