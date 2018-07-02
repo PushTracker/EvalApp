@@ -454,7 +454,7 @@ export class BluetoothService {
       name: argdata.name
     };
     console.log(`peripheral disconnected - ${device.name}::${device.address}`);
-    if (device.addres && this.isSmartDrive(device)) {
+    if (device.address && this.isSmartDrive(device)) {
       const sd = this.getOrMakeSmartDrive(device);
       sd.handleDisconnect();
     }
