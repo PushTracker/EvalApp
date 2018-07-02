@@ -11,10 +11,16 @@
 <Gradient  direction="to bottom" colors="#004F7E, #0070b3">
   <ScrollView>
     <StackLayout class="account-layout" orientation="vertical">
-      <Image *ngIf="user.data.profile_picture"
+      <Image #accountImage
+             class="account-picture"
+	     *ngIf="user.data.profile_picture"
              [src]="user.data.profile_picture"
              (tap)="onUpdateProfilePictureTap()"
-             class="account-picture"></Image>
+	     width="100"
+	     height="100"
+	     borderRadius="100"
+	     borderWidth="10"
+	     borderColor="#009ac7"></Image>
       <Label color="#fff"
              *ngIf="!user.data.profile_picture"
              (tap)="onUpdateProfilePictureTap()"
