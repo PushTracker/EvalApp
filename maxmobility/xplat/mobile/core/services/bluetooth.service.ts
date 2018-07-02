@@ -275,27 +275,7 @@ export class BluetoothService {
   public restart(): Promise<any> {
     return this.stop()
       .then(() => {
-        return this._bluetooth.isBluetoothEnabled();
-      })
-      .then(enabled => {
-        if (enabled) {
-          return enabled;
-        } else {
-          if (isAndroid) {
-            return this._bluetooth.enable();
-          } else {
-            throw new String('on iOS but bluetooth not enabled!');
-          }
-        }
-      })
-      .then(wasEnabled => {
-        this.enabled = wasEnabled;
-        console.log(`BLUETOOTH WAS ENABLED? ${this.enabled}`);
-        if (this.enabled) {
-          return this.advertise();
-        } else {
-          throw new String("Bluetooth was not enabled, couldn't start gattServer!");
-        }
+        return this.advertise();
       })
       .catch(err => {
         this.enabled = false;
