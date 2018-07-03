@@ -188,7 +188,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   demoThumbTapped(item: any) {
-    const index = DemoService.Demos.indexOf(item);
+    let index = -1;
+    if (item) {
+      index = DemoService.Demos.indexOf(item);
+    }
     this._routerExtensions.navigate(['/demo-detail'], {
       queryParams: {
         index

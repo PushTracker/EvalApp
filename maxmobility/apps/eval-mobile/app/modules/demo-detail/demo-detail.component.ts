@@ -39,9 +39,11 @@ export class DemoDetailComponent implements OnInit {
     private _bluetoothService: BluetoothService
   ) {
     this.pageRoute.activatedRoute.pipe(switchMap(activatedRoute => activatedRoute.queryParams)).forEach(params => {
-      if (params.index) {
+      if (params.index !== undefined && params.index > -1) {
         this.index = params.index;
         this.demo = DemoService.Demos.getItem(this.index);
+      } else {
+        this.demo = new Demo();
       }
     });
   }
