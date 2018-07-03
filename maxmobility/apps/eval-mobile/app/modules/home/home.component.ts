@@ -103,7 +103,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
     private zone: NgZone
   ) {
     this._page.enableSwipeBackNavigation = false;
-
+    this._demoService.load().catch(err => {
+      console.log(`Couldn't load demos: ${err}`);
+    });
     this.feedback = new Feedback();
   }
 

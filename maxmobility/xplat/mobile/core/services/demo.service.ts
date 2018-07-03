@@ -94,6 +94,7 @@ export class DemoService {
   }
 
   load(): Promise<any> {
+    DemoService.Demos.splice(0, DemoService.Demos.length);
     return this.login()
       .then(() => {
         return this.datastore.sync();
