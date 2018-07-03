@@ -52,13 +52,6 @@
 
         <StackLayout class="hr-light m-10" backgroundColor="#FFF" width="100%"></StackLayout>
 
-        <DockLayout stretchLastChild="true" margin="5, 10, 10, 0">
-          <Label text="&#xf150;" class="mdi icon"></Label>
-          <Label [text]="demo.getTime()" class="info"></Label>
-        </DockLayout>
-
-        <StackLayout class="hr-light m-10" backgroundColor="#FFF" width="100%"></StackLayout>
-
         <DockLayout (onTap)="onVersionTap()" stretchLastChild="true" margin="5, 10, 10, 0">
           <Label text="&#xf628;" class="mdi icon"></Label>
           <Label dock="left" (tap)="onVersionTap()"

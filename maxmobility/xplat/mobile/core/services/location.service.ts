@@ -45,9 +45,10 @@ export class LocationService {
       let lang = userData.language ? '&language=' + userData.language : '';
       let query =
         'https://api.mapbox.com/geocoding/v5/mapbox.places/' + userLoc + '.json?access_token=' + api_key + lang;
+      // TODO: might also add '&types=postcode' to the query to only get postcode
       httpModule.getJSON(query).then(
         function(r) {
-          const location = r.features[0].place_name;
+          const location = r.features.filter(f => f.place_type.indexOf('postcode') > -1)[0].place_name;
           resolve(location);
         },
         function(e) {
