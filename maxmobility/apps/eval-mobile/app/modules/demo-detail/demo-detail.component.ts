@@ -56,21 +56,7 @@ export class DemoDetailComponent implements OnInit {
     return isAndroid;
   }
 
-  ngOnInit() {
-    let models = ['MX2+', 'MX2'];
-    if (models.indexOf(this.demo.model) == -1) {
-      dialogs
-        .action({
-          message: 'Demo Unit Model',
-          cancelButtonText: 'Cancel',
-          actions: models
-        })
-        .then(r => {
-          if (models.indexOf(r) > -1) this.demo.model = r;
-          else this.demo.model = 'MX2+';
-        });
-    }
-  }
+  ngOnInit() {}
 
   haveSerial(): boolean {
     let sdSN = this.demo.smartdrive_serial_number.trim();
@@ -126,36 +112,60 @@ export class DemoDetailComponent implements OnInit {
         openSettingsIfPermissionWasPreviouslyDenied: true
       })
       .then(result => {
-        const deviceType = result.text.indexOf('B') > -1 ? 'pushtracker' : 'smartdrive';
-        if (deviceName && deviceType !== deviceName) {
-          throw 'Wrong device scanned!';
-        } else {
-          const serialNumber = result.text;
-          if (deviceType === 'pushtracker') {
-            this.demo.pushtracker_serial_number = serialNumber;
-          } else {
-            this.demo.smartdrive_serial_number = serialNumber;
-          }
-        }
-        this.demo.model = 'MX2+';
+        const validDevices = deviceName == 'pushtracker' ? ['pushtracker', 'wristband'] : ['smartdrive'];
+        this.handleSerial(result.text, validDevices);
       })
       .catch(errorMessage => {
         console.log('No scan. ' + errorMessage);
       });
   }
 
+  handleSerial(text: string, forDevices?: Array<string>) {
+    text = text.trim().toUpperCase();
+    let deviceType = null;
+    const isPushTracker = text[0] == 'B';
+    const isWristband = text[0] == 'A';
+    let isSmartDrive = false;
+    let serialNumber = text;
+    try {
+      isSmartDrive = !isPushTracker && !isWristband && parseInt(text) !== NaN && true;
+      if (isSmartDrive) {
+        serialNumber = `${parseInt(text)}`;
+      }
+    } catch (err) {
+      // do nothing
+    }
+    if (isPushTracker) deviceType = 'pushtracker';
+    else if (isWristband) deviceType = 'wristband';
+    else if (isSmartDrive) deviceType = 'smartdrive';
+    // check the type
+    if (forDevices && forDevices.length && forDevices.indexOf(deviceType) == -1) {
+      throw 'Wrong device scanned!';
+    }
+    // set the model
+    if (isPushTracker) this.demo.model = 'MX2+';
+    else if (isWristband) this.demo.model = 'MX2';
+    // now set the serial number
+    if (deviceType === 'pushtracker' || deviceType == 'wristband') {
+      this.demo.pushtracker_serial_number = serialNumber;
+    } else if (deviceType === 'smartdrive') {
+      this.demo.smartdrive_serial_number = serialNumber;
+    }
+  }
+
   onEditSD() {
     dialogs
       .prompt({
-        title: 'Enter SmartDrive S/N',
+        title: 'Enter Serial Number',
         message: 'Please enter SmartDrive Serial Number',
         okButtonText: 'Save',
         cancelButtonText: 'Cancel'
       })
       .then(r => {
-        r.text = r.text.trim();
-        if (r.result && r.text && r.text.length) {
-          this.demo.smartdrive_serial_number = r.text;
+        try {
+          this.handleSerial(r.text, ['smartdrive']);
+        } catch (err) {
+          dialogs.alert(`${r.text} is not a valid SmartDrive serial number!`);
         }
       });
   }
@@ -163,19 +173,16 @@ export class DemoDetailComponent implements OnInit {
   onEditPT() {
     dialogs
       .prompt({
-        title: 'Enter PushTracker S/N',
-        message: 'Please enter PushTracker Serial Number',
+        title: 'Enter Serial Number',
+        message: 'Please enter PushTracker or Wristband Serial Number',
         okButtonText: 'Save',
         cancelButtonText: 'Cancel'
       })
       .then(r => {
-        r.text = r.text.trim();
-        if (r.result && r.text && r.text.length) {
-          if (r.text[0] === 'B' || r.text[0] === 'b') {
-            this.demo.pushtracker_serial_number = r.text.toUpperCase();
-          } else {
-            dialogs.alert(`${r.text} is not a valid PushTracker serial number!`);
-          }
+        try {
+          this.handleSerial(r.text, ['pushtracker', 'wristband']);
+        } catch (err) {
+          dialogs.alert(`${r.text} is not a valid PushTracker or Wristband serial number!`);
         }
       });
   }
