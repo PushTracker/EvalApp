@@ -27,7 +27,7 @@ export class SignUpComponent implements OnInit {
   selectedLanguageIndex: number = 0;
 
   error: string = this._translateService.instant('user.error');
-  ok: string = this._translateService.instant('dialogues.ok');
+  ok: string = this._translateService.instant('dialogs.ok');
   form_invalid: string = this._translateService.instant('user.form-invalid');
   email_invalid: string = this._translateService.instant('user.email-invalid');
   account_creating: string = this._translateService.instant('user.account-creating');
@@ -125,6 +125,7 @@ export class SignUpComponent implements OnInit {
   }
 
   onEmailTextChange(args) {
+    this.user.email = args.value;
     this._isEmailValid(this.user.email);
   }
 

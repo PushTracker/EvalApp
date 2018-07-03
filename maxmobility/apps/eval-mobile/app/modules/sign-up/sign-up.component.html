@@ -38,8 +38,7 @@
              class="text-white error"
              [visibility]="lastNameError ? 'visible' : 'collapsed'"
              textWrap="true"></Label>
-      <TextField #email
-                 [(ngModel)]="user.email"
+      <TextField [text]="user.email"
                  class="text-field"
                  [hint]="'user.email' | translate"
                  keyboardType="email"
