@@ -1,9 +1,6 @@
 @import '../../scss/variables';
 @import '../../scss/buttons';
 
-ScrollView{
-    background-color: $permobil-hero;
-}
 .hero {
     color: $permobil-hero;
 }
@@ -14,8 +11,8 @@ ScrollView{
 }
 
 .ota {
-    padding: 5, 15, 5, 15;
-    margin: 5, 15, 5, 15;
+    padding: 5, 10, 5, 10;
+    margin: 5, 5, 5, 5;
 }
 
 .progress {
@@ -43,18 +40,15 @@ ScrollView{
 
 .features {
     padding: 15, 15, 15, 15;
-    height: 30%;
     font-family: $os-Light;
     font-size: 20;
     color: #fff;
     vertical-align: center;
-    background: $permobil-hero;
 }
 
 .featuresLayout {
-    color: $permobil-hero;
-    background-color: $permobil-hero;
     height: 30%;
+    width: 100%;
 }
 
 .otaInfo {
@@ -71,18 +65,15 @@ ScrollView{
 .otaLabel {
     margin: 0, 0, 0, 0;
     font-family: $os-SemiBold;
-    font-size: 14;
+    font-size: 11;
     color: $permobil-charcoal;
 }
 
 .otaState {
-    border-color: white;
-    color: white;
-    background-color: white;
-    border-bottom-width: 0;
     margin: 0, 0, 0, 0;
+    padding: 5, 5, 5, 0;
     font-family: $os-Light;
-    font-size: 12;
+    font-size: 14;
     color: $permobil-charcoal;
 }
 

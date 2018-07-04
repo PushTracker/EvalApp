@@ -2,15 +2,15 @@
   <NavigationButton android:visibility="collapse"></NavigationButton>
 </ActionBar>
 
-<StackLayout tkMainContent class="page page-content">
-  <ScrollView class="hero" height="70%">
-    <StackLayout class="page page-content">
+<Gradient tkMainContent direction="to bottom" colors="#004F7E, #0070b3">
+  <ScrollView height="70%" borderRadius="4" >
+    <Gradient direction="to bottom" colors="rgba(255, 255, 255, 0.95), rgb(255, 255, 255)" borderRadius="4" margin="5, 10, 0, 10">
       <Label class="title"
              [text]="('ota.version' | translate) + ' ' + (currentVersion || '??')"
              textWrap="true"></Label>
 
       <GridLayout *ngIf="ready" columns="*, *" rows="*">
-        <Button android:class="permobil-ocean-btn ota"
+        <Button b android:class="permobil-ocean-btn ota"
 		ios:class="ota"
                 col="0"
 		textWrap="true"
@@ -31,7 +31,7 @@
              [text]="'ota.downloading' | translate"></Label>
 
       //StackLayout in contains progress views for updates
-      <StackLayout #otaProgressView padding="5" orientation="vertical">
+      <StackLayout #otaProgressView padding="5, 0, 5, 0" orientation="vertical">
         //SmartDrive OTAs
         <StackLayout class="ota" *ngFor="let sd of smartDriveOTAs._array">
           <GridLayout class="otaInfo" rows="auto" columns="auto, *">
@@ -46,8 +46,8 @@
           </GridLayout>
           <Progress [value]="sd.otaProgress" maxValue="100" class="progress"></Progress>
           <GridLayout class="otaInfo" rows="auto, auto, *" columns="2*, *">
-            <Label col="0" textWrap="true" class="otaLabel" [text]="sd.address"></Label>
-            <TextView col="0" row="1" editable="false" class="otaState" textDecoration="none" [text]="sd.otaStateToString()"></TextView>
+            <Label col="0" textWrap="false" class="otaLabel" [text]="sd.address"></Label>
+            <Label col="0" row="1" editable="false" class="otaState" textDecoration="none" [text]="sd.otaStateToString()"></Label>
             <WrapLayout orientation="horizontal" horizontalAlignment="right" rowSpan="3" col="1">
               <Button *ngFor="let action of sd.otaActions" class="otaAction" [text]="action" (tap)="sd.onOTAActionTap(action)"></Button>
             </WrapLayout>
@@ -61,8 +61,8 @@
           </GridLayout>
           <Progress [value]="pt.otaProgress" maxValue="100" class="progress"></Progress>
           <GridLayout class="otaInfo" rows="auto, auto, *" columns="2*, *">
-            <Label col="0" textWrap="true" class="otaLabel" [text]="pt.address"></Label>
-            <TextView col="0" row="1" editable="false" class="otaState" textDecoration="none" [text]="pt.otaStateToString()"></TextView>
+            <Label col="0" textWrap="false" class="otaLabel" [text]="pt.address"></Label>
+            <Label col="0" row="1" editable="false" class="otaState" textDecoration="none" [text]="pt.otaStateToString()"></Label>
             <WrapLayout orientation="horizontal" horizontalAlignment="right" rowSpan="3" col="1">
               <Button *ngFor="let action of pt.otaActions" class="otaAction" [text]="action" (tap)="pt.onOTAActionTap(action)"></Button>
             </WrapLayout>
@@ -70,11 +70,26 @@
         </StackLayout>
       </StackLayout>
 
-    </StackLayout>
+    </Gradient>
   </ScrollView>
-  <slides *ngIf="otaDescription.length" loop="true" pageIndicators="true" class="featuresLayout" height="30%" width="100%">
-    <slide *ngFor="let desc of otaDescription._array" class="featuresLayout">
+  <!-- <slides *ngIf="otaDescription.length" loop="true" pageIndicators="true" class="featuresLayout" height="30%" width="100%">
+    <slide backgroundColor="yellow" *ngFor="let desc of otaDescription._array" class="featuresLayout">
       <Label class="features" textWrap="true" [text]="desc"></Label>
     </slide>
-  </slides>
-</StackLayout>
+  </slides> -->
+
+  <Carousel *ngIf="otaDescription.length" #carousel
+      autoPagingInterval="5"
+	    ios:indicatorOffset="0,-10"
+	    ios:finite="true"
+	    ios:bounce="false"
+	    indicatorColor="#66ccff"
+      indicatorColorUnselected="#cceeff"
+      class="featuresLayout">
+      <CarouselItem  *ngFor="let desc of otaDescription._array" class="featuresLayout">
+       
+      <Label class="features" textWrap="true" [text]="desc"></Label>
+     
+    </CarouselItem>
+  </Carousel>
+</Gradient>

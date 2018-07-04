@@ -17,6 +17,7 @@ import { View } from 'tns-core-modules/ui/core/view';
 import { Animation, AnimationDefinition } from 'tns-core-modules/ui/animation';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 import { TranslateService } from '@ngx-translate/core';
+const Carousel = require('nativescript-carousel').Carousel;
 
 // libs
 import { BluetoothService, FirmwareService, ProgressService } from '@maxmobility/mobile';
@@ -30,6 +31,8 @@ import { Packet, DailyInfo, PushTracker, SmartDrive } from '@maxmobility/core';
 })
 export class OTAComponent implements OnInit, OnDestroy {
   // PUBLIC MEMBERS
+  @ViewChild('carousel') carousel: ElementRef;
+  selectedPage = 0;
   connected = false;
   updating = false;
   searching = false;
@@ -146,6 +149,14 @@ export class OTAComponent implements OnInit, OnDestroy {
 
   public onRefreshDeviceList() {
     this.refreshDeviceList();
+  }
+
+  onCarouselLoad() {
+    setTimeout(() => {
+      this.carousel.nativeElement.selectedPage = this.selectedPage;
+      this.carousel.nativeElement.refresh();
+      console.log('Carousel loaded to ' + this.selectedPage);
+    }, 100);
   }
 
   private refreshDeviceList(): Promise<any> {
