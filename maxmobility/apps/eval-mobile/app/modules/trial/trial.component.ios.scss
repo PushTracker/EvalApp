@@ -77,6 +77,14 @@ TextField {
   border-radius: 2;
   placeholder-color: lightgray;
 }
+
+.trial-recommendation {
+color: $white;
+font-family: $os-SemiBold;
+font-size: 13;
+text-align: left;
+margin: 0, 15, 10, 15;
+}
 .start-button {
   width: 150;
   height: 40;
