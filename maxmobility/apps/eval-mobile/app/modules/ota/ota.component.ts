@@ -61,6 +61,9 @@ export class OTAComponent implements OnInit, OnDestroy {
     private _bluetoothService: BluetoothService,
     private _firmwareService: FirmwareService
   ) {
+    if (this._firmwareService.description.length) {
+      this.otaDescription.splice(0, this.otaDescription.length, ...this._firmwareService.description.slice());
+    }
     // register for description updates
     this._firmwareService.description.on(ObservableArray.changeEvent, args => {
       this.otaDescription.splice(0, this.otaDescription.length, ...this._firmwareService.description.slice());
