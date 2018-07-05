@@ -281,7 +281,9 @@
         }
     },
     "bluetooth": {
-        "searching": "Searching for SmartDrives",
+        "searching": "Searching for Devices",
+        "sd_app_conn_instructions": "For the app to be able to see and connect to a SmartDrive, you must have the SmartDrive on and power assist off / 'SD Off'",
+        "pt_app_conn_instructions": "To connect the PushTracker to the app, you must have the app open on your phone, then press and release the right button on the PushTracker. This will either connect your PushTracker to your app or take you into the pairing settings of the PushTracker. After pairing, you will need to leave the settings menu and then press the right button to connect to the app.",
         "waiting": "Waiting for bluetooth to initialize",
         "errors": {
             "unavailable": {
