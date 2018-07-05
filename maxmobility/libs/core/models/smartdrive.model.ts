@@ -169,6 +169,47 @@ export class SmartDrive extends Observable {
 
   // regular methods
 
+  get mcu_version_string(): string {
+    return SmartDrive.versionByteToString(this.mcu_version);
+  }
+
+  get ble_version_string(): string {
+    return SmartDrive.versionByteToString(this.ble_version);
+  }
+
+  public isMcuUpToDate(version: string): boolean {
+    const v = SmartDrive.versionStringToByte(version);
+    if (v === 0xff) {
+      return true;
+    }
+    const versions = [this.mcu_version];
+    return versions.reduce((a, e) => {
+      return a && e != 0xff && e >= v;
+    }, true);
+  }
+
+  public isBleUpToDate(version: string): boolean {
+    const v = SmartDrive.versionStringToByte(version);
+    if (v === 0xff) {
+      return true;
+    }
+    const versions = [this.ble_version];
+    return versions.reduce((a, e) => {
+      return a && e != 0xff && e >= v;
+    }, true);
+  }
+
+  public isUpToDate(version: string): boolean {
+    const v = SmartDrive.versionStringToByte(version);
+    if (v === 0xff) {
+      return true;
+    }
+    const versions = [this.mcu_version, this.ble_version];
+    return versions.reduce((a, e) => {
+      return a && e != 0xff && e >= v;
+    }, true);
+  }
+
   get otaProgress(): number {
     if (this.doBLEUpdate && this.doMCUUpdate) {
       return (this.mcuOTAProgress + this.bleOTAProgress) / 2;

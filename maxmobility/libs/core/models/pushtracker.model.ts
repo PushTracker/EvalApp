@@ -160,6 +160,24 @@ export class PushTracker extends Observable {
 
   // regular methods
 
+  get version_string(): string {
+    return PushTracker.versionByteToString(this.version);
+  }
+
+  public isUpToDate(version: string, checkAll?: boolean): boolean {
+    const v = PushTracker.versionStringToByte(version);
+    if (v === 0xff) {
+      return true;
+    }
+    const versions = [this.version];
+    if (checkAll) {
+      versions.push(this.mcu_version, this.ble_version);
+    }
+    return versions.reduce((a, e) => {
+      return a && e != 0xff && e >= v;
+    }, true);
+  }
+
   public otaProgressToString(): string {
     return `${this.otaProgress.toFixed(1)} %`;
   }
