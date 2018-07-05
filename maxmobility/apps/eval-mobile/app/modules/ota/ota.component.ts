@@ -72,13 +72,22 @@ export class OTAComponent implements OnInit, OnDestroy {
     this.routeSub = this.router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
         this.cancelOTAs(true);
+        if (this.slideIntervalID) {
+          clearInterval(this.slideIntervalID);
+        }
       }
     });
 
     this.page.on(Page.navigatingFromEvent, event => {
+      if (this.slideIntervalID) {
+        clearInterval(this.slideIntervalID);
+      }
       // this.ngOnDestroy();
     });
 
+    if (this.slideIntervalID) {
+      clearInterval(this.slideIntervalID);
+    }
     this.slideIntervalID = setInterval(() => {
       this.slides.nextSlide();
     }, this.slideInterval);
