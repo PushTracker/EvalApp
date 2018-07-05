@@ -275,6 +275,10 @@
         "cancel": "Cancel All Firmware Updates",
         "downloading": "Fetching latest firmware data from the server",
         "errors": {
+            "sd_connection": {
+                "title": "SmartDrive connection error!",
+                "message": "Bad connection with SmartDrive, please power-cycle the SmartDrive with address: ",
+            },
             "devices": {
                 "title": "No Devices",
                 "message": "No PushTrackers or SmartDrives found!"
