@@ -21,7 +21,7 @@ export class EvalEntryComponent implements OnInit {
   isAndroid = false;
 
   years = ['1', '2', '3', '4', '5+', '10+', '20+', '30+'];
-  chair = ['TiLite', 'Quckie', 'Other'];
+  chair = ['TiLite', 'Quickie', 'Other'];
 
   constructor(private routerExtensions: RouterExtensions, private _evaluationService: EvaluationService) {
     // make sure we clear out any previous evaluation info!

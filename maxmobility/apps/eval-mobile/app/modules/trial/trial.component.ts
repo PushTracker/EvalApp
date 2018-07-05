@@ -356,7 +356,7 @@ export class TrialComponent implements OnInit {
   }
 
   onSliderUpdate(key, args) {
-    this.trial[key] = args.object.value / 10;
+    this.trial[key] = Math.round(args.object.value) / 10;
   }
 
   ngOnInit(): void {

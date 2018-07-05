@@ -68,7 +68,15 @@ TextField {
   color: #fff;
   background-color: $permobil-orange;
 }
-
+.trial-description-textfield {
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 7;
+  font-size: 14;
+  margin: 5, 15, 5, 15;
+  color: #fff;
+  border-radius: 2;
+  placeholder-color: lightgray;
+}
 .trial-name-textfield {
   background-color: rgba(255, 255, 255, 0.2);
   padding: 7;
