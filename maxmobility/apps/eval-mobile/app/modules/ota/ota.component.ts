@@ -111,8 +111,8 @@ export class OTAComponent implements OnInit, OnDestroy {
     }
     if (rssi === null) return 'red';
     if (rssi > -70) return 'green';
-    if (rssi > -80) return 'yellow';
-    if (rssi > -90) return 'orange';
+    if (rssi > -80) return 'GoldenRod';
+    if (rssi > -90) return 'OrangeRed';
     return 'red';
   }
 
@@ -120,7 +120,6 @@ export class OTAComponent implements OnInit, OnDestroy {
   discoverSmartDrives() {
     this._progressService.show(this._translateService.instant('bluetooth.searching'));
     return this._bluetoothService.scanForSmartDrive().then(() => {
-      console.log(`Found ${BluetoothService.SmartDrives.length} SmartDrives!`);
       this._progressService.hide();
       return BluetoothService.SmartDrives;
     });

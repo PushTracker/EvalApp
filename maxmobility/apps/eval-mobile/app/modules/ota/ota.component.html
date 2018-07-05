@@ -32,6 +32,18 @@
 
       //StackLayout in contains progress views for updates
       <StackLayout #otaProgressView padding="5, 0, 5, 0" orientation="vertical">
+        // SmartDrive Instructions
+        <StackLayout class="ota" *ngIf="!smartDriveOTAs.length">
+          <Label [text]="'bluetooth.sd_app_conn_instructions' | translate"
+                 textWrap="true">
+          </Label>
+        </StackLayout>
+        <StackLayout class="ota" *ngIf="!pushTrackerOTAs.length">
+          <Label [text]="'bluetooth.pt_app_conn_instructions' | translate"
+                 textWrap="true">
+          </Label>
+        </StackLayout>
+        // PushTracker Instructions
         //SmartDrive OTAs
         <StackLayout class="ota" *ngFor="let sd of smartDriveOTAs._array">
           <GridLayout class="otaInfo" rows="auto" columns="auto, *">
