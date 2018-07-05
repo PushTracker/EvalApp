@@ -56,7 +56,7 @@
                 <Span text=", " color="#004f7e"></Span>
                 <Span [text]="sd.ble_version_string"
                       [color]="sd.isBleUpToDate(currentVersion) ? 'green' : 'red'"></Span>
-                <Span [text]="sd.isUpToDate(currentVersion) ? ' (Up to date)' : ''"
+                <Span [text]="sd.isUpToDate(currentVersion) ? (' ' + ('ota.up-to-date' | translate)) : ''"
                       color="green"></Span>
 		        <Span [text]="'\nRSSI: '" color="#004f7e"></Span>
 		        <Span [text]="sd.rssi" [color]="rssiToColor(sd.rssi)"></Span>
@@ -82,8 +82,7 @@
                 <Span [text]="'\nFirmware Version: '" color="#004f7e"></Span>
                 <Span [text]="pt.version_string"
                       [color]="pt.isUpToDate(currentVersion) ? 'green' : 'red'"></Span>
-                <Span *ngIf="pt.isUpToDate(currentVersion)"
-                      text=" (Up to date)"
+                <Span [text]="pt.isUpToDate(currentVersion) ? (' ' + ('ota.up-to-date' | translate)) : ''"
                       color="green"></Span>
               </FormattedString>
             </Label>
