@@ -71,43 +71,43 @@
     <StackLayout class="list-stack-layout" row="4">
       <StackLayout class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></StackLayout>
       <DockLayout (tap)="chevronButtonTapped('/demos')"  class="dockLayout-options" textWrap="true" stretchLastChild="false">
-	<Label [text]="'menu.demos' | translate" class="heading" dock="left"></Label>
-	<Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/demos')"></Label>
+	    <Label [text]="'menu.demos' | translate" class="heading" dock="left"></Label>
+	    <Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/demos')"></Label>
       </DockLayout>
       <Label [text]="'menu.demos-desc' | translate" class="description" textWrap="true"></Label>
 
       <ScrollView orientation="horizontal" class="rad-list-view">
-	<StackLayout orientation="horizontal">
-	  <StackLayout *ngIf="!Demos.length"
+	    <StackLayout orientation="horizontal">
+	      <StackLayout *ngIf="!Demos.length"
                        class="icon-description-group">
-	    <Image src="~/assets/images/PushTracker-SmartDrive-pairing.png"
+	        <Image src="~/assets/images/PushTracker-SmartDrive-pairing.png"
                    (tap)="demoThumbTapped(null)"
                    backgroundImage="~/assets/images/background_1.jpg"
                    stretch="aspectFill" class="thumb"></Image>
-	    <StackLayout>
-	      <Label class="demo-item-description"
+	        <StackLayout>
+	          <Label class="demo-item-description"
                      textWrap="true"
                      [text]="'menu.new-demo' | translate"></Label>
-	    </StackLayout>
+	        </StackLayout>
           </StackLayout>
-	  <StackLayout *ngFor="let item of Demos._array"
+	      <StackLayout *ngFor="let item of Demos._array"
                        class="icon-description-group">
-	    <Image src="~/assets/images/PushTracker-SmartDrive-pairing.png"
+	        <Image src="~/assets/images/PushTracker-SmartDrive-pairing.png"
                    (tap)="demoThumbTapped(item)"
                    backgroundImage="~/assets/images/background_1.jpg"
                    stretch="aspectFill" class="thumb"></Image>
-	    <StackLayout>
-	      <Label class="demo-item-description"
-		     textWrap="true"
-		     [text]="(item.smartdrive_serial_number || '# ??')"></Label>
-	      <Label class="demo-item-description"
-		     textWrap="true" [text]="item.location_string"  ></Label>
-	      <Label class="demo-item-description"
-		     [backgroundColor]="(item.isUpToDate('1.5')) ? 'green' : 'red'"
-		     textWrap="true" [text]="item.version_string"  ></Label>
+	        <StackLayout>
+	          <Label class="demo-item-description"
+		             textWrap="true"
+		             [text]="(item.smartdrive_serial_number || '# ??')"></Label>
+	          <Label class="demo-item-description"
+		             textWrap="true" [text]="item.location_string"  ></Label>
+	          <Label class="demo-item-description"
+		             [backgroundColor]="(item.isUpToDate('1.5')) ? 'green' : 'red'"
+		             textWrap="true" [text]="item.version_string"  ></Label>
+	        </StackLayout>
+	      </StackLayout>
 	    </StackLayout>
-	  </StackLayout>
-	</StackLayout>
       </ScrollView>
     </StackLayout>
 
@@ -115,20 +115,26 @@
     <StackLayout class="list-stack-layout" row="5">
       <StackLayout class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></StackLayout>
       <DockLayout (tap)="chevronButtonTapped('/faq')"  class="dockLayout-options" stretchLastChild="false">
-	<Label [text]="'menu.faq' | translate" class="heading" dock="left"></Label>
-	<Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/faq')"></Label>
+	    <Label [text]="'menu.faq' | translate" class="heading" dock="left"></Label>
+	    <Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/faq')"></Label>
       </DockLayout>
       <Label [text]="'menu.faq-desc' | translate" class="description" textWrap="true"></Label>
 
       <ScrollView orientation="horizontal" class="rad-list-view">
-	<StackLayout orientation="horizontal">
-	  <Gradient borderRadius="4" direction="to bottom right"
-                    colors="#004F7E, #0070b3"
-                    *ngFor="let item of faqItems"
-                    class="icon-description-group">
-	    <Label (tap)="faqThumbTapped(item)" class="faq-question" stretch="aspectFill" [text]="item.question" textWrap="true"></Label>
-	  </Gradient>
-	</StackLayout>
+	    <StackLayout orientation="horizontal">
+          <StackLayout  (tap)="faqThumbTapped(item)"
+                        *ngFor="let item of faqItems"
+                        class="thumb"
+                        margin="0, 10, 15, 15"
+                        verticalAlign="center"
+                        backgroundSize="cover"
+                        backgroundImage="~/assets/images/background_1.jpg"
+                        stretch="aspectFill">
+	        <Label [text]="item.question"
+                   class="faq-question"
+                   textWrap="true"></Label>
+	      </StackLayout>
+	    </StackLayout>
       </ScrollView>
     </StackLayout>
 
