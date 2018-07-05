@@ -37,8 +37,10 @@
           <GridLayout class="otaInfo" rows="auto" columns="auto, *">
             <Label col="0" class="otaLabel" textWrap="true">
 	          <FormattedString>
-		        <Span text="SmartDrive"></Span>
-		        <Span [text]="'\nRSSI:'" color="#004f7e"></Span>
+            <Span text="SmartDrive" class="device-label"></Span>
+            <Span [text]="'\nFirmware Version: '" color="#004f7e"></Span>
+            <Span [text]="sd.rssi" [color]="rssiToColor(sd.rssi)"></Span>
+		        <Span [text]="'\nRSSI: '" color="#004f7e"></Span>
 		        <Span [text]="sd.rssi" [color]="rssiToColor(sd.rssi)"></Span>
 	          </FormattedString>
 	        </Label>
@@ -56,7 +58,14 @@
         //PushTracker OTAs
         <StackLayout class="ota" *ngFor="let pt of pushTrackerOTAs._array">
           <GridLayout class="otaInfo" rows="auto" columns="auto, *">
-            <Label col="0" class="otaLabel" text="PushTracker"></Label>
+              <Label col="0" class="otaLabel" textWrap="true">
+                  <FormattedString>
+                  <Span text="PushTracker" class="device-label"></Span>
+                  <Span [text]="'\nFirmware Version: '" color="#004f7e"></Span>
+                  <Span text="1.5" color="green"></Span>
+                  <Span text=" (Up to date)" color="green"></Span>
+                  </FormattedString>
+                </Label>
             <Label col="1" class="percentageLabel" [text]="pt.otaProgressToString()"></Label>
           </GridLayout>
           <Progress [value]="pt.otaProgress" maxValue="100" class="progress"></Progress>
