@@ -86,7 +86,8 @@ export class BluetoothService {
   }
 
   public clearSmartDrives() {
-    BluetoothService.SmartDrives.splice(0, BluetoothService.SmartDrives.length);
+    let connectedSDs = BluetoothService.SmartDrives.slice().filter(sd => sd.connected);
+    BluetoothService.SmartDrives.splice(0, BluetoothService.SmartDrives.length, ...connectedSDs);
   }
 
   public clearPushTrackers() {
@@ -411,6 +412,9 @@ export class BluetoothService {
           const pt = this.getOrMakePushTracker(device);
           pt.handleConnect();
           this.notify(`${device.name || 'PushTracker'}::${device.address} connected`);
+        } else if (this.isSmartDrive(device)) {
+          const sd = this.getOrMakeSmartDrive(device);
+          sd.handleConnect(argdata);
         }
         break;
       case ConnectionState.disconnected:
@@ -418,6 +422,9 @@ export class BluetoothService {
           const pt = this.getOrMakePushTracker(device);
           pt.handleDisconnect();
           this.notify(`${device.name || 'PushTracker'}::${device.address} disconnected`);
+        } else if (this.isSmartDrive(device)) {
+          const sd = this.getOrMakeSmartDrive(device);
+          sd.handleDisconnect();
         }
         break;
       default:

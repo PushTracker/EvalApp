@@ -1,6 +1,7 @@
 // nativescript
 import timer = require('tns-core-modules/timer');
 import { Observable, EventData } from 'tns-core-modules/data/observable';
+import { alert } from 'tns-core-modules/ui/dialogs';
 // libs
 import { Packet, bindingTypeToString } from '@maxmobility/core';
 import { BluetoothService } from '@maxmobility/mobile';
@@ -259,6 +260,7 @@ export class SmartDrive extends Observable {
         this.sendEvent(SmartDrive.smartdrive_ota_force_event);
         break;
       case 'Retry':
+        console.log(`sending retry event: ${SmartDrive.smartdrive_ota_retry_event}`);
         this.sendEvent(SmartDrive.smartdrive_ota_retry_event);
         break;
       default:
@@ -299,7 +301,6 @@ export class SmartDrive extends Observable {
         console.log(msg);
         reject(msg);
       } else {
-        console.log(`Beginning OTA for SmartDrive: ${this.address}`);
         // set up variables to keep track of the ota
         let otaIntervalID = null;
 
@@ -326,7 +327,43 @@ export class SmartDrive extends Observable {
         const smartDriveConnectionInterval = 2000;
 
         // define our functions here
+        const unregister = () => {
+          // unregister for events
+          this.off(SmartDrive.smartdrive_connect_event, connectHandler);
+          this.off(SmartDrive.smartdrive_disconnect_event, disconnectHandler);
+          this.off(SmartDrive.smartdrive_ble_version_event, bleVersionHandler);
+          this.off(SmartDrive.smartdrive_mcu_version_event, mcuVersionHandler);
+          this.off(SmartDrive.smartdrive_ota_ready_event, otaReadyHandler);
+          this.off(SmartDrive.smartdrive_ota_ready_mcu_event, otaMCUReadyHandler);
+          this.off(SmartDrive.smartdrive_ota_ready_ble_event, otaBLEReadyHandler);
+          this.off(SmartDrive.smartdrive_ota_start_event, otaStartHandler);
+          this.off(SmartDrive.smartdrive_ota_retry_event, otaRetryHandler);
+          this.off(SmartDrive.smartdrive_ota_force_event, otaForceHandler);
+          this.off(SmartDrive.smartdrive_ota_pause_event, otaPauseHandler);
+          this.off(SmartDrive.smartdrive_ota_resume_event, otaResumeHandler);
+          this.off(SmartDrive.smartdrive_ota_cancel_event, otaCancelHandler);
+          this.off(SmartDrive.smartdrive_ota_timeout_event, otaTimeoutHandler);
+        };
+        const register = () => {
+          unregister();
+          // register for connection events
+          this.on(SmartDrive.smartdrive_connect_event, connectHandler);
+          this.on(SmartDrive.smartdrive_disconnect_event, disconnectHandler);
+          this.on(SmartDrive.smartdrive_ble_version_event, bleVersionHandler);
+          this.on(SmartDrive.smartdrive_mcu_version_event, mcuVersionHandler);
+          this.on(SmartDrive.smartdrive_ota_ready_mcu_event, otaMCUReadyHandler);
+          this.on(SmartDrive.smartdrive_ota_ready_ble_event, otaBLEReadyHandler);
+          this.on(SmartDrive.smartdrive_ota_ready_event, otaReadyHandler);
+          this.on(SmartDrive.smartdrive_ota_start_event, otaStartHandler);
+          this.on(SmartDrive.smartdrive_ota_retry_event, otaRetryHandler);
+          this.on(SmartDrive.smartdrive_ota_pause_event, otaPauseHandler);
+          this.on(SmartDrive.smartdrive_ota_resume_event, otaResumeHandler);
+          this.on(SmartDrive.smartdrive_ota_force_event, otaForceHandler);
+          this.on(SmartDrive.smartdrive_ota_cancel_event, otaCancelHandler);
+          this.on(SmartDrive.smartdrive_ota_timeout_event, otaTimeoutHandler);
+        };
         const begin = () => {
+          console.log(`Beginning OTA for SmartDrive: ${this.address}`);
           paused = false;
           cancelOTA = false;
           startedOTA = false;
@@ -337,21 +374,7 @@ export class SmartDrive extends Observable {
           // now that we're starting the OTA, we are awaiting the versions
           this.otaState = SmartDrive.OTAState.not_started;
 
-          // register for connection events
-          this.on(SmartDrive.smartdrive_connect_event, connectHandler);
-          this.on(SmartDrive.smartdrive_disconnect_event, disconnectHandler);
-          this.on(SmartDrive.smartdrive_ble_version_event, bleVersionHandler);
-          this.on(SmartDrive.smartdrive_mcu_version_event, mcuVersionHandler);
-          this.on(SmartDrive.smartdrive_ota_ready_mcu_event, otaMCUReadyHandler);
-          this.on(SmartDrive.smartdrive_ota_ready_ble_event, otaBLEReadyHandler);
-          this.on(SmartDrive.smartdrive_ota_ready_event, otaReadyHandler);
-          this.on(SmartDrive.smartdrive_ota_start_event, otaStartHandler);
-          this.on(SmartDrive.smartdrive_ota_pause_event, otaPauseHandler);
-          this.on(SmartDrive.smartdrive_ota_resume_event, otaResumeHandler);
-          this.on(SmartDrive.smartdrive_ota_force_event, otaForceHandler);
-          this.on(SmartDrive.smartdrive_ota_retry_event, otaRetryHandler);
-          this.on(SmartDrive.smartdrive_ota_cancel_event, otaCancelHandler);
-          this.on(SmartDrive.smartdrive_ota_timeout_event, otaTimeoutHandler);
+          register();
           // stop the timer
           if (otaIntervalID) {
             timer.clearInterval(otaIntervalID);
@@ -359,7 +382,7 @@ export class SmartDrive extends Observable {
           // now actually start the ota
           otaIntervalID = timer.setInterval(runOTA, 250);
         };
-        const otaStartHandler = data => {
+        const otaStartHandler = () => {
           // set the progresses
           this.bleOTAProgress = 0;
           this.mcuOTAProgress = 0;
@@ -386,29 +409,30 @@ export class SmartDrive extends Observable {
             this.sendEvent(SmartDrive.smartdrive_ota_timeout_event);
           }, otaTimeout);
         };
-        const otaForceHandler = data => {
+        const otaForceHandler = () => {
           startedOTA = true;
           this.doMCUUpdate = true;
           this.doBLEUpdate = true;
           this.otaState = SmartDrive.OTAState.awaiting_mcu_ready;
           this.otaActions = ['Cancel'];
         };
-        const otaPauseHandler = data => {
+        const otaPauseHandler = () => {
           this.otaActions = ['Resume', 'Cancel'];
           paused = true;
         };
-        const otaResumeHandler = data => {
+        const otaResumeHandler = () => {
           this.otaActions = ['Pause', 'Cancel'];
           paused = false;
         };
-        const otaCancelHandler = data => {
+        const otaCancelHandler = () => {
           this.otaState = SmartDrive.OTAState.cancelling;
         };
-        const otaTimeoutHandler = data => {
+        const otaTimeoutHandler = () => {
           startedOTA = false;
           this.otaState = SmartDrive.OTAState.timeout;
         };
-        const otaRetryHandler = data => {
+        const otaRetryHandler = () => {
+          console.log('Retrying!');
           begin();
         };
         const connectHandler = data => {
@@ -447,6 +471,7 @@ export class SmartDrive extends Observable {
           }
         };
         const mcuVersionHandler = data => {
+          console.log('got mcu version!');
           mcuVersion = data.data.mcu;
           haveMCUVersion = true;
           if (mcuVersion < mcuFWVersion) {
@@ -541,65 +566,31 @@ export class SmartDrive extends Observable {
             timer.clearInterval(otaTimeoutID);
           }
 
-          // unregister for events
-          this.off(SmartDrive.smartdrive_connect_event, connectHandler);
-          this.off(SmartDrive.smartdrive_disconnect_event, disconnectHandler);
-          this.off(SmartDrive.smartdrive_ble_version_event, bleVersionHandler);
-          this.off(SmartDrive.smartdrive_mcu_version_event, mcuVersionHandler);
-          this.off(SmartDrive.smartdrive_ota_ready_event, otaReadyHandler);
-          this.off(SmartDrive.smartdrive_ota_ready_mcu_event, otaMCUReadyHandler);
-          this.off(SmartDrive.smartdrive_ota_ready_ble_event, otaBLEReadyHandler);
-          this.off(SmartDrive.smartdrive_ota_start_event, otaStartHandler);
-          this.off(SmartDrive.smartdrive_ota_force_event, otaForceHandler);
-          this.off(SmartDrive.smartdrive_ota_pause_event, otaPauseHandler);
-          this.off(SmartDrive.smartdrive_ota_resume_event, otaResumeHandler);
-          this.off(SmartDrive.smartdrive_ota_retry_event, otaRetryHandler);
-          this.off(SmartDrive.smartdrive_ota_cancel_event, otaCancelHandler);
-          this.off(SmartDrive.smartdrive_ota_timeout_event, otaTimeoutHandler);
-
-          let tasks = [];
-          if (this.notifying) {
-            // stop notifying characteristics
-            tasks = SmartDrive.Characteristics.map(characteristic => {
-              console.log(`Stop Notifying ${characteristic}`);
-              return this._bluetoothService
-                .stopNotifying({
-                  peripheralUUID: this.address,
-                  serviceUUID: SmartDrive.ServiceUUID,
-                  characteristicUUID: characteristic.toUpperCase()
-                })
-                .catch(err => {});
-            });
-          }
-          Promise.all(tasks).then(() => {
-            this.notifying = false;
-            // then disconnect
-            if (this.connected) {
+          unregister();
+          const finish = () => {
+            if (success) {
+              resolve(reason);
+            } else if (doRetry) {
+              this.otaActions = ['Retry'];
+            } else {
+              resolve(reason);
+            }
+          };
+          return this.stopNotifyCharacteristics(
+            SmartDrive.Characteristics.filter(c => {
+              return c.toUpperCase() != SmartDrive.BLEOTADongleCharacteristic.toUpperCase();
+            })
+          )
+            .then(() => {
+              // then disconnect
               console.log(`Disconnecting from ${this.address}`);
               // TODO: Doesn't properly disconnect
-              this._bluetoothService
-                .disconnect({
-                  UUID: this.address
-                })
-                .then(() => {
-                  if (success) {
-                    resolve(reason);
-                  } else if (doRetry) {
-                    this.otaActions = ['Retry'];
-                  } else {
-                    resolve(reason);
-                  }
-                });
-            } else {
-              if (success) {
-                resolve(reason);
-              } else if (doRetry) {
-                this.otaActions = ['Retry'];
-              } else {
-                resolve(reason);
-              }
-            }
-          });
+              return this._bluetoothService.disconnect({
+                UUID: this.address
+              });
+            })
+            .then(finish)
+            .catch(finish);
         };
         const runOTA = () => {
           switch (this.otaState) {
@@ -615,6 +606,14 @@ export class SmartDrive extends Observable {
                 } else {
                   this.otaState = SmartDrive.OTAState.awaiting_mcu_ready;
                 }
+              } else if (haveMCUVersion && !haveBLEVersion) {
+                stopOTA('Connection Error', false, true).then(() => {
+                  alert({
+                    title: 'SmartDrive connection error!',
+                    message: `Bad connection with SmartDrive, please power-cycle the SmartDrive ${this.address}`,
+                    okButtonText: 'Ok'
+                  });
+                });
               }
               break;
             case SmartDrive.OTAState.awaiting_mcu_ready:
@@ -786,10 +785,10 @@ export class SmartDrive extends Observable {
               stopOTA('OTA Complete', true);
               break;
             case SmartDrive.OTAState.cancelling:
+              cancelOTA = true;
               this.otaActions = [];
               this.mcuOTAProgress = 0;
               this.bleOTAProgress = 0;
-              cancelOTA = true;
               if (!startedOTA) {
                 this.otaState = SmartDrive.OTAState.canceled;
               } else if (this.connected && this.ableToSend) {
@@ -867,6 +866,89 @@ export class SmartDrive extends Observable {
 
   // handlers
 
+  private stopNotifyCharacteristics(characteristics: Array<string>): Promise<any> {
+    const retry = (maxRetries, fn) => {
+      return fn().catch(err => {
+        if (maxRetries <= 0) {
+          throw err;
+        } else {
+          console.log('RETRYING');
+          return retry(maxRetries - 1, fn);
+        }
+      });
+    };
+    const retries = 3;
+    //console.log(`Notifying characteristics: ${characteristics}`);
+    return characteristics.reduce((p, characteristic) => {
+      return p.then(() => {
+        return retry(retries, () => {
+          return new Promise((resolve, reject) => {
+            setTimeout(() => {
+              console.log(`Stop Notifying ${characteristic}`);
+              this._bluetoothService
+                .stopNotifying({
+                  peripheralUUID: this.address,
+                  serviceUUID: SmartDrive.ServiceUUID,
+                  characteristicUUID: characteristic.toUpperCase(),
+                  onNotify: this.handleNotify.bind(this)
+                })
+                .then(() => {
+                  resolve();
+                })
+                .catch(err => {
+                  // if we failed we probably stopped anyway
+                  resolve(err);
+                });
+            }, 250);
+          });
+        });
+      });
+    }, Promise.resolve());
+  }
+
+  private startNotifyCharacteristics(characteristics: Array<string>): Promise<any> {
+    const retry = (maxRetries, fn) => {
+      return fn().catch(err => {
+        if (err.includes('peripheral is disconnected')) {
+          // can't notify a disconnected peripheral
+          throw err;
+        } else {
+          if (maxRetries <= 0) {
+            throw err;
+          } else {
+            console.log(`RETRYING ${maxRetries}`);
+            return retry(maxRetries - 1, fn);
+          }
+        }
+      });
+    };
+    //console.log(`Notifying characteristics: ${characteristics}`);
+    return characteristics.reduce((p, characteristic) => {
+      return p.then(() => {
+        return retry(3, () => {
+          return new Promise((resolve, reject) => {
+            setTimeout(() => {
+              console.log(`Start Notifying ${characteristic}`);
+              this._bluetoothService
+                .startNotifying({
+                  peripheralUUID: this.address,
+                  serviceUUID: SmartDrive.ServiceUUID,
+                  characteristicUUID: characteristic.toUpperCase(),
+                  onNotify: this.handleNotify.bind(this)
+                })
+                .then(() => {
+                  resolve();
+                })
+                .catch(err => {
+                  reject(err);
+                });
+            }, 250);
+          });
+        });
+      });
+    }, Promise.resolve());
+  }
+
   public handleConnect(data?: any) {
     //console.log(`connected to smartdrive!`);
     this.connected = true;
@@ -886,30 +968,20 @@ export class SmartDrive extends Observable {
           // TODO: if we didn't get characteristics then we
           //       should disconnect and re-scan!
           //console.log(characteristics);
-          let i = 0;
-          // TODO: find a better solution than notification interval!
-          const notificationInterval = 1000;
-          characteristics.map(characteristic => {
-            if (characteristic.UUID.toUpperCase() == SmartDrive.BLEOTADongleCharacteristic.toUpperCase()) {
-              return; // isn't set up to be subscribed to - we also don't use it
-            }
-            this.notifying = true;
-            timer.setTimeout(() => {
-              console.log(`Start Notifying ${characteristic.UUID}`);
-              this._bluetoothService
-                .startNotifying({
-                  peripheralUUID: this.address,
-                  serviceUUID: SmartDrive.ServiceUUID,
-                  characteristicUUID: characteristic.UUID,
-                  onNotify: this.handleNotify.bind(this)
-                })
-                .catch(err => {
-                  console.log(`Couldn't start notifying: ${err}`);
-                  this.notifying = false;
-                  this.connected = false;
-                });
-            }, i * notificationInterval);
-            i++;
+          console.log('notyfing characteristics!');
+          this.startNotifyCharacteristics(
+            characteristics.map(c => c.UUID).filter(c => {
+              // isn't set up to be subscribed to - we also don't use it
+              return c.toUpperCase() != SmartDrive.BLEOTADongleCharacteristic.toUpperCase();
+            })
+          ).catch(err => {
+            this.notifying = false;
+            this.connected = false;
+            alert({
+              title: 'SmartDrive connect failure!',
+              message: `Could not connect to ${this.address}: ${err}`,
+              okButtonText: 'Ok'
+            });
           });
         }
       }
@@ -921,21 +993,9 @@ export class SmartDrive extends Observable {
     this.connected = false;
     this.ableToSend = false;
     // stop notifying
-    let tasks = [];
-    if (this.notifying) {
-      tasks = SmartDrive.Characteristics.map(characteristic => {
-        console.log(`Stop Notifying ${characteristic}`);
-        return this._bluetoothService
-          .stopNotifying({
-            peripheralUUID: this.address,
-            serviceUUID: SmartDrive.ServiceUUID,
-            characteristicUUID: characteristic.toUpperCase()
-          })
-          .catch(err => {});
-      });
-    }
-    Promise.all(tasks).then(() => {
-      // now send the event
+    this.stopNotifyCharacteristics(
+      SmartDrive.Characteristics.filter(c => c.toUpperCase() != SmartDrive.BLEOTADongleCharacteristic.toUpperCase())
+    ).then(() => {
       this.sendEvent(SmartDrive.smartdrive_disconnect_event);
     });
   }
