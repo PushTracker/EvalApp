@@ -2,6 +2,7 @@ import { Observable } from 'tns-core-modules/data/observable';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 
 import { LocationService } from '@maxmobility/mobile';
+import { PushTracker } from '@maxmobility/core';
 
 import * as _ from 'underscore';
 
@@ -129,6 +130,19 @@ export class Demo extends Observable {
       }
     });
     return obj;
+  }
+
+  isUpToDate(version: string): boolean {
+    const v = PushTracker.versionStringToByte(version);
+    if (v === 0xff) {
+      return true;
+    }
+    const versions = [
+      PushTracker.versionStringToByte(this.pt_version),
+      PushTracker.versionStringToByte(this.mcu_version),
+      PushTracker.versionStringToByte(this.ble_version)
+    ];
+    return versions.reduce((a, e) => (a = a && e != 0xff && e > v), true);
   }
 
   versionsAreEqualTo(version: string): boolean {
