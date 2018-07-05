@@ -142,7 +142,9 @@ export class Demo extends Observable {
       PushTracker.versionStringToByte(this.mcu_version),
       PushTracker.versionStringToByte(this.ble_version)
     ];
-    return versions.reduce((a, e) => (a = a && e != 0xff && e > v), true);
+    return versions.reduce((a, e) => {
+      return a && e != 0xff && e >= v;
+    }, true);
   }
 
   versionsAreEqualTo(version: string): boolean {
