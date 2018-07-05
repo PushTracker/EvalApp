@@ -72,24 +72,14 @@
 
     </Gradient>
   </ScrollView>
-  <!-- <slides *ngIf="otaDescription.length" loop="true" pageIndicators="true" class="featuresLayout" height="30%" width="100%">
-    <slide backgroundColor="yellow" *ngFor="let desc of otaDescription._array" class="featuresLayout">
+  <slides #slides
+          loop="true"
+          [pageIndicators]="true"
+          class="featuresLayout"
+          height="30%"
+          width="100%">
+    <slide *ngFor="let desc of otaDescription._array" class="featuresLayout">
       <Label class="features" textWrap="true" [text]="desc"></Label>
     </slide>
-  </slides> -->
-
-  <Carousel *ngIf="otaDescription.length" #carousel
-      autoPagingInterval="5"
-	    ios:indicatorOffset="0,-10"
-	    ios:finite="true"
-	    ios:bounce="false"
-	    indicatorColor="#66ccff"
-      indicatorColorUnselected="#cceeff"
-      class="featuresLayout">
-      <CarouselItem  *ngFor="let desc of otaDescription._array" class="featuresLayout">
-       
-      <Label class="features" textWrap="true" [text]="desc"></Label>
-     
-    </CarouselItem>
-  </Carousel>
+  </slides>
 </Gradient>

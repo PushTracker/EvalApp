@@ -17,7 +17,6 @@ import { View } from 'tns-core-modules/ui/core/view';
 import { Animation, AnimationDefinition } from 'tns-core-modules/ui/animation';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 import { TranslateService } from '@ngx-translate/core';
-const Carousel = require('nativescript-carousel').Carousel;
 
 // libs
 import { BluetoothService, FirmwareService, ProgressService } from '@maxmobility/mobile';
@@ -31,7 +30,7 @@ import { Packet, DailyInfo, PushTracker, SmartDrive } from '@maxmobility/core';
 })
 export class OTAComponent implements OnInit, OnDestroy {
   // PUBLIC MEMBERS
-  @ViewChild('carousel') carousel: ElementRef;
+  @ViewChild('slides') slides: ElementRef;
   selectedPage = 0;
   connected = false;
   updating = false;
@@ -44,10 +43,13 @@ export class OTAComponent implements OnInit, OnDestroy {
 
   smartDriveOTAs: ObservableArray<SmartDrive> = new ObservableArray();
   pushTrackerOTAs: ObservableArray<PushTracker> = new ObservableArray();
+  otaDescription: ObservableArray<string> = new ObservableArray([this._translateService.instant('ota.downloading')]);
 
   snackbar = new SnackBar();
 
   private routeSub: any; // subscription to route observer
+  private slideInterval: number = 5000;
+  private slideIntervalID: any;
 
   constructor(
     private http: HttpClient,
@@ -58,7 +60,12 @@ export class OTAComponent implements OnInit, OnDestroy {
     private _progressService: ProgressService,
     private _bluetoothService: BluetoothService,
     private _firmwareService: FirmwareService
-  ) {}
+  ) {
+    // register for description updates
+    this._firmwareService.description.on(ObservableArray.changeEvent, args => {
+      this.otaDescription.splice(0, this.otaDescription.length, ...this._firmwareService.description.slice());
+    });
+  }
 
   ngOnInit() {
     // see https://github.com/NativeScript/nativescript-angular/issues/1049
@@ -71,19 +78,22 @@ export class OTAComponent implements OnInit, OnDestroy {
     this.page.on(Page.navigatingFromEvent, event => {
       // this.ngOnDestroy();
     });
+
+    this.slideIntervalID = setInterval(() => {
+      this.slides.nextSlide();
+    }, this.slideInterval);
   }
 
   ngOnDestroy() {
     this.cancelOTAs(true);
     this.routeSub.unsubscribe();
+    if (this.slideIntervalID) {
+      clearInterval(this.slideIntervalID);
+    }
   }
 
   get currentVersion(): string {
     return PushTracker.versionByteToString(this._firmwareService.firmwares.PT.version);
-  }
-
-  get otaDescription(): ObservableArray<string> {
-    return this._firmwareService.description;
   }
 
   get ready(): boolean {
@@ -149,14 +159,6 @@ export class OTAComponent implements OnInit, OnDestroy {
 
   public onRefreshDeviceList() {
     this.refreshDeviceList();
-  }
-
-  onCarouselLoad() {
-    setTimeout(() => {
-      this.carousel.nativeElement.selectedPage = this.selectedPage;
-      this.carousel.nativeElement.refresh();
-      console.log('Carousel loaded to ' + this.selectedPage);
-    }, 100);
   }
 
   private refreshDeviceList(): Promise<any> {
