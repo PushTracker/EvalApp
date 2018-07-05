@@ -1,4 +1,5 @@
 // nativescript
+import { alert } from 'tns-core-modules/ui/dialogs';
 import { isIOS, isAndroid } from 'tns-core-modules/platform';
 import { Observable, EventData } from 'tns-core-modules/data/observable';
 import timer = require('tns-core-modules/timer');
@@ -13,7 +14,7 @@ enum OTAState {
   awaiting_version = 'Awaiting Version',
   awaiting_ready = 'Waiting on PT',
   updating = 'Updating',
-  rebooting = 'Rebooting',
+  rebooting = 'Rebooting, please re-pair and re-connect your PushTracker',
   verifying_update = 'Verifying',
   complete = 'Complete',
   cancelling = 'Cancelling',
@@ -461,7 +462,7 @@ export class PushTracker extends Observable {
               index = -1;
               if (this.connected && this.ableToSend) {
                 // send start OTA
-                this.sendPacket('Command', 'StartOTA', 'OTADevice', 'PacketOTAType', 'PushTracker');
+                this.sendPacket('Command', 'StartOTA', 'OTADevice', 'PacketOTAType', 'PushTracker').catch(err => {});
               }
               break;
             case PushTracker.OTAState.updating:
@@ -489,7 +490,7 @@ export class PushTracker extends Observable {
               this.otaActions = [];
               if (this.ableToSend && !hasRebooted) {
                 // send stop ota command
-                this.sendPacket('Command', 'StopOTA', 'OTADevice', 'PacketOTAType', 'PushTracker');
+                this.sendPacket('Command', 'StopOTA', 'OTADevice', 'PacketOTAType', 'PushTracker').catch(err => {});
               } else if (this.ableToSend && haveVersion) {
                 this.otaState = PushTracker.OTAState.verifying_update;
               }
@@ -521,12 +522,14 @@ export class PushTracker extends Observable {
                 this.otaState = PushTracker.OTAState.canceled;
               } else if (this.connected && this.ableToSend) {
                 // send stop ota command
-                this.sendPacket('Command', 'StopOTA', 'OTADevice', 'PacketOTAType', 'PushTracker').then(success => {
-                  if (success) {
-                    // now update the ota state
-                    this.otaState = PushTracker.OTAState.canceled;
-                  }
-                });
+                this.sendPacket('Command', 'StopOTA', 'OTADevice', 'PacketOTAType', 'PushTracker')
+                  .then(success => {
+                    if (success) {
+                      // now update the ota state
+                      this.otaState = PushTracker.OTAState.canceled;
+                    }
+                  })
+                  .catch(err => {});
               } else {
                 // now update the ota state
                 this.otaState = PushTracker.OTAState.canceled;
