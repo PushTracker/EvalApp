@@ -496,50 +496,57 @@ export class SmartDrive extends Observable {
             index = 0;
           }
           const fileSize = fw.length;
-          if (cancelOTA) {
-            return;
-          } else if (paused) {
+          try {
+            if (cancelOTA) {
+              return;
+            } else if (paused || !this.connected || !this.ableToSend || !this.notifying) {
+              setTimeout(() => {
+                writeFirmwareSector(device, fw, characteristic, nextState);
+              }, 100);
+            } else if (index < fileSize) {
+              //console.log(`Writing ${index} / ${fileSize} of ota to ${device}`);
+              let data = null;
+              if (device === 'SmartDrive') {
+                const p = new Packet();
+                p.makeOTAPacket(device, index, fw);
+                data = p.toUint8Array();
+                p.destroy();
+              } else if (device === 'SmartDriveBluetooth') {
+                const length = Math.min(fw.length - index, 16);
+                data = Uint8Array.from(fw.subarray(index, index + length));
+              } else {
+                throw `ERROR: ${device} should be either 'SmartDrive' or 'SmartDriveBluetooth'`;
+              }
+              // TODO: add write timeout here in case of disconnect or other error
+              this._bluetoothService
+                .write({
+                  peripheralUUID: this.address,
+                  serviceUUID: SmartDrive.ServiceUUID,
+                  characteristicUUID: characteristic,
+                  value: data
+                })
+                .then(() => {
+                  this.ableToSend = true;
+                  index += payloadSize;
+                  writeFirmwareSector(device, fw, characteristic, nextState);
+                })
+                .catch(err => {
+                  setTimeout(() => {
+                    console.log(`Couldn't send fw to ${device}: ${err}`);
+                    console.log('Retrying');
+                    writeFirmwareSector(device, fw, characteristic, nextState);
+                  }, 500);
+                });
+            } else {
+              // we are done with the sending change
+              // state to the next state
+              this.otaState = nextState;
+            }
+          } catch (err) {
+            console.log(`WriteFirmwareSector error: ${err}`);
             setTimeout(() => {
               writeFirmwareSector(device, fw, characteristic, nextState);
             }, 100);
-          } else if (index < fileSize) {
-            //console.log(`Writing ${index} / ${fileSize} of ota to ${device}`);
-            let data = null;
-            if (device === 'SmartDrive') {
-              const p = new Packet();
-              p.makeOTAPacket(device, index, fw);
-              data = p.toUint8Array();
-              p.destroy();
-            } else if (device === 'SmartDriveBluetooth') {
-              const length = Math.min(fw.length - index, 16);
-              data = Uint8Array.from(fw.subarray(index, index + length));
-            } else {
-              throw `ERROR: ${device} should be either 'SmartDrive' or 'SmartDriveBluetooth'`;
-            }
-            // TODO: add write timeout here in case of disconnect or other error
-            this._bluetoothService
-              .write({
-                peripheralUUID: this.address,
-                serviceUUID: SmartDrive.ServiceUUID,
-                characteristicUUID: characteristic,
-                value: data
-              })
-              .then(() => {
-                this.ableToSend = true;
-                index += payloadSize;
-                writeFirmwareSector(device, fw, characteristic, nextState);
-              })
-              .catch(err => {
-                setTimeout(() => {
-                  console.log(`Couldn't send fw to ${device}: ${err}`);
-                  console.log('Retrying');
-                  writeFirmwareSector(device, fw, characteristic, nextState);
-                }, 500);
-              });
-          } else {
-            // we are done with the sending change
-            // state to the next state
-            this.otaState = nextState;
           }
         };
         const stopOTA = (reason: string, success: boolean = false, doRetry: boolean = false) => {
@@ -978,7 +985,7 @@ export class SmartDrive extends Observable {
     }
   }
 
-  public handleConnect(data?: any): Promise<any> {
+  public handleConnect(data?: any) {
     // update state
     this.connected = true;
     this.notifying = false;
