@@ -1111,6 +1111,7 @@ export class Bluetooth extends BluetoothCommon {
       this.connections[device.getAddress()] = null;
       // Close this Bluetooth GATT client.
       CLog(CLogTypes.info, 'Bluetooth.gattDisconnect ---- Closing GATT client');
+      gatt.disconnect();
       gatt.close();
     }
   }
