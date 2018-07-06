@@ -255,6 +255,7 @@ export class DemoDetailComponent implements OnInit {
             );
           }
           this.demo = DemoService.Demos.getItem(this.index);
+          // now save the images for the SD if they exist
           this._progressService.hide();
         })
         .catch(err => {
