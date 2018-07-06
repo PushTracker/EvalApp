@@ -414,7 +414,7 @@ export class BluetoothService {
           this.notify(`${device.name || 'PushTracker'}::${device.address} connected`);
         } else if (this.isSmartDrive(device)) {
           const sd = this.getOrMakeSmartDrive(device);
-          sd.handleConnect(argdata);
+          sd.handleConnect();
         }
         break;
       case ConnectionState.disconnected:
@@ -578,7 +578,9 @@ export class BluetoothService {
       pt = new PushTracker(this, { address: device.address });
       BluetoothService.PushTrackers.push(pt);
     }
-    pt.device = device.device;
+    if (device.device) {
+      pt.device = device.device;
+    }
     //console.log(`Found or made PT: ${pt}`);
     return pt;
   }
@@ -591,7 +593,9 @@ export class BluetoothService {
       BluetoothService.SmartDrives.push(sd);
     }
     //console.log(`Found or made SD: ${sd}`);
-    sd.device = device.device;
+    if (device.device) {
+      sd.device = device.device;
+    }
     if (device.rssi) {
       sd.rssi = device.rssi;
     }

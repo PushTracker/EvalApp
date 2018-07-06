@@ -21,6 +21,7 @@ enum OTAState {
   cancelling = 'Cancelling',
   canceled = 'Canceled',
   failed = 'Failed',
+  comm_failure = 'Communications error, please reboot your SmartDrive',
   timeout = 'Timeout'
 }
 
@@ -41,14 +42,14 @@ export class SmartDrive extends Observable {
     'e7add780-b042-4876-aae1-112855353cc1',
     'e8add780-b042-4876-aae1-112855353cc1',
     'e9add780-b042-4876-aae1-112855353cc1',
-    'eaadd780-b042-4876-aae1-112855353cc1',
+    //'eaadd780-b042-4876-aae1-112855353cc1',
     'ebadd780-b042-4876-aae1-112855353cc1'
   ];
   public static DataCharacteristic = SmartDrive.Characteristics[1];
   public static ControlCharacteristic = SmartDrive.Characteristics[2];
   public static BLEOTADataCharacteristic = SmartDrive.Characteristics[0];
-  public static BLEOTAControlCharacteristic = SmartDrive.Characteristics[4];
-  public static BLEOTADongleCharacteristic = SmartDrive.Characteristics[3];
+  public static BLEOTAControlCharacteristic = SmartDrive.Characteristics[3];
+  //public static BLEOTADongleCharacteristic = SmartDrive.Characteristics[3];
 
   // Event names
   public static smartdrive_connect_event = 'smartdrive_connect_event';
@@ -229,14 +230,14 @@ export class SmartDrive extends Observable {
 
   public otaStateToString(): string {
     /*
-        if (this.otaState == SmartDrive.OTAState.updating_mcu ||
-            this.otaState == SmartDrive.OTAState.updating_ble) {
-            const time = timeToString(this.otaCurrentTime.getTime() - this.otaStartTime.getTime());
-            return `${this.otaState} ${time}`;
-        } else if (this.otaState == SmartDrive.OTAState.complete) {
-            const time = timeToString(this.otaEndTime.getTime() - this.otaStartTime.getTime());
-            return `${this.otaState} ${time}`;
-        }
+          if (this.otaState == SmartDrive.OTAState.updating_mcu ||
+          this.otaState == SmartDrive.OTAState.updating_ble) {
+          const time = timeToString(this.otaCurrentTime.getTime() - this.otaStartTime.getTime());
+          return `${this.otaState} ${time}`;
+          } else if (this.otaState == SmartDrive.OTAState.complete) {
+          const time = timeToString(this.otaEndTime.getTime() - this.otaStartTime.getTime());
+          return `${this.otaState} ${time}`;
+          }
         */
     return this.otaState;
   }
@@ -260,7 +261,6 @@ export class SmartDrive extends Observable {
         this.sendEvent(SmartDrive.smartdrive_ota_force_event);
         break;
       case 'Retry':
-        console.log(`sending retry event: ${SmartDrive.smartdrive_ota_retry_event}`);
         this.sendEvent(SmartDrive.smartdrive_ota_retry_event);
         break;
       default:
@@ -324,7 +324,7 @@ export class SmartDrive extends Observable {
         let connectionIntervalID = null;
         let otaTimeoutID = null;
         const otaTimeout = timeout;
-        const smartDriveConnectionInterval = 2000;
+        const smartDriveConnectionInterval = 5000;
 
         // define our functions here
         const unregister = () => {
@@ -368,6 +368,15 @@ export class SmartDrive extends Observable {
           cancelOTA = false;
           startedOTA = false;
           hasRebooted = false;
+
+          mcuVersion = 0xff;
+          bleVersion = 0xff;
+          haveMCUVersion = false;
+          haveBLEVersion = false;
+
+          this.doBLEUpdate = false;
+          this.doMCUUpdate = false;
+
           index = 0;
           // set the action
           this.otaActions = ['Start'];
@@ -388,17 +397,7 @@ export class SmartDrive extends Observable {
           this.mcuOTAProgress = 0;
           this.otaActions = ['Cancel'];
           // connect to the smartdrive
-          this._bluetoothService.connect(
-            this.address,
-            data => {
-              this.handleConnect(data);
-            },
-            data => {
-              this.ableToSend = false;
-              hasRebooted = true;
-              this.handleDisconnect();
-            }
-          );
+          this.connect();
           this.otaStartTime = new Date();
           this.otaState = SmartDrive.OTAState.awaiting_versions;
           // start the timeout timer
@@ -432,10 +431,9 @@ export class SmartDrive extends Observable {
           this.otaState = SmartDrive.OTAState.timeout;
         };
         const otaRetryHandler = () => {
-          console.log('Retrying!');
           begin();
         };
-        const connectHandler = data => {
+        const connectHandler = () => {
           this.ableToSend = false;
           // clear out the connection interval
           timer.clearInterval(connectionIntervalID);
@@ -443,23 +441,14 @@ export class SmartDrive extends Observable {
         const disconnectHandler = () => {
           this.ableToSend = false;
           hasRebooted = true;
+          if (connectionIntervalID) {
+            timer.clearInterval(connectionIntervalID);
+          }
           if (!cancelOTA) {
             // try to connect to it again
-            if (connectionIntervalID) {
-              timer.clearInterval(connectionIntervalID);
-            }
             connectionIntervalID = timer.setInterval(() => {
-              this._bluetoothService.connect(
-                this.address,
-                data => {
-                  this.handleConnect(data);
-                },
-                data => {
-                  this.ableToSend = false;
-                  hasRebooted = true;
-                  this.handleDisconnect();
-                }
-              );
+              console.log(`Disconnected - reconnecting to ${this.address}`);
+              this.connect();
             }, smartDriveConnectionInterval);
           }
         };
@@ -471,7 +460,6 @@ export class SmartDrive extends Observable {
           }
         };
         const mcuVersionHandler = data => {
-          console.log('got mcu version!');
           mcuVersion = data.data.mcu;
           haveMCUVersion = true;
           if (mcuVersion < mcuFWVersion) {
@@ -537,13 +525,16 @@ export class SmartDrive extends Observable {
                 value: data
               })
               .then(() => {
+                this.ableToSend = true;
                 index += payloadSize;
                 writeFirmwareSector(device, fw, characteristic, nextState);
               })
               .catch(err => {
-                console.log(`Couldn't send fw to ${device}: ${err}`);
-                console.log('Retrying');
-                writeFirmwareSector(device, fw, characteristic, nextState);
+                setTimeout(() => {
+                  console.log(`Couldn't send fw to ${device}: ${err}`);
+                  console.log('Retrying');
+                  writeFirmwareSector(device, fw, characteristic, nextState);
+                }, 500);
               });
           } else {
             // we are done with the sending change
@@ -565,26 +556,31 @@ export class SmartDrive extends Observable {
           if (otaTimeoutID) {
             timer.clearInterval(otaTimeoutID);
           }
-
+          // unregister from all events
           unregister();
+
+          // if we are supposed to retry
+          const retry = () => {
+            cancelOTA = false;
+            this.on(SmartDrive.smartdrive_ota_retry_event, otaRetryHandler);
+            this.on(SmartDrive.smartdrive_ota_cancel_event, otaCancelHandler);
+            this.otaActions = ['Retry'];
+            otaIntervalID = timer.setInterval(runOTA, 250);
+          };
+
           const finish = () => {
             if (success) {
               resolve(reason);
             } else if (doRetry) {
-              this.otaActions = ['Retry'];
+              retry();
             } else {
               resolve(reason);
             }
           };
-          return this.stopNotifyCharacteristics(
-            SmartDrive.Characteristics.filter(c => {
-              return c.toUpperCase() != SmartDrive.BLEOTADongleCharacteristic.toUpperCase();
-            })
-          )
+          return this.stopNotifyCharacteristics(SmartDrive.Characteristics)
             .then(() => {
-              // then disconnect
-              console.log(`Disconnecting from ${this.address}`);
               // TODO: Doesn't properly disconnect
+              console.log(`Disconnecting from ${this.address}`);
               return this._bluetoothService.disconnect({
                 UUID: this.address
               });
@@ -600,20 +596,15 @@ export class SmartDrive extends Observable {
             case SmartDrive.OTAState.awaiting_versions:
               if (haveBLEVersion && haveMCUVersion) {
                 if (bleVersion == bleFWVersion && mcuVersion == mcuFWVersion) {
-                  // TODO: add ability to select which FW to
-                  //       force (if they're not the same)
                   this.otaActions = ['Force', 'Cancel'];
                 } else {
                   this.otaState = SmartDrive.OTAState.awaiting_mcu_ready;
                 }
               } else if (haveMCUVersion && !haveBLEVersion) {
-                stopOTA('Connection Error', false, true).then(() => {
-                  alert({
-                    title: 'SmartDrive connection error!',
-                    message: `Bad connection with SmartDrive, please power-cycle the SmartDrive ${this.address}`,
-                    okButtonText: 'Ok'
-                  });
-                });
+                this.otaState = SmartDrive.OTAState.comm_failure;
+                setTimeout(() => {
+                  stopOTA('Communications Failed', false, false);
+                }, 2500);
               }
               break;
             case SmartDrive.OTAState.awaiting_mcu_ready:
@@ -689,6 +680,9 @@ export class SmartDrive extends Observable {
                     characteristicUUID: SmartDrive.BLEOTAControlCharacteristic.toUpperCase(),
                     value: data
                   })
+                  .then(() => {
+                    this.ableToSend = true;
+                  })
                   .catch(err => {});
               }
               break;
@@ -742,6 +736,9 @@ export class SmartDrive extends Observable {
                     serviceUUID: SmartDrive.ServiceUUID,
                     characteristicUUID: SmartDrive.BLEOTAControlCharacteristic.toUpperCase(),
                     value: data
+                  })
+                  .then(() => {
+                    this.ableToSend = true;
                   })
                   .catch(err => {});
               }
@@ -812,6 +809,8 @@ export class SmartDrive extends Observable {
             case SmartDrive.OTAState.failed:
               stopOTA('OTA Failed', false, true);
               break;
+            case SmartDrive.OTAState.comm_failure:
+              break;
             case SmartDrive.OTAState.timeout:
               stopOTA('OTA Timeout', false, true);
               break;
@@ -866,47 +865,58 @@ export class SmartDrive extends Observable {
 
   // handlers
 
+  private stoppingNotify = false;
   private stopNotifyCharacteristics(characteristics: Array<string>): Promise<any> {
+    if (this.stoppingNotify) return Promise.resolve('Already stopping notifying!');
+    else this.stoppingNotify = true;
+    console.log(`StopNotifying`);
     const retry = (maxRetries, fn) => {
       return fn().catch(err => {
         if (maxRetries <= 0) {
           throw err;
         } else {
-          console.log('RETRYING');
+          console.log(`RETRYING: ${err}, ${maxRetries}`);
           return retry(maxRetries - 1, fn);
         }
       });
     };
     const retries = 3;
-    //console.log(`Notifying characteristics: ${characteristics}`);
-    return characteristics.reduce((p, characteristic) => {
-      return p.then(() => {
-        return retry(retries, () => {
-          return new Promise((resolve, reject) => {
-            setTimeout(() => {
-              console.log(`Stop Notifying ${characteristic}`);
-              this._bluetoothService
-                .stopNotifying({
-                  peripheralUUID: this.address,
-                  serviceUUID: SmartDrive.ServiceUUID,
-                  characteristicUUID: characteristic.toUpperCase(),
-                  onNotify: this.handleNotify.bind(this)
-                })
-                .then(() => {
-                  resolve();
-                })
-                .catch(err => {
-                  // if we failed we probably stopped anyway
-                  resolve(err);
-                });
-            }, 250);
+    return characteristics
+      .reduce((p, characteristic) => {
+        return p.then(() => {
+          return retry(retries, () => {
+            return new Promise((resolve, reject) => {
+              setTimeout(() => {
+                console.log(`Stop Notifying ${characteristic}`);
+                this._bluetoothService
+                  .stopNotifying({
+                    peripheralUUID: this.address,
+                    serviceUUID: SmartDrive.ServiceUUID,
+                    characteristicUUID: characteristic.toUpperCase(),
+                    onNotify: this.handleNotify.bind(this)
+                  })
+                  .then(() => {
+                    resolve();
+                  })
+                  .catch(err => {
+                    // if we failed we probably stopped anyway
+                    resolve(err);
+                  });
+              }, 250);
+            });
           });
         });
+      }, Promise.resolve())
+      .then(() => {
+        this.stoppingNotify = false;
       });
-    }, Promise.resolve());
   }
 
+  private startingNotify = false;
   private startNotifyCharacteristics(characteristics: Array<string>): Promise<any> {
+    if (this.startingNotify) return Promise.reject('Already started notifying!');
+    else this.startingNotify = true;
+    console.log(`StartNotifying`);
     const retry = (maxRetries, fn) => {
       return fn().catch(err => {
         if (err.includes('peripheral is disconnected')) {
@@ -916,86 +926,80 @@ export class SmartDrive extends Observable {
           if (maxRetries <= 0) {
             throw err;
           } else {
-            console.log(`RETRYING ${maxRetries}`);
+            console.log(`RETRYING: ${err}, ${maxRetries}`);
             return retry(maxRetries - 1, fn);
           }
         }
       });
     };
-    //console.log(`Notifying characteristics: ${characteristics}`);
-    return characteristics.reduce((p, characteristic) => {
-      return p.then(() => {
-        return retry(3, () => {
-          return new Promise((resolve, reject) => {
-            setTimeout(() => {
-              console.log(`Start Notifying ${characteristic}`);
-              this._bluetoothService
-                .startNotifying({
-                  peripheralUUID: this.address,
-                  serviceUUID: SmartDrive.ServiceUUID,
-                  characteristicUUID: characteristic.toUpperCase(),
-                  onNotify: this.handleNotify.bind(this)
-                })
-                .then(() => {
-                  resolve();
-                })
-                .catch(err => {
-                  reject(err);
-                });
-            }, 250);
-          });
-        });
-      });
-    }, Promise.resolve());
-  }
-
-  public handleConnect(data?: any) {
-    //console.log(`connected to smartdrive!`);
-    this.connected = true;
-    this.sendEvent(SmartDrive.smartdrive_connect_event, data);
-    // now that we're connected, subscribe to the characteristics
-    const services = data.services;
-    if (services) {
-      // TODO: if we didn't get services then we should disconnect and re-scan!
-      //console.log('services:');
-      //services.map(s => console.dir(s));
-      const sdService = services.filter(s => s.UUID.toUpperCase() === SmartDrive.ServiceUUID.toUpperCase())[0];
-      //console.dir(sdService);
-      if (sdService) {
-        // TODO: if we didn't get sdService then we should disconnect and re-scan!
-        const characteristics = sdService.characteristics;
-        if (characteristics) {
-          // TODO: if we didn't get characteristics then we
-          //       should disconnect and re-scan!
-          //console.log(characteristics);
-          console.log('notyfing characteristics!');
-          this.startNotifyCharacteristics(
-            characteristics.map(c => c.UUID).filter(c => {
-              // isn't set up to be subscribed to - we also don't use it
-              return c.toUpperCase() != SmartDrive.BLEOTADongleCharacteristic.toUpperCase();
-            })
-          ).catch(err => {
-            this.notifying = false;
-            this.connected = false;
-            alert({
-              title: 'SmartDrive connect failure!',
-              message: `Could not connect to ${this.address}: ${err}`,
-              okButtonText: 'Ok'
+    return characteristics
+      .reduce((p, characteristic) => {
+        return p.then(() => {
+          return retry(3, () => {
+            return new Promise((resolve, reject) => {
+              setTimeout(() => {
+                console.log(`Start Notifying ${characteristic}`);
+                this._bluetoothService
+                  .startNotifying({
+                    peripheralUUID: this.address,
+                    serviceUUID: SmartDrive.ServiceUUID,
+                    characteristicUUID: characteristic.toUpperCase(),
+                    onNotify: this.handleNotify.bind(this)
+                  })
+                  .then(() => {
+                    resolve();
+                  })
+                  .catch(err => {
+                    reject(err);
+                  });
+              }, 250);
             });
           });
-        }
-      }
+        });
+      }, Promise.resolve())
+      .then(() => {
+        this.startingNotify = false;
+      })
+      .catch(() => {
+        this.startingNotify = false;
+      });
+  }
+
+  public connect() {
+    console.log(`Connecting to ${this.address}`);
+    try {
+      this._bluetoothService.connect(
+        this.address,
+        this.handleConnect.bind(this),
+        this.handleDisconnect.bind(this)
+      );
+    } catch (err) {
+      console.log(`Couldn't connect to ${this.address}: ${err}`);
     }
+  }
+
+  public handleConnect(data?: any): Promise<any> {
+    // update state
+    this.connected = true;
+    this.notifying = false;
+    this.ableToSend = false;
+    console.log(`connected to smartdrive!`);
+    // now that we're connected, subscribe to the characteristics
+    this.startNotifyCharacteristics(SmartDrive.Characteristics)
+      .then(() => {
+        this.sendEvent(SmartDrive.smartdrive_connect_event);
+      })
+      .catch(err => {});
   }
 
   public handleDisconnect() {
     // update state
+    this.notifying = false;
     this.connected = false;
     this.ableToSend = false;
-    // stop notifying
-    this.stopNotifyCharacteristics(
-      SmartDrive.Characteristics.filter(c => c.toUpperCase() != SmartDrive.BLEOTADongleCharacteristic.toUpperCase())
-    ).then(() => {
+    console.log(`disconnected from smartdrive!`);
+    // now that we're disconnected - make sure we unsubscribe to the characteristics
+    this.stopNotifyCharacteristics(SmartDrive.Characteristics).then(() => {
       this.sendEvent(SmartDrive.smartdrive_disconnect_event);
     });
   }
@@ -1005,6 +1009,7 @@ export class SmartDrive extends Observable {
     // now that we're receiving data we can definitly send data
     this.notifying = true;
     this.ableToSend = true;
+    this.connected = true;
     // handle the packet here
     const value = args.value;
     const uArray = new Uint8Array(value);
