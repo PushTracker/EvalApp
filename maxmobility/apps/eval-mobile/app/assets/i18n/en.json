@@ -277,7 +277,7 @@
         "errors": {
             "sd_connection": {
                 "title": "SmartDrive connection error!",
-                "message": "Bad connection with SmartDrive, please power-cycle the SmartDrive with address: ",
+                "message": "Bad connection with SmartDrive, please power-cycle the SmartDrive with address: "
             },
             "devices": {
                 "title": "No Devices",
