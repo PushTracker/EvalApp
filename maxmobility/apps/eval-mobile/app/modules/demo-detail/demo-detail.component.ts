@@ -4,7 +4,12 @@ import { DemoDetailView } from './shared/demo-detail-view.model';
 import { DemoDetailViewService } from './shared/demo-detail-view.service';
 
 import { View } from 'ui/core/view';
-import { Image } from 'ui/image';
+import { Image } from 'tns-core-modules/ui/image';
+import * as fileSystemModule from 'tns-core-modules/file-system';
+import * as imageSource from 'tns-core-modules/image-source';
+import * as camera from 'nativescript-camera';
+import { ImageCropper } from 'nativescript-imagecropper';
+import * as LS from 'nativescript-localstorage';
 import { Label } from 'ui/label';
 import * as dialogs from 'ui/dialogs';
 import { BarcodeScanner } from 'nativescript-barcodescanner';
@@ -27,6 +32,12 @@ import { DemoService, BluetoothService, FirmwareService, ProgressService } from 
 export class DemoDetailComponent implements OnInit {
   public demo: Demo = new Demo();
 
+  public fsKeyPrefix: string = 'DemoComponent.';
+  public fsKeySDImage: string = 'SDImage';
+  public fsKeyPTImage: string = 'PTImage';
+
+  private imageCropper: ImageCropper;
+
   private index: number = -1; // index into DemoService.Demos
   private snackbar = new SnackBar();
 
@@ -38,6 +49,7 @@ export class DemoDetailComponent implements OnInit {
     private _demoService: DemoService,
     private _bluetoothService: BluetoothService
   ) {
+    this.imageCropper = new ImageCropper();
     this.pageRoute.activatedRoute.pipe(switchMap(activatedRoute => activatedRoute.queryParams)).forEach(params => {
       if (params.index !== undefined && params.index > -1) {
         this.index = params.index;
@@ -56,7 +68,166 @@ export class DemoDetailComponent implements OnInit {
     return isAndroid;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    // this.loadProfileImage();
+  }
+  getSDImageFSKey(): string {
+    return this.fsKeyPrefix + (this.demo.data as any)._id + '.' + this.fsKeySDImage;
+  }
+
+  getPTImageFSKey(): string {
+    return this.fsKeyPrefix + (this.demo.data as any)._id + '.' + this.fsKeyPTImage;
+  }
+
+  saveSDImage(source) {
+    try {
+      const picKey = this.getSDImageFSKey();
+      const b64 = source.toBase64String('png');
+      const pic = LS.setItem(picKey, b64);
+      (this.demo.data as any).sd_image = source;
+      return Promise.resolve();
+    } catch (err) {
+      return Promise.reject(`Couldn't save SmartDrive Image: ${err}`);
+    }
+  }
+
+  savePTImage(source) {
+    try {
+      const picKey = this.getSDImageFSKey();
+      const b64 = source.toBase64String('png');
+      const pic = LS.setItem(picKey, b64);
+      (this.demo.data as any).pt_image = source;
+      return Promise.resolve();
+    } catch (err) {
+      return Promise.reject(`Couldn't save PushTracker Image: ${err}`);
+    }
+  }
+
+  loadSDImage() {
+    try {
+      const picKey = this.getSDImageFSKey();
+      const pic = LS.getItem(picKey);
+      if (pic) {
+        const source = imageSource.fromBase64(pic);
+        (this.demo.data as any).sd_image = source;
+      } else {
+        (this.demo.data as any).sd_image = undefined;
+      }
+      return Promise.resolve();
+    } catch (err) {
+      return Promise.reject(`Couldn't load SmartDrive image: ${err}`);
+    }
+  }
+
+  loadPTImage() {
+    try {
+      const picKey = this.getPTImageFSKey();
+      const pic = LS.getItem(picKey);
+      if (pic) {
+        const source = imageSource.fromBase64(pic);
+        (this.demo.data as any).pt_image = source;
+      } else {
+        (this.demo.data as any).pt_image = undefined;
+      }
+      return Promise.resolve();
+    } catch (err) {
+      return Promise.reject(`Couldn't load PushTracker image: ${err}`);
+    }
+  }
+
+  onUpdateSDImageTap() {
+    if (camera.isAvailable()) {
+      camera
+        .requestPermissions()
+        .then(() => {
+          console.log('Updating SmartSDrive Image!');
+
+          const options = {
+            width: 256,
+            height: 256,
+            lockSquare: true
+          };
+
+          camera
+            .takePicture({
+              width: 500,
+              height: 500,
+              keepAspectRatio: true,
+              cameraFacing: 'rear'
+            })
+            .then(imageAsset => {
+              const source = new imageSource.ImageSource();
+              source.fromAsset(imageAsset).then(source => {
+                this.imageCropper
+                  .show(source, options)
+                  .then(args => {
+                    if (args.image !== null) {
+                      this.saveSDImage(args.image);
+                    }
+                  })
+                  .catch(function(e) {
+                    console.dir(e);
+                  });
+              });
+            })
+            .catch(err => {
+              console.log('Error -> ' + err.message);
+            });
+        })
+        .catch(err => {
+          console.log('Error -> ' + err.message);
+        });
+    } else {
+      console.log('No camera available');
+    }
+  }
+
+  onUpdatePTImageTap() {
+    if (camera.isAvailable()) {
+      camera
+        .requestPermissions()
+        .then(() => {
+          console.log('Updating SmartSDrive Image!');
+
+          const options = {
+            width: 256,
+            height: 256,
+            lockSquare: true
+          };
+
+          camera
+            .takePicture({
+              width: 500,
+              height: 500,
+              keepAspectRatio: true,
+              cameraFacing: 'rear'
+            })
+            .then(imageAsset => {
+              const source = new imageSource.ImageSource();
+              source.fromAsset(imageAsset).then(source => {
+                this.imageCropper
+                  .show(source, options)
+                  .then(args => {
+                    if (args.image !== null) {
+                      this.savePTImage(args.image);
+                    }
+                  })
+                  .catch(function(e) {
+                    console.dir(e);
+                  });
+              });
+            })
+            .catch(err => {
+              console.log('Error -> ' + err.message);
+            });
+        })
+        .catch(err => {
+          console.log('Error -> ' + err.message);
+        });
+    } else {
+      console.log('No camera available');
+    }
+  }
 
   haveSerial(): boolean {
     let sdSN = this.demo.smartdrive_serial_number.trim();

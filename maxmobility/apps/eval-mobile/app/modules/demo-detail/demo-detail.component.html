@@ -11,10 +11,28 @@
 <Gradient tkMainContent direction="to bottom" colors="#004F7E, #0070b3">
   <GridLayout padding="0" margin="0"  rows="auto, *" cols="auto">
     <StackLayout backgroundImage="~/assets/images/background_1.jpg" row="0"  height="30%" width="100%" orientation="horizontal" horizontalAlignment="center">
-      <Image src="~/assets/images/smartDriveFull.png"
-             stretch="aspectFit" (tap)="onSdTap()"></Image>
-      <Image src="~/assets/images/pushTrackerFull.png"
-             stretch="aspectFit" (tap)="onPtTap()"></Image>
+      <Image #sdImage  
+              *ngIf="demo.data.sd_image"
+              class="demo-image"
+              [src]="demo.data.sd_image"
+              stretch="aspectFit" 
+              (tap)="onUpdateSDImageTap()"></Image>
+      <Image *ngIf="!demo.data.sd_image"
+              class="demo-image"
+              src="~/assets/images/smartDriveFull.png"
+              stretch="aspectFit" 
+              (tap)="onUpdateSDImageTap()"></Image>
+      <Image  #ptImage 
+              *ngIf="demo.data.pt_image"
+              class="demo-image"
+              [src]="demo.data.pt_image"
+              stretch="aspectFit" 
+              (tap)="onUpdatePTImageTap()"></Image>
+      <Image *ngIf="!demo.data.pt_image"
+              class="demo-image"
+              src="~/assets/images/pushTrackerFull.png"
+              stretch="aspectFit" 
+              (tap)="onUpdatePTImageTap()"></Image>
     </StackLayout>
 
 	<ScrollView  row="1" class="" height="70%">
@@ -23,12 +41,12 @@
 
         <DockLayout stretchLastChild="true" margin="15, 10, 5, 0">
           <Label dock="left"
-                 text="&#xf072;" class="mdi icon" ></Label>
+                 text="&#xf072;" class="mdi icon-scan" ></Label>
           <Label dock="left" (tap)="onScan('smartdrive')"
                  text="&#xf100;" class="mdi icon-scan" ></Label>
           <Label dock="left" (tap)="onEditSD()"
                  text="&#xf3ed;" class="mdi icon-scan"></Label>
-          <Label [text]="(demo.smartdrive_serial_number.length && demo.smartdrive_serial_number ) || 'press scan or edit button'" class="info" dock="left"></Label>
+          <Label [text]="(demo.smartdrive_serial_number.length && demo.smartdrive_serial_number ) || 'SD: Press scan or edit button'" class="info" dock="left"></Label>
         </DockLayout>
 
         <StackLayout class="hr-light m-10" backgroundColor="#FFF" width="100%"></StackLayout>
@@ -40,7 +58,7 @@
                  text="&#xf100;" class="mdi icon-scan" ></Label>
           <Label dock="left" (tap)="onEditPT()"
                  text="&#xf3ed;" class="mdi icon-scan" ></Label>
-          <Label [text]="(demo.pushtracker_serial_number.length && demo.pushtracker_serial_number) || 'press scan or edit button'" class="info" dock="left"></Label>
+          <Label [text]="(demo.pushtracker_serial_number.length && demo.pushtracker_serial_number) || 'PT Press scan or edit button'" class="info" dock="left"></Label>
         </DockLayout>
 
         <StackLayout class="hr-light m-10" backgroundColor="#FFF" width="100%"></StackLayout>
