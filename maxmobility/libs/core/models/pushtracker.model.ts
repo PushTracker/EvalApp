@@ -261,14 +261,22 @@ export class PushTracker extends Observable {
         const otaTimeout = timeout;
 
         // define our functions here
-        const begin = () => {
-          cancelOTA = false;
-          hasRebooted = false;
-          haveVersion = false;
-          startedOTA = false;
-          paused = false;
-          index = 0;
-
+        const unregister = () => {
+          // de-register for events
+          this.off(PushTracker.pushtracker_connect_event, connectHandler);
+          this.off(PushTracker.pushtracker_disconnect_event, disconnectHandler);
+          this.off(PushTracker.pushtracker_version_event, versionHandler);
+          this.off(PushTracker.pushtracker_ota_start_event, otaStartHandler);
+          this.off(PushTracker.pushtracker_ota_ready_event, otaReadyHandler);
+          this.off(PushTracker.pushtracker_ota_pause_event, otaPauseHandler);
+          this.off(PushTracker.pushtracker_ota_resume_event, otaResumeHandler);
+          this.off(PushTracker.pushtracker_ota_force_event, otaForceHandler);
+          this.off(PushTracker.pushtracker_ota_cancel_event, otaCancelHandler);
+          this.off(PushTracker.pushtracker_ota_retry_event, otaRetryHandler);
+          this.off(PushTracker.pushtracker_ota_timeout_event, otaTimeoutHandler);
+        };
+        const register = () => {
+          unregister();
           // register for events
           this.on(PushTracker.pushtracker_connect_event, connectHandler);
           this.on(PushTracker.pushtracker_disconnect_event, disconnectHandler);
@@ -281,6 +289,16 @@ export class PushTracker extends Observable {
           this.on(PushTracker.pushtracker_ota_cancel_event, otaCancelHandler);
           this.on(PushTracker.pushtracker_ota_retry_event, otaRetryHandler);
           this.on(PushTracker.pushtracker_ota_timeout_event, otaTimeoutHandler);
+        };
+        const begin = () => {
+          cancelOTA = false;
+          hasRebooted = false;
+          haveVersion = false;
+          startedOTA = false;
+          paused = false;
+          index = 0;
+
+          register();
           // set the progress
           this.otaProgress = 0;
           // set the state
@@ -412,26 +430,17 @@ export class PushTracker extends Observable {
             timer.clearInterval(otaTimeoutID);
           }
 
-          // de-register for events
-          this.off(PushTracker.pushtracker_connect_event, connectHandler);
-          this.off(PushTracker.pushtracker_disconnect_event, disconnectHandler);
-          this.off(PushTracker.pushtracker_version_event, versionHandler);
-          this.off(PushTracker.pushtracker_ota_start_event, otaStartHandler);
-          this.off(PushTracker.pushtracker_ota_ready_event, otaReadyHandler);
-          this.off(PushTracker.pushtracker_ota_pause_event, otaPauseHandler);
-          this.off(PushTracker.pushtracker_ota_resume_event, otaResumeHandler);
-          this.off(PushTracker.pushtracker_ota_force_event, otaForceHandler);
-          this.off(PushTracker.pushtracker_ota_cancel_event, otaCancelHandler);
-          this.off(PushTracker.pushtracker_ota_retry_event, otaRetryHandler);
-          this.off(PushTracker.pushtracker_ota_timeout_event, otaTimeoutHandler);
-
+          unregister();
           // TODO: do we disconnect?
           //console.log(`Disconnecting from ${this.address}`);
           // TODO: How do we disconnect from the PT?
           if (success) {
             resolve(reason);
           } else if (doRetry) {
+            this.on(PushTracker.pushtracker_ota_cancel_event, otaCancelHandler);
+            this.on(PushTracker.pushtracker_ota_retry_event, otaRetryHandler);
             this.otaActions = ['Retry'];
+            otaIntervalID = timer.setInterval(runOTA, 250);
           } else {
             resolve(reason);
           }
