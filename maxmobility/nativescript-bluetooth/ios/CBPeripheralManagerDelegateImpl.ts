@@ -296,6 +296,10 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
       request
     );
 
+    // set low connection latency
+    //console.log('Setting desired connection latency to low!');
+    peripheral.setDesiredConnectionLatencyForCentral(CBPeripheralManagerConnectionLatency.Low, request.central);
+
     const owner = this._owner.get();
     if (!owner) {
       return;
@@ -337,6 +341,11 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
 
     for (let i = 0; i < requests.count; i++) {
       const r = requests.objectAtIndex(i);
+
+      // set low connection latency
+      //console.log('Setting desired connection latency to low!');
+      peripheral.setDesiredConnectionLatencyForCentral(CBPeripheralManagerConnectionLatency.Low, r.central);
+
       const dev = deviceToCentral(r.central);
       owner.sendEvent(Bluetooth.characteristic_write_request_event, {
         device: dev,
