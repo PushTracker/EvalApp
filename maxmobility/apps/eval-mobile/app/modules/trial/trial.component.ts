@@ -47,9 +47,19 @@ export class TrialComponent implements OnInit {
   snackbar = new SnackBar();
 
   please_connect_pt: string = this._translateService.instant('trial.please-connect-pt');
-  too_many_pts: string = this._translateService.instant('trial.to-many-pts');
   starting_trial: string = this._translateService.instant('trial.starting-trial');
   stopping_trial: string = this._translateService.instant('trial.stopping-trial');
+
+  okbuttontxt: string = this._translateService.instant('dialogs.ok');
+
+  too_many_pts: string = this._translateService.instant('trial.errors.to-many-pts');
+  failed_start_title: string = this._translateService.instant('trial.errors.failed-start.title');
+  failed_start_message: string = this._translateService.instant('trial.errors.failed-start.message');
+  failed_stop_title: string = this._translateService.instant('trial.errors.failed-stop.title');
+  failed_stop_message: string = this._translateService.instant('trial.errors.failed-stop.message');
+
+  pt_version_title: string = this._translateService.instant('trial.errors.pt-version.title');
+  pt_version_message: string = this._translateService.instant('trial.errors.pt-version.message');
 
   constructor(
     private routerExtensions: RouterExtensions,
@@ -116,12 +126,9 @@ export class TrialComponent implements OnInit {
       // check the version here (must be >= 1.5)
       if (pt.version == 0xff || pt.version < 0x15) {
         alert({
-          title: 'PushTracker Version Error',
-          message:
-            'Your Pushtracker version (' +
-            PushTracker.versionByteToString(pt.version) +
-            ') is out of date, please perform an OTA!',
-          okButtonText: 'Ok'
+          title: this.pt_version_title,
+          message: this.pt_version_message + PushTracker.versionByteToString(pt.version),
+          okButtonText: this.okbuttontxt
         });
         return;
       }
@@ -139,6 +146,20 @@ export class TrialComponent implements OnInit {
           pt.off(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
           this.trial.startedWith = true;
           this.animateViewIn(<View>this.stopWithView.nativeElement);
+        });
+      };
+      const trialFailedHandler = err => {
+        this.zone.run(() => {
+          this._progressService.hide();
+          pt.off(PushTracker.pushtracker_distance_event, distanceHandler);
+          pt.off(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
+          this.animateViewIn(<View>this.startWithView.nativeElement);
+          console.log(`Couldn't start trial: ${err}`);
+          alert({
+            title: this.failed_start_title,
+            message: this.failed_start_message + err,
+            okButtonText: this.okbuttontxt
+          });
         });
       };
       const dailyInfoHandler = data => {
@@ -159,42 +180,41 @@ export class TrialComponent implements OnInit {
           trialStartedHandler();
         }
       };
-      let distanceTimeout = null;
-      const sendDistance = () => {
-        if (distanceTimeout) {
-          clearTimeout(distanceTimeout);
-        }
-        return pt.sendPacket('Command', 'DistanceRequest').catch(err => {
-          distanceTimeout = setTimeout(sendDistance, 500);
+      const retry = (maxRetries, fn) => {
+        return fn().catch(err => {
+          if (maxRetries <= 0) {
+            throw err;
+          } else {
+            console.log(`RETRYING: ${err}, ${maxRetries}`);
+            return new Promise((resolve, reject) => {
+              setTimeout(() => {
+                retry(maxRetries - 1, fn)
+                  .then(resolve)
+                  .catch(reject);
+              }, 1000);
+            });
+          }
         });
       };
-      let settingsTimeout = null;
-      const sendSettings = () => {
-        if (settingsTimeout) {
-          clearTimeout(settingsTimeout);
-        }
-        return pt
-          .sendSettings('MX2+', 'English', 0x00, 1.0, this.trial.acceleration, this.trial.max_speed)
-          .catch(err => {
-            settingsTimeout = setTimeout(sendDistance, 500);
-          });
+      const sendDistance = () => {
+        return pt.sendPacket('Command', 'DistanceRequest');
       };
-
-      sendSettings().then(() => {
-        sendDistance();
-      });
-
-      /*
-      // send command to get distance:
-      pt.sendSettings('MX2+', 'English', 0x00, 1.0, this.trial.acceleration, this.trial.max_speed)
-        .then(success => {
-          return pt.sendPacket('Command', 'DistanceRequest');
-        })
-        .then(success => {});
-	*/
+      const sendSettings = () => {
+        return pt.sendSettings('MX2+', 'English', 0x00, 1.0, this.trial.acceleration, this.trial.max_speed);
+      };
       // wait for push / coast data and distance:
       pt.on(PushTracker.pushtracker_distance_event, distanceHandler);
       pt.on(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
+      // set timeout on trial starting
+      setTimeout(() => {
+        trialFailedHandler('Timeout!');
+      }, 15000); // 15 seconds
+      // now actually try to send these data
+      retry(3, sendSettings)
+        .then(() => {
+          return retry(3, sendDistance);
+        })
+        .catch(trialFailedHandler);
     }
   }
 
@@ -231,6 +251,20 @@ export class TrialComponent implements OnInit {
           this.timeWithDisplay = Trial.timeToString(this.trial.with_elapsed * 60);
         });
       };
+      const trialFailedHandler = err => {
+        this.zone.run(() => {
+          this._progressService.hide();
+          pt.off(PushTracker.pushtracker_distance_event, distanceHandler);
+          pt.off(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
+          this.animateViewIn(<View>this.stopWithView.nativeElement);
+          console.log(`Couldn't stop trial: ${err}`);
+          alert({
+            title: this.failed_stop_title,
+            message: this.failed_stop_message + err,
+            okButtonText: this.okbuttontxt
+          });
+        });
+      };
       const dailyInfoHandler = data => {
         // get the data
         this.trial.with_pushes = data.data.pushesWithout + data.data.pushesWith - this.trial.with_pushes;
@@ -250,11 +284,34 @@ export class TrialComponent implements OnInit {
           trialStoppedHandler();
         }
       };
-      // send command to get distance:
-      pt.sendPacket('Command', 'DistanceRequest');
+      const retry = (maxRetries, fn) => {
+        return fn().catch(err => {
+          if (maxRetries <= 0) {
+            throw err;
+          } else {
+            console.log(`RETRYING: ${err}, ${maxRetries}`);
+            return new Promise((resolve, reject) => {
+              setTimeout(() => {
+                retry(maxRetries - 1, fn)
+                  .then(resolve)
+                  .catch(reject);
+              }, 1000);
+            });
+          }
+        });
+      };
+      const sendDistance = () => {
+        return pt.sendPacket('Command', 'DistanceRequest');
+      };
       // wait for push / coast data and distance:
       pt.on(PushTracker.pushtracker_distance_event, distanceHandler);
       pt.on(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
+      // set timeout on trial starting
+      setTimeout(() => {
+        trialFailedHandler('Timeout!');
+      }, 15000); // 15 seconds
+      // now actually send the distance command
+      retry(3, sendDistance).catch(trialFailedHandler);
     }
   }
 
@@ -272,13 +329,12 @@ export class TrialComponent implements OnInit {
       const pt = connectedPTs[0];
       // check the version here (must be >= 1.5)
       if (pt.version == 0xff || pt.version < 0x15) {
+        // TODO: this doesn't necessarily need to be 1.5 since we're
+        // not using distance command
         alert({
-          title: 'PushTracker Version Error',
-          message:
-            'Your Pushtracker version (' +
-            PushTracker.versionByteToString(pt.version) +
-            ') is out of date, please perform an OTA!',
-          okButtonText: 'Ok'
+          title: this.pt_version_title,
+          message: this.pt_version_message + PushTracker.versionByteToString(pt.version),
+          okButtonText: this.okbuttontxt
         });
         return;
       }

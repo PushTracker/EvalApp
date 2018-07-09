@@ -261,10 +261,23 @@
         "complete": "Trial Complete",
         "summary": "Summary",
         "please-connect-pt": "Please connect your PushTracker",
-        "too-many-pts": "Too many PushTrackers connected - please only connect one!",
         "starting-trial": "Starting Trial",
-        "stopping-trial": "Stopping Trial"
-
+        "stopping-trial": "Stopping Trial",
+        "errors": {
+            "too-many-pts": "Too many PushTrackers connected - please only connect one!",
+            "failed-start": {
+                "title": "Couldn't Start Trial",
+                "message": "Could not start the trial, error: "
+            },
+            "failed-stop": {
+                "title": "Couldn't Stop Trial",
+                "message": "Could not stop the trial, error: "
+            },
+            "pt-version": {
+                "title": "PushTracker Version Error",
+                "message": "Your PushTracker version is out of date, please perform an OTA! Current version: ",
+            }
+        }
     },
     "ota": {
         "up-to-date": "(Up to date)",
