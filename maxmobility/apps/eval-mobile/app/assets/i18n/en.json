@@ -275,7 +275,7 @@
             },
             "pt-version": {
                 "title": "PushTracker Version Error",
-                "message": "Your PushTracker version is out of date, please perform an OTA! Current version: ",
+                "message": "Your PushTracker version is out of date, please perform an OTA! Current version: "
             }
         }
     },
