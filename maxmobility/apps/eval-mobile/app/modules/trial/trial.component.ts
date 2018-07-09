@@ -34,6 +34,7 @@ export class TrialComponent implements OnInit {
   @ViewChild('stopWithout') stopWithoutView: ElementRef;
 
   trial: Trial = new Trial();
+  trialTimeout: number = 15000; // 15 seconds
 
   // displaying trial info
   distanceDisplay: string = '--';
@@ -135,11 +136,15 @@ export class TrialComponent implements OnInit {
       this.hideView(<View>this.startWithView.nativeElement);
       let haveDailyInfo = false;
       let haveDistance = false;
+      let startWithTimeoutID = null;
       // let user know we're doing something
       this._progressService.show(this.starting_trial);
       // set up handlers
       const trialStartedHandler = () => {
         this.zone.run(() => {
+          if (startWithTimeoutID) {
+            clearTimeout(startWithTimeoutID);
+          }
           this._progressService.hide();
           this.trial.with_start = new Date();
           pt.off(PushTracker.pushtracker_distance_event, distanceHandler);
@@ -148,8 +153,11 @@ export class TrialComponent implements OnInit {
           this.animateViewIn(<View>this.stopWithView.nativeElement);
         });
       };
-      const trialFailedHandler = err => {
+      const trialStartWithFailed = err => {
         this.zone.run(() => {
+          if (startWithTimeoutID) {
+            clearTimeout(startWithTimeoutID);
+          }
           this._progressService.hide();
           pt.off(PushTracker.pushtracker_distance_event, distanceHandler);
           pt.off(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
@@ -206,15 +214,15 @@ export class TrialComponent implements OnInit {
       pt.on(PushTracker.pushtracker_distance_event, distanceHandler);
       pt.on(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
       // set timeout on trial starting
-      setTimeout(() => {
-        trialFailedHandler('Timeout!');
-      }, 15000); // 15 seconds
+      startWithTimeoutID = setTimeout(() => {
+        trialStartWithFailed('Timeout!');
+      }, this.trialTimeout);
       // now actually try to send these data
       retry(3, sendSettings)
         .then(() => {
           return retry(3, sendDistance);
         })
-        .catch(trialFailedHandler);
+        .catch(trialStartWithFailed);
     }
   }
 
@@ -233,11 +241,15 @@ export class TrialComponent implements OnInit {
       const pt = connectedPTs[0];
       let haveDailyInfo = false;
       let haveDistance = false;
+      let stopWithTimeoutID = null;
       // let user know we're doing something
       this._progressService.show('Stopping Trial');
       // set up handlers
       const trialStoppedHandler = () => {
         this.zone.run(() => {
+          if (stopWithTimeoutID) {
+            clearTimeout(stopWithTimeoutID);
+          }
           this.trial.finishedWith = true;
           this.trial.with_elapsed = (this.trial.with_end.getTime() - this.trial.with_start.getTime()) / 60000; // diff is in ms
           this.trial.with_coast = this.trial.with_pushes ? (this.trial.with_elapsed * 60) / this.trial.with_pushes : 0;
@@ -251,12 +263,14 @@ export class TrialComponent implements OnInit {
           this.timeWithDisplay = Trial.timeToString(this.trial.with_elapsed * 60);
         });
       };
-      const trialFailedHandler = err => {
+      const trialStopWithFailed = err => {
         this.zone.run(() => {
+          if (stopWithTimeoutID) {
+            clearTimeout(stopWithTimeoutID);
+          }
           this._progressService.hide();
           pt.off(PushTracker.pushtracker_distance_event, distanceHandler);
           pt.off(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
-          this.animateViewIn(<View>this.stopWithView.nativeElement);
           console.log(`Couldn't stop trial: ${err}`);
           alert({
             title: this.failed_stop_title,
@@ -307,11 +321,11 @@ export class TrialComponent implements OnInit {
       pt.on(PushTracker.pushtracker_distance_event, distanceHandler);
       pt.on(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
       // set timeout on trial starting
-      setTimeout(() => {
-        trialFailedHandler('Timeout!');
-      }, 15000); // 15 seconds
+      stopWithTimeoutID = setTimeout(() => {
+        trialStopWithFailed('Timeout!');
+      }, this.trialTimeout);
       // now actually send the distance command
-      retry(3, sendDistance).catch(trialFailedHandler);
+      retry(3, sendDistance).catch(trialStopWithFailed);
     }
   }
 
@@ -339,16 +353,36 @@ export class TrialComponent implements OnInit {
         return;
       }
       this.hideView(<View>this.startWithoutView.nativeElement);
+      let startWithoutTimeoutID = null;
       // let user know we're doing something
       this._progressService.show(this.starting_trial);
       // set up handlers
       const trialStartedHandler = () => {
         this.zone.run(() => {
+          if (startWithoutTimeoutID) {
+            clearTimeout(startWithoutTimeoutID);
+          }
           this._progressService.hide();
           this.trial.startedWithout = true;
           this.trial.without_start = new Date();
           pt.off(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
           this.animateViewIn(<View>this.stopWithoutView.nativeElement);
+        });
+      };
+      const trialStartWithoutFailed = err => {
+        this.zone.run(() => {
+          if (startWithoutTimeoutID) {
+            clearTimeout(startWithoutTimeoutID);
+          }
+          this._progressService.hide();
+          pt.off(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
+          this.animateViewIn(<View>this.startWithoutView.nativeElement);
+          console.log(`Couldn't start trial: ${err}`);
+          alert({
+            title: this.failed_start_title,
+            message: this.failed_start_message + err,
+            okButtonText: this.okbuttontxt
+          });
         });
       };
       const dailyInfoHandler = data => {
@@ -357,6 +391,10 @@ export class TrialComponent implements OnInit {
         // record that we've gotten it
         trialStartedHandler();
       };
+      // set timeout on trial starting
+      startWithoutTimeoutID = setTimeout(() => {
+        trialStartWithoutFailed('Timeout!');
+      }, this.trialTimeout);
       pt.on(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
     }
   }
@@ -374,11 +412,15 @@ export class TrialComponent implements OnInit {
       this.trial.without_end = new Date();
       // we have exactly one PushTracker connected
       const pt = connectedPTs[0];
+      let stopWithoutTimeoutID = null;
       // let user know we're doing something
       this._progressService.show(this.stopping_trial);
       // set up handlers
       const trialStoppedHandler = () => {
         this.zone.run(() => {
+          if (stopWithoutTimeoutID) {
+            clearTimeout(stopWithoutTimeoutID);
+          }
           this.trial.finishedWithout = true;
           this.trial.without_elapsed = (this.trial.without_end.getTime() - this.trial.without_start.getTime()) / 60000;
           this.trial.without_coast = this.trial.without_pushes
@@ -392,12 +434,31 @@ export class TrialComponent implements OnInit {
           this.timeWithoutDisplay = Trial.timeToString(this.trial.without_elapsed * 60);
         });
       };
+      const trialStopWithoutFailed = err => {
+        this.zone.run(() => {
+          if (stopWithoutTimeoutID) {
+            clearTimeout(stopWithoutTimeoutID);
+          }
+          this._progressService.hide();
+          pt.off(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
+          console.log(`Couldn't stop trial: ${err}`);
+          alert({
+            title: this.failed_stop_title,
+            message: this.failed_stop_message + err,
+            okButtonText: this.okbuttontxt
+          });
+        });
+      };
       const dailyInfoHandler = data => {
         // get the data
         this.trial.without_pushes = data.data.pushesWithout + data.data.pushesWith - this.trial.without_pushes;
         // record that we've gotten it
         trialStoppedHandler();
       };
+      // set timeout on trial starting
+      stopWithoutTimeoutID = setTimeout(() => {
+        trialStopWithoutFailed('Timeout!');
+      }, this.trialTimeout);
       // wait for push / coast data and distance:
       pt.on(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
     }
