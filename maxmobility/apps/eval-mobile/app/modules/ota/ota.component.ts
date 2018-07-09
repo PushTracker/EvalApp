@@ -91,9 +91,11 @@ export class OTAComponent implements OnInit, OnDestroy {
     if (this.slideIntervalID) {
       clearInterval(this.slideIntervalID);
     }
+    /*
     this.slideIntervalID = setInterval(() => {
       this.slides.nextSlide();
     }, this.slideInterval);
+      */
   }
 
   ngOnDestroy() {
