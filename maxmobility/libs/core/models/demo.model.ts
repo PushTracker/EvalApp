@@ -1,5 +1,7 @@
 import { Observable } from 'tns-core-modules/data/observable';
 import { Kinvey } from 'kinvey-nativescript-sdk';
+import * as LS from 'nativescript-localstorage';
+import * as imageSource from 'tns-core-modules/image-source';
 
 import { LocationService } from '@maxmobility/mobile';
 import { PushTracker } from '@maxmobility/core';
@@ -40,6 +42,10 @@ export class Record extends Observable {
 
 export class Demo extends Observable {
   // STATIC:
+  public static fsKeyPrefix: string = 'Demo.';
+  public static fsKeySDImage: string = 'SDImage';
+  public static fsKeyPTImage: string = 'PTImage';
+
   public static editableProperties = [
     'model',
     'geo',
@@ -66,6 +72,8 @@ export class Demo extends Observable {
   public mcu_version: string = '';
   public pt_mac_addr: string = '';
   public sd_mac_addr: string = '';
+  public pt_image: any = null;
+  public sd_image: any = null;
   public usage: Array<Record> = [];
 
   get location_string(): string {
@@ -130,6 +138,72 @@ export class Demo extends Observable {
       }
     });
     return obj;
+  }
+
+  getSDImageFSKey(): string {
+    let key = Demo.fsKeyPrefix + this.id + '.' + Demo.fsKeySDImage;
+    return key;
+  }
+
+  getPTImageFSKey(): string {
+    let key = Demo.fsKeyPrefix + this.id + '.' + Demo.fsKeyPTImage;
+    return key;
+  }
+
+  loadImages() {
+    this.loadPTImage();
+    this.loadSDImage();
+  }
+
+  saveImages() {
+    this.savePTImage();
+    this.saveSDImage();
+  }
+
+  saveSDImage() {
+    try {
+      if (this.sd_image) {
+        const picKey = this.getSDImageFSKey();
+        const b64 = this.sd_image.toBase64String('png');
+        LS.setItem(picKey, b64);
+      }
+    } catch (err) {}
+  }
+
+  savePTImage() {
+    try {
+      if (this.pt_image) {
+        const picKey = this.getPTImageFSKey();
+        const b64 = this.pt_image.toBase64String('png');
+        LS.setItem(picKey, b64);
+      }
+    } catch (err) {}
+  }
+
+  loadSDImage() {
+    try {
+      const picKey = this.getSDImageFSKey();
+      const pic = LS.getItem(picKey);
+      if (pic) {
+        const source = imageSource.fromBase64(pic);
+        this.sd_image = source;
+      } else {
+        this.sd_image = undefined;
+      }
+    } catch (err) {}
+  }
+
+  loadPTImage() {
+    try {
+      const picKey = this.getPTImageFSKey();
+      const pic = LS.getItem(picKey);
+      if (pic) {
+        const source = imageSource.fromBase64(pic);
+        this.pt_image = source;
+      } else {
+        this.pt_image = undefined;
+      }
+    } catch (err) {}
   }
 
   isUpToDate(version: string): boolean {

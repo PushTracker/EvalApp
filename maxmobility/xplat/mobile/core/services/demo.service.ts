@@ -58,7 +58,7 @@ export class DemoService {
   }
 
   constructor() {
-    this.load();
+    //this.load();
   }
 
   create(demoModel: Demo): Promise<any> {
