@@ -428,6 +428,7 @@ export class SmartDrive extends Observable {
         };
         const otaTimeoutHandler = () => {
           startedOTA = false;
+          stopOTA('OTA Timeout', false, true);
           this.otaState = SmartDrive.OTAState.timeout;
         };
         const otaRetryHandler = () => {
@@ -490,7 +491,12 @@ export class SmartDrive extends Observable {
             this.otaState = SmartDrive.OTAState.updating_ble;
           }
         };
+        let writeFirmwareTimeoutID = null;
         const writeFirmwareSector = (device: string, fw: any, characteristic: any, nextState: any) => {
+          if (writeFirmwareTimeoutID) {
+            timer.clearTimeout(writeFirmwareTimeoutID);
+          }
+          writeFirmwareTimeoutID = null;
           if (index < 0) {
             console.log('writing firmware to ' + device + ' at ' + characteristic);
             index = 0;
@@ -500,9 +506,11 @@ export class SmartDrive extends Observable {
             if (cancelOTA) {
               return;
             } else if (paused || !this.connected || !this.ableToSend || !this.notifying) {
-              setTimeout(() => {
+              //console.log('NOT WRITING TO SD!');
+              writeFirmwareTimeoutID = timer.setTimeout(() => {
+                //console.log('trying now!');
                 writeFirmwareSector(device, fw, characteristic, nextState);
-              }, 100);
+              }, 500);
             } else if (index < fileSize) {
               //console.log(`Writing ${index} / ${fileSize} of ota to ${device}`);
               let data = null;
@@ -526,13 +534,15 @@ export class SmartDrive extends Observable {
                   value: data
                 })
                 .then(() => {
-                  this.ableToSend = true;
-                  index += payloadSize;
-                  writeFirmwareSector(device, fw, characteristic, nextState);
+                  writeFirmwareTimeoutID = timer.setTimeout(() => {
+                    this.ableToSend = true;
+                    index += payloadSize;
+                    writeFirmwareSector(device, fw, characteristic, nextState);
+                  }, 0);
                 })
                 .catch(err => {
-                  setTimeout(() => {
-                    console.log(`Couldn't send fw to ${device}: ${err}`);
+                  console.log(`Couldn't send fw to ${device}: ${err}`);
+                  writeFirmwareTimeoutID = timer.setTimeout(() => {
                     console.log('Retrying');
                     writeFirmwareSector(device, fw, characteristic, nextState);
                   }, 500);
@@ -544,9 +554,9 @@ export class SmartDrive extends Observable {
             }
           } catch (err) {
             console.log(`WriteFirmwareSector error: ${err}`);
-            setTimeout(() => {
+            writeFirmwareTimeoutID = timer.setTimeout(() => {
               writeFirmwareSector(device, fw, characteristic, nextState);
-            }, 100);
+            }, 500);
           }
         };
         const stopOTA = (reason: string, success: boolean = false, doRetry: boolean = false) => {
@@ -609,7 +619,7 @@ export class SmartDrive extends Observable {
                 }
               } else if (haveMCUVersion && !haveBLEVersion) {
                 this.otaState = SmartDrive.OTAState.comm_failure;
-                setTimeout(() => {
+                timer.setTimeout(() => {
                   stopOTA('Communications Failed', false, false);
                 }, 2500);
               }
@@ -654,12 +664,14 @@ export class SmartDrive extends Observable {
                 // the interval for now? - shouldn't need
                 // to
                 if (index === -1) {
-                  writeFirmwareSector(
-                    'SmartDrive',
-                    mcuFirmware,
-                    SmartDrive.ControlCharacteristic.toUpperCase(),
-                    nextState
-                  );
+                  writeFirmwareTimeoutID = timer.setTimeout(() => {
+                    writeFirmwareSector(
+                      'SmartDrive',
+                      mcuFirmware,
+                      SmartDrive.ControlCharacteristic.toUpperCase(),
+                      nextState
+                    );
+                  }, 0);
                 }
               } else {
                 // go to next state
@@ -709,12 +721,14 @@ export class SmartDrive extends Observable {
                 haveBLEVersion = false;
                 // now send data to SD BLE
                 if (index === -1) {
-                  writeFirmwareSector(
-                    'SmartDriveBluetooth',
-                    bleFirmware,
-                    SmartDrive.BLEOTADataCharacteristic.toUpperCase(),
-                    SmartDrive.OTAState.rebooting_ble
-                  );
+                  writeFirmwareTimeoutID = timer.setTimeout(() => {
+                    writeFirmwareSector(
+                      'SmartDriveBluetooth',
+                      bleFirmware,
+                      SmartDrive.BLEOTADataCharacteristic.toUpperCase(),
+                      SmartDrive.OTAState.rebooting_ble
+                    );
+                  }, 0);
                 }
               } else {
                 this.otaState = this.doMCUUpdate ? SmartDrive.OTAState.rebooting_mcu : SmartDrive.OTAState.complete;
@@ -783,6 +797,7 @@ export class SmartDrive extends Observable {
                 msg = `SmartDrive OTA FAILED! ${mcuVersion.toString(16)}, ${bleVersion.toString(16)}`;
                 console.log(msg);
                 this.otaState = SmartDrive.OTAState.failed;
+                stopOTA('OTA Failed', false, true);
               }
               break;
             case SmartDrive.OTAState.complete:
@@ -814,12 +829,10 @@ export class SmartDrive extends Observable {
               stopOTA('OTA Canceled', false);
               break;
             case SmartDrive.OTAState.failed:
-              stopOTA('OTA Failed', false, true);
               break;
             case SmartDrive.OTAState.comm_failure:
               break;
             case SmartDrive.OTAState.timeout:
-              stopOTA('OTA Timeout', false, true);
               break;
             default:
               break;
@@ -893,7 +906,7 @@ export class SmartDrive extends Observable {
         return p.then(() => {
           return retry(retries, () => {
             return new Promise((resolve, reject) => {
-              setTimeout(() => {
+              timer.setTimeout(() => {
                 console.log(`Stop Notifying ${characteristic}`);
                 this._bluetoothService
                   .stopNotifying({
@@ -944,7 +957,7 @@ export class SmartDrive extends Observable {
         return p.then(() => {
           return retry(3, () => {
             return new Promise((resolve, reject) => {
-              setTimeout(() => {
+              timer.setTimeout(() => {
                 console.log(`Start Notifying ${characteristic}`);
                 this._bluetoothService
                   .startNotifying({

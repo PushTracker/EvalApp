@@ -12,7 +12,11 @@ import { Bluetooth } from './ios_main';
 export class CBPeripheralDelegateImpl extends NSObject implements CBPeripheralDelegate {
   public static ObjCProtocols = [CBPeripheralDelegate];
   public _onWritePromise;
+  public _onWriteReject;
+  public _onWriteTimeout;
   public _onReadPromise;
+  public _onReadReject;
+  public _onReadTimeout;
   public _onNotifyCallback;
   private _servicesWithCharacteristics;
   private _services;
@@ -29,6 +33,13 @@ export class CBPeripheralDelegateImpl extends NSObject implements CBPeripheralDe
     this._callback = callback;
     this._servicesWithCharacteristics = [];
     return this;
+  }
+
+  public peripheralDidReadRSSIError(peripheral: CBPeripheral, RSSI: number, error: NSError) {
+    CLog(
+      CLogTypes.info,
+      `CBPeripheralDelegateImpl.peripheralDidReadRSSIError ---- peripheral: ${peripheral}, rssi: ${RSSI}, error: ${error}`
+    );
   }
 
   /**
@@ -258,7 +269,13 @@ export class CBPeripheralDelegateImpl extends NSObject implements CBPeripheralDe
       CLogTypes.info,
       `CBPeripheralDelegateImpl.peripheralDidWriteValueForCharacteristicError ---- peripheral: ${peripheral}, characteristic: ${characteristic}, error: ${error}`
     );
-    if (this._onWritePromise) {
+    if (this._onWriteTimeout) {
+      clearTimeout(this._onWriteTimeout);
+      this._onWriteTimeout = null;
+    }
+    if (error && this._onWriteReject) {
+      this._onWriteReject(`Could not write - error: ${error}`);
+    } else if (this._onWritePromise) {
       this._onWritePromise({
         characteristicUUID: characteristic.UUID.UUIDString
       });

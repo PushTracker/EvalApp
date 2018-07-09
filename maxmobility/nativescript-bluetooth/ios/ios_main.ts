@@ -692,6 +692,10 @@ export class Bluetooth extends BluetoothCommon {
         // the promise will be resolved from 'didWriteValueForCharacteristic',
         // but we should make this characteristic-specific (see .read)
         (wrapper.peripheral.delegate as CBPeripheralDelegateImpl)._onWritePromise = resolve;
+        (wrapper.peripheral.delegate as CBPeripheralDelegateImpl)._onWriteReject = reject;
+        (wrapper.peripheral.delegate as CBPeripheralDelegateImpl)._onWriteTimeout = setTimeout(() => {
+          reject('Write timed out!');
+        }, 10000);
 
         wrapper.peripheral.writeValueForCharacteristicType(
           valueEncoded,
