@@ -90,9 +90,6 @@ export class HomeComponent implements OnInit {
     private zone: NgZone
   ) {
     this._page.enableSwipeBackNavigation = false;
-    this._demoService.load().catch(err => {
-      console.log(`Couldn't load demos: ${err}`);
-    });
     this.feedback = new Feedback();
   }
 
@@ -114,6 +111,13 @@ export class HomeComponent implements OnInit {
       });
     });
       */
+  }
+
+
+  ngAfterViewInit(): void {
+    this._demoService.load().catch(err => {
+      console.log(`Couldn't load demos: ${err}`);
+    });
   }
 
   onRadListLoaded(event) {

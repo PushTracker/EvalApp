@@ -32,10 +32,6 @@ import { DemoService, BluetoothService, FirmwareService, ProgressService } from 
 export class DemoDetailComponent implements OnInit {
   public demo: Demo = new Demo();
 
-  public fsKeyPrefix: string = 'DemoComponent.';
-  public fsKeySDImage: string = 'SDImage';
-  public fsKeyPTImage: string = 'PTImage';
-
   private imageCropper: ImageCropper;
 
   private index: number = -1; // index into DemoService.Demos
@@ -68,72 +64,7 @@ export class DemoDetailComponent implements OnInit {
     return isAndroid;
   }
 
-  ngOnInit() {
-    // this.loadProfileImage();
-  }
-  getSDImageFSKey(): string {
-    return this.fsKeyPrefix + (this.demo.data as any)._id + '.' + this.fsKeySDImage;
-  }
-
-  getPTImageFSKey(): string {
-    return this.fsKeyPrefix + (this.demo.data as any)._id + '.' + this.fsKeyPTImage;
-  }
-
-  saveSDImage(source) {
-    try {
-      const picKey = this.getSDImageFSKey();
-      const b64 = source.toBase64String('png');
-      const pic = LS.setItem(picKey, b64);
-      (this.demo.data as any).sd_image = source;
-      return Promise.resolve();
-    } catch (err) {
-      return Promise.reject(`Couldn't save SmartDrive Image: ${err}`);
-    }
-  }
-
-  savePTImage(source) {
-    try {
-      const picKey = this.getSDImageFSKey();
-      const b64 = source.toBase64String('png');
-      const pic = LS.setItem(picKey, b64);
-      (this.demo.data as any).pt_image = source;
-      return Promise.resolve();
-    } catch (err) {
-      return Promise.reject(`Couldn't save PushTracker Image: ${err}`);
-    }
-  }
-
-  loadSDImage() {
-    try {
-      const picKey = this.getSDImageFSKey();
-      const pic = LS.getItem(picKey);
-      if (pic) {
-        const source = imageSource.fromBase64(pic);
-        (this.demo.data as any).sd_image = source;
-      } else {
-        (this.demo.data as any).sd_image = undefined;
-      }
-      return Promise.resolve();
-    } catch (err) {
-      return Promise.reject(`Couldn't load SmartDrive image: ${err}`);
-    }
-  }
-
-  loadPTImage() {
-    try {
-      const picKey = this.getPTImageFSKey();
-      const pic = LS.getItem(picKey);
-      if (pic) {
-        const source = imageSource.fromBase64(pic);
-        (this.demo.data as any).pt_image = source;
-      } else {
-        (this.demo.data as any).pt_image = undefined;
-      }
-      return Promise.resolve();
-    } catch (err) {
-      return Promise.reject(`Couldn't load PushTracker image: ${err}`);
-    }
-  }
+  ngOnInit() {}
 
   onUpdateSDImageTap() {
     if (camera.isAvailable()) {
@@ -162,7 +93,11 @@ export class DemoDetailComponent implements OnInit {
                   .show(source, options)
                   .then(args => {
                     if (args.image !== null) {
-                      this.saveSDImage(args.image);
+                      this.demo.sd_image = args.image;
+                      if (this.index) {
+                        // auto-save if this demo already exists
+                        this.demo.saveSDImage();
+                      }
                     }
                   })
                   .catch(function(e) {
@@ -209,7 +144,11 @@ export class DemoDetailComponent implements OnInit {
                   .show(source, options)
                   .then(args => {
                     if (args.image !== null) {
-                      this.savePTImage(args.image);
+                      this.demo.pt_image = args.image;
+                      if (this.index) {
+                        // auto-save if this demo already exists
+                        this.demo.savePTImage();
+                      }
                     }
                   })
                   .catch(function(e) {
@@ -256,6 +195,7 @@ export class DemoDetailComponent implements OnInit {
           }
           this.demo = DemoService.Demos.getItem(this.index);
           // now save the images for the SD if they exist
+          this.demo.saveImages();
           this._progressService.hide();
         })
         .catch(err => {

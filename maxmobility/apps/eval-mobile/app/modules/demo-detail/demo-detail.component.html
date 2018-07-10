@@ -11,28 +11,36 @@
 <Gradient tkMainContent direction="to bottom" colors="#004F7E, #0070b3">
   <GridLayout padding="0" margin="0"  rows="auto, *" cols="auto">
     <StackLayout backgroundImage="~/assets/images/background_1.jpg" row="0"  height="30%" width="100%" orientation="horizontal" horizontalAlignment="center">
-      <Image #sdImage  
-              *ngIf="demo.data.sd_image"
-              class="demo-image"
-              [src]="demo.data.sd_image"
-              stretch="aspectFit" 
-              (tap)="onUpdateSDImageTap()"></Image>
-      <Image *ngIf="!demo.data.sd_image"
-              class="demo-image"
-              src="~/assets/images/smartDriveFull.png"
-              stretch="aspectFit" 
-              (tap)="onUpdateSDImageTap()"></Image>
+      <AbsoluteLayout>
+        <Image #sdImage
+               *ngIf="demo.sd_image"
+               class="demo-image"
+               [src]="demo.sd_image"
+               stretch="aspectFit" 
+               (tap)="onUpdateSDImageTap()"></Image>
+        <Image *ngIf="!demo.sd_image"
+               class="demo-image"
+               src="~/assets/images/smartDriveFull.png"
+               stretch="aspectFit" 
+               (tap)="onUpdateSDImageTap()"></Image>
+        <Label top="15" left="5" (tap)="onUpdateSDImageTap()"
+               text="&#xf100;" class="mdi icon-scan" ></Label>
+      </AbsoluteLayout>
+      <AbsoluteLayout>
       <Image  #ptImage 
-              *ngIf="demo.data.pt_image"
+              *ngIf="demo.pt_image"
               class="demo-image"
-              [src]="demo.data.pt_image"
+              [src]="demo.pt_image"
               stretch="aspectFit" 
               (tap)="onUpdatePTImageTap()"></Image>
-      <Image *ngIf="!demo.data.pt_image"
+      <Image *ngIf="!demo.pt_image"
               class="demo-image"
               src="~/assets/images/pushTrackerFull.png"
               stretch="aspectFit" 
               (tap)="onUpdatePTImageTap()"></Image>
+        <Label top="15" left="5" (tap)="onUpdatePTImageTap()"
+               text="&#xf100;" class="mdi icon-scan" ></Label>
+      </AbsoluteLayout>
     </StackLayout>
 
 	<ScrollView  row="1" class="" height="70%">
@@ -41,7 +49,7 @@
 
         <DockLayout stretchLastChild="true" margin="15, 10, 5, 0">
           <Label dock="left"
-                 text="&#xf072;" class="mdi icon-scan" ></Label>
+                 text="&#xf072;" class="mdi icon" ></Label>
           <Label dock="left" (tap)="onScan('smartdrive')"
                  text="&#xf100;" class="mdi icon-scan" ></Label>
           <Label dock="left" (tap)="onEditSD()"
