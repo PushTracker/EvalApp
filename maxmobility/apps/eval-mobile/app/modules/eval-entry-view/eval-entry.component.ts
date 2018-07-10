@@ -6,6 +6,7 @@ import { confirm } from 'tns-core-modules/ui/dialogs';
 import { Evaluation, EvaluationService } from '@maxmobility/mobile';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { DropDownModule } from 'nativescript-drop-down/angular';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'EvalEntry',
@@ -16,6 +17,7 @@ import { DropDownModule } from 'nativescript-drop-down/angular';
 export class EvalEntryComponent implements OnInit {
   hasPushingPain = false;
   hasPushingFatigue = false;
+  impactsIndependence = false;
 
   isIOS = false;
   isAndroid = false;
@@ -23,7 +25,11 @@ export class EvalEntryComponent implements OnInit {
   years = ['1', '2', '3', '4', '5+', '10+', '20+', '30+'];
   chair = ['TiLite', 'Quickie', 'Other'];
 
-  constructor(private routerExtensions: RouterExtensions, private _evaluationService: EvaluationService) {
+  constructor(
+    private routerExtensions: RouterExtensions,
+    private _evaluationService: EvaluationService,
+    private translateService: TranslateService
+  ) {
     // make sure we clear out any previous evaluation info!
     this._evaluationService.createEvaluation();
   }
@@ -54,6 +60,13 @@ export class EvalEntryComponent implements OnInit {
     this.hasPushingFatigue = args.value;
     if (!this.hasPushingFatigue) {
       this.evaluation['pushing_fatigue'] = 0;
+    }
+  }
+
+  onIndependenceChecked(args): void {
+    this.impactsIndependence = args.value;
+    if (!this.impactsIndependence) {
+      this.evaluation['impact_on_independence'] = 0;
     }
   }
 

@@ -3,7 +3,14 @@
 </ActionBar>
 
 <Gradient tkMainContent direction="to bottom" colors="#004F7E, #0070b3">
-  <Carousel #carousel ios:indicatorOffset="0,-10" ios:finite="true" ios:bounce="false" height="100%" indicatorColor="#66ccff" indicatorColorUnselected="#cceeff">
+  <Carousel #carousel
+            showIndicator="true"
+            ios:indicatorOffset="0,-10"
+            ios:finite="true"
+            ios:bounce="false"
+            height="100%"
+            indicatorColor="#66ccff"
+            indicatorColorUnselected="#cceeff">
     <CarouselItem  *ngFor="let slide of slides">
       <GridLayout  rows="auto, *" cols="*">
 	    <StackLayout backgroundImage="~/assets/images/background_1.jpg" row="0"  height="35%" width="100%" orientation="horizontal" horizontalAlignment="center">
@@ -13,11 +20,7 @@
           <StackLayout orientation="vertical" horizontalAlignment="center" width="100%">
             <Label [text]="slide.Label" class="slideLowerLabel" textWrap="true"></Label>
 	        <Label *ngFor="let bullet of slide.Bullets" [text]="bullet" class="bullet" textWrap="true"></Label>
-            <DockLayout *ngIf="slides.indexOf(slide) == 0" stretchLastChild="false">
-              <!-- <Button  class="icon fa" (tap)="onChevronTapped()" text="&#xf054;" dock="right"></Button> -->
-            </DockLayout>
             <Button *ngIf="slides.indexOf(slide) == (slides.length-1)" class="next-button" text="Next" (tap)="onNext()"></Button>
-            <Button *ngIf="slides.indexOf(slide) == 0" class="back-button" text="Back" (tap)="onBack()"></Button>
           </StackLayout>
         </ScrollView>
       </GridLayout>

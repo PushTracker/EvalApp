@@ -6,6 +6,7 @@ import { View } from 'ui/core/view';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 const carousel = require('nativescript-carousel').Carousel;
 import { isAndroid, isIOS } from 'platform';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'Training',
@@ -81,7 +82,7 @@ export class TrainingComponent implements AfterViewInit {
     }
   ];
 
-  constructor(private routerExtensions: RouterExtensions) {}
+  constructor(private routerExtensions: RouterExtensions, private translateService: TranslateService) {}
 
   isIOS(): boolean {
     return isIOS;

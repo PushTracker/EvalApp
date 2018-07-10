@@ -1,6 +1,6 @@
 // Custom common variables
 @import '../../scss/variables';
-@import '../../scss/_carousel';
+@import '../../scss/carousel';
 
 Switch {
     color: #fff;
@@ -17,8 +17,19 @@ Switch[checked=false] {
 }
 
 .eval-stack-layout{
-    padding: 20, 10, 20, 10;
+    padding: 0, 10, 20, 10;
     background: transparent;
+    horizontal-align: center;
+}
+
+.heading {
+    text-align: center;
+    horizontal-align: center;
+    font-family: $os-Light;
+    font-size: 25;
+    margin: 0;
+    padding: 0;
+    color: $white;
 }
 
 .hero {
