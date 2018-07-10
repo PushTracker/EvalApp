@@ -19,7 +19,7 @@ import { WebView } from 'tns-core-modules/ui/web-view';
 import { isAndroid, isIOS } from 'platform';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { CLog, LoggingService, Demo } from '@maxmobility/core';
-import { DemoService } from '@maxmobility/mobile';
+import { DemoService, FirmwareService } from '@maxmobility/mobile';
 import { Feedback, FeedbackType, FeedbackPosition } from 'nativescript-feedback';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 import { FAQs } from '../faq/faq.component';
@@ -87,6 +87,7 @@ export class HomeComponent implements OnInit {
     private _routerExtensions: RouterExtensions,
     private _logService: LoggingService,
     private _demoService: DemoService,
+    private _firmwareService: FirmwareService,
     private zone: NgZone
   ) {
     this._page.enableSwipeBackNavigation = false;
@@ -94,6 +95,10 @@ export class HomeComponent implements OnInit {
     this._demoService.load().catch(err => {
       console.log(`Couldn't load demos: ${err}`);
     });
+  }
+
+  get currentVersion(): string {
+    return FirmwareService.versionByteToString(this._firmwareService.firmwares.PT.version);
   }
 
   get Demos(): ObservableArray<Demo> {

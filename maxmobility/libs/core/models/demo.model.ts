@@ -46,6 +46,9 @@ export class Demo extends Observable {
   public static fsKeySDImage: string = 'SDImage';
   public static fsKeyPTImage: string = 'PTImage';
 
+  public static upToDateBadge: string = String.fromCharCode(0xf133);
+  public static outOfDateBadge: string = String.fromCharCode(0xf159);
+
   public static editableProperties = [
     'model',
     'geo',
@@ -82,6 +85,20 @@ export class Demo extends Observable {
     } else {
       return '??';
     }
+  }
+
+  version_badge(version: string, dev?: string): string {
+    let badge = Demo.outOfDateBadge;
+    if (dev && dev.length) {
+      if (this.isDevUpToDate(dev, version)) {
+        badge = Demo.upToDateBadge;
+      }
+    } else {
+      if (this.isUpToDate(version)) {
+        badge = Demo.upToDateBadge;
+      }
+    }
+    return badge;
   }
 
   get version_string(): string {
