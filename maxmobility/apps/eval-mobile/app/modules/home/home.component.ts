@@ -32,24 +32,9 @@ import { Videos } from '../videos/videos.component';
   styleUrls: ['./home.component.css'],
   changeDetection: ChangeDetectionStrategy.Default
 })
-export class HomeComponent implements OnInit, AfterViewInit {
-  private feedback: Feedback;
-
-  isIOS(): boolean {
-    return isIOS;
-  }
-
-  isAndroid(): boolean {
-    return isAndroid;
-  }
-
+export class HomeComponent implements OnInit {
   faqItems = FAQs;
   videoItems = Videos;
-
-  get Demos(): ObservableArray<Demo> {
-    return DemoService.Demos;
-  }
-
   connectivityItems = [
     {
       Image: '~/assets/images/pt-phone-home.png',
@@ -95,6 +80,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
   ];
 
+  private feedback: Feedback;
+
   constructor(
     private _page: Page,
     private _routerExtensions: RouterExtensions,
@@ -106,6 +93,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.feedback = new Feedback();
   }
 
+  get Demos(): ObservableArray<Demo> {
+    return DemoService.Demos;
+  }
+  isIOS(): boolean {
+    return isIOS;
+  }
+
+  isAndroid(): boolean {
+    return isAndroid;
+  }
   ngOnInit(): void {
     /*
     this.zone.run(() => {
@@ -115,6 +112,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
       */
   }
+
 
   ngAfterViewInit(): void {
     this._demoService.load().catch(err => {
@@ -137,8 +135,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
       transition: {
         name: 'slideTop',
         duration: 350,
-        curve: 'easeInOut',
-        clearHistory: true
+        curve: 'easeInOut'
+        // clearHistory: true
       }
     });
   }
@@ -146,7 +144,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   connectivityThumbTapped(item: any) {
     const index = this.connectivityItems.indexOf(item);
     const route = item.Route;
-    //Determines the pairing processs to perform
+    // Determines the pairing processs to perform
     const directive = item.Directive;
 
     this._routerExtensions.navigate([route], {
@@ -158,7 +156,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   otaThumbTapped(item: any) {
     const route = item.Route;
-    //Determines the OTA process to perform
+    // Determines the OTA process to perform
     const directive = item.Directive;
 
     this._routerExtensions.navigate([route]);

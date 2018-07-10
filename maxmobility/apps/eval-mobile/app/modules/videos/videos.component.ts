@@ -73,7 +73,7 @@ export { Videos };
   templateUrl: './videos.component.html',
   styleUrls: ['./videos.component.css']
 })
-export class VideosComponent implements OnInit {
+export class VideosComponent {
   videos = Videos;
 
   constructor(private _routerExtensions: RouterExtensions, private _translateService: TranslateService) {}
@@ -85,10 +85,6 @@ export class VideosComponent implements OnInit {
   isAndroid(): boolean {
     return isAndroid;
   }
-
-  ngOnInit(): void {}
-
-  onDrawerButtonTap(): void {}
 
   onItemTap(args) {
     const item = this.videos[args.index];

@@ -1,6 +1,4 @@
-// angular
 import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
-// nativescript
 import { RouterExtensions } from 'nativescript-angular/router';
 import { SegmentedBar, SegmentedBarItem } from 'tns-core-modules/ui/segmented-bar';
 import { TextField } from 'tns-core-modules/ui/text-field';
@@ -10,12 +8,9 @@ import { alert, confirm } from 'tns-core-modules/ui/dialogs';
 import * as switchModule from 'tns-core-modules/ui/switch';
 import { Observable, fromObject } from 'tns-core-modules/data/observable';
 import { isAndroid, isIOS } from 'platform';
-
-// app
-import { ProgressService } from '@maxmobility/mobile';
+import { ProgressService, BluetoothService, EvaluationService } from '@maxmobility/mobile';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 import { Trial, PushTracker } from '@maxmobility/core';
-import { BluetoothService, EvaluationService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -96,7 +91,7 @@ export class TrialComponent implements OnInit {
   onNext(): void {
     this._evaluationService.evaluation.trials.push(this.trial);
     this.routerExtensions.navigate(['/summary'], {
-      clearHistory: true,
+      // clearHistory: true,
       transition: {
         name: 'slide'
       }
@@ -105,7 +100,7 @@ export class TrialComponent implements OnInit {
 
   onBack(): void {
     this.routerExtensions.navigate(['/training'], {
-      clearHistory: true,
+      // clearHistory: true,
       transition: {
         name: 'slideRight'
       }
@@ -125,7 +120,7 @@ export class TrialComponent implements OnInit {
       // we have exactly one PushTracker connected
       const pt = connectedPTs[0];
       // check the version here (must be >= 1.5)
-      if (pt.version == 0xff || pt.version < 0x15) {
+      if (pt.version === 0xff || pt.version < 0x15) {
         alert({
           title: this.pt_version_title,
           message: this.pt_version_message + PushTracker.versionByteToString(pt.version),
@@ -342,7 +337,7 @@ export class TrialComponent implements OnInit {
       // we have exactly one PushTracker connected
       const pt = connectedPTs[0];
       // check the version here (must be >= 1.5)
-      if (pt.version == 0xff || pt.version < 0x15) {
+      if (pt.version === 0xff || pt.version < 0x15) {
         // TODO: this doesn't necessarily need to be 1.5 since we're
         // not using distance command
         alert({

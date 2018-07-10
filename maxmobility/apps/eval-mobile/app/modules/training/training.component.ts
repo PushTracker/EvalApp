@@ -13,7 +13,7 @@ import { isAndroid, isIOS } from 'platform';
   templateUrl: './training.component.html',
   styleUrls: ['./training.component.css']
 })
-export class TrainingComponent implements OnInit, AfterViewInit {
+export class TrainingComponent implements AfterViewInit {
   @ViewChild('carousel') carousel: ElementRef;
 
   snackbar = new SnackBar();
@@ -94,7 +94,7 @@ export class TrainingComponent implements OnInit, AfterViewInit {
   // button events
   onNext(): void {
     this.routerExtensions.navigate(['/trial'], {
-      clearHistory: true,
+      // clearHistory: true,
       transition: {
         name: 'wipe'
       }
@@ -109,14 +109,10 @@ export class TrainingComponent implements OnInit, AfterViewInit {
 
   onBack(): void {
     this.routerExtensions.navigate(['/eval-entry'], {
-      clearHistory: true,
+      // clearHistory: true,
       transition: {
         name: 'slideRight'
       }
     });
   }
-
-  ngOnInit(): void {}
-
-  onDrawerButtonTap(): void {}
 }
