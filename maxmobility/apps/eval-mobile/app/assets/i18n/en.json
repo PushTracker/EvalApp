@@ -1,4 +1,8 @@
 {
+    "buttons": {
+        "next": "Next",
+        "back": "Back"
+    },
     "menu": {
         "home": "SmartDrive",
         "connectivity": "Connectivity",
@@ -23,12 +27,14 @@
     },
     "training": [
         {
+            "Image": "~/assets/images/PowerOn.png",
             "Label": "Powering SmartDrive",
             "Bullets": [ 
                 "Press back on the rocker switch to power on the SmartDrive, and forward to power off."
             ]
         },
         {
+            "Image": "~/assets/images/BandPower.png",
             "Label": "Powering PushTracker",
             "Bullets": [ 
                 "Press the left raised button on the PushTracker to power on.",
@@ -36,6 +42,7 @@
             ]
         },
         {
+            "Image": "~/assets/images/Stop.png",
             "Label": "Tap Gesture",
             "Bullets": [ 
                 "Keeping your wrist straight, make contact on the pushrim with the palm of your hand.",
@@ -45,6 +52,7 @@
             ]
         },
         {
+            "Image": "~/assets/images/start-coast.png",
             "Label": "Starting & Setting Speed",
             "Bullets": [ 
                 "Double-tap to initiate the SmartDrive. It will then begin to accelerate.",
@@ -53,6 +61,7 @@
             ]
         },
         {
+            "Image": "~/assets/images/Steer.png",
             "Label": "Steering",
             "Bullets": [ 
                 "To steer, gently grip the pushrim of the direction you want to go.",
@@ -61,12 +70,22 @@
             ]
         },
         {
+            "Image": "~/assets/images/turn.png",
             "Label": "Turning",
             "Bullets": [ 
                 "To turn, firmly grip the pushrim of the direction you want to go.",
 	            "Firm grip will allow you to turn.",
 	            "The tighter you grip, the sharper you will turn.",
 	            "Tip: An optimal center of gravity position of the reer wheels will reduce the grip needed to make sharp turns."
+            ]
+        },
+        {
+            "Image": "~/assets/images/Stop2.png",
+            "Label": "Stopping",
+            "Bullets": [
+                "Double-tap to disengage the SmartDrive.",
+                "Then coast and brake with your hands.",
+                "Tip: To stop quickly, perform a single-tap followed by a quick combined tap and grab."
             ]
         }
     ],
@@ -81,7 +100,7 @@
         "pt-basic-op-desc": "This video covers the basic operation and functionality of the PushTracker.",
         "pt-ap-basic-op-title":"Intro to the PushTracker App",
         "pt-ap-basic-op-desc": "This video covers the basic operation and functionality of the PushTracker App.",
-        "sea-basic-op-title": "Intro to the Smart Evaluation App'",
+        "sea-basic-op-title": "Intro to the Smart Evaluation App",
         "sea-basic-op-desc": "This video covers the basic operation and functionality of the Smart Evaluation App.",
         "eval-training-tite": "SmartDrive Evaluation and Training",
         "eval-training-desc": "This video covers the steps to perform when doing a SmartDrive Evaluation or Training",
@@ -204,8 +223,8 @@
             "    time:   {{#without_elapsed}}{{toTimeString}}{{/without_elapsed}}",
             "{{/trials._array}}",
             "",
-            "User's difficulty with ramps: {{evaluation.ramp_difficulty}}",
-            "User's difficulty with flats: {{evaluation.flat_difficulty}}",
+            "User's difficulty with ramps: {{evaluation.ramp_difficulty}} / 10",
+            "User's difficulty with flats: {{evaluation.flat_difficulty}} / 10",
             "",
             "User performed {{pushDiff}}% {{pushComparison}} pushes with SmartDrive.",
             "",

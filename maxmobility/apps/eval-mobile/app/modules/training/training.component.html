@@ -20,7 +20,10 @@
           <StackLayout orientation="vertical" horizontalAlignment="center" width="100%">
             <Label [text]="slide.Label" class="slideLowerLabel" textWrap="true"></Label>
 	        <Label *ngFor="let bullet of slide.Bullets" [text]="bullet" class="bullet" textWrap="true"></Label>
-            <Button *ngIf="slides.indexOf(slide) == (slides.length-1)" class="next-button" text="Next" (tap)="onNext()"></Button>
+            <Button *ngIf="slides.indexOf(slide) == (slides.length-1)"
+                    class="next-button"
+                    [text]="'buttons.next' | translate"
+                    (tap)="onNext()"></Button>
           </StackLayout>
         </ScrollView>
       </GridLayout>
