@@ -23,7 +23,7 @@ export class SignUpComponent implements OnInit {
   firstNameError = '';
   lastNameError = '';
 
-  languages: Array<string> = this._translateService.getLangs();
+  languages: string[] = this._translateService.getLangs();
   selectedLanguageIndex: number = 0;
 
   error: string = this._translateService.instant('user.error');

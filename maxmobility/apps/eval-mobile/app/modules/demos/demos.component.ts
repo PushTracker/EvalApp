@@ -4,10 +4,9 @@ import { alert } from 'tns-core-modules/ui/dialogs';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { BarcodeScanner } from 'nativescript-barcodescanner';
 import { isAndroid, isIOS } from 'platform';
-import { BluetoothService } from '@maxmobility/mobile';
+import { BluetoothService, DemoService } from '@maxmobility/mobile';
 
 import { Demo } from '@maxmobility/core';
-import { DemoService } from '@maxmobility/mobile';
 
 @Component({
   selector: 'Demos',
@@ -15,7 +14,7 @@ import { DemoService } from '@maxmobility/mobile';
   templateUrl: './demos.component.html',
   styleUrls: ['./demos.component.css']
 })
-export class DemosComponent implements OnInit {
+export class DemosComponent {
   get Demos(): ObservableArray<Demo> {
     return DemoService.Demos;
   }
@@ -43,13 +42,9 @@ export class DemosComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
-
-  onDrawerButtonTap(): void {}
-
   onNavBtnTap(): void {
     this.routerExtensions.navigate(['/home'], {
-      clearHistory: true,
+      // clearHistory: true,
       transition: {
         name: 'slideRight'
       }

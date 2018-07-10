@@ -25,27 +25,13 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./account.component.css']
 })
 export class AccountComponent implements OnInit {
-  public fsKeyPrefix: string = 'AccountComponent.';
-  public fsKeyProfilePicture: string = 'ProfilePicture';
-
-  private imageCropper: ImageCropper;
-
-  constructor(
-    private _userService: UserService,
-    private _progressService: ProgressService,
-    private _loggingService: LoggingService,
-    private _router: RouterExtensions,
-    private _page: Page,
-    private _translateService: TranslateService
-  ) {
-    this._page.enableSwipeBackNavigation = false;
-    this.imageCropper = new ImageCropper();
-  }
+  fsKeyPrefix: string = 'AccountComponent.';
+  fsKeyProfilePicture: string = 'ProfilePicture';
 
   // tslint:disable-next-line:member-ordering
   user: Kinvey.User = this._userService.user;
 
-  languages: Array<string> = this._translateService.getLangs();
+  languages: string[] = this._translateService.getLangs();
   selectedLanguageIndex: number = 0;
 
   yes: string = this._translateService.instant('dialogs.yes');
@@ -62,6 +48,20 @@ export class AccountComponent implements OnInit {
   // tslint:disable-next-line:member-ordering
   sign_out: string = this._translateService.instant('user.sign-out');
   sign_out_confirm: string = this._translateService.instant('user.sign-out-confirm');
+
+  private imageCropper: ImageCropper;
+
+  constructor(
+    private _userService: UserService,
+    private _progressService: ProgressService,
+    private _loggingService: LoggingService,
+    private _router: RouterExtensions,
+    private _page: Page,
+    private _translateService: TranslateService
+  ) {
+    this._page.enableSwipeBackNavigation = false;
+    this.imageCropper = new ImageCropper();
+  }
 
   ngOnInit() {
     this.loadProfilePicture();
@@ -92,7 +92,7 @@ export class AccountComponent implements OnInit {
       const picKey = this.getProfilePictureFSKey();
       const pic = LS.getItem(picKey);
       if (pic) {
-        let source = imageSource.fromBase64(pic);
+        const source = imageSource.fromBase64(pic);
         (this.user.data as any).profile_picture = source;
       } else {
         (this.user.data as any).profile_picture = undefined;
@@ -124,16 +124,16 @@ export class AccountComponent implements OnInit {
               cameraFacing: 'front'
             })
             .then(imageAsset => {
-              let source = new imageSource.ImageSource();
-              source.fromAsset(imageAsset).then(source => {
+              const source = new imageSource.ImageSource();
+              source.fromAsset(imageAsset).then(iSrc => {
                 this.imageCropper
-                  .show(source, options)
+                  .show(iSrc, options)
                   .then(args => {
                     if (args.image !== null) {
                       this.saveProfilePicture(args.image);
                     }
                   })
-                  .catch(function(e) {
+                  .catch(e => {
                     console.dir(e);
                   });
               });
@@ -161,8 +161,8 @@ export class AccountComponent implements OnInit {
       transition: {
         name: 'slideBottom',
         duration: 350,
-        curve: 'easeInOut',
-        clearHistory: true
+        curve: 'easeInOut'
+        // clearHistory: true
       }
     });
   }

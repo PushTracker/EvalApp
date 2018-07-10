@@ -1,6 +1,4 @@
-// angular
-import { Component, OnInit, ViewChild } from '@angular/core';
-// nativescript
+import { Component } from '@angular/core';
 import { isAndroid, isIOS } from 'platform';
 import * as switchModule from 'tns-core-modules/ui/switch';
 import { RouterExtensions } from 'nativescript-angular/router';
@@ -11,9 +9,7 @@ import { confirm } from 'tns-core-modules/ui/dialogs';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 import * as email from 'nativescript-email';
 import { TranslateService } from '@ngx-translate/core';
-// libs
 import * as mustache from 'mustache';
-// app
 import { Trial } from '@maxmobility/core';
 import { Evaluation, EvaluationService } from '@maxmobility/mobile';
 
@@ -23,7 +19,7 @@ import { Evaluation, EvaluationService } from '@maxmobility/mobile';
   templateUrl: './summary.component.html',
   styleUrls: ['./summary.component.css']
 })
-export class SummaryComponent implements OnInit {
+export class SummaryComponent {
   trialName: string = '';
   snackbar = new SnackBar();
 
@@ -116,14 +112,14 @@ export class SummaryComponent implements OnInit {
       message: this.confirm,
       okButtonText: this.yes,
       cancelButtonText: this.no
-    }).then(result => {
-      if (result) {
+    }).then(confirmResult => {
+      if (confirmResult) {
         // send email to user
         email
           .available()
           .then(available => {
             if (available) {
-              let lmnBody = this.generateLMN();
+              const lmnBody = this.generateLMN();
               email
                 .compose({
                   to: [],
@@ -133,6 +129,7 @@ export class SummaryComponent implements OnInit {
                 })
                 .then(result => {
                   if (result) {
+                    console.log('email compose result', result);
                   } else {
                     console.log('the email may NOT have been sent!');
                   }
@@ -144,7 +141,7 @@ export class SummaryComponent implements OnInit {
         this._evaluationService.save();
         // now go back to dashboard
         this.routerExtensions.navigate(['/home'], {
-          clearHistory: true,
+          // clearHistory: true,
           transition: {
             name: 'fade'
           }
@@ -163,7 +160,7 @@ export class SummaryComponent implements OnInit {
 
   onBack(): void {
     this.routerExtensions.navigate(['/trial'], {
-      clearHistory: true,
+      // clearHistory: true,
       transition: {
         name: 'slideRight'
       }
@@ -183,8 +180,6 @@ export class SummaryComponent implements OnInit {
   onSliderUpdate(key, args) {
     this.evaluation[key] = args.object.value;
   }
-
-  ngOnInit() {}
 
   get evaluation() {
     return this._evaluationService.evaluation;

@@ -1,6 +1,4 @@
-// angular
 import { Component, ElementRef, OnInit, AfterViewInit, ViewChild } from '@angular/core';
-// nativescript
 import { ObservableArray, ChangedData, ChangeType } from 'tns-core-modules/data/observable-array';
 import { PageRoute, RouterExtensions } from 'nativescript-angular/router';
 import { switchMap } from 'rxjs/operators';
@@ -8,10 +6,9 @@ import { View } from 'ui/core/view';
 import { Color } from 'tns-core-modules/color';
 import { Feedback, FeedbackType, FeedbackPosition } from 'nativescript-feedback';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
-const Carousel = require('nativescript-carousel').Carousel;
-// libs
 import { BluetoothService } from '@maxmobility/mobile';
 import { PushTracker } from '@maxmobility/core';
+const Carousel = require('nativescript-carousel').Carousel;
 
 @Component({
   selector: 'Pairing',
@@ -19,9 +16,8 @@ import { PushTracker } from '@maxmobility/core';
   templateUrl: './pairing.component.html',
   styleUrls: ['./pairing.component.css']
 })
-export class PairingComponent implements OnInit, AfterViewInit {
+export class PairingComponent implements AfterViewInit {
   @ViewChild('carousel') carousel: ElementRef;
-  private feedback: Feedback;
   snackbar = new SnackBar();
   selectedPage = 0;
 
@@ -54,6 +50,8 @@ export class PairingComponent implements OnInit, AfterViewInit {
     }
   ];
 
+  private feedback: Feedback;
+
   constructor(
     private pageRoute: PageRoute,
     private routerExtensions: RouterExtensions,
@@ -85,7 +83,8 @@ export class PairingComponent implements OnInit, AfterViewInit {
       if (args.action === 'add') {
         const pt = BluetoothService.PushTrackers.getItem(BluetoothService.PushTrackers.length - 1);
         if (pt) {
-          pt.on(PushTracker.pushtracker_paired_event, args => {
+          pt.on(PushTracker.pushtracker_paired_event, pairedArgs => {
+            console.log('pairedArgs', pairedArgs);
             this.pushTrackerPairingSuccess();
           });
           pt.on(PushTracker.pushtracker_connect_event, arg => {
@@ -98,7 +97,7 @@ export class PairingComponent implements OnInit, AfterViewInit {
     });
   }
 
-  //Connectivity Events
+  // Connectivity Events
   pushTrackerPairingSuccess() {
     this.feedback.success({
       title: 'Success!',
@@ -126,7 +125,7 @@ export class PairingComponent implements OnInit, AfterViewInit {
   // button events
   onNext(): void {
     this.routerExtensions.navigate(['/trial'], {
-      clearHistory: true,
+      // clearHistory: true,
       transition: {
         name: 'wipe'
       }
@@ -149,7 +148,7 @@ export class PairingComponent implements OnInit, AfterViewInit {
 
   onBack(): void {
     this.routerExtensions.navigate(['/eval-entry'], {
-      clearHistory: true,
+      // clearHistory: true,
       transition: {
         name: 'slideRight'
       }
@@ -158,14 +157,10 @@ export class PairingComponent implements OnInit, AfterViewInit {
 
   onNavButtonTap(): void {
     this.routerExtensions.navigate(['/home'], {
-      clearHistory: true,
+      // clearHistory: true,
       transition: {
         name: 'slideRight'
       }
     });
   }
-
-  ngOnInit(): void {}
-
-  onDrawerButtonTap(): void {}
 }
