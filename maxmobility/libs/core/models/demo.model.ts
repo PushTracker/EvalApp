@@ -221,6 +221,15 @@ export class Demo extends Observable {
     }, true);
   }
 
+  isDevUpToDate(dev: string, version: string): boolean {
+    const v = PushTracker.versionStringToByte(version);
+    if (v === 0xff || !dev.length) {
+      return true;
+    }
+    let e = PushTracker.versionStringToByte(this[dev + '_version']) || 0xff;
+    return e != 0xff && e >= v;
+  }
+
   versionsAreEqualTo(version: string): boolean {
     return (
       this.pt_version.includes(version) && this.mcu_version.includes(version) && this.ble_version.includes(version)

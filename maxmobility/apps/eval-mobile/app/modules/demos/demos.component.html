@@ -35,13 +35,19 @@
           <!-- SD Firmware versions -->
           <Label text="&#xf628;" row="1" col="0" class="mdi icon" ></Label>
           <Label row="1" col="1" class="info" textWrap="true">
-              <FormattedString>
-                  <Span text="Firmware: "></Span>
-                  <Span [text]="item.version_string"></Span>
-                  <Span *ngIf="item.isUpToDate(currentVersion)"
-                        [text]="'\n    ' + ('ota.up-to-date' | translate)"></Span>
-              </FormattedString>
-            </Label>
+            <FormattedString>
+              <Span text="Firmware: "></Span>
+              <Span [text]="item.version_string"></Span>
+            </FormattedString>
+          </Label>
+          <Label *ngIf="item.isUpToDate(currentVersion)"
+                 row="1" col="2"
+                 class="mdi icon"
+                 text="&#xf133;"></Label>
+          <Label *ngIf="!item.isUpToDate(currentVersion)"
+                 row="1" col="2"
+                 class="mdi icon"
+                 text="&#xf159;"></Label>
           <!-- Demo Location -->
           <Label text="&#xf5f5;" row="2" col="0" class="mdi icon"></Label>
           <Label  [text]="item.location_string" row="2" col="1" colSpan="2" class="info" textWrap="true"></Label>

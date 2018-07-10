@@ -9,7 +9,7 @@ import { BarcodeScanner } from 'nativescript-barcodescanner';
 const routes: Routes = [{ path: '', component: DemoDetailComponent }];
 
 @NgModule({
-  imports: [NativeScriptRouterModule.forChild(routes), SharedModule],
+  imports: [NativeScriptRouterModule.forChild(routes), SharedModule, TranslateModule],
   declarations: [DemoDetailComponent],
   providers: [BarcodeScanner],
   schemas: [NO_ERRORS_SCHEMA]
