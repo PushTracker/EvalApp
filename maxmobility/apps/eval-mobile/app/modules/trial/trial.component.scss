@@ -59,17 +59,18 @@ TextField {
 .trial-slider-label {
   color: #fff;
   font-weight: 500;
-  margin: 10, 0, 10, 25;
+  margin: 10, 0, 10, 15;
 }
 
 .trial-slider-value-label {
-  color: #fff;
+    color: #fff;
+    min-width: 50%;
   font-family: $os-Light;
   margin: 10, 0, 10, 0;
 }
 
 .trial-slider {
-  margin: 0, 15, 0, 25;
+  margin: 5, 15, 15, 15;
   color: #fff;
   background-color: $permobil-orange;
 }

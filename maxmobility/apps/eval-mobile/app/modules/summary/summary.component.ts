@@ -23,8 +23,8 @@ export class SummaryComponent {
   trialName: string = '';
   snackbar = new SnackBar();
 
-  hasFlatDifficulty: boolean = false;
-  hasRampDifficulty: boolean = false;
+  hasFlatDifficulty: boolean = this.evaluation.flat_difficulty > 0;
+  hasRampDifficulty: boolean = this.evaluation.ramp_difficulty > 0;
 
   totalPushesWith: number = 0;
   totalPushesWithout: number = 0;
@@ -83,6 +83,7 @@ export class SummaryComponent {
   }
 
   generateLMN(): string {
+    const that = this;
     return mustache.render(this.lmnTemplate, {
       evaluation: this.evaluation,
       trials: this.evaluation.trials,
@@ -90,16 +91,20 @@ export class SummaryComponent {
       pushDiff: this.pushDiff.toFixed(0),
       coastDiff: this.coastDiff.toFixed(1),
       toFixed: function() {
-        return this.toFixed(2) || '0';
+        console.log(this);
+        let str = this.toFixed(2);
+        console.log(str);
+        if (!str.length) str = '0';
+        return str;
       },
       toTimeString: function() {
         return Trial.timeToString(this * 60);
       },
       pushComparison: function() {
-        return this.pushDiff > 0 ? this.fewer : this.more;
+        return this.pushDiff > 0 ? that.fewer : that.more;
       },
       coastComparison: function() {
-        return this.coastDiff > 1.0 ? this.higher : this.lower;
+        return this.coastDiff > 1.0 ? that.higher : that.lower;
       },
       showCadence: this.totalCadenceWithout > this.cadenceThresh
     });
