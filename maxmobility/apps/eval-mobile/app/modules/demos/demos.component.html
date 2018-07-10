@@ -34,11 +34,12 @@
           <Label [text]="item.model" row="0" col="2" class="info"></Label>
           <!-- SD Firmware versions -->
           <Label text="&#xf628;" row="1" col="0" class="mdi icon" ></Label>
-          <Label row="1" col="1" class="info">
+          <Label row="1" col="1" class="info" textWrap="true">
               <FormattedString>
                   <Span text="Firmware: "></Span>
-                  <Span [text]="item.version_string"
-                        [color]="(item.isUpToDate('1.5')) ? 'green' : 'red'"></Span>
+                  <Span [text]="item.version_string"></Span>
+                  <Span *ngIf="item.isUpToDate(currentVersion)"
+                        [text]="'\n    ' + ('ota.up-to-date' | translate)"></Span>
               </FormattedString>
             </Label>
           <!-- Demo Location -->

@@ -4,7 +4,7 @@ import { alert } from 'tns-core-modules/ui/dialogs';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { BarcodeScanner } from 'nativescript-barcodescanner';
 import { isAndroid, isIOS } from 'platform';
-import { BluetoothService, DemoService } from '@maxmobility/mobile';
+import { FirmwareService, BluetoothService, DemoService } from '@maxmobility/mobile';
 
 import { Demo } from '@maxmobility/core';
 
@@ -22,7 +22,8 @@ export class DemosComponent {
   constructor(
     private barcodeScanner: BarcodeScanner,
     private routerExtensions: RouterExtensions,
-    private _demoService: DemoService
+    private _demoService: DemoService,
+    private _firmwareService: FirmwareService
   ) {}
 
   isIOS(): boolean {
@@ -31,6 +32,10 @@ export class DemosComponent {
 
   isAndroid(): boolean {
     return isAndroid;
+  }
+
+  get currentVersion(): string {
+    return FirmwareService.versionByteToString(this._firmwareService.firmwares.PT.version);
   }
 
   onDemoTap(args) {
