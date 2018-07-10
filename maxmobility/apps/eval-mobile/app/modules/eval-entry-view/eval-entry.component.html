@@ -1,4 +1,4 @@
-<ActionBar class="action-bar" flat="true" title="Perform an Evaluation">
+<ActionBar class="action-bar" flat="true" [title]="'eval-entry.title' | translate">
   <NavigationButton android:visibility="collapse" tap="onNavBtnTap"></NavigationButton>
 </ActionBar>
 
@@ -17,14 +17,14 @@
     <ScrollView row="1" class="" orientation="vertical">
       <StackLayout class="eval-stack-layout" width="100%">
         // Title
-        <Label text="Questionnaire"
+        <Label [text]="'eval-entry.heading' | translate"
                class="heading"
                textWrap="true"></Label>
 	    // PAIN
 	    <GridLayout class="eval-item" rows="auto, auto" columns="*, auto">
           <Label row="0" col="0"
                  class="eval-label"
-                 text="Do you have pain from pushing?"
+                 [text]="'eval-entry.pain-question' | translate"
                  textWrap="true"></Label>
           <Switch
              row="0" col="1"
@@ -33,7 +33,7 @@
 	      <GridLayout row="1" colSpan="2"  *ngIf="hasPushingPain" class="eval-item" rows="auto, auto" columns="*, auto">
             <Label row="0" col="0"
                    class="eval-slider-label"
-                   text="Pain Level:"
+                   [text]="'eval-entry.pain-label' | translate"
                    textWrap="true"></Label>
             <Label row="0" col="1"
                    class="eval-slider-value-label"
@@ -50,7 +50,7 @@
 	    <GridLayout class="eval-item" rows="auto, auto" columns="*, auto">
           <Label row="0" col="0"
                  class="eval-label"
-                 text="Do you have fatigue from pushing?"
+                 [text]="'eval-entry.fatigue-question' | translate"
                  textWrap="true"></Label>
           <Switch
              row="0" col="1"
@@ -61,7 +61,7 @@
                       class="eval-item" rows="auto, auto" columns="*, auto">
             <Label row="0" col="0"
                    class="eval-slider-label"
-                   text="Fatigue Level:"
+                   [text]="'eval-entry.fatigue-label' | translate"
                    textWrap="true"></Label>
             <Label row="0" col="1"
                    class="eval-slider-value-label"
@@ -78,7 +78,7 @@
 	    <GridLayout class="eval-item" rows="auto, auto" columns="*, auto">
           <Label row="0" col="0"
                  class="eval-label"
-                 text="Does this impact your independence?"
+                 [text]="'eval-entry.independence-question' | translate"
                  textWrap="true"></Label>
           <Switch
              row="0" col="1"
@@ -89,7 +89,7 @@
                       class="eval-item" rows="auto, auto" columns="*, auto">
             <Label row="0" col="0"
                    class="eval-slider-label"
-                   text="Impact on independence:"
+                   [text]="'eval-entry.independence-label' | translate"
                    textWrap="true"></Label>
             <Label row="0" col="1"
                    class="eval-slider-value-label"
@@ -103,12 +103,13 @@
 	    </GridLayout>
 
 	    <GridLayout class="eval-item" rows="auto" columns="*, auto">
-          <Label col="0" text="How many years in a manual chair:"
+          <Label col="0"
+                 [text]="'eval-entry.years-question' | translate"
                  class="eval-label"
                  textWrap="true"></Label>
           <DropDown
 	         col="1"
-	         hint="years"
+             [hint]="'eval-entry.years-label' | translate"
 	         class="dropdown"
 	         [items]="years" 
 	         (selectedIndexChanged)="selectedIndexChanged('years',$event)"></DropDown>
@@ -125,7 +126,9 @@
               -->
 	    </GridLayout>
 
-	    <Button (tap)="onNext()" text="Next" class="nextButton"></Button>
+	    <Button (tap)="onNext()"
+                [text]="'buttons.next' | translate"
+                class="nextButton"></Button>
 
       </StackLayout>
     </ScrollView>

@@ -25,6 +25,18 @@
         "faq": "FAQs",
         "faq-desc": "Some frequently asked questions"
     },
+    "eval-entry": {
+        "title": "Perform an Evaluation",
+        "heading": "Questionnaire",
+        "pain-question": "Do you have pain from pushing?",
+        "pain-label": "Pain Level:",
+        "fatigue-question": "Do you have fatigue from pushing?",
+        "fatigue-label": "Fatigue Level:",
+        "independence-question": "Does it impact your independence?",
+        "independence-label": "Impact on Independence:",
+        "years-question": "How many years have you been in a manual chair?",
+        "years-label": "Years"
+    },
     "training": [
         {
             "Image": "~/assets/images/PowerOn.png",
