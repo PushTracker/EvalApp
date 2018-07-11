@@ -37,6 +37,7 @@ export class AppComponent {
     // wrapping this in try/catch due to https://github.com/PushTracker/EvalApp/issues/43
     try {
       this._translateService.setDefaultLang('en');
+      this._translateService.addLangs(['en', 'es', 'de', 'fr', 'nl']);
       // this._translateService.use(device.language);
       console.log(`device language: ${device.language}`);
     } catch (error) {
@@ -56,10 +57,6 @@ export class AppComponent {
     Kinvey.ping()
       .then(res => {
         CLog(`Kinvey ping successful, SDK is active ${String.fromCodePoint(0x1f60e)}`);
-        if (this._userService.user) {
-          // REGISTER FOR PUSH NOTIFICATIONS
-          this._userService.registerForPushNotifications();
-        }
       })
       .catch(err => {
         this._logService.logException(err);

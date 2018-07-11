@@ -1,0 +1,36 @@
+{
+  "menu": {
+    "home": "Haus",
+    "all-events": "Alle Ereignisse",
+    "events": "Geschehen",
+    "copyright": "2018 MaxMobility"
+  },
+  "error": {
+    "upload-photo-lbl": "Beim Laden dieses Fotos ist ein Fehler aufgetreten."
+  },
+  "dialogs": {
+    "confirm": "bestätigen",
+    "yes": "ja",
+    "yes-login": "Ja, verbinden!",
+    "yes-delete": "Ja, löschen",
+    "cancel": "stornieren",
+    "no": "nicht",
+    "camera": "Kamera",
+    "confirm-photo-delete": "Möchtest du dieses Foto wirklich löschen?",
+    "close": "schließen",
+    "sms": "Textnachricht"
+  },
+  "user": {
+    "language": "Sprache",
+    "unsaved": "Es hat Änderungen ohne zu speichern. Sind Sie sicher, dass Sie ohne zu speichern gehen möchten?",
+    "name": "Name",
+    "phone": "Telefon",
+    "company": "Unternehmen",
+    "email": "Geschäft",
+    "updated": "Dein Profil wurde erfolgreich aktualisiert!",
+    "login": "Einloggen",
+    "logout": "Sitzung schließen",
+    "logged-in": "Jetzt ist es verbunden",
+    "toggle-fav": "Favoriten umschalten"
+  }
+}

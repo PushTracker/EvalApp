@@ -1,22 +1,17 @@
 import { Injectable } from '@angular/core';
-// lib
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { validate } from 'email-validator';
-
-import { File } from 'file-system';
-import * as Kinvey from 'kinvey-nativescript-sdk';
 import { Push } from 'kinvey-nativescript-sdk/push';
-import * as pushPlugin from 'nativescript-push-notifications';
-
 import { User } from '@maxmobility/core';
+import * as http from 'tns-core-modules/http';
+import * as fs from 'tns-core-modules/file-system';
+import * as Kinvey from 'kinvey-nativescript-sdk';
+import * as pushPlugin from 'nativescript-push-notifications';
+import * as localstorage from 'nativescript-localstorage';
 
 @Injectable()
 export class UserService {
   public static Kinvey_App_Key = 'kid_SyIIDJjdM';
   public static Kinvey_App_Secret = '3cfe36e6ac8f4d80b04014cc980a4d47';
   public static Kinvey_Host_Url = 'https://baas.kinvey.com/';
-
   constructor() {}
 
   /**
@@ -47,7 +42,7 @@ export class UserService {
   }
 
   uploadImage(remoteFullPath: string, localFullPath: string): Promise<any> {
-    const imageFile = File.fromPath(localFullPath);
+    const imageFile = fs.File.fromPath(localFullPath);
     const imageContent = imageFile.readSync();
 
     const metadata = {
@@ -64,7 +59,7 @@ export class UserService {
 
         return Kinvey.Files.find(query);
       })
-      .then((files: Array<any>) => {
+      .then((files: any[]) => {
         if (files && files.length) {
           const file = files[0];
           file.url = file._downloadURL;
@@ -155,6 +150,26 @@ export class UserService {
           console.log(`Couldn't register push notifications: ${error}`);
         }
       );
+    }
+  }
+
+  /**
+   * Downloads the i18n json translation files from the Kinvey account and saves to the `assets/i18n/` directory that the ngx TranslateService will use to load files.
+   */
+  async downloadTranslationFiles() {
+    console.log('===== userService.downloadTranslationFiles ====');
+    // query Kinvey Files for all translation files
+    const query = new Kinvey.Query();
+    query.equalTo('translation_file', true);
+    const files = await Kinvey.Files.find(query);
+
+    if (files.length >= 1) {
+      files.forEach(async file => {
+        const filePath = fs.path.join(fs.knownFolders.currentApp().path, `assets/i18n/${file._filename}`);
+        http.getFile(file._downloadURL, filePath).catch(err => {
+          console.log('error using http.getFile', err);
+        });
+      });
     }
   }
 

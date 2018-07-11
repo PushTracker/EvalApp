@@ -1,0 +1,23 @@
+{
+  "menu": {
+    "home": "Maison",
+    "all-events": "Tous les évènements",
+    "events": "Événements",
+    "copyright": "2018 MaxMobility"
+  },
+  "error": {
+    "upload-photo-lbl": "Désolé, une erreur s'est produite lors du chargement de cette photo."
+  },
+  "dialogs": {
+    "confirm": "Confirmer",
+    "yes": "Oui",
+    "yes-login": "Oui, connectez-vous!",
+    "yes-delete": "Oui, supprimer",
+    "cancel": "Annuler",
+    "no": "Non",
+    "camera": "Caméra",
+    "confirm-photo-delete": "Êtes-vous sûr de vouloir supprimer cette photo?",
+    "close": "Proche",
+    "sms": "Message de texte"
+  }
+}
