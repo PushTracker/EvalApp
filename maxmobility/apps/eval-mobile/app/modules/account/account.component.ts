@@ -9,6 +9,7 @@ import * as imageSource from 'tns-core-modules/image-source';
 import * as camera from 'nativescript-camera';
 import { ImageCropper } from 'nativescript-imagecropper';
 import * as LS from 'nativescript-localstorage';
+import * as email from 'nativescript-email';
 // app
 import { ValueList } from 'nativescript-drop-down';
 import { DropDownModule } from 'nativescript-drop-down/angular';
@@ -234,6 +235,44 @@ export class AccountComponent implements OnInit {
           .catch(error => {
             this._loggingService.logException(error);
           });
+      }
+    });
+  }
+
+  /**
+   * Confirm with user to provide feedback.
+   */
+  onFeedbackTap() {
+    confirm({
+      title: this._translateService.instant('user.provide-feedback-confirm-title'),
+      message: this._translateService.instant('user.provide-feedback-confirm-message'),
+      okButtonText: this.yes,
+      cancelButtonText: this.no
+    }).then(result => {
+      if (result) {
+        // send email to user
+        email
+          .available()
+          .then(available => {
+            if (available) {
+              email
+                .compose({
+                  to: ['feedback@max-mobility.com'],
+                  subject: this._translateService.instant('user.feedback-email-subject'),
+                  body: '',
+                  cc: []
+                })
+                .then(result => {
+                  if (result) {
+                    console.log('email compose result', result);
+                  } else {
+                    console.log('the email may NOT have been sent!');
+                  }
+                })
+                .catch(error => console.error(error));
+            }
+          })
+          .catch(error => console.error(error));
       }
     });
   }

@@ -172,6 +172,10 @@
         "This area groups a collection of topics together you can create sketches and artwork for. Tap to get started!"
     },
     "user": {
+        "provide-feedback-confirm-title": "Provide Feedback?",
+        "provide-feedback-confirm-message": "Would you like to send feedback via your configured email client?",
+        "provide-feedback-btn": "Send Feedback",
+        "feedback-email-subject": "Smart Evaluation Feedback",
         "account": "Account",
         "account-creating": "Creating Account...",
         "account-update": "Update User Account?", 
