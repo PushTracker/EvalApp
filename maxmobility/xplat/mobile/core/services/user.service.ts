@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Push } from 'kinvey-nativescript-sdk/push';
 import { User } from '@maxmobility/core';
-import * as http from 'tns-core-modules/http';
-import * as fs from 'tns-core-modules/file-system';
+import * as fs from 'tns-core-modules/file-system/file-system';
 import * as Kinvey from 'kinvey-nativescript-sdk';
 import * as pushPlugin from 'nativescript-push-notifications';
-import * as localstorage from 'nativescript-localstorage';
 
 @Injectable()
 export class UserService {
@@ -150,26 +148,6 @@ export class UserService {
           console.log(`Couldn't register push notifications: ${error}`);
         }
       );
-    }
-  }
-
-  /**
-   * Downloads the i18n json translation files from the Kinvey account and saves to the `assets/i18n/` directory that the ngx TranslateService will use to load files.
-   */
-  async downloadTranslationFiles() {
-    console.log('===== userService.downloadTranslationFiles ====');
-    // query Kinvey Files for all translation files
-    const query = new Kinvey.Query();
-    query.equalTo('translation_file', true);
-    const files = await Kinvey.Files.find(query);
-
-    if (files.length >= 1) {
-      files.forEach(async file => {
-        const filePath = fs.path.join(fs.knownFolders.currentApp().path, `assets/i18n/${file._filename}`);
-        http.getFile(file._downloadURL, filePath).catch(err => {
-          console.log('error using http.getFile', err);
-        });
-      });
     }
   }
 

@@ -43,7 +43,7 @@
     "object-literal-sort-keys": false,
     "ordered-imports": false,
     "prefer-const": true,
-    "radix": true,
+    "radix": false,
     "triple-equals": [true, "allow-null-check"],
     "unified-signatures": true,
     "variable-name": false,
