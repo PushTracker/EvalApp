@@ -1,0 +1,23 @@
+{
+  "menu": {
+    "home": "huis",
+    "all-events": "Alle evenementen",
+    "events": "events",
+    "copyright": "2018 MaxMobility"
+  },
+  "error": {
+    "upload-photo-lbl": "Er is helaas een fout opgetreden tijdens het laden van deze foto."
+  },
+  "dialogs": {
+    "confirm": "bevestigen",
+    "yes": "ja",
+    "yes-login": "Ja, verbinding maken!",
+    "yes-delete": "Ja, verwijderen",
+    "cancel": "annuleren",
+    "no": "Neen",
+    "camera": "camera",
+    "confirm-photo-delete": "Weet je zeker dat je deze foto wilt verwijderen?",
+    "close": "dicht",
+    "sms": "SMS-bericht"
+  }
+}

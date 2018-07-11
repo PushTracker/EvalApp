@@ -6,7 +6,7 @@ android {
   defaultConfig {  
     generatedDensities = []
     applicationId = "com.permobil.smarteval"  
-    jackOptions {
+   jackOptions {
         enabled true
     }
   }  

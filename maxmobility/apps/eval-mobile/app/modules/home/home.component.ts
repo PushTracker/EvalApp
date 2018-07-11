@@ -19,7 +19,7 @@ import { WebView } from 'tns-core-modules/ui/web-view';
 import { isAndroid, isIOS } from 'platform';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { CLog, LoggingService, Demo } from '@maxmobility/core';
-import { DemoService } from '@maxmobility/mobile';
+import { DemoService, UserService } from '@maxmobility/mobile';
 import { Feedback, FeedbackType, FeedbackPosition } from 'nativescript-feedback';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 import { FAQs } from '../faq/faq.component';
@@ -32,7 +32,7 @@ import { Videos } from '../videos/videos.component';
   styleUrls: ['./home.component.css'],
   changeDetection: ChangeDetectionStrategy.Default
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewInit {
   faqItems = FAQs;
   videoItems = Videos;
   connectivityItems = [
@@ -86,11 +86,18 @@ export class HomeComponent implements OnInit {
     private _page: Page,
     private _routerExtensions: RouterExtensions,
     private _logService: LoggingService,
+    private _userService: UserService,
     private _demoService: DemoService,
     private zone: NgZone
   ) {
     this._page.enableSwipeBackNavigation = false;
     this.feedback = new Feedback();
+    if (this._userService.user) {
+      // REGISTER FOR PUSH NOTIFICATIONS
+      this._userService.registerForPushNotifications();
+      // Download i18n files
+      this._userService.downloadTranslationFiles();
+    }
   }
 
   get Demos(): ObservableArray<Demo> {
@@ -112,7 +119,6 @@ export class HomeComponent implements OnInit {
     });
       */
   }
-
 
   ngAfterViewInit(): void {
     this._demoService.load().catch(err => {
