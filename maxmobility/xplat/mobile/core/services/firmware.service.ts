@@ -1,23 +1,18 @@
-// angular
+import * as httpModule from 'tns-core-modules/http';
+import * as LS from 'nativescript-localstorage';
 import { Injectable } from '@angular/core';
-
-// nativescript
-const httpModule = require('http');
-import { Observable, fromObject } from 'tns-core-modules/data/observable';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
 import { Kinvey } from 'kinvey-nativescript-sdk';
-import { isIOS, isAndroid } from 'tns-core-modules/platform';
-import * as application from 'tns-core-modules/application';
+import { isIOS } from 'tns-core-modules/platform';
 import { path, knownFolders, File } from 'tns-core-modules/file-system';
-import * as LS from 'nativescript-localstorage';
 
 @Injectable()
 export class FirmwareService {
   // static members
-  public static firmwarePathPrefix: string = '/assets/ota/';
+  public static firmwarePathPrefix = '/assets/ota/';
 
-  private static fsKeyPrefix: string = 'FirmwareService.';
-  private static fsKeyMetadata: string = 'Metadata';
+  private static fsKeyPrefix = 'FirmwareService.';
+  private static fsKeyMetadata = 'Metadata';
 
   // public members
   public haveFirmwares = false;
@@ -55,6 +50,14 @@ export class FirmwareService {
     });
   }
 
+  public static versionByteToString(version: number): string {
+    if (version === 0xff || version === 0x00) {
+      return 'unknown';
+    } else {
+      return `${(version & 0xf0) >> 4}.${version & 0x0f}`;
+    }
+  }
+
   public loadFromFS() {
     return this.loadMetadata().then(() => {
       const tasks = Object.keys(this.firmwares).map(k => {
@@ -69,14 +72,6 @@ export class FirmwareService {
   private versionStringToByte(version: string): number {
     const [major, minor] = version.split('.');
     return (parseInt(major) << 4) | parseInt(minor);
-  }
-
-  public static versionByteToString(version: number): string {
-    if (version == 0xff || version == 0x00) {
-      return 'unknown';
-    } else {
-      return `${(version & 0xf0) >> 4}.${version & 0x0f}`;
-    }
   }
 
   // FOR STORING METADATA TO FILE SYSTEM
@@ -212,16 +207,16 @@ export class FirmwareService {
       query.equalTo('_filename', this.firmwares[fwKey].filename);
       return Kinvey.Files.find(query)
         .then(files => {
-          if (files.length == 1) {
+          if (files.length === 1) {
             const file = files[0];
             this.updateFirmware(fwKey, file);
             // download the firmware data and save it to temporary storage
             return this.getData(file._downloadURL, file._filename);
           } else if (files.length > 1) {
             console.log(JSON.stringify(files, null, 2));
-            throw new String(`Found more than one OTA for ${fwKey}!`);
+            throw new Error(`Found more than one OTA for ${fwKey}!`);
           } else {
-            throw new String(`Couldn't find OTA for ${fwKey}!`);
+            throw new Error(`Couldn't find OTA for ${fwKey}!`);
           }
         })
         .then(file => {

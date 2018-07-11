@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
 
     // if we get to the login page, no user should be logged in
     CLog(
-      'LoginComponent ngOnInit ',
+      'LoginComponent ngOnInit',
       'Logging out any active user. Login screen should only be used when no user is authenticated.'
     );
     this._userService.logout();
@@ -73,10 +73,12 @@ export class LoginComponent implements OnInit {
     this._userService
       .login(this.user.email, this.user.password)
       .then(res => {
-        CLog('login res', res);
+        CLog('login result', res);
         this._progressService.hide();
+
         // REGISTER FOR PUSH NOTIFICATIONS
         this._userService.registerForPushNotifications();
+
         this._routerExtensions.navigate(['/home'], {
           clearHistory: true
         });
@@ -140,7 +142,6 @@ export class LoginComponent implements OnInit {
 
   private _isPasswordValid(text: string): boolean {
     // validate the password
-
     if (!text) {
       this.passwordError = this.password_error;
       return false;

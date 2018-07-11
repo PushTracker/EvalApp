@@ -1,5 +1,6 @@
 import { LocationService } from './location.service';
 import { EvaluationService } from './evaluation.service';
+import { FileService } from './file.service';
 import { DemoService } from './demo.service';
 import { UserService } from './user.service';
 import { KeyboardService } from './keyboard.service';
@@ -14,6 +15,7 @@ import { PairingService } from './pairing.service';
 export const PROVIDERS: any[] = [
   LocationService,
   EvaluationService,
+  FileService,
   DemoService,
   UserService,
   KeyboardService,
@@ -29,6 +31,7 @@ export const PROVIDERS: any[] = [
 export * from './auth-guard.service';
 export * from './location.service';
 export * from './evaluation.service';
+export * from './file.service';
 export * from './demo.service';
 export * from './keyboard.service';
 export * from './logging.service';

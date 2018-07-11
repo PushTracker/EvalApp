@@ -4,7 +4,7 @@ import { Page } from 'tns-core-modules/ui/page';
 import { Color } from 'tns-core-modules/color';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { LoggingService, Demo } from '@maxmobility/core';
-import { DemoService, FirmwareService } from '@maxmobility/mobile';
+import { DemoService, FirmwareService, FileService } from '@maxmobility/mobile';
 import { Feedback, FeedbackType, FeedbackPosition } from 'nativescript-feedback';
 import { FAQs } from '../faq/faq.component';
 import { Videos } from '../videos/videos.component';
@@ -71,7 +71,8 @@ export class HomeComponent {
     private _routerExtensions: RouterExtensions,
     private _logService: LoggingService,
     private _demoService: DemoService,
-    private _firmwareService: FirmwareService
+    private _firmwareService: FirmwareService,
+    private _fileService: FileService
   ) {
     this._page.enableSwipeBackNavigation = false;
     this.feedback = new Feedback();
@@ -79,6 +80,8 @@ export class HomeComponent {
     this._demoService.load().catch(err => {
       console.log(`Couldn't load demos: ${err}`);
     });
+
+    this._fileService.downloadTranslationFiles();
   }
 
   get currentVersion(): string {

@@ -1,3 +1,4 @@
+import * as application from 'tns-core-modules/application';
 import { Component } from '@angular/core';
 import { CLog, LoggingService, UserService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
@@ -46,9 +47,13 @@ export class AppComponent {
     }
 
     // application level events
-    // application.on(application.uncaughtErrorEvent, (args: application.UnhandledErrorEventData) => {
-    //   console.log('uncaughtException', args.error);
-    // });
+    application.on(application.uncaughtErrorEvent, (args: application.UnhandledErrorEventData) => {
+      console.log('**** App Uncaught Error Event ****', args.error);
+    });
+
+    application.on(application.resumeEvent, (args: application.ApplicationEventData) => {
+      console.log('**** App Resume Event ****');
+    });
 
     Kinvey.init({
       appKey: `${UserService.Kinvey_App_Key}`,
