@@ -1,10 +1,10 @@
-<ActionBar class="action-bar" flat="true" [title]="demo.model + ' Demo ' + demo.smartdrive_serial_number">
+<ActionBar class="action-bar" flat="true" [title]="title">
   <NavigationButton android:visibility="collapse"></NavigationButton>
 
   <ActionItem (tap)="onSave()"
               ios.systemIcon="3" ios.position="right"
-              ios:text="Save" color="white">
-    <Button text="Save" class="button"></Button>
+              [ios:text]="'general.save' | translate" color="white">
+    <Button [text]="'general.save' | translate" class="button"></Button>
   </ActionItem>
 </ActionBar>
 
@@ -54,7 +54,7 @@
                  text="&#xf100;" class="mdi icon-scan" ></Label>
           <Label dock="left" (tap)="onEditSD()"
                  text="&#xf3ed;" class="mdi icon-scan"></Label>
-          <Label [text]="(demo.smartdrive_serial_number.length && demo.smartdrive_serial_number ) || 'SD: Press scan or edit button'" class="info" dock="left"></Label>
+          <Label [text]="sd_serial_label" class="info" dock="left"></Label>
         </DockLayout>
 
         <StackLayout class="hr-light m-10" backgroundColor="#FFF" width="100%"></StackLayout>
@@ -66,7 +66,7 @@
                  text="&#xf100;" class="mdi icon-scan" ></Label>
           <Label dock="left" (tap)="onEditPT()"
                  text="&#xf3ed;" class="mdi icon-scan" ></Label>
-          <Label [text]="(demo.pushtracker_serial_number.length && demo.pushtracker_serial_number) || 'PT Press scan or edit button'" class="info" dock="left"></Label>
+          <Label [text]="pt_serial_label" class="info" dock="left"></Label>
         </DockLayout>
 
         <StackLayout class="hr-light m-10" backgroundColor="#FFF" width="100%"></StackLayout>
@@ -87,7 +87,7 @@
           <Label class="info" textWrap="true">
             <FormattedString>
               <Span [text]="demo.mcu_version_string"></Span>
-              <Span text=" - SmartDrive MCU Version"></Span>
+              <Span [text]="mcu_version_label"></Span>
             </FormattedString>
           </Label>
         </DockLayout>
@@ -100,13 +100,10 @@
                  text="&#xf0af;" class="mdi icon-scan" ></Label>
           <Label class="mdi icon"
                  [text]="demo.version_badge(currentVersion, 'ble')"></Label>
-          <Label *ngIf="!demo.isDevUpToDate('ble', currentVersion)"
-                 class="mdi icon"
-                 text="&#xf159;"></Label>
           <Label class="info" textWrap="true">
             <FormattedString>
               <Span [text]="demo.ble_version_string"></Span>
-              <Span text=" - SmartDrive BLE Version"></Span>
+              <Span [text]="ble_version_label"></Span>
             </FormattedString>
           </Label>
         </DockLayout>
@@ -122,7 +119,7 @@
           <Label class="info" textWrap="true">
             <FormattedString>
               <Span [text]="demo.pt_version_string"></Span>
-              <Span text=" - PushTracker Version"></Span>
+              <Span [text]="pt_version_label"></Span>
             </FormattedString>
           </Label>
         </DockLayout>

@@ -32,6 +32,10 @@ import { DemoService, BluetoothService, FirmwareService, ProgressService } from 
 export class DemoDetailComponent implements OnInit {
   public demo: Demo = new Demo();
 
+  mcu_version_label: string = ' - SmartDrive MCU ' + this.translateService.instant('general.version');
+  ble_version_label: string = ' - SmartDrive BLE ' + this.translateService.instant('general.version');
+  pt_version_label: string = ' - PushTracker ' + this.translateService.instant('general.version');
+
   private imageCropper: ImageCropper;
 
   private index: number = -1; // index into DemoService.Demos
@@ -44,7 +48,8 @@ export class DemoDetailComponent implements OnInit {
     private _progressService: ProgressService,
     private _demoService: DemoService,
     private _bluetoothService: BluetoothService,
-    private _firmwareService: FirmwareService
+    private _firmwareService: FirmwareService,
+    private translateService: TranslateService
   ) {
     this.imageCropper = new ImageCropper();
     this.pageRoute.activatedRoute.pipe(switchMap(activatedRoute => activatedRoute.queryParams)).forEach(params => {
@@ -55,6 +60,24 @@ export class DemoDetailComponent implements OnInit {
         this.demo = new Demo();
       }
     });
+  }
+
+  get sd_serial_label(): string {
+    return (
+      (this.demo.smartdrive_serial_number.length && this.demo.smartdrive_serial_number) ||
+      this.translateService.instant('demo-detail.scan-sd')
+    );
+  }
+
+  get pt_serial_label(): string {
+    return (
+      (this.demo.pushtracker_serial_number.length && this.demo.pushtracker_serial_number) ||
+      this.translateService.instant('demo-detail.scan-pt')
+    );
+  }
+
+  get title(): string {
+    return `${this.demo.model} ${this.translateService.instant('general.demo')} ${this.demo.smartdrive_serial_number}`;
   }
 
   isIOS(): boolean {
