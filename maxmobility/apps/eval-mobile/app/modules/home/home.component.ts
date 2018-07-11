@@ -93,7 +93,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ) {
     this._page.enableSwipeBackNavigation = false;
     this.feedback = new Feedback();
-      
+
     this._demoService.load().catch(err => {
       console.log(`Couldn't load demos: ${err}`);
     });
@@ -122,6 +122,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
       */
   }
+
+  ngAfterViewInit(): void {}
 
   onRadListLoaded(event) {
     // const radListView = event.object;
