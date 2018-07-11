@@ -71,6 +71,14 @@ export class FirmwareService {
     return (parseInt(major) << 4) | parseInt(minor);
   }
 
+  public static versionByteToString(version: number): string {
+    if (version == 0xff || version == 0x00) {
+      return 'unknown';
+    } else {
+      return `${(version & 0xf0) >> 4}.${version & 0x0f}`;
+    }
+  }
+
   // FOR STORING METADATA TO FILE SYSTEM
   private saveMetadata() {
     const md = {

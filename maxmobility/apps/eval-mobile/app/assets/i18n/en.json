@@ -1,4 +1,8 @@
 {
+    "buttons": {
+        "next": "Next",
+        "back": "Back"
+    },
     "menu": {
         "home": "SmartDrive",
         "connectivity": "Connectivity",
@@ -21,14 +25,28 @@
         "faq": "FAQs",
         "faq-desc": "Some frequently asked questions"
     },
+    "eval-entry": {
+        "title": "Perform an Evaluation",
+        "heading": "Questionnaire",
+        "pain-question": "Do you have pain from pushing?",
+        "pain-label": "Pain Level:",
+        "fatigue-question": "Do you have fatigue from pushing?",
+        "fatigue-label": "Fatigue Level:",
+        "independence-question": "Does it impact your independence?",
+        "independence-label": "Impact on Independence:",
+        "years-question": "How many years have you been in a manual chair?",
+        "years-label": "Years"
+    },
     "training": [
         {
+            "Image": "~/assets/images/PowerOn.png",
             "Label": "Powering SmartDrive",
             "Bullets": [ 
                 "Press back on the rocker switch to power on the SmartDrive, and forward to power off."
             ]
         },
         {
+            "Image": "~/assets/images/BandPower.png",
             "Label": "Powering PushTracker",
             "Bullets": [ 
                 "Press the left raised button on the PushTracker to power on.",
@@ -36,6 +54,7 @@
             ]
         },
         {
+            "Image": "~/assets/images/Stop.png",
             "Label": "Tap Gesture",
             "Bullets": [ 
                 "Keeping your wrist straight, make contact on the pushrim with the palm of your hand.",
@@ -45,6 +64,7 @@
             ]
         },
         {
+            "Image": "~/assets/images/start-coast.png",
             "Label": "Starting & Setting Speed",
             "Bullets": [ 
                 "Double-tap to initiate the SmartDrive. It will then begin to accelerate.",
@@ -53,6 +73,7 @@
             ]
         },
         {
+            "Image": "~/assets/images/Steer.png",
             "Label": "Steering",
             "Bullets": [ 
                 "To steer, gently grip the pushrim of the direction you want to go.",
@@ -61,12 +82,22 @@
             ]
         },
         {
+            "Image": "~/assets/images/turn.png",
             "Label": "Turning",
             "Bullets": [ 
                 "To turn, firmly grip the pushrim of the direction you want to go.",
 	            "Firm grip will allow you to turn.",
 	            "The tighter you grip, the sharper you will turn.",
 	            "Tip: An optimal center of gravity position of the reer wheels will reduce the grip needed to make sharp turns."
+            ]
+        },
+        {
+            "Image": "~/assets/images/Stop2.png",
+            "Label": "Stopping",
+            "Bullets": [
+                "Double-tap to disengage the SmartDrive.",
+                "Then coast and brake with your hands.",
+                "Tip: To stop quickly, perform a single-tap followed by a quick combined tap and grab."
             ]
         }
     ],
@@ -81,7 +112,7 @@
         "pt-basic-op-desc": "This video covers the basic operation and functionality of the PushTracker.",
         "pt-ap-basic-op-title":"Intro to the PushTracker App",
         "pt-ap-basic-op-desc": "This video covers the basic operation and functionality of the PushTracker App.",
-        "sea-basic-op-title": "Intro to the Smart Evaluation App'",
+        "sea-basic-op-title": "Intro to the Smart Evaluation App",
         "sea-basic-op-desc": "This video covers the basic operation and functionality of the Smart Evaluation App.",
         "eval-training-tite": "SmartDrive Evaluation and Training",
         "eval-training-desc": "This video covers the steps to perform when doing a SmartDrive Evaluation or Training",
@@ -187,25 +218,39 @@
         "lmnTemplate": [
             "This email was generated and sent by the Smart Evaluation App.",
             "",
-            "User's pushing pain? {{evaluation.pushing_pain}} / 10",
-            "User's pushing fatigue? {{evaluation.pushing_fatigue}} / 10",
+            "User's pushing pain: {{evaluation.pushing_pain}} / 10",
+            "User's pushing fatigue: {{evaluation.pushing_fatigue}} / 10",
             "Impact on user's independence: {{evaluation.impact_on_independence}} / 10",
             "",
             "{{#trials._array}}",
             "Trial '{{name}}':",
-            "  distance:   {{#distance}}{{toFixed}}{{/distance}} m",
+            "  Had Flats: {{flat}}",
+            "  Had Ramp: {{ramp}}",
+            "  Had Inclines: {{inclines}}",
+            "{{#other}}  Had Other: '{{other_description}}'{{/other}}",
+            "  Distance:   {{#distance}}{{toFixed}}{{/distance}}{{^distance}}0.00{{/distance}} m",
+            "{{#finishedWith}}",
             "  With SD:",
             "    pushes: {{with_pushes}}",
-            "    coast:  {{#with_coast}}{{toFixed}}{{/with_coast}} s",
+            "    coast:  {{#with_coast}}{{toFixed}}{{/with_coast}}{{^with_coast}}0{{/with_coast}} s",
             "    time:   {{#with_elapsed}}{{toTimeString}}{{/with_elapsed}}",
+            "{{/finishedWith}}",
+            "{{^finishedWith}}",
+            "  Did not complete the trial with SD!",
+            "{{/finishedWith}}",
+            "{{#finishedWithout}}",
             "  Without SD:",
             "    pushes: {{without_pushes}}",
-            "    coast:  {{#without_coast}}{{toFixed}}{{/without_coast}} s",
+            "    coast:  {{#without_coast}}{{toFixed}}{{/without_coast}}{{^without_coast}}0{{/without_coast}} s",
             "    time:   {{#without_elapsed}}{{toTimeString}}{{/without_elapsed}}",
+            "{{/finishedWithout}}",
+            "{{^finishedWithout}}",
+            "  Did not complete the trial without SD!",
+            "{{/finishedWithout}}",
             "{{/trials._array}}",
             "",
-            "User's difficulty with ramps: {{evaluation.ramp_difficulty}}",
-            "User's difficulty with flats: {{evaluation.flat_difficulty}}",
+            "User's difficulty with ramps: {{evaluation.ramp_difficulty}} / 10",
+            "User's difficulty with flats: {{evaluation.flat_difficulty}} / 10",
             "",
             "User performed {{pushDiff}}% {{pushComparison}} pushes with SmartDrive.",
             "",
@@ -226,6 +271,7 @@
         "difficulty-ramp": "Difficulty with ramp?",
         "ramp-difficulty": "Ramp Difficulty",
         "complete": "Complete Evaluation?",
+        "add-trial": "Add Trial",
         "confirm": "Are you sure you're done with the evaluation?",
         "email-subject": "Smart Evaluation LMN",
         "fewer": "fewer",

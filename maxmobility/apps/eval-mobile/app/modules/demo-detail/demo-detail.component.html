@@ -82,8 +82,14 @@
           <Label text="&#xf628;" class="mdi icon"></Label>
           <Label dock="left" (tap)="onVersionTap()"
                  text="&#xf0af;" class="mdi icon-scan" ></Label>
-          <Label [text]="demo.mcu_version_string" class="info"></Label>
-          <Label text="SmartDrive MCU Version" class="info"></Label>
+          <Label class="mdi icon"
+                 [text]="demo.version_badge(currentVersion, 'mcu')"></Label>
+          <Label class="info" textWrap="true">
+            <FormattedString>
+              <Span [text]="demo.mcu_version_string"></Span>
+              <Span text=" - SmartDrive MCU Version"></Span>
+            </FormattedString>
+          </Label>
         </DockLayout>
 
         <StackLayout class="hr-light m-10" backgroundColor="#FFF" width="100%"></StackLayout>
@@ -92,8 +98,17 @@
           <Label text="&#xf628;" class="mdi icon"></Label>
           <Label dock="left" (tap)="onVersionTap()"
                  text="&#xf0af;" class="mdi icon-scan" ></Label>
-          <Label [text]="demo.ble_version_string" class="info"></Label>
-          <Label text="SmartDrive BLE Version" class="info"></Label>
+          <Label class="mdi icon"
+                 [text]="demo.version_badge(currentVersion, 'ble')"></Label>
+          <Label *ngIf="!demo.isDevUpToDate('ble', currentVersion)"
+                 class="mdi icon"
+                 text="&#xf159;"></Label>
+          <Label class="info" textWrap="true">
+            <FormattedString>
+              <Span [text]="demo.ble_version_string"></Span>
+              <Span text=" - SmartDrive BLE Version"></Span>
+            </FormattedString>
+          </Label>
         </DockLayout>
 
         <StackLayout class="hr-light m-10" backgroundColor="#FFF" width="100%"></StackLayout>
@@ -102,8 +117,14 @@
           <Label text="&#xf628;" class="mdi icon"></Label>
           <Label dock="left" (tap)="onVersionTap()"
                  text="&#xf0af;" class="mdi icon-scan" ></Label>
-          <Label [text]="demo.pt_version_string" class="info"></Label>
-          <Label text="PushTracker Version" class="info"></Label>
+          <Label class="mdi icon"
+                 [text]="demo.version_badge(currentVersion, 'pt')"></Label>
+          <Label class="info" textWrap="true">
+            <FormattedString>
+              <Span [text]="demo.pt_version_string"></Span>
+              <Span text=" - PushTracker Version"></Span>
+            </FormattedString>
+          </Label>
         </DockLayout>
 
         <StackLayout class="hr-light m-10" backgroundColor="#FFF" width="100%"></StackLayout>

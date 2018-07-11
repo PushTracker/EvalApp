@@ -108,8 +108,15 @@
 	          <Label class="demo-item-description"
 		             textWrap="true" [text]="item.location_string"  ></Label>
 	          <Label class="demo-item-description"
-		             [backgroundColor]="(item.isUpToDate('1.5')) ? 'green' : 'red'"
-		             textWrap="true" [text]="item.version_string"  ></Label>
+		             textWrap="true"
+		             [backgroundColor]="(item.isUpToDate(currentVersion)) ? 'green' : 'red'">
+                <FormattedString>
+                  <Span
+                     [text]="item.version_string"></Span>
+                  <Span class="mdi"
+                     [text]="' ' + item.version_badge(currentVersion)"></Span>
+                </FormattedString>
+              </Label>
 	        </StackLayout>
 	      </StackLayout>
 	    </StackLayout>

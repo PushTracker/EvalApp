@@ -7,6 +7,8 @@ import { RouterExtensions } from 'nativescript-angular/router';
 import { Video as ExoPlayer } from 'nativescript-exoplayer';
 import { device } from 'tns-core-modules/platform';
 
+const orientation = require('nativescript-orientation');
+
 // Register Custom Elements for Angular
 const NS_CAROUSEL = require('nativescript-carousel');
 registerElement('Carousel', () => NS_CAROUSEL.Carousel);
@@ -26,6 +28,10 @@ export class AppComponent {
     private _userService: UserService,
     private _router: RouterExtensions
   ) {
+    // set the orientation to be portrait and don't allow orientation changes
+    orientation.setOrientation('portrait');
+    orientation.disableRotation(); // may not need to call this - docs say 'set' calls this
+
     // Brad - sets the default language for ngx-translate
     // *** The value being set must match a translation .json file in assets/i18n/ or it will fail ***
     // wrapping this in try/catch due to https://github.com/PushTracker/EvalApp/issues/43

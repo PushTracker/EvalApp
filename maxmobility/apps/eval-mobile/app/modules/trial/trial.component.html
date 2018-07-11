@@ -21,10 +21,10 @@
 
             //Trial Name
             <TextField [hint]="'trial.name' | translate"
-		       autocorrect="false"
-		       [text]="trial.name"
-		       (textChange)="onTextChange('name', $event)"
-		       class="trial-name-textfield"></TextField>
+		               autocorrect="false"
+		               [text]="trial.name"
+		               (textChange)="onTextChange('name', $event)"
+		               class="trial-name-textfield"></TextField>
 
             //Trial options
             <StackLayout class="trial-stack-layout">
@@ -36,7 +36,7 @@
               <DockLayout stretchLastChild="false">
                 <Label [text]="'trial.flat-surfaces' | translate" class="trial-item" dock="left"></Label>
                 <Switch dock="right"
-                class=""
+                        class=""
                         [checked]="trial.flat"
                         (checkedChange)="onSwitchChecked('flat', $event)"></Switch>
               </DockLayout>
@@ -68,37 +68,41 @@
               //SmartDrive Settings 
               //Acceleration
               <DockLayout stretchLastChild="false">
-                <Label [text]="'trial.accelleration' | translate" class="trial-slider-label"></Label>
-                <Label verticalAlignment="center" dock="right" class="trial-slider-value-label" style="min-width: 50" [text]="(trial.acceleration*100).toFixed(0)+'%'"
+                <Label [text]="'trial.accelleration' | translate"
+                       class="trial-slider-label"></Label>
+                <Label verticalAlignment="center" dock="right"
+                       class="trial-slider-value-label"
+                       [text]="(trial.acceleration*100).toFixed(0)+'%'"
                        row="0" col="1"></Label>
               </DockLayout>
               <GridLayout rows="auto" columns="*, auto">
                 <Slider minValue="0"
-			maxValue="10"
-			verticalAlignment="center"
-			class="trial-slider"
-			[value]="trial.acceleration * 10"
-			(valueChange)="onSliderUpdate('acceleration', $event)"
-			row="0" col="0"></Slider>
+			            maxValue="10"
+			            verticalAlignment="center"
+			            class="trial-slider"
+			            [value]="trial.acceleration * 10"
+			            (valueChange)="onSliderUpdate('acceleration', $event)"
+			            row="0" col="0"></Slider>
               </GridLayout>
 
               //Max Speed
               <DockLayout stretchLastChild="false">
-                <Label [text]="'trial.max-speed' | translate" class="trial-slider-label"></Label>
-                <Label verticalAlignment="center" dock="right" class="trial-slider-value-label" style="min-width: 50" [text]="(trial.max_speed*100).toFixed(0)+'%'"
+                <Label [text]="'trial.max-speed' | translate"
+                       class="trial-slider-label"></Label>
+                <Label verticalAlignment="center" dock="right"
+                       class="trial-slider-value-label"
+                       [text]="(trial.max_speed*100).toFixed(0)+'%'"
                        row="0" col="1"></Label>
               </DockLayout>
               <GridLayout rows="auto" columns="*, auto">
                 <Slider minValue="0"
-			maxValue="10"
-			verticalAlignment="center"
-			class="trial-slider"
-			[value]="trial.max_speed * 10"
-			(valueChange)="onSliderUpdate('max_speed', $event)"
-			row="0" col="0"></Slider>
+			            maxValue="10"
+			            verticalAlignment="center"
+			            class="trial-slider"
+			            [value]="trial.max_speed * 10"
+			            (valueChange)="onSliderUpdate('max_speed', $event)"
+			            row="0" col="0"></Slider>
               </GridLayout>
-
-              <Button class="back-button" [text]="'general.back' | translate" (tap)="onBack()"></Button>
 
             </StackLayout>
           </StackLayout>
@@ -110,7 +114,7 @@
     <CarouselItem #withPage height="100%">
       <GridLayout  rows="auto, *" cols="*">
 
-         <StackLayout backgroundImage="~/assets/images/background_1.jpg" row="0"  height="20%" width="100%" orientation="horizontal" horizontalAlignment="center">
+        <StackLayout backgroundImage="~/assets/images/background_1.jpg" row="0"  height="20%" width="100%" orientation="horizontal" horizontalAlignment="center">
           <Image src="~/assets/images/trial-sd.png" stretch="aspectFit"></Image>
         </StackLayout>
 
@@ -125,15 +129,15 @@
             <StackLayout class="input-field">
 
               <button #startWith
-		      row="2"
-		      [text]="'trial.start' | translate"
-		      class="start-button"
-		      (tap)="onStartWithTrial($event)"></button>
+		              row="2"
+		              [text]="'trial.start' | translate"
+		              class="start-button"
+		              (tap)="onStartWithTrial($event)"></button>
               <button #stopWith
-		      row="2"
-		      [text]="'trial.stop' | translate"
-		      class="start-button"
-		      (tap)="onStopWithTrial($event)"></button>
+		              row="2"
+		              [text]="'trial.stop' | translate"
+		              class="start-button"
+		              (tap)="onStopWithTrial($event)"></button>
 
               //Data Fields
               <GridLayout  rows="auto, auto" columns="auto, *, auto, *">
@@ -173,15 +177,15 @@
             <StackLayout class="input-field">
 
               <button #startWithout
-		      row="2"
-		      [text]="'trial.start' | translate"
-		      class="start-button"
-		      (tap)="onStartWithoutTrial($event)"></button>
+		              row="2"
+		              [text]="'trial.start' | translate"
+		              class="start-button"
+		              (tap)="onStartWithoutTrial($event)"></button>
               <button #stopWithout
-		      row="2"
-		      [text]="'trial.stop' | translate"
-		      class="start-button"
-		      (tap)="onStopWithoutTrial($event)"></button>
+		              row="2"
+		              [text]="'trial.stop' | translate"
+		              class="start-button"
+		              (tap)="onStopWithoutTrial($event)"></button>
 
               //Data Fields
               <GridLayout  rows="auto, auto" columns="auto, *, auto, *">

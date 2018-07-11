@@ -43,7 +43,8 @@ export class DemoDetailComponent implements OnInit {
     private barcodeScanner: BarcodeScanner,
     private _progressService: ProgressService,
     private _demoService: DemoService,
-    private _bluetoothService: BluetoothService
+    private _bluetoothService: BluetoothService,
+    private _firmwareService: FirmwareService
   ) {
     this.imageCropper = new ImageCropper();
     this.pageRoute.activatedRoute.pipe(switchMap(activatedRoute => activatedRoute.queryParams)).forEach(params => {
@@ -65,6 +66,10 @@ export class DemoDetailComponent implements OnInit {
   }
 
   ngOnInit() {}
+
+  get currentVersion(): string {
+    return FirmwareService.versionByteToString(this._firmwareService.firmwares.PT.version);
+  }
 
   onUpdateSDImageTap() {
     if (camera.isAvailable()) {

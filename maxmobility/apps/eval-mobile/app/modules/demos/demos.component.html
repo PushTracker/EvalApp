@@ -34,13 +34,15 @@
           <Label [text]="item.model" row="0" col="2" class="info"></Label>
           <!-- SD Firmware versions -->
           <Label text="&#xf628;" row="1" col="0" class="mdi icon" ></Label>
-          <Label row="1" col="1" class="info">
-              <FormattedString>
-                  <Span text="Firmware: "></Span>
-                  <Span [text]="item.version_string"
-                        [color]="(item.isUpToDate('1.5')) ? 'green' : 'red'"></Span>
-              </FormattedString>
-            </Label>
+          <Label row="1" col="1" class="info" textWrap="true">
+            <FormattedString>
+              <Span text="Firmware: "></Span>
+              <Span [text]="item.version_string"></Span>
+            </FormattedString>
+          </Label>
+          <Label row="1" col="2"
+                 class="mdi icon"
+                 [text]="item.version_badge(currentVersion)"></Label>
           <!-- Demo Location -->
           <Label text="&#xf5f5;" row="2" col="0" class="mdi icon"></Label>
           <Label  [text]="item.location_string" row="2" col="1" colSpan="2" class="info" textWrap="true"></Label>
