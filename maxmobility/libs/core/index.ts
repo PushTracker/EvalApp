@@ -1,4 +1,4 @@
-export * from './services';
+export { MaxMobilityCoreModule } from './core.module';
 export * from './models';
 export * from './packet';
-export { MaxMobilityCoreModule } from './core.module';
+export * from './services';

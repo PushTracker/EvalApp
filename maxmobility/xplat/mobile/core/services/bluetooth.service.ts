@@ -1,14 +1,13 @@
 /// <reference path="../../../typings/android27.d.ts" />
 
 import { Injectable } from '@angular/core';
-import * as dialogsModule from 'tns-core-modules/ui/dialogs';
-import { isIOS, isAndroid } from 'tns-core-modules/platform';
-import { fromObject } from 'tns-core-modules/data/observable';
+import { Packet, PushTracker, SmartDrive } from '@maxmobility/core';
+import { Bluetooth, BondState, Central, ConnectionState } from 'nativescript-bluetooth';
+import { Feedback } from 'nativescript-feedback';
+import { SnackBar } from 'nativescript-snackbar';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
-import { Packet, DailyInfo, PushTracker, SmartDrive } from '@maxmobility/core';
-import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
-import { Feedback, FeedbackType, FeedbackPosition } from 'nativescript-feedback';
-import { Bluetooth, BondState, ConnectionState, Central, Peripheral } from 'nativescript-bluetooth';
+import { isAndroid, isIOS } from 'tns-core-modules/platform';
+import * as dialogsModule from 'tns-core-modules/ui/dialogs';
 
 @Injectable()
 export class BluetoothService {

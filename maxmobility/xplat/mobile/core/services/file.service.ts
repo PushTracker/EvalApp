@@ -1,8 +1,8 @@
-import * as localStorage from 'nativescript-localstorage';
-import * as http from 'tns-core-modules/http';
-import * as fs from 'tns-core-modules/file-system';
-import * as Kinvey from 'kinvey-nativescript-sdk';
 import { Injectable } from '@angular/core';
+import * as Kinvey from 'kinvey-nativescript-sdk';
+import * as localStorage from 'nativescript-localstorage';
+import * as fs from 'tns-core-modules/file-system';
+import * as http from 'tns-core-modules/http';
 
 @Injectable()
 export class FileService {

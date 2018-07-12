@@ -1,10 +1,10 @@
-import { Injectable, NgZone } from '@angular/core';
-
+import { Injectable } from '@angular/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 import * as geolocation from 'nativescript-geolocation';
-import { Accuracy } from 'ui/enums'; // used to describe at what accuracy the location should be get
-const httpModule = require('http');
-var api_key = 'pk.eyJ1IjoiZmluZ2VyNTYzIiwiYSI6ImNqYXZmYTZ0bDVtYmcyd28yZ2ZwandxYWcifQ.ROCLEdkuzALMsVQedcIeAQ';
+import * as httpModule from 'tns-core-modules/http';
+import { Accuracy } from 'tns-core-modules/ui/enums'; // used to describe at what accuracy the location should be get
+
+const api_key = 'pk.eyJ1IjoiZmluZ2VyNTYzIiwiYSI6ImNqYXZmYTZ0bDVtYmcyd28yZ2ZwandxYWcifQ.ROCLEdkuzALMsVQedcIeAQ';
 
 // see https://www.mapbox.com/api-documentation/?language=cURL#retrieve-places-near-a-location
 
@@ -39,19 +39,20 @@ export class LocationService {
 
   public static coordToLocation(coord: any): Promise<string> {
     return new Promise((resolve, reject) => {
-      let userLoc = `${coord.longitude},${coord.latitude}`;
-      let user = Kinvey.User.getActiveUser();
-      let userData = ((user && user.data) || {}) as any;
-      let lang = userData.language ? '&language=' + userData.language : '';
-      let query =
+      const userLoc = `${coord.longitude},${coord.latitude}`;
+      const user = Kinvey.User.getActiveUser();
+      const userData = ((user && user.data) || {}) as any;
+      const lang = userData.language ? '&language=' + userData.language : '';
+      const query =
         'https://api.mapbox.com/geocoding/v5/mapbox.places/' + userLoc + '.json?access_token=' + api_key + lang;
+
       // TODO: might also add '&types=postcode' to the query to only get postcode
       httpModule.getJSON(query).then(
-        function(r) {
+        r => {
           const location = r.features.filter(f => f.place_type.indexOf('postcode') > -1)[0].place_name;
           resolve(location);
         },
-        function(e) {
+        e => {
           reject(`Couldn't get location: ${e}`);
         }
       );

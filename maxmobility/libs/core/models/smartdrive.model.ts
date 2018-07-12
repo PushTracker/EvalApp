@@ -1,10 +1,7 @@
-// nativescript
-import timer = require('tns-core-modules/timer');
-import { Observable, EventData } from 'tns-core-modules/data/observable';
-import { alert } from 'tns-core-modules/ui/dialogs';
-// libs
-import { Packet, bindingTypeToString } from '@maxmobility/core';
+import { bindingTypeToString, Packet } from '@maxmobility/core';
 import { BluetoothService } from '@maxmobility/mobile';
+import { Observable } from 'tns-core-modules/data/observable';
+import * as timer from 'tns-core-modules/timer';
 
 // TODO: TRANSLATE
 enum OTAState {

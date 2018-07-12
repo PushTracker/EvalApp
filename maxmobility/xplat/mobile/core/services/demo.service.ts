@@ -1,13 +1,8 @@
-import { Injectable, NgZone } from '@angular/core';
-import { Http, Headers, Response, ResponseOptions } from '@angular/http';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/toPromise';
-import { Kinvey } from 'kinvey-nativescript-sdk';
-
-import { fromObject, Observable } from 'tns-core-modules/data/observable';
-import { ObservableArray } from 'tns-core-modules/data/observable-array';
-
+import { Injectable } from '@angular/core';
+import { Response } from '@angular/http';
 import { Demo } from '@maxmobility/core';
+import { Kinvey } from 'kinvey-nativescript-sdk';
+import { ObservableArray } from 'tns-core-modules/data/observable-array';
 
 @Injectable()
 export class DemoService {

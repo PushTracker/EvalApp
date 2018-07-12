@@ -1,7 +1,7 @@
+import { Injectable } from '@angular/core';
 import * as app from 'tns-core-modules/application';
 import { fromObject, Observable } from 'tns-core-modules/data/observable';
 import { isIOS } from 'tns-core-modules/platform';
-import { Injectable } from '@angular/core';
 
 @Injectable()
 export class KeyboardService {

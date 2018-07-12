@@ -1,7 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { DrawerTransitionBase, SlideAlongTransition } from 'nativescript-ui-sidedrawer';
-import { RadSideDrawerComponent } from 'nativescript-ui-sidedrawer/angular';
-import { isAndroid, isIOS } from 'platform';
+import { Component } from '@angular/core';
+import { isAndroid, isIOS } from 'tns-core-modules/platform';
 
 const FAQs = [
   {
@@ -43,8 +41,8 @@ export { FAQs };
   templateUrl: './faq.component.html',
   styleUrls: ['./faq.component.css']
 })
-export class FAQComponent implements OnInit {
-  @ViewChild('drawer') drawerComponent: RadSideDrawerComponent;
+export class FAQComponent {
+  faqs = FAQs;
 
   isIOS(): boolean {
     return isIOS;
@@ -52,21 +50,5 @@ export class FAQComponent implements OnInit {
 
   isAndroid(): boolean {
     return isAndroid;
-  }
-
-  public faqs = FAQs;
-
-  private _sideDrawerTransition: DrawerTransitionBase;
-
-  ngOnInit(): void {
-    this._sideDrawerTransition = new SlideAlongTransition();
-  }
-
-  get sideDrawerTransition(): DrawerTransitionBase {
-    return this._sideDrawerTransition;
-  }
-
-  onDrawerButtonTap(): void {
-    this.drawerComponent.sideDrawer.showDrawer();
   }
 }

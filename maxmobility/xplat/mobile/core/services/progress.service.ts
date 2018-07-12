@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-// nativescript
 import { LoadingIndicator } from 'nativescript-loading-indicator';
 
 /**
