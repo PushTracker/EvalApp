@@ -18,6 +18,7 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './modules/core/core.module';
 import { SharedModule } from './modules/shared/shared.module';
 import { TNSTranslateLoader } from './utils';
+import { YoutubePlayerModule } from 'nativescript-youtubeplayer/angular';
 
 // factories
 export function createTranslateLoader() {
@@ -39,6 +40,7 @@ export function createTranslateLoader() {
     HttpClientModule,
     SlidesModule,
     DropDownModule,
+    YoutubePlayerModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

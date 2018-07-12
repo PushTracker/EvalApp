@@ -53,6 +53,9 @@ export class AppComponent {
 
     application.on(application.resumeEvent, (args: application.ApplicationEventData) => {
       console.log('**** App Resume Event ****');
+      // set the orientation to be portrait and don't allow orientation changes
+      orientation.setOrientation('portrait');
+      orientation.disableRotation(); // may not need to call this - docs say 'set' calls this
     });
 
     Kinvey.init({

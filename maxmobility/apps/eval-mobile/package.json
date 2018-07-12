@@ -80,6 +80,7 @@
     "nativescript-toast": "file:../../node_modules/nativescript-toast",
     "nativescript-ui-listview": "~3.5.7",
     "nativescript-ui-sidedrawer": "~3.5.1",
+    "nativescript-youtubeplayer": "^2.2.6",
     "ngx-progressbar": "file:../../node_modules/ngx-progressbar",
     "primeng": "file:../../node_modules/primeng",
     "reflect-metadata": "file:../../node_modules/reflect-metadata",

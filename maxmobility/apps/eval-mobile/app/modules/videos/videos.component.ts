@@ -8,56 +8,49 @@ import { TranslateService } from '@ngx-translate/core';
 
 const Videos = [
   {
-    Url:
-      '<iframe style="margin-bottom: 10; padding:0; border:0; width:100%; height:100%" src="https://www.youtube.com/embed/8fn26J59WJ4"></iframe>',
+    Url: '8fn26J59WJ4',
     Description: 'videos.overview-desc',
     Title: 'videos.overview-title',
     Thumb: '~/assets/images/overview-thumb.jpg',
     Route: '/video'
   },
   {
-    Url:
-      '<iframe style="margin-bottom: 10; padding:0; border:0; width:100%; height:100%" src="https://www.youtube.com/embed/uhA3-svjQFg"  ></iframe>',
+    Url: 'uhA3-svjQFg',
     Description: 'videos.sd-basic-op-desc',
     Title: 'videos.sd-basic-op-title',
     Thumb: '~/assets/images/sd-basic-op-thumb.jpg',
     Route: '/video'
   },
   {
-    Url:
-      '<iframe  style="margin-bottom: 10; padding:0; border:0; width:100%; height:100%" src="https://www.youtube.com/embed/6_M1J8HZXIk"  ></iframe>',
+    Url: '6_M1J8HZXIk',
     Description: 'videos.pt-basic-op-desc',
     Title: 'videos.pt-basic-op-title',
     Thumb: '~/assets/images/pt-basic-op-thumb.jpg',
     Route: '/video'
   },
   {
-    Url:
-      '<iframe  style="margin-bottom: 10; padding:0; border:0; width:100%; height:100%" src="https://www.youtube.com/embed/3B-6ked84us"  ></iframe>',
+    Url: '3B-6ked84us',
     Description: 'videos.pt-ap-basic-op-desc',
     Title: 'videos.pt-ap-basic-op-title',
     Thumb: '~/assets/images/intro-PushTracker-app-thumb.jpg',
     Route: '/video'
   },
   {
-    Url:
-      '<iframe  style="margin-bottom: 10; padding:0; border:0; width:100%; height:100%" src="https://www.youtube.com/embed/3B-6ked84us"  ></iframe>',
+    Url: '3B-6ked84us',
     Description: 'videos.sea-basic-op-desc',
     Title: 'videos.sea-basic-op-title',
     Thumb: '~/assets/images/intro-PushTracker-app-thumb.jpg',
     Route: '/video'
   },
   {
-    Url:
-      '<iframe  style="margin-bottom: 10; padding:0; border:0; width:100%; height:100%" src="https://www.youtube.com/embed/45Kj7zJpDcM"  ></iframe>',
+    Url: '45Kj7zJpDcM',
     Description: 'videos.eval-training-desc',
     Title: 'videos.eval-training-desc',
     Thumb: '~/assets/images/eval-thumb.jpg',
     Route: '/video'
   },
   {
-    Url:
-      '<iframe  style="margin-bottom: 10; padding:0; border:0; width:100%; height:100%" src="https://www.youtube.com/embed/hFid9ks551A"  ></iframe>',
+    Url: 'hFid9ks551A',
     Description: 'videos.interview-desc',
     Title: 'videos.interview-title',
     Thumb: '~/assets/images/interview-thumb.jpg',

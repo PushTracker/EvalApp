@@ -1,6 +1,6 @@
 // angular
 import { Component, ElementRef, OnInit, AfterViewInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { RouterExtensions } from 'nativescript-angular/router';
 // nativescript
@@ -18,6 +18,8 @@ import { Animation, AnimationDefinition } from 'ui/animation';
 import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
 import { Observable } from 'data/observable';
 
+const orientation = require('nativescript-orientation');
+
 @Component({
   selector: 'Video',
   moduleId: module.id,
@@ -30,11 +32,24 @@ export class VideoComponent implements OnInit, AfterViewInit {
   url = String();
   title = String();
   desc = String();
+  options = { rel: 1 };
 
-  constructor(private _routerExtensions: RouterExtensions, private route: ActivatedRoute) {}
+  private routeSub: any; // subscription to route observer
+
+  constructor(private _routerExtensions: RouterExtensions, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit() {
+    // see https://github.com/NativeScript/nativescript-angular/issues/1049
+    this.routeSub = this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        orientation.setOrientation('portrait');
+        orientation.disableRotation();
+      }
+    });
+
     const query = this.route.snapshot.queryParams;
+    //orientation.setOrientation('portrait');
+    orientation.enableRotation();
 
     this.url = `${query['url']}`;
     this.title = `${query['title']}`;
@@ -66,6 +81,4 @@ export class VideoComponent implements OnInit, AfterViewInit {
     //     });
     // }, 750)
   }
-
-  onDrawerButtonTap(): void {}
 }
