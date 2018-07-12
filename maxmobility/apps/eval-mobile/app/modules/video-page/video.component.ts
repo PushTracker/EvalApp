@@ -46,10 +46,10 @@ export class VideoComponent implements OnInit, AfterViewInit {
         orientation.disableRotation();
       }
     });
-
-    const query = this.route.snapshot.queryParams;
     //orientation.setOrientation('portrait');
     orientation.enableRotation();
+
+    const query = this.route.snapshot.queryParams;
 
     this.url = `${query['url']}`;
     this.title = `${query['title']}`;
