@@ -33,6 +33,7 @@
     "clean.shared": "npx rimraf -- libs/**/*.js && npx rimraf -- libs/**/*.map && npx rimraf -- libs/**/*.d.ts && npx rimraf -- libs/**/*.ngfactory.ts && npx rimraf -- libs/**/*.ngsummary.json && npx rimraf -- libs/**/*.metadata.json && npx rimraf -- xplat/**/*.js && npx rimraf -- xplat/**/*.map && npx rimraf -- xplat/**/*.d.ts && npx rimraf -- xplat/**/*.ngfactory.ts && npx rimraf -- xplat/**/*.ngsummary.json && npx rimraf -- xplat/**/*.metadata.json",
     "nuke": "npm run clean && npm run clean.eval.mobile && npm run clean.shared",
     "nuki": "npm run nuke && npm i",
+    "ns-setup": "npm uninstall -g nativescript && npm install -g nativescript@next",
     "precommit": "lint-staged"
   },
   "private": true,
