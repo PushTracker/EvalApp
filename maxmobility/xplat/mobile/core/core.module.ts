@@ -1,23 +1,14 @@
-import { NgModule, NO_ERRORS_SCHEMA, APP_INITIALIZER, Optional, SkipSelf } from '@angular/core';
-
-// nativescript
-import { device } from 'tns-core-modules/platform';
+import { NgModule, NO_ERRORS_SCHEMA, Optional, SkipSelf } from '@angular/core';
+import { throwIfAlreadyLoaded } from '@maxmobility/helpers';
+import { TranslateModule } from '@ngx-translate/core';
+import * as TNSKinvey from 'kinvey-nativescript-sdk';
 import { NativeScriptCommonModule } from 'nativescript-angular/common';
 import { NativeScriptFormsModule } from 'nativescript-angular/forms';
 import { NativeScriptRouterModule } from 'nativescript-angular/router';
-import { NativeScriptModule } from 'nativescript-angular/nativescript.module';
-import { NativeScriptHttpClientModule } from 'nativescript-angular/http-client';
-import { NativeScriptUISideDrawerModule } from 'nativescript-ui-sidedrawer/angular';
-import { NativeScriptUIListViewModule } from 'nativescript-ui-listview/angular';
-
-// libs
-import * as TNSKinvey from 'kinvey-nativescript-sdk';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { throwIfAlreadyLoaded } from '@maxmobility/helpers';
 import { LoadingIndicator } from 'nativescript-loading-indicator';
-import { TNSFontIconModule } from 'nativescript-ngx-fonticon';
-import { MaxMobilityCoreModule } from '@maxmobility/core';
-// app
+// import { TNSFontIconModule } from 'nativescript-ngx-fonticon';
+import { NativeScriptUIListViewModule } from 'nativescript-ui-listview/angular';
+import { device } from 'tns-core-modules/platform';
 import { PROVIDERS } from './services';
 
 // factories
@@ -38,10 +29,9 @@ const MODULES = [
   NativeScriptCommonModule,
   NativeScriptFormsModule,
   NativeScriptRouterModule,
-  NativeScriptUISideDrawerModule,
   NativeScriptUIListViewModule,
-  TranslateModule,
-  TNSFontIconModule
+  TranslateModule
+  // TNSFontIconModule
 ];
 
 @NgModule({

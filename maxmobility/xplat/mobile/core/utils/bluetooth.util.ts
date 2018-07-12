@@ -1,14 +1,10 @@
+import * as dialogsModule from 'tns-core-modules/ui/dialogs';
 import { Injectable } from '@angular/core';
-import { fromObject } from 'data/observable';
-import { ObservableArray } from 'data/observable-array';
-
-import * as dialogsModule from 'ui/dialogs';
-
-import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
-import { Feedback, FeedbackType, FeedbackPosition } from 'nativescript-feedback';
+import { fromObject } from 'tns-core-modules/data/observable';
+import { ObservableArray } from 'tns-core-modules/data/observable-array';
+import { SnackBar } from 'nativescript-snackbar';
+import { Feedback } from 'nativescript-feedback';
 import { Bluetooth } from 'nativescript-bluetooth';
-import * as Toast from 'nativescript-toast';
-
 import { Packet, DailyInfo } from '@maxmobility/core';
 //import { DailyInfo } from "./daily-info";
 //const Packet = require("./packet/packet");
@@ -16,10 +12,10 @@ import { Packet, DailyInfo } from '@maxmobility/core';
 @Injectable()
 export class BluetoothService {
   // static members
-  public static SmartDriveServiceUUID: string = '0cd51666-e7cb-469b-8e4d-2742f1ba7723';
-  public static PushTrackerServiceUUID: string = '1d14d6ee-fd63-4fa1-bfa4-8f47b42119f0';
-  public static AppServiceUUID: string = '9358ac8f-6343-4a31-b4e0-4b13a2b45d86';
-  public static peripherals: ObservableArray<any> = new ObservableArray();
+  public static SmartDriveServiceUUID = '0cd51666-e7cb-469b-8e4d-2742f1ba7723';
+  public static PushTrackerServiceUUID = '1d14d6ee-fd63-4fa1-bfa4-8f47b42119f0';
+  public static AppServiceUUID = '9358ac8f-6343-4a31-b4e0-4b13a2b45d86';
+  public static peripherals = new ObservableArray();
 
   // public members
 

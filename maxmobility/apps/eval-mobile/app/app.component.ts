@@ -1,4 +1,3 @@
-import * as application from 'tns-core-modules/application';
 import { Component } from '@angular/core';
 import { CLog, LoggingService, UserService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
@@ -6,9 +5,9 @@ import { Kinvey } from 'kinvey-nativescript-sdk';
 import { registerElement } from 'nativescript-angular/element-registry';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { Video as ExoPlayer } from 'nativescript-exoplayer';
+import * as orientation from 'nativescript-orientation';
+import * as application from 'tns-core-modules/application';
 import { device } from 'tns-core-modules/platform';
-
-const orientation = require('nativescript-orientation');
 
 // Register Custom Elements for Angular
 const NS_CAROUSEL = require('nativescript-carousel');

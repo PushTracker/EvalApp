@@ -1,8 +1,7 @@
 {
     "compilerOptions": {
-        "target": "es2015",
         "module": "commonjs",
-        "moduleResolution": "node",
+        "target": "es2015",
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "noImplicitUseStrict": true,
@@ -14,6 +13,7 @@
         "lib": [
             "es2017",
             "dom",
+            "webworker",
             "es6"
         ],
         "baseUrl": ".",
@@ -36,8 +36,10 @@
             ]
         }
     },
-    "exclude": [
-        "node_modules",
-        "platforms"
-    ]
+    "include": [
+        "references.d.ts",
+        "app/main.ts",
+        "app/**/*.module.ts"
+    ],
+    "compileOnSave": false
 }
