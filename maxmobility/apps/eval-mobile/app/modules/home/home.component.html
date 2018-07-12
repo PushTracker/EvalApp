@@ -4,7 +4,8 @@
   <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem>
 </ActionBar>
 
-<ScrollView tkMainContent class="main-scroll-view">
+<StackLayout tkMainContent>
+<ScrollView class="main-scroll-view">
   <GridLayout rows="auto, auto, auto, auto, auto, auto" columns="*">
 
     //Connectivity
@@ -153,3 +154,4 @@
 
   </GridLayout>
 </ScrollView>
+</StackLayout>
