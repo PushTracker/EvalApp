@@ -1,14 +1,11 @@
-import { Component, ElementRef, OnInit, AfterViewInit, ViewChild } from '@angular/core';
-import { ObservableArray, ChangedData, ChangeType } from 'tns-core-modules/data/observable-array';
-import { PageRoute, RouterExtensions } from 'nativescript-angular/router';
-import { switchMap } from 'rxjs/operators';
-import { View } from 'ui/core/view';
-import { Color } from 'tns-core-modules/color';
-import { Feedback, FeedbackType, FeedbackPosition } from 'nativescript-feedback';
-import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
-import { BluetoothService } from '@maxmobility/mobile';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { PushTracker } from '@maxmobility/core';
-const Carousel = require('nativescript-carousel').Carousel;
+import { BluetoothService } from '@maxmobility/mobile';
+import { PageRoute, RouterExtensions } from 'nativescript-angular/router';
+import { Feedback } from 'nativescript-feedback';
+import { SnackBar } from 'nativescript-snackbar';
+import { switchMap } from 'rxjs/operators';
+import { ChangedData, ObservableArray } from 'tns-core-modules/data/observable-array';
 
 @Component({
   selector: 'Pairing',

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Push } from 'kinvey-nativescript-sdk/push';
 import { User } from '@maxmobility/core';
-import * as fs from 'tns-core-modules/file-system/file-system';
 import * as Kinvey from 'kinvey-nativescript-sdk';
+import { Push } from 'kinvey-nativescript-sdk/push';
 import * as pushPlugin from 'nativescript-push-notifications';
+import * as fs from 'tns-core-modules/file-system/file-system';
 
 @Injectable()
 export class UserService {

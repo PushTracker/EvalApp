@@ -1,27 +1,21 @@
 import { Injectable, NgZone } from '@angular/core';
-import { Http, Headers, Response, ResponseOptions } from '@angular/http';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/toPromise';
-import { Kinvey } from 'kinvey-nativescript-sdk';
-
-import { fromObject, Observable } from 'tns-core-modules/data/observable';
-import { ObservableArray } from 'tns-core-modules/data/observable-array';
-
+import { Response } from '@angular/http';
 import { Trial } from '@maxmobility/core';
+import { Kinvey } from 'kinvey-nativescript-sdk';
+import { Observable } from 'tns-core-modules/data/observable';
+import { ObservableArray } from 'tns-core-modules/data/observable-array';
 
 export class Evaluation extends Observable {
   // public members
-  public _id = null;
-
-  public pushing_pain: number = 0;
-  public pushing_fatigue: number = 0;
-  public impact_on_independence: number = 0;
-  public ramp_difficulty: number = 0.0;
-  public flat_difficulty: number = 0.0;
-  public years: string = '';
-  public chair: string = '';
-
-  public trials: ObservableArray<Trial> = new ObservableArray();
+  _id = null;
+  pushing_pain = 0;
+  pushing_fatigue = 0;
+  impact_on_independence = 0;
+  ramp_difficulty = 0.0;
+  flat_difficulty = 0.0;
+  years = '';
+  chair = '';
+  trials: ObservableArray<Trial> = new ObservableArray();
 
   // private members
 

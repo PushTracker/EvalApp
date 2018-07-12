@@ -2,10 +2,8 @@ import { Observable } from 'tns-core-modules/data/observable';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 import * as LS from 'nativescript-localstorage';
 import * as imageSource from 'tns-core-modules/image-source';
-
 import { LocationService } from '@maxmobility/mobile';
 import { PushTracker } from '@maxmobility/core';
-
 import * as _ from 'underscore';
 
 export class Record extends Observable {

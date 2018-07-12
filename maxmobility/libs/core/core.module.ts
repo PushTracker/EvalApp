@@ -1,12 +1,7 @@
-import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
 import { APP_BASE_HREF, CommonModule } from '@angular/common';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-
-// libs
-import { NxModule } from '@nrwl/nx';
+import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
 import { throwIfAlreadyLoaded } from '@maxmobility/helpers';
-
-// app
+import { NxModule } from '@nrwl/nx';
 import { CORE_PROVIDERS } from './services';
 
 export const BASE_PROVIDERS: any[] = [

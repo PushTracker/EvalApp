@@ -1,16 +1,15 @@
-import * as httpModule from 'tns-core-modules/http';
-import * as LS from 'nativescript-localstorage';
 import { Injectable } from '@angular/core';
-import { ObservableArray } from 'tns-core-modules/data/observable-array';
 import { Kinvey } from 'kinvey-nativescript-sdk';
+import * as LS from 'nativescript-localstorage';
+import { ObservableArray } from 'tns-core-modules/data/observable-array';
+import { File, knownFolders, path } from 'tns-core-modules/file-system';
+import * as httpModule from 'tns-core-modules/http';
 import { isIOS } from 'tns-core-modules/platform';
-import { path, knownFolders, File } from 'tns-core-modules/file-system';
 
 @Injectable()
 export class FirmwareService {
   // static members
   public static firmwarePathPrefix = '/assets/ota/';
-
   private static fsKeyPrefix = 'FirmwareService.';
   private static fsKeyMetadata = 'Metadata';
 
