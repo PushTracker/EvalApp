@@ -19,7 +19,7 @@
 	    <StackLayout row="0" class="topSlide"
                      height="35%" width="100%"
                      orientation="horizontal" horizontalAlignment="center">
-	      <Image [src]="slide.Image" stretch="aspectFit"></Image>
+	      <Gif (loaded)="gifLoaded($event)" [src]="slide.Image" stretch="aspectFit"></Gif>
 	    </StackLayout>
 
 	    <ScrollView  row="1" class="lowerSlide hero" height="65%" >
