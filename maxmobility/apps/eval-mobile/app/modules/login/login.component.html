@@ -3,13 +3,14 @@
   <ScrollView height="100%" width="100%">
     <StackLayout row="0">
       <Label class="app-logo"
-             text="Smart Evaluation"></Label>
+             [text]="'general.title' | translate"></Label>
       <Label class="account-icon fa text-white"
              text="&#xf2be;"></Label>
       <TextField [text]="user.email"
                  class="text-field"
                  (textChange)="onEmailTextChange($event)"
-                 hint="Email..." keyboardType="email"
+                 [hint]="'hints.email' | translate"
+                 keyboardType="email"
                  autocorrect="false" autocapitalizationType="none"></TextField>
       <Label [text]="emailError"
              class="text-white error"
@@ -17,7 +18,7 @@
              textWrap="true"></Label>
       <TextField [(ngModel)]="user.password"
                  class="text-field"
-                 hint="Password..."
+                 [hint]="'hints.password' | translate"
                  secure="true"></TextField>
       <Label [text]="passwordError"
              class="text-white error"
@@ -28,11 +29,11 @@
               (tap)="onSubmitTap()"></Button>
       <DockLayout stretchLastChild="false">
         <Button dock="left"
-                text="Forgot Password"
+                [text]="'user.forgot-password' | translate"
                 class="btn-transparent text-white forgot"
                 (tap)="navToForgotPassword()"></Button>
         <Button dock="right"
-                text="Sign Up"
+                [text]="'user.sign-up' | translate"
                 class="btn-transparent text-white sign-up"
                 (tap)="navToSignUp()"></Button>
       </DockLayout>

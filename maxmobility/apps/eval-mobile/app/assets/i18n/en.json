@@ -139,6 +139,10 @@
     "item": {
         "delete-lbl": "Delete"
     },
+    "hints": {
+        "password": "Password...",
+        "email": "Email..."
+    },
     "general": {
         "title": "Smart Evaluation",
         "demo": "Demo",
@@ -228,6 +232,8 @@
         "password-change-confirm": "Are you sure you want to change your password?",
         "updated": "Your profile was successfully updated!",
         "login": "Login",
+        "sign-up": "Sign Up",
+        "forgot-password": "Forgot Password",
         "back-to-login": "Back To Login",
         "logout": "Logout",
         "sign-out": "Sign Out",
