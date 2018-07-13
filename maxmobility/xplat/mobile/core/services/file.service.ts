@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import * as Kinvey from 'kinvey-nativescript-sdk';
 import * as localStorage from 'nativescript-localstorage';
 import * as fs from 'tns-core-modules/file-system';
 import * as http from 'tns-core-modules/http';
-import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class FileService {
@@ -34,11 +34,14 @@ export class FileService {
         }
 
         const filePath = fs.path.join(fs.knownFolders.currentApp().path, `assets/i18n/${file._filename}`);
-        const downloadedFile = await http.getFile(file._downloadURL, filePath).catch(err => {
+        await http.getFile(file._downloadURL, filePath).catch(err => {
           console.log('error http.getFile', err);
         });
 
-        this._translateService.reloadLang('es');
+        // Get the language name from the filename by removing the file extension from _filename property
+        const languageName = file._filename.replace(/\..+$/, '');
+        // reload the language in the ngx TranslateService
+        this._translateService.reloadLang(languageName);
 
         console.log(`Downloaded ${file._filename} successfully!`);
 
