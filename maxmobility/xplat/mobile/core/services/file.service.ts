@@ -15,17 +15,15 @@ export class FileService {
    * Downloads the i18n json translation files from the Kinvey account and saves to the `assets/i18n/` directory that the ngx TranslateService will use to load files.
    */
   async downloadTranslationFiles() {
-    console.log('===== userService.downloadTranslationFiles ====');
+    console.log('**** FileService.downloadTranslationFiles ****');
+
     // query Kinvey Files for all translation files
-    const query = new Kinvey.Query();
-    query.equalTo('translation_file', true);
+    const query = new Kinvey.Query().equalTo('translation-file', true);
     const files = await Kinvey.Files.find(query);
 
     if (files.length >= 1) {
       files.forEach(async file => {
-        // check if we have the latest version of the translation files
-        // if so then just return and move to the next file in the loop
-
+        // check if we have the latest version of the translation files - if not return out to next item
         const data = localStorage.getItem(`${file._filename}-${FileService.fsKeyMetadata}`);
         console.log(`file ${file._filename} stored metadata`, JSON.stringify(data));
 
@@ -47,6 +45,7 @@ export class FileService {
 
         // save the file metadata since we just downloaded the file and stored it
         this._saveFileMetaData(file);
+        console.log(`file ${file._filename} updated metadata`, JSON.stringify(data));
       });
     }
   }
