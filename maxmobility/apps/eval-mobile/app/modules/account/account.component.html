@@ -23,16 +23,16 @@
              text="&#xf2be;"></Label>
       <GridLayout rows="auto" columns="auto, *">
         <Label
-	  col="0"
-	  class="label"
-	  [text]="'user.language' | translate"></Label>
+	      col="0"
+	      class="label"
+	      [text]="'user.language' | translate"></Label>
         <DropDown
-	  col="1"
-	  class="dropdown"
-	  [hint]="'user.language' | translate"
-          [selectedIndex]="selectedLanguageIndex"
-	  [items]="languages"
-	  (selectedIndexChanged)="onLanguageChanged($event)"></DropDown>
+	      col="1"
+	      class="dropdown"
+	      [hint]="'user.language' | translate"
+        [selectedIndex]="selectedLanguageIndex"
+	      [items]="languages"
+	      (selectedIndexChanged)="onLanguageChanged($event)"></DropDown>
       </GridLayout>
       <TextField [(ngModel)]="user.data.first_name"
                  returnKeyType="next"

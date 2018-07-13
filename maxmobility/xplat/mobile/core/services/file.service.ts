@@ -18,7 +18,7 @@ export class FileService {
     console.log('**** FileService.downloadTranslationFiles ****');
 
     // query Kinvey Files for all translation files
-    const query = new Kinvey.Query().equalTo('translation-file', true);
+    const query = new Kinvey.Query().equalTo('translation_file', true);
     const files = await Kinvey.Files.find(query);
 
     if (files.length >= 1) {
@@ -45,17 +45,17 @@ export class FileService {
 
         // save the file metadata since we just downloaded the file and stored it
         this._saveFileMetaData(file);
-        console.log(`file ${file._filename} updated metadata`, JSON.stringify(data));
       });
     }
   }
 
   private _saveFileMetaData(file: Kinvey.File) {
-    console.log(JSON.stringify(file));
     const metadata = {
       file_version: file._version
     };
 
     localStorage.setItem(`${file._filename}-${FileService.fsKeyMetadata}`, metadata);
+
+    console.log(`${file._filename} updated metadata`, JSON.stringify(metadata));
   }
 }

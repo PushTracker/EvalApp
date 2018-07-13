@@ -1,23 +1,17 @@
 // angular
-import { Component, OnInit, ViewChild } from '@angular/core';
-// nativescript
-import { confirm } from 'tns-core-modules/ui/dialogs';
-import { Page } from 'tns-core-modules/ui/page';
-import { Image } from 'tns-core-modules/ui/image';
-import * as fileSystemModule from 'tns-core-modules/file-system';
-import * as imageSource from 'tns-core-modules/image-source';
+import { Component, OnInit } from '@angular/core';
+import { CLog } from '@maxmobility/core';
+import { FileService, LoggingService, ProgressService, UserService } from '@maxmobility/mobile';
+import { TranslateService } from '@ngx-translate/core';
+import { Kinvey } from 'kinvey-nativescript-sdk';
+import { RouterExtensions } from 'nativescript-angular/router';
 import * as camera from 'nativescript-camera';
+import * as email from 'nativescript-email';
 import { ImageCropper } from 'nativescript-imagecropper';
 import * as LS from 'nativescript-localstorage';
-import * as email from 'nativescript-email';
-// app
-import { ValueList } from 'nativescript-drop-down';
-import { DropDownModule } from 'nativescript-drop-down/angular';
-import { UserService, ProgressService, LoggingService } from '@maxmobility/mobile';
-import { User, CLog } from '@maxmobility/core';
-import { RouterExtensions } from 'nativescript-angular/router';
-import { Kinvey } from 'kinvey-nativescript-sdk';
-import { TranslateService } from '@ngx-translate/core';
+import * as imageSource from 'tns-core-modules/image-source';
+import { confirm } from 'tns-core-modules/ui/dialogs';
+import { Page } from 'tns-core-modules/ui/page';
 
 @Component({
   selector: 'Account',
@@ -58,7 +52,8 @@ export class AccountComponent implements OnInit {
     private _loggingService: LoggingService,
     private _router: RouterExtensions,
     private _page: Page,
-    private _translateService: TranslateService
+    private _translateService: TranslateService,
+    private _fileService: FileService
   ) {
     this._page.enableSwipeBackNavigation = false;
     this.imageCropper = new ImageCropper();
@@ -70,6 +65,8 @@ export class AccountComponent implements OnInit {
       this.languages.indexOf((this.user.data as any).language) > -1
         ? this.languages.indexOf((this.user.data as any).language)
         : 0;
+
+    this._fileService.downloadTranslationFiles();
   }
 
   getProfilePictureFSKey(): string {
@@ -155,6 +152,8 @@ export class AccountComponent implements OnInit {
     const newLanguage = this.languages[args.newIndex] || 'en';
     (this.user.data as any).language = newLanguage;
     this._translateService.use(newLanguage);
+    // save the user setting to their account when changed
+    this._saveUserToKinvey();
   }
 
   onDrawerButtonTap() {
@@ -176,21 +175,10 @@ export class AccountComponent implements OnInit {
       cancelButtonText: this.no
     }).then(result => {
       if (result) {
-        this.user
-          .update({
-            email: (this.user.data as any).email,
-            language: (this.user.data as any).language,
-            first_name: (this.user.data as any).first_name,
-            last_name: (this.user.data as any).last_name,
-            phone_number: (this.user.data as any).phone_number
-          })
-          .then(resp => {
-            CLog('update response', JSON.stringify(resp));
-            alert({ title: this.success, message: this.account_update_complete, okButtonText: this.ok });
-          })
-          .catch(err => {
-            this._loggingService.logException(err);
-          });
+        this._saveUserToKinvey().then(resp => {
+          CLog('update response', JSON.stringify(resp));
+          alert({ title: this.success, message: this.account_update_complete, okButtonText: this.ok });
+        });
       }
     });
   }
@@ -248,8 +236,8 @@ export class AccountComponent implements OnInit {
       message: this._translateService.instant('user.provide-feedback-confirm-message'),
       okButtonText: this.yes,
       cancelButtonText: this.no
-    }).then(result => {
-      if (result) {
+    }).then(confirmResult => {
+      if (confirmResult) {
         // send email to user
         email
           .available()
@@ -279,5 +267,19 @@ export class AccountComponent implements OnInit {
 
   onDebugMenuTap() {
     this._router.navigate(['/settings']);
+  }
+
+  private _saveUserToKinvey() {
+    return this.user
+      .update({
+        email: (this.user.data as any).email,
+        language: (this.user.data as any).language,
+        first_name: (this.user.data as any).first_name,
+        last_name: (this.user.data as any).last_name,
+        phone_number: (this.user.data as any).phone_number
+      })
+      .catch(err => {
+        this._loggingService.logException(err);
+      });
   }
 }
