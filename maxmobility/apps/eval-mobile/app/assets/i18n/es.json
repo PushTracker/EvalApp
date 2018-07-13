@@ -1,9 +1,29 @@
 {
   "menu": {
-    "home": "Casa",
+    "home": "SmartDrive",
     "all-events": "All Events",
     "events": "Events",
-    "copyright": "2018 MaxMobility"
+    "copyright": "2018 MaxMobility",
+    "connectivity": "Conectividad",
+    "con-desc": "Conéctese con PushTracker y SmartDrive",
+    "pair-pt-app": "Empareje un PushTracker a la aplicación",
+    "connect-app": "Conecte un Pushtracker a la aplicación",
+    "pair-pt-sd": "Empareje un PushTracker a un SmartDrive",
+    "ota": "Actualice un PushTracker y SmartDrive",
+    "clinical-tools": "Herramientas clínicas",
+    "clinical-tools-desc": "Entrenando como usar SmartDrive",
+    "training": "Entrenamiento SmartDrive",
+    "eval": "Comience la evaluación de SmartDrive",
+    "eval-title": "Comience la evaluación de SmartDrive",
+    "trial": "Comience una prueba SmartDrive.",
+    "trial-title": "Comience una prueba SmartDrive.",
+    "summary": "Resumen",
+    "demos": "Población",
+    "new-demo":
+      "No tienes demos registradas en tu cuenta. Toque la imagen de arriba para registrar una nueva unidad de demostración en su cuenta.",
+    "demos-desc": "Ubicación y gestión de demostración",
+    "faq": "Preguntas frecuentes",
+    "faq-desc": "Algunas preguntas frecuentes"
   },
   "error": {
     "upload-photo-lbl": "Lo sentimos, ocurrió un error al cargar esa foto."
