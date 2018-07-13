@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Demo, LoggingService } from '@maxmobility/core';
+import { DemoService, FileService, FirmwareService } from '@maxmobility/mobile';
+import { RouterExtensions } from 'nativescript-angular/router';
+import { Feedback, FeedbackPosition, FeedbackType } from 'nativescript-feedback';
+import { Color } from 'tns-core-modules/color';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
 import { Page } from 'tns-core-modules/ui/page';
-import { Color } from 'tns-core-modules/color';
-import { RouterExtensions } from 'nativescript-angular/router';
-import { LoggingService, Demo } from '@maxmobility/core';
-import { DemoService, FirmwareService, FileService } from '@maxmobility/mobile';
-import { Feedback, FeedbackType, FeedbackPosition } from 'nativescript-feedback';
 import { FAQs } from '../faq/faq.component';
 import { Videos } from '../videos/videos.component';
 

@@ -7,6 +7,7 @@ import { SnackBar } from 'nativescript-snackbar';
 import { switchMap } from 'rxjs/operators';
 import { Gif } from 'nativescript-gif';
 import { ChangedData, ObservableArray } from 'tns-core-modules/data/observable-array';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'Pairing',
@@ -19,43 +20,19 @@ export class PairingComponent implements AfterViewInit {
   snackbar = new SnackBar();
   selectedPage = 0;
 
-  slides = [
-    {
-      // Image: '~/assets/images/gifs/PT-APP-CONNECT2.gif',
-      Image: 'https://media4.giphy.com/media/3uyIgVxP1qAjS/200.gif',
-      Label: 'Pairing Your PushTracker to the App',
-      Bullets: [
-        'Press and hold the right flat button on your PushTracker for three seconds to enter the settings menu',
-        'Press the right button to scroll to the phone/PT icon.',
-        'Press the left raised button to innitiate pairing.'
-      ]
-    },
-    {
-      Image: '~/assets/images/PushTracker-Connecting.png',
-      Label: 'Connecting your PushTracker to the App',
-      Bullets: [
-        'With the PushTrtacker app open, press the right flat button on the PushTracker',
-        'You will see a "Success" notification in the app.'
-      ]
-    },
-    {
-      Image: '~/assets/images/gifs/PT-SD-CONNECT2.gif',
-      Label: 'Tap Gesture',
-      Bullets: [
-        'Press and hold the right flat button on your PushTracker for three seconds to enter the settings menu',
-        'Press the right button to scroll to the PT-SD icon.',
-        'Press the left raised button to innitiate pairing your PushTracker to your SmartDrive.'
-      ]
-    }
-  ];
+  slides = this._translateService.instant('pairing');
 
   private feedback: Feedback;
 
   constructor(
     private pageRoute: PageRoute,
     private routerExtensions: RouterExtensions,
-    private _bluetoothService: BluetoothService
+    private _bluetoothService: BluetoothService,
+    private _translateService: TranslateService
   ) {
+    // update slides
+    this.slides = this._translateService.instant('pairing');
+
     // figure out which slide we're going to
     this.pageRoute.activatedRoute.pipe(switchMap(activatedRoute => activatedRoute.queryParams)).forEach(params => {
       if (params.index) {
@@ -83,7 +60,6 @@ export class PairingComponent implements AfterViewInit {
         const pt = BluetoothService.PushTrackers.getItem(BluetoothService.PushTrackers.length - 1);
         if (pt) {
           pt.on(PushTracker.pushtracker_paired_event, pairedArgs => {
-            console.log('pairedArgs', pairedArgs);
             this.pushTrackerPairingSuccess();
           });
           pt.on(PushTracker.pushtracker_connect_event, arg => {
@@ -99,8 +75,8 @@ export class PairingComponent implements AfterViewInit {
   // Connectivity Events
   pushTrackerPairingSuccess() {
     this.feedback.success({
-      title: 'Success!',
-      message: 'Successfully paired with PushTracker!',
+      title: this._translateService.instant('dialogs.success'),
+      message: this._translateService.instant('bluetooth.pairing-success'),
       duration: 4500,
       // type: FeedbackType.Success, // no need to specify when using 'success' instead of 'show'
       onTap: () => {
@@ -111,8 +87,8 @@ export class PairingComponent implements AfterViewInit {
 
   pushTrackerConnectionSuccess() {
     this.feedback.success({
-      title: 'Success!',
-      message: 'Successfully connected with PushTracker!',
+      title: this._translateService.instant('dialogs.success'),
+      message: this._translateService.instant('bluetooth.connection-success'),
       duration: 4500,
       // type: FeedbackType.Success, // no need to specify when using 'success' instead of 'show'
       onTap: () => {

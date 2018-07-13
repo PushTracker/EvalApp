@@ -21,7 +21,10 @@ export class TrainingComponent implements AfterViewInit {
 
   slides = this.translateService.instant('training');
 
-  constructor(private routerExtensions: RouterExtensions, private translateService: TranslateService) {}
+  constructor(private routerExtensions: RouterExtensions, private translateService: TranslateService) {
+    // re-update slides every time it's created
+    this.slides = this.translateService.instant('training');
+  }
 
   isIOS(): boolean {
     return isIOS;

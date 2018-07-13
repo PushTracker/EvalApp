@@ -133,10 +133,15 @@
         "camera": "Camera",
         "confirm-photo-delete": "Are you sure you want to remove this photo?",
         "close": "Close",
-        "sms": "Text message"
+        "sms": "Text message",
+        "success": "Success!"
     },
     "item": {
         "delete-lbl": "Delete"
+    },
+    "hints": {
+        "password": "Password...",
+        "email": "Email..."
     },
     "general": {
         "title": "Smart Evaluation",
@@ -165,12 +170,35 @@
         "scan-sd": "SD: Press scan or edit button",
         "scan-pt": "PT: Press scan or edit button"
     },
-    "help": {
-        "intro":
-        "As an artist you can now live stream your own unique perspective in a sketch. Tap anywhere to view current areas you can sketch on...",
-        "item":
-        "This area groups a collection of topics together you can create sketches and artwork for. Tap to get started!"
-    },
+    "pairing": [
+        {
+            "Image": "~/assets/images/PushTracker-pairing.png",
+            "Label": "Pairing Your PushTracker to the App",
+            "Bullets": [
+                "Press and hold the right flat button on your PushTracker for three seconds to enter the settings menu",
+                "Press the right button to scroll to the phone/PT icon.",
+                "Press the left raised button to initiate pairing."
+            ]
+        },
+        {
+            "Image": "~/assets/images/PushTracker-Connecting.png",
+            "Label": "Connecting your PushTracker to the App",
+            "Bullets": [
+                "With the PushTracker app open, press the right flat button on the PushTracker",
+                "You will see a 'Success' notification in the app.",
+                "Note: if you don't see a 'Success' notification in the app then you may need to re-pair your PushTracker"
+            ]
+        },
+        {
+            "Image": "~/assets/images/PushTracker-SmartDrive-pairing.png",
+            "Label": "Tap Gesture",
+            "Bullets": [
+                "Press and hold the right flat button on your PushTracker for three seconds to enter the settings menu",
+                "Press the right button to scroll to the PT-SD icon.",
+                "Press the left raised button to initiate pairing your PushTracker to your SmartDrive."
+            ]
+        }
+    ],
     "user": {
         "provide-feedback-confirm-title": "Provide Feedback?",
         "provide-feedback-confirm-message": "Would you like to send feedback via your configured email client?",
@@ -204,6 +232,8 @@
         "password-change-confirm": "Are you sure you want to change your password?",
         "updated": "Your profile was successfully updated!",
         "login": "Login",
+        "sign-up": "Sign Up",
+        "forgot-password": "Forgot Password",
         "back-to-login": "Back To Login",
         "logout": "Logout",
         "sign-out": "Sign Out",
@@ -355,6 +385,8 @@
         }
     },
     "bluetooth": {
+        "pairing-success": "Successfully paired with PushTracker!",
+        "connection-success": "Successfully connected with PushTracker!",
         "searching": "Searching for Devices",
         "sd_app_conn_instructions": "For the app to be able to see and connect to a SmartDrive, you must have the SmartDrive ON and power assist OFF / 'SD Off'.  If you have trouble, turn the SmartDrive OFF and then ON.",
         "pt_app_conn_instructions": "To connect the PushTracker to the app, you must have the app open on your phone, then press and release the right button on the PushTracker. This will either connect your PushTracker to your app or take you into the pairing settings of the PushTracker. After pairing, you will need to leave the settings menu and then press the right button to connect to the app. If you have trouble, put the PushTracker to SLEEP and then turn it ON.",
