@@ -5,6 +5,7 @@ import { PageRoute, RouterExtensions } from 'nativescript-angular/router';
 import { Feedback } from 'nativescript-feedback';
 import { SnackBar } from 'nativescript-snackbar';
 import { switchMap } from 'rxjs/operators';
+import { Gif } from 'nativescript-gif';
 import { ChangedData, ObservableArray } from 'tns-core-modules/data/observable-array';
 
 @Component({
@@ -20,7 +21,8 @@ export class PairingComponent implements AfterViewInit {
 
   slides = [
     {
-      Image: '~/assets/images/PushTracker-pairing.png',
+      // Image: '~/assets/images/gifs/PT-APP-CONNECT2.gif',
+      Image: 'https://media4.giphy.com/media/3uyIgVxP1qAjS/200.gif',
       Label: 'Pairing Your PushTracker to the App',
       Bullets: [
         'Press and hold the right flat button on your PushTracker for three seconds to enter the settings menu',
@@ -37,7 +39,7 @@ export class PairingComponent implements AfterViewInit {
       ]
     },
     {
-      Image: '~/assets/images/PushTracker-SmartDrive-pairing.png',
+      Image: '~/assets/images/gifs/PT-SD-CONNECT2.gif',
       Label: 'Tap Gesture',
       Bullets: [
         'Press and hold the right flat button on your PushTracker for three seconds to enter the settings menu',
@@ -117,6 +119,14 @@ export class PairingComponent implements AfterViewInit {
         console.log('showSuccess tapped');
       }
     });
+  }
+
+  gifLoaded(args) {
+    console.log('gif loaded');
+    console.log(args.object);
+    const x = args.object as Gif;
+    console.log(x.src);
+    x.start();
   }
 
   // button events
