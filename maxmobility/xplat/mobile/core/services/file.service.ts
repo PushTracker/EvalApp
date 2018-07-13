@@ -3,11 +3,13 @@ import * as Kinvey from 'kinvey-nativescript-sdk';
 import * as localStorage from 'nativescript-localstorage';
 import * as fs from 'tns-core-modules/file-system';
 import * as http from 'tns-core-modules/http';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class FileService {
+  constructor(private _translateService: TranslateService) {}
+
   private static fsKeyMetadata = 'Metadata';
-  private static TranslationKey = 'TranslationFile';
 
   /**
    * Downloads the i18n json translation files from the Kinvey account and saves to the `assets/i18n/` directory that the ngx TranslateService will use to load files.
@@ -26,14 +28,17 @@ export class FileService {
 
         const data = localStorage.getItem(`${file._filename}-${FileService.fsKeyMetadata}`);
         console.log(`file ${file._filename} stored metadata`, JSON.stringify(data));
+
         if (data && data.file_version === file._version) {
           return;
         }
 
         const filePath = fs.path.join(fs.knownFolders.currentApp().path, `assets/i18n/${file._filename}`);
-        http.getFile(file._downloadURL, filePath).catch(err => {
+        const downloadedFile = await http.getFile(file._downloadURL, filePath).catch(err => {
           console.log('error http.getFile', err);
         });
+
+        this._translateService.reloadLang('es');
 
         console.log(`Downloaded ${file._filename} successfully!`);
 
@@ -51,22 +56,4 @@ export class FileService {
 
     localStorage.setItem(`${file._filename}-${FileService.fsKeyMetadata}`, metadata);
   }
-
-  // /**
-  //  * Checks the file version against the last downloaded version.
-  //  * If we do not have the latest version we will download.
-  //  * @param file
-  //  * @returns {boolean}
-  //  */
-  // private _shouldDownloadFile(file): boolean {
-  //   const data = localStorage.getItem(`${file.name}-${FileService.fsKeyMetadata}`);
-  //   console.log('storage data', JSON.stringify(data));
-  //   if (!data) {
-  //     console.log('no data for the file so we need to download it', file);
-  //     return true;
-  //   }
-
-  //   const result = data.file_version === file._version ? false : true;
-  //   return result;
-  // }
 }
