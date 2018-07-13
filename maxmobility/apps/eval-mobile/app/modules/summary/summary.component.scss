@@ -51,19 +51,19 @@ Button, TextField {
 }
 
 .trial-slider-label {
-    color: $permobil-ocean;
+    color: $permobil-titan;
     font-family: $os-Light;
-    margin: 5, 0, 0, 5;
+    margin: 5, 0, 0, 15;
 }
 
-.trial-slider-value-label {
+.trial-slider-value {
     color: #fff;
     font-family: $os-Light;
-    margin: 5, 0, 5, 0;
+    margin: 5, 0, 5, 15;
 }
 
 .trial-slider {
-    margin: 0, 5, 0, 5;
+    margin: 0, 5, 0, 15;
     color: $permobil-ocean;
     background-color: $permobil-ocean;
 }

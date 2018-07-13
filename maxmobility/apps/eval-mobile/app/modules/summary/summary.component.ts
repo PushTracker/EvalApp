@@ -23,8 +23,50 @@ export class SummaryComponent {
   trialName: string = '';
   snackbar = new SnackBar();
 
+  showFlatDifficulty: boolean = false;
+  showRampDifficulty: boolean = false;
+  showInclineDifficulty: boolean = false;
+  showOtherDifficulty: boolean = false;
+
   hasFlatDifficulty: boolean = this.evaluation.flat_difficulty > 0;
   hasRampDifficulty: boolean = this.evaluation.ramp_difficulty > 0;
+  hasInclineDifficulty: boolean = this.evaluation.incline_difficulty > 0;
+  hasOtherDifficulty: boolean = this.evaluation.other_difficulty > 0;
+
+  difficulties = [
+    {
+      name: 'Flat',
+      key: 'flat_difficulty',
+      labelText: 'summary.difficulty-flat',
+      sliderLabelText: 'summary.flat-surface-difficulty',
+      has: false,
+      show: false
+    },
+    {
+      name: 'Ramp',
+      key: 'ramp_difficulty',
+      labelText: 'summary.difficulty-ramp',
+      sliderLabelText: 'summary.ramp-difficulty',
+      has: false,
+      show: false
+    },
+    {
+      name: 'Incline',
+      key: 'incline_difficulty',
+      labelText: 'summary.difficulty-incline',
+      sliderLabelText: 'summary.incline-difficulty',
+      has: false,
+      show: false
+    },
+    {
+      name: 'Other',
+      key: 'other_difficulty',
+      labelText: 'summary.difficulty-other',
+      sliderLabelText: 'summary.other-surface-difficulty',
+      has: false,
+      show: false
+    }
+  ];
 
   totalPushesWith: number = 0;
   totalPushesWithout: number = 0;
@@ -58,7 +100,23 @@ export class SummaryComponent {
     private _evaluationService: EvaluationService,
     private _translateService: TranslateService
   ) {
+    // update difficulties
+    this.difficulties.map(d => {
+      d.has = this.evaluation[d.key] > 0;
+    });
     this.evaluation.trials.map(t => {
+      if (t.flat) {
+        this.difficulties.filter(d => d.name == 'Flat')[0].show = true;
+      }
+      if (t.ramp) {
+        this.difficulties.filter(d => d.name == 'Ramp')[0].show = true;
+      }
+      if (t.inclines) {
+        this.difficulties.filter(d => d.name == 'Incline')[0].show = true;
+      }
+      if (t.other) {
+        this.difficulties.filter(d => d.name == 'Other')[0].show = true;
+      }
       this.totalPushesWith += t.with_pushes;
       this.totalPushesWithout += t.without_pushes;
       this.totalTimeWith += t.with_elapsed;
@@ -155,12 +213,15 @@ export class SummaryComponent {
     });
   }
 
-  onRampDifficultyChecked(args): void {
-    this.hasRampDifficulty = args.value;
+  onDifficultyChecked(diff: any, args): void {
+    diff.has = args.value;
+    if (!diff.has) {
+      this.evaluation[diff.key] = 0;
+    }
   }
 
-  onFlatDifficultyChecked(args): void {
-    this.hasFlatDifficulty = args.value;
+  onSliderUpdate(key, args) {
+    this.evaluation[key] = args.object.value;
   }
 
   onBack(): void {
@@ -180,10 +241,6 @@ export class SummaryComponent {
   onReturn(args) {
     const textField = <TextField>args.object;
     this.trialName = textField.text;
-  }
-
-  onSliderUpdate(key, args) {
-    this.evaluation[key] = args.object.value;
   }
 
   get evaluation() {
