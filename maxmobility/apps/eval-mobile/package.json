@@ -66,6 +66,7 @@
     "nativescript-feedback": "file:../../node_modules/nativescript-feedback",
     "nativescript-fresco": "file:../../node_modules/nativescript-fresco",
     "nativescript-geolocation": "^4.2.6",
+    "nativescript-gif": "^4.0.0",
     "nativescript-gradient": "file:../../node_modules/nativescript-gradient",
     "nativescript-imagecropper": "^1.0.4",
     "nativescript-iqkeyboardmanager": "file:../../node_modules/nativescript-iqkeyboardmanager",
