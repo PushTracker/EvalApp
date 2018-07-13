@@ -29,6 +29,9 @@ export class PairingComponent implements AfterViewInit {
     private _bluetoothService: BluetoothService,
     private _translateService: TranslateService
   ) {
+    // update slides
+    this.slides = this._translateService.instant('pairing');
+
     // figure out which slide we're going to
     this.pageRoute.activatedRoute.pipe(switchMap(activatedRoute => activatedRoute.queryParams)).forEach(params => {
       if (params.index) {
