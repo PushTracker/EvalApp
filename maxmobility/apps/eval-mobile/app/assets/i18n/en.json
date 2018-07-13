@@ -172,7 +172,7 @@
     },
     "pairing": [
         {
-            "Image": "~/assets/images/PushTracker-pairing.png",
+            "Image": "~/assets/images/gifs/PT-APP-CONNECT2.gif",
             "Label": "Pairing Your PushTracker to the App",
             "Bullets": [
                 "Press and hold the right flat button on your PushTracker for three seconds to enter the settings menu",
@@ -190,7 +190,7 @@
             ]
         },
         {
-            "Image": "~/assets/images/PushTracker-SmartDrive-pairing.png",
+            "Image": "~/assets/images/gifs/PT-SD-CONNECT2.gif",
             "Label": "Tap Gesture",
             "Bullets": [
                 "Press and hold the right flat button on your PushTracker for three seconds to enter the settings menu",
@@ -289,8 +289,10 @@
             "{{/finishedWithout}}",
             "{{/trials._array}}",
             "",
-            "User's difficulty with ramps: {{evaluation.ramp_difficulty}} / 10",
             "User's difficulty with flats: {{evaluation.flat_difficulty}} / 10",
+            "User's difficulty with ramps: {{evaluation.ramp_difficulty}} / 10",
+            "User's difficulty with inclines: {{evaluation.incline_difficulty}} / 10",
+            "User's difficulty with other: {{evaluation.other_difficulty}} / 10",
             "",
             "User performed {{pushDiff}}% {{pushComparison}} pushes with SmartDrive.",
             "",

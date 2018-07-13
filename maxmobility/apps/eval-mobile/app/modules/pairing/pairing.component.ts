@@ -5,6 +5,7 @@ import { PageRoute, RouterExtensions } from 'nativescript-angular/router';
 import { Feedback } from 'nativescript-feedback';
 import { SnackBar } from 'nativescript-snackbar';
 import { switchMap } from 'rxjs/operators';
+import { Gif } from 'nativescript-gif';
 import { ChangedData, ObservableArray } from 'tns-core-modules/data/observable-array';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -94,6 +95,14 @@ export class PairingComponent implements AfterViewInit {
         console.log('showSuccess tapped');
       }
     });
+  }
+
+  gifLoaded(args) {
+    console.log('gif loaded');
+    console.log(args.object);
+    const x = args.object as Gif;
+    console.log(x.src);
+    x.start();
   }
 
   // button events

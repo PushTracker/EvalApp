@@ -5,6 +5,7 @@ import { Kinvey } from 'kinvey-nativescript-sdk';
 import { registerElement } from 'nativescript-angular/element-registry';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { Video as ExoPlayer } from 'nativescript-exoplayer';
+import { Gif } from 'nativescript-gif';
 import * as orientation from 'nativescript-orientation';
 import * as application from 'tns-core-modules/application';
 import { device } from 'tns-core-modules/platform';
@@ -16,6 +17,7 @@ registerElement('CarouselItem', () => NS_CAROUSEL.CarouselItem);
 registerElement('exoplayer', () => ExoPlayer);
 registerElement('BarcodeScanner', () => require('nativescript-barcodescanner').BarcodeScannerView);
 registerElement('Gradient', () => require('nativescript-gradient').Gradient);
+registerElement('Gif', () => Gif);
 
 @Component({
   selector: 'ns-app',
