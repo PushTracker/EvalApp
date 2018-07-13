@@ -19,7 +19,19 @@
 	    <StackLayout row="0" class="topSlide"
                      height="35%" width="100%"
                      orientation="horizontal" horizontalAlignment="center">
-	      <Gif (loaded)="gifLoaded($event)" [src]="slide.Image" stretch="aspectFit"></Gif>
+          // TODO: THIS IS A HORRIBLE HACK AND SHOULD BE FIXED IN THE PLUGIN
+	      <Gif *ngIf="slide.Image === '~/assets/images/gifs/PT-APP-CONNECT2.gif'"
+               (loaded)="gifLoaded($event)"
+               src="~/assets/images/gifs/PT-APP-CONNECT2.gif"
+               (tap)="onGifTap($event)"></Gif>
+	      <Gif *ngIf="slide.Image === '~/assets/images/gifs/PT-APP-CONNECT2.gif'"
+               (loaded)="gifLoaded($event)"
+               src="~/assets/images/gifs/PT-APP-CONNECT2.gif"
+               (tap)="onGifTap($event)"></Gif>
+	      <Gif *ngIf="slide.Image === '~/assets/images/gifs/PT-SD-CONNECT2.gif'"
+               (loaded)="gifLoaded($event)"
+               src="~/assets/images/gifs/PT-SD-CONNECT2.gif"
+               (tap)="onGifTap($event)"></Gif>
 	    </StackLayout>
 
 	    <ScrollView  row="1" class="lowerSlide hero" height="65%" >
