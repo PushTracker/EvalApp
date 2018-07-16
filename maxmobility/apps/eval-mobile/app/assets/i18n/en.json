@@ -181,7 +181,7 @@
             ]
         },
         {
-            "Image": "~/assets/images/PushTracker-Connecting.png",
+            "Image": "~/assets/images/gifs/PT-APP-CONNECTION1.gif",
             "Label": "Connecting your PushTracker to the App",
             "Bullets": [
                 "With the PushTracker app open, press the right flat button on the PushTracker",
@@ -191,7 +191,7 @@
         },
         {
             "Image": "~/assets/images/gifs/PT-SD-CONNECT2.gif",
-            "Label": "Tap Gesture",
+            "Label": "Pairing Your PushTracker to Your SmartDrive",
             "Bullets": [
                 "Press and hold the right flat button on your PushTracker for three seconds to enter the settings menu",
                 "Press the right button to scroll to the PT-SD icon.",
