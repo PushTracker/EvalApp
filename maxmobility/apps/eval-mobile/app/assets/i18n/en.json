@@ -472,12 +472,12 @@
     ],
     "ota": {
         "action": {
-            "Start": "Start",
-            "Pause": "Pause",
-            "Resume": "Resume",
-            "Cancel": "Cancel",
-            "Force": "Force",
-            "Retry": "Retry"
+            "start": "Start",
+            "pause": "Pause",
+            "resume": "Resume",
+            "cancel": "Cancel",
+            "force": "Force",
+            "retry": "Retry"
         },
         "sd": {
             "state": {
