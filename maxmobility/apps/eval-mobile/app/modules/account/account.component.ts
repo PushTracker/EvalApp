@@ -15,6 +15,7 @@ import * as imageSource from 'tns-core-modules/image-source';
 import { confirm } from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
 import { PrivacyPolicyComponent } from '../../privacy-policy';
+import { ValueList } from 'nativescript-drop-down';
 
 @Component({
   selector: 'Account',
@@ -29,7 +30,11 @@ export class AccountComponent implements OnInit {
   // tslint:disable-next-line:member-ordering
   user: Kinvey.User = this._userService.user;
 
-  languages: string[] = this._translateService.getLangs();
+  languages: ValueList<string> = new ValueList<string>(
+    this._translateService.getLangs().map(l => {
+      return { value: l, display: this._translateService.instant('languages.' + l) };
+    })
+  );
   selectedLanguageIndex: number = 0;
 
   yes: string = this._translateService.instant('dialogs.yes');
@@ -198,7 +203,7 @@ export class AccountComponent implements OnInit {
   }
 
   onLanguageChanged(args) {
-    const newLanguage = this.languages[args.newIndex] || 'en';
+    const newLanguage = this.languages.getValue(args.newIndex) || 'en';
     (this.user.data as any).language = newLanguage;
     this._translateService.use(newLanguage);
     // save the user setting to their account when changed

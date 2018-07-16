@@ -10,6 +10,7 @@ import { DropDownModule } from 'nativescript-drop-down/angular';
 import { setMarginForNoActionBarOnPage } from '~/utils';
 import { ModalDialogService } from 'nativescript-angular/directives/dialogs';
 import { PrivacyPolicyComponent } from '../../privacy-policy';
+import { ValueList } from 'nativescript-drop-down';
 
 @Component({
   selector: 'eval-login',
@@ -25,7 +26,11 @@ export class SignUpComponent implements OnInit {
   firstNameError = '';
   lastNameError = '';
 
-  languages: string[] = this._translateService.getLangs();
+  languages: ValueList<string> = new ValueList<string>(
+    this._translateService.getLangs().map(l => {
+      return { value: l, display: this._translateService.instant('languages.' + l) };
+    })
+  );
   selectedLanguageIndex: number = 0;
 
   error: string = this._translateService.instant('user.error');
@@ -63,7 +68,7 @@ export class SignUpComponent implements OnInit {
   }
 
   onLanguageChanged(args) {
-    const newLanguage = this.languages[args.newIndex] || 'en';
+    const newLanguage = this.languages.getValue(args.newIndex) || 'en';
     this.user.language = newLanguage;
     this._translateService.use(newLanguage);
   }

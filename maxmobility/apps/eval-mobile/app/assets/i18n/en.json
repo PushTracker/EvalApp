@@ -1,4 +1,15 @@
 {
+    "languages": {
+        "en": "English",
+        "es": "Spanish",
+        "de": "German",
+        "fr": "French",
+        "nl": "Dutch",
+        "sv": "Swedish",
+        "ru": "Russian",
+        "zh": "Chinese",
+        "it": "Italian"
+    },
     "buttons": {
         "next": "Next",
         "back": "Back"
