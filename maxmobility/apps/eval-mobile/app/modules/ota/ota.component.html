@@ -3,114 +3,123 @@
 </ActionBar>
 
 <Gradient tkMainContent direction="to bottom" colors="#004F7E, #0070b3">
-  <ScrollView height="70%" borderRadius="4" backgroundColor="white"  margin="5, 10, 0, 10">
-    <Gradient direction="to bottom" colors="rgba(255, 255, 255, 0.95), rgb(255, 255, 255)" margin="5, 10, 0, 10">
-      <Label class="title"
-             [text]="('ota.version' | translate) + ' ' + (currentVersion || '??')"
-             textWrap="true"></Label>
+      <ScrollView height="70%" borderRadius="4" backgroundColor="white"  margin="5, 10, 0, 10">
+          <Gradient direction="to bottom" colors="rgba(255, 255, 255, 0.95), rgb(255, 255, 255)" margin="5, 10, 0, 10">
+            <Label class="title"
+                   [text]="('ota.version' | translate) + ' ' + (currentVersion || '??')"
+                   textWrap="true"></Label>
+      
+            <GridLayout *ngIf="ready" columns="*, *" rows="*">
+              <Button b android:class="permobil-ocean-btn ota"
+                  ios:class="ota"
+                      col="0"
+                  textWrap="true"
+                      *ngIf="!updating"
+                      [text]="'ota.refresh' | translate"
+                      (tap)="onRefreshDeviceList()"></Button>
+              <Button android:class="permobil-ocean-btn ota"
+                  ios:class="ota"
+                  textWrap="true"
+                      [col]="updating ? '0' : '1'"
+                      [colSpan]="updating ? '2' : '1'"
+                      [text]="updatingButtonText"
+                      (tap)="onStartOtaUpdate()"></Button>
+            </GridLayout>
+            <Label class="otaDescription"
+                   *ngIf="!ready"
+                   textWrap="true"
+                   [text]="'ota.downloading' | translate"></Label>
+      
+            //StackLayout in contains progress views for updates
+            <StackLayout #otaProgressView padding="5, 0, 5, 0" orientation="vertical">
+              // PushTracker Instructions
+              //SmartDrive OTAs
+              <StackLayout class="ota" *ngFor="let sd of smartDriveOTAs._array">
+                <GridLayout class="otaInfo" rows="auto" columns="auto, *">
+                  <Label col="0" class="otaLabel" textWrap="true">
+                  <FormattedString>
+                      <Span text="SmartDrive" class="device-label"></Span>
+                      <Span [text]="'\nFirmware Version: '" color="#004f7e"></Span>
+                      <Span [text]="sd.mcu_version_string"
+                            [color]="sd.isMcuUpToDate(currentVersion) ? 'green' : 'red'"></Span>
+                      <Span text=", " color="#004f7e"></Span>
+                      <Span [text]="sd.ble_version_string"
+                            [color]="sd.isBleUpToDate(currentVersion) ? 'green' : 'red'"></Span>
+                      <Span [text]="sd.isUpToDate(currentVersion) ? (' ' + ('ota.up-to-date' | translate)) : ''"
+                            color="green"></Span>
+                  <Span [text]="'\nRSSI: '" color="#004f7e"></Span>
+                  <Span [text]="sd.rssi" [color]="rssiToColor(sd.rssi)"></Span>
+                  </FormattedString>
+                </Label>
+                  <Label col="1" class="percentageLabel" [text]="sd.otaProgressToString()"></Label>
+                </GridLayout>
+                <Progress [value]="sd.otaProgress" maxValue="100" class="progress"></Progress>
+                <GridLayout class="otaInfo" rows="auto, auto, *" columns="2*, *">
+                  <Label col="0" textWrap="false" class="otaLabel" [text]="sd.address"></Label>
+                  <Label col="0" row="1" editable="false" textWrap="true" class="otaState" textDecoration="none" [text]="sd.otaStateToString()"></Label>
+                  <WrapLayout orientation="horizontal" horizontalAlignment="right" rowSpan="3" col="1">
+                    <Button *ngFor="let action of sd.otaActions" class="otaAction" [text]="action" (tap)="sd.onOTAActionTap(action)"></Button>
+                  </WrapLayout>
+                </GridLayout>
+              </StackLayout>
 
-      <GridLayout *ngIf="ready" columns="*, *" rows="*">
-        <Button b android:class="permobil-ocean-btn ota"
-		        ios:class="ota"
-                col="0"
-		        textWrap="true"
-                *ngIf="!updating"
-                [text]="'ota.refresh' | translate"
-                (tap)="onRefreshDeviceList()"></Button>
-        <Button android:class="permobil-ocean-btn ota"
-		        ios:class="ota"
-		        textWrap="true"
-                [col]="updating ? '0' : '1'"
-                [colSpan]="updating ? '2' : '1'"
-                [text]="updatingButtonText"
-                (tap)="onStartOtaUpdate()"></Button>
-      </GridLayout>
-      <Label class="otaDescription"
-             *ngIf="!ready"
-             textWrap="true"
-             [text]="'ota.downloading' | translate"></Label>
+              //PushTracker OTAs
+              <StackLayout class="ota" *ngFor="let pt of pushTrackerOTAs._array">
+                <GridLayout class="otaInfo" rows="auto" columns="auto, *">
+                  <Label col="0" class="otaLabel" textWrap="true">
+                    <FormattedString>
+                      <Span text="PushTracker" class="device-label"></Span>
+                      <Span [text]="'\nFirmware Version: '" color="#004f7e"></Span>
+                      <Span [text]="pt.version_string"
+                            [color]="pt.isUpToDate(currentVersion) ? 'green' : 'red'"></Span>
+                      <Span [text]="pt.isUpToDate(currentVersion) ? (' ' + ('ota.up-to-date' | translate)) : ''"
+                            color="green"></Span>
+                    </FormattedString>
+                  </Label>
+                  <Label col="1" class="percentageLabel" [text]="pt.otaProgressToString()"></Label>
+                </GridLayout>
+                <Progress [value]="pt.otaProgress" maxValue="100" class="progress"></Progress>
+                <GridLayout class="otaInfo" rows="auto, auto, *" columns="2*, *">
+                  <Label col="0" textWrap="false" class="otaLabel" [text]="pt.address"></Label>
+                  <Label col="0" row="1" editable="false" textWrap="true" class="otaState" textDecoration="none" [text]="pt.otaStateToString()"></Label>
+                  <WrapLayout orientation="horizontal" horizontalAlignment="right" rowSpan="3" col="1">
+                    <Button *ngFor="let action of pt.otaActions" class="otaAction" [text]="action" (tap)="pt.onOTAActionTap(action)"></Button>
+                  </WrapLayout>
+                </GridLayout>
+              </StackLayout>
 
-      //StackLayout in contains progress views for updates
-      <StackLayout #otaProgressView padding="5, 0, 5, 0" orientation="vertical">
-        // PushTracker Instructions
-        //SmartDrive OTAs
-        <StackLayout class="ota" *ngFor="let sd of smartDriveOTAs._array">
-          <GridLayout class="otaInfo" rows="auto" columns="auto, *">
-            <Label col="0" class="otaLabel" textWrap="true">
-	          <FormattedString>
-                <Span text="SmartDrive" class="device-label"></Span>
-                <Span [text]="'\nFirmware Version: '" color="#004f7e"></Span>
-                <Span [text]="sd.mcu_version_string"
-                      [color]="sd.isMcuUpToDate(currentVersion) ? 'green' : 'red'"></Span>
-                <Span text=", " color="#004f7e"></Span>
-                <Span [text]="sd.ble_version_string"
-                      [color]="sd.isBleUpToDate(currentVersion) ? 'green' : 'red'"></Span>
-                <Span [text]="sd.isUpToDate(currentVersion) ? (' ' + ('ota.up-to-date' | translate)) : ''"
-                      color="green"></Span>
-		        <Span [text]="'\nRSSI: '" color="#004f7e"></Span>
-		        <Span [text]="sd.rssi" [color]="rssiToColor(sd.rssi)"></Span>
-	          </FormattedString>
-	        </Label>
-            <Label col="1" class="percentageLabel" [text]="sd.otaProgressToString()"></Label>
-          </GridLayout>
-          <Progress [value]="sd.otaProgress" maxValue="100" class="progress"></Progress>
-          <GridLayout class="otaInfo" rows="auto, auto, *" columns="2*, *">
-            <Label col="0" textWrap="false" class="otaLabel" [text]="sd.address"></Label>
-            <Label col="0" row="1" editable="false" textWrap="true" class="otaState" textDecoration="none" [text]="sd.otaStateToString()"></Label>
-            <WrapLayout orientation="horizontal" horizontalAlignment="right" rowSpan="3" col="1">
-              <Button *ngFor="let action of sd.otaActions" class="otaAction" [text]="action" (tap)="sd.onOTAActionTap(action)"></Button>
-            </WrapLayout>
-          </GridLayout>
-        </StackLayout>
-        //PushTracker OTAs
-        <StackLayout class="ota" *ngFor="let pt of pushTrackerOTAs._array">
-          <GridLayout class="otaInfo" rows="auto" columns="auto, *">
-            <Label col="0" class="otaLabel" textWrap="true">
-              <FormattedString>
-                <Span text="PushTracker" class="device-label"></Span>
-                <Span [text]="'\nFirmware Version: '" color="#004f7e"></Span>
-                <Span [text]="pt.version_string"
-                      [color]="pt.isUpToDate(currentVersion) ? 'green' : 'red'"></Span>
-                <Span [text]="pt.isUpToDate(currentVersion) ? (' ' + ('ota.up-to-date' | translate)) : ''"
-                      color="green"></Span>
-              </FormattedString>
-            </Label>
-            <Label col="1" class="percentageLabel" [text]="pt.otaProgressToString()"></Label>
-          </GridLayout>
-          <Progress [value]="pt.otaProgress" maxValue="100" class="progress"></Progress>
-          <GridLayout class="otaInfo" rows="auto, auto, *" columns="2*, *">
-            <Label col="0" textWrap="false" class="otaLabel" [text]="pt.address"></Label>
-            <Label col="0" row="1" editable="false" textWrap="true" class="otaState" textDecoration="none" [text]="pt.otaStateToString()"></Label>
-            <WrapLayout orientation="horizontal" horizontalAlignment="right" rowSpan="3" col="1">
-              <Button *ngFor="let action of pt.otaActions" class="otaAction" [text]="action" (tap)="pt.onOTAActionTap(action)"></Button>
-            </WrapLayout>
-          </GridLayout>
-        </StackLayout>
-        // SmartDrive Instructions
-        <StackLayout class="ota" *ngIf="!smartDriveOTAs.length">
-          <Label [text]="'bluetooth.sd_app_conn_instructions' | translate"
-                 textWrap="true">
-          </Label>
-        </StackLayout>
-        <StackLayout class="ota" *ngIf="!pushTrackerOTAs.length">
-          <Label [text]="'bluetooth.pt_app_conn_instructions' | translate"
-                 textWrap="true">
-          </Label>
-        </StackLayout>
-      </StackLayout>
+              // SmartDrive Instructions
+              <StackLayout class="ota" *ngIf="!smartDriveOTAs.length">
+                <Label [text]="'bluetooth.sd_app_conn_instructions' | translate"
+                       textWrap="true">
+                </Label>
+              </StackLayout>
+              <StackLayout class="ota" *ngIf="!pushTrackerOTAs.length">
+                <Label [text]="'bluetooth.pt_app_conn_instructions' | translate"
+                       textWrap="true">
+                </Label>
+              </StackLayout>
+            </StackLayout>
+      
+          </Gradient>
+        </ScrollView>
 
-    </Gradient>
-  </ScrollView>
-  <slides #slides
-          loop="true"
-          [pageIndicators]="true"
-	  pageHeight="80%"
-	  footerMarginTop="70%"
-          class="featuresLayout"
-          height="30%"
-          width="100%">
-    <slide *ngFor="let desc of otaDescription._array" class="featuresLayout">
-      <Label class="features" textWrap="true" [text]="desc"></Label>
-    </slide>
-  </slides>
+
+        <GridLayout height="30%">
+          <Carousel #carousel
+            (loaded)="onCarouselLoad($event)"
+            ios:indicatorOffset="0,-10"
+            ios:finite="true"
+            ios:bounce="false"
+            showIndicator="true"
+            height="100%"
+            indicatorColor="#66ccff"
+            indicatorColorUnselected="#cceeff"
+            width="100%">
+            <CarouselItem *ngFor="let desc of otaDescription._array">
+                <Label class="features" textWrap="true" [text]="desc"></Label>
+            </CarouselItem> 
+          </Carousel>
+        </GridLayout>
+
 </Gradient>
