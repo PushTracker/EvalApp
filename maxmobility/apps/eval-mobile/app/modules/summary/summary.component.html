@@ -51,40 +51,32 @@
             </Label>
           </DockLayout>
           
-          //Flat Difficulty
-          <DockLayout stretchLastChild="false">
-            <Label [text]="'summary.difficulty-flat' | translate" class="trial-item" dock="left" textWrap="true" width="70%"></Label>
-            <Switch (checkedChange)="onFlatDifficultyChecked($event)"
-		    [checked]="hasFlatDifficulty"
-		    dock="right"></Switch>
-          </DockLayout>
-          <DockLayout *ngIf="hasFlatDifficulty" stretchLastChild="false">
-            <Label [text]="'summary.flat-surface-difficulty' | translate" class="trial-item"></Label>
-            <Label verticalAlignment="center" dock="right" class="trial-slider-value-label" style="min-width: 50" [text]="evaluation.flat_difficulty.toFixed(0) +'/10'"
-                   row="0" col="1"></Label>
-          </DockLayout>
-          <GridLayout *ngIf="hasFlatDifficulty" rows="auto" columns="*, auto">
-            <Slider maxValue="10" verticalAlignment="center" class="trial-slider" [value]="evaluation.flat_difficulty" (valueChange)="onSliderUpdate('flat_difficulty', $event)"
-                    row="0" col="0"></Slider>
-          </GridLayout>
-
-          //Ramp Difficulty
-          <DockLayout class="dockLayout-options" stretchLastChild="false">
-            <Label [text]="'summary.difficulty-ramp' | translate"  class="trial-item" dock="left" textWrap="true" width="70%"></Label>
-            <Switch (checkedChange)="onRampDifficultyChecked($event)"
-		    [checked]="hasRampDifficulty"
-		    dock="right"></Switch>
-          </DockLayout>
-          <DockLayout *ngIf="hasRampDifficulty" stretchLastChild="false">
-            <Label [text]="'summary.ramp-difficulty' | translate"  class="trial-item"></Label>
-            <Label verticalAlignment="center" dock="right" class="trial-slider-value-label" style="min-width: 50" [text]="evaluation.ramp_difficulty.toFixed(0) +'/10'"
-                   row="0" col="1"></Label>
-          </DockLayout>
-          <GridLayout *ngIf="hasRampDifficulty" rows="auto" columns="*, auto">
-            <Slider maxValue="10" verticalAlignment="center" class="trial-slider" [value]="evaluation.ramp_difficulty" (valueChange)="onSliderUpdate('ramp_difficulty', $event)"
-                    row="0" col="0"></Slider>
-          </GridLayout>
-
+          <StackLayout *ngFor="let diff of difficulties">
+            <StackLayout *ngIf="diff.show">
+              <DockLayout stretchLastChild="false">
+                <Label [text]="diff.labelText | translate"
+                       class="trial-item" dock="left" textWrap="true" width="70%"></Label>
+                <Switch (checkedChange)="onDifficultyChecked(diff,$event)"
+		                [checked]="diff.has"
+		                dock="right"></Switch>
+              </DockLayout>
+              <DockLayout *ngIf="diff.has" stretchLastChild="false">
+                <Label [text]="diff.sliderLabelText | translate"
+                       class="trial-slider-label"></Label>
+                <Label verticalAlignment="center" dock="right"
+                       class="trial-slider-value" style="min-width: 50"
+                       [text]="evaluation[diff.key].toFixed(0) +'/10'"
+                       row="0" col="1"></Label>
+              </DockLayout>
+              <GridLayout *ngIf="diff.has" rows="auto" columns="*, auto">
+                <Slider maxValue="10" verticalAlignment="center"
+                        class="trial-slider"
+                        [value]="evaluation[diff.key]"
+                        (valueChange)="onSliderUpdate(diff.key, $event)"
+                        row="0" col="0"></Slider>
+              </GridLayout>
+            </StackLayout>
+          </StackLayout>
 
         </StackLayout>
 

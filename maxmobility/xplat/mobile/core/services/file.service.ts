@@ -27,7 +27,7 @@ export class FileService {
         const data = localStorage.getItem(`${file._filename}-${FileService.fsKeyMetadata}`);
         console.log(`file ${file._filename} stored metadata`, JSON.stringify(data));
 
-        if (data && data.file_version === file._version) {
+        if (data && data.file_version >= file._version) {
           return;
         }
 

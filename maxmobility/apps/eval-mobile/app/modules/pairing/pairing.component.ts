@@ -105,6 +105,15 @@ export class PairingComponent implements AfterViewInit {
     x.start();
   }
 
+  onGifTap(args) {
+    const x = args.object as Gif;
+    if (x.isPlaying()) {
+      x.stop();
+    } else {
+      x.start();
+    }
+  }
+
   // button events
   onNext(): void {
     this.routerExtensions.navigate(['/trial'], {
