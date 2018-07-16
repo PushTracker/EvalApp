@@ -8,7 +8,7 @@ import { alert, confirm } from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
 import { DropDownModule } from 'nativescript-drop-down/angular';
 import { setMarginForNoActionBarOnPage } from '~/utils';
-import { ModalDialogService } from 'nativscript-angular/directives/dialogs';
+import { ModalDialogService } from 'nativescript-angular/directives/dialogs';
 import { PrivacyPolicyComponent } from '../../privacy-policy';
 
 @Component({

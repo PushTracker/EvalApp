@@ -1,5 +1,6 @@
 // angular
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { ModalDialogService } from 'nativescript-angular/directives/dialogs';
 import { CLog } from '@maxmobility/core';
 import { FileService, LoggingService, ProgressService, UserService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
@@ -13,7 +14,6 @@ import * as LS from 'nativescript-localstorage';
 import * as imageSource from 'tns-core-modules/image-source';
 import { confirm } from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
-import { ModalDialogService } from 'nativscript-angular/directives/dialogs';
 import { PrivacyPolicyComponent } from '../../privacy-policy';
 
 @Component({
@@ -80,11 +80,8 @@ export class AccountComponent implements OnInit {
     // handle the privacy policy / consent stuff!
     let has_agreed = (this.user.data as any).has_agreed_to_user_agreement;
     let has_read = (this.user.data as any).has_read_privacy_policy;
-    if (!has_agreed) {
-      console.log('NEED TO AGREE!');
-    }
-    if (!has_read) {
-      console.log('NEED TO READ!');
+    if (!has_agreed || !has_read) {
+      this.showModal();
     }
 
     // load profile picture
