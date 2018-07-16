@@ -1,4 +1,4 @@
-<ActionBar class="action-bar" flat="true" [title]="'videos.videos-title' | translate">
+<ActionBar class="action-bar" flat="true" [title]="'menu.videos-title' | translate">
   <NavigationButton android:visibility="collapse"></NavigationButton>
 </ActionBar>
 
@@ -8,8 +8,8 @@
         <GridLayout  rows="auto" columns="145, *">
             <Image col="0" class="thumb" [src]="item.Thumb" ></Image>
             <GridLayout col="1" rows="auto, auto" columns="*">
-            <Label row="0" class="title" textWrap="true"  [text]="item.Title | translate"></Label>
-            <Label row="1"  class="desc" textWrap="true"  [text]="item.Description | translate"></Label>
+            <Label row="0" class="title" textWrap="true"  [text]="item.Title"></Label>
+            <Label row="1"  class="desc" textWrap="true"  [text]="item.Description"></Label>
             </GridLayout>
          </GridLayout>
         </ng-template>

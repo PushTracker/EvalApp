@@ -1,4 +1,4 @@
-<ActionBar class="action-bar" flat="true" [title]="title | translate">
+<ActionBar class="action-bar" flat="true" [title]="title">
   <NavigationButton android:visibility="collapse"></NavigationButton>
 </ActionBar>
 
@@ -12,8 +12,8 @@
                      [options]="options"
                      apiKey="AIzaSyBLlWMu4GcwFcUmcBtK7R9gWBtloBswfHg"
                      backgroundColor="gray"></YoutubePlayer>
-      <Label [text]="title | translate" class="title" textWrap="true"></Label>
-	  <Label [text]="desc | translate" class="bullet" textWrap="true"></Label>
+      <Label [text]="title" class="title" textWrap="true"></Label>
+	  <Label [text]="desc" class="bullet" textWrap="true"></Label>
     </StackLayout>
   </ScrollView>
 </Gradient>

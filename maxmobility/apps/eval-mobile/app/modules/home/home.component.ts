@@ -6,8 +6,7 @@ import { Feedback, FeedbackPosition, FeedbackType } from 'nativescript-feedback'
 import { Color } from 'tns-core-modules/color';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
 import { Page } from 'tns-core-modules/ui/page';
-import { FAQs } from '../faq/faq.component';
-import { Videos } from '../videos/videos.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'Home',
@@ -17,8 +16,9 @@ import { Videos } from '../videos/videos.component';
   changeDetection: ChangeDetectionStrategy.Default
 })
 export class HomeComponent {
-  faqItems = FAQs;
-  videoItems = Videos;
+  faqItems = this.translateService.instant('faqs');
+  videoItems = this.translateService.instant('videos');
+
   connectivityItems = [
     {
       Image: '~/assets/images/pt-phone-home.png',
@@ -72,7 +72,8 @@ export class HomeComponent {
     private _logService: LoggingService,
     private _demoService: DemoService,
     private _firmwareService: FirmwareService,
-    private _fileService: FileService
+    private _fileService: FileService,
+    private translateService: TranslateService
   ) {
     this._page.enableSwipeBackNavigation = false;
     this.feedback = new Feedback();
