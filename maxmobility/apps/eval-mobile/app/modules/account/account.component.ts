@@ -13,6 +13,8 @@ import * as LS from 'nativescript-localstorage';
 import * as imageSource from 'tns-core-modules/image-source';
 import { confirm } from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
+import { ModalDialogService } from 'nativscript-angular/directives/dialogs';
+import { PrivacyPolicyComponent } from '../../privacy-policy';
 
 @Component({
   selector: 'Account',
@@ -56,7 +58,9 @@ export class AccountComponent implements OnInit {
     private router: Router,
     private _page: Page,
     private _translateService: TranslateService,
-    private _fileService: FileService
+    private _fileService: FileService,
+    private modal: ModalDialogService,
+    private vcRef: ViewContainerRef
   ) {
     this._page.enableSwipeBackNavigation = false;
     this.imageCropper = new ImageCropper();
@@ -94,6 +98,27 @@ export class AccountComponent implements OnInit {
 
     // get translation files
     this._fileService.downloadTranslationFiles();
+  }
+
+  async showModal(): Promise<boolean> {
+    let options = {
+      context: {
+        user: this.user.data
+      },
+      fullscreen: true,
+      viewContainerRef: this.vcRef
+    };
+    return this.modal.showModal(PrivacyPolicyComponent, options).then(res => {
+      if (res) {
+        (this.user.data as any).has_read_privacy_policy = res.has_read_privacy_policy;
+        (this.user.data as any).has_agreed_to_user_agreement = res.has_agreed_to_user_agreement;
+        (this.user.data as any).consent_to_research = res.consent_to_research;
+        (this.user.data as any).consent_to_product_development = res.consent_to_product_development;
+      }
+      const hasAgreed =
+        (this.user.data as any).has_read_privacy_policy && (this.user.data as any).has_agreed_to_user_agreement;
+      return hasAgreed;
+    });
   }
 
   getProfilePictureFSKey(): string {
