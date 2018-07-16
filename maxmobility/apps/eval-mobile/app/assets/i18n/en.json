@@ -471,6 +471,48 @@
         }
     ],
     "ota": {
+        "action": {
+            "Start": "Start",
+            "Pause": "Pause",
+            "Resume": "Resume",
+            "Cancel": "Cancel",
+            "Force": "Force",
+            "Retry": "Retry"
+        },
+        "sd": {
+            "state": {
+                "not-started": "Not Started",
+                "awaiting-versions": "Awaiting Versions",
+                "awaiting-mcu-ready": "Waiting on MCU",
+                "updating-mcu": "Updating MCU",
+                "awaiting-ble-ready": "Waiting on BLE",
+                "updating-ble": "Updating BLE",
+                "rebooting-ble": "Rebooting BLE",
+                "rebooting-mcu": "Rebooting MCU",
+                "verifying-update": "Verifying",
+                "complete": "Complete",
+                "canceling": "Canceling",
+                "canceled": "Canceled",
+                "failed": "Failed",
+                "comm-failure": "Communications error, please reboot your SmartDrive",
+                "timeout": "Timeout"
+            }
+        },
+        "pt": {
+            "state": {
+                "not-started": "Not Started",
+                "awaiting-version": "Awaiting Version",
+                "awaiting-ready": "Waiting on PushTracker",
+                "updating": "Updating",
+                "rebooting": "Rebooting, please re-pair and re-connect your PushTracker",
+                "verifying-update": "Verifying",
+                "complete": "Complete",
+                "cancel-ling": "Cancel-ling",
+                "canceled": "Canceled",
+                "failed": "Failed",
+                "timeout": "Timeout"
+            }
+        },
         "up-to-date": "(Up to date)",
         "title": "Firmware Updates",
         "version": "Version",

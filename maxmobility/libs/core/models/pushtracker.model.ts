@@ -6,17 +6,17 @@ import * as timer from 'tns-core-modules/timer';
 
 // TODO: TRANSLATE
 enum OTAState {
-  not_started = 'Not Started',
-  awaiting_version = 'Awaiting Version',
-  awaiting_ready = 'Waiting on PT',
-  updating = 'Updating',
-  rebooting = 'Rebooting, please re-pair and re-connect your PushTracker',
-  verifying_update = 'Verifying',
-  complete = 'Complete',
-  cancelling = 'Cancelling',
-  canceled = 'Canceled',
-  failed = 'Failed',
-  timeout = 'Timeout'
+  not_started = 'ota.pt.state.not-started',
+  awaiting_version = 'ota.pt.state.awaiting-version',
+  awaiting_ready = 'ota.pt.state.awaiting-ready',
+  updating = 'ota.pt.state.updating',
+  rebooting = 'ota.pt.state.rebooting',
+  verifying_update = 'ota.pt.state.verifying',
+  complete = 'ota.pt.state.complete',
+  canceling = 'ota.pt.state.canceling',
+  canceled = 'ota.pt.state.canceled',
+  failed = 'ota.pt.state.failed',
+  timeout = 'ota.pt.state.timeout'
 }
 
 const timeToString = function(milliseconds: number): string {
@@ -180,37 +180,28 @@ export class PushTracker extends Observable {
   }
 
   public otaStateToString(): string {
-    /*
-        if (this.otaState == PushTracker.OTAState.updating) {
-            const time = timeToString(this.otaCurrentTime.getTime() - this.otaStartTime.getTime());
-            return `${this.otaState} ${time}`;
-        } else if (this.otaState == PushTracker.OTAState.complete) {
-            const time = timeToString(this.otaEndTime.getTime() - this.otaStartTime.getTime());
-            return `${this.otaState} ${time}`;
-        }
-        */
     return this.otaState;
   }
 
   public onOTAActionTap(action: string) {
     console.log(`OTA Action: ${action}`);
     switch (action) {
-      case 'Start':
+      case 'ota.action.start':
         this.sendEvent(PushTracker.pushtracker_ota_start_event);
         break;
-      case 'Pause':
+      case 'ota.action.pause':
         this.sendEvent(PushTracker.pushtracker_ota_pause_event);
         break;
-      case 'Resume':
+      case 'ota.action.resume':
         this.sendEvent(PushTracker.pushtracker_ota_resume_event);
         break;
-      case 'Cancel':
+      case 'ota.action.cancel':
         this.sendEvent(PushTracker.pushtracker_ota_cancel_event);
         break;
-      case 'Force':
+      case 'ota.action.force':
         this.sendEvent(PushTracker.pushtracker_ota_force_event);
         break;
-      case 'Retry':
+      case 'ota.action.retry':
         this.sendEvent(PushTracker.pushtracker_ota_retry_event);
         break;
       default:
@@ -304,7 +295,7 @@ export class PushTracker extends Observable {
             if (this.version != 0xff) {
               haveVersion = true;
             }
-            this.otaActions = ['Start'];
+            this.otaActions = ['ota.action.start'];
           }
           // stop the timer
           if (otaIntervalID) {
@@ -326,7 +317,7 @@ export class PushTracker extends Observable {
         };
         const otaStartHandler = data => {
           this.otaState = PushTracker.OTAState.awaiting_version;
-          this.otaActions = ['Cancel'];
+          this.otaActions = ['ota.action.cancel'];
           this.otaStartTime = new Date();
           // start the timeout timer
           if (otaTimeoutID) {
@@ -339,23 +330,23 @@ export class PushTracker extends Observable {
         const otaReadyHandler = data => {
           startedOTA = true;
           this.otaState = PushTracker.OTAState.updating;
-          this.otaActions = ['Pause', 'Cancel'];
+          this.otaActions = ['ota.action.pause', 'ota.action.cancel'];
         };
         const otaForceHandler = data => {
           startedOTA = true;
           this.otaState = PushTracker.OTAState.awaiting_ready;
-          this.otaActions = ['Pause', 'Cancel'];
+          this.otaActions = ['ota.action.pause', 'ota.action.cancel'];
         };
         const otaPauseHandler = data => {
           paused = true;
-          this.otaActions = ['Resume', 'Cancel'];
+          this.otaActions = ['ota.action.resume', 'ota.action.cancel'];
         };
         const otaResumeHandler = data => {
           paused = false;
-          this.otaActions = ['Pause', 'Cancel'];
+          this.otaActions = ['ota.action.pause', 'ota.action.cancel'];
         };
         const otaCancelHandler = data => {
-          this.otaState = PushTracker.OTAState.cancelling;
+          this.otaState = PushTracker.OTAState.canceling;
         };
         const otaTimeoutHandler = data => {
           startedOTA = false;
@@ -435,7 +426,7 @@ export class PushTracker extends Observable {
           } else if (doRetry) {
             this.on(PushTracker.pushtracker_ota_cancel_event, otaCancelHandler);
             this.on(PushTracker.pushtracker_ota_retry_event, otaRetryHandler);
-            this.otaActions = ['Retry'];
+            this.otaActions = ['ota.action.retry'];
             otaIntervalID = timer.setInterval(runOTA, 250);
           } else {
             resolve(reason);
@@ -445,7 +436,7 @@ export class PushTracker extends Observable {
           switch (this.otaState) {
             case PushTracker.OTAState.not_started:
               if (this.connected && this.ableToSend) {
-                this.otaActions = ['Start'];
+                this.otaActions = ['ota.action.start'];
               } else {
                 this.otaActions = [];
               }
@@ -453,7 +444,7 @@ export class PushTracker extends Observable {
             case PushTracker.OTAState.awaiting_version:
               if (this.ableToSend && haveVersion) {
                 if (this.version == fwVersion) {
-                  this.otaActions = ['Force', 'Cancel'];
+                  this.otaActions = ['ota.action.force', 'ota.action.cancel'];
                 } else {
                   this.otaState = PushTracker.OTAState.awaiting_ready;
                 }
@@ -518,7 +509,7 @@ export class PushTracker extends Observable {
             case PushTracker.OTAState.complete:
               stopOTA('OTA Complete', true, false);
               break;
-            case PushTracker.OTAState.cancelling:
+            case PushTracker.OTAState.canceling:
               this.otaActions = [];
               this.otaProgress = 0;
               cancelOTA = true;
