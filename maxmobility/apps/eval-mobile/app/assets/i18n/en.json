@@ -200,7 +200,13 @@
         }
     ],
     "user": {
+        "accept": {
+            "header": "You must accept the end user agreement and read the privacy notic to be able to activate and use Smart Evaluation",
+            "user-agreement": "I have read, understood, and agree to the end user agreement",
+            "privacy-policy": "I have read and understood the privacy policy"
+        },
         "consent": {
+            "header": "You can give or withdraw any of your consents at any time during the use of the service by going to the 'Account' page of the application.",
             "research": "I give my consent to the usage of my data for product development as described in the privacy policy",
             "product-development": "I give my consent to the usage of my data for research as described in the privacy policy"
         },

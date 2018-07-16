@@ -5,6 +5,7 @@ import { FileService, LoggingService, ProgressService, UserService } from '@maxm
 import { TranslateService } from '@ngx-translate/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 import { RouterExtensions } from 'nativescript-angular/router';
+import { NavigationStart, Router } from '@angular/router';
 import * as camera from 'nativescript-camera';
 import * as email from 'nativescript-email';
 import { ImageCropper } from 'nativescript-imagecropper';
@@ -45,12 +46,14 @@ export class AccountComponent implements OnInit {
   sign_out_confirm: string = this._translateService.instant('user.sign-out-confirm');
 
   private imageCropper: ImageCropper;
+  private routeSub: any; // subscription to route observer
 
   constructor(
     private _userService: UserService,
     private _progressService: ProgressService,
     private _loggingService: LoggingService,
-    private _router: RouterExtensions,
+    private _routerExtensions: RouterExtensions,
+    private router: Router,
     private _page: Page,
     private _translateService: TranslateService,
     private _fileService: FileService
@@ -60,12 +63,36 @@ export class AccountComponent implements OnInit {
   }
 
   ngOnInit() {
+    // save when we navigate away!
+    // see https://github.com/NativeScript/nativescript-angular/issues/1049
+    this.routeSub = this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        // now save
+        console.log('Saving user data when navigating away!');
+        this._saveUserToKinvey();
+      }
+    });
+
+    // handle the privacy policy / consent stuff!
+    let has_agreed = (this.user.data as any).has_agreed_to_user_agreement;
+    let has_read = (this.user.data as any).has_read_privacy_policy;
+    if (!has_agreed) {
+      console.log('NEED TO AGREE!');
+    }
+    if (!has_read) {
+      console.log('NEED TO READ!');
+    }
+
+    // load profile picture
     this.loadProfilePicture();
+
+    // set language data
     this.selectedLanguageIndex =
       this.languages.indexOf((this.user.data as any).language) > -1
         ? this.languages.indexOf((this.user.data as any).language)
         : 0;
 
+    // get translation files
     this._fileService.downloadTranslationFiles();
   }
 
@@ -157,7 +184,7 @@ export class AccountComponent implements OnInit {
   }
 
   onDrawerButtonTap() {
-    this._router.navigate(['/home'], {
+    this._routerExtensions.navigate(['/home'], {
       transition: {
         name: 'slideBottom',
         duration: 350,
@@ -216,7 +243,7 @@ export class AccountComponent implements OnInit {
         this._userService
           .logout()
           .then(() => {
-            this._router.navigate(['/login'], {
+            this._routerExtensions.navigate(['/login'], {
               clearHistory: true
             });
           })
@@ -266,7 +293,7 @@ export class AccountComponent implements OnInit {
   }
 
   onDebugMenuTap() {
-    this._router.navigate(['/settings']);
+    this._routerExtensions.navigate(['/settings']);
   }
 
   private _saveUserToKinvey() {
