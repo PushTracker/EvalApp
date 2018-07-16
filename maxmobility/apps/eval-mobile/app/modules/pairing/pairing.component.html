@@ -12,22 +12,22 @@
 	        height="100%"
 	        indicatorColor="#66ccff"
 	        indicatorColorUnselected="#cceeff">
-    <CarouselItem  *ngFor="let slide of slides">
+    <CarouselItem *ngFor="let slide of slides">
       
       <GridLayout  rows="auto, *" cols="*" class="">
 	    
-	    <StackLayout row="0" class="topSlide"
-                     height="35%" width="100%"
-                     orientation="horizontal" horizontalAlignment="center">
-        <Image *ngIf="slides.indexOf(slide) == 1" [src]="slide.Image" stretch="aspectFit"></Image>
-        <Gif *ngIf="slides.indexOf(slide) != 1" [src]="slide.Image" height="100%"></Gif>
-	    </StackLayout>
+	      <StackLayout row="0" class="topSlide"
+                       height="35%" width="100%"
+                       orientation="horizontal" horizontalAlignment="center">
+          <Image *ngIf="slides.indexOf(slide) == 1" [src]="slide.Image" stretch="aspectFit" width="135"></Image>
+          <Gif *ngIf="slides.indexOf(slide) != 1" [src]="slide.Image" height="100%" width="135"></Gif>
+	      </StackLayout>
 
-	    <ScrollView  row="1" class="lowerSlide hero" height="65%" >
+	      <ScrollView row="1" class="lowerSlide hero" height="65%">
           <StackLayout class="hero" orientation="vertical"
                        horizontalAlignment="center" width="100%">
             <Label [text]="slide.Label" class="slideLowerLabel" textWrap="true"></Label>
-	        <Label *ngFor="let bullet of slide.Bullets"
+	          <Label *ngFor="let bullet of slide.Bullets"
                    [text]="bullet"
                    class="bullet" textWrap="true"></Label>
           </StackLayout>
