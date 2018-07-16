@@ -52,6 +52,20 @@
                  returnKeyType="done"
                  class="account-text-entry"
                  [hint]="'user.phone' | translate"></TextField>
+      <DockLayout stretchLastChild="true" class="account-dock">
+        <Label [text]="'user.consent.product-development' | translate"
+               textWrap="true"
+               class="consent" dock="left"></Label>
+        <Switch dock="right"
+                [(ngModel)]="user.data.consent_to_product_development"></Switch>
+      </DockLayout>
+      <DockLayout stretchLastChild="true" class="account-dock">
+        <Label [text]="'user.consent.research' | translate"
+               textWrap="true"
+               class="consent" dock="left"></Label>
+        <Switch dock="right"
+                [(ngModel)]="user.data.consent_to_research"></Switch>
+      </DockLayout>
       <Button class="acct-btn "
               [text]="'user.change-pass' | translate"
               (tap)="onChangePasswordTap()"></Button>

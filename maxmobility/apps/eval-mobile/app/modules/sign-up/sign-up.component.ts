@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { CLog, LoggingService, User } from '@maxmobility/core';
 import { preventKeyboardFromShowing, ProgressService, UserService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { validate } from 'email-validator';
 import { RouterExtensions } from 'nativescript-angular/router';
-import { alert } from 'tns-core-modules/ui/dialogs';
+import { alert, confirm } from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
 import { DropDownModule } from 'nativescript-drop-down/angular';
 import { setMarginForNoActionBarOnPage } from '~/utils';
+import { ModalDialogService } from 'nativescript-angular/directives/dialogs';
+import { PrivacyPolicyComponent } from '../../privacy-policy';
 
 @Component({
   selector: 'eval-login',
@@ -46,7 +48,9 @@ export class SignUpComponent implements OnInit {
     private _progressService: ProgressService,
     private _page: Page,
     private _router: RouterExtensions,
-    private _translateService: TranslateService
+    private _translateService: TranslateService,
+    private modal: ModalDialogService,
+    private vcRef: ViewContainerRef
   ) {
     preventKeyboardFromShowing();
   }
@@ -64,7 +68,27 @@ export class SignUpComponent implements OnInit {
     this._translateService.use(newLanguage);
   }
 
-  onSubmitTap() {
+  async showModal(): Promise<boolean> {
+    let options = {
+      context: {
+        user: this.user
+      },
+      fullscreen: true,
+      viewContainerRef: this.vcRef
+    };
+    return this.modal.showModal(PrivacyPolicyComponent, options).then(res => {
+      if (res) {
+        this.user.has_read_privacy_policy = res.has_read_privacy_policy;
+        this.user.has_agreed_to_user_agreement = res.has_agreed_to_user_agreement;
+        this.user.consent_to_research = res.consent_to_research;
+        this.user.consent_to_product_development = res.consent_to_product_development;
+      }
+      const hasAgreed = this.user.has_read_privacy_policy && this.user.has_agreed_to_user_agreement;
+      return hasAgreed;
+    });
+  }
+
+  async onSubmitTap() {
     // validate user form
     const isFirstNameValid = this._isFirstNameValid(this.user.first_name);
     if (!isFirstNameValid) {
@@ -87,7 +111,20 @@ export class SignUpComponent implements OnInit {
       return;
     }
 
+    const agreed = await this.showModal();
+    if (!agreed) {
+      return alert({
+        title: this._translateService.instant('user.accept.accept-error.title'),
+        message: this._translateService.instant('user.accept.accept-error.message'),
+        okButtonText: this.ok
+      });
+    }
+
     this.user.username = this.user.email.toLowerCase().trim();
+
+    // TODO: need to show privacy / user agreement forms here - the
+    //       user cannot create the account without reading and
+    //       agreeing to both!
 
     this._progressService.show(this.account_creating);
     // need to make sure the username is not already taken

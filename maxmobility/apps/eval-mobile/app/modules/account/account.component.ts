@@ -1,10 +1,12 @@
 // angular
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { ModalDialogService } from 'nativescript-angular/directives/dialogs';
 import { CLog } from '@maxmobility/core';
 import { FileService, LoggingService, ProgressService, UserService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 import { RouterExtensions } from 'nativescript-angular/router';
+import { NavigationStart, Router } from '@angular/router';
 import * as camera from 'nativescript-camera';
 import * as email from 'nativescript-email';
 import { ImageCropper } from 'nativescript-imagecropper';
@@ -12,6 +14,7 @@ import * as LS from 'nativescript-localstorage';
 import * as imageSource from 'tns-core-modules/image-source';
 import { confirm } from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
+import { PrivacyPolicyComponent } from '../../privacy-policy';
 
 @Component({
   selector: 'Account',
@@ -45,28 +48,74 @@ export class AccountComponent implements OnInit {
   sign_out_confirm: string = this._translateService.instant('user.sign-out-confirm');
 
   private imageCropper: ImageCropper;
+  private routeSub: any; // subscription to route observer
 
   constructor(
     private _userService: UserService,
     private _progressService: ProgressService,
     private _loggingService: LoggingService,
-    private _router: RouterExtensions,
+    private _routerExtensions: RouterExtensions,
+    private router: Router,
     private _page: Page,
     private _translateService: TranslateService,
-    private _fileService: FileService
+    private _fileService: FileService,
+    private modal: ModalDialogService,
+    private vcRef: ViewContainerRef
   ) {
     this._page.enableSwipeBackNavigation = false;
     this.imageCropper = new ImageCropper();
   }
 
   ngOnInit() {
+    // save when we navigate away!
+    // see https://github.com/NativeScript/nativescript-angular/issues/1049
+    this.routeSub = this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        // now save
+        console.log('Saving user data when navigating away!');
+        this._saveUserToKinvey();
+      }
+    });
+
+    // handle the privacy policy / consent stuff!
+    let has_agreed = (this.user.data as any).has_agreed_to_user_agreement;
+    let has_read = (this.user.data as any).has_read_privacy_policy;
+    if (!has_agreed || !has_read) {
+      this.showModal();
+    }
+
+    // load profile picture
     this.loadProfilePicture();
+
+    // set language data
     this.selectedLanguageIndex =
       this.languages.indexOf((this.user.data as any).language) > -1
         ? this.languages.indexOf((this.user.data as any).language)
         : 0;
 
+    // get translation files
     this._fileService.downloadTranslationFiles();
+  }
+
+  async showModal(): Promise<boolean> {
+    let options = {
+      context: {
+        user: this.user.data
+      },
+      fullscreen: true,
+      viewContainerRef: this.vcRef
+    };
+    return this.modal.showModal(PrivacyPolicyComponent, options).then(res => {
+      if (res) {
+        (this.user.data as any).has_read_privacy_policy = res.has_read_privacy_policy;
+        (this.user.data as any).has_agreed_to_user_agreement = res.has_agreed_to_user_agreement;
+        (this.user.data as any).consent_to_research = res.consent_to_research;
+        (this.user.data as any).consent_to_product_development = res.consent_to_product_development;
+      }
+      const hasAgreed =
+        (this.user.data as any).has_read_privacy_policy && (this.user.data as any).has_agreed_to_user_agreement;
+      return hasAgreed;
+    });
   }
 
   getProfilePictureFSKey(): string {
@@ -157,7 +206,7 @@ export class AccountComponent implements OnInit {
   }
 
   onDrawerButtonTap() {
-    this._router.navigate(['/home'], {
+    this._routerExtensions.navigate(['/home'], {
       transition: {
         name: 'slideBottom',
         duration: 350,
@@ -216,7 +265,7 @@ export class AccountComponent implements OnInit {
         this._userService
           .logout()
           .then(() => {
-            this._router.navigate(['/login'], {
+            this._routerExtensions.navigate(['/login'], {
               clearHistory: true
             });
           })
@@ -266,7 +315,7 @@ export class AccountComponent implements OnInit {
   }
 
   onDebugMenuTap() {
-    this._router.navigate(['/settings']);
+    this._routerExtensions.navigate(['/settings']);
   }
 
   private _saveUserToKinvey() {
