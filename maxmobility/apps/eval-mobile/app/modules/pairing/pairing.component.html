@@ -2,7 +2,10 @@
   <NavigationButton android:visibility="collapse"></NavigationButton>
 </ActionBar>
 
-<StackLayout backgroundImage="~/assets/images/background_1.jpg" tkMainContent class="page page-content gridImage">
+<GridLayout tkMainContent
+			rows="*" columns="*"
+			backgroundImage="~/assets/images/background_1.jpg"
+			class="page page-content gridImage">
 
   <Carousel #carousel
 	        (loaded)="onCarouselLoad()"
@@ -13,22 +16,22 @@
 	        indicatorColor="#66ccff"
 	        indicatorColorUnselected="#cceeff">
     <CarouselItem *ngFor="let slide of slides">
-      
-      <GridLayout  rows="auto, *" cols="*" class="">
-	    
-	      <StackLayout row="0" class="topSlide"
-                       height="35%" width="100%"
-                       orientation="horizontal" horizontalAlignment="center">
-            <Gif *ngIf="slide.Image.indexOf('.gif') > -1" [src]="slide.Image"
-                 (tap)="onGifTap($event)"
-                 height="100%" width="135"></Gif>
-	      </StackLayout>
 
-	      <ScrollView row="1" class="lowerSlide hero" height="65%">
+      <GridLayout  rows="auto, *" cols="*" class="">
+
+	    <StackLayout row="0" class="topSlide"
+                     height="35%" width="100%"
+                     orientation="horizontal" horizontalAlignment="center">
+          <Gif *ngIf="slide.Image.indexOf('.gif') > -1" [src]="slide.Image"
+               (tap)="onGifTap($event)"
+               height="100%" width="135"></Gif>
+	    </StackLayout>
+
+	    <ScrollView row="1" class="lowerSlide hero" height="65%">
           <StackLayout class="hero" orientation="vertical"
                        horizontalAlignment="center" width="100%">
             <Label [text]="slide.Label" class="slideLowerLabel" textWrap="true"></Label>
-	          <Label *ngFor="let bullet of slide.Bullets"
+	        <Label *ngFor="let bullet of slide.Bullets"
                    [text]="bullet"
                    class="bullet" textWrap="true"></Label>
           </StackLayout>
@@ -37,4 +40,4 @@
       </GridLayout>
     </CarouselItem>
   </Carousel>
-</StackLayout>
+</GridLayout>

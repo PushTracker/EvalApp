@@ -3,7 +3,6 @@ import { PushTracker } from '@maxmobility/core';
 import { BluetoothService } from '@maxmobility/mobile';
 import { PageRoute, RouterExtensions } from 'nativescript-angular/router';
 import { Feedback } from 'nativescript-feedback';
-import { SnackBar } from 'nativescript-snackbar';
 import { switchMap } from 'rxjs/operators';
 import { Gif } from 'nativescript-gif';
 import { ChangedData, ObservableArray } from 'tns-core-modules/data/observable-array';
@@ -17,7 +16,6 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class PairingComponent implements AfterViewInit {
   @ViewChild('carousel') carousel: ElementRef;
-  snackbar = new SnackBar();
   selectedPage = 0;
 
   slides = this._translateService.instant('pairing');
@@ -132,11 +130,7 @@ export class PairingComponent implements AfterViewInit {
     }, 100);
   }
 
-  ngAfterViewInit() {
-    setTimeout(() => {
-      this.snackbar.simple('Swipe left to view more slides.');
-    }, 1000);
-  }
+  ngAfterViewInit() {}
 
   onBack(): void {
     this.routerExtensions.navigate(['/eval-entry'], {
