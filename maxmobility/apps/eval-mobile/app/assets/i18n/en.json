@@ -547,12 +547,12 @@
     },
 	"firmware": {
 		"1.5": [
-			"Updated company logo branding when booting PT from sleep.",
-			"Now show estimated drive range on the PT in DisplayInfo  battery status screen.",
-			"Now show OTA status bar and percentage on PT when performing PT OTA.",
-			"When SD is not paired (e.g. after OTA) and the left button is pressed to turn 'SD On', the PT goes directly into pairing to SD mode.",
-			"When App is not paired (e.g. after OTA) and the right button is pressed to connect to the app, the PT goes directly into pairing to app mode.",
-			"Bugfixes to pairing process for handling multiple devices."
+			"Updated company logo branding when booting PushTracker from sleep.",
+			"Now show estimated drive range on the PushTracker in DisplayInfo  battery status screen.",
+			"Now show OTA status bar and percentage on PushTracker when performing PushTracker OTA.",
+			"When the SD is not paired (e.g. after OTA) and the left button is pressed to turn 'SD On', the PushTracker goes directly into pairing to SD mode.",
+			"When the App is not paired (e.g. after OTA) and the right button is pressed to connect to the app, the PushTracker goes directly into pairing to app mode.",
+			"Bugfixes to the pairing process for handling multiple devices."
 		],
 		"1.4": [
 			"Addition of 'EZ-ON' mode for PushTracker - you can now turn power assist ON & OFF / 'SD On' & 'SD Off' by tapping!"

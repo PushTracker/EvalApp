@@ -73,6 +73,11 @@ export class FirmwareService {
     return (parseInt(major) << 4) | parseInt(minor);
   }
 
+  get currentVersion(): string {
+    const maxVersion = Math.max(this.firmwares.PT.version, this.firmwares.BLE.version, this.firmwares.MCU.version);
+    return FirmwareService.versionByteToString(maxVersion);
+  }
+
   // FOR STORING METADATA TO FILE SYSTEM
   private saveMetadata() {
     const md = {
