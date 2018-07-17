@@ -72,7 +72,6 @@ export class OTAComponent implements OnInit, OnDestroy {
       this.slides.nextSlide();
     }, this.slideInterval);
       */
-
   }
 
   get otaDescription(): string[] {
@@ -97,27 +96,27 @@ export class OTAComponent implements OnInit, OnDestroy {
   onCarouselLoad(args: EventData): void {
     const carousel = args.object as any;
 
-    setTimeout(() => {
-      console.log('timeout adding slide');
-      const x = new Label();
-      x.color = new Color('#fff');
-      x.text = 'What is going to happen?!?!';
-      // create carouselItem
-      const item = new CarouselItem();
-      item.addChild(x);
-      // add carouselItem to the carousel
-      carousel.addChild(item);
+    // setTimeout(() => {
+    //   console.log('timeout adding slide');
+    //   const x = new Label();
+    //   x.color = new Color('#fff');
+    //   x.text = 'What is going to happen?!?!';
+    //   // create carouselItem
+    //   const item = new CarouselItem();
+    //   item.addChild(x);
+    //   // add carouselItem to the carousel
+    //   carousel.addChild(item);
 
-      if (isAndroid) {
-        const adapter = carousel.android.getAdapter();
-        if (adapter) {
-          adapter.notifyDataSetChanged();
-          carousel._pageIndicatorView.setCount(this.otaDescription.length);
-        }
-      }
+    //   if (isAndroid) {
+    //     const adapter = carousel.android.getAdapter();
+    //     if (adapter) {
+    //       adapter.notifyDataSetChanged();
+    //       carousel._pageIndicatorView.setCount(this.otaDescription.length);
+    //     }
+    //   }
 
-      carousel.refresh();
-    }, 2000);
+    //   carousel.refresh();
+    // }, 2000);
   }
 
   get currentVersion(): string {
