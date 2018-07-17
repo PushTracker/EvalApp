@@ -16,7 +16,8 @@ export class FirmwareService {
   // public members
   public haveFirmwares = false;
   public last_check: Date;
-  public firmwares = {
+  public description = new ObservableArray<string>();
+  public firmwares: OtaFirmwares = {
     MCU: {
       filename: 'SmartDriveMCU.ota',
       id: null,
@@ -231,4 +232,18 @@ export class FirmwareService {
       });
   }
   // END FOR LOADING A FW FILE FROM SERVER
+}
+
+export interface OtaFirmwares {
+  MCU: FirmwareFile;
+  BLE: FirmwareFile;
+  PT: FirmwareFile;
+}
+
+export interface FirmwareFile {
+  filename: string;
+  id: any;
+  length: number;
+  data: any;
+  version: number;
 }

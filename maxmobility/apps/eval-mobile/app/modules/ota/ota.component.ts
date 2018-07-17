@@ -1,26 +1,18 @@
-// angular
-import { Component, ElementRef, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
-import { RouterExtensions } from 'nativescript-angular/router';
-// nativescript
-import timer = require('tns-core-modules/timer');
-import { isIOS, isAndroid } from 'tns-core-modules/platform';
-import { alert } from 'tns-core-modules/ui/dialogs';
-import { Progress } from 'tns-core-modules/ui/progress';
-import { Page } from 'tns-core-modules/ui/page';
-import { ScrollView, ScrollEventData } from 'tns-core-modules/ui/scroll-view';
-import { Color } from 'tns-core-modules/color';
-import { ObservableArray, ChangedData, ChangeType } from 'tns-core-modules/data/observable-array';
-import { AnimationCurve } from 'tns-core-modules/ui/enums';
-import { View } from 'tns-core-modules/ui/core/view';
-import { Animation, AnimationDefinition } from 'tns-core-modules/ui/animation';
-import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
-import { TranslateService } from '@ngx-translate/core';
-
-// libs
+import { PushTracker, SmartDrive } from '@maxmobility/core';
 import { BluetoothService, FirmwareService, ProgressService } from '@maxmobility/mobile';
-import { Packet, DailyInfo, PushTracker, SmartDrive } from '@maxmobility/core';
+import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
+import { Color } from 'tns-core-modules/color';
+import { ObservableArray } from 'tns-core-modules/data/observable-array';
+import { isAndroid } from 'tns-core-modules/platform';
+import { EventData } from 'tns-core-modules/ui/core/view';
+import { alert } from 'tns-core-modules/ui/dialogs';
+import { Label } from 'tns-core-modules/ui/label';
+import { Page } from 'tns-core-modules/ui/page';
+const Carousel = require('nativescript-carousel').Carousel;
+const CarouselItem = require('nativescript-carousel').CarouselItem;
 
 @Component({
   selector: 'OTA',
@@ -29,32 +21,25 @@ import { Packet, DailyInfo, PushTracker, SmartDrive } from '@maxmobility/core';
   styleUrls: ['./ota.component.css']
 })
 export class OTAComponent implements OnInit, OnDestroy {
-  // PUBLIC MEMBERS
-  @ViewChild('slides') slides: ElementRef;
+  @ViewChild('carousel') carousel: ElementRef;
   selectedPage = 0;
   connected = false;
   updating = false;
   searching = false;
-
   bluetoothReady = false;
-
   // text
   updatingButtonText = this._translateService.instant('ota.begin');
-
-  smartDriveOTAs: ObservableArray<SmartDrive> = new ObservableArray();
-  pushTrackerOTAs: ObservableArray<PushTracker> = new ObservableArray();
-
-  snackbar = new SnackBar();
-
-  private routeSub: any; // subscription to route observer
-  private slideInterval: number = 5000;
+  smartDriveOTAs = new ObservableArray<SmartDrive>();
+  pushTrackerOTAs = new ObservableArray<PushTracker>();
+  otaDescription = new ObservableArray<string>([this._translateService.instant('ota.downloading')]);
+  private routeSub: Subscription; // subscription to route observer
+  private slideInterval = 5000;
   private slideIntervalID: any;
+  private x;
 
   constructor(
-    private http: HttpClient,
-    private page: Page,
-    private routerExtensions: RouterExtensions,
-    private router: Router,
+    private _page: Page,
+    private _router: Router,
     private _translateService: TranslateService,
     private _progressService: ProgressService,
     private _bluetoothService: BluetoothService,
@@ -63,7 +48,7 @@ export class OTAComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // see https://github.com/NativeScript/nativescript-angular/issues/1049
-    this.routeSub = this.router.events.subscribe(event => {
+    this.routeSub = this._router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
         this.cancelOTAs(true);
         if (this.slideIntervalID) {
@@ -71,6 +56,23 @@ export class OTAComponent implements OnInit, OnDestroy {
         }
       }
     });
+
+    this._page.on(Page.navigatingFromEvent, event => {
+      if (this.slideIntervalID) {
+        clearInterval(this.slideIntervalID);
+      }
+      // this.ngOnDestroy();
+    });
+
+    if (this.slideIntervalID) {
+      clearInterval(this.slideIntervalID);
+    }
+    /*
+    this.slideIntervalID = setInterval(() => {
+      this.slides.nextSlide();
+    }, this.slideInterval);
+      */
+
   }
 
   get otaDescription(): string[] {
@@ -92,6 +94,32 @@ export class OTAComponent implements OnInit, OnDestroy {
     return otaDesc;
   }
 
+  onCarouselLoad(args: EventData): void {
+    const carousel = args.object as any;
+
+    setTimeout(() => {
+      console.log('timeout adding slide');
+      const x = new Label();
+      x.color = new Color('#fff');
+      x.text = 'What is going to happen?!?!';
+      // create carouselItem
+      const item = new CarouselItem();
+      item.addChild(x);
+      // add carouselItem to the carousel
+      carousel.addChild(item);
+
+      if (isAndroid) {
+        const adapter = carousel.android.getAdapter();
+        if (adapter) {
+          adapter.notifyDataSetChanged();
+          carousel._pageIndicatorView.setCount(this.otaDescription.length);
+        }
+      }
+
+      carousel.refresh();
+    }, 2000);
+  }
+
   get currentVersion(): string {
     return this._firmwareService.currentVersion;
   }
@@ -100,19 +128,25 @@ export class OTAComponent implements OnInit, OnDestroy {
     return this._firmwareService.haveFirmwares;
   }
 
-  onDrawerButtonTap(): void {}
-
   rssiToColor(_rssi): string {
     let rssi = null;
     try {
-      rssi = parseInt(_rssi);
+      rssi = parseInt(_rssi, 10);
     } catch (err) {
       console.log(`Couldn't parse RSSI(${_rssi}): ${err}`);
     }
-    if (rssi === null) return 'red';
-    if (rssi > -70) return 'green';
-    if (rssi > -80) return 'GoldenRod';
-    if (rssi > -90) return 'OrangeRed';
+    if (rssi === null) {
+      return 'red';
+    }
+    if (rssi > -70) {
+      return 'green';
+    }
+    if (rssi > -80) {
+      return 'GoldenRod';
+    }
+    if (rssi > -90) {
+      return 'OrangeRed';
+    }
     return 'red';
   }
 
@@ -156,11 +190,7 @@ export class OTAComponent implements OnInit, OnDestroy {
     });
   }
 
-  public onRefreshDeviceList() {
-    this.refreshDeviceList();
-  }
-
-  private refreshDeviceList(): Promise<any> {
+  onRefreshDeviceList(): Promise<any> {
     if (!this.updating && !this.searching) {
       this.smartDriveOTAs.splice(0, this.smartDriveOTAs.length);
       this.pushTrackerOTAs.splice(0, this.pushTrackerOTAs.length);
@@ -202,18 +232,18 @@ export class OTAComponent implements OnInit, OnDestroy {
       // OTA the selected smart drive(s)
       const smartDriveOTATasks = this.smartDriveOTAs.map(sd => {
         return sd.performOTA(
-          this._firmwareService.firmwares['BLE'].data,
-          this._firmwareService.firmwares['MCU'].data,
-          this._firmwareService.firmwares['BLE'].version,
-          this._firmwareService.firmwares['MCU'].version,
+          this._firmwareService.firmwares.BLE.data,
+          this._firmwareService.firmwares.MCU.data,
+          this._firmwareService.firmwares.BLE.version,
+          this._firmwareService.firmwares.MCU.version,
           300000
         );
       });
 
       const pushTrackerOTATasks = this.pushTrackerOTAs.map(pt => {
         return pt.performOTA(
-          this._firmwareService.firmwares['PT'].data,
-          this._firmwareService.firmwares['PT'].version,
+          this._firmwareService.firmwares.PT.data,
+          this._firmwareService.firmwares.PT.version,
           300000
         );
       });
