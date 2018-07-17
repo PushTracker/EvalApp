@@ -86,7 +86,7 @@ export class HomeComponent {
   }
 
   get currentVersion(): string {
-    return FirmwareService.versionByteToString(this._firmwareService.firmwares.PT.version);
+    return this._firmwareService.currentVersion;
   }
 
   get Demos(): ObservableArray<Demo> {

@@ -16,7 +16,6 @@ export class FirmwareService {
   // public members
   public haveFirmwares = false;
   public last_check: Date;
-  public description: ObservableArray<string> = new ObservableArray();
   public firmwares = {
     MCU: {
       filename: 'SmartDriveMCU.ota',
@@ -73,10 +72,14 @@ export class FirmwareService {
     return (parseInt(major) << 4) | parseInt(minor);
   }
 
+  get currentVersion(): string {
+    const maxVersion = Math.max(this.firmwares.PT.version, this.firmwares.BLE.version, this.firmwares.MCU.version);
+    return FirmwareService.versionByteToString(maxVersion);
+  }
+
   // FOR STORING METADATA TO FILE SYSTEM
   private saveMetadata() {
     const md = {
-      description: this.description.slice(),
       last_check: this.last_check
     };
     Object.keys(this.firmwares).map(k => {
@@ -99,7 +102,6 @@ export class FirmwareService {
       const md = LS.getItem(FirmwareService.fsKeyPrefix + FirmwareService.fsKeyMetadata);
       if (md) {
         // now update our firmwares data
-        this.description.splice(0, this.description.length, md.description || []);
         this.last_check = md.last_check ? new Date(md.last_check) : null;
         Object.keys(this.firmwares).map(k => {
           this.firmwares[k].id = (md[k] && md[k].id) || null;
@@ -178,29 +180,15 @@ export class FirmwareService {
     }
   }
 
-  private clearDescription() {
-    this.description.splice(0, this.description.length);
-  }
-
-  private updateDescription(desc) {
-    if (typeof desc === 'object') {
-      this.description.push(desc);
-    } else if (typeof desc === 'string') {
-      this.description.push(JSON.parse(desc));
-    }
-  }
-
   private updateFirmware(fwKey, file) {
     this.firmwares[fwKey].version = this.versionStringToByte('' + file._version);
     this.firmwares[fwKey].id = file._id;
     this.firmwares[fwKey].length = file.size;
-    this.updateDescription(file.description);
     console.log(`${fwKey}: ${file._version} : ${file.size}`);
   }
 
   public downloadFirmwares(): Promise<any> {
     this.haveFirmwares = false;
-    this.clearDescription();
     const tasks = Object.keys(this.firmwares).map(fwKey => {
       const query = new Kinvey.Query();
       query.equalTo('_filename', this.firmwares[fwKey].filename);
