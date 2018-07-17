@@ -1,15 +1,12 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import { PushTracker, SmartDrive } from '@maxmobility/core';
 import { BluetoothService, FirmwareService, ProgressService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { Color } from 'tns-core-modules/color';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
-import { isAndroid } from 'tns-core-modules/platform';
 import { EventData } from 'tns-core-modules/ui/core/view';
 import { alert } from 'tns-core-modules/ui/dialogs';
-import { Label } from 'tns-core-modules/ui/label';
 import { Page } from 'tns-core-modules/ui/page';
 const Carousel = require('nativescript-carousel').Carousel;
 const CarouselItem = require('nativescript-carousel').CarouselItem;
@@ -20,7 +17,7 @@ const CarouselItem = require('nativescript-carousel').CarouselItem;
   templateUrl: './ota.component.html',
   styleUrls: ['./ota.component.css']
 })
-export class OTAComponent implements OnInit, OnDestroy {
+export class OTAComponent implements OnInit {
   @ViewChild('carousel') carousel: ElementRef;
   selectedPage = 0;
   connected = false;
@@ -31,11 +28,9 @@ export class OTAComponent implements OnInit, OnDestroy {
   updatingButtonText = this._translateService.instant('ota.begin');
   smartDriveOTAs = new ObservableArray<SmartDrive>();
   pushTrackerOTAs = new ObservableArray<PushTracker>();
-  otaDescription = new ObservableArray<string>([this._translateService.instant('ota.downloading')]);
   private routeSub: Subscription; // subscription to route observer
   private slideInterval = 5000;
   private slideIntervalID: any;
-  private x;
 
   constructor(
     private _page: Page,
@@ -61,18 +56,11 @@ export class OTAComponent implements OnInit, OnDestroy {
       if (this.slideIntervalID) {
         clearInterval(this.slideIntervalID);
       }
-      // this.ngOnDestroy();
     });
 
     if (this.slideIntervalID) {
       clearInterval(this.slideIntervalID);
     }
-    /*
-    this.slideIntervalID = setInterval(() => {
-      this.slides.nextSlide();
-    }, this.slideInterval);
-      */
-
   }
 
   get otaDescription(): string[] {
@@ -97,27 +85,27 @@ export class OTAComponent implements OnInit, OnDestroy {
   onCarouselLoad(args: EventData): void {
     const carousel = args.object as any;
 
-    setTimeout(() => {
-      console.log('timeout adding slide');
-      const x = new Label();
-      x.color = new Color('#fff');
-      x.text = 'What is going to happen?!?!';
-      // create carouselItem
-      const item = new CarouselItem();
-      item.addChild(x);
-      // add carouselItem to the carousel
-      carousel.addChild(item);
+    // setTimeout(() => {
+    //   console.log('timeout adding slide');
+    //   const x = new Label();
+    //   x.color = new Color('#fff');
+    //   x.text = 'What is going to happen?!?!';
+    //   // create carouselItem
+    //   const item = new CarouselItem();
+    //   item.addChild(x);
+    //   // add carouselItem to the carousel
+    //   carousel.addChild(item);
 
-      if (isAndroid) {
-        const adapter = carousel.android.getAdapter();
-        if (adapter) {
-          adapter.notifyDataSetChanged();
-          carousel._pageIndicatorView.setCount(this.otaDescription.length);
-        }
-      }
+    //   if (isAndroid) {
+    //     const adapter = carousel.android.getAdapter();
+    //     if (adapter) {
+    //       adapter.notifyDataSetChanged();
+    //       carousel._pageIndicatorView.setCount(this.otaDescription.length);
+    //     }
+    //   }
 
-      carousel.refresh();
-    }, 2000);
+    //   carousel.refresh();
+    // }, 2000);
   }
 
   get currentVersion(): string {
