@@ -546,6 +546,9 @@
         }
     },
 	"firmware": {
+		"not-found": [
+			"We were unable to find the description for the latest firmware!"
+		],
 		"1.5": [
 			"Updated company logo branding when booting PushTracker from sleep.",
 			"Now show estimated drive range on the PushTracker in DisplayInfo  battery status screen.",

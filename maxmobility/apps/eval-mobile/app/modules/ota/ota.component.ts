@@ -79,6 +79,13 @@ export class OTAComponent implements OnInit, OnDestroy {
       let tmp = this._translateService.instant('firmware.' + this.currentVersion);
       if (typeof tmp !== 'string' && tmp.length) {
         otaDesc = tmp;
+      } else {
+        tmp = this._translateService.instant('firmware.not-found');
+        if (typeof tmp !== 'string' && tmp.length) {
+          otaDesc = tmp;
+        } else {
+          otaDesc = [this._translateService.instant('general.error')];
+        }
       }
     }
     console.log(otaDesc);
