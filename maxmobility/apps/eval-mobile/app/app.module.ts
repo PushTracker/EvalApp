@@ -9,12 +9,12 @@ import { NativeScriptModule } from 'nativescript-angular/nativescript.module';
 import { DropDownModule } from 'nativescript-drop-down/angular';
 import { SlidesModule } from 'nativescript-ngx-slides';
 import { NativeScriptUIListViewModule } from 'nativescript-ui-listview/angular';
+import { YoutubePlayerModule } from 'nativescript-youtubeplayer/angular';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './modules/core/core.module';
 import { SharedModule } from './modules/shared/shared.module';
 import { TNSTranslateLoader } from './utils';
-import { YoutubePlayerModule } from 'nativescript-youtubeplayer/angular';
 
 // factories
 export function createTranslateLoader() {

@@ -108,7 +108,7 @@ export class OTAComponent implements OnInit, OnDestroy {
         const adapter = carousel.android.getAdapter();
         if (adapter) {
           adapter.notifyDataSetChanged();
-          carousel._pageIndicatorView.setCount(7);
+          carousel._pageIndicatorView.setCount(this.otaDescription.length);
         }
       }
 
