@@ -75,7 +75,7 @@ export class DemoDetailComponent {
   }
 
   get currentVersion(): string {
-    return FirmwareService.versionByteToString(this._firmwareService.firmwares.PT.version);
+    return this._firmwareService.currentVersion;
   }
 
   onUpdateSDImageTap() {

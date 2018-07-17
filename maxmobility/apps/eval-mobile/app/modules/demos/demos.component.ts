@@ -35,7 +35,7 @@ export class DemosComponent {
   }
 
   get currentVersion(): string {
-    return FirmwareService.versionByteToString(this._firmwareService.firmwares.PT.version);
+    return this._firmwareService.currentVersion;
   }
 
   onDemoTap(args) {
