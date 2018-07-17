@@ -544,5 +544,24 @@
                 "message": "Bluetooth service unavailable - re-initializing!"
             }
         }
-    }
+    },
+	"firmware": {
+		"1.5": [
+			"Updated company logo branding when booting PT from sleep.",
+			"Now show estimated drive range on the PT in DisplayInfo  battery status screen.",
+			"Now show OTA status bar and percentage on PT when performing PT OTA.",
+			"When SD is not paired (e.g. after OTA) and the left button is pressed to turn 'SD On', the PT goes directly into pairing to SD mode.",
+			"When App is not paired (e.g. after OTA) and the right button is pressed to connect to the app, the PT goes directly into pairing to app mode.",
+			"Bugfixes to pairing process for handling multiple devices."
+		],
+		"1.4": [
+			"Addition of 'EZ-ON' mode for PushTracker - you can now turn power assist ON & OFF / 'SD On' & 'SD Off' by tapping!"
+		],
+		"1.3": [
+			"Addition of 'EZ-ON' mode for PushTracker - you can now turn power assist ON & OFF / 'SD On' & 'SD Off' by tapping!"
+		],
+		"1.2": [
+			"Added 'About' to PushTracker 'Settings' menu which shows the firmware versions of the PushTracker, SmartDrive Bluetooth (BLE) and SmartDrive Microcontroller (MCU). Also shows the most recent error code and information."
+		]
+	}
 }
