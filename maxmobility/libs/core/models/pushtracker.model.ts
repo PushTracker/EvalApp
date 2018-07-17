@@ -735,7 +735,7 @@ export class PushTracker extends Observable {
     /* DistanceInfo
            struct {
            uint64_t   motorDistance;  /** Cumulative Drive distance in ticks.
-           uint64_t   caseDistance;   /** Cumulative Case distance in ticks. 
+           uint64_t   caseDistance;   /** Cumulative Case distance in ticks.
            }            distanceInfo;
         */
     console.log(`Got distance info: ${motorTicks}, ${caseTicks}`);
@@ -755,7 +755,7 @@ export class PushTracker extends Observable {
            struct Settings {
            ControlMode controlMode;
            Units       units;
-           uint8_t     settingsFlags1;  /** Bitmask of boolean settings.     
+           uint8_t     settingsFlags1;  /** Bitmask of boolean settings.
            uint8_t     padding;
            float       tapSensitivity;  /** Slider setting, range: [0.1, 1.0]
            float       acceleration;    /** Slider setting, range: [0.1, 1.0]
@@ -778,14 +778,14 @@ export class PushTracker extends Observable {
            uint16_t    year;
            uint8_t     month;
            uint8_t     day;
-           uint16_t    pushesWith;      /** Raw integer number of pushes. 
-           uint16_t    pushesWithout;   /** Raw integer number of pushes. 
-           uint16_t    coastWith;       /** Coast Time (s) * 100.         
-           uint16_t    coastWithout;    /** Coast Time Without (s) * 100. 
-           uint8_t     distance;        /** Distance (mi) * 10.           
-           uint8_t     speed;           /** Speed (mph) * 10.             
-           uint8_t     ptBattery;       /** Percent, [0, 100].            
-           uint8_t     sdBattery;       /** Percent, [0, 100].            
+           uint16_t    pushesWith;      /** Raw integer number of pushes.
+           uint16_t    pushesWithout;   /** Raw integer number of pushes.
+           uint16_t    coastWith;       /** Coast Time (s) * 100.
+           uint16_t    coastWithout;    /** Coast Time Without (s) * 100.
+           uint8_t     distance;        /** Distance (mi) * 10.
+           uint8_t     speed;           /** Speed (mph) * 10.
+           uint8_t     ptBattery;       /** Percent, [0, 100].
+           uint8_t     sdBattery;       /** Percent, [0, 100].
            }            dailyInfo;
         */
     this.sendEvent(PushTracker.pushtracker_daily_info_event, {

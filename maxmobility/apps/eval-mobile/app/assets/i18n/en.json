@@ -54,14 +54,14 @@
         {
             "Image": "~/assets/images/PowerOn.png",
             "Label": "Powering SmartDrive",
-            "Bullets": [ 
+            "Bullets": [
                 "Press back on the rocker switch to power on the SmartDrive, and forward to power off."
             ]
         },
         {
             "Image": "~/assets/images/BandPower.png",
             "Label": "Powering PushTracker",
-            "Bullets": [ 
+            "Bullets": [
                 "Press the left raised button on the PushTracker to power on.",
 	            "Press and hold for 3 seconds to enter sleep mode 'zzz' and power off."
             ]
@@ -69,7 +69,7 @@
         {
             "Image": "~/assets/images/Stop.png",
             "Label": "Tap Gesture",
-            "Bullets": [ 
+            "Bullets": [
                 "Keeping your wrist straight, make contact on the push-rim with the palm of your hand.",
 	            "A red light will illuminate upon successful tap.",
 	            "Tip: You do not need to make contact with the PushTracker band.",
@@ -79,7 +79,7 @@
         {
             "Image": "~/assets/images/start-coast.png",
             "Label": "Starting & Setting Speed",
-            "Bullets": [ 
+            "Bullets": [
                 "Double-tap to initiate the SmartDrive. It will then begin to accelerate.",
 	            "Then, single-tap to set your desired speed.",
 	            "To increase speed, give a faster push and then single tap to set your desired speed."
@@ -88,7 +88,7 @@
         {
             "Image": "~/assets/images/Steer.png",
             "Label": "Steering",
-            "Bullets": [ 
+            "Bullets": [
                 "To steer, gently grip the push-rim of the direction you want to go.",
 	            "Light grip will allow you to veer.",
 	            "Allow the push-rim to slide through your hands."
@@ -97,7 +97,7 @@
         {
             "Image": "~/assets/images/turn.png",
             "Label": "Turning",
-            "Bullets": [ 
+            "Bullets": [
                 "To turn, firmly grip the push-rim of the direction you want to go.",
 	            "Firm grip will allow you to turn.",
 	            "The tighter you grip, the sharper you will turn.",
@@ -273,7 +273,7 @@
         "feedback-email-subject": "Smart Evaluation Feedback",
         "account": "Account",
         "account-creating": "Creating Account...",
-        "account-update": "Update User Account?", 
+        "account-update": "Update User Account?",
         "account-update-confirm": "Send these settings to the Server?",
         "account-update-complete": "Your profile has been updated.",
         "account-reset": "Reset Account?",
@@ -507,7 +507,7 @@
                 "rebooting": "Rebooting, please re-pair and re-connect your PushTracker",
                 "verifying-update": "Verifying",
                 "complete": "Complete",
-                "cancel-ling": "Cancel-ling",
+                "canceling": "Canceling",
                 "canceled": "Canceled",
                 "failed": "Failed",
                 "timeout": "Timeout"
