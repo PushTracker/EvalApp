@@ -14,7 +14,6 @@ import * as LS from 'nativescript-localstorage';
 import * as imageSource from 'tns-core-modules/image-source';
 import { confirm } from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
-import { PrivacyPolicyComponent } from '../../privacy-policy';
 import { ValueList } from 'nativescript-drop-down';
 
 @Component({
@@ -82,13 +81,6 @@ export class AccountComponent implements OnInit {
       }
     });
 
-    // handle the privacy policy / consent stuff!
-    let has_agreed = (this.user.data as any).has_agreed_to_user_agreement;
-    let has_read = (this.user.data as any).has_read_privacy_policy;
-    if (!has_agreed || !has_read) {
-      this.showModal();
-    }
-
     // load profile picture
     this.loadProfilePicture();
 
@@ -100,27 +92,6 @@ export class AccountComponent implements OnInit {
 
     // get translation files
     this._fileService.downloadTranslationFiles();
-  }
-
-  async showModal(): Promise<boolean> {
-    let options = {
-      context: {
-        user: this.user.data
-      },
-      fullscreen: true,
-      viewContainerRef: this.vcRef
-    };
-    return this.modal.showModal(PrivacyPolicyComponent, options).then(res => {
-      if (res) {
-        (this.user.data as any).has_read_privacy_policy = res.has_read_privacy_policy;
-        (this.user.data as any).has_agreed_to_user_agreement = res.has_agreed_to_user_agreement;
-        (this.user.data as any).consent_to_research = res.consent_to_research;
-        (this.user.data as any).consent_to_product_development = res.consent_to_product_development;
-      }
-      const hasAgreed =
-        (this.user.data as any).has_read_privacy_policy && (this.user.data as any).has_agreed_to_user_agreement;
-      return hasAgreed;
-    });
   }
 
   getProfilePictureFSKey(): string {
