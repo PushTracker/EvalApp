@@ -9,12 +9,14 @@ import { NativeScriptModule } from 'nativescript-angular/nativescript.module';
 import { DropDownModule } from 'nativescript-drop-down/angular';
 import { SlidesModule } from 'nativescript-ngx-slides';
 import { NativeScriptUIListViewModule } from 'nativescript-ui-listview/angular';
-import { YoutubePlayerModule } from 'nativescript-youtubeplayer/angular';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './modules/core/core.module';
 import { SharedModule } from './modules/shared/shared.module';
 import { TNSTranslateLoader } from './utils';
+import { YoutubePlayerModule } from 'nativescript-youtubeplayer/angular';
+import { ModalDialogService } from 'nativescript-angular/modal-dialog';
+import { PrivacyPolicyComponent } from './privacy-policy';
 
 // factories
 export function createTranslateLoader() {
@@ -23,6 +25,7 @@ export function createTranslateLoader() {
 
 @NgModule({
   bootstrap: [AppComponent],
+  entryComponents: [PrivacyPolicyComponent],
   imports: [
     NativeScriptCommonModule,
     NativeScriptModule,
@@ -43,8 +46,8 @@ export function createTranslateLoader() {
       }
     })
   ],
-  declarations: [AppComponent],
-  providers: [...CORE_PROVIDERS],
+  declarations: [AppComponent, PrivacyPolicyComponent],
+  providers: [...CORE_PROVIDERS, ModalDialogService],
   schemas: [NO_ERRORS_SCHEMA]
 })
 export class AppModule {}

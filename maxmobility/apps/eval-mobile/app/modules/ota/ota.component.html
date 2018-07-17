@@ -37,9 +37,9 @@
           <Progress [value]="sd.otaProgress" maxValue="100" class="progress"></Progress>
           <GridLayout class="otaInfo" rows="auto, auto, *" columns="2*, *">
             <Label col="0" textWrap="false" class="otaLabel" [text]="sd.address"></Label>
-            <Label col="0" row="1" editable="false" textWrap="true" class="otaState" textDecoration="none" [text]="sd.otaStateToString()"></Label>
+            <Label col="0" row="1" editable="false" textWrap="true" class="otaState" textDecoration="none" [text]="sd.otaState | translate"></Label>
             <WrapLayout orientation="horizontal" horizontalAlignment="right" rowSpan="3" col="1">
-              <Button *ngFor="let action of sd.otaActions" class="otaAction" [text]="action" (tap)="sd.onOTAActionTap(action)"></Button>
+              <Button *ngFor="let action of sd.otaActions" class="otaAction" [text]="action | translate" (tap)="sd.onOTAActionTap(action)"></Button>
             </WrapLayout>
           </GridLayout>
         </StackLayout>
@@ -60,9 +60,9 @@
           <Progress [value]="pt.otaProgress" maxValue="100" class="progress"></Progress>
           <GridLayout class="otaInfo" rows="auto, auto, *" columns="2*, *">
             <Label col="0" textWrap="false" class="otaLabel" [text]="pt.address"></Label>
-            <Label col="0" row="1" editable="false" textWrap="true" class="otaState" textDecoration="none" [text]="pt.otaStateToString()"></Label>
+            <Label col="0" row="1" editable="false" textWrap="true" class="otaState" textDecoration="none" [text]="pt.otaState | translate"></Label>
             <WrapLayout orientation="horizontal" horizontalAlignment="right" rowSpan="3" col="1">
-              <Button *ngFor="let action of pt.otaActions" class="otaAction" [text]="action" (tap)="pt.onOTAActionTap(action)"></Button>
+              <Button *ngFor="let action of pt.otaActions" class="otaAction" [text]="action | translate" (tap)="pt.onOTAActionTap(action)"></Button>
             </WrapLayout>
           </GridLayout>
         </StackLayout>
@@ -80,7 +80,6 @@
 
     </Gradient>
   </ScrollView>
-
 
   <GridLayout height="30%">
     <Carousel #carousel 

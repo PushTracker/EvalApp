@@ -1,10 +1,12 @@
 // angular
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { ModalDialogService } from 'nativescript-angular/directives/dialogs';
 import { CLog } from '@maxmobility/core';
 import { FileService, LoggingService, ProgressService, UserService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 import { RouterExtensions } from 'nativescript-angular/router';
+import { NavigationStart, Router } from '@angular/router';
 import * as camera from 'nativescript-camera';
 import * as email from 'nativescript-email';
 import { ImageCropper } from 'nativescript-imagecropper';
@@ -12,6 +14,7 @@ import * as LS from 'nativescript-localstorage';
 import * as imageSource from 'tns-core-modules/image-source';
 import { confirm } from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
+import { ValueList } from 'nativescript-drop-down';
 
 @Component({
   selector: 'Account',
@@ -26,7 +29,11 @@ export class AccountComponent implements OnInit {
   // tslint:disable-next-line:member-ordering
   user: Kinvey.User = this._userService.user;
 
-  languages: string[] = this._translateService.getLangs();
+  languages: ValueList<string> = new ValueList<string>(
+    this._translateService.getLangs().map(l => {
+      return { value: l, display: this._translateService.instant('languages.' + l) };
+    })
+  );
   selectedLanguageIndex: number = 0;
 
   yes: string = this._translateService.instant('dialogs.yes');
@@ -45,27 +52,45 @@ export class AccountComponent implements OnInit {
   sign_out_confirm: string = this._translateService.instant('user.sign-out-confirm');
 
   private imageCropper: ImageCropper;
+  private routeSub: any; // subscription to route observer
 
   constructor(
     private _userService: UserService,
     private _progressService: ProgressService,
     private _loggingService: LoggingService,
-    private _router: RouterExtensions,
+    private _routerExtensions: RouterExtensions,
+    private router: Router,
     private _page: Page,
     private _translateService: TranslateService,
-    private _fileService: FileService
+    private _fileService: FileService,
+    private modal: ModalDialogService,
+    private vcRef: ViewContainerRef
   ) {
     this._page.enableSwipeBackNavigation = false;
     this.imageCropper = new ImageCropper();
   }
 
   ngOnInit() {
+    // save when we navigate away!
+    // see https://github.com/NativeScript/nativescript-angular/issues/1049
+    this.routeSub = this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        // now save
+        console.log('Saving user data when navigating away!');
+        this._saveUserToKinvey();
+      }
+    });
+
+    // load profile picture
     this.loadProfilePicture();
+
+    // set language data
     this.selectedLanguageIndex =
       this.languages.indexOf((this.user.data as any).language) > -1
         ? this.languages.indexOf((this.user.data as any).language)
         : 0;
 
+    // get translation files
     this._fileService.downloadTranslationFiles();
   }
 
@@ -149,7 +174,7 @@ export class AccountComponent implements OnInit {
   }
 
   onLanguageChanged(args) {
-    const newLanguage = this.languages[args.newIndex] || 'en';
+    const newLanguage = this.languages.getValue(args.newIndex) || 'en';
     (this.user.data as any).language = newLanguage;
     this._translateService.use(newLanguage);
     // save the user setting to their account when changed
@@ -157,7 +182,7 @@ export class AccountComponent implements OnInit {
   }
 
   onDrawerButtonTap() {
-    this._router.navigate(['/home'], {
+    this._routerExtensions.navigate(['/home'], {
       transition: {
         name: 'slideBottom',
         duration: 350,
@@ -216,7 +241,7 @@ export class AccountComponent implements OnInit {
         this._userService
           .logout()
           .then(() => {
-            this._router.navigate(['/login'], {
+            this._routerExtensions.navigate(['/login'], {
               clearHistory: true
             });
           })
@@ -266,7 +291,7 @@ export class AccountComponent implements OnInit {
   }
 
   onDebugMenuTap() {
-    this._router.navigate(['/settings']);
+    this._routerExtensions.navigate(['/settings']);
   }
 
   private _saveUserToKinvey() {

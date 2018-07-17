@@ -1,4 +1,15 @@
 {
+    "languages": {
+        "en": "English",
+        "es": "Spanish",
+        "de": "German",
+        "fr": "French",
+        "nl": "Dutch",
+        "sv": "Swedish",
+        "ru": "Russian",
+        "zh": "Chinese",
+        "it": "Italian"
+    },
     "buttons": {
         "next": "Next",
         "back": "Back"
@@ -16,6 +27,8 @@
         "training": "SmartDrive Training",
         "eval": "Begin SmartDrive Evaluation",
         "eval-title": "Begin SmartDrive Evaluation",
+        "videos-title": "Videos",
+        "videos-description": "Training and usage videos for SmartDrive and PushTracker",
         "trial": "Begin a SmartDrive Trial.",
         "trial-title": "Begin a SmartDrive Trial.",
         "summary": "Summary",
@@ -41,14 +54,14 @@
         {
             "Image": "~/assets/images/PowerOn.png",
             "Label": "Powering SmartDrive",
-            "Bullets": [ 
+            "Bullets": [
                 "Press back on the rocker switch to power on the SmartDrive, and forward to power off."
             ]
         },
         {
             "Image": "~/assets/images/BandPower.png",
             "Label": "Powering PushTracker",
-            "Bullets": [ 
+            "Bullets": [
                 "Press the left raised button on the PushTracker to power on.",
 	            "Press and hold for 3 seconds to enter sleep mode 'zzz' and power off."
             ]
@@ -56,7 +69,7 @@
         {
             "Image": "~/assets/images/Stop.png",
             "Label": "Tap Gesture",
-            "Bullets": [ 
+            "Bullets": [
                 "Keeping your wrist straight, make contact on the push-rim with the palm of your hand.",
 	            "A red light will illuminate upon successful tap.",
 	            "Tip: You do not need to make contact with the PushTracker band.",
@@ -66,7 +79,7 @@
         {
             "Image": "~/assets/images/start-coast.png",
             "Label": "Starting & Setting Speed",
-            "Bullets": [ 
+            "Bullets": [
                 "Double-tap to initiate the SmartDrive. It will then begin to accelerate.",
 	            "Then, single-tap to set your desired speed.",
 	            "To increase speed, give a faster push and then single tap to set your desired speed."
@@ -75,7 +88,7 @@
         {
             "Image": "~/assets/images/Steer.png",
             "Label": "Steering",
-            "Bullets": [ 
+            "Bullets": [
                 "To steer, gently grip the push-rim of the direction you want to go.",
 	            "Light grip will allow you to veer.",
 	            "Allow the push-rim to slide through your hands."
@@ -84,7 +97,7 @@
         {
             "Image": "~/assets/images/turn.png",
             "Label": "Turning",
-            "Bullets": [ 
+            "Bullets": [
                 "To turn, firmly grip the push-rim of the direction you want to go.",
 	            "Firm grip will allow you to turn.",
 	            "The tighter you grip, the sharper you will turn.",
@@ -101,24 +114,57 @@
             ]
         }
     ],
-    "videos": {
-        "title": "Videos",
-        "description": "Training and usage videos for SmartDrive and PushTracker",
-        "overview-title": "SmartDrive Introduction",
-        "overview-desc": "This video is an overview of SmartDrive being used by people of varying ages and circumstances in a variety of environments.",
-        "sd-basic-op-title": "SmartDrive MX2+ Basic Operation",
-        "sd-basic-op-desc": "This video covers the basic operation and functionality of the SmartDrive and PushTracker.",
-        "pt-basic-op-title": "PushTracker Basic Operation",
-        "pt-basic-op-desc": "This video covers the basic operation and functionality of the PushTracker.",
-        "pt-ap-basic-op-title":"Intro to the PushTracker App",
-        "pt-ap-basic-op-desc": "This video covers the basic operation and functionality of the PushTracker App.",
-        "sea-basic-op-title": "Intro to the Smart Evaluation App",
-        "sea-basic-op-desc": "This video covers the basic operation and functionality of the Smart Evaluation App.",
-        "eval-training-tite": "SmartDrive Evaluation and Training",
-        "eval-training-desc": "This video covers the steps to perform when doing a SmartDrive Evaluation or Training",
-        "interview-title": "Interview with Chels and Steph",
-        "interview-desc": "In this video, I interview Chels and Steph about the many aspects of their lives, and how they have been impacted by SmartDrive"
-    },
+    "videos": [
+        {
+            "Url": "8fn26J59WJ4",
+            "Description": "This video is an overview of SmartDrive being used by people of varying ages and circumstances in a variety of environments.",
+            "Title": "SmartDrive Introduction",
+            "Thumb": "~/assets/images/overview-thumb.jpg",
+            "Route": "/video"
+        },
+        {
+            "Url": "uhA3-svjQFg",
+            "Description": "This video covers the basic operation and functionality of the SmartDrive and PushTracker.",
+            "Title": "SmartDrive MX2+ Basic Operation",
+            "Thumb": "~/assets/images/sd-basic-op-thumb.jpg",
+            "Route": "/video"
+        },
+        {
+            "Url": "6_M1J8HZXIk",
+            "Description": "This video covers the basic operation and functionality of the PushTracker.",
+            "Title": "PushTracker Basic Operation",
+            "Thumb": "~/assets/images/pt-basic-op-thumb.jpg",
+            "Route": "/video"
+        },
+        {
+            "Url": "3B-6ked84us",
+            "Description": "This video covers the basic operation and functionality of the PushTracker App.",
+            "Title": "Intro to the PushTracker App",
+            "Thumb": "~/assets/images/intro-PushTracker-app-thumb.jpg",
+            "Route": "/video"
+        },
+        {
+            "Url": "3B-6ked84us",
+            "Description": "This video covers the basic operation and functionality of the Smart Evaluation App.",
+            "Title": "Intro to the Smart Evaluation App",
+            "Thumb": "~/assets/images/intro-PushTracker-app-thumb.jpg",
+            "Route": "/video"
+        },
+        {
+            "Url": "45Kj7zJpDcM",
+            "Description": "This video covers the steps to perform when doing a SmartDrive Evaluation or Training",
+            "Title": "SmartDrive Evaluation and Training",
+            "Thumb": "~/assets/images/eval-thumb.jpg",
+            "Route": "/video"
+        },
+        {
+            "Url": "hFid9ks551A",
+            "Description": "In this video, I interview Chels and Steph about the many aspects of their lives, and how they have been impacted by SmartDrive",
+            "Title": "Interview with Chels and Steph",
+            "Thumb": "~/assets/images/interview-thumb.jpg",
+            "Route": "/video"
+        }
+    ],
     "error": {
         "email": "Sorry, an error occurred uploading that photo."
     },
@@ -181,7 +227,7 @@
             ]
         },
         {
-            "Image": "~/assets/images/PushTracker-Connecting.png",
+            "Image": "~/assets/images/gifs/PT-APP-CONNECTION1.gif",
             "Label": "Connecting your PushTracker to the App",
             "Bullets": [
                 "With the PushTracker app open, press the right flat button on the PushTracker",
@@ -191,7 +237,7 @@
         },
         {
             "Image": "~/assets/images/gifs/PT-SD-CONNECT2.gif",
-            "Label": "Tap Gesture",
+            "Label": "Pairing Your PushTracker to Your SmartDrive",
             "Bullets": [
                 "Press and hold the right flat button on your PushTracker for three seconds to enter the settings menu",
                 "Press the right button to scroll to the PT-SD icon.",
@@ -200,13 +246,34 @@
         }
     ],
     "user": {
+        "consent-form-title": "Privacy Policy Consent Form",
+        "privacy-policy-site": "https://privacy.permobil.com",
+        "end-user-agreement-site": "https://privacy.permobil.com/our-products.html#collapseEight",
+        "accept": {
+            "agreement-button": "View End User Agreement",
+            "privacy-button": "View Privacy Policy",
+            "user-agreement-title": "Accept End User Agreement",
+            "privacy-policy-title": "Accept Privacy Policy",
+            "header": "You must accept the end user agreement and read the privacy notice to be able to activate and use Smart Evaluation",
+            "user-agreement": "I have read, understood, and agree to the end user agreement",
+            "privacy-policy": "I have read and understood the privacy policy",
+            "accept-error": {
+                "title": "Agreement Error",
+                "message": "You must read and accept the agreement and privacy policy to register an account!"
+            }
+        },
+        "consent": {
+            "header": "You can give or withdraw any of your consents at any time during the use of the service by going to the 'Account' page of the application.",
+            "research": "I give my consent to the usage of my data for product development as described in the privacy policy",
+            "product-development": "I give my consent to the usage of my data for research as described in the privacy policy"
+        },
         "provide-feedback-confirm-title": "Provide Feedback?",
         "provide-feedback-confirm-message": "Would you like to send feedback via your configured email client?",
         "provide-feedback-btn": "Send Feedback",
         "feedback-email-subject": "Smart Evaluation Feedback",
         "account": "Account",
         "account-creating": "Creating Account...",
-        "account-update": "Update User Account?", 
+        "account-update": "Update User Account?",
         "account-update-confirm": "Send these settings to the Server?",
         "account-update-complete": "Your profile has been updated.",
         "account-reset": "Reset Account?",
@@ -371,7 +438,81 @@
             }
         }
     },
+    "faqs": [
+        {
+            "question": "Why isn't my SmartDrive engaging?",
+            "answer":
+            "Generally, you should check these things: 1) that your SmartDrive is powered on, 2) that your PushTracker is in 'SD On' mode - the blue light should be flashing, and 3) that you are in MX2+ mode - in which a double tap will engage the motor."
+        },
+        {
+            "question": "Can my SmartDrive slow me down?",
+            "answer":
+            "Unfortunately, no - the SmartDrive is incapable of providing any braking for your chair. This means that after you turn off the motor you will need to manually grab the hand-rims and bring your chair to a stop.  This also means that your SmartDrive cannot slow you down going down a ramp or a hill."
+        },
+        {
+            "question": "Do I need to re-pair my PushTracker to my SmartDrive?",
+            "answer":
+            "No, the only time you need to re-pair your PushTracker to your SmartDrive is after performing an over-the-air (OTA) update. After doing that, the PushTracker will automatically go into pairing mode when you try to connect or turn 'SD On'."
+        },
+        {
+            "question": "Why won't my PushTracker connect to my phone?",
+            "answer":
+            "If you are using Android then it might be because the phone has saved the pairing information - which will prevent the PushTracker from establishing a solid connection.  To fix this, simply open your phone's bluetooth settings menu and click 'Forget' on the PushTracker that shows up in that menu.  Once you have done that, restart the app and the PushTracker should be able to reliably connect - without needing to re-pair to the phone!"
+        },
+        {
+            "question": "How can I make the SmartDrive safe for children?",
+            "answer":
+            "The SmartDrive is safe for children to use - but we do recommend the best way to ensure safety is to train them on proper tapping and braking techniques. Moreover, we have included the ability to limit the max speed of the SmartDrive (from 0.5 miles per hour all the way up to 5.5 miles per hour) as well as the acceleration of the SmartDrive. For someone who is just learning to push or to use a SmartDrive, we recommend setting both very low."
+        },
+        {
+            "question": "Why should I want a SmartDrive?",
+            "answer":
+            "You should be active and go out into the world! With pushing however, unlike the general advice with walking (where people really cannot walk too much) - people can push too much! If you push too much then you will be more likely to get pain and injury in your arms and shoulders - which may limit your mobility and independence.  With the SmartDrive you are still able to push around in your chair as you normally would - you can now go farther faster and with less effort! Use it when you need to get somewhere fast or up a big hill - don't kill your shoulders if you don't have to! Enjoy your journey with your SmartDrive!"
+        }
+    ],
     "ota": {
+        "action": {
+            "start": "Start",
+            "pause": "Pause",
+            "resume": "Resume",
+            "cancel": "Cancel",
+            "force": "Force",
+            "retry": "Retry"
+        },
+        "sd": {
+            "state": {
+                "not-started": "Not Started",
+                "awaiting-versions": "Awaiting Versions",
+                "awaiting-mcu-ready": "Waiting on MCU",
+                "updating-mcu": "Updating MCU",
+                "awaiting-ble-ready": "Waiting on BLE",
+                "updating-ble": "Updating BLE",
+                "rebooting-ble": "Rebooting BLE",
+                "rebooting-mcu": "Rebooting MCU",
+                "verifying-update": "Verifying",
+                "complete": "Complete",
+                "canceling": "Canceling",
+                "canceled": "Canceled",
+                "failed": "Failed",
+                "comm-failure": "Communications error, please reboot your SmartDrive",
+                "timeout": "Timeout"
+            }
+        },
+        "pt": {
+            "state": {
+                "not-started": "Not Started",
+                "awaiting-version": "Awaiting Version",
+                "awaiting-ready": "Waiting on PushTracker",
+                "updating": "Updating",
+                "rebooting": "Rebooting, please re-pair and re-connect your PushTracker",
+                "verifying-update": "Verifying",
+                "complete": "Complete",
+                "canceling": "Canceling",
+                "canceled": "Canceled",
+                "failed": "Failed",
+                "timeout": "Timeout"
+            }
+        },
         "up-to-date": "(Up to date)",
         "title": "Firmware Updates",
         "version": "Version",
@@ -403,5 +544,27 @@
                 "message": "Bluetooth service unavailable - re-initializing!"
             }
         }
-    }
+    },
+	"firmware": {
+		"not-found": [
+			"We were unable to find the description for the latest firmware!"
+		],
+		"1.5": [
+			"Updated company logo branding when booting PushTracker from sleep.",
+			"Now show estimated drive range on the PushTracker in DisplayInfo  battery status screen.",
+			"Now show OTA status bar and percentage on PushTracker when performing PushTracker OTA.",
+			"When the SD is not paired (e.g. after OTA) and the left button is pressed to turn 'SD On', the PushTracker goes directly into pairing to SD mode.",
+			"When the App is not paired (e.g. after OTA) and the right button is pressed to connect to the app, the PushTracker goes directly into pairing to app mode.",
+			"Bugfixes to the pairing process for handling multiple devices."
+		],
+		"1.4": [
+			"Addition of 'EZ-ON' mode for PushTracker - you can now turn power assist ON & OFF / 'SD On' & 'SD Off' by tapping!"
+		],
+		"1.3": [
+			"Addition of 'EZ-ON' mode for PushTracker - you can now turn power assist ON & OFF / 'SD On' & 'SD Off' by tapping!"
+		],
+		"1.2": [
+			"Added 'About' to PushTracker 'Settings' menu which shows the firmware versions of the PushTracker, SmartDrive Bluetooth (BLE) and SmartDrive Microcontroller (MCU). Also shows the most recent error code and information."
+		]
+	}
 }

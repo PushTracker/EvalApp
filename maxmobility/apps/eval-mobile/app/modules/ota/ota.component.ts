@@ -44,15 +44,7 @@ export class OTAComponent implements OnInit, OnDestroy {
     private _progressService: ProgressService,
     private _bluetoothService: BluetoothService,
     private _firmwareService: FirmwareService
-  ) {
-    if (this._firmwareService.description.length) {
-      this.otaDescription.splice(0, this.otaDescription.length, ...this._firmwareService.description.slice());
-    }
-    // register for description updates
-    this._firmwareService.description.on(ObservableArray.changeEvent, args => {
-      this.otaDescription.splice(0, this.otaDescription.length, ...this._firmwareService.description.slice());
-    });
-  }
+  ) {}
 
   ngOnInit() {
     // see https://github.com/NativeScript/nativescript-angular/issues/1049
@@ -80,14 +72,26 @@ export class OTAComponent implements OnInit, OnDestroy {
       this.slides.nextSlide();
     }, this.slideInterval);
       */
+
   }
 
-  ngOnDestroy() {
-    this.cancelOTAs(true);
-    this.routeSub.unsubscribe();
-    if (this.slideIntervalID) {
-      clearInterval(this.slideIntervalID);
+  get otaDescription(): string[] {
+    let otaDesc = [this._translateService.instant('ota.downloading')];
+    if (this.ready) {
+      let tmp = this._translateService.instant('firmware.' + this.currentVersion);
+      if (typeof tmp !== 'string' && tmp.length) {
+        otaDesc = tmp;
+      } else {
+        tmp = this._translateService.instant('firmware.not-found');
+        if (typeof tmp !== 'string' && tmp.length) {
+          otaDesc = tmp;
+        } else {
+          otaDesc = [this._translateService.instant('general.error')];
+        }
+      }
     }
+    console.log(otaDesc);
+    return otaDesc;
   }
 
   onCarouselLoad(args: EventData): void {
@@ -117,7 +121,7 @@ export class OTAComponent implements OnInit, OnDestroy {
   }
 
   get currentVersion(): string {
-    return PushTracker.versionByteToString(this._firmwareService.firmwares.PT.version);
+    return this._firmwareService.currentVersion;
   }
 
   get ready(): boolean {

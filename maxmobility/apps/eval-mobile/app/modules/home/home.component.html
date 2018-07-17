@@ -33,17 +33,17 @@
     <StackLayout class="list-stack-layout" row="2">
       <StackLayout class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></StackLayout>
       <DockLayout (tap)="chevronButtonTapped('/videos')"  class="dockLayout-options" stretchLastChild="false">
-	<Label [text]="'videos.title' | translate" class="heading" dock="left"></Label>
+	<Label [text]="'menu.videos-title' | translate" class="heading" dock="left"></Label>
 	<Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/videos')"></Label>
 	
       </DockLayout>
-      <Label [text]="'videos.description' | translate" class="description" textWrap="true"></Label>
+      <Label [text]="'menu.videos-description' | translate" class="description" textWrap="true"></Label>
 
       <ScrollView orientation="horizontal" class="rad-list-view">
 	<StackLayout orientation="horizontal">
 	  <StackLayout *ngFor="let item of videoItems" class="icon-description-group">
 	    <Image [src]="item.Thumb" (tap)="videoThumbTapped(item)" class="thumb" padding="0"></Image>
-	    <Label class="item-description" textWrap="true" [text]="item.Description | translate" ></Label>
+	    <Label class="item-description" textWrap="true" [text]="item.Description" ></Label>
 	  </StackLayout>
 	</StackLayout>
       </ScrollView>
