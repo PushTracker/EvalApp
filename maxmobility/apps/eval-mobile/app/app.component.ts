@@ -7,6 +7,7 @@ import { RouterExtensions } from 'nativescript-angular/router';
 import { Video as ExoPlayer } from 'nativescript-exoplayer';
 import { Gif } from 'nativescript-gif';
 import * as orientation from 'nativescript-orientation';
+import { Sentry } from 'nativescript-sentry';
 import * as application from 'tns-core-modules/application';
 import { device } from 'tns-core-modules/platform';
 
@@ -30,6 +31,13 @@ export class AppComponent {
     private _userService: UserService,
     private _router: RouterExtensions
   ) {
+    // init sentry
+    const sentryDsn = 'https://aaa25eb556fa476a92e0edea6dd57af6:65c984b9260e47f0bb128def7eddd5f4@sentry.io/306438';
+    Sentry.init(sentryDsn, {
+      environment: 'mobile',
+      release: '0.1.0'
+    });
+
     // set the orientation to be portrait and don't allow orientation changes
     orientation.setOrientation('portrait');
     orientation.disableRotation(); // may not need to call this - docs say 'set' calls this

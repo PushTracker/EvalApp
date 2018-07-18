@@ -77,6 +77,7 @@
     "nativescript-orientation": "^2.2.0",
     "nativescript-push-notifications": "^1.1.4",
     "nativescript-snackbar": "file:../../node_modules/nativescript-snackbar",
+    "nativescript-sentry": "^1.5.2",
     "nativescript-theme-core": "file:../../node_modules/nativescript-theme-core",
     "nativescript-toast": "file:../../node_modules/nativescript-toast",
     "nativescript-ui-listview": "~3.5.9",
