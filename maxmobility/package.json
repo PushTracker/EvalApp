@@ -34,6 +34,8 @@
     "nuke": "npm run clean && npm run clean.eval.mobile && npm run clean.shared",
     "nuki": "npm run nuke && npm i",
     "ns-setup": "npm uninstall -g nativescript && npm install -g nativescript@next",
+    "ios-release": "npm run nuki && cd apps/eval-mobile && tns build ios --release",
+    "android-release": "npm run nukie && cd apps/eval-mobile && tns build android --release",
     "precommit": "lint-staged"
   },
   "private": true,
