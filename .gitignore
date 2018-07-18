@@ -110,3 +110,4 @@ maxmobility/nativescript-bluetooth/**/*.js
 !**/typings/*.d.ts
 
 !maxmobility/tools/**/*.js
+!maxmobility/libs/core/packet_bindings.js
