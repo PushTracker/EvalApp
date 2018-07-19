@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LoggingService } from '@maxmobility/core';
+import { LoggingService } from './logging.service';
 import { TranslateService } from '@ngx-translate/core';
 import * as Kinvey from 'kinvey-nativescript-sdk';
 import * as localStorage from 'nativescript-localstorage';
