@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Sentry, SentryOptions } from 'nativescript-sentry';
+import { Sentry, SentryBreadcrumb, SentryOptions } from 'nativescript-sentry';
+import { UserService } from './user.service';
 
 export class LoggingUtil {
   public static debug = true;
@@ -13,13 +14,13 @@ export const CLog = (...args) => {
 
 @Injectable()
 export class LoggingService {
-  constructor() {}
+  constructor(private _userService: UserService) {}
   /**
    * Will console.log() the error argument. If devmode is false then we capture
    * the exception with Sentry logging.
    * @param err
    */
-  public logException(exception: Error, options: SentryOptions = {}) {
+  public logException(exception: Error) {
     console.log(exception);
 
     // Sentry.setContextUser({
@@ -38,9 +39,9 @@ export class LoggingService {
 
     // if error type
     if (exception instanceof Error) {
-      Sentry.captureException(exception, options);
+      Sentry.captureException(exception);
     } else {
-      Sentry.captureMessage(exception as any, options);
+      Sentry.captureMessage(exception as any);
     }
   }
 
@@ -48,4 +49,18 @@ export class LoggingService {
     console.log(message);
     Sentry.captureMessage(message, options);
   }
+
+  public logBreadCrumb(message, category: LoggingCategory = LoggingCategory.Info, data = {}) {
+    const breadcrumb: SentryBreadcrumb = {
+      message,
+      category,
+      data
+    };
+    Sentry.captureBreadcrumb(breadcrumb);
+  }
+}
+
+export enum LoggingCategory {
+  Info = 'Info',
+  Warning = 'Warning'
 }

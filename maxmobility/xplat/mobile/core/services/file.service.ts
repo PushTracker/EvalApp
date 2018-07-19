@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { LoggingService } from './logging.service';
 import { TranslateService } from '@ngx-translate/core';
+import { LoggingService } from './logging.service';
 import * as Kinvey from 'kinvey-nativescript-sdk';
 import * as localStorage from 'nativescript-localstorage';
 import * as fs from 'tns-core-modules/file-system';
@@ -65,6 +65,6 @@ export class FileService {
 
     localStorage.setItem(`${file._filename}-${FileService.fsKeyMetadata}`, metadata);
 
-    this._loggingService.logMessage(`${file._filename} updated metadata ${JSON.stringify(metadata)}`);
+    console.log(`${file._filename} updated metadata ${JSON.stringify(metadata)}`);
   }
 }
