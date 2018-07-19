@@ -72,6 +72,7 @@ export class HomeComponent {
     private _logService: LoggingService,
     private _demoService: DemoService,
     private _firmwareService: FirmwareService,
+    private _loggingService: LoggingService,
     private _fileService: FileService,
     private translateService: TranslateService
   ) {
@@ -79,6 +80,7 @@ export class HomeComponent {
     this.feedback = new Feedback();
 
     this._demoService.load().catch(err => {
+      this._loggingService.logException(err);
       console.log(`Couldn't load demos: ${err}`);
     });
 

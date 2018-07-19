@@ -1,17 +1,12 @@
 import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
-import { RouterExtensions } from 'nativescript-angular/router';
-import { SegmentedBar, SegmentedBarItem } from 'tns-core-modules/ui/segmented-bar';
-import { TextField } from 'tns-core-modules/ui/text-field';
-import { View } from 'tns-core-modules/ui/core/view';
-import { Animation, AnimationDefinition } from 'tns-core-modules/ui/animation';
-import { alert, confirm } from 'tns-core-modules/ui/dialogs';
-import * as switchModule from 'tns-core-modules/ui/switch';
-import { Observable, fromObject } from 'tns-core-modules/data/observable';
-import { isAndroid, isIOS } from 'platform';
-import { ProgressService, BluetoothService, EvaluationService } from '@maxmobility/mobile';
-import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
-import { Trial, PushTracker } from '@maxmobility/core';
+import { PushTracker, Trial } from '@maxmobility/core';
+import { BluetoothService, EvaluationService, LoggingService, ProgressService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
+import { RouterExtensions } from 'nativescript-angular/router';
+import { SnackBar } from 'nativescript-snackbar';
+import { isAndroid, isIOS } from 'tns-core-modules/platform';
+import { View } from 'tns-core-modules/ui/core/view';
+import { alert } from 'tns-core-modules/ui/dialogs';
 
 @Component({
   selector: 'Trial',
@@ -27,33 +22,27 @@ export class TrialComponent implements OnInit {
   @ViewChild('stopWith') stopWithView: ElementRef;
   @ViewChild('startWithout') startWithoutView: ElementRef;
   @ViewChild('stopWithout') stopWithoutView: ElementRef;
-
-  trial: Trial = new Trial();
-  trialTimeout: number = 15000; // 15 seconds
+  snackbar = new SnackBar();
+  trial = new Trial();
+  trialTimeout = 15000; // 15 seconds
 
   // displaying trial info
-  distanceDisplay: string = '--';
-  pushWithDisplay: string = '--';
-  coastWithDisplay: string = '--';
-  timeWithDisplay: string = '--';
-  pushWithoutDisplay: string = '--';
-  coastWithoutDisplay: string = '--';
-  timeWithoutDisplay: string = '--';
-
-  snackbar = new SnackBar();
-
+  distanceDisplay = '--';
+  pushWithDisplay = '--';
+  coastWithDisplay = '--';
+  timeWithDisplay = '--';
+  pushWithoutDisplay = '--';
+  coastWithoutDisplay = '--';
+  timeWithoutDisplay = '--';
   please_connect_pt: string = this._translateService.instant('trial.please-connect-pt');
   starting_trial: string = this._translateService.instant('trial.starting-trial');
   stopping_trial: string = this._translateService.instant('trial.stopping-trial');
-
   okbuttontxt: string = this._translateService.instant('dialogs.ok');
-
   too_many_pts: string = this._translateService.instant('trial.errors.to-many-pts');
   failed_start_title: string = this._translateService.instant('trial.errors.failed-start.title');
   failed_start_message: string = this._translateService.instant('trial.errors.failed-start.message');
   failed_stop_title: string = this._translateService.instant('trial.errors.failed-stop.title');
   failed_stop_message: string = this._translateService.instant('trial.errors.failed-stop.message');
-
   pt_version_title: string = this._translateService.instant('trial.errors.pt-version.title');
   pt_version_message: string = this._translateService.instant('trial.errors.pt-version.message');
 
@@ -63,8 +52,14 @@ export class TrialComponent implements OnInit {
     private _bluetoothService: BluetoothService,
     private _evaluationService: EvaluationService,
     private zone: NgZone,
-    private _translateService: TranslateService
+    private _translateService: TranslateService,
+    private _loggingService: LoggingService
   ) {}
+
+  ngOnInit() {
+    this.hideView(this.stopWithView.nativeElement);
+    this.hideView(this.stopWithoutView.nativeElement);
+  }
 
   isIOS(): boolean {
     return isIOS;
@@ -107,7 +102,6 @@ export class TrialComponent implements OnInit {
     });
   }
 
-  // tslint:disable-next-line:adjacent-overload-signatures
   onStartWithTrial() {
     const connectedPTs = BluetoothService.PushTrackers.filter(pt => pt.connected);
     if (connectedPTs.length <= 0) {
@@ -185,6 +179,7 @@ export class TrialComponent implements OnInit {
       };
       const retry = (maxRetries, fn) => {
         return fn().catch(err => {
+          this._loggingService.logException(err);
           if (maxRetries <= 0) {
             throw err;
           } else {
@@ -246,7 +241,8 @@ export class TrialComponent implements OnInit {
             clearTimeout(stopWithTimeoutID);
           }
           this.trial.finishedWith = true;
-          this.trial.with_elapsed = (this.trial.with_end.getTime() - this.trial.with_start.getTime()) / 60000; // diff is in ms
+          // diff is in ms
+          this.trial.with_elapsed = (this.trial.with_end.getTime() - this.trial.with_start.getTime()) / 60000;
           this.trial.with_coast = this.trial.with_pushes ? (this.trial.with_elapsed * 60) / this.trial.with_pushes : 0;
           pt.off(PushTracker.pushtracker_distance_event, distanceHandler);
           pt.off(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
@@ -260,6 +256,7 @@ export class TrialComponent implements OnInit {
       };
       const trialStopWithFailed = err => {
         this.zone.run(() => {
+          this._loggingService.logException(err);
           if (stopWithTimeoutID) {
             clearTimeout(stopWithTimeoutID);
           }
@@ -295,6 +292,7 @@ export class TrialComponent implements OnInit {
       };
       const retry = (maxRetries, fn) => {
         return fn().catch(err => {
+          this._loggingService.logException(err);
           if (maxRetries <= 0) {
             throw err;
           } else {
@@ -470,11 +468,4 @@ export class TrialComponent implements OnInit {
   onSliderUpdate(key, args) {
     this.trial[key] = Math.round(args.object.value) / 10;
   }
-
-  ngOnInit(): void {
-    this.hideView(<View>this.stopWithView.nativeElement);
-    this.hideView(<View>this.stopWithoutView.nativeElement);
-  }
-
-  onDrawerButtonTap(): void {}
 }

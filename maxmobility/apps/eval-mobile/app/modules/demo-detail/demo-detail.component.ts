@@ -1,6 +1,6 @@
 import { Component, NgZone } from '@angular/core';
 import { Demo, PushTracker } from '@maxmobility/core';
-import { BluetoothService, DemoService, FirmwareService, ProgressService } from '@maxmobility/mobile';
+import { BluetoothService, DemoService, FirmwareService, LoggingService, ProgressService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { PageRoute } from 'nativescript-angular/router';
 import { BarcodeScanner } from 'nativescript-barcodescanner';
@@ -35,7 +35,8 @@ export class DemoDetailComponent {
     private _demoService: DemoService,
     private _bluetoothService: BluetoothService,
     private _firmwareService: FirmwareService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private _loggingService: LoggingService
   ) {
     this.imageCropper = new ImageCropper();
     this.pageRoute.activatedRoute.pipe(switchMap(activatedRoute => activatedRoute.queryParams)).forEach(params => {
@@ -130,54 +131,58 @@ export class DemoDetailComponent {
   }
 
   onUpdatePTImageTap() {
-    if (camera.isAvailable()) {
-      camera
-        .requestPermissions()
-        .then(() => {
-          console.log('Updating SmartSDrive Image!');
-
-          const options = {
-            width: 256,
-            height: 256,
-            lockSquare: true
-          };
-
-          camera
-            .takePicture({
-              width: 500,
-              height: 500,
-              keepAspectRatio: true,
-              cameraFacing: 'rear'
-            })
-            .then(imageAsset => {
-              const source = new imageSource.ImageSource();
-              source.fromAsset(imageAsset).then(iSrc => {
-                this.imageCropper
-                  .show(iSrc, options)
-                  .then(args => {
-                    if (args.image !== null) {
-                      this.demo.pt_image = args.image;
-                      if (this.index) {
-                        // auto-save if this demo already exists
-                        this.demo.savePTImage();
-                      }
-                    }
-                  })
-                  .catch(e => {
-                    console.dir(e);
-                  });
-              });
-            })
-            .catch(err => {
-              console.log('Error -> ' + err.message);
-            });
-        })
-        .catch(err => {
-          console.log('Error -> ' + err.message);
-        });
-    } else {
-      console.log('No camera available');
+    if (!camera.isAvailable()) {
+      console.log('Camera is not available.');
+      return;
     }
+
+    camera
+      .requestPermissions()
+      .then(() => {
+        console.log('Updating SmartSDrive Image!');
+
+        const options = {
+          width: 256,
+          height: 256,
+          lockSquare: true
+        };
+
+        camera
+          .takePicture({
+            width: 500,
+            height: 500,
+            keepAspectRatio: true,
+            cameraFacing: 'rear'
+          })
+          .then(imageAsset => {
+            const source = new imageSource.ImageSource();
+            source.fromAsset(imageAsset).then(iSrc => {
+              this.imageCropper
+                .show(iSrc, options)
+                .then(args => {
+                  if (args.image !== null) {
+                    this.demo.pt_image = args.image;
+                    if (this.index) {
+                      // auto-save if this demo already exists
+                      this.demo.savePTImage();
+                    }
+                  }
+                })
+                .catch(e => {
+                  this._loggingService.logException(e);
+                  console.dir(e);
+                });
+            });
+          })
+          .catch(err => {
+            this._loggingService.logException(err);
+            console.log('Error -> ' + err.message);
+          });
+      })
+      .catch(err => {
+        this._loggingService.logException(err);
+        console.log('Error -> ' + err.message);
+      });
   }
 
   haveSerial(): boolean {
@@ -213,6 +218,7 @@ export class DemoDetailComponent {
         })
         .catch(err => {
           this._progressService.hide();
+          this._loggingService.logException(err);
           console.log(`Couldn't create / load demos: ${err}`);
         });
     }
@@ -240,8 +246,9 @@ export class DemoDetailComponent {
         const validDevices = deviceName === 'pushtracker' ? ['pushtracker', 'wristband'] : ['smartdrive'];
         this.handleSerial(result.text, validDevices);
       })
-      .catch(errorMessage => {
-        console.log('No scan. ' + errorMessage);
+      .catch(err => {
+        this._loggingService.logException(err);
+        console.log('No scan. ' + err);
       });
   }
 
@@ -270,7 +277,9 @@ export class DemoDetailComponent {
 
     // check the type
     if (forDevices && forDevices.length && forDevices.indexOf(deviceType) === -1) {
-      throw new Error('Wrong device scanned!');
+      const error = new Error('Wrong device scanned!');
+      this._loggingService.logException(error);
+      throw error;
     }
     // set the model
     if (isPushTracker) {
@@ -298,6 +307,7 @@ export class DemoDetailComponent {
         try {
           this.handleSerial(r.text, ['smartdrive']);
         } catch (err) {
+          this._loggingService.logException(err);
           dialogs.alert(`${r.text} is not a valid SmartDrive serial number!`);
         }
       });
@@ -315,6 +325,7 @@ export class DemoDetailComponent {
         try {
           this.handleSerial(r.text, ['pushtracker', 'wristband']);
         } catch (err) {
+          this._loggingService.logException(err);
           dialogs.alert(`${r.text} is not a valid PushTracker or Wristband serial number!`);
         }
       });

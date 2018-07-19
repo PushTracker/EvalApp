@@ -1,17 +1,14 @@
 import { Component } from '@angular/core';
-import { isAndroid, isIOS } from 'platform';
-import * as switchModule from 'tns-core-modules/ui/switch';
-import { RouterExtensions } from 'nativescript-angular/router';
-import { SegmentedBar, SegmentedBarItem } from 'tns-core-modules/ui/segmented-bar';
-import { TextField } from 'tns-core-modules/ui/text-field';
-import { Observable } from 'tns-core-modules/data/observable';
-import { confirm } from 'tns-core-modules/ui/dialogs';
-import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
-import * as email from 'nativescript-email';
+import { Trial } from '@maxmobility/core';
+import { EvaluationService, LoggingService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import * as mustache from 'mustache';
-import { Trial } from '@maxmobility/core';
-import { Evaluation, EvaluationService } from '@maxmobility/mobile';
+import { RouterExtensions } from 'nativescript-angular/router';
+import * as email from 'nativescript-email';
+import { SnackBar } from 'nativescript-snackbar';
+import { isAndroid, isIOS } from 'platform';
+import { confirm } from 'tns-core-modules/ui/dialogs';
+import { TextField } from 'tns-core-modules/ui/text-field';
 
 @Component({
   selector: 'Summary',
@@ -20,18 +17,18 @@ import { Evaluation, EvaluationService } from '@maxmobility/mobile';
   styleUrls: ['./summary.component.css']
 })
 export class SummaryComponent {
-  trialName: string = '';
+  trialName = '';
   snackbar = new SnackBar();
 
-  showFlatDifficulty: boolean = false;
-  showRampDifficulty: boolean = false;
-  showInclineDifficulty: boolean = false;
-  showOtherDifficulty: boolean = false;
+  showFlatDifficulty = false;
+  showRampDifficulty = false;
+  showInclineDifficulty = false;
+  showOtherDifficulty = false;
 
-  hasFlatDifficulty: boolean = this.evaluation.flat_difficulty > 0;
-  hasRampDifficulty: boolean = this.evaluation.ramp_difficulty > 0;
-  hasInclineDifficulty: boolean = this.evaluation.incline_difficulty > 0;
-  hasOtherDifficulty: boolean = this.evaluation.other_difficulty > 0;
+  hasFlatDifficulty = this.evaluation.flat_difficulty > 0;
+  hasRampDifficulty = this.evaluation.ramp_difficulty > 0;
+  hasInclineDifficulty = this.evaluation.incline_difficulty > 0;
+  hasOtherDifficulty = this.evaluation.other_difficulty > 0;
 
   difficulties = [
     {
@@ -68,20 +65,17 @@ export class SummaryComponent {
     }
   ];
 
-  totalPushesWith: number = 0;
-  totalPushesWithout: number = 0;
-  totalTimeWith: number = 0;
-  totalTimeWithout: number = 0;
-  totalCoastWith: number = 0;
-  totalCoastWithout: number = 0;
-  totalCadenceWith: number = 0;
-  totalCadenceWithout: number = 0;
-
-  pushDiff: number = 0;
-  coastDiff: number = 0;
-
+  totalPushesWith = 0;
+  totalPushesWithout = 0;
+  totalTimeWith = 0;
+  totalTimeWithout = 0;
+  totalCoastWith = 0;
+  totalCoastWithout = 0;
+  totalCadenceWith = 0;
+  totalCadenceWithout = 0;
+  pushDiff = 0;
+  coastDiff = 0;
   cadenceThresh = 10; // pushes per minute
-
   error: string = this._translateService.instant('user.error');
   ok: string = this._translateService.instant('dialogs.ok');
   yes: string = this._translateService.instant('dialogs.yes');
@@ -98,7 +92,8 @@ export class SummaryComponent {
   constructor(
     private routerExtensions: RouterExtensions,
     private _evaluationService: EvaluationService,
-    private _translateService: TranslateService
+    private _translateService: TranslateService,
+    private _loggingService: LoggingService
   ) {
     // update difficulties
     this.difficulties.map(d => {
@@ -106,16 +101,16 @@ export class SummaryComponent {
     });
     this.evaluation.trials.map(t => {
       if (t.flat) {
-        this.difficulties.filter(d => d.name == 'Flat')[0].show = true;
+        this.difficulties.filter(d => d.name === 'Flat')[0].show = true;
       }
       if (t.ramp) {
-        this.difficulties.filter(d => d.name == 'Ramp')[0].show = true;
+        this.difficulties.filter(d => d.name === 'Ramp')[0].show = true;
       }
       if (t.inclines) {
-        this.difficulties.filter(d => d.name == 'Incline')[0].show = true;
+        this.difficulties.filter(d => d.name === 'Incline')[0].show = true;
       }
       if (t.other) {
-        this.difficulties.filter(d => d.name == 'Other')[0].show = true;
+        this.difficulties.filter(d => d.name === 'Other')[0].show = true;
       }
       this.totalPushesWith += t.with_pushes;
       this.totalPushesWithout += t.without_pushes;
@@ -141,7 +136,7 @@ export class SummaryComponent {
   }
 
   generateLMN(): string {
-    const that = this;
+    // const that = this;
     return mustache.render(this.lmnTemplate, {
       evaluation: this.evaluation,
       trials: this.evaluation.trials,
@@ -152,63 +147,71 @@ export class SummaryComponent {
         console.log(this);
         let str = this.toFixed(2);
         console.log(str);
-        if (!str.length) str = '0';
+        if (!str.length) {
+          str = '0';
+        }
         return str;
       },
       toTimeString: function() {
         return Trial.timeToString(this * 60);
       },
-      pushComparison: function() {
-        return this.pushDiff > 0 ? that.fewer : that.more;
+      pushComparison: () => {
+        return this.pushDiff > 0 ? this.fewer : this.more;
       },
-      coastComparison: function() {
-        return this.coastDiff > 1.0 ? that.higher : that.lower;
+      coastComparison: () => {
+        return this.coastDiff > 1.0 ? this.higher : this.lower;
       },
       showCadence: this.totalCadenceWithout > this.cadenceThresh
     });
   }
 
   // button events
-  onNext(): void {
-    confirm({
+  async onNext() {
+    const confirmResult = await confirm({
       title: this.complete,
       message: this.confirm,
       okButtonText: this.yes,
       cancelButtonText: this.no
-    }).then(confirmResult => {
-      if (confirmResult) {
-        // send email to user
-        email
-          .available()
-          .then(available => {
-            if (available) {
-              const lmnBody = this.generateLMN();
-              email
-                .compose({
-                  to: [],
-                  subject: this.summary_email_subject,
-                  body: lmnBody,
-                  cc: []
-                })
-                .then(result => {
-                  if (result) {
-                    console.log('email compose result', result);
-                  } else {
-                    console.log('the email may NOT have been sent!');
-                  }
-                })
-                .catch(error => console.error(error));
-            }
-          })
-          .catch(error => console.error(error));
-        this._evaluationService.save();
-        // now go back to dashboard
-        this.routerExtensions.navigate(['/home'], {
-          // clearHistory: true,
-          transition: {
-            name: 'fade'
-          }
-        });
+    });
+
+    if (!confirmResult) {
+      console.log('confirmation was denied');
+      return;
+    }
+
+    // send email to user
+    const isAvailable = await email.available();
+    if (!isAvailable) {
+      console.log('Email is not available on device.');
+      return;
+    }
+
+    const lmnBody = this.generateLMN();
+    email
+      .compose({
+        to: [],
+        subject: this.summary_email_subject,
+        body: lmnBody,
+        cc: []
+      })
+      .then(result => {
+        if (result) {
+          console.log('email compose result', result);
+        } else {
+          console.log('the email may NOT have been sent!');
+        }
+      })
+      .catch(error => {
+        this._loggingService.logException(error);
+        console.error(error);
+      });
+
+    this._evaluationService.save();
+    // now go back to dashboard
+    this.routerExtensions.navigate(['/home'], {
+      // clearHistory: true,
+      transition: {
+        name: 'fade'
       }
     });
   }
@@ -226,7 +229,6 @@ export class SummaryComponent {
 
   onBack(): void {
     this.routerExtensions.navigate(['/trial'], {
-      // clearHistory: true,
       transition: {
         name: 'slideRight'
       }

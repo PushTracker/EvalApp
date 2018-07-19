@@ -1,12 +1,8 @@
-import * as app from 'tns-core-modules/application';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { SegmentedBar, SegmentedBarItem } from 'tns-core-modules/ui/segmented-bar';
-import { Observable } from 'tns-core-modules/data/observable';
-import { confirm } from 'tns-core-modules/ui/dialogs';
-import { Evaluation, EvaluationService } from '@maxmobility/mobile';
-import { RouterExtensions } from 'nativescript-angular/router';
-import { DropDownModule } from 'nativescript-drop-down/angular';
+import { Component, OnInit } from '@angular/core';
+import { EvaluationService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
+import { RouterExtensions } from 'nativescript-angular/router';
+import * as app from 'tns-core-modules/application';
 
 @Component({
   selector: 'EvalEntry',
@@ -81,6 +77,4 @@ export class EvalEntryComponent implements OnInit {
   get evaluation() {
     return this._evaluationService.evaluation;
   }
-
-  onDrawerButtonTap(): void {}
 }

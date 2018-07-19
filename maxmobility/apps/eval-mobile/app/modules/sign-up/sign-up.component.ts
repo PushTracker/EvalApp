@@ -1,16 +1,15 @@
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
-import { CLog, LoggingService, User } from '@maxmobility/core';
-import { preventKeyboardFromShowing, ProgressService, UserService } from '@maxmobility/mobile';
+import { CLog, User } from '@maxmobility/core';
+import { LoggingService, preventKeyboardFromShowing, ProgressService, UserService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { validate } from 'email-validator';
-import { RouterExtensions } from 'nativescript-angular/router';
-import { alert, confirm } from 'tns-core-modules/ui/dialogs';
-import { Page } from 'tns-core-modules/ui/page';
-import { DropDownModule } from 'nativescript-drop-down/angular';
-import { setMarginForNoActionBarOnPage } from '~/utils';
 import { ModalDialogService } from 'nativescript-angular/directives/dialogs';
-import { PrivacyPolicyComponent } from '../../privacy-policy';
+import { RouterExtensions } from 'nativescript-angular/router';
 import { ValueList } from 'nativescript-drop-down';
+import { alert } from 'tns-core-modules/ui/dialogs';
+import { Page } from 'tns-core-modules/ui/page';
+import { setMarginForNoActionBarOnPage } from '~/utils';
+import { PrivacyPolicyComponent } from '../../privacy-policy';
 
 @Component({
   selector: 'eval-login',

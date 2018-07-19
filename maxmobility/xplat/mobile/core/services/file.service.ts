@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { LoggingService } from '@maxmobility/core';
 import { TranslateService } from '@ngx-translate/core';
 import * as Kinvey from 'kinvey-nativescript-sdk';
 import * as localStorage from 'nativescript-localstorage';
@@ -7,7 +8,7 @@ import * as http from 'tns-core-modules/http';
 
 @Injectable()
 export class FileService {
-  constructor(private _translateService: TranslateService) {}
+  constructor(private _translateService: TranslateService, private _loggingService: LoggingService) {}
 
   private static fsKeyMetadata = 'Metadata';
 
@@ -19,7 +20,9 @@ export class FileService {
 
     // query Kinvey Files for all translation files
     const query = new Kinvey.Query().equalTo('translation_file', true);
-    const files = await Kinvey.Files.find(query);
+    const files = (await Kinvey.Files.find(query).catch(e => {
+      this._loggingService.logException(e);
+    })) as Kinvey.File[];
 
     if (files.length >= 1) {
       files.forEach(async file => {
@@ -33,13 +36,19 @@ export class FileService {
 
         const filePath = fs.path.join(fs.knownFolders.currentApp().path, `assets/i18n/${file._filename}`);
         await http.getFile(file._downloadURL, filePath).catch(err => {
+          this._loggingService.logException(err);
           console.log('error http.getFile', err);
         });
 
         // Get the language name from the filename by removing the file extension from _filename property
         const languageName = file._filename.replace(/\..+$/, '');
         // reload the language in the ngx TranslateService
-        this._translateService.reloadLang(languageName);
+        this._translateService
+          .reloadLang(languageName)
+          .toPromise()
+          .catch(e => {
+            this._loggingService.logException(e);
+          });
 
         console.log(`Downloaded ${file._filename} successfully!`);
 
@@ -56,6 +65,6 @@ export class FileService {
 
     localStorage.setItem(`${file._filename}-${FileService.fsKeyMetadata}`, metadata);
 
-    console.log(`${file._filename} updated metadata`, JSON.stringify(metadata));
+    this._loggingService.logMessage(`${file._filename} updated metadata ${JSON.stringify(metadata)}`);
   }
 }

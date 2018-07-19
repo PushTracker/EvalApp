@@ -1,12 +1,10 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { ObservableArray } from 'tns-core-modules/data/observable-array';
-import { alert } from 'tns-core-modules/ui/dialogs';
+import { Component } from '@angular/core';
+import { Demo } from '@maxmobility/core';
+import { DemoService, FirmwareService } from '@maxmobility/mobile';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { BarcodeScanner } from 'nativescript-barcodescanner';
 import { isAndroid, isIOS } from 'platform';
-import { FirmwareService, BluetoothService, DemoService } from '@maxmobility/mobile';
-
-import { Demo } from '@maxmobility/core';
+import { ObservableArray } from 'tns-core-modules/data/observable-array';
 
 @Component({
   selector: 'Demos',

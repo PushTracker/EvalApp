@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { CLog, LoggingService } from '@maxmobility/core';
-import { preventKeyboardFromShowing, ProgressService, UserService } from '@maxmobility/mobile';
+import { CLog } from '@maxmobility/core';
+import { LoggingService, preventKeyboardFromShowing, ProgressService, UserService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { validate } from 'email-validator';
 import { RouterExtensions } from 'nativescript-angular/router';
@@ -36,7 +36,8 @@ export class LoginComponent implements OnInit {
     private _userService: UserService,
     private _progressService: ProgressService,
     private _page: Page,
-    private _translateService: TranslateService
+    private _translateService: TranslateService,
+    private _loggingService: LoggingService
   ) {
     preventKeyboardFromShowing();
   }
