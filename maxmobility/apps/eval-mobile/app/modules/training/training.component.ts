@@ -1,12 +1,9 @@
-// angular
-import { Component, ElementRef, OnInit, AfterViewInit, ViewChild } from '@angular/core';
-// nativescript
-import { RouterExtensions } from 'nativescript-angular/router';
-import { View } from 'ui/core/view';
-import { SnackBar, SnackBarOptions } from 'nativescript-snackbar';
-const carousel = require('nativescript-carousel').Carousel;
-import { isAndroid, isIOS } from 'platform';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { RouterExtensions } from 'nativescript-angular/router';
+import { SnackBar } from 'nativescript-snackbar';
+import { isAndroid, isIOS } from 'tns-core-modules/platform';
+const carousel = require('nativescript-carousel').Carousel;
 
 @Component({
   selector: 'Training',
@@ -16,9 +13,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class TrainingComponent implements AfterViewInit {
   @ViewChild('carousel') carousel: ElementRef;
-
   snackbar = new SnackBar();
-
   slides = this.translateService.instant('training');
 
   constructor(private routerExtensions: RouterExtensions, private translateService: TranslateService) {
@@ -37,7 +32,6 @@ export class TrainingComponent implements AfterViewInit {
   // button events
   onNext(): void {
     this.routerExtensions.navigate(['/trial'], {
-      // clearHistory: true,
       transition: {
         name: 'wipe'
       }
@@ -52,7 +46,6 @@ export class TrainingComponent implements AfterViewInit {
 
   onBack(): void {
     this.routerExtensions.navigate(['/eval-entry'], {
-      // clearHistory: true,
       transition: {
         name: 'slideRight'
       }

@@ -1,12 +1,12 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { PushTracker } from '@maxmobility/core';
 import { BluetoothService } from '@maxmobility/mobile';
+import { TranslateService } from '@ngx-translate/core';
 import { PageRoute, RouterExtensions } from 'nativescript-angular/router';
 import { Feedback } from 'nativescript-feedback';
-import { switchMap } from 'rxjs/operators';
 import { Gif } from 'nativescript-gif';
+import { switchMap } from 'rxjs/operators';
 import { ChangedData, ObservableArray } from 'tns-core-modules/data/observable-array';
-import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'Pairing',
@@ -14,7 +14,7 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './pairing.component.html',
   styleUrls: ['./pairing.component.css']
 })
-export class PairingComponent implements AfterViewInit {
+export class PairingComponent {
   @ViewChild('carousel') carousel: ElementRef;
   selectedPage = 0;
 
@@ -129,8 +129,6 @@ export class PairingComponent implements AfterViewInit {
       console.log('Carousel loaded to ' + this.selectedPage);
     }, 100);
   }
-
-  ngAfterViewInit() {}
 
   onBack(): void {
     this.routerExtensions.navigate(['/eval-entry'], {

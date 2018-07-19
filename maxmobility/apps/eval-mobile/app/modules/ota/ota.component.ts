@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import { PushTracker, SmartDrive } from '@maxmobility/core';
-import { BluetoothService, FirmwareService, ProgressService } from '@maxmobility/mobile';
+import { BluetoothService, FirmwareService, ProgressService, LoggingService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
@@ -38,7 +38,8 @@ export class OTAComponent implements OnInit {
     private _translateService: TranslateService,
     private _progressService: ProgressService,
     private _bluetoothService: BluetoothService,
-    private _firmwareService: FirmwareService
+    private _firmwareService: FirmwareService,
+    private _loggingService: LoggingService
   ) {}
 
   ngOnInit() {
@@ -141,41 +142,49 @@ export class OTAComponent implements OnInit {
   // Connectivity
   discoverSmartDrives() {
     this._progressService.show(this._translateService.instant('bluetooth.searching'));
-    return this._bluetoothService.scanForSmartDrive().then(() => {
-      this._progressService.hide();
-      return BluetoothService.SmartDrives;
-    });
+    return this._bluetoothService
+      .scanForSmartDrive()
+      .then(() => {
+        this._progressService.hide();
+        return BluetoothService.SmartDrives;
+      })
+      .catch(e => {
+        this._progressService.hide();
+        this._loggingService.logException(e);
+      });
   }
 
-  onStartOtaUpdate() {
-    this._bluetoothService.available().then(available => {
-      if (available) {
-        if (!this.updating) {
-          // start updating
-          this.performOTAs()
-            .then(otaStatuses => {
-              console.log(`completed all otas with statuses: ${otaStatuses}`);
-              this.cancelOTAs(false);
-            })
-            .catch(err => {
-              console.log(`Couldn't finish updating: ${err}`);
-              this.cancelOTAs(true);
-            });
-        } else {
-          // we're already updating
+  async onStartOtaUpdate() {
+    const isAvailable = await this._bluetoothService.available();
+
+    if (!isAvailable) {
+      // bluetooth is not available
+      alert({
+        title: 'Bluetooth Unavailable',
+        message: 'Bluetooth service unavailable - reinitializing!',
+        okButtonText: 'OK'
+      }).then(() => {
+        this._bluetoothService.advertise();
+      });
+      return;
+    }
+
+    if (!this.updating) {
+      // start updating
+      this.performOTAs()
+        .then(otaStatuses => {
+          console.log(`completed all otas with statuses: ${otaStatuses}`);
+          this.cancelOTAs(false);
+        })
+        .catch(err => {
+          this._loggingService.logException(err);
+          console.log(`Couldn't finish updating: ${err}`);
           this.cancelOTAs(true);
-        }
-      } else {
-        // bluetooth is not available
-        alert({
-          title: 'Bluetooth Unavailable',
-          message: 'Bluetooth service unavailable - reinitializing!',
-          okButtonText: 'OK'
-        }).then(() => {
-          this._bluetoothService.advertise();
         });
-      }
-    });
+    } else {
+      // we're already updating
+      this.cancelOTAs(true);
+    }
   }
 
   onRefreshDeviceList(): Promise<any> {

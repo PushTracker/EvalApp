@@ -1,20 +1,20 @@
-// angular
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
-import { ModalDialogService } from 'nativescript-angular/directives/dialogs';
+import { NavigationStart, Router } from '@angular/router';
 import { CLog } from '@maxmobility/core';
 import { FileService, LoggingService, ProgressService, UserService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
+import { ModalDialogService } from 'nativescript-angular/directives/dialogs';
 import { RouterExtensions } from 'nativescript-angular/router';
-import { NavigationStart, Router } from '@angular/router';
 import * as camera from 'nativescript-camera';
+import { ValueList } from 'nativescript-drop-down';
 import * as email from 'nativescript-email';
 import { ImageCropper } from 'nativescript-imagecropper';
 import * as LS from 'nativescript-localstorage';
+import { Subscription } from 'rxjs';
 import * as imageSource from 'tns-core-modules/image-source';
 import { confirm } from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
-import { ValueList } from 'nativescript-drop-down';
 
 @Component({
   selector: 'Account',
@@ -23,12 +23,9 @@ import { ValueList } from 'nativescript-drop-down';
   styleUrls: ['./account.component.css']
 })
 export class AccountComponent implements OnInit {
-  fsKeyPrefix: string = 'AccountComponent.';
-  fsKeyProfilePicture: string = 'ProfilePicture';
-
-  // tslint:disable-next-line:member-ordering
+  fsKeyPrefix = 'AccountComponent.';
+  fsKeyProfilePicture = 'ProfilePicture';
   user: Kinvey.User = this._userService.user;
-
   languages: ValueList<string> = new ValueList<string>(
     this._translateService.getLangs().map(l => {
       return { value: l, display: this._translateService.instant('languages.' + l) };
@@ -47,12 +44,11 @@ export class AccountComponent implements OnInit {
   account_reset_confirm: string = this._translateService.instant('user.account-reset-confirm');
   password_change: string = this._translateService.instant('user.password-change');
   password_change_confirm: string = this._translateService.instant('user.password-change-confirm');
-  // tslint:disable-next-line:member-ordering
   sign_out: string = this._translateService.instant('user.sign-out');
   sign_out_confirm: string = this._translateService.instant('user.sign-out-confirm');
 
   private imageCropper: ImageCropper;
-  private routeSub: any; // subscription to route observer
+  private routeSub: Subscription; // subscription to route observer
 
   constructor(
     private _userService: UserService,
@@ -76,7 +72,7 @@ export class AccountComponent implements OnInit {
     this.routeSub = this.router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
         // now save
-        console.log('Saving user data when navigating away!');
+        console.log('Saving user data when navigating away from account.');
         this._saveUserToKinvey();
       }
     });
@@ -106,6 +102,7 @@ export class AccountComponent implements OnInit {
       (this.user.data as any).profile_picture = source;
       return Promise.resolve();
     } catch (err) {
+      this._loggingService.logException(err);
       return Promise.reject(`Couldn't save profile picture: ${err}`);
     }
   }
@@ -122,55 +119,60 @@ export class AccountComponent implements OnInit {
       }
       return Promise.resolve();
     } catch (err) {
+      this._loggingService.logException(err);
       return Promise.reject(`Couldn't load profile picture: ${err}`);
     }
   }
 
-  onUpdateProfilePictureTap() {
-    if (camera.isAvailable()) {
-      camera
-        .requestPermissions()
-        .then(() => {
-          console.log('Updating profile picture!');
-
-          const options = {
-            width: 256,
-            height: 256,
-            lockSquare: true
-          };
-
-          camera
-            .takePicture({
-              width: 500,
-              height: 500,
-              keepAspectRatio: true,
-              cameraFacing: 'front'
-            })
-            .then(imageAsset => {
-              const source = new imageSource.ImageSource();
-              source.fromAsset(imageAsset).then(iSrc => {
-                this.imageCropper
-                  .show(iSrc, options)
-                  .then(args => {
-                    if (args.image !== null) {
-                      this.saveProfilePicture(args.image);
-                    }
-                  })
-                  .catch(e => {
-                    console.dir(e);
-                  });
-              });
-            })
-            .catch(err => {
-              console.log('Error -> ' + err.message);
-            });
-        })
-        .catch(err => {
-          console.log('Error -> ' + err.message);
-        });
-    } else {
-      console.log('No camera available');
+  async onUpdateProfilePictureTap() {
+    if (!camera.isAvailable()) {
+      console.log('Camera not available on device.');
+      return;
     }
+
+    camera
+      .requestPermissions()
+      .then(() => {
+        console.log('Updating profile picture!');
+
+        const options = {
+          width: 256,
+          height: 256,
+          lockSquare: true
+        };
+
+        camera
+          .takePicture({
+            width: 500,
+            height: 500,
+            keepAspectRatio: true,
+            cameraFacing: 'front'
+          })
+          .then(imageAsset => {
+            const source = new imageSource.ImageSource();
+            source.fromAsset(imageAsset).then(iSrc => {
+              this.imageCropper
+                .show(iSrc, options)
+                .then(args => {
+                  if (args.image !== null) {
+                    this.saveProfilePicture(args.image);
+                  }
+                })
+                .catch(e => {
+                  this._loggingService.logException(e);
+                  console.dir(e);
+                });
+            });
+          })
+          .catch(err => {
+            this._loggingService.logException(err);
+            console.log('Error -> ' + err.message);
+          });
+      })
+      .catch(err => {
+        this._loggingService.logException(err);
+        console.log('requestPermissions Error -> ' + err.message);
+      });
   }
 
   onLanguageChanged(args) {
@@ -255,39 +257,50 @@ export class AccountComponent implements OnInit {
   /**
    * Confirm with user to provide feedback.
    */
-  onFeedbackTap() {
-    confirm({
+  async onFeedbackTap() {
+    const confirmResult = await confirm({
       title: this._translateService.instant('user.provide-feedback-confirm-title'),
       message: this._translateService.instant('user.provide-feedback-confirm-message'),
       okButtonText: this.yes,
       cancelButtonText: this.no
-    }).then(confirmResult => {
-      if (confirmResult) {
-        // send email to user
-        email
-          .available()
-          .then(available => {
-            if (available) {
-              email
-                .compose({
-                  to: ['feedback@max-mobility.com'],
-                  subject: this._translateService.instant('user.feedback-email-subject'),
-                  body: '',
-                  cc: []
-                })
-                .then(result => {
-                  if (result) {
-                    console.log('email compose result', result);
-                  } else {
-                    console.log('the email may NOT have been sent!');
-                  }
-                })
-                .catch(error => console.error(error));
-            }
-          })
-          .catch(error => console.error(error));
-      }
+    }).catch(e => {
+      this._loggingService.logException(e);
     });
+
+    if (confirmResult === false) {
+      // user denied the confirmation
+      console.log('User denied the confirmation to open email to send feedback.');
+      return;
+    }
+
+    // check if device has email available
+    const canEmail = await email.available().catch(e => {
+      this._loggingService.logException(e);
+    });
+
+    if (!canEmail) {
+      // email is available on device
+      console.log('Email is not available on the device.');
+      return;
+    }
+
+    email
+      .compose({
+        to: ['feedback@max-mobility.com'],
+        subject: this._translateService.instant('user.feedback-email-subject'),
+        body: '',
+        cc: []
+      })
+      .then(result => {
+        if (result) {
+          console.log('email compose result', result);
+        } else {
+          console.log('the email may NOT have been sent!');
+        }
+      })
+      .catch(e => {
+        this._loggingService.logException(e);
+      });
   }
 
   onDebugMenuTap() {

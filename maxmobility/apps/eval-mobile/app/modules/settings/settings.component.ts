@@ -1,11 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-
-import { BluetoothService, FirmwareService, ProgressService } from '@maxmobility/mobile';
-
-import * as application from 'tns-core-modules/application';
-import { isIOS, isAndroid } from 'tns-core-modules/platform';
-import * as fs from 'tns-core-modules/file-system';
+import { Component } from '@angular/core';
+import { BluetoothService, FirmwareService, LoggingService, ProgressService } from '@maxmobility/mobile';
 import { Kinvey } from 'kinvey-nativescript-sdk';
+import * as fs from 'tns-core-modules/file-system';
+import { isAndroid, isIOS } from 'tns-core-modules/platform';
 
 @Component({
   selector: 'Settings',
@@ -13,36 +10,13 @@ import { Kinvey } from 'kinvey-nativescript-sdk';
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.css']
 })
-export class SettingsComponent implements OnInit {
+export class SettingsComponent {
   constructor(
     private _bluetoothService: BluetoothService,
     private _firmwareService: FirmwareService,
-    private _progressService: ProgressService
+    private _progressService: ProgressService,
+    private _loggingService: LoggingService
   ) {}
-
-  ngOnInit(): void {}
-
-  onDrawerButtonTap(): void {}
-
-  private getFileBytes(data) {
-    let bytes = null;
-    if (isIOS) {
-      const arr = new ArrayBuffer(data.length);
-      data.getBytes(arr);
-      bytes = new Uint8Array(arr);
-    } else if (isAndroid) {
-      bytes = new Uint8Array(data);
-    }
-    return bytes;
-  }
-
-  private loadFile(fileName: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const filePath = fs.path.join(fs.knownFolders.currentApp().path, fileName);
-      const f = fs.File.fromPath(filePath);
-      resolve(f);
-    });
-  }
 
   onReload() {
     this._firmwareService.loadFromFS();
@@ -99,6 +73,7 @@ export class SettingsComponent implements OnInit {
             console.log(`Uploaded to kinvey: ${files}`);
           })
           .catch(error => {
+            this._loggingService.logException(error);
             console.log(`Couldn't upload to kinvey: ${error}`);
           });
       });
@@ -116,6 +91,7 @@ export class SettingsComponent implements OnInit {
       .stop()
       .then(stopProgress)
       .catch(err => {
+        this._loggingService.logException(err);
         console.log(`Couldn't stop BT: ${err}`);
         stopProgress(err);
       });
@@ -133,8 +109,34 @@ export class SettingsComponent implements OnInit {
       .advertise()
       .then(stopProgress)
       .catch(err => {
+        this._loggingService.logException(err);
         console.log(`Couldn't restart BT: ${err}`);
         stopProgress(err);
       });
+  }
+
+  private getFileBytes(data) {
+    let bytes = null;
+    if (isIOS) {
+      const arr = new ArrayBuffer(data.length);
+      data.getBytes(arr);
+      bytes = new Uint8Array(arr);
+    } else if (isAndroid) {
+      bytes = new Uint8Array(data);
+    }
+    return bytes;
+  }
+
+  private loadFile(fileName: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      try {
+        const filePath = fs.path.join(fs.knownFolders.currentApp().path, fileName);
+        const f = fs.File.fromPath(filePath);
+        resolve(f);
+      } catch (error) {
+        this._loggingService.logException(error);
+        reject(error);
+      }
+    });
   }
 }
