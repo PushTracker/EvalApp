@@ -111,3 +111,9 @@ maxmobility/nativescript-bluetooth/**/*.js
 
 !maxmobility/tools/**/*.js
 !maxmobility/libs/core/packet_bindings.js
+
+
+# keystore, certs, executables
+*.keystore
+*.apk
+*.ipa
