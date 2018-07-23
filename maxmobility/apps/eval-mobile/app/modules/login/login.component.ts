@@ -124,8 +124,6 @@ export class LoginComponent implements OnInit {
 
   private _isEmailValid(text: string): boolean {
     // validate the email
-    CLog('isEmailValid', text);
-
     if (!text) {
       this.emailError = this.email_required;
       return false;
