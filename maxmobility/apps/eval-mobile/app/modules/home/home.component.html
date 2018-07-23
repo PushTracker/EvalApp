@@ -15,14 +15,25 @@
         </DockLayout>
         <Label [text]="'menu.con-desc' | translate" class="description" textWrap="true"></Label>
 
-        <ScrollView orientation="horizontal" class="rad-list-view">
+        <!-- <ScrollView orientation="horizontal" class="rad-list-view">
           <StackLayout orientation="horizontal">
             <StackLayout *ngFor="let item of connectivityItems" class="icon-description-group">
               <Image [src]="item.Image" (tap)="connectivityThumbTapped(item)" stretch="aspectFill" class="thumb"></Image>
               <Label class="item-description" textWrap="true" [text]="item.Description | translate"></Label>
             </StackLayout>
           </StackLayout>
-        </ScrollView>
+        </ScrollView> -->
+
+        <RadListView [items]="connectivityItems">
+          <ng-template tkListItemTemplate let-item="item">
+            <StackLayout class="icon-description-group">
+              <Image [src]="item.Image" (tap)="connectivityThumbTapped(item)" stretch="aspectFill" class="thumb"></Image>
+              <Label class="item-description" textWrap="true" [text]="item.Description | translate"></Label>
+            </StackLayout>
+          </ng-template>
+          <ListViewLinearLayout tkListViewLayout scrollDirection="Horizontal"></ListViewLinearLayout>
+        </RadListView>
+
       </StackLayout>
 
       // Videos
@@ -35,14 +46,24 @@
         </DockLayout>
         <Label [text]="'menu.videos-description' | translate" class="description" textWrap="true"></Label>
 
-        <ScrollView orientation="horizontal" class="rad-list-view">
+        <!-- <ScrollView orientation="horizontal" class="rad-list-view">
           <StackLayout orientation="horizontal">
             <StackLayout *ngFor="let item of videoItems" class="icon-description-group">
               <Image [src]="item.Thumb" (tap)="videoThumbTapped(item)" class="thumb" padding="0"></Image>
               <Label class="item-description" textWrap="true" [text]="item.Description"></Label>
             </StackLayout>
           </StackLayout>
-        </ScrollView>
+        </ScrollView> -->
+
+        <RadListView [items]="videoItems">
+          <ng-template tkListItemTemplate let-item="item">
+            <StackLayout class="icon-description-group">
+              <Image [src]="item.Thumb" (tap)="videoThumbTapped(item)" class="thumb" padding="0"></Image>
+              <Label class="item-description" textWrap="true" [text]="item.Description"></Label>
+            </StackLayout>
+          </ng-template>
+          <ListViewLinearLayout tkListViewLayout scrollDirection="Horizontal"></ListViewLinearLayout>
+        </RadListView>
       </StackLayout>
 
       // Evaluation
@@ -54,14 +75,25 @@
         </DockLayout>
         <Label [text]="'menu.clinical-tools-desc' | translate" class="description" textWrap="true"></Label>
 
-        <ScrollView orientation="horizontal" class="rad-list-view">
+        <!-- <ScrollView orientation="horizontal" class="rad-list-view">
           <StackLayout orientation="horizontal">
             <StackLayout *ngFor="let item of evalItems" class="icon-description-group">
               <Image [src]="item.Image" (tap)="evalThumbTapped(item)" class="thumb"></Image>
               <Label class="item-description" textWrap="true" [text]="item.Description | translate"></Label>
             </StackLayout>
           </StackLayout>
-        </ScrollView>
+        </ScrollView> -->
+
+
+        <RadListView [items]="evalItems">
+          <ng-template tkListItemTemplate let-item="item">
+            <StackLayout class="icon-description-group">
+              <Image [src]="item.Image" (tap)="evalThumbTapped(item)" class="thumb"></Image>
+              <Label class="item-description" textWrap="true" [text]="item.Description | translate"></Label>
+            </StackLayout>
+          </ng-template>
+          <ListViewLinearLayout tkListViewLayout scrollDirection="Horizontal"></ListViewLinearLayout>
+        </RadListView>
       </StackLayout>
 
       // Demos
@@ -73,7 +105,7 @@
         </DockLayout>
         <Label [text]="'menu.demos-desc' | translate" class="description" textWrap="true"></Label>
 
-        <ScrollView orientation="horizontal" class="rad-list-view">
+        <!-- <ScrollView orientation="horizontal" class="rad-list-view">
           <StackLayout orientation="horizontal">
             <StackLayout *ngIf="!Demos.length" class="icon-description-group">
               <Image src="~/assets/images/PushTracker-SmartDrive-pairing.png" (tap)="demoThumbTapped(null)" backgroundImage="~/assets/images/background_1.jpg"
@@ -98,7 +130,37 @@
               </StackLayout>
             </StackLayout>
           </StackLayout>
-        </ScrollView>
+        </ScrollView> -->
+
+        <StackLayout *ngIf="!Demos.length" class="icon-description-group">
+          <Image src="~/assets/images/PushTracker-SmartDrive-pairing.png" (tap)="demoThumbTapped(null)" backgroundImage="~/assets/images/background_1.jpg"
+            stretch="aspectFill" class="thumb"></Image>
+          <StackLayout>
+            <Label class="demo-item-description" textWrap="true" [text]="'menu.new-demo' | translate"></Label>
+          </StackLayout>
+        </StackLayout>
+
+        <RadListView [items]="Demos._array">
+          <ng-template tkListItemTemplate let-item="item">
+            <StackLayout class="icon-description-group">
+              <Image *ngIf="!item.sd_image" src="~/assets/images/PushTracker-SmartDrive-pairing.png" (tap)="demoThumbTapped(item)" backgroundImage="~/assets/images/background_1.jpg"
+                stretch="aspectFill" class="thumb"></Image>
+              <Image *ngIf="item.sd_image" class="thumb" [src]="item.sd_image" stretch="aspectFill"></Image>
+              <StackLayout>
+                <Label class="demo-item-description" textWrap="true" [text]="(item.smartdrive_serial_number || '# ??')"></Label>
+                <Label class="demo-item-description" textWrap="true" [text]="item.location_string"></Label>
+                <Label class="demo-item-description" textWrap="true" [backgroundColor]="(item.isUpToDate(currentVersion)) ? 'green' : 'red'">
+                  <FormattedString>
+                    <Span [text]="item.version_string"></Span>
+                    <Span class="mdi" [text]="' ' + item.version_badge(currentVersion)"></Span>
+                  </FormattedString>
+                </Label>
+              </StackLayout>
+            </StackLayout>
+          </ng-template>
+          <ListViewLinearLayout tkListViewLayout scrollDirection="Horizontal"></ListViewLinearLayout>
+        </RadListView>
+
       </StackLayout>
 
       // FAQ
@@ -110,14 +172,25 @@
         </DockLayout>
         <Label [text]="'menu.faq-desc' | translate" class="description" textWrap="true"></Label>
 
-        <ScrollView orientation="horizontal" class="rad-list-view">
-          <StackLayout orientation="horizontal">
-            <GridLayout rows="*" columns="*" (tap)="faqThumbTapped(item)" *ngFor="let item of faqItems" class="thumb" margin="0, 10, 15, 15"
-              verticalAlign="center" backgroundSize="cover" backgroundImage="~/assets/images/background_1.jpg" stretch="aspectFill">
+        <!-- <ScrollView orientation="horizontal" class="rad-list-view">
+            <StackLayout orientation="horizontal">
+              <GridLayout rows="*" columns="*" (tap)="faqThumbTapped(item)" *ngFor="let item of faqItems" class="thumb" margin="0, 10, 15, 15"
+                verticalAlign="center" backgroundSize="cover" backgroundImage="~/assets/images/background_1.jpg" stretch="aspectFill">
+                <Label row="0" [text]="item.question" class="faq-question" textWrap="true"></Label>
+              </GridLayout>
+            </StackLayout>
+          </ScrollView> -->
+
+        <RadListView [items]="faqItems">
+          <ng-template tkListItemTemplate let-item="item">
+            <GridLayout rows="*" columns="*" (tap)="faqThumbTapped(item)" class="thumb" margin="0, 10, 15, 15" verticalAlign="center"
+              backgroundSize="cover" backgroundImage="~/assets/images/background_1.jpg" stretch="aspectFill">
               <Label row="0" [text]="item.question" class="faq-question" textWrap="true"></Label>
             </GridLayout>
-          </StackLayout>
-        </ScrollView>
+          </ng-template>
+          <ListViewLinearLayout tkListViewLayout scrollDirection="Horizontal"></ListViewLinearLayout>
+        </RadListView>
+
       </StackLayout>
 
     </GridLayout>
