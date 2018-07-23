@@ -95,16 +95,6 @@ export class HomeComponent {
     return DemoService.Demos;
   }
 
-  onRadListLoaded(event) {
-    // const radListView = event.object;
-    // setTimeout(() => {
-    //   radListView.scrollWithAmount(150, true);
-    // setTimeout(() => {
-    //   radListView.scrollWithAmount(-150, true);
-    // }, 500);
-    // }, 100);
-  }
-
   onDrawerButtonTap(): void {
     this._routerExtensions.navigate(['/account'], {
       transition: {
