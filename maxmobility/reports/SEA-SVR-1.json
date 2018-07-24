@@ -114,6 +114,14 @@
         {
           "name": "SEA-SRS-5-A",
           "description": "Data Transmission with the SmartDrive"
+        },
+        {
+          "name": "SEA-SRS-19-A",
+          "description": "OTA Interface"
+        },
+        {
+          "name": "SEA-SRS-20-A",
+          "description": "OTA Status Display"
         }
       ],
       "tests": [
