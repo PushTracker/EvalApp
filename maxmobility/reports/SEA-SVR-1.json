@@ -89,6 +89,86 @@
 			"startDate": "2018-07-23",
 			"endDate": "2018-07-23",
 			"notes": ""
+		},
+		{
+			"number": "2",
+			"revision": "A",
+			"description": "OTA Data Integrity",
+			"testerName": "William Emfinger",
+			"testLevel": [
+				"System"
+			],
+			"requirements": [
+				{
+					"name": "SEA-SRS-2-A",
+					"description": "Connectivity to the PushTracker"
+				},
+				{
+					"name": "SEA-SRS-3-A",
+					"description": "Data Transmission with the PushTracker"
+				},
+				{
+					"name": "SEA-SRS-4-A",
+					"description": "Connectivity to the SmartDrive"
+				},
+				{
+					"name": "SEA-SRS-5-A",
+					"description": "Data Transmission with the SmartDrive"
+				}
+			],
+			"tests": [
+				{
+					"name": "PT OTA",
+					"preconditions": "The app should be running and opened to the OTA page. A pushtracker running version 1.5 should be on and already paired, but not connected to the app.",
+					"methods": [
+						"Press the right button on the PushTracker to initiate app connection. Press 'Refresh Device List' in the app.",
+						"Press 'Begin Updates' in the app, then press the 'Start' button, then press the 'Force' button.",
+						"Wait until the OTA finishes - the PT must reboot. After the PT reboots, press the right button on the PT to turn it on and then press the right button to connect to the app."
+					],
+					"acceptanceCriteria": [
+						"The PushTracker should show up in the list of devices.",
+						"The app should show 'Updating' and the PT should show the OTA status.",
+						"The PushTracker should go into the 'pairing to app' setting menu - indicating that it has lost its pairing information and the OTA succeeded."
+					],
+					"results": [
+						"PASS",
+						"PASS",
+						"PASS",
+						"SKIP",
+						"SKIP",
+						"SKIP",
+						"SKIP"
+					],
+					"finalResult": true
+				},
+				{
+					"name": "SD OTA",
+					"preconditions": "The app should be running and opened to the OTA page. A SmartDrive running version 1.4 should be on and not connected to a PushTracker.",
+					"methods": [
+						"Press 'Refresh Device List' in the app.",
+						"Press 'Begin Updates' and then 'Start' for the SmartDrive.",
+						"Wait until the OTA finishes and the ota status is displayed for the SmartDrive."
+					],
+					"acceptanceCriteria": [
+						"The SmartDRive should show up in the list of devices.",
+						"The app should show the firmware versions (1.4) for the SmartDrive and should then continue through the ota process.",
+						"The OTA status displayed should be 'Complete'"
+					],
+					"results": [
+						"PASS",
+						"PASS",
+						"PASS",
+						"SKIP",
+						"SKIP",
+						"SKIP",
+						"SKIP"
+					],
+					"finalResult": true
+				}
+			],
+			"notes": "",
+			"startDate": "2018-07-24",
+			"endDate": "2018-07-24"
 		}
 	]
 }
