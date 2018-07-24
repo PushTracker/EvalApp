@@ -99,6 +99,98 @@
       "notes": "The values for the trial / evaluation will be predominantly 0 - which is OK since this only tests the evaluation interface - other tests confirm data collection for the evaluation.",
       "startDate": "2018-07-24",
       "endDate": "2018-07-24"
+    },
+    {
+      "number": "3",
+      "revision": "A",
+      "description": "OTA Interface",
+      "testerName": "William Emfinger",
+      "testLevel": "Software Item",
+      "requirements": [
+        {
+          "name": "SEA-SRS-19-A",
+          "description": "OTA Interface"
+        },
+        {
+          "name": "SEA-SRS-20-A",
+          "description": "OTA Status Display"
+        }
+      ],
+      "tests": [
+        {
+          "name": "OTA Page",
+          "preconditions": "The app should be running, signed in, and open to the 'Home' page.",
+          "methods": [
+            "Navigate to the OTA Page by pressing the 'Update a PushTracker or SmartDrive' button."
+          ],
+          "acceptanceCriteria": [
+            "The app should navigate to the 'Firmware Updates' page - which should show the latest version of the firmware at the top, and some information about the features of the firmware at the bottom."
+          ],
+          "results": [
+            "PASS",
+            "PASS",
+            "PASS",
+            "SKIP",
+            "SKIP",
+            "SKIP",
+            "SKIP"
+          ],
+          "finalResult": true
+        },
+        {
+          "name": "Device Checking",
+          "preconditions": "OTA Page test is complete",
+          "methods": [
+            "Press the 'Begin Updates' button."
+          ],
+          "acceptanceCriteria": [
+            "The app should indicate that there are no PushTrackers or SmartDrives to update."
+          ],
+          "results": [
+            "PASS",
+            "PASS",
+            "PASS",
+            "SKIP",
+            "SKIP",
+            "SKIP",
+            "SKIP"
+          ],
+          "finalResult": true
+        },
+        {
+          "name": "Device Display",
+          "preconditions": "Device Checking test is complete. A PushTracker that has already been paired with the app is on and connected. A SmartDrive that is not connected to a PushTracker is on.",
+          "methods": [
+            "Press the 'Refresh Device List' button.",
+            "Press the 'Begin Updates' button.",
+            "Press 'Start' on both the PushTracker and SmartDrive.",
+            "Press 'Pause' on both devices.",
+            "Press 'Resume' on both devices.",
+            "Press 'Cancel' on both devices."
+          ],
+          "acceptanceCriteria": [
+            "Both the PushTracker and SmartDrive should be shown.",
+            "Both the PushTracker and SmartDrive should have 'Start' buttons. The PushTracker's version should show, the SmartDrive's versions should show as unknown.",
+            "The version info for the SmartDrive should show, both devices should show that they are updating. Controls to 'Pause' or 'Cancel' should show for each device.",
+            "Both devices should now have a 'Resume' button and the ota progress for each device should stop increasing.",
+            "Both devices should now have a 'Pause' button again and the ota progress should resume increasing.",
+            "Both devices should reboot and the app should show 'Canceled' for each device."
+          ],
+          "results": [
+            "PASS",
+            "PASS",
+            "PASS",
+            "SKIP",
+            "SKIP",
+            "SKIP",
+            "SKIP"
+          ],
+          "finalResult": true
+        }
+      ],
+      "notes": "If the versions of the devices used for testing already match the latest version, you will have to press 'Force' after pressing 'Start' before OTA will continue.",
+      "startDate": "2018-07-24",
+      "endDate": "2018-07-24"
     }
   ]
 }
