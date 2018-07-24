@@ -1,5 +1,104 @@
 {
-	"number": "3",
-	"name": "Interface",
-	"reports": []
+  "number": "3",
+  "name": "Interface",
+  "reports": [
+    {
+      "number": "1",
+      "revision": "A",
+      "description": "Dashboard",
+      "testerName": "William Emfinger",
+      "testLevel": "Software Item",
+      "requirements": [
+        {
+          "name": "SEA-SRS-13-A",
+          "description": "Application Menu"
+        }
+      ],
+      "tests": [
+        {
+          "name": "Display",
+          "preconditions": "The app should be running, signed in, and open to the app's landing page.",
+          "methods": [
+            "Navigate (swipe) around the page."
+          ],
+          "acceptanceCriteria": [
+            "The app should show grouped, actionable content associated with different pages. Each section of content should have a meaningful description of what it is or relates to."
+          ],
+          "results": [
+            "PASS",
+            "PASS",
+            "PASS",
+            "SKIP",
+            "SKIP",
+            "SKIP",
+            "SKIP"
+          ],
+          "finalResult": true
+        }
+      ],
+      "notes": "",
+      "startDate": "2018-07-24",
+      "endDate": "2018-07-24"
+    },
+    {
+      "number": "2",
+      "revision": "A",
+      "description": "Evaluation",
+      "testerName": "William Emfinger",
+      "testLevel": "Software Item",
+      "requirements": [
+        {
+          "name": "SEA-SRS-14-A",
+          "description": "Evaluation Interface"
+        },
+        {
+          "name": "SEA-SRS-15-A",
+          "description": "Evaluation User Data Collection"
+        },
+        {
+          "name": "SEA-SRS-17-A",
+          "description": "Evaluation Information Display"
+        },
+        {
+          "name": "SEA-SRS-18-A",
+          "description": "Evaluation Report Generation"
+        }
+      ],
+      "tests": [
+        {
+          "name": "Questionnaire",
+          "preconditions": "The app should be running, signed in, and open to the dashboard.",
+          "methods": [
+            "Press the 'Clinical Tools' button.",
+            "Fill out the questionnaire and press 'Next'",
+            "Swipe through the training pages and press the 'Next' button.",
+            "Fill out the questionnaire, navigate to the 'Trial Complete' page and press 'Summary'.",
+            "Press the 'Complete' button and agree to the confirmation.",
+            "Enter in your own email address as the destination and send the email to yourself."
+          ],
+          "acceptanceCriteria": [
+            "The app should naviage to a 'Perform an Evaluation' page with a questionnaire.",
+            "The app should navigate to a 'Training' page with information about the SmartDrive / PushTracker.",
+            "The app should navigate to a 'Trial' page with another questionnaire.",
+            "The app should navigate to a 'Summary' page with text describing the trial. The values in the text will be '0' - which is acceptable since we did not use the PushTracker or SmartDrive.",
+            "The app should open into the user's preferred and set-up email app on the phone - sending an email from their account with the evaluation data as the body of the email.",
+            "The email should send and the app should return to the foreground, navigated to the 'Home' screen."
+          ],
+          "results": [
+            "PASS",
+            "PASS",
+            "PASS",
+            "SKIP",
+            "SKIP",
+            "SKIP",
+            "SKIP"
+          ],
+          "finalResult": true
+        }
+      ],
+      "notes": "The values for the trial / evaluation will be predominantly 0 - which is OK since this only tests the evaluation interface - other tests confirm data collection for the evaluation.",
+      "startDate": "2018-07-24",
+      "endDate": "2018-07-24"
+    }
+  ]
 }
