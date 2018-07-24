@@ -5,7 +5,7 @@
 		{
 			"number": "1",
 			"revision": "A",
-			"description": "App should support bluetooth connections to both PushTracker and SmartDrive.",
+			"description": "App should support bluetooth communications with both PushTracker and SmartDrive.",
 			"testerName": "William Emfinger",
 			"testLevel": "System",
 			"requirements": [
