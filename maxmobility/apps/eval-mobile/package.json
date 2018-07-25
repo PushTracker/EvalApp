@@ -71,6 +71,7 @@
     "nativescript-iqkeyboardmanager": "file:../../node_modules/nativescript-iqkeyboardmanager",
     "nativescript-loading-indicator": "file:../../node_modules/nativescript-loading-indicator",
     "nativescript-localstorage": "file:../../node_modules/nativescript-localstorage",
+    "nativescript-master-technology": "../../node_modules/nativescript-master-technology",
     "nativescript-ngx-fonticon": "file:../../node_modules/nativescript-ngx-fonticon",
     "nativescript-ngx-slides": "^6.0.0",
     "nativescript-orientation": "^2.2.0",
