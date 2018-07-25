@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { CLog, LoggingService, UserService } from '@maxmobility/mobile';
+import { CLog, DemoService, FileService, FirmwareService, LoggingService, UserService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 import { registerElement } from 'nativescript-angular/element-registry';
 import { RouterExtensions } from 'nativescript-angular/router';
+import { Carousel, CarouselItem } from 'nativescript-carousel';
 import { Gif } from 'nativescript-gif';
 import * as orientation from 'nativescript-orientation';
 import { Sentry } from 'nativescript-sentry';
@@ -11,9 +12,8 @@ import * as application from 'tns-core-modules/application';
 import { device } from 'tns-core-modules/platform';
 
 // Register Custom Elements for Angular
-const NS_CAROUSEL = require('nativescript-carousel');
-registerElement('Carousel', () => NS_CAROUSEL.Carousel);
-registerElement('CarouselItem', () => NS_CAROUSEL.CarouselItem);
+registerElement('Carousel', () => <any>Carousel);
+registerElement('CarouselItem', () => <any>CarouselItem);
 registerElement('BarcodeScanner', () => require('nativescript-barcodescanner').BarcodeScannerView);
 registerElement('Gradient', () => require('nativescript-gradient').Gradient);
 registerElement('Gif', () => Gif);
@@ -27,7 +27,10 @@ export class AppComponent {
     private _translateService: TranslateService,
     private _logService: LoggingService,
     private _userService: UserService,
-    private _router: RouterExtensions
+    private _router: RouterExtensions,
+    private _demoService: DemoService,
+    private _firmwareService: FirmwareService,
+    private _fileService: FileService
   ) {
     // init sentry
     const sentryDsn = 'https://aaa25eb556fa476a92e0edea6dd57af6:65c984b9260e47f0bb128def7eddd5f4@sentry.io/306438';

@@ -100,6 +100,8 @@ export class FirmwareService {
 
   private loadMetadata() {
     try {
+      console.log(`loadMetadata start - ${performance.now()}`);
+
       const md = LS.getItem(FirmwareService.fsKeyPrefix + FirmwareService.fsKeyMetadata);
       if (md) {
         // now update our firmwares data
@@ -109,9 +111,11 @@ export class FirmwareService {
           this.firmwares[k].length = (md[k] && md[k].length) || 0;
           this.firmwares[k].version = (md[k] && md[k].version) || null;
         });
+        console.log(`loadMetadata end - ${performance.now()}`);
         return Promise.resolve();
       } else {
         console.log('No metadata file found!');
+        console.log(`loadMetadata end - ${performance.now()}`);
         return Promise.resolve();
       }
     } catch (err) {
@@ -157,6 +161,7 @@ export class FirmwareService {
   }
 
   private unpackFirmwareData(fwKey, data) {
+    console.log(`unpackFirmwareData start ${performance.now()}`);
     const length = this.firmwares[fwKey].length;
     let bytes = null;
     if (isIOS) {
@@ -174,9 +179,11 @@ export class FirmwareService {
     const actualLength = this.firmwares[fwKey].data.length;
     if (actualLength !== validLength) {
       const msg = `${fwKey} data length (${actualLength}) not the expected (${validLength})!`;
+      console.log(`unpackFirmwareData end ${performance.now()}`);
       return Promise.reject(msg);
     } else {
       console.log(`Downloaded ${fwKey} ota successfully!`);
+      console.log(`unpackFirmwareData end ${performance.now()}`);
       return Promise.resolve();
     }
   }
@@ -189,6 +196,8 @@ export class FirmwareService {
   }
 
   public downloadFirmwares(): Promise<any> {
+    console.log(`downloadFirmwares start ${performance.now()}`);
+
     this.haveFirmwares = false;
     const tasks = Object.keys(this.firmwares).map(fwKey => {
       const query = new Kinvey.Query();
@@ -225,9 +234,11 @@ export class FirmwareService {
         this.haveFirmwares = true;
         this.last_check = new Date();
         this.saveMetadata();
+        console.log(`downloadFirmwares promise.all resolve ${performance.now()}`);
       })
       .catch(err => {
         console.log(`Couldn't get firmware data: ${err}`);
+        console.log(`downloadFirmwares promise.all error ${performance.now()}`);
         this.haveFirmwares = false;
       });
   }
