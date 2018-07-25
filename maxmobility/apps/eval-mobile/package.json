@@ -62,7 +62,6 @@
     "nativescript-carousel": "file:../../node_modules/nativescript-carousel",
     "nativescript-drop-down": "file:../../node_modules/nativescript-drop-down",
     "nativescript-email": "^1.5.2",
-    "nativescript-exoplayer": "file:../../node_modules/nativescript-exoplayer",
     "nativescript-feedback": "file:../../node_modules/nativescript-feedback",
     "nativescript-fresco": "file:../../node_modules/nativescript-fresco",
     "nativescript-geolocation": "^4.2.6",
