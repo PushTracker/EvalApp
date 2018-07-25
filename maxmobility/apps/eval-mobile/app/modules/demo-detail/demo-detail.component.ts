@@ -188,7 +188,7 @@ export class DemoDetailComponent {
   }
 
   handleSerial(text: string, forDevices?: string[]) {
-      text = text || '';
+    text = text || '';
     text = text.trim().toUpperCase();
     let deviceType = null;
     const isPushTracker = text[0] === 'B';
@@ -196,8 +196,8 @@ export class DemoDetailComponent {
     let isSmartDrive = false;
     let serialNumber = text;
     try {
-	let value = parseInt(text, 10);
-	let valid = isFinite(value);
+      let value = parseInt(text, 10);
+      let valid = isFinite(value);
       isSmartDrive = !isPushTracker && !isWristband && valid && value > 0;
       if (isSmartDrive) {
         serialNumber = `${parseInt(text, 10)}`;
@@ -212,14 +212,14 @@ export class DemoDetailComponent {
     } else if (isSmartDrive) {
       deviceType = 'smartdrive';
     } else {
-	return;
+      return;
     }
 
     // check the type
     if (forDevices && forDevices.length && forDevices.indexOf(deviceType) === -1) {
       const error = new Error('Wrong device scanned!');
       this._loggingService.logException(error);
-	return;
+      return;
     }
     // set the model
     if (isPushTracker) {
