@@ -76,6 +76,7 @@ export class HomeComponent {
     private _fileService: FileService,
     private translateService: TranslateService
   ) {
+    console.log(`Home.Component start constructor ${performance.now()}`);
     this._page.enableSwipeBackNavigation = false;
     this.feedback = new Feedback();
 
@@ -85,6 +86,7 @@ export class HomeComponent {
     });
 
     this._fileService.downloadTranslationFiles();
+    console.log(`Home.Component end constructor ${performance.now()}`);
   }
 
   get currentVersion(): string {
