@@ -5,11 +5,12 @@ import { TranslateService } from '@ngx-translate/core';
 import { PageRoute } from 'nativescript-angular/router';
 import { BarcodeScanner } from 'nativescript-barcodescanner';
 import * as camera from 'nativescript-camera';
-import { ImageCropper } from 'nativescript-imagecropper';
+import { ImageCropper, Result as ImageCropperResult } from 'nativescript-imagecropper';
 import { SnackBar } from 'nativescript-snackbar';
 import { isAndroid, isIOS } from 'platform';
 import { switchMap } from 'rxjs/operators';
-import * as imageSource from 'tns-core-modules/image-source';
+import { ImageAsset } from 'tns-core-modules/image-asset/image-asset';
+import { ImageSource } from 'tns-core-modules/image-source/image-source';
 import * as dialogs from 'tns-core-modules/ui/dialogs';
 
 @Component({
@@ -79,110 +80,44 @@ export class DemoDetailComponent {
     return this._firmwareService.currentVersion;
   }
 
-  onUpdateSDImageTap() {
-    if (camera.isAvailable()) {
-      camera
-        .requestPermissions()
-        .then(() => {
-          console.log('Updating SmartSDrive Image!');
+  async onUpdateSDImageTap() {
+    try {
+      const result = await this.takePictureAndCrop();
+      console.log('result', result);
 
-          const options = {
-            width: 256,
-            height: 256,
-            lockSquare: true
-          };
-
-          camera
-            .takePicture({
-              width: 500,
-              height: 500,
-              keepAspectRatio: true,
-              cameraFacing: 'rear'
-            })
-            .then(imageAsset => {
-              const source = new imageSource.ImageSource();
-              source.fromAsset(imageAsset).then(iSrc => {
-                this.imageCropper
-                  .show(iSrc, options)
-                  .then(args => {
-                    if (args.image !== null) {
-                      this.demo.sd_image = args.image;
-                      if (this.index) {
-                        // auto-save if this demo already exists
-                        this.demo.saveSDImage();
-                      }
-                    }
-                  })
-                  .catch(e => {
-                    console.dir(e);
-                  });
-              });
-            })
-            .catch(err => {
-              console.log('Error -> ' + err.message);
-            });
-        })
-        .catch(err => {
-          console.log('Error -> ' + err.message);
-        });
-    } else {
-      console.log('No camera available');
+      if (result && result.image) {
+        console.log('ImageCropper returned cropped image.');
+        this.demo.sd_image = result.image;
+        if (this.index) {
+          // auto-save if this demo already exists
+          this.demo.saveSDImage();
+        }
+      } else {
+        console.log('No result returned from the image cropper.');
+      }
+    } catch (error) {
+      console.log('ERROR', error);
     }
   }
 
-  onUpdatePTImageTap() {
-    if (!camera.isAvailable()) {
-      console.log('Camera is not available.');
-      return;
+  async onUpdatePTImageTap() {
+    try {
+      const result = await this.takePictureAndCrop();
+      console.log('result', result);
+
+      if (result && result.image !== null) {
+        console.log('ImageCropper return cropped image.');
+        this.demo.pt_image = result.image;
+        if (this.index) {
+          // auto-save if this demo already exists
+          this.demo.savePTImage();
+        }
+      } else {
+        console.log('No result returned from the image cropper.');
+      }
+    } catch (error) {
+      console.log('ERROR', error);
     }
-
-    camera
-      .requestPermissions()
-      .then(() => {
-        console.log('Updating SmartSDrive Image!');
-
-        const options = {
-          width: 256,
-          height: 256,
-          lockSquare: true
-        };
-
-        camera
-          .takePicture({
-            width: 500,
-            height: 500,
-            keepAspectRatio: true,
-            cameraFacing: 'rear'
-          })
-          .then(imageAsset => {
-            const source = new imageSource.ImageSource();
-            source.fromAsset(imageAsset).then(iSrc => {
-              this.imageCropper
-                .show(iSrc, options)
-                .then(args => {
-                  if (args.image !== null) {
-                    this.demo.pt_image = args.image;
-                    if (this.index) {
-                      // auto-save if this demo already exists
-                      this.demo.savePTImage();
-                    }
-                  }
-                })
-                .catch(e => {
-                  this._loggingService.logException(e);
-                  console.dir(e);
-                });
-            });
-          })
-          .catch(err => {
-            this._loggingService.logException(err);
-            console.log('Error -> ' + err.message);
-          });
-      })
-      .catch(err => {
-        this._loggingService.logException(err);
-        console.log('Error -> ' + err.message);
-      });
   }
 
   haveSerial(): boolean {
@@ -373,16 +308,6 @@ export class DemoDetailComponent {
     });
   }
 
-  onSdTap() {
-    // take an image of SD
-    console.log('sd image tapped');
-  }
-
-  onPtTap() {
-    // take an image of PT
-    console.log('pt image tapped');
-  }
-
   onSDRowTapped() {
     dialogs
       .confirm({
@@ -395,5 +320,55 @@ export class DemoDetailComponent {
         // result argument is boolean
         console.log('Dialog result: ' + result);
       });
+  }
+
+  private async takePictureAndCrop() {
+    try {
+      // check if device has camera
+      if (!camera.isAvailable()) {
+        console.log('No camera available on device.');
+        return null;
+      }
+
+      // request camera permissions
+      console.log('checking permissions');
+      await camera.requestPermissions().catch(error => {
+        console.log('Permission denied for camera.');
+        let msg: string;
+        if (isIOS) {
+          msg = `Smart Evaluation app does not have permission to open your camera.
+          Please go to settings and enable the camera permission.`;
+        } else {
+          msg = `Smart Evaluation app needs the Camera permission to open the camera.`;
+        }
+
+        dialogs.alert({ message: msg, okButtonText: 'Okay' });
+        return null;
+      });
+
+      const imageAsset = (await camera.takePicture({
+        width: 256,
+        height: 256,
+        keepAspectRatio: true,
+        cameraFacing: 'rear'
+      })) as ImageAsset;
+
+      const source = new ImageSource();
+      console.log(`Creating ImageSource from the imageAsset ${imageAsset}`);
+      const iSrc = await source.fromAsset(imageAsset);
+
+      console.log('Showing ImageCropper.');
+      const result = (await this.imageCropper.show(iSrc, {
+        width: 256,
+        height: 256,
+        lockSquare: true
+      })) as ImageCropperResult;
+
+      return result;
+    } catch (error) {
+      console.log('error in takePictureAndCrop', error);
+      this._loggingService.logException(error);
+      return null;
+    }
   }
 }
