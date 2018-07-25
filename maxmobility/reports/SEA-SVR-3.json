@@ -191,6 +191,72 @@
       "notes": "If the versions of the devices used for testing already match the latest version, you will have to press 'Force' after pressing 'Start' before OTA will continue.",
       "startDate": "2018-07-24",
       "endDate": "2018-07-24"
+    },
+    {
+      "number": "4",
+      "revision": "A",
+      "description": "Demo Unit Management",
+      "testerName": "William Emfinger",
+      "testLevel": "System",
+      "requirements": [
+        {
+          "name": "SEA-SRS-21-A",
+          "description": "Demo Unit Interface"
+        }
+      ],
+      "tests": [
+        {
+          "name": "Addition",
+          "preconditions": "The app should be running, signed in, and open to the 'Home' page.",
+          "methods": [
+            "Navigate to the 'Demos' page by selecting the 'Demos' header.",
+            "Press the 'Add' button",
+            "Press the 'Save' button",
+            "Enter a SmartDrive serial number and a PushTracker serial number. Press 'Save'.",
+            "Navigate back to the 'Demos' page"
+          ],
+          "acceptanceCriteria": [
+            "The app should navigate to the 'Demos' page and display any demo units that have been registered to the account.",
+            "The app should navigate to a 'Demo' page that has no demo details.'",
+            "The app should inform the user that the demo cannot be saved because it lacks sufficient details.",
+            "The app should inform the user that the demo unit is being saved.",
+            "The app should navigate to the 'Demos' page and a demo unit item with the same serial number as was entered above should be now present."
+          ],
+          "results": [
+            "PASS",
+            "PASS",
+            "PASS",
+            "SKIP",
+            "SKIP",
+            "SKIP",
+            "SKIP"
+          ],
+          "finalResult": true
+        },
+        {
+          "name": "Demo Unit View",
+          "preconditions": "The app should be running, signed in, open to the 'Home' page, and the account should have at least one Demo unit registered to it.",
+          "methods": [
+            "Select one of the Demo Units displayed on the 'Home' screen."
+          ],
+          "acceptanceCriteria": [
+            "The app should navigate to the 'Demo' detail page with the correct demo unit information filled in and displayed to the user."
+          ],
+          "results": [
+            "PASS",
+            "PASS",
+            "PASS",
+            "SKIP",
+            "SKIP",
+            "SKIP",
+            "SKIP"
+          ],
+          "finalResult": true
+        }
+      ],
+      "notes": "",
+      "startDate": "2018-07-25",
+      "endDate": "2018-07-25"
     }
   ]
 }
