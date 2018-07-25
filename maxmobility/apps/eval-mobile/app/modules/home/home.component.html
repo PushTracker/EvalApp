@@ -117,7 +117,7 @@
             <StackLayout *ngFor="let item of Demos._array" class="icon-description-group">
               <Image *ngIf="!item.sd_image" src="~/assets/images/PushTracker-SmartDrive-pairing.png" (tap)="demoThumbTapped(item)" backgroundImage="~/assets/images/background_1.jpg"
                 stretch="aspectFill" class="thumb"></Image>
-              <Image *ngIf="item.sd_image" class="thumb" [src]="item.sd_image" stretch="aspectFill"></Image>
+              <Image *ngIf="item.sd_image" class="thumb" (tap)="demoThumbTapped(item)" [src]="item.sd_image" stretch="aspectFill"></Image>
               <StackLayout>
                 <Label class="demo-item-description" textWrap="true" [text]="(item.smartdrive_serial_number || '# ??')"></Label>
                 <Label class="demo-item-description" textWrap="true" [text]="item.location_string"></Label>

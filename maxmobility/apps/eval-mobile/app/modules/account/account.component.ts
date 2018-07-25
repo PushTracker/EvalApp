@@ -13,7 +13,8 @@ import { ImageCropper } from 'nativescript-imagecropper';
 import * as LS from 'nativescript-localstorage';
 import { Subscription } from 'rxjs';
 import * as imageSource from 'tns-core-modules/image-source';
-import { confirm } from 'tns-core-modules/ui/dialogs';
+import { isIOS } from 'tns-core-modules/platform';
+import { alert, confirm } from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
 
 @Component({
@@ -125,54 +126,50 @@ export class AccountComponent implements OnInit {
   }
 
   async onUpdateProfilePictureTap() {
-    if (!camera.isAvailable()) {
-      console.log('Camera not available on device.');
-      return;
-    }
+    try {
+      if (!camera.isAvailable()) {
+        console.log('Camera not available on device.');
+        return;
+      }
 
-    camera
-      .requestPermissions()
-      .then(() => {
-        console.log('Updating profile picture!');
+      await camera.requestPermissions().catch(error => {
+        console.log('Permission denied for camera.');
+        let msg: string;
+        if (isIOS) {
+          msg = `Smart Evaluation app does not have permission to open your camera.
+          Please go to settings and enable the camera permission.`;
+        } else {
+          msg = `Smart Evaluation app needs the Camera permission to open the camera.`;
+        }
 
-        const options = {
-          width: 256,
-          height: 256,
-          lockSquare: true
-        };
-
-        camera
-          .takePicture({
-            width: 500,
-            height: 500,
-            keepAspectRatio: true,
-            cameraFacing: 'front'
-          })
-          .then(imageAsset => {
-            const source = new imageSource.ImageSource();
-            source.fromAsset(imageAsset).then(iSrc => {
-              this.imageCropper
-                .show(iSrc, options)
-                .then(args => {
-                  if (args.image !== null) {
-                    this.saveProfilePicture(args.image);
-                  }
-                })
-                .catch(e => {
-                  this._loggingService.logException(e);
-                  console.dir(e);
-                });
-            });
-          })
-          .catch(err => {
-            this._loggingService.logException(err);
-            console.log('Error -> ' + err.message);
-          });
-      })
-      .catch(err => {
-        this._loggingService.logException(err);
-        console.log('requestPermissions Error -> ' + err.message);
+        alert({ message: msg, okButtonText: 'Okay' });
+        return null;
       });
+
+      console.log('Updating profile picture!');
+
+      const imageAsset = await camera.takePicture({
+        width: 500,
+        height: 500,
+        keepAspectRatio: true,
+        cameraFacing: 'front'
+      });
+
+      const source = new imageSource.ImageSource();
+      const iSrc = await source.fromAsset(imageAsset);
+
+      const result = await this.imageCropper.show(iSrc, {
+        height: 256,
+        width: 256,
+        lockSquare: true
+      });
+
+      if (result && result.image !== null) {
+        this.saveProfilePicture(result.image);
+      }
+    } catch (error) {
+      this._loggingService.logException(error);
+    }
   }
 
   onLanguageChanged(args) {
