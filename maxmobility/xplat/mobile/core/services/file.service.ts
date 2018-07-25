@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { LoggingService } from './logging.service';
 import * as Kinvey from 'kinvey-nativescript-sdk';
 import * as localStorage from 'nativescript-localstorage';
 import * as fs from 'tns-core-modules/file-system';
 import * as http from 'tns-core-modules/http';
+import { LoggingService } from './logging.service';
 
 @Injectable()
 export class FileService {
@@ -30,7 +30,8 @@ export class FileService {
         const data = localStorage.getItem(`${file._filename}-${FileService.fsKeyMetadata}`);
         console.log(`file ${file._filename} stored metadata`, JSON.stringify(data));
 
-        if (data && data.file_version >= file._version) {
+        // _version is a property on our Kinvey files
+        if (data && data.file_version >= (file as any)._version) {
           return;
         }
 
@@ -60,7 +61,7 @@ export class FileService {
 
   private _saveFileMetaData(file: Kinvey.File) {
     const metadata = {
-      file_version: file._version
+      file_version: (file as any)._version
     };
 
     localStorage.setItem(`${file._filename}-${FileService.fsKeyMetadata}`, metadata);
