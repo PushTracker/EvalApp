@@ -21,10 +21,40 @@
 
 .desc {
     text-align: left;
-    font-size: 14;
+    font-size: 17;
     font-weight: 300;
     color: #fff;
     margin: 5, 5, 15, 10;
 }
 
+.video-layout {
+  width: 150;
+  margin: 0, 10, 15, 15;
 
+  .video-title {
+    height: 150;
+    background-image: url('~/assets/images/video-item-background.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% 100%;
+    border-radius: 4;
+    label {
+      font-family: $os-Light;
+      color: $white;
+      text-align: center;
+      font-size: 16;
+      font-weight: 400;
+      margin: 5, 0, 0, 0;
+      horizontal-align: center;
+      vertical-align: middle;
+    }
+  }
+
+  .video-description {
+    font-family: $os-Light;
+    color: $permobil-charcoal;
+    font-size: 14;
+    font-weight: 400;
+    margin: 5, 0, 0, 0;
+  }
+}

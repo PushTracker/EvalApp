@@ -50,11 +50,11 @@
           <ng-template tkListItemTemplate let-item="item">
             <GridLayout rows="auto, auto" columns="*" class="video-layout">
               <!-- <GridLayout rows="auto, *, auto" columns="*" class="video-thumbnail"> -->
-              <GridLayout row="0" class="video-title">
+              <GridLayout row="0" class="video-title" (tap)="videoThumbTapped(item)">
                 <Label textWrap="true" [text]="item.Title"></Label>
               </GridLayout>
               <!-- </GridLayout> -->
-              <Label row="1" class="video-description" textWrap="true" [text]="item.Description"></Label>
+              <!-- <Label row="1" class="video-description" textWrap="true" [text]="item.Description"></Label> -->
             </GridLayout>
             <!-- <StackLayout class="icon-description-group">
               <Image [src]="item.Thumb" (tap)="videoThumbTapped(item)" class="thumb" padding="0"></Image>

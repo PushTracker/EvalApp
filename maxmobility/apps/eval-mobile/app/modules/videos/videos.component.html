@@ -6,10 +6,15 @@
 <ListView backgroundColor="transparent" [items]="videos" (itemTap)="onItemTap($event)">
     <ng-template let-item="item">
         <GridLayout  rows="auto" columns="145, *">
-            <Image col="0" class="thumb" [src]="item.Thumb" ></Image>
-            <GridLayout col="1" rows="auto, auto" columns="*">
-            <Label row="0" class="title" textWrap="true"  [text]="item.Title"></Label>
-            <Label row="1"  class="desc" textWrap="true"  [text]="item.Description"></Label>
+		  <GridLayout rows="auto" columns="*" class="video-layout">
+			<GridLayout row="0" class="video-title" (tap)="videoThumbTapped(item)">
+              <Label textWrap="true" [text]="item.Title"></Label>
+			</GridLayout>
+          </GridLayout>
+          <!-- <Image col="0" class="thumb" [src]="item.Thumb" ></Image> -->
+            <GridLayout col="1" rows="auto" columns="*">
+              <!-- <Label row="0" class="title" textWrap="true"  [text]="item.Title"></Label> -->
+            <Label class="desc" textWrap="true"  [text]="item.Description"></Label>
             </GridLayout>
          </GridLayout>
         </ng-template>
