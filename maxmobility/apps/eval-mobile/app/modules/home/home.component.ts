@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Demo } from '@maxmobility/core';
-import { DemoService, FileService, FirmwareService, LoggingService } from '@maxmobility/mobile';
+import { DemoService, FileService, FirmwareService, LoggingService, UserService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { Feedback, FeedbackPosition, FeedbackType } from 'nativescript-feedback';
@@ -74,11 +74,15 @@ export class HomeComponent {
     private _firmwareService: FirmwareService,
     private _loggingService: LoggingService,
     private _fileService: FileService,
+    private _userService: UserService,
     private translateService: TranslateService
   ) {
     console.log(`Home.Component start constructor ${performance.now()}`);
     this._page.enableSwipeBackNavigation = false;
     this.feedback = new Feedback();
+
+    // REGISTER FOR PUSH NOTIFICATIONS
+    this._userService.registerForPushNotifications();
 
     this._demoService.load().catch(err => {
       this._loggingService.logException(err);

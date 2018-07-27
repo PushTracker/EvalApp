@@ -77,9 +77,6 @@ export class LoginComponent implements OnInit {
         CLog('login result', res);
         this._progressService.hide();
 
-        // REGISTER FOR PUSH NOTIFICATIONS
-        this._userService.registerForPushNotifications();
-
         this._routerExtensions.navigate(['/home'], {
           clearHistory: true
         });

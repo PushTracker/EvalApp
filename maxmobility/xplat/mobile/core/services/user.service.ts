@@ -2,15 +2,21 @@ import { Injectable } from '@angular/core';
 import { User } from '@maxmobility/core';
 import * as Kinvey from 'kinvey-nativescript-sdk';
 import { Push } from 'kinvey-nativescript-sdk/push';
-import * as pushPlugin from 'nativescript-push-notifications';
 import * as fs from 'tns-core-modules/file-system/file-system';
+import { alert } from 'tns-core-modules/ui/dialogs';
 
 @Injectable()
 export class UserService {
   public static Kinvey_App_Key = 'kid_SyIIDJjdM';
   public static Kinvey_App_Secret = '3cfe36e6ac8f4d80b04014cc980a4d47';
   public static Kinvey_Host_Url = 'https://baas.kinvey.com/';
-  constructor() {}
+  constructor() {
+    Push.onNotification((data: any) => {
+      console.log('RECEIVED NOTIFICATION:');
+      console.log(JSON.stringify(data));
+      alert(`Message received!\n${JSON.stringify(data)}`);
+    });
+  }
 
   /**
    * Will return the active user from the Kinvey auth.
@@ -75,80 +81,33 @@ export class UserService {
     return 'image/' + extension.replace(/\./g, '');
   }
 
-  unregisterForPushNotifications() {}
+  unregisterForPushNotifications() {
+    const promise = Push.unregister()
+      .then(() => {
+        // ...
+      })
+      .catch((error: Error) => {
+        // ...
+      });
+  }
 
   registerForPushNotifications() {
-    const usePUSH = false;
-    if (usePUSH) {
-      const promise = Push.register({
-        android: {
-          senderID: '1053576736707'
-        },
-        ios: {
-          alert: true,
-          badge: true,
-          sound: true
-        }
+    const promise = Push.register({
+      android: {
+        senderID: '1053576736707'
+      },
+      ios: {
+        alert: true,
+        badge: true,
+        sound: true
+      }
+    })
+      .then((deviceToken: string) => {
+        console.log(`registered push notifications: ${deviceToken}`);
       })
-        .then((deviceToken: string) => {
-          console.log(`registered push notifications: ${deviceToken}`);
-          Push.onNotification((data: any) => {
-            alert(`Message received!\n${JSON.stringify(data)}`);
-          });
-        })
-        .catch((error: Error) => {
-          console.log(`Couldn't register push notifications: ${error}`);
-        });
-    } else {
-      pushPlugin.register(
-        {
-          // android specific
-          senderID: '1053576736707',
-          notificationCallbackAndroid: (stringifiedData: string, fcmNotification: any) => {
-            console.log('GOT NOTIFICATION');
-            console.log(`Got notification: ${stringifiedData}`);
-          },
-          // ios specific
-          alert: true,
-          badge: true,
-          sound: true,
-          interactiveSettings: {
-            actions: [
-              {
-                identifier: 'READ_IDENTIFIER',
-                title: 'Read',
-                activationMode: 'foreground',
-                destructive: false,
-                authenticationRequired: true
-              },
-              {
-                identifier: 'CANCEL_IDENTIFIER',
-                title: 'Cancel',
-                activationMode: 'foreground',
-                destructive: true,
-                authenticationRequired: true
-              }
-            ],
-            categories: [
-              {
-                identifier: 'READ_CATEGORY',
-                actionsForDefaultContext: ['READ_IDENTIFIER', 'CANCEL_IDENTIFIER'],
-                actionsForMinimalContext: ['READ_IDENTIFIER', 'CANCEL_IDENTIFIER']
-              }
-            ]
-          },
-          notificationCallbackIOS: (message: any) => {
-            alert('Message received!\n' + JSON.stringify(message));
-          }
-        },
-        token => {
-          console.log(`registered push notifications: ${token}`);
-        },
-        error => {
-          console.log(`Couldn't register push notifications: ${error}`);
-        }
-      );
-    }
+      .catch((error: Error) => {
+        console.log(`Couldn't register push notifications: ${error}`);
+      });
   }
 
   // getUserDetails() {
