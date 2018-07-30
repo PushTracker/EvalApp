@@ -1,5 +1,13 @@
-import { Component } from '@angular/core';
-import { CLog, DemoService, FileService, FirmwareService, LoggingService, UserService } from '@maxmobility/mobile';
+import { Component, OnInit } from '@angular/core';
+import {
+  CLog,
+  DemoService,
+  FileService,
+  FirmwareService,
+  LoggingService,
+  NetworkService,
+  UserService
+} from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 import { registerElement } from 'nativescript-angular/element-registry';
@@ -9,6 +17,7 @@ import { Gif } from 'nativescript-gif';
 import * as orientation from 'nativescript-orientation';
 import { Sentry } from 'nativescript-sentry';
 import * as application from 'tns-core-modules/application';
+import { connectionType } from 'tns-core-modules/connectivity/connectivity';
 import { device } from 'tns-core-modules/platform';
 
 // Register Custom Elements for Angular
@@ -22,7 +31,7 @@ registerElement('Gif', () => Gif);
   selector: 'ns-app',
   template: '<page-router-outlet></page-router-outlet>'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   constructor(
     private _translateService: TranslateService,
     private _logService: LoggingService,
@@ -30,7 +39,8 @@ export class AppComponent {
     private _router: RouterExtensions,
     private _demoService: DemoService,
     private _firmwareService: FirmwareService,
-    private _fileService: FileService
+    private _fileService: FileService,
+    private _networkService: NetworkService
   ) {
     // init sentry
     const sentryDsn = 'https://aaa25eb556fa476a92e0edea6dd57af6:65c984b9260e47f0bb128def7eddd5f4@sentry.io/306438';
@@ -86,5 +96,20 @@ export class AppComponent {
     } else {
       this._router.navigate(['/login']);
     }
+  }
+
+  ngOnInit() {
+    console.log('app.component onInit');
+
+    // setup the subscription to the network service connection
+    this._networkService.networkSubject.subscribe(value => {
+      console.log('app.component network value', value);
+      if (value === connectionType.none) {
+        // alert({
+        //   message: 'Smart Evaluation has detected no cell or wifi signal. You may experience issues with the app.',
+        //   okButtonText: 'Okay'
+        // });
+      }
+    });
   }
 }
