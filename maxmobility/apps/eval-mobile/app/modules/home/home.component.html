@@ -8,93 +8,69 @@
     <GridLayout rows="auto, auto, auto, auto, auto, auto" columns="*">
 
       //Connectivity
-      <StackLayout class="list-stack-layout" row="0">
-        <DockLayout (tap)="chevronButtonTapped('/pairing')" class="dockLayout-options" stretchLastChild="false">
-          <Label [text]="'menu.connectivity' | translate" class="heading" dock="left"></Label>
-          <Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/pairing')"></Label>
-        </DockLayout>
-        <Label [text]="'menu.con-desc' | translate" class="description" textWrap="true"></Label>
+      <GridLayout rows="auto, auto, *" columns="*, auto" class="list-grid-layout" row="0">
+        <Label row="0" col="0" [text]="'menu.connectivity' | translate" class="heading" (tap)="chevronButtonTapped('/pairing')"></Label>
+        <Label row="0" col="1" horizontalAlignment="right" text="&#xf142;" class="mdi chev" (tap)="chevronButtonTapped('/pairing')"></Label>
+        <Label row="1" [text]="'menu.con-desc' | translate" class="description" textWrap="true"></Label>
 
-        <!-- <ScrollView orientation="horizontal" class="rad-list-view">
-          <StackLayout orientation="horizontal">
-            <StackLayout *ngFor="let item of connectivityItems" class="icon-description-group">
-              <Image [src]="item.Image" (tap)="connectivityThumbTapped(item)" stretch="aspectFill" class="thumb"></Image>
-              <Label class="item-description" textWrap="true" [text]="item.Description | translate"></Label>
-            </StackLayout>
-          </StackLayout>
-        </ScrollView> -->
-
-        <RadListView [items]="connectivityItems">
+        <RadListView row="2" colSpan="2" ios:height="160" [items]="connectivityItems">
           <ng-template tkListItemTemplate let-item="item">
             <StackLayout class="icon-description-group">
               <Image [src]="item.Image" (tap)="connectivityThumbTapped(item)" stretch="aspectFill" class="thumb"></Image>
               <Label class="item-description" textWrap="true" [text]="item.Description | translate"></Label>
             </StackLayout>
           </ng-template>
-          <ListViewLinearLayout tkListViewLayout scrollDirection="Horizontal"></ListViewLinearLayout>
+          <ListViewLinearLayout tkListViewLayout itemHeight="150" itemWidth="165" scrollDirection="Horizontal"></ListViewLinearLayout>
         </RadListView>
 
-      </StackLayout>
+
+      </GridLayout>
 
       // Videos
-      <StackLayout class="list-stack-layout" row="2">
-        <Label class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></Label>
-        <DockLayout (tap)="chevronButtonTapped('/videos')" class="dockLayout-options" stretchLastChild="false">
-          <Label [text]="'menu.videos-title' | translate" class="heading" dock="left"></Label>
-          <Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/videos')"></Label>
+      <GridLayout rows="auto, auto, auto, *" columns="*, auto" class="list-grid-layout" row="2">
+        <Label row="0" colSpan="2" class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></Label>
+        <Label row="1" col="0" [text]="'menu.videos-title' | translate" class="heading" (tap)="chevronButtonTapped('/videos')"></Label>
+        <Label row="1" col="1" horizontalAlignment="right" text="&#xf142;" class="mdi chev" (tap)="chevronButtonTapped('/videos')"></Label>
+        <Label row="2" colSpan="2" [text]="'menu.videos-description' | translate" class="description" textWrap="true"></Label>
 
-        </DockLayout>
-        <Label [text]="'menu.videos-description' | translate" class="description" textWrap="true"></Label>
-
-        <RadListView [items]="videoItems">
+        <RadListView row="3" colSpan="2" ios:height="160" [items]="videoItems">
           <ng-template tkListItemTemplate let-item="item">
             <GridLayout rows="auto, auto" columns="*" class="video-layout">
-              <!-- <GridLayout rows="auto, *, auto" columns="*" class="video-thumbnail"> -->
               <GridLayout row="0" class="video-title" (tap)="videoThumbTapped(item)">
                 <Label textWrap="true" [text]="item.Title"></Label>
               </GridLayout>
-              <!-- </GridLayout> -->
-              <!-- <Label row="1" class="video-description" textWrap="true" [text]="item.Description"></Label> -->
             </GridLayout>
-            <!-- <StackLayout class="icon-description-group">
-              <Image [src]="item.Thumb" (tap)="videoThumbTapped(item)" class="thumb" padding="0"></Image>
-              <Label class="item-description" textWrap="true" [text]="item.Description"></Label>
-            </StackLayout> -->
           </ng-template>
-          <ListViewLinearLayout tkListViewLayout itemHeight="155" itemWidth="155" scrollDirection="Horizontal"></ListViewLinearLayout>
+          <ListViewLinearLayout tkListViewLayout itemHeight="160" itemWidth="165" scrollDirection="Horizontal"></ListViewLinearLayout>
         </RadListView>
-      </StackLayout>
+      </GridLayout>
 
-      // Evaluation
-      <StackLayout class="list-stack-layout" row="3">
-        <Label class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></Label>
-        <DockLayout (tap)="chevronButtonTapped('/eval-entry')" class="dockLayout-options" stretchLastChild="false">
-          <Label [text]="'menu.clinical-tools' | translate" class="heading" dock="left"></Label>
-          <Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/eval-entry')"></Label>
-        </DockLayout>
-        <Label [text]="'menu.clinical-tools-desc' | translate" class="description" textWrap="true"></Label>
+      // Evaluation-Clinical Tools
+      <GridLayout rows="auto, auto, auto, *" columns="*, auto" class="list-grid-layout" row="3">
+        <Label row="0" colSpan="2" class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></Label>
+        <Label row="1" col="0" [text]="'menu.clinical-tools' | translate" class="heading" (tap)="chevronButtonTapped('/eval-entry')"></Label>
+        <Label row="1" col="1" horizontalAlignment="right" text="&#xf142;" class="mdi chev" (tap)="chevronButtonTapped('/eval-entry')"></Label>
+        <Label row="2" colSpan="2" [text]="'menu.clinical-tools-desc' | translate" class="description" textWrap="true"></Label>
 
-        <RadListView [items]="evalItems">
+        <RadListView row="3" colSpan="2" ios:height="160" [items]="evalItems">
           <ng-template tkListItemTemplate let-item="item">
             <StackLayout class="icon-description-group">
               <Image [src]="item.Image" (tap)="evalThumbTapped(item)" class="thumb"></Image>
               <Label class="item-description" textWrap="true" [text]="item.Description | translate"></Label>
             </StackLayout>
           </ng-template>
-          <ListViewLinearLayout tkListViewLayout scrollDirection="Horizontal"></ListViewLinearLayout>
+          <ListViewLinearLayout tkListViewLayout itemHeight="160" itemWidth="150" scrollDirection="Horizontal"></ListViewLinearLayout>
         </RadListView>
-      </StackLayout>
+      </GridLayout>
 
       // Demos
-      <StackLayout class="list-stack-layout" row="4">
-        <Label class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></Label>
-        <DockLayout (tap)="chevronButtonTapped('/demos')" class="dockLayout-options" textWrap="true" stretchLastChild="false">
-          <Label [text]="'menu.demos' | translate" class="heading" dock="left"></Label>
-          <Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/demos')"></Label>
-        </DockLayout>
-        <Label [text]="'menu.demos-desc' | translate" class="description" textWrap="true"></Label>
+      <GridLayout rows="auto, auto, auto, *" columns="*, auto" class="list-grid-layout" row="4">
+        <Label row="0" colSpan="2" class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></Label>
+        <Label row="1" col="0" [text]="'menu.demos' | translate" class="heading" (tap)="chevronButtonTapped('/demos')"></Label>
+        <Label row="1" col="1" horizontalAlignment="right" text="&#xf142;" class="mdi chev" (tap)="chevronButtonTapped('/demos')"></Label>
+        <Label row="2" colSpan="2" [text]="'menu.demos-desc' | translate" class="description" textWrap="true"></Label>
 
-        <StackLayout *ngIf="!Demos.length" class="icon-description-group" horizontalAlignment="left">
+        <StackLayout row="3" colSpan="2" *ngIf="!Demos.length" class="icon-description-group" horizontalAlignment="left">
           <Image src="~/assets/images/PushTracker-SmartDrive-pairing.png" (tap)="demoThumbTapped(null)" backgroundImage="~/assets/images/background_1.jpg"
             stretch="aspectFill" class="thumb"></Image>
           <StackLayout>
@@ -102,7 +78,7 @@
           </StackLayout>
         </StackLayout>
 
-        <RadListView [items]="Demos._array" *ngIf="Demos.length">
+        <RadListView row="3" colSpan="2" ios:height="160" [items]="Demos._array" *ngIf="Demos.length">
           <ng-template tkListItemTemplate let-item="item">
             <StackLayout class="icon-description-group">
               <Image *ngIf="!item.sd_image" src="~/assets/images/PushTracker-SmartDrive-pairing.png" (tap)="demoThumbTapped(item)" backgroundImage="~/assets/images/background_1.jpg"
@@ -123,28 +99,25 @@
           <ListViewLinearLayout tkListViewLayout scrollDirection="Horizontal"></ListViewLinearLayout>
         </RadListView>
 
-      </StackLayout>
+      </GridLayout>
 
-      // FAQ
-      <StackLayout class="list-stack-layout" row="5">
-        <Label class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></Label>
-        <DockLayout (tap)="chevronButtonTapped('/faq')" class="dockLayout-options" stretchLastChild="false">
-          <Label [text]="'menu.faq' | translate" class="heading" dock="left"></Label>
-          <Label text="&#xf142;" class="mdi chev" dock="right" (tap)="chevronButtonTapped('/faq')"></Label>
-        </DockLayout>
-        <Label [text]="'menu.faq-desc' | translate" class="description" textWrap="true"></Label>
+      // FAQs
+      <GridLayout rows="auto, auto, auto, *" columns="*, auto" class="list-grid-layout" row="5">
+        <Label row="0" colSpan="2" class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></Label>
+        <Label row="1" col="0" [text]="'menu.faq' | translate" class="heading" (tap)="chevronButtonTapped('/faq')"></Label>
+        <Label row="1" col="1" horizontalAlignment="right" text="&#xf142;" class="mdi chev" (tap)="chevronButtonTapped('/faq')"></Label>
+        <Label row="2" [text]="'menu.faq-desc' | translate" class="description" textWrap="true"></Label>
 
-        <RadListView [items]="faqItems">
+        <RadListView row="3" colSpan="2" ios:height="160" [items]="faqItems">
           <ng-template tkListItemTemplate let-item="item">
-            <GridLayout rows="*" columns="*" (tap)="faqThumbTapped(item)" class="thumb" margin="0, 10, 15, 15" verticalAlign="center"
-              backgroundSize="cover" backgroundImage="~/assets/images/background_1.jpg" stretch="aspectFill">
+            <GridLayout rows="*" columns="*" (tap)="faqThumbTapped(item)" class="thumb" verticalAlign="center" backgroundSize="cover"
+              backgroundImage="~/assets/images/background_1.jpg" stretch="aspectFill">
               <Label row="0" [text]="item.question" class="faq-question" textWrap="true"></Label>
             </GridLayout>
           </ng-template>
-          <ListViewLinearLayout tkListViewLayout scrollDirection="Horizontal"></ListViewLinearLayout>
+          <ListViewLinearLayout tkListViewLayout itemHeight="160" itemWidth="160" scrollDirection="Horizontal"></ListViewLinearLayout>
         </RadListView>
-
-      </StackLayout>
+      </GridLayout>
 
     </GridLayout>
   </ScrollView>
