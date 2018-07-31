@@ -10,13 +10,9 @@ export class UserService {
   public static Kinvey_App_Key = 'kid_SyIIDJjdM';
   public static Kinvey_App_Secret = '3cfe36e6ac8f4d80b04014cc980a4d47';
   public static Kinvey_Host_Url = 'https://baas.kinvey.com/';
-  constructor() {
-    Push.onNotification((data: any) => {
-      console.log('RECEIVED NOTIFICATION:');
-      console.log(JSON.stringify(data));
-      alert(`Message received!\n${JSON.stringify(data)}`);
-    });
-  }
+
+  private static hasRegistered = false;
+  constructor() {}
 
   /**
    * Will return the active user from the Kinvey auth.
@@ -38,7 +34,13 @@ export class UserService {
   }
 
   logout() {
-    return Kinvey.User.logout();
+    return this.unregisterForPushNotifications()
+      .then(() => {
+        return Kinvey.User.logout();
+      })
+      .catch(() => {
+        return Kinvey.User.logout();
+      });
   }
 
   resetPassword(email: string) {
@@ -82,32 +84,42 @@ export class UserService {
   }
 
   unregisterForPushNotifications() {
-    const promise = Push.unregister()
+    console.log('Unregistering for push notifications');
+    UserService.hasRegistered = false;
+    return Push.unregister()
       .then(() => {
-        // ...
+        console.log('Successfully unregistered for push notifications');
       })
       .catch((error: Error) => {
-        // ...
+        console.log('Could not unregister for push notifications: ', error);
       });
   }
 
   registerForPushNotifications() {
-    const promise = Push.register({
-      android: {
-        senderID: '1053576736707'
-      },
-      ios: {
-        alert: true,
-        badge: true,
-        sound: true
-      }
-    })
-      .then((deviceToken: string) => {
-        console.log(`registered push notifications: ${deviceToken}`);
+    if (!UserService.hasRegistered) {
+      return Push.register({
+        android: {
+          senderID: '1053576736707'
+        },
+        ios: {
+          alert: true,
+          badge: true,
+          sound: true
+        }
       })
-      .catch((error: Error) => {
-        console.log(`Couldn't register push notifications: ${error}`);
-      });
+        .then((deviceToken: string) => {
+          console.log(`registered push notifications: ${deviceToken}`);
+          UserService.hasRegistered = true;
+          Push.onNotification((data: any) => {
+            console.log('RECEIVED NOTIFICATION:');
+            console.log(JSON.stringify(data));
+            alert(`Message received!\n${JSON.stringify(data)}`);
+          });
+        })
+        .catch((error: Error) => {
+          console.log(`Couldn't register push notifications: ${error}`);
+        });
+    }
   }
 
   // getUserDetails() {

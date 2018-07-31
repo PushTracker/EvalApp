@@ -305,16 +305,20 @@ export class AccountComponent implements OnInit {
   }
 
   private _saveUserToKinvey() {
-    return this.user
-      .update({
-        email: (this.user.data as any).email,
-        language: (this.user.data as any).language,
-        first_name: (this.user.data as any).first_name,
-        last_name: (this.user.data as any).last_name,
-        phone_number: (this.user.data as any).phone_number
-      })
-      .catch(err => {
-        this._loggingService.logException(err);
-      });
+    if (this._userService.user) {
+      return this.user
+        .update({
+          email: (this.user.data as any).email,
+          language: (this.user.data as any).language,
+          first_name: (this.user.data as any).first_name,
+          last_name: (this.user.data as any).last_name,
+          phone_number: (this.user.data as any).phone_number
+        })
+        .catch(err => {
+          this._loggingService.logException(err);
+        });
+    } else {
+      return Promise.resolve();
+    }
   }
 }
