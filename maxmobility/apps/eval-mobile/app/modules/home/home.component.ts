@@ -16,9 +16,6 @@ import { Page } from 'tns-core-modules/ui/page';
   changeDetection: ChangeDetectionStrategy.Default
 })
 export class HomeComponent {
-  faqItems = this.translateService.instant('faqs');
-  videoItems = this.translateService.instant('videos');
-
   connectivityItems = [
     {
       Image: '~/assets/images/pt-phone-home.png',
@@ -64,6 +61,9 @@ export class HomeComponent {
     }
   ];
 
+  faqItems = this.translateService.instant('faqs');
+  videoItems = this.translateService.instant('videos');
+
   private feedback: Feedback;
 
   constructor(
@@ -81,15 +81,16 @@ export class HomeComponent {
     this._page.enableSwipeBackNavigation = false;
     this.feedback = new Feedback();
 
-    // REGISTER FOR PUSH NOTIFICATIONS
-    this._userService.registerForPushNotifications();
-
     this._demoService.load().catch(err => {
       this._loggingService.logException(err);
       console.log(`Couldn't load demos: ${err}`);
     });
 
     this._fileService.downloadTranslationFiles();
+
+    // REGISTER FOR PUSH NOTIFICATIONS
+    this._userService.registerForPushNotifications();
+
     console.log(`Home.Component end constructor ${performance.now()}`);
   }
 
@@ -114,11 +115,10 @@ export class HomeComponent {
 
   connectivityThumbTapped(item: any) {
     const index = this.connectivityItems.indexOf(item);
-    const route = item.Route;
     // Determines the pairing processs to perform
     const directive = item.Directive;
 
-    this._routerExtensions.navigate([route], {
+    this._routerExtensions.navigate([item.Route], {
       queryParams: {
         index
       }
@@ -126,25 +126,18 @@ export class HomeComponent {
   }
 
   otaThumbTapped(item: any) {
-    const route = item.Route;
     // Determines the OTA process to perform
     const directive = item.Directive;
-
-    this._routerExtensions.navigate([route]);
+    this._routerExtensions.navigate([item.Route]);
   }
 
   videoThumbTapped(item: any) {
-    const videoUrl = item.Url;
-    const route = item.Route;
-    const title = item.Title;
-    const desc = item.Description;
-
-    this._routerExtensions.navigate([route], {
+    this._routerExtensions.navigate([item.Route], {
       transition: {
         name: ''
       },
       queryParams: {
-        url: videoUrl,
+        url: item.Url,
         desc: item.Description,
         title: item.Title
       }
