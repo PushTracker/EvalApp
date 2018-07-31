@@ -9,29 +9,28 @@
 
       //Connectivity
       <GridLayout rows="auto, auto, *" columns="*, auto" class="list-grid-layout" row="0">
-        <Label row="0" col="0" [text]="'menu.connectivity' | translate" class="heading" (tap)="chevronButtonTapped('/pairing')"></Label>
+        <Label row="0" col="0" [text]="'menu.connectivity' | translate" class="list-heading" (tap)="chevronButtonTapped('/pairing')"></Label>
         <Label row="0" col="1" horizontalAlignment="right" text="&#xf142;" class="mdi chev" (tap)="chevronButtonTapped('/pairing')"></Label>
-        <Label row="1" [text]="'menu.con-desc' | translate" class="description" textWrap="true"></Label>
+        <Label row="1" [text]="'menu.con-desc' | translate" class="list-description" textWrap="true"></Label>
 
-        <RadListView row="2" colSpan="2" ios:height="160" [items]="connectivityItems">
+        <RadListView row="2" colSpan="2" ios:height="210" [items]="connectivityItems">
           <ng-template tkListItemTemplate let-item="item">
-            <StackLayout class="icon-description-group">
-              <Image [src]="item.Image" (tap)="connectivityThumbTapped(item)" stretch="aspectFill" class="thumb"></Image>
-              <Label class="item-description" textWrap="true" [text]="item.Description | translate"></Label>
-            </StackLayout>
+            <GridLayout rows="140, auto" class="list-item-layout">
+              <Image row="0" [src]="item.Image" (tap)="connectivityThumbTapped(item)" stretch="aspectFill"></Image>
+              <Label row="1" [text]="item.Description | translate" textWrap="true"></Label>
+            </GridLayout>
           </ng-template>
-          <ListViewLinearLayout tkListViewLayout itemHeight="150" itemWidth="165" scrollDirection="Horizontal"></ListViewLinearLayout>
+          <ListViewLinearLayout tkListViewLayout dynamicItemSize="false" ios:itemHeight="210" ios:itemWidth="160" scrollDirection="Horizontal"></ListViewLinearLayout>
         </RadListView>
-
 
       </GridLayout>
 
       // Videos
       <GridLayout rows="auto, auto, auto, *" columns="*, auto" class="list-grid-layout" row="2">
         <Label row="0" colSpan="2" class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></Label>
-        <Label row="1" col="0" [text]="'menu.videos-title' | translate" class="heading" (tap)="chevronButtonTapped('/videos')"></Label>
+        <Label row="1" col="0" [text]="'menu.videos-title' | translate" class="list-heading" (tap)="chevronButtonTapped('/videos')"></Label>
         <Label row="1" col="1" horizontalAlignment="right" text="&#xf142;" class="mdi chev" (tap)="chevronButtonTapped('/videos')"></Label>
-        <Label row="2" colSpan="2" [text]="'menu.videos-description' | translate" class="description" textWrap="true"></Label>
+        <Label row="2" colSpan="2" [text]="'menu.videos-description' | translate" class="list-description" textWrap="true"></Label>
 
         <RadListView row="3" colSpan="2" ios:height="160" [items]="videoItems">
           <ng-template tkListItemTemplate let-item="item">
@@ -41,44 +40,42 @@
               </GridLayout>
             </GridLayout>
           </ng-template>
-          <ListViewLinearLayout tkListViewLayout itemHeight="160" itemWidth="165" scrollDirection="Horizontal"></ListViewLinearLayout>
+          <ListViewLinearLayout tkListViewLayout dynamicItemSize="false" ios:itemHeight="160" ios:itemWidth="160" scrollDirection="Horizontal"></ListViewLinearLayout>
         </RadListView>
       </GridLayout>
 
       // Evaluation-Clinical Tools
       <GridLayout rows="auto, auto, auto, *" columns="*, auto" class="list-grid-layout" row="3">
         <Label row="0" colSpan="2" class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></Label>
-        <Label row="1" col="0" [text]="'menu.clinical-tools' | translate" class="heading" (tap)="chevronButtonTapped('/eval-entry')"></Label>
+        <Label row="1" col="0" [text]="'menu.clinical-tools' | translate" class="list-heading" (tap)="chevronButtonTapped('/eval-entry')"></Label>
         <Label row="1" col="1" horizontalAlignment="right" text="&#xf142;" class="mdi chev" (tap)="chevronButtonTapped('/eval-entry')"></Label>
-        <Label row="2" colSpan="2" [text]="'menu.clinical-tools-desc' | translate" class="description" textWrap="true"></Label>
+        <Label row="2" colSpan="2" [text]="'menu.clinical-tools-desc' | translate" class="list-description" textWrap="true"></Label>
 
-        <RadListView row="3" colSpan="2" ios:height="160" [items]="evalItems">
+        <RadListView row="3" colSpan="2" ios:height="210" [items]="evalItems">
           <ng-template tkListItemTemplate let-item="item">
-            <StackLayout class="icon-description-group">
-              <Image [src]="item.Image" (tap)="evalThumbTapped(item)" class="thumb"></Image>
-              <Label class="item-description" textWrap="true" [text]="item.Description | translate"></Label>
-            </StackLayout>
+            <GridLayout rows="140, auto" class="list-item-layout">
+              <Image row="0" [src]="item.Image" (tap)="evalThumbTapped(item)" stretch="aspectFill"></Image>
+              <Label row="1" [text]="item.Description | translate" textWrap="true"></Label>
+            </GridLayout>
           </ng-template>
-          <ListViewLinearLayout tkListViewLayout itemHeight="160" itemWidth="150" scrollDirection="Horizontal"></ListViewLinearLayout>
+          <ListViewLinearLayout tkListViewLayout dynamicItemSize="false" ios:itemHeight="220" ios:itemWidth="160" scrollDirection="Horizontal"></ListViewLinearLayout>
         </RadListView>
       </GridLayout>
 
       // Demos
       <GridLayout rows="auto, auto, auto, *" columns="*, auto" class="list-grid-layout" row="4">
         <Label row="0" colSpan="2" class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></Label>
-        <Label row="1" col="0" [text]="'menu.demos' | translate" class="heading" (tap)="chevronButtonTapped('/demos')"></Label>
+        <Label row="1" col="0" [text]="'menu.demos' | translate" class="list-heading" (tap)="chevronButtonTapped('/demos')"></Label>
         <Label row="1" col="1" horizontalAlignment="right" text="&#xf142;" class="mdi chev" (tap)="chevronButtonTapped('/demos')"></Label>
-        <Label row="2" colSpan="2" [text]="'menu.demos-desc' | translate" class="description" textWrap="true"></Label>
+        <Label row="2" colSpan="2" [text]="'menu.demos-desc' | translate" class="list-description" textWrap="true"></Label>
 
-        <StackLayout row="3" colSpan="2" *ngIf="!Demos.length" class="icon-description-group" horizontalAlignment="left">
-          <Image src="~/assets/images/PushTracker-SmartDrive-pairing.png" (tap)="demoThumbTapped(null)" backgroundImage="~/assets/images/background_1.jpg"
-            stretch="aspectFill" class="thumb"></Image>
-          <StackLayout>
-            <Label class="demo-item-description" textWrap="true" [text]="'menu.new-demo' | translate"></Label>
-          </StackLayout>
-        </StackLayout>
+        <GridLayout rows="140, auto" row="3" colSpan="2" *ngIf="!Demos.length" class="list-item-layout" horizontalAlignment="left">
+          <Image row="0" width="140" src="~/assets/images/PushTracker-SmartDrive-pairing.png" (tap)="demoThumbTapped(null)" backgroundImage="~/assets/images/background_1.jpg"
+            stretch="aspectFill"></Image>
+          <Label row="1" class="demo-item-description" color="white" [text]="'menu.new-demo' | translate" textWrap="true"></Label>
+        </GridLayout>
 
-        <RadListView row="3" colSpan="2" ios:height="160" [items]="Demos._array" *ngIf="Demos.length">
+        <RadListView row="3" colSpan="2" ios:height="210" [items]="Demos._array" *ngIf="Demos.length">
           <ng-template tkListItemTemplate let-item="item">
             <StackLayout class="icon-description-group">
               <Image *ngIf="!item.sd_image" src="~/assets/images/PushTracker-SmartDrive-pairing.png" (tap)="demoThumbTapped(item)" backgroundImage="~/assets/images/background_1.jpg"
@@ -96,7 +93,7 @@
               </StackLayout>
             </StackLayout>
           </ng-template>
-          <ListViewLinearLayout tkListViewLayout scrollDirection="Horizontal"></ListViewLinearLayout>
+          <ListViewLinearLayout tkListViewLayout dynamicItemSize="false" ios:itemHeight="160" ios:itemWidth="160" scrollDirection="Horizontal"></ListViewLinearLayout>
         </RadListView>
 
       </GridLayout>
@@ -104,18 +101,18 @@
       // FAQs
       <GridLayout rows="auto, auto, auto, *" columns="*, auto" class="list-grid-layout" row="5">
         <Label row="0" colSpan="2" class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></Label>
-        <Label row="1" col="0" [text]="'menu.faq' | translate" class="heading" (tap)="chevronButtonTapped('/faq')"></Label>
+        <Label row="1" col="0" [text]="'menu.faq' | translate" class="list-heading" (tap)="chevronButtonTapped('/faq')"></Label>
         <Label row="1" col="1" horizontalAlignment="right" text="&#xf142;" class="mdi chev" (tap)="chevronButtonTapped('/faq')"></Label>
-        <Label row="2" [text]="'menu.faq-desc' | translate" class="description" textWrap="true"></Label>
+        <Label row="2" [text]="'menu.faq-desc' | translate" class="list-description" textWrap="true"></Label>
 
         <RadListView row="3" colSpan="2" ios:height="160" [items]="faqItems">
           <ng-template tkListItemTemplate let-item="item">
-            <GridLayout rows="*" columns="*" (tap)="faqThumbTapped(item)" class="thumb" verticalAlign="center" backgroundSize="cover"
-              backgroundImage="~/assets/images/background_1.jpg" stretch="aspectFill">
+            <GridLayout rows="140" class="list-item-layout" (tap)="faqThumbTapped(item)">
+              <Image row="0" colSpan="2" src="~/assets/images/background_1.jpg" stretch="aspectFill"></Image>
               <Label row="0" [text]="item.question" class="faq-question" textWrap="true"></Label>
             </GridLayout>
           </ng-template>
-          <ListViewLinearLayout tkListViewLayout itemHeight="160" itemWidth="160" scrollDirection="Horizontal"></ListViewLinearLayout>
+          <ListViewLinearLayout tkListViewLayout dynamicItemSize="false" ios:itemHeight="160" ios:itemWidth="160" scrollDirection="Horizontal"></ListViewLinearLayout>
         </RadListView>
       </GridLayout>
 

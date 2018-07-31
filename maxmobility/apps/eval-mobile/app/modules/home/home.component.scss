@@ -2,73 +2,76 @@
 @import '../../scss/common';
 @import '../../scss/variables';
 
-.rad-list-view {
-  padding: 0, 10, 0, 0;
-  height: auto;
-  width: 100%;
+// Styles for the main parent Grid which contains the various list sections
+.list-grid-layout {
+  margin: 10, 0, 10, 0;
+
+  .list-heading {
+    font-family: $os-SemiBold;
+    text-align: left;
+    font-size: 20;
+    font-weight: 400;
+    margin: 5, 10, 5, 10;
+    color: $permobil-charcoal;
+  }
+  .list-description {
+    font-family: $os-Light;
+    color: $permobil-charcoal;
+    font-size: 15;
+    font-weight: 400;
+    margin: 5, 10, 5, 10;
+  }
+}
+
+// General List Item Styles
+.list-item-layout {
+  image {
+    background-color: $permobil-hero;
+    border: solid;
+    border-radius: 4;
+    margin: 5, 10, 5, 10;
+  }
+  label {
+    font-family: $os-Light;
+    color: $permobil-charcoal;
+    font-size: 15;
+    font-weight: 400;
+    margin: 5, 10, 5, 10;
+  }
+
+  .faq-question {
+    padding: 15;
+    horizontal-align: center;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 17;
+    font-weight: 500;
+    color: $white;
+  }
 }
 
 .icon-description-group {
   padding: 0;
-  margin: 5, 10, 15, 15;
+  margin: 5, 10, 5, 10;
   width: 150;
-}
-
-.heading {
-  font-family: $os-SemiBold;
-  text-align: left;
-  font-size: 20;
-  font-weight: 400;
-  margin: 5, 0, 5, 15;
-  color: $permobil-charcoal;
-}
-
-.description {
-  font-family: $os-Light;
-  color: $permobil-charcoal;
-  font-size: 15;
-  font-weight: 400;
-  margin: 5, 15, 5, 15;
-}
-
-.item-description {
-  font-family: $os-Light;
-  color: $permobil-charcoal;
-  font-size: 14;
-  font-weight: 400;
-  margin: 5, 0, 0, 0;
 }
 
 .demo-item-description {
   font-family: $os-Light;
   color: #fff;
-  width: 150;
+  width: 140;
   font-size: 15;
   font-weight: 400;
   padding: 5;
-  margin: 3, 0, 0, 0;
+  margin: 5, 10, 5, 10;
   background-color: $permobil-ocean;
   border: solid;
   border-radius: 3;
 }
 
-.faq-question {
-  padding: 15;
-  horizontal-align: center;
-  vertical-align: middle;
-  text-align: center;
-  font-size: 18;
-  font-weight: 500;
-  color: $white;
-}
-
 .chev {
   font-size: 32;
   margin: 5, 5, 0, 0;
-}
-
-.list-grid-layout {
-  margin: 10, 0, 10, 0;
 }
 
 .main-scroll-view {
@@ -79,20 +82,21 @@
 }
 
 .thumb {
-  // width: 150;
-  // height: 150;
-  // background-color: $permobil-hero;
-  margin: 5, 10, 15, 15;
+  width: 140;
+  height: 140;
+  background-color: $permobil-hero;
+  margin: 5, 10, 5, 10;
   border: solid;
   border-radius: 4;
 }
 
 .video-layout {
-  width: 150;
-  margin: 0, 10, 15, 15;
+  width: 140;
+  height: 140;
+  margin: 5, 10, 5, 10;
 
   .video-title {
-    height: 150;
+    height: 140;
     background-image: url('~/assets/images/video-item-background.png');
     background-repeat: no-repeat;
     background-position: center;
@@ -104,7 +108,7 @@
       text-align: center;
       font-size: 16;
       font-weight: 400;
-      margin: 5, 2, 0, 2;
+      margin: 4;
       horizontal-align: center;
       vertical-align: middle;
     }
@@ -118,29 +122,3 @@
     margin: 5, 0, 0, 0;
   }
 }
-
-.floor {
-  margin: 5, 0, 10, 0;
-}
-
-.icon {
-  font-size: 14em;
-  padding: 0, 0, 0, 10;
-  color: $permobil-hero;
-  horizontal-align: center;
-  vertical-align: center;
-}
-
-.info {
-  font-family: $os-SemiBold;
-  padding: 0, 0, 0, 5;
-  color: $permobil-charcoal;
-  font-size: 14em;
-  vertical-align: center;
-}
-
-// NavigationButton {
-//   width: 35;
-//   height: 35;
-//   padding: 15, 0, 0, 15;
-// }
