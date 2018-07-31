@@ -1,4 +1,4 @@
-/// <reference path="../../../typings/android27.d.ts" />
+// /// <reference path="../../../typings/android27.d.ts" />
 
 import { Injectable } from '@angular/core';
 import { Packet, PushTracker, SmartDrive } from '@maxmobility/core';
@@ -546,8 +546,8 @@ export class BluetoothService {
         }
 
         if (isAndroid) {
-          c.setValue(0, android.bluetooth.BluetoothGattCharacteristic.FORMAT_UINT8, 0);
-          c.setWriteType(android.bluetooth.BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT);
+          c.setValue(0, (android.bluetooth as any).BluetoothGattCharacteristic.FORMAT_UINT8, 0);
+          c.setWriteType((android.bluetooth as any).BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT);
         } else {
           // TODO: don't need ios impl apparrently?
         }

@@ -49,7 +49,7 @@ export class LocationService {
       // TODO: might also add '&types=postcode' to the query to only get postcode
       httpModule.getJSON(query).then(
         r => {
-          const location = r.features.filter(f => f.place_type.indexOf('postcode') > -1)[0].place_name;
+          const location = (r as any).features.filter(f => f.place_type.indexOf('postcode') > -1)[0].place_name;
           resolve(location);
         },
         e => {

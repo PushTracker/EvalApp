@@ -39,9 +39,9 @@ export class LoggingService {
 
     // if error type
     if (exception instanceof Error) {
-      Sentry.captureException(exception);
+      Sentry.captureException(exception, {});
     } else {
-      Sentry.captureMessage(exception as any);
+      Sentry.captureMessage(exception as any, {});
     }
   }
 
