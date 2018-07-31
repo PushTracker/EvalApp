@@ -10,7 +10,7 @@
 
 .icon-description-group {
   padding: 0;
-  margin: 0, 10, 15, 15;
+  margin: 5, 10, 15, 15;
   width: 150;
 }
 
@@ -67,22 +67,22 @@
   margin: 5, 5, 0, 0;
 }
 
-.list-stack-layout {
+.list-grid-layout {
   margin: 10, 0, 10, 0;
 }
 
 .main-scroll-view {
   background-color: #fff;
-  padding: 0, 30, 0, 30;
+  // padding: 0, 30, 0, 30;
   margin: 0, 0, 0, 0;
   height: 100%;
 }
 
 .thumb {
-  width: 150;
-  height: 150;
-  background-color: $permobil-hero;
-  margin: 5, 0, 5, 0;
+  // width: 150;
+  // height: 150;
+  // background-color: $permobil-hero;
+  margin: 5, 10, 15, 15;
   border: solid;
   border-radius: 4;
 }
@@ -104,7 +104,7 @@
       text-align: center;
       font-size: 16;
       font-weight: 400;
-      margin: 5, 0, 0, 0;
+      margin: 5, 2, 0, 2;
       horizontal-align: center;
       vertical-align: middle;
     }
