@@ -80,7 +80,7 @@
     "nativescript-snackbar": "file:../../node_modules/nativescript-snackbar",
     "nativescript-theme-core": "file:../../node_modules/nativescript-theme-core",
     "nativescript-toast": "file:../../node_modules/nativescript-toast",
-    "nativescript-ui-listview": "~3.5.9",
+    "nativescript-ui-listview": "~3.5.11",
     "nativescript-youtubeplayer": "^2.2.6",
     "reflect-metadata": "file:../../node_modules/reflect-metadata",
     "rxjs": "file:../../node_modules/rxjs",
