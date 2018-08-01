@@ -77,21 +77,21 @@
 
         <RadListView row="3" colSpan="2" ios:height="210" [items]="Demos._array" *ngIf="Demos.length">
           <ng-template tkListItemTemplate let-item="item">
-            <StackLayout class="icon-description-group">
-              <Image *ngIf="!item.sd_image" src="~/assets/images/PushTracker-SmartDrive-pairing.png" (tap)="demoThumbTapped(item)" backgroundImage="~/assets/images/background_1.jpg"
-                stretch="aspectFill" class="thumb"></Image>
-              <Image *ngIf="item.sd_image" class="thumb" [src]="item.sd_image" stretch="aspectFill"></Image>
-              <StackLayout>
-                <Label class="demo-item-description" textWrap="true" [text]="(item.smartdrive_serial_number || '# ??')"></Label>
-                <Label class="demo-item-description" textWrap="true" [text]="item.location_string"></Label>
-                <Label class="demo-item-description" textWrap="true" [backgroundColor]="(item.isUpToDate(currentVersion)) ? 'green' : 'red'">
+            <GridLayout rows="*, *" class="list-item-layout">
+              <Image row="0" *ngIf="!item.sd_image" src="~/assets/images/PushTracker-SmartDrive-pairing.png" (tap)="demoThumbTapped(item)"
+                backgroundImage="~/assets/images/background_1.jpg" stretch="aspectFill"></Image>
+              <Image row="0" *ngIf="item.sd_image" [src]="item.sd_image" stretch="aspectFill"></Image>
+              <StackLayout row="1" class="demo-item-description">
+                <Label textWrap="true" [text]="(item.smartdrive_serial_number || '# ??')"></Label>
+                <Label textWrap="true" [text]="item.location_string"></Label>
+                <Label textWrap="true" [backgroundColor]="(item.isUpToDate(currentVersion)) ? 'green' : 'red'">
                   <FormattedString>
                     <Span [text]="item.version_string"></Span>
                     <Span class="mdi" [text]="' ' + item.version_badge(currentVersion)"></Span>
                   </FormattedString>
                 </Label>
               </StackLayout>
-            </StackLayout>
+            </GridLayout>
           </ng-template>
           <ListViewLinearLayout tkListViewLayout dynamicItemSize="false" ios:itemHeight="160" ios:itemWidth="160" scrollDirection="Horizontal"></ListViewLinearLayout>
         </RadListView>

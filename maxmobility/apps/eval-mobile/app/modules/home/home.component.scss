@@ -2,6 +2,18 @@
 @import '../../scss/common';
 @import '../../scss/variables';
 
+.main-scroll-view {
+  background-color: #fff;
+  // padding: 0, 30, 0, 30;
+  margin: 0, 0, 0, 0;
+  height: 100%;
+}
+
+.chev {
+  font-size: 32;
+  margin: 5, 5, 0, 0;
+}
+
 // Styles for the main parent Grid which contains the various list sections
 .list-grid-layout {
   margin: 10, 0, 10, 0;
@@ -54,46 +66,7 @@
   }
 }
 
-.icon-description-group {
-  padding: 0;
-  margin: 5, 10, 5, 10;
-  width: 150;
-}
-
-.demo-item-description {
-  font-family: $os-Light;
-  color: #fff;
-  width: 140;
-  font-size: 15;
-  font-weight: 400;
-  padding: 5;
-  margin: 5, 10, 5, 10;
-  background-color: $permobil-ocean;
-  border: solid;
-  border-radius: 3;
-}
-
-.chev {
-  font-size: 32;
-  margin: 5, 5, 0, 0;
-}
-
-.main-scroll-view {
-  background-color: #fff;
-  // padding: 0, 30, 0, 30;
-  margin: 0, 0, 0, 0;
-  height: 100%;
-}
-
-.thumb {
-  width: 140;
-  height: 140;
-  background-color: $permobil-hero;
-  margin: 5, 10, 5, 10;
-  border: solid;
-  border-radius: 4;
-}
-
+// video list styles
 .video-layout {
   width: 140;
   height: 140;
@@ -124,5 +97,21 @@
     font-size: 14;
     font-weight: 400;
     margin: 5, 0, 0, 0;
+  }
+}
+
+// Demo unit list styles
+.demo-item-description {
+  label {
+    font-family: $os-Light;
+    // width: 140;
+    font-size: 15;
+    font-weight: 400;
+    padding: 5;
+    color: #fff;
+    margin: 5, 10, 5, 10;
+    background-color: $permobil-ocean;
+    border: solid;
+    border-radius: 3;
   }
 }
