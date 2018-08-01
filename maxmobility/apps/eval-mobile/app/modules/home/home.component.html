@@ -69,7 +69,7 @@
         <Label row="1" col="1" horizontalAlignment="right" text="&#xf142;" class="mdi chev" (tap)="chevronButtonTapped('/demos')"></Label>
         <Label row="2" colSpan="2" [text]="'menu.demos-desc' | translate" class="list-description" textWrap="true"></Label>
 
-        <GridLayout rows="140, auto" row="3" colSpan="2" *ngIf="!Demos.length" class="list-item-layout" horizontalAlignment="left">
+        <GridLayout rows="140, auto" marginLeft="10" row="3" colSpan="2" *ngIf="!Demos.length" class="list-item-layout" horizontalAlignment="left">
           <Image row="0" width="140" src="~/assets/images/PushTracker-SmartDrive-pairing.png" (tap)="demoThumbTapped(null)" backgroundImage="~/assets/images/background_1.jpg"
             stretch="aspectFill"></Image>
           <Label row="1" class="demo-item-description" color="white" [text]="'menu.new-demo' | translate" textWrap="true"></Label>

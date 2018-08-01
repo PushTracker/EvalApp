@@ -15,7 +15,8 @@ import { ChangedData, ObservableArray } from 'tns-core-modules/data/observable-a
   styleUrls: ['./pairing.component.css']
 })
 export class PairingComponent {
-  @ViewChild('carousel') carousel: ElementRef;
+  @ViewChild('carousel')
+  carousel: ElementRef;
   selectedPage = 0;
 
   slides = this._translateService.instant('pairing');
