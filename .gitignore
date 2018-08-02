@@ -76,6 +76,7 @@ package-lock.json
 /**/platforms/
 
 # IDE - VSCode
+.vs/*
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
