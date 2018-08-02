@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CLog, DemoService, FileService, FirmwareService, LoggingService, UserService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
@@ -24,7 +24,7 @@ registerElement('Gif', () => Gif);
   selector: 'ns-app',
   template: '<page-router-outlet></page-router-outlet>'
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   networkStatus: string;
   constructor(
     private _translateService: TranslateService,
