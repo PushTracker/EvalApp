@@ -9,7 +9,9 @@ import { Gif } from 'nativescript-gif';
 import * as orientation from 'nativescript-orientation';
 import { Sentry } from 'nativescript-sentry';
 import * as application from 'tns-core-modules/application';
+import { connectionType, startMonitoring, stopMonitoring } from 'tns-core-modules/connectivity';
 import { device } from 'tns-core-modules/platform';
+import { alert } from 'tns-core-modules/ui/dialogs/dialogs';
 
 // Register Custom Elements for Angular
 registerElement('Carousel', () => <any>Carousel);
@@ -59,10 +61,22 @@ export class AppComponent {
     // application level events
     application.on(application.uncaughtErrorEvent, (args: application.UnhandledErrorEventData) => {
       console.log('**** App Uncaught Error Event ****', args.error);
+      this._stopNetworkMonitoring();
+    });
+
+    application.on(application.suspendEvent, () => {
+      console.log('**** App Suspended Event ****');
+      this._stopNetworkMonitoring();
+    });
+
+    application.on(application.exitEvent, () => {
+      console.log('**** App Exit Event ****');
+      this._stopNetworkMonitoring();
     });
 
     application.on(application.resumeEvent, (args: application.ApplicationEventData) => {
       console.log('**** App Resume Event ****');
+      this._startNetworkMonitor();
       // set the orientation to be portrait and don't allow orientation changes
       orientation.setOrientation('portrait');
       orientation.disableRotation(); // may not need to call this - docs say 'set' calls this
@@ -86,5 +100,29 @@ export class AppComponent {
     } else {
       this._router.navigate(['/login']);
     }
+  }
+
+  private _startNetworkMonitor() {
+    // start network monitoring
+    startMonitoring(newConnectionType => {
+      console.log('network type', newConnectionType);
+      switch (newConnectionType) {
+        case connectionType.none:
+          alert({
+            message: `Smart Evaluation has detected a network change. Please make sure you are connected to wifi or a cell network. The app`,
+            okButtonText: 'Okay'
+          });
+          break;
+        case connectionType.wifi:
+          return;
+        case connectionType.mobile:
+          return;
+      }
+    });
+  }
+
+  // Stop the monitoring
+  private _stopNetworkMonitoring() {
+    stopMonitoring();
   }
 }
