@@ -3,6 +3,7 @@ import { Response } from '@angular/http';
 import { Demo } from '@maxmobility/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
+import { fromBase64 } from 'tns-core-modules/image-source/image-source';
 
 @Injectable()
 export class DemoService {
@@ -57,10 +58,12 @@ export class DemoService {
   }
 
   create(demoModel: Demo): Promise<any> {
+    console.log('**** DEMO MODEL ****', demoModel);
+
     const foundSD = this.getDemoBySmartDriveSerialNumber(demoModel.smartdrive_serial_number);
     const foundPT = this.getDemoByPushTrackerSerialNumber(demoModel.pushtracker_serial_number);
     if (foundSD) {
-      console.log('Found SD');
+      console.log('Found SD', foundSD);
       foundSD.update(demoModel);
       demoModel = foundSD;
     } else if (foundPT) {
@@ -103,8 +106,15 @@ export class DemoService {
         return stream.toPromise();
       })
       .then(data => {
-        let demos = data.map((demoData: any) => {
+        let demos = data.map((demoData: Demo) => {
           demoData.id = demoData._id;
+
+          // BRAD = trying to fix issue-144 loading images for demos
+          if (demoData.sd_image && demoData.sd_image_base64) {
+            const source = fromBase64(demoData.sd_image_base64);
+            demoData.sd_image = source;
+          }
+
           return new Demo(demoData);
         });
         DemoService.Demos.splice(0, DemoService.Demos.length, ...demos);

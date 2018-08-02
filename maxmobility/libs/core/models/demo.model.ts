@@ -1,9 +1,9 @@
-import { Observable } from 'tns-core-modules/data/observable';
+import { PushTracker } from '@maxmobility/core';
+import { LocationService } from '@maxmobility/mobile';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 import * as LS from 'nativescript-localstorage';
+import { Observable } from 'tns-core-modules/data/observable';
 import * as imageSource from 'tns-core-modules/image-source';
-import { LocationService } from '@maxmobility/mobile';
-import { PushTracker } from '@maxmobility/core';
 import * as _ from 'underscore';
 
 export class Record extends Observable {
@@ -57,7 +57,10 @@ export class Demo extends Observable {
     'ble_version',
     'mcu_version',
     'pt_mac_addr',
-    'sd_mac_addr'
+    'sd_mac_addr',
+    'sd_image',
+    'sd_image_base64',
+    'pt_image'
   ];
 
   // NON STATIC:
@@ -75,6 +78,11 @@ export class Demo extends Observable {
   public sd_mac_addr: string = '';
   public pt_image: any = null;
   public sd_image: any = null;
+
+  /**
+   * Base64 string of the image saved for the Smart Drive unit.
+   */
+  public sd_image_base64: string = '';
   public usage: Array<Record> = [];
 
   get location_string(): string {
@@ -170,10 +178,10 @@ export class Demo extends Observable {
     this.loadSDImage();
   }
 
-  saveImages() {
-    this.savePTImage();
-    this.saveSDImage();
-  }
+  // saveImages() {
+  //   this.savePTImage();
+  //   this.saveSDImage();
+  // }
 
   saveSDImage() {
     try {
