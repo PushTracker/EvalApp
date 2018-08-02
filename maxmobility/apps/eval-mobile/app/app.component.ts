@@ -25,7 +25,6 @@ registerElement('Gif', () => Gif);
   template: '<page-router-outlet></page-router-outlet>'
 })
 export class AppComponent {
-  networkStatus: string;
   constructor(
     private _translateService: TranslateService,
     private _logService: LoggingService,
