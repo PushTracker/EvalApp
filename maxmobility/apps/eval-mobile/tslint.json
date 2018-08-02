@@ -11,6 +11,7 @@
     "component-class-suffix": true,
     "directive-class-suffix": true,
     "member-access": [true, "no-public"],
+    "max-line-length": false,
     "newline-before-return": false,
     "no-angle-bracket-type-assertion": false,
     "no-attribute-parameter-decorator": true,

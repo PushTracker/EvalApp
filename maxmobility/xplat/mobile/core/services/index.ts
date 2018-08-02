@@ -7,7 +7,6 @@ import { FirmwareService } from './firmware.service';
 import { KeyboardService } from './keyboard.service';
 import { LocationService } from './location.service';
 import { LoggingService } from './logging.service';
-import { NetworkService } from './network.service';
 import { PairingService } from './pairing.service';
 import { ProgressService } from './progress.service';
 import { StorageService } from './storage.service';
@@ -23,7 +22,6 @@ export const PROVIDERS: any[] = [
   AuthGuardService,
   StorageService,
   LoggingService,
-  NetworkService,
   ProgressService,
   BluetoothService,
   FirmwareService,
@@ -39,7 +37,6 @@ export * from './firmware.service';
 export * from './keyboard.service';
 export * from './location.service';
 export * from './logging.service';
-export * from './network.service';
 export * from './pairing.service';
 export * from './progress.service';
 export * from './storage.service';
