@@ -27,12 +27,12 @@ export class AccountComponent implements OnInit {
   fsKeyPrefix = 'AccountComponent.';
   fsKeyProfilePicture = 'ProfilePicture';
   user: Kinvey.User = this._userService.user;
-  languages: ValueList<string> = new ValueList<string>(
+  languages = new ValueList<string>(
     this._translateService.getLangs().map(l => {
       return { value: l, display: this._translateService.instant('languages.' + l) };
     })
   );
-  selectedLanguageIndex: number = 0;
+  selectedLanguageIndex = 0;
 
   yes: string = this._translateService.instant('dialogs.yes');
   no: string = this._translateService.instant('dialogs.no');
@@ -50,6 +50,7 @@ export class AccountComponent implements OnInit {
 
   private imageCropper: ImageCropper;
   private routeSub: Subscription; // subscription to route observer
+  private profileImageKey = this.fsKeyPrefix + (this.user.data as any)._id + '.' + this.fsKeyProfilePicture;
 
   constructor(
     private _userService: UserService,
@@ -91,37 +92,27 @@ export class AccountComponent implements OnInit {
     this._fileService.downloadTranslationFiles();
   }
 
-  getProfilePictureFSKey(): string {
-    return this.fsKeyPrefix + (this.user.data as any)._id + '.' + this.fsKeyProfilePicture;
-  }
-
-  saveProfilePicture(source) {
+  saveProfilePicture(source: imageSource.ImageSource) {
     try {
-      const picKey = this.getProfilePictureFSKey();
       const b64 = source.toBase64String('png');
-      const pic = LS.setItem(picKey, b64);
+      LS.setItem(this.profileImageKey, b64);
       (this.user.data as any).profile_picture = source;
-      return Promise.resolve();
     } catch (err) {
       this._loggingService.logException(err);
-      return Promise.reject(`Couldn't save profile picture: ${err}`);
     }
   }
 
   loadProfilePicture() {
     try {
-      const picKey = this.getProfilePictureFSKey();
-      const pic = LS.getItem(picKey);
+      const pic = LS.getItem(this.profileImageKey);
       if (pic) {
         const source = imageSource.fromBase64(pic);
         (this.user.data as any).profile_picture = source;
       } else {
         (this.user.data as any).profile_picture = undefined;
       }
-      return Promise.resolve();
     } catch (err) {
       this._loggingService.logException(err);
-      return Promise.reject(`Couldn't load profile picture: ${err}`);
     }
   }
 
@@ -155,8 +146,7 @@ export class AccountComponent implements OnInit {
         cameraFacing: 'front'
       });
 
-      const source = new imageSource.ImageSource();
-      const iSrc = await source.fromAsset(imageAsset);
+      const iSrc = await imageSource.fromAsset(imageAsset);
 
       const result = await this.imageCropper.show(iSrc, {
         height: 256,

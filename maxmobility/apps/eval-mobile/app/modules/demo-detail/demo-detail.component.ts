@@ -6,11 +6,12 @@ import { PageRoute } from 'nativescript-angular/router';
 import { BarcodeScanner } from 'nativescript-barcodescanner';
 import * as camera from 'nativescript-camera';
 import { ImageCropper, Result as ImageCropperResult } from 'nativescript-imagecropper';
+import * as LS from 'nativescript-localstorage';
 import { SnackBar } from 'nativescript-snackbar';
-import { isAndroid, isIOS } from 'platform';
 import { switchMap } from 'rxjs/operators';
 import { ImageAsset } from 'tns-core-modules/image-asset/image-asset';
-import { ImageSource } from 'tns-core-modules/image-source/image-source';
+import { fromBase64, ImageSource } from 'tns-core-modules/image-source/image-source';
+import { isIOS } from 'tns-core-modules/platform';
 import * as dialogs from 'tns-core-modules/ui/dialogs';
 
 @Component({
@@ -20,7 +21,7 @@ import * as dialogs from 'tns-core-modules/ui/dialogs';
   styleUrls: ['./demo-detail.component.css']
 })
 export class DemoDetailComponent {
-  demo: Demo = new Demo();
+  demo = new Demo();
   mcu_version_label = ' - SmartDrive MCU ' + this.translateService.instant('general.version');
   ble_version_label = ' - SmartDrive BLE ' + this.translateService.instant('general.version');
   pt_version_label = ' - PushTracker ' + this.translateService.instant('general.version');
@@ -41,9 +42,18 @@ export class DemoDetailComponent {
   ) {
     this.imageCropper = new ImageCropper();
     this.pageRoute.activatedRoute.pipe(switchMap(activatedRoute => activatedRoute.queryParams)).forEach(params => {
+      console.log('params', params);
       if (params.index !== undefined && params.index > -1) {
         this.index = params.index;
-        this.demo = DemoService.Demos.getItem(this.index);
+        const demo = DemoService.Demos.getItem(this.index);
+        // BRAD - fix the image before binding to UI - https://github.com/PushTracker/EvalApp/issues/144
+        if (demo.pt_image && demo.pt_image_base64) {
+          demo.pt_image = fromBase64(demo.pt_image_base64);
+        }
+        if (demo.sd_image && demo.sd_image_base64) {
+          demo.sd_image = fromBase64(demo.sd_image_base64);
+        }
+        this.demo = demo;
       } else {
         this.demo = new Demo();
       }
@@ -68,14 +78,6 @@ export class DemoDetailComponent {
     return `${this.demo.model} ${this.translateService.instant('general.demo')} ${this.demo.smartdrive_serial_number}`;
   }
 
-  isIOS(): boolean {
-    return isIOS;
-  }
-
-  isAndroid(): boolean {
-    return isAndroid;
-  }
-
   get currentVersion(): string {
     return this._firmwareService.currentVersion;
   }
@@ -83,40 +85,43 @@ export class DemoDetailComponent {
   async onUpdateSDImageTap() {
     try {
       const result = await this.takePictureAndCrop();
-      console.log('result', result);
-
       if (result && result.image) {
         console.log('ImageCropper returned cropped image.');
         this.demo.sd_image = result.image;
-        if (this.index) {
+        if (this.index && this.demo.sd_image) {
           // auto-save if this demo already exists
-          this.demo.saveSDImage();
+          const picKey = this.demo.getSDImageFSKey();
+          const b64 = this.demo.sd_image.toBase64String('png');
+          LS.setItem(picKey, b64);
+          this.demo.sd_image_base64 = b64;
         }
       } else {
         console.log('No result returned from the image cropper.');
       }
     } catch (error) {
-      console.log('ERROR', error);
+      this._loggingService.logException(error);
     }
   }
 
   async onUpdatePTImageTap() {
     try {
       const result = await this.takePictureAndCrop();
-      console.log('result', result);
-
       if (result && result.image !== null) {
         console.log('ImageCropper return cropped image.');
         this.demo.pt_image = result.image;
-        if (this.index) {
+        if (this.index && this.demo.pt_image) {
           // auto-save if this demo already exists
-          this.demo.savePTImage();
+          const picKey = this.demo.getPTImageFSKey();
+          const b64 = this.demo.pt_image.toBase64String('png');
+          LS.setItem(picKey, b64);
+          this.demo.pt_image_base64 = b64;
         }
       } else {
         console.log('No result returned from the image cropper.');
+        this._loggingService.logBreadCrumb('No result returned from the image cropper.');
       }
     } catch (error) {
-      console.log('ERROR', error);
+      this._loggingService.logException(error);
     }
   }
 
@@ -126,36 +131,47 @@ export class DemoDetailComponent {
     return sdSN && sdSN.length && true;
   }
 
-  onSave() {
-    if (!this.haveSerial()) {
-      dialogs.alert('You must enter a SmartDrive serial number!');
-    } else {
+  async onSave() {
+    try {
+      if (!this.haveSerial()) {
+        dialogs.alert('You must enter a SmartDrive serial number!');
+        return;
+      }
+
       this._progressService.show('Saving');
-      return this.demo
-        .use()
-        .then(() => {
-          return this._demoService.create(this.demo);
-        })
-        .then(() => {
-          // the demo service calls load() at the end ofa create
-          // now re-load our data from the service
-          if (this.index > -1) {
-            console.log('index is greater than -1');
-          } else {
-            this.index = DemoService.Demos.indexOf(
-              this._demoService.getDemoBySmartDriveSerialNumber(this.demo.smartdrive_serial_number)
-            );
-          }
-          this.demo = DemoService.Demos.getItem(this.index);
-          // now save the images for the SD if they exist
-          this.demo.saveImages();
-          this._progressService.hide();
-        })
-        .catch(err => {
-          this._progressService.hide();
-          this._loggingService.logException(err);
-          console.log(`Couldn't create / load demos: ${err}`);
-        });
+
+      await this.demo.use();
+
+      await this._demoService.create(this.demo);
+
+      // the demo service calls load() at the end ofa create
+      // now re-load our data from the service
+      if (this.index > -1) {
+        console.log('index is greater than -1');
+      } else {
+        this.index = DemoService.Demos.indexOf(
+          this._demoService.getDemoBySmartDriveSerialNumber(this.demo.smartdrive_serial_number)
+        );
+      }
+
+      console.log('this.index', this.index);
+      const demo = DemoService.Demos.getItem(this.index);
+      console.log('demo', demo);
+
+      // BRAD - https://github.com/PushTracker/EvalApp/issues/144
+      if (demo.sd_image_base64 && demo.sd_image) {
+        const source = fromBase64(demo.sd_image_base64);
+        demo.sd_image = source;
+      }
+      if (demo.pt_image_base64 && demo.pt_image) {
+        const source = fromBase64(demo.pt_image_base64);
+        demo.pt_image = source;
+      }
+      this.demo = demo;
+      this._progressService.hide();
+    } catch (error) {
+      this._loggingService.logException(error);
+      this._progressService.hide();
     }
   }
 
@@ -196,8 +212,8 @@ export class DemoDetailComponent {
     let isSmartDrive = false;
     let serialNumber = text;
     try {
-      let value = parseInt(text, 10);
-      let valid = isFinite(value);
+      const value = parseInt(text, 10);
+      const valid = isFinite(value);
       isSmartDrive = !isPushTracker && !isWristband && valid && value > 0;
       if (isSmartDrive) {
         serialNumber = `${parseInt(text, 10)}`;
