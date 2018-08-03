@@ -4,10 +4,11 @@ import { Demo } from '@maxmobility/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
 import { fromBase64 } from 'tns-core-modules/image-source/image-source';
+import { LoggingService } from './logging.service';
 
 @Injectable()
 export class DemoService {
-  public static Demos: ObservableArray<Demo> = new ObservableArray<Demo>([]);
+  public static Demos = new ObservableArray<Demo>([]);
 
   private static cloneUpdateModel(demo: Demo): object {
     return Demo.editableProperties.reduce((a, e) => ((a[e] = demo[e]), a), {
@@ -19,6 +20,10 @@ export class DemoService {
   }
 
   private datastore = Kinvey.DataStore.collection<any>('SmartDrives');
+
+  constructor(private _logService: LoggingService) {
+    //this.load();
+  }
 
   getDemoById(id: string): Demo {
     if (!id) {
@@ -53,10 +58,6 @@ export class DemoService {
     return obj;
   }
 
-  constructor() {
-    //this.load();
-  }
-
   create(demoModel: Demo): Promise<any> {
     console.log('**** DEMO MODEL ****', demoModel);
 
@@ -84,47 +85,53 @@ export class DemoService {
         .save(demo.data())
         .then(data => {
           this.update(data);
-          this.publishUpdates();
         })
         .catch(this.handleErrors);
     });
     return Promise.all(tasks);
   }
 
-  load(): Promise<any> {
+  async load(): Promise<any> {
     DemoService.Demos.splice(0, DemoService.Demos.length);
-    return this.login()
-      .then(() => {
-        return this.datastore.sync();
-      })
-      .then(() => {
-        const query = new Kinvey.Query();
-        query.equalTo('owner_id', Kinvey.User.getActiveUser()._id);
-        query.ascending('smartdrive_serial_number');
-        const stream = this.datastore.find(query);
 
-        return stream.toPromise();
-      })
-      .then(data => {
-        let demos = data.map((demoData: Demo) => {
-          demoData.id = demoData._id;
+    await this.login();
+    await this.datastore.sync();
+    const query = new Kinvey.Query();
+    query.equalTo('owner_id', Kinvey.User.getActiveUser()._id);
+    query.ascending('smartdrive_serial_number');
+    const stream = this.datastore.find(query);
 
-          // BRAD = trying to fix issue-144 loading images for demos
-          if (demoData.sd_image && demoData.sd_image_base64) {
-            const source = fromBase64(demoData.sd_image_base64);
-            demoData.sd_image = source;
-          }
+    const data = await stream.toPromise();
+    let demos = data.map((demoData: Demo) => {
+      demoData.id = (demoData as any)._id;
 
-          return new Demo(demoData);
-        });
-        DemoService.Demos.splice(0, DemoService.Demos.length, ...demos);
-      });
+      // BRAD = attempt to fix https://github.com/PushTracker/EvalApp/issues/144 for loading the base64 images
+      // if the unit has the base64 string and a value in the sd_image then they took a picture and saved it
+      // if not null it out so the `Image` databinding in the UI doesn't crash trying to bind
+      if (demoData.sd_image && demoData.sd_image_base64) {
+        const source = fromBase64(demoData.sd_image_base64);
+        demoData.sd_image = source;
+      } else {
+        demoData.sd_image = null;
+      }
+
+      return new Demo(demoData);
+    });
+
+    DemoService.Demos.splice(0, DemoService.Demos.length, ...demos);
   }
 
   private update(demoModel: Demo): Promise<any> {
-    const updateModel = DemoService.cloneUpdateModel(demoModel);
-
-    return this.datastore.save(updateModel);
+    return new Promise(async (resolve, reject) => {
+      try {
+        const updateModel = DemoService.cloneUpdateModel(demoModel);
+        await this.datastore.save(updateModel);
+        resolve();
+      } catch (error) {
+        this._logService.logException(error);
+        reject(error);
+      }
+    });
   }
 
   private put(data: Object) {
@@ -138,8 +145,6 @@ export class DemoService {
       return Promise.reject('No active user!');
     }
   }
-
-  private publishUpdates() {}
 
   private handleErrors(error: Response) {
     console.log(error);

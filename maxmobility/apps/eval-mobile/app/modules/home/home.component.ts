@@ -63,6 +63,7 @@ export class HomeComponent {
 
   faqItems = this.translateService.instant('faqs');
   videoItems = this.translateService.instant('videos');
+  demoUnitsLoaded = false;
 
   private feedback: Feedback;
 
@@ -81,15 +82,23 @@ export class HomeComponent {
     this._page.enableSwipeBackNavigation = false;
     this.feedback = new Feedback();
 
-    this._demoService.load().catch(err => {
-      this._loggingService.logException(err);
-      console.log(`Couldn't load demos: ${err}`);
-    });
-
     this._fileService.downloadTranslationFiles();
 
     // REGISTER FOR PUSH NOTIFICATIONS
     this._userService.registerForPushNotifications();
+
+    // delaying since it typically won't be in the viewport initially on majority of devices
+    setTimeout(() => {
+      this._demoService
+        .load()
+        .then(() => {
+          this.demoUnitsLoaded = true;
+        })
+        .catch(err => {
+          this._loggingService.logException(err);
+          this.demoUnitsLoaded = true;
+        });
+    }, 2500);
 
     console.log(`Home.Component end constructor ${performance.now()}`);
   }
