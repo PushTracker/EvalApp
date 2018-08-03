@@ -77,33 +77,33 @@
         </StackLayout>
 
         // Stock demo unit when no demo units are found
-        <GridLayout rows="140, auto" marginLeft="10" row="3" colSpan="2" *ngIf="!Demos.length && demoUnitsLoaded" class="list-item-layout"
+        <GridLayout rows="140, *" marginLeft="10" row="3" colSpan="2" class="list-item-layout" *ngIf="!Demos.length && demoUnitsLoaded"
           horizontalAlignment="left">
           <Image row="0" width="140" src="~/assets/images/PushTracker-SmartDrive-pairing.png" (tap)="demoThumbTapped(null)" backgroundImage="~/assets/images/background_1.jpg"
             stretch="aspectFill"></Image>
-          <Label row="1" class="demo-item-description" color="white" [text]="'menu.new-demo' | translate" textWrap="true"></Label>
+          <Label row="1" class="new-demo" color="white" [text]="'menu.new-demo' | translate" textWrap="true"></Label>
         </GridLayout>
 
         // Demo unit listview
-        <RadListView row="3" colSpan="2" ios:height="210" [items]="Demos._array" *ngIf="Demos.length && demoUnitsLoaded">
+        <RadListView row="3" colSpan="2" ios:height="312" [items]="Demos._array" *ngIf="Demos.length && demoUnitsLoaded">
           <ng-template tkListItemTemplate let-item="item">
             <GridLayout rows="*, *" class="list-item-layout">
               <Image row="0" *ngIf="!item.sd_image" src="~/assets/images/PushTracker-SmartDrive-pairing.png" (tap)="demoThumbTapped(item)"
                 backgroundImage="~/assets/images/background_1.jpg" stretch="aspectFill"></Image>
-              <Image row="0" *ngIf="item.sd_image" [src]="item.sd_image" (tap)="demoThumbTapped(item)" stretch="aspectFill"></Image>
-              <StackLayout row="1" class="demo-item-description">
-                <Label textWrap="true" [text]="(item.smartdrive_serial_number || '# ??')"></Label>
-                <Label textWrap="true" [text]="item.location_string"></Label>
-                <Label textWrap="true" [backgroundColor]="(item.isUpToDate(currentVersion)) ? 'green' : 'red'">
+              <Image row="0" *ngIf="item.sd_image" height="140" [src]="item.sd_image" (tap)="demoThumbTapped(item)" stretch="aspectFill"></Image>
+              <GridLayout row="1" rows="auto, auto, auto" class="demo-item-description">
+                <Label row="0" textWrap="true" [text]="(item.smartdrive_serial_number || '# ??')"></Label>
+                <Label row="1" textWrap="true" [text]="item.location_string"></Label>
+                <Label row="2" textWrap="true" [backgroundColor]="(item.isUpToDate(currentVersion)) ? 'green' : 'red'">
                   <FormattedString>
                     <Span [text]="item.version_string"></Span>
                     <Span class="mdi" [text]="' ' + item.version_badge(currentVersion)"></Span>
                   </FormattedString>
                 </Label>
-              </StackLayout>
+              </GridLayout>
             </GridLayout>
           </ng-template>
-          <ListViewLinearLayout tkListViewLayout dynamicItemSize="false" ios:itemHeight="160" ios:itemWidth="160" scrollDirection="Horizontal"></ListViewLinearLayout>
+          <ListViewLinearLayout tkListViewLayout dynamicItemSize="true" ios:itemWidth="160" scrollDirection="Horizontal"></ListViewLinearLayout>
         </RadListView>
 
       </GridLayout>

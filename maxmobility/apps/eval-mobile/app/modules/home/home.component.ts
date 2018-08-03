@@ -63,6 +63,9 @@ export class HomeComponent {
 
   faqItems = this.translateService.instant('faqs');
   videoItems = this.translateService.instant('videos');
+  /**
+   * Boolean to track when the demo unit loading has finished to hide the loading indicator and show the list data
+   */
   demoUnitsLoaded = false;
 
   private feedback: Feedback;

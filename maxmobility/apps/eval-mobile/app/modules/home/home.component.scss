@@ -101,17 +101,25 @@
 }
 
 // Demo unit list styles
+
+.new-demo {
+  font-size: 14;
+  padding: 5;
+  color: #fff;
+  background-color: $permobil-ocean;
+  font-family: $os-Light;
+}
+
 .demo-item-description {
-  label {
+  label,
+  StackLayout {
     font-family: $os-Light;
     // width: 140;
-    font-size: 15;
-    font-weight: 400;
+    font-size: 14;
     padding: 5;
     color: #fff;
     margin: 5, 10, 5, 10;
     background-color: $permobil-ocean;
-    border: solid;
     border-radius: 3;
   }
 }
