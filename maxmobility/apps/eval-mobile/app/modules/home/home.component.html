@@ -63,19 +63,29 @@
       </GridLayout>
 
       // Demos
+
       <GridLayout rows="auto, auto, auto, *" columns="*, auto" class="list-grid-layout" row="4">
         <Label row="0" colSpan="2" class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></Label>
         <Label row="1" col="0" [text]="'menu.demos' | translate" class="list-heading" (tap)="chevronButtonTapped('/demos')"></Label>
         <Label row="1" col="1" horizontalAlignment="right" text="&#xf142;" class="mdi chev" (tap)="chevronButtonTapped('/demos')"></Label>
         <Label row="2" colSpan="2" [text]="'menu.demos-desc' | translate" class="list-description" textWrap="true"></Label>
 
-        <GridLayout rows="140, auto" marginLeft="10" row="3" colSpan="2" *ngIf="!Demos.length" class="list-item-layout" horizontalAlignment="left">
+        // Loading View for the delay to fetch and load demos to smooth out UI
+        <StackLayout orientation="horizontal" marginLeft="10" row="3" colSpan="2" *ngIf="!demoUnitsLoaded">
+          <Label text="Loading Demos..." class="h2 text-middle" textWrap="true"></Label>
+          <ActivityIndicator busy="true" marginLeft="5" width="26" height="26"></ActivityIndicator>
+        </StackLayout>
+
+        // Stock demo unit when no demo units are found
+        <GridLayout rows="140, auto" marginLeft="10" row="3" colSpan="2" *ngIf="!Demos.length && demoUnitsLoaded" class="list-item-layout"
+          horizontalAlignment="left">
           <Image row="0" width="140" src="~/assets/images/PushTracker-SmartDrive-pairing.png" (tap)="demoThumbTapped(null)" backgroundImage="~/assets/images/background_1.jpg"
             stretch="aspectFill"></Image>
           <Label row="1" class="demo-item-description" color="white" [text]="'menu.new-demo' | translate" textWrap="true"></Label>
         </GridLayout>
 
-        <RadListView row="3" colSpan="2" ios:height="210" [items]="Demos._array" *ngIf="Demos.length">
+        // Demo unit listview
+        <RadListView row="3" colSpan="2" ios:height="210" [items]="Demos._array" *ngIf="Demos.length && demoUnitsLoaded">
           <ng-template tkListItemTemplate let-item="item">
             <GridLayout rows="*, *" class="list-item-layout">
               <Image row="0" *ngIf="!item.sd_image" src="~/assets/images/PushTracker-SmartDrive-pairing.png" (tap)="demoThumbTapped(item)"
