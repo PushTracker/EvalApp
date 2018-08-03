@@ -45,11 +45,15 @@ export class DemoDetailComponent {
       console.log('params', params);
       if (params.index !== undefined && params.index > -1) {
         this.index = params.index;
-        this.demo = DemoService.Demos.getItem(this.index);
-
-        // Brad - debugging the demo flow here
-        // right now thinking we need to fix the saving of the imageSource base64String to the demos array
-        // then we'll need to convert it to ImageSource when this page loads with a demo with a string in the image value
+        const demo = DemoService.Demos.getItem(this.index);
+        // BRAD - fix the image before binding to UI - https://github.com/PushTracker/EvalApp/issues/144
+        if (demo.pt_image && demo.pt_image_base64) {
+          demo.pt_image = fromBase64(demo.pt_image_base64);
+        }
+        if (demo.sd_image && demo.sd_image_base64) {
+          demo.sd_image = fromBase64(demo.sd_image_base64);
+        }
+        this.demo = demo;
       } else {
         this.demo = new Demo();
       }
@@ -81,46 +85,43 @@ export class DemoDetailComponent {
   async onUpdateSDImageTap() {
     try {
       const result = await this.takePictureAndCrop();
-      console.log('result', result);
-
       if (result && result.image) {
         console.log('ImageCropper returned cropped image.');
         this.demo.sd_image = result.image;
         if (this.index && this.demo.sd_image) {
           // auto-save if this demo already exists
           const picKey = this.demo.getSDImageFSKey();
-          console.log('picKey', picKey);
           const b64 = this.demo.sd_image.toBase64String('png');
-          console.log('SB b64', b64);
           LS.setItem(picKey, b64);
           this.demo.sd_image_base64 = b64;
-          console.log('set the SM image in LS');
         }
       } else {
         console.log('No result returned from the image cropper.');
       }
     } catch (error) {
-      console.log('ERROR', error);
+      this._loggingService.logException(error);
     }
   }
 
   async onUpdatePTImageTap() {
     try {
       const result = await this.takePictureAndCrop();
-      console.log('result', result);
-
       if (result && result.image !== null) {
         console.log('ImageCropper return cropped image.');
         this.demo.pt_image = result.image;
-        if (this.index) {
+        if (this.index && this.demo.pt_image) {
           // auto-save if this demo already exists
-          this.demo.savePTImage();
+          const picKey = this.demo.getPTImageFSKey();
+          const b64 = this.demo.pt_image.toBase64String('png');
+          LS.setItem(picKey, b64);
+          this.demo.pt_image_base64 = b64;
         }
       } else {
         console.log('No result returned from the image cropper.');
+        this._loggingService.logBreadCrumb('No result returned from the image cropper.');
       }
     } catch (error) {
-      console.log('ERROR', error);
+      this._loggingService.logException(error);
     }
   }
 
@@ -157,18 +158,19 @@ export class DemoDetailComponent {
       const demo = DemoService.Demos.getItem(this.index);
       console.log('demo', demo);
 
-      // convert the image ??? maybe - BRAD
+      // BRAD - https://github.com/PushTracker/EvalApp/issues/144
       if (demo.sd_image_base64 && demo.sd_image) {
         const source = fromBase64(demo.sd_image_base64);
         demo.sd_image = source;
       }
+      if (demo.pt_image_base64 && demo.pt_image) {
+        const source = fromBase64(demo.pt_image_base64);
+        demo.pt_image = source;
+      }
       this.demo = demo;
-
-      // now save the images for the SD if they exist
-      // this.demo.saveImages();
+      this._progressService.hide();
     } catch (error) {
       this._loggingService.logException(error);
-    } finally {
       this._progressService.hide();
     }
   }

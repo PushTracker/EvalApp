@@ -60,7 +60,8 @@ export class Demo extends Observable {
     'sd_mac_addr',
     'sd_image',
     'sd_image_base64',
-    'pt_image'
+    'pt_image',
+    'pt_image_base64'
   ];
 
   // NON STATIC:
@@ -83,6 +84,10 @@ export class Demo extends Observable {
    * Base64 string of the image saved for the Smart Drive unit.
    */
   public sd_image_base64: string = '';
+  /**
+   * Base64 string of the image saved for the PushTracker for the demo unit.
+   */
+  public pt_image_base64: string = '';
   public usage: Array<Record> = [];
 
   get location_string(): string {
