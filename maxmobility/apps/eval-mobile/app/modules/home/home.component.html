@@ -80,7 +80,7 @@
             <GridLayout rows="*, *" class="list-item-layout">
               <Image row="0" *ngIf="!item.sd_image" src="~/assets/images/PushTracker-SmartDrive-pairing.png" (tap)="demoThumbTapped(item)"
                 backgroundImage="~/assets/images/background_1.jpg" stretch="aspectFill"></Image>
-              <Image row="0" *ngIf="item.sd_image" [src]="item.sd_image" stretch="aspectFill"></Image>
+              <Image row="0" *ngIf="item.sd_image" [src]="item.sd_image" (tap)="demoThumbTapped(item)" stretch="aspectFill"></Image>
               <StackLayout row="1" class="demo-item-description">
                 <Label textWrap="true" [text]="(item.smartdrive_serial_number || '# ??')"></Label>
                 <Label textWrap="true" [text]="item.location_string"></Label>
