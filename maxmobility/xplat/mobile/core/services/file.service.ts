@@ -41,6 +41,13 @@ export class FileService {
           console.log('error http.getFile', err);
         });
 
+        // const theFile = fs.File.fromPath(`${fs.knownFolders.currentApp().path}/assets/i18n/${file._filename}`);
+        // console.log('theFile fromPath', theFile);
+        // const fileData = theFile.readTextSync(err => {
+        //   console.log('error reading file', err);
+        // });
+        // console.log(`File ${theFile} text`, fileData);
+
         // Get the language name from the filename by removing the file extension from _filename property
         const languageName = file._filename.replace(/\..+$/, '');
         // reload the language in the ngx TranslateService
