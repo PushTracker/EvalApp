@@ -8,7 +8,6 @@ import { NativeScriptHttpModule } from 'nativescript-angular/http';
 import { ModalDialogService } from 'nativescript-angular/modal-dialog';
 import { NativeScriptModule } from 'nativescript-angular/nativescript.module';
 import { DropDownModule } from 'nativescript-drop-down/angular';
-import { SlidesModule } from 'nativescript-ngx-slides';
 import { SentryModule } from 'nativescript-sentry/angular';
 import { NativeScriptUIListViewModule } from 'nativescript-ui-listview/angular';
 import { YoutubePlayerModule } from 'nativescript-youtubeplayer/angular';
@@ -41,7 +40,6 @@ export function createTranslateLoader() {
     MobileCoreModule,
     AppRoutingModule,
     HttpClientModule,
-    SlidesModule,
     DropDownModule,
     YoutubePlayerModule,
     SentryModule.forRoot({
