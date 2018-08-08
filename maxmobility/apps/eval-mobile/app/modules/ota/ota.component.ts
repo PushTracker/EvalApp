@@ -18,7 +18,8 @@ const CarouselItem = require('nativescript-carousel').CarouselItem;
   styleUrls: ['./ota.component.css']
 })
 export class OTAComponent implements OnInit {
-  @ViewChild('carousel') carousel: ElementRef;
+  @ViewChild('carousel')
+  carousel: ElementRef;
   selectedPage = 0;
   connected = false;
   updating = false;
@@ -79,7 +80,6 @@ export class OTAComponent implements OnInit {
         }
       }
     }
-    console.log(otaDesc);
     return otaDesc;
   }
 
