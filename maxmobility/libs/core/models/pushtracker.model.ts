@@ -11,7 +11,7 @@ enum OTAState {
   awaiting_ready = 'ota.pt.state.awaiting-ready',
   updating = 'ota.pt.state.updating',
   rebooting = 'ota.pt.state.rebooting',
-  verifying_update = 'ota.pt.state.verifying',
+  verifying_update = 'ota.pt.state.verifying-update',
   complete = 'ota.pt.state.complete',
   canceling = 'ota.pt.state.canceling',
   canceled = 'ota.pt.state.canceled',
