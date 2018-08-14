@@ -212,6 +212,9 @@
         "profile": "Profile",
         "heading": "Sketch key points for the following:"
     },
+	"demos": {
+		"loading": "Loading Demos..."
+	},
     "demo-detail": {
         "scan-sd": "SD: Press scan or edit button",
         "scan-pt": "PT: Press scan or edit button"

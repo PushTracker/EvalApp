@@ -72,7 +72,7 @@
 
         // Loading View for the delay to fetch and load demos to smooth out UI
         <StackLayout orientation="horizontal" marginLeft="10" row="3" colSpan="2" *ngIf="!demoUnitsLoaded">
-          <Label text="Loading Demos..." class="h2 text-middle" textWrap="true"></Label>
+          <Label [text]="'demos.loading' | translate" class="h2 text-middle" textWrap="true"></Label>
           <ActivityIndicator busy="true" marginLeft="5" width="26" height="26"></ActivityIndicator>
         </StackLayout>
 
