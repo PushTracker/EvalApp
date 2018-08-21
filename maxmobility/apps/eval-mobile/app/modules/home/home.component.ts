@@ -50,7 +50,7 @@ export class HomeComponent {
       Route: '/eval-entry'
     },
     {
-      Image: '~/assets/images/Training.jpg',
+      Image: '~/assets/images/training.jpg',
       Description: 'menu.training',
       Route: '/training'
     },
