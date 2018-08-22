@@ -12,6 +12,7 @@ import * as email from 'nativescript-email';
 import { ImageCropper } from 'nativescript-imagecropper';
 import * as LS from 'nativescript-localstorage';
 import { Subscription } from 'rxjs';
+import * as http from 'tns-core-modules/http';
 import * as imageSource from 'tns-core-modules/image-source';
 import { isIOS } from 'tns-core-modules/platform';
 import { alert, confirm } from 'tns-core-modules/ui/dialogs';
@@ -27,6 +28,11 @@ export class AccountComponent implements OnInit {
   fsKeyPrefix = 'AccountComponent.';
   fsKeyProfilePicture = 'ProfilePicture';
   user: Kinvey.User = this._userService.user;
+
+  /**
+   * Value of the hidden Did You Know textfield for Devon to send data to Kinvey to trigger push notifications.
+   */
+  didyouknow: string;
   languages = new ValueList<string>(
     this._translateService.getLangs().map(l => {
       return { value: l, display: this._translateService.instant('languages.' + l) };
@@ -292,6 +298,27 @@ export class AccountComponent implements OnInit {
 
   onDebugMenuTap() {
     this._routerExtensions.navigate(['/settings']);
+  }
+
+  /**
+   * Submits the value in the textview (didyouknow data value) to Kinvey endpoint
+   * which sends out a push notification to users.
+   */
+  async submitDidYouKnow() {
+    console.log('submitDidYouKnow tapped');
+    try {
+      const response = await http.request({
+        method: 'POST',
+        url: 'https://baas.kinvey.com/rpc/kid_SyIIDJjdM/custom/didyouknow',
+        headers: { 'Content-Type': 'application/json' },
+        content: JSON.stringify({
+          text: this.didyouknow
+        })
+      });
+      console.log('response', response);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   private _saveUserToKinvey() {
