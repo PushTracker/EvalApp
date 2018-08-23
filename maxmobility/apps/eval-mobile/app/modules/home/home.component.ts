@@ -45,7 +45,7 @@ export class HomeComponent {
 
   evalItems = [
     {
-      Image: '~/assets/images/evaluation.jpg',
+      Image: '~/assets/images/evaluation.png',
       Description: 'menu.eval',
       Route: '/eval-entry'
     },
