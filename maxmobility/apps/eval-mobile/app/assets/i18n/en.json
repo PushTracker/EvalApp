@@ -135,20 +135,6 @@
       "Route": "/video"
     },
     {
-      "Url": "3B-6ked84us",
-      "Description": "This video covers the basic operation and functionality of the PushTracker App.",
-      "Title": "Intro to the PushTracker App",
-      "Thumb": "~/assets/images/intro-PushTracker-app-thumb.jpg",
-      "Route": "/video"
-    },
-    {
-      "Url": "3B-6ked84us",
-      "Description": "This video covers the basic operation and functionality of the Smart Evaluation App.",
-      "Title": "Intro to the Smart Evaluation App",
-      "Thumb": "~/assets/images/intro-PushTracker-app-thumb.jpg",
-      "Route": "/video"
-    },
-    {
       "Url": "45Kj7zJpDcM",
       "Description": "This video covers the steps to perform when doing a SmartDrive Evaluation or Training",
       "Title": "SmartDrive Evaluation and Training",
