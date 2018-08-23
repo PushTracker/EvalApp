@@ -12,9 +12,10 @@ import * as email from 'nativescript-email';
 import { ImageCropper } from 'nativescript-imagecropper';
 import * as LS from 'nativescript-localstorage';
 import { Subscription } from 'rxjs';
+import * as http from 'tns-core-modules/http';
 import * as imageSource from 'tns-core-modules/image-source';
 import { isIOS } from 'tns-core-modules/platform';
-import { alert, confirm } from 'tns-core-modules/ui/dialogs';
+import { alert, confirm, prompt } from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
 
 @Component({
@@ -27,6 +28,11 @@ export class AccountComponent implements OnInit {
   fsKeyPrefix = 'AccountComponent.';
   fsKeyProfilePicture = 'ProfilePicture';
   user: Kinvey.User = this._userService.user;
+
+  /**
+   * Value of the hidden Did You Know textfield for Devon to send data to Kinvey to trigger push notifications.
+   */
+  didyouknow: string;
   languages = new ValueList<string>(
     this._translateService.getLangs().map(l => {
       return { value: l, display: this._translateService.instant('languages.' + l) };
@@ -292,6 +298,63 @@ export class AccountComponent implements OnInit {
 
   onDebugMenuTap() {
     this._routerExtensions.navigate(['/settings']);
+  }
+
+  /**
+   * Submits the value in the textview (didyouknow data value) to Kinvey endpoint
+   * which sends out a push notification to users.
+   */
+  async submitDidYouKnow() {
+    console.log('submitDidYouKnow tapped');
+    // prompt for the private key to make sure before sending
+    const result = await prompt({
+      message: 'Enter the private key?',
+      cancelable: true,
+      okButtonText: 'Enter',
+      cancelButtonText: 'Cancel'
+    });
+
+    // if prompt text is empty just return
+    if (!result.text) {
+      return;
+    }
+
+    try {
+      // use the authtoken that is returned during a login for the endpoint auth
+      const token = (this._userService.user._kmd as any).authtoken;
+      const response = await http.request({
+        method: 'POST',
+        url: 'https://baas.kinvey.com/rpc/kid_SyIIDJjdM/custom/didyouknow',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Kinvey ${token}`
+        },
+        content: JSON.stringify({
+          key: result.text,
+          text: this.didyouknow
+        })
+      });
+
+      console.log('response', response);
+
+      // if error show alert with error from Kinvey endpoint
+      if (response.statusCode !== 200) {
+        this._loggingService.logException(new Error(response.content.toString()));
+        const message = response.content.toJSON().debug ? `${response.content.toJSON().debug}` : 'Error sending data.';
+        alert({
+          message,
+          okButtonText: 'Okay'
+        });
+      } else {
+        alert({
+          message: 'Request successful to save Did You Know',
+          okButtonText: 'Okay'
+        });
+      }
+    } catch (error) {
+      this._loggingService.logException(error);
+      alert(error);
+    }
   }
 
   private _saveUserToKinvey() {
