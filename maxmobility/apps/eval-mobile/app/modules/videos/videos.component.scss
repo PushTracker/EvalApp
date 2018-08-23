@@ -1,35 +1,10 @@
 // Custom common variables
 @import '../../scss/common';
-
-.thumb {
-
-    width: 125;
-    height: 125;
-    margin: 15, 5, 15, 15;
-    border: solid;
-        border-radius: 3;
-        // background-color: $permobil-charcoal;
-}
-
-.title {
-    text-align: left;
-    font-size: 17;
-    //font-weight: 350;
-    color: #fff;
-    margin: 25, 5, 5, 10;
-}
-
-.desc {
-    text-align: left;
-    font-size: 17;
-    font-weight: 300;
-    color: #fff;
-    margin: 5, 5, 15, 10;
-}
+@import '../../scss/variables';
 
 .video-layout {
   width: 150;
-  margin: 0, 10, 15, 15;
+  margin: 10, 10, 15, 15;
 
   .video-title {
     height: 150;
@@ -38,6 +13,8 @@
     background-position: center;
     background-size: 100% 100%;
     border-radius: 4;
+    padding: 5;
+
     label {
       font-family: $os-Light;
       color: $white;
@@ -49,12 +26,14 @@
       vertical-align: middle;
     }
   }
+}
 
-  .video-description {
-    font-family: $os-Light;
-    color: $permobil-charcoal;
-    font-size: 14;
-    font-weight: 400;
-    margin: 5, 0, 0, 0;
-  }
+.video-description {
+  font-family: $os-Light;
+  color: $white;
+  font-weight: 400;
+  margin: 5;
+  font-size: 17;
+  margin: 5, 5, 15, 10;
+  vertical-align: middle;
 }
