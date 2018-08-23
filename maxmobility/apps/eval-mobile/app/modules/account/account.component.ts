@@ -33,6 +33,9 @@ export class AccountComponent implements OnInit {
    * Value of the hidden Did You Know textfield for Devon to send data to Kinvey to trigger push notifications.
    */
   didyouknow: string;
+
+  isAdminAccount = false;
+
   languages = new ValueList<string>(
     this._translateService.getLangs().map(l => {
       return { value: l, display: this._translateService.instant('languages.' + l) };
@@ -72,6 +75,8 @@ export class AccountComponent implements OnInit {
   ) {
     this._page.enableSwipeBackNavigation = false;
     this.imageCropper = new ImageCropper();
+    this.isAdminAccount = this._userService.user.email === 'devon.doebele@permobil.com';
+    console.log('isAdmin', this.isAdminAccount);
   }
 
   ngOnInit() {
