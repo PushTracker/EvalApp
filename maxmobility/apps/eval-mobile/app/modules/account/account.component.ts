@@ -314,20 +314,46 @@ export class AccountComponent implements OnInit {
       cancelButtonText: 'Cancel'
     });
 
-    // if prompt is good then we send the request
+    // if prompt text is empty just return
+    if (!result.text) {
+      return;
+    }
+
     try {
+      // use the authtoken that is returned during a login for the endpoint auth
+      const token = (this._userService.user._kmd as any).authtoken;
       const response = await http.request({
         method: 'POST',
         url: 'https://baas.kinvey.com/rpc/kid_SyIIDJjdM/custom/didyouknow',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Kinvey ${token}`
+        },
         content: JSON.stringify({
           key: result.text,
           text: this.didyouknow
         })
       });
+
       console.log('response', response);
+
+      // if error show alert with error from Kinvey endpoint
+      if (response.statusCode !== 200) {
+        this._loggingService.logException(new Error(response.content.toString()));
+        const message = response.content.toJSON().debug ? `${response.content.toJSON().debug}` : 'Error sending data.';
+        alert({
+          message,
+          okButtonText: 'Okay'
+        });
+      } else {
+        alert({
+          message: 'Request successful to save Did You Know',
+          okButtonText: 'Okay'
+        });
+      }
     } catch (error) {
-      console.log(error);
+      this._loggingService.logException(error);
+      alert(error);
     }
   }
 
