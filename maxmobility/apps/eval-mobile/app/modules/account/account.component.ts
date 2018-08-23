@@ -15,7 +15,7 @@ import { Subscription } from 'rxjs';
 import * as http from 'tns-core-modules/http';
 import * as imageSource from 'tns-core-modules/image-source';
 import { isIOS } from 'tns-core-modules/platform';
-import { alert, confirm } from 'tns-core-modules/ui/dialogs';
+import { alert, confirm, prompt } from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
 
 @Component({
@@ -306,12 +306,22 @@ export class AccountComponent implements OnInit {
    */
   async submitDidYouKnow() {
     console.log('submitDidYouKnow tapped');
+    // prompt for the private key to make sure before sending
+    const result = await prompt({
+      message: 'Enter the private key?',
+      cancelable: true,
+      okButtonText: 'Enter',
+      cancelButtonText: 'Cancel'
+    });
+
+    // if prompt is good then we send the request
     try {
       const response = await http.request({
         method: 'POST',
         url: 'https://baas.kinvey.com/rpc/kid_SyIIDJjdM/custom/didyouknow',
         headers: { 'Content-Type': 'application/json' },
         content: JSON.stringify({
+          key: result.text,
           text: this.didyouknow
         })
       });
