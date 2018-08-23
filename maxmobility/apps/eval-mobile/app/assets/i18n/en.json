@@ -226,6 +226,10 @@
       "Image": "~/assets/images/gifs/PT-SD-CONNECT2.gif",
       "Label": "Pairing Your PushTracker to Your SmartDrive",
       "Bullets": [
+        "For a PushTracker that has not been paired to a SmartDrive, press the left button and you will immediately see the PT (Bt symobol) SD icon.",
+        "Then press the left button again to initiate pairing.",
+        "You will see a checkmark on the PushTracker when successful",
+        "For a PushTracker that needs to be re-paired to any SmartDrive:",
         "Press and hold the right flat button on your PushTracker for three seconds to enter the settings menu",
         "Press the right button to scroll to the PT-SD icon.",
         "Press the left raised button to initiate pairing your PushTracker to your SmartDrive."
