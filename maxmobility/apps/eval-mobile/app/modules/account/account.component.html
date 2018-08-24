@@ -37,11 +37,11 @@
       <!-- <Button class="acct-btn"
               text="Debug Menu"
               (tap)="onDebugMenuTap()"></Button> -->
-      
+
       // hidden layout for Devon to submit 'Did You Knows' to Kinvey which triggers Push Notifications
       <StackLayout [visibility]="isAdminAccount ? 'visible' : 'collapsed'" borderColor="orange" borderRadius="4" backgroundColor="#fff"
         margin="5">
-        <TextView hint="Did you know..." [text]="didyouknow" editable="true"></TextView>
+        <TextView hint="Did you know..." [(ngModel)]="didyouknow" editable="true"></TextView>
         <Button text="Submit" (tap)="submitDidYouKnow()"></Button>
       </StackLayout>
 
