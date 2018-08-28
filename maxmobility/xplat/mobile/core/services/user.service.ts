@@ -4,6 +4,7 @@ import * as Kinvey from 'kinvey-nativescript-sdk';
 import { Push } from 'kinvey-nativescript-sdk/push';
 import * as fs from 'tns-core-modules/file-system/file-system';
 import { alert } from 'tns-core-modules/ui/dialogs';
+import { LoggingService } from './logging.service';
 
 @Injectable()
 export class UserService {
@@ -12,7 +13,7 @@ export class UserService {
   public static Kinvey_Host_Url = 'https://baas.kinvey.com/';
 
   private static hasRegistered = false;
-  constructor() {}
+  constructor(private _loggingService: LoggingService) {}
 
   /**
    * Will return the active user from the Kinvey auth.
@@ -109,6 +110,7 @@ export class UserService {
       })
         .then((deviceToken: string) => {
           console.log(`registered push notifications: ${deviceToken}`);
+          this._loggingService.logMessage(`registered push notifications: ${deviceToken}`);
           UserService.hasRegistered = true;
           Push.onNotification((data: any) => {
             console.log('RECEIVED NOTIFICATION:');
@@ -117,6 +119,7 @@ export class UserService {
           });
         })
         .catch((error: Error) => {
+          this._loggingService.logException(error);
           console.log(`Couldn't register push notifications: ${error}`);
         });
     }

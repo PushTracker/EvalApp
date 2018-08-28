@@ -92,33 +92,38 @@ export class DemoService {
   }
 
   async load(): Promise<any> {
-    DemoService.Demos.splice(0, DemoService.Demos.length);
+    try {
+      DemoService.Demos.splice(0, DemoService.Demos.length);
 
-    await this.login();
-    await this.datastore.sync();
-    const query = new Kinvey.Query();
-    query.equalTo('owner_id', Kinvey.User.getActiveUser()._id);
-    query.ascending('smartdrive_serial_number');
-    const stream = this.datastore.find(query);
+      await this.login();
+      await this.datastore.sync();
+      const query = new Kinvey.Query();
+      query.equalTo('owner_id', Kinvey.User.getActiveUser()._id);
+      query.ascending('smartdrive_serial_number');
+      const stream = this.datastore.find(query);
 
-    const data = await stream.toPromise();
-    let demos = data.map((demoData: Demo) => {
-      demoData.id = (demoData as any)._id;
+      const data = await stream.toPromise();
 
-      // BRAD = attempt to fix https://github.com/PushTracker/EvalApp/issues/144 for loading the base64 images
-      // if the unit has the base64 string and a value in the sd_image then they took a picture and saved it
-      // if not null it out so the `Image` databinding in the UI doesn't crash trying to bind
-      if (demoData.sd_image && demoData.sd_image_base64) {
-        const source = fromBase64(demoData.sd_image_base64);
-        demoData.sd_image = source;
-      } else {
-        demoData.sd_image = null;
-      }
+      let demos = data.map((demoData: Demo) => {
+        demoData.id = (demoData as any)._id;
 
-      return new Demo(demoData);
-    });
+        // BRAD = attempt to fix https://github.com/PushTracker/EvalApp/issues/144 for loading the base64 images
+        // if the unit has the base64 string and a value in the sd_image then they took a picture and saved it
+        // if not null it out so the `Image` databinding in the UI doesn't crash trying to bind
+        if (demoData.sd_image && demoData.sd_image_base64) {
+          const source = fromBase64(demoData.sd_image_base64);
+          demoData.sd_image = source;
+        } else {
+          demoData.sd_image = null;
+        }
 
-    DemoService.Demos.splice(0, DemoService.Demos.length, ...demos);
+        return new Demo(demoData);
+      });
+
+      DemoService.Demos.splice(0, DemoService.Demos.length, ...demos);
+    } catch (error) {
+      this._logService.logException(error);
+    }
   }
 
   private update(demoModel: Demo): Promise<any> {
