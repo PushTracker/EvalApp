@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { Response } from '@angular/http';
 import { Demo } from '@maxmobility/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
@@ -21,7 +21,7 @@ export class DemoService {
 
   private datastore = Kinvey.DataStore.collection<any>('SmartDrives');
 
-  constructor(private _logService: LoggingService) {
+  constructor(@Inject(LoggingService) private _logService: LoggingService) {
     //this.load();
   }
 

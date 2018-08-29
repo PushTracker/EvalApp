@@ -3,10 +3,12 @@ import { Demo } from '@maxmobility/core';
 import { DemoService, FileService, FirmwareService, LoggingService, UserService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { RouterExtensions } from 'nativescript-angular/router';
+import { Push } from 'kinvey-nativescript-sdk/push';
 import { Feedback, FeedbackPosition, FeedbackType } from 'nativescript-feedback';
 import { Color } from 'tns-core-modules/color';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
 import { Page } from 'tns-core-modules/ui/page';
+import { alert } from 'tns-core-modules/ui/dialogs';
 
 @Component({
   selector: 'Home',
@@ -88,7 +90,22 @@ export class HomeComponent {
     this._fileService.downloadTranslationFiles();
 
     // REGISTER FOR PUSH NOTIFICATIONS
-    this._userService.registerForPushNotifications();
+    this._userService
+      .registerForPushNotifications()
+      .then((deviceToken: string) => {
+        console.log(`registered push notifications: ${deviceToken}`);
+        this._logService.logMessage(`registered push notifications: ${deviceToken}`);
+        UserService.hasRegistered = true;
+        Push.onNotification((data: any) => {
+          console.log('RECEIVED NOTIFICATION:');
+          console.log(JSON.stringify(data));
+          alert(`Message received!\n${JSON.stringify(data)}`);
+        });
+      })
+      .catch((error: Error) => {
+        this._logService.logException(error);
+        console.log(`Couldn't register push notifications: ${error}`);
+      });
 
     // delaying since it typically won't be in the viewport initially on majority of devices
     setTimeout(() => {
