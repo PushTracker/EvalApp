@@ -38,6 +38,9 @@
     "faq": "FAQs",
     "faq-desc": "Some frequently asked questions"
   },
+  "evals": {
+    "title": "Evaluations"
+  },
   "eval-entry": {
     "title": "Perform an Evaluation",
     "heading": "Questionnaire",

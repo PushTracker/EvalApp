@@ -52,6 +52,11 @@ export class HomeComponent {
       Route: '/eval-entry'
     },
     {
+      Image: 'res://icon',
+      Description: 'Evals',
+      Route: '/evals'
+    },
+    {
       Image: '~/assets/images/training.jpg',
       Description: 'menu.training',
       Route: '/training'

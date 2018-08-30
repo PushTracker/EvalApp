@@ -1,63 +1,16 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Response } from '@angular/http';
-import { Trial } from '@maxmobility/core';
+import { Evaluation } from '@maxmobility/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
-import { Observable } from 'tns-core-modules/data/observable';
-import { ObservableArray } from 'tns-core-modules/data/observable-array';
-
-export class Evaluation extends Observable {
-  // public members
-  _id = null;
-  pushing_pain = 0;
-  pushing_fatigue = 0;
-  impact_on_independence = 0;
-  flat_difficulty = 0.0;
-  ramp_difficulty = 0.0;
-  incline_difficulty = 0.0;
-  other_difficulty = 0.0;
-  years = '';
-  chair = '';
-  trials: ObservableArray<Trial> = new ObservableArray();
-
-  // private members
-
-  // functions
-
-  constructor(obj?: any) {
-    super();
-    if (obj !== null && obj !== undefined) {
-      this.fromObject(obj);
-    }
-  }
-
-  fromObject(obj: any) {
-    Object.assign(this, obj);
-  }
-
-  data(): any {
-    var obj = {
-      trials: []
-    };
-    Object.keys(this).map(k => {
-      if (typeof this[k] === 'number' || typeof this[k] === 'string') {
-        obj[k] = this[k];
-      }
-    });
-    this.trials.map(t => {
-      obj.trials.push(t.data());
-    });
-    return obj;
-  }
-}
+import { LoggingService } from './logging.service';
 
 // tslint:disable-next-line:max-classes-per-file
 @Injectable()
 export class EvaluationService {
   evaluation: Evaluation = new Evaluation();
-
   private datastore = Kinvey.DataStore.collection<Evaluation>('Evaluations');
 
-  constructor(private zone: NgZone) {}
+  constructor(private _logService: LoggingService, private zone: NgZone) {}
 
   // tslint:disable-next-line:member-ordering
   createEvaluation() {
@@ -72,6 +25,29 @@ export class EvaluationService {
         this.createEvaluation();
       })
       .catch(this.handleErrors);
+  }
+
+  async loadEvaluations(): Promise<any> {
+    try {
+      await this.login();
+      await this.datastore.sync();
+      const query = new Kinvey.Query();
+      // query.equalTo(this.evaluation.creator_id, Kinvey.User.getActiveUser()._id);
+      const stream = this.datastore.find(query);
+      const data = await stream.toPromise();
+      console.log(data);
+      return data;
+    } catch (error) {
+      this._logService.logException(error);
+    }
+  }
+
+  private login(): Promise<any> {
+    if (!!Kinvey.User.getActiveUser()) {
+      return Promise.resolve();
+    } else {
+      return Promise.reject('No active user!');
+    }
   }
 
   private handleErrors(error: Response) {

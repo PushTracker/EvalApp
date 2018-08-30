@@ -67,6 +67,11 @@ const routes: Routes = [
     canActivate: [AuthGuardService]
   },
   {
+    path: 'evals',
+    loadChildren: './modules/evals/evals.module#EvalsModule',
+    canActivate: [AuthGuardService]
+  },
+  {
     path: 'eval-entry',
     loadChildren: './modules/eval-entry-view/eval-entry.module#EvalEntryModule',
     canActivate: [AuthGuardService]

@@ -1,0 +1,13 @@
+<ActionBar class="action-bar" flat="true" [title]="'evals.title' | translate">
+    <NavigationButton android:visibility="collapse" tap="onNavBtnTap"></NavigationButton>
+</ActionBar>
+
+<StackLayout>
+    <ListView height="100%" [items]="evals" (itemTap)="onEvalItemTap($event)" class="list-group">
+        <ng-template let-item="item" let-odd="odd" let-even="even">
+            <StackLayout>
+                <Label [text]="item.pushing_pain" class="list-group-item"></Label>
+            </StackLayout>
+        </ng-template>
+    </ListView>
+</StackLayout>

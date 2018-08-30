@@ -1,5 +1,6 @@
 export * from './user-model';
 export * from './daily-info';
+export * from './evaluation.model';
 export * from './pairing.model';
 export * from './smartdrive.model';
 export * from './pushtracker.model';
