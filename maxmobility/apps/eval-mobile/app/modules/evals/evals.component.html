@@ -3,10 +3,19 @@
 </ActionBar>
 
 <StackLayout>
-    <ListView height="100%" [items]="evals" (itemTap)="onEvalItemTap($event)" class="list-group">
-        <ng-template let-item="item" let-odd="odd" let-even="even">
+
+    <GridLayout rows="*" columns="auto, auto" orientation="horizontal" *ngIf="!evalsLoaded" class="loader">
+        <Label col="0" text="Loading Evaluations..." class="h3" textWrap="true"></Label>
+        <ActivityIndicator col="1" busy="true" width="26" height="26"></ActivityIndicator>
+    </GridLayout>
+
+
+    <ListView height="100%" [items]="evals" *ngIf="evalsLoaded" (itemTap)="onEvalItemTap($event)" class="list-group">
+        <ng-template let-item="item">
             <StackLayout>
-                <Label [text]="item.pushing_pain" class="list-group-item"></Label>
+                <Label [text]="'Pushing Pain: ' + item.pushing_pain" class="list-group-item"></Label>
+                <Label [text]="'Chair: ' + item.chair" class="list-group-item"></Label>
+                <Label [text]="'Status: ' + item.status" class="list-group-item" textWrap="true"></Label>
             </StackLayout>
         </ng-template>
     </ListView>

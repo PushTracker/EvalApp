@@ -1,0 +1,14 @@
+// Custom common variables
+@import '../../scss/common';
+@import '../../scss/variables';
+
+.loader {
+  margin: 5;
+  vertical-align: middle;
+  horizontal-align: middle;
+  width: 100%;
+
+  ActivityIndicator {
+    horizontal-align: middle;
+  }
+}
