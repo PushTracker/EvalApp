@@ -7,7 +7,7 @@ import { LoggingService } from './logging.service';
 // tslint:disable-next-line:max-classes-per-file
 @Injectable()
 export class EvaluationService {
-  evaluation: Evaluation = new Evaluation();
+  evaluation: Evaluation = null;
   private datastore = Kinvey.DataStore.collection<Evaluation>('Evaluations');
 
   constructor(private _logService: LoggingService, private zone: NgZone) {}
@@ -32,7 +32,8 @@ export class EvaluationService {
       await this.login();
       await this.datastore.sync();
       const query = new Kinvey.Query();
-      // query.equalTo(this.evaluation.creator_id, Kinvey.User.getActiveUser()._id);
+      query.equalTo('creator_id', Kinvey.User.getActiveUser()._id);
+
       const stream = this.datastore.find(query);
       const data = await stream.toPromise();
       console.log(data);

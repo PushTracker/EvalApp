@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { EvaluationService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { RouterExtensions } from 'nativescript-angular/router';
+import { confirm } from 'tns-core-modules/ui/dialogs';
 import * as app from 'tns-core-modules/application';
+import { EvaluationStatus, Evaluation } from '@maxmobility/core';
 
 @Component({
   selector: 'EvalEntry',
@@ -24,10 +26,24 @@ export class EvalEntryComponent implements OnInit {
   constructor(
     private routerExtensions: RouterExtensions,
     private _evaluationService: EvaluationService,
-    private translateService: TranslateService
+    private _translateService: TranslateService
   ) {
     // make sure we clear out any previous evaluation info!
-    this._evaluationService.createEvaluation();
+    if (this.evaluation !== null) {
+      console.log('the evaluation is not complete');
+      confirm({
+        message: 'You have an evaluation that has not been completed. Would you like to continue working on it?',
+        okButtonText: 'Yes',
+        cancelButtonText: 'No'
+      }).then(result => {
+        console.log('confirm result', result);
+        if (result === false) {
+          this._evaluationService.evaluation = new Evaluation();
+        }
+      });
+    } else {
+      this._evaluationService.evaluation = new Evaluation();
+    }
   }
 
   onSliderUpdate(key, args) {
@@ -48,21 +64,21 @@ export class EvalEntryComponent implements OnInit {
   onPushingPainChecked(args): void {
     this.hasPushingPain = args.value;
     if (!this.hasPushingPain) {
-      this.evaluation['pushing_pain'] = 0;
+      this.evaluation.pushing_pain = 0;
     }
   }
 
   onPushingFatigueChecked(args) {
     this.hasPushingFatigue = args.value;
     if (!this.hasPushingFatigue) {
-      this.evaluation['pushing_fatigue'] = 0;
+      this.evaluation.pushing_fatigue = 0;
     }
   }
 
   onIndependenceChecked(args): void {
     this.impactsIndependence = args.value;
     if (!this.impactsIndependence) {
-      this.evaluation['impact_on_independence'] = 0;
+      this.evaluation.impact_on_independence = 0;
     }
   }
 

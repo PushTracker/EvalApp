@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Trial, EvaluationStatus } from '@maxmobility/core';
+import { Trial, EvaluationStatus, Evaluation } from '@maxmobility/core';
 import { EvaluationService, LoggingService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import * as mustache from 'mustache';
@@ -9,6 +9,7 @@ import { SnackBar } from 'nativescript-snackbar';
 import { isAndroid, isIOS } from 'platform';
 import { confirm } from 'tns-core-modules/ui/dialogs';
 import { TextField } from 'tns-core-modules/ui/text-field';
+import { Kinvey } from 'kinvey-nativescript-sdk';
 
 @Component({
   selector: 'Summary',
@@ -211,8 +212,13 @@ export class SummaryComponent {
     // this is quick and dirty to confirm reusing the method with status value
     // related: https://github.com/PushTracker/EvalApp/issues/190
     this.evaluation.status = EvaluationStatus.Complete;
+    this.evaluation.creator_id = Kinvey.User.getActiveUser()._id;
 
     this._evaluationService.save();
+
+    // after saving to kinvey, null the instance
+    this._evaluationService.evaluation = null;
+
     // now go back to dashboard
     this.routerExtensions.navigate(['/home'], {
       // clearHistory: true,
