@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Trial } from '@maxmobility/core';
+import { Trial, EvaluationStatus } from '@maxmobility/core';
 import { EvaluationService, LoggingService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import * as mustache from 'mustache';
@@ -205,6 +205,12 @@ export class SummaryComponent {
         this._loggingService.logException(error);
         console.error(error);
       });
+
+    // Brad - if user is here saving the eval it should be complete
+    // we can add better tracking to check for specific values
+    // this is quick and dirty to confirm reusing the method with status value
+    // related: https://github.com/PushTracker/EvalApp/issues/190
+    this.evaluation.status = EvaluationStatus.Complete;
 
     this._evaluationService.save();
     // now go back to dashboard
