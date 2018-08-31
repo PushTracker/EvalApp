@@ -9,6 +9,8 @@
         <ActivityIndicator col="1" busy="true" width="26" height="26"></ActivityIndicator>
     </GridLayout>
 
+    <Label text="No Evaluations Found." *ngIf="evalsLoaded && evals.length < 1" textWrap="true"></Label>
+
 
     <ListView height="100%" [items]="evals" *ngIf="evalsLoaded" (itemTap)="onEvalItemTap($event)" class="list-group">
         <ng-template let-item="item">
