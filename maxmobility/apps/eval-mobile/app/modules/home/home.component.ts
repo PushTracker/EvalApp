@@ -52,7 +52,7 @@ export class HomeComponent {
       Route: '/eval-entry'
     },
     {
-      Image: 'res://icon',
+      Image: '~/assets/images/trial-history.png',
       Description: 'Evals',
       Route: '/evals'
     },
