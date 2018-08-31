@@ -54,7 +54,8 @@
         <RadListView row="3" colSpan="2" ios:height="210" [items]="evalItems">
           <ng-template tkListItemTemplate let-item="item">
             <GridLayout rows="140, auto" class="list-item-layout">
-              <Image row="0" [src]="item.Image" (tap)="evalThumbTapped(item)" stretch="aspectFill"></Image>
+              <Image row="0" colSpan="2" src="~/assets/images/background_1.jpg" stretch="aspectFill"></Image>
+              <Image row="0" colSpan="2" [src]="item.Image" margin="20" (tap)="evalThumbTapped(item)" stretch="aspectFit"></Image>
               <Label row="1" [text]="item.Description | translate" textWrap="true"></Label>
             </GridLayout>
           </ng-template>

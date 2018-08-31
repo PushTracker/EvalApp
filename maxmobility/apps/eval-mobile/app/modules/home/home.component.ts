@@ -47,22 +47,22 @@ export class HomeComponent {
 
   evalItems = [
     {
-      Image: '~/assets/images/evaluation.jpg',
+      Image: '~/assets/images/evaluation.png',
       Description: 'menu.eval',
       Route: '/eval-entry'
     },
     {
-      Image: '~/assets/images/trial-history.png',
+      Image: '~/assets/images/trial-history-transparent.png',
       Description: 'Evals',
       Route: '/evals'
     },
     {
-      Image: '~/assets/images/training.jpg',
+      Image: '~/assets/images/training-transparent.png',
       Description: 'menu.training',
       Route: '/training'
     },
     {
-      Image: '~/assets/images/trial.jpg',
+      Image: '~/assets/images/trial-transparent.png',
       Description: 'menu.trial',
       Route: '/trial'
     }
