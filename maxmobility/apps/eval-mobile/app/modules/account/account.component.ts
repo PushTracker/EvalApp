@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
-import { CLog } from '@maxmobility/core';
+import { CLog, DidYouKnow } from '@maxmobility/core';
 import { FileService, LoggingService, ProgressService, UserService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
@@ -29,10 +29,7 @@ export class AccountComponent implements OnInit {
   fsKeyProfilePicture = 'ProfilePicture';
   user: Kinvey.User = this._userService.user;
 
-  /**
-   * Value of the hidden Did You Know textfield for Devon to send data to Kinvey to trigger push notifications.
-   */
-  didyouknow: string;
+  didyouknow = new DidYouKnow();
 
   isAdminAccount = false;
 
@@ -325,6 +322,14 @@ export class AccountComponent implements OnInit {
     }
 
     try {
+      console.log('saving DidYouKnow to Kinvey...');
+      await Kinvey.DataStore.collection('DidYouKnow').save({
+        all_users: this.didyouknow.all_users,
+        creator_id: this._userService.user._id,
+        text: this.didyouknow.text
+      });
+      console.log('DidYouKnow saved to Kinvey data collection');
+
       // use the authtoken that is returned during a login for the endpoint auth
       const token = (this._userService.user._kmd as any).authtoken;
       const response = await http.request({
@@ -336,7 +341,8 @@ export class AccountComponent implements OnInit {
         },
         content: JSON.stringify({
           key: result.text,
-          text: this.didyouknow
+          text: this.didyouknow.text,
+          all_users: this.didyouknow.all_users
         })
       });
 

@@ -41,7 +41,12 @@
       // hidden layout for Devon to submit 'Did You Knows' to Kinvey which triggers Push Notifications
       <StackLayout [visibility]="isAdminAccount ? 'visible' : 'collapsed'" borderColor="orange" borderRadius="4" backgroundColor="#fff"
         margin="5">
-        <TextView hint="Did you know..." [(ngModel)]="didyouknow" editable="true"></TextView>
+        <GridLayout rows="auto" columns="auto, *">
+          <Label col="0" text="Send to All Smart Eval Users?" textWrap="true"></Label>
+          <Switch col="1" [(ngModel)]="didyouknow.all_users" class="switch" horizontalAlignment="right"></Switch>
+        </GridLayout>
+
+        <TextView hint="Did you know..." [(ngModel)]="didyouknow.text" editable="true"></TextView>
         <Button text="Submit" (tap)="submitDidYouKnow()"></Button>
       </StackLayout>
 
