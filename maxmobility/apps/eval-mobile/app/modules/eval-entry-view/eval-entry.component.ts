@@ -37,7 +37,15 @@ export class EvalEntryComponent implements OnInit {
         cancelButtonText: 'No'
       }).then(result => {
         console.log('confirm result', result);
-        if (result === false) {
+        if (result === true) {
+          console.log('need to load the last data set on the evaluation...');
+          console.log(this.evaluation);
+          // we have the data on the `evaluation` on the service so just let it load
+          // we have to check the toggles bc we have props here that set them false when the component loads ^^^
+          this.hasPushingFatigue = this.evaluation.pushing_fatigue ? true : false;
+          this.hasPushingPain = this.evaluation.pushing_pain ? true : false;
+          this.impactsIndependence = this.evaluation.impact_on_independence ? true : false;
+        } else {
           this._evaluationService.evaluation = new Evaluation();
         }
       });
