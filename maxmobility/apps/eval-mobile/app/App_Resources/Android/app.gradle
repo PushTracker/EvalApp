@@ -2,6 +2,10 @@
 dependencies {
 }
 
+repositories {
+  google() // Google's Maven repository
+}
+
 android {  
   defaultConfig {  
     generatedDensities = []
