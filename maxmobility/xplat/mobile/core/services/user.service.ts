@@ -95,35 +95,26 @@ export class UserService {
   }
 
   registerForPushNotifications() {
-    if (!UserService.hasRegistered) {
-      return Push.register({
-        android: {
-          senderID: '1053576736707'
-        },
-        ios: {
-          alert: true,
-          badge: true,
-          sound: true
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!UserService.hasRegistered) {
+          const register = await Push.register({
+            android: {
+              senderID: '1053576736707'
+            },
+            ios: {
+              alert: true,
+              badge: true,
+              sound: true
+            }
+          });
+          console.log('register', register);
+          resolve();
         }
-      });
-      // .then((deviceToken: string) => {
-      //   console.log(`registered push notifications: ${deviceToken}`);
-      //   this._logService.logMessage(`registered push notifications: ${deviceToken}`);
-      //   UserService.hasRegistered = true;
-      //   Push.onNotification((data: any) => {
-      //     console.log('RECEIVED NOTIFICATION:');
-      //     console.log(JSON.stringify(data));
-      //     alert(`Message received!\n${JSON.stringify(data)}`);
-      //   });
-      // })
-      // .catch((error: Error) => {
-      //   this._logService.logException(error);
-      //   console.log(`Couldn't register push notifications: ${error}`);
-      // });
-    }
+      } catch (error) {
+        console.log(error);
+        reject(error);
+      }
+    });
   }
-
-  // getUserDetails() {
-  //   return Kinvey.User.getActiveUser().metadata;
-  // }
 }
