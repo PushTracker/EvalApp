@@ -9,7 +9,7 @@ repositories {
 android {  
   defaultConfig {  
     generatedDensities = []
-    applicationId = "com.permobil.smarteval"  
+    applicationId = "com.permobil.smartevaluation"  
 
   }  
   aaptOptions {  

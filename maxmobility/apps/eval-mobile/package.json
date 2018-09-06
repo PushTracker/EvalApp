@@ -85,6 +85,7 @@
     "reflect-metadata": "file:../../node_modules/reflect-metadata",
     "rxjs": "file:../../node_modules/rxjs",
     "tns-core-modules": "^4.2.0",
+    "tslib": "^1.9.3",
     "underscore": "file:../../node_modules/underscore",
     "zone.js": "file:../../node_modules/zone.js"
   },
