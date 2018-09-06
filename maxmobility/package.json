@@ -89,7 +89,7 @@
     "nativescript-social-share": "~1.5.0",
     "nativescript-theme-core": "~1.0.4",
     "nativescript-toast": "^1.4.6",
-    "nativescript-ui-listview": "~3.5.11",
+    "nativescript-ui-listview": "~3.6.1",
     "reflect-metadata": "^0.1.12",
     "rxjs": "^6.2.2",
     "tns-core-modules": "^4.2.0",
