@@ -5,7 +5,7 @@
   "readme": "NativeScript Application",
   "repository": "<fill-your-repository-here>",
   "nativescript": {
-    "id": "com.permobil.smarteval",
+    "id": "com.permobil.smartevaluation",
     "tns-android": {
       "version": "4.2.0"
     },
@@ -62,6 +62,7 @@
     "nativescript-carousel": "file:../../node_modules/nativescript-carousel",
     "nativescript-drop-down": "file:../../node_modules/nativescript-drop-down",
     "nativescript-email": "^1.5.2",
+    "nativescript-fancyalert": "^1.2.0",
     "nativescript-feedback": "file:../../node_modules/nativescript-feedback",
     "nativescript-fresco": "file:../../node_modules/nativescript-fresco",
     "nativescript-geolocation": "^4.3.0",
@@ -71,8 +72,8 @@
     "nativescript-intl": "file:../../node_modules/nativescript-intl",
     "nativescript-iqkeyboardmanager": "file:../../node_modules/nativescript-iqkeyboardmanager",
     "nativescript-loading-indicator": "file:../../node_modules/nativescript-loading-indicator",
-    "nativescript-localstorage": "file:../../node_modules/nativescript-localstorage",
     "nativescript-local-notifications": "^3.0.0",
+    "nativescript-localstorage": "file:../../node_modules/nativescript-localstorage",
     "nativescript-master-technology": "../../node_modules/nativescript-master-technology",
     "nativescript-ngx-fonticon": "file:../../node_modules/nativescript-ngx-fonticon",
     "nativescript-orientation": "^2.2.1",
