@@ -109,7 +109,7 @@ export class UserService {
             }
           });
           console.log('register', register);
-          resolve();
+          resolve(register);
         }
       } catch (error) {
         console.log(error);
