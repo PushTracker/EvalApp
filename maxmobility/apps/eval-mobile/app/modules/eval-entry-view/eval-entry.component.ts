@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Evaluation } from '@maxmobility/core';
 import { EvaluationService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { RouterExtensions } from 'nativescript-angular/router';
-import { confirm } from 'tns-core-modules/ui/dialogs';
 import * as app from 'tns-core-modules/application';
-import { EvaluationStatus, Evaluation } from '@maxmobility/core';
+import { confirm } from 'tns-core-modules/ui/dialogs';
 
 @Component({
   selector: 'EvalEntry',
@@ -30,25 +30,27 @@ export class EvalEntryComponent implements OnInit {
   ) {
     // make sure we clear out any previous evaluation info!
     if (this.evaluation !== null) {
-      console.log('the evaluation is not complete');
-      confirm({
-        message: 'You have an evaluation that has not been completed. Would you like to continue working on it?',
-        okButtonText: 'Yes',
-        cancelButtonText: 'No'
-      }).then(result => {
-        console.log('confirm result', result);
-        if (result === true) {
-          console.log('need to load the last data set on the evaluation...');
-          console.log(this.evaluation);
-          // we have the data on the `evaluation` on the service so just let it load
-          // we have to check the toggles bc we have props here that set them false when the component loads ^^^
-          this.hasPushingFatigue = this.evaluation.pushing_fatigue ? true : false;
-          this.hasPushingPain = this.evaluation.pushing_pain ? true : false;
-          this.impactsIndependence = this.evaluation.impact_on_independence ? true : false;
-        } else {
-          this._evaluationService.evaluation = new Evaluation();
-        }
-      });
+      setTimeout(() => {
+        console.log('the evaluation is not complete');
+        confirm({
+          message: 'You have an evaluation that has not been completed. Would you like to continue working on it?',
+          okButtonText: 'Yes',
+          cancelButtonText: 'No'
+        }).then(result => {
+          console.log('confirm result', result);
+          if (result === true) {
+            console.log('need to load the last data set on the evaluation...');
+            console.log(this.evaluation);
+            // we have the data on the `evaluation` on the service so just let it load
+            // we have to check the toggles bc we have props here that set them false when the component loads ^^^
+            this.hasPushingFatigue = this.evaluation.pushing_fatigue ? true : false;
+            this.hasPushingPain = this.evaluation.pushing_pain ? true : false;
+            this.impactsIndependence = this.evaluation.impact_on_independence ? true : false;
+          } else {
+            this._evaluationService.evaluation = new Evaluation();
+          }
+        });
+      }, 650);
     } else {
       this._evaluationService.evaluation = new Evaluation();
     }

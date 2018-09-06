@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { EvaluationService } from '@maxmobility/mobile';
-import { TranslateService } from '@ngx-translate/core';
-import { RouterExtensions } from 'nativescript-angular/router';
-import * as app from 'tns-core-modules/application';
 import { Evaluation } from '@maxmobility/core';
+import { EvaluationService } from '@maxmobility/mobile';
 
 @Component({
   selector: 'Evals',
@@ -33,6 +30,7 @@ export class EvalsComponent implements OnInit {
       this.evalsLoaded = true;
       console.log('evals', this.evals);
     } catch (error) {
+      this.evalsLoaded = true;
       console.log('ERROR', error);
     }
   }
