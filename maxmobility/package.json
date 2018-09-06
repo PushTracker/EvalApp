@@ -17,6 +17,8 @@
     "sema-bluetooth": "npm i && cd apps/eval-mobile && tns run android --syncAllFiles",
     "semi-bluetooth": "npm i && cd apps/eval-mobile && tns run ios --syncAllFiles",
     "build": "ng build",
+    "bundle-android": "cd apps/eval-mobile && tns run android --bundle --env.aot --env.uglify",
+    "bundle-ios": "cd apps/eval-mobile && tns run ios --bundle --env.aot --env.uglify",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
