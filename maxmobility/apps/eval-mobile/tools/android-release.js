@@ -32,10 +32,12 @@ function askKeystorePassword() {
 }
 
 askKeystorePassword().then(result => {
-  console.log('Executing the android release build process.');
+  console.log(
+    'Executing the android release build process. This will take a few minutes as the entire project is built from scratch. Go get a coffee.'
+  );
   // execute the android release build cmd with the result as password
   exec(
-    `npm run nuki && cd apps/eval-mobile && tns build android --release --key-store-path ./tools/smarteval.keystore --key-store-password ${result} --key-store-alias smartevalkey --key-store-alias-password ${result} --copy-to ./tools/smart-eval.apk`,
+    `npm run nuki && cd apps/eval-mobile && tns build android --release --key-store-path ./tools/smartevaluation.keystore --key-store-password ${result} --key-store-alias smartevaluation --key-store-alias-password ${result} --copy-to ./tools/smart-evaluation.apk`,
     (err, stdout, stderr) => {
       if (err) {
         console.error('Error executing the android-release command.', err);
@@ -43,7 +45,7 @@ askKeystorePassword().then(result => {
       }
 
       console.log(
-        'Android release finished. A new release APK should be located in the _maxmobility/apps/eval-mobile/tools/_ directory.'
+        'Android release finished. A new release APK should be located in the maxmobility/apps/eval-mobile/tools/ directory.'
       );
     }
   );
