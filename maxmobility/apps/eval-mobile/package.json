@@ -5,7 +5,7 @@
   "readme": "NativeScript Application",
   "repository": "<fill-your-repository-here>",
   "nativescript": {
-    "id": "com.permobil.smartevaluation",
+    "id": "com.permobil.smarteval",
     "tns-android": {
       "version": "4.2.0"
     },
@@ -33,6 +33,7 @@
     "start": "tns run ios --emulator --syncAllFiles"
   },
   "dependencies": {
+    "@_/nativescript-swift-fix": "file:./swift-fix",
     "@angular/animations": "file:../../node_modules/@angular/animations",
     "@angular/common": "file:../../node_modules/@angular/common",
     "@angular/compiler": "file:../../node_modules/@angular/compiler",
@@ -60,11 +61,10 @@
     "nativescript-bluetooth": "file:../../nativescript-bluetooth",
     "nativescript-camera": "^4.0.2",
     "nativescript-carousel": "file:../../node_modules/nativescript-carousel",
+    "nativescript-cfalert-dialog": "^1.0.10",
     "nativescript-drop-down": "file:../../node_modules/nativescript-drop-down",
-    "nativescript-email": "^1.5.2",
-    "nativescript-fancyalert": "^1.2.0",
+    "nativescript-email": "^1.5.3",
     "nativescript-feedback": "file:../../node_modules/nativescript-feedback",
-    "nativescript-fresco": "file:../../node_modules/nativescript-fresco",
     "nativescript-geolocation": "^4.3.0",
     "nativescript-gif": "^4.0.1",
     "nativescript-gradient": "file:../../node_modules/nativescript-gradient",
@@ -72,7 +72,6 @@
     "nativescript-intl": "file:../../node_modules/nativescript-intl",
     "nativescript-iqkeyboardmanager": "file:../../node_modules/nativescript-iqkeyboardmanager",
     "nativescript-loading-indicator": "file:../../node_modules/nativescript-loading-indicator",
-    "nativescript-local-notifications": "^3.0.0",
     "nativescript-localstorage": "file:../../node_modules/nativescript-localstorage",
     "nativescript-master-technology": "../../node_modules/nativescript-master-technology",
     "nativescript-ngx-fonticon": "file:../../node_modules/nativescript-ngx-fonticon",
@@ -81,7 +80,7 @@
     "nativescript-sentry": "^1.5.2",
     "nativescript-snackbar": "file:../../node_modules/nativescript-snackbar",
     "nativescript-theme-core": "file:../../node_modules/nativescript-theme-core",
-    "nativescript-toast": "file:../../node_modules/nativescript-toast",
+    "nativescript-toasty": "^1.1.5",
     "nativescript-ui-listview": "~3.5.11",
     "nativescript-youtubeplayer": "^2.2.6",
     "reflect-metadata": "file:../../node_modules/reflect-metadata",
