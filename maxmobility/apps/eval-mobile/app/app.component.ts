@@ -5,6 +5,7 @@ import { Kinvey } from 'kinvey-nativescript-sdk';
 import { registerElement } from 'nativescript-angular/element-registry';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { Carousel, CarouselItem } from 'nativescript-carousel';
+import { CFAlertDialog } from 'nativescript-cfalert-dialog';
 import { Gif } from 'nativescript-gif';
 import * as orientation from 'nativescript-orientation';
 import { Sentry } from 'nativescript-sentry';
@@ -25,6 +26,7 @@ registerElement('Gif', () => Gif);
   template: '<page-router-outlet></page-router-outlet>'
 })
 export class AppComponent {
+  private cfalertDialog = new CFAlertDialog();
   constructor(
     private _translateService: TranslateService,
     private _logService: LoggingService,
@@ -40,6 +42,22 @@ export class AppComponent {
       environment: 'mobile',
       release: '0.1.0'
     });
+
+    // REGISTER FOR PUSH NOTIFICATIONS
+    console.log('*** app.component constructor ***');
+    console.log('UserService.hasRegistered', UserService.hasRegistered);
+
+    if (UserService.hasRegistered === false) {
+      this._userService
+        ._registerForPushNotifications()
+        .then((deviceToken: string) => {
+          console.log(`registered push notifications: ${deviceToken}`);
+          UserService.hasRegistered = true;
+        })
+        .catch(err => {
+          this._logService.logException(err);
+        });
+    }
 
     // set the orientation to be portrait and don't allow orientation changes
     orientation.setOrientation('portrait');
@@ -125,4 +143,57 @@ export class AppComponent {
   private _stopNetworkMonitoring() {
     stopMonitoring();
   }
+
+  // private _registerForPushNotifications() {
+  //   return new Promise(async (resolve, reject) => {
+  //     try {
+  //       console.log('*** register for push notifications ***');
+  //       if (!UserService.hasRegistered) {
+  //         const register = await Push.register({
+  //           android: {
+  //             senderID: '1053576736707',
+  //             notificationCallbackAndroid: (data, notification) => {
+  //               console.log(data);
+  //               console.log(notification);
+  //               this.cfalertDialog.show({
+  //                 // Options go here
+  //                 dialogStyle: CFAlertStyle.NOTIFICATION,
+  //                 title: 'New Message from Smart Evaluation',
+  //                 message: notification.getBody(),
+  //                 backgroundBlur: true,
+  //                 cancellable: true,
+  //                 onDismiss: dialog => {
+  //                   console.log('Dialog was dismissed');
+  //                 }
+  //               });
+  //             }
+  //           },
+  //           ios: {
+  //             alert: true,
+  //             badge: true,
+  //             sound: true,
+  //             notificationCallbackIOS: message => {
+  //               console.log(message);
+  //               console.log('message.alert', message.alert);
+  //               this.cfalertDialog.show({
+  //                 // Options go here
+  //                 dialogStyle: CFAlertStyle.NOTIFICATION,
+  //                 title: 'New Message from Smart Evaluation',
+  //                 message: message.alert,
+  //                 backgroundBlur: true,
+  //                 cancellable: true,
+  //                 onDismiss: dialog => {
+  //                   console.log('Dialog was dismissed');
+  //                 }
+  //               });
+  //             }
+  //           }
+  //         });
+  //         resolve(register);
+  //       }
+  //     } catch (error) {
+  //       reject(error);
+  //     }
+  //   });
+  // }
 }

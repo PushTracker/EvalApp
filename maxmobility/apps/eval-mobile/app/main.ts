@@ -4,7 +4,6 @@ import { platformNativeScriptDynamic } from 'nativescript-angular/platform';
 import 'nativescript-localstorage'; // for local/session storage plugin
 // util functions (https://github.com/NathanaelA/nativescript-master-technology)
 import 'nativescript-master-technology';
-import 'nativescript-local-notifications';
 import { AppModule } from './app.module';
 
 platformNativeScriptDynamic().bootstrapModule(AppModule);

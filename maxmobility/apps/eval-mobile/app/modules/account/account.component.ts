@@ -226,27 +226,25 @@ export class AccountComponent implements OnInit {
   /**
    * Confirm with user to sign out. If confirmed, sign out, then nav to login.
    */
-  onSignOutTap() {
-    confirm({
-      title: this.sign_out,
-      message: this.sign_out_confirm,
-      okButtonText: this.yes,
-      cancelButtonText: this.no
-    }).then(result => {
+  async onSignOutTap() {
+    try {
+      const result = await confirm({
+        title: this.sign_out,
+        message: this.sign_out_confirm,
+        okButtonText: this.yes,
+        cancelButtonText: this.no
+      });
       CLog('signout confirm result', result);
       if (result) {
-        this._userService
-          .logout()
-          .then(() => {
-            this._routerExtensions.navigate(['/login'], {
-              clearHistory: true
-            });
-          })
-          .catch(error => {
-            this._loggingService.logException(error);
-          });
+        const logoutResult = await this._userService.logout();
+        console.log('logoutResult', logoutResult);
+        this._routerExtensions.navigate(['/login'], {
+          clearHistory: true
+        });
       }
-    });
+    } catch (error) {
+      this._loggingService.logException(error);
+    }
   }
 
   /**

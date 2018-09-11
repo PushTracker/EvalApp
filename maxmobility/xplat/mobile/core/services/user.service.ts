@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { User } from '@maxmobility/core';
 import * as Kinvey from 'kinvey-nativescript-sdk';
 import { Push } from 'kinvey-nativescript-sdk/push';
+import { CFAlertDialog, CFAlertStyle } from 'nativescript-cfalert-dialog';
 import * as fs from 'tns-core-modules/file-system/file-system';
-// import { alert } from 'tns-core-modules/ui/dialogs';
 
 @Injectable()
 export class UserService {
@@ -11,6 +11,8 @@ export class UserService {
   public static Kinvey_App_Secret = '3cfe36e6ac8f4d80b04014cc980a4d47';
   public static Kinvey_Host_Url = 'https://baas.kinvey.com/';
   public static hasRegistered = false;
+  private _cfAlertDialog = new CFAlertDialog();
+
   constructor() {}
 
   /**
@@ -32,14 +34,27 @@ export class UserService {
     return Kinvey.User.login(username.trim(), pw.trim());
   }
 
+  /**
+   * Unregister for push notifications so the device doesn't receive any after signing out.
+   * Then logout the Kinvey User.
+   */
   logout() {
-    return this.unregisterForPushNotifications()
-      .then(() => {
-        return Kinvey.User.logout();
-      })
-      .catch(() => {
-        return Kinvey.User.logout();
-      });
+    return new Promise(async (resolve, reject) => {
+      try {
+        // only call if registered
+        console.log('user.service logout() UserService.hasRegistered = ' + UserService.hasRegistered);
+        if (UserService.hasRegistered === true) {
+          await Push.unregister().catch(error => {
+            console.log('unregister in kinvey push error', error);
+          });
+        }
+        UserService.hasRegistered = false;
+        await Kinvey.User.logout();
+        resolve(true);
+      } catch (error) {
+        resolve(false);
+      }
+    });
   }
 
   resetPassword(email: string) {
@@ -82,37 +97,66 @@ export class UserService {
     return 'image/' + extension.replace(/\./g, '');
   }
 
-  unregisterForPushNotifications() {
-    console.log('Unregistering for push notifications');
-    UserService.hasRegistered = false;
-    return Push.unregister()
-      .then(() => {
-        console.log('Successfully unregistered for push notifications');
-      })
-      .catch((error: Error) => {
-        console.log('Could not unregister for push notifications: ', error);
-      });
-  }
+  // unregisterForPushNotifications() {
+  //   console.log('Unregistering for push notifications');
+  //   UserService.hasRegistered = false;
+  //   return Push.unregister();
+  // }
 
-  registerForPushNotifications() {
+  _registerForPushNotifications() {
     return new Promise(async (resolve, reject) => {
       try {
+        console.log(
+          '*** user.service _registerForPushNotifications *** UserService.hasRegistered = ' + UserService.hasRegistered
+        );
+        let register = null;
         if (!UserService.hasRegistered) {
-          const register = await Push.register({
+          register = await Push.register({
             android: {
-              senderID: '1053576736707'
+              senderID: '1053576736707',
+              notificationCallbackAndroid: (data, notification) => {
+                console.log(data);
+                console.log(notification);
+                this._cfAlertDialog.show({
+                  // Options go here
+                  dialogStyle: CFAlertStyle.NOTIFICATION,
+                  title: 'New Message from Smart Evaluation',
+                  message: notification.getBody(),
+                  backgroundBlur: true,
+                  cancellable: true,
+                  onDismiss: dialog => {
+                    console.log('Dialog was dismissed');
+                  }
+                });
+              }
             },
             ios: {
               alert: true,
               badge: true,
-              sound: true
+              sound: true,
+              notificationCallbackIOS: message => {
+                console.log(message);
+                console.log('message.alert', message.alert);
+                this._cfAlertDialog.show({
+                  // Options go here
+                  dialogStyle: CFAlertStyle.NOTIFICATION,
+                  title: 'New Message from Smart Evaluation',
+                  message: message.alert,
+                  backgroundBlur: true,
+                  cancellable: true,
+                  onDismiss: dialog => {
+                    console.log('Dialog was dismissed');
+                  }
+                });
+              }
             }
           });
-          console.log('register', register);
+          UserService.hasRegistered = true;
           resolve(register);
         }
+
+        resolve(register);
       } catch (error) {
-        console.log(error);
         reject(error);
       }
     });
