@@ -73,7 +73,7 @@ export class SignUpComponent implements OnInit {
   }
 
   async showModal(): Promise<boolean> {
-    let options = {
+    const options = {
       context: {
         user: this.user
       },

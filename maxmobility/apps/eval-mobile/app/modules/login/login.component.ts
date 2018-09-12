@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { CLog } from '@maxmobility/core';
 import { LoggingService, preventKeyboardFromShowing, ProgressService, UserService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { validate } from 'email-validator';
+import { Kinvey } from 'kinvey-nativescript-sdk';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { alert } from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
@@ -37,7 +38,8 @@ export class LoginComponent implements OnInit {
     private _progressService: ProgressService,
     private _page: Page,
     private _translateService: TranslateService,
-    private _loggingService: LoggingService
+    private _loggingService: LoggingService,
+    private zone: NgZone
   ) {
     preventKeyboardFromShowing();
   }
@@ -53,49 +55,53 @@ export class LoginComponent implements OnInit {
       'LoginComponent ngOnInit',
       'Logging out any active user. Login screen should only be used when no user is authenticated.'
     );
-    this._userService.logout();
+
+    Kinvey.User.logout();
   }
 
-  onSubmitTap() {
-    // validate the email
-    const isEmailValid = this._isEmailValid(this.user.email);
-    if (!isEmailValid) {
-      return;
-    }
+  async onSubmitTap() {
+    try {
+      // validate the email
+      const isEmailValid = this._isEmailValid(this.user.email);
+      if (!isEmailValid) {
+        return;
+      }
 
-    const isPasswordValid = this._isPasswordValid(this.user.password);
-    if (!isPasswordValid) {
-      return;
-    }
+      const isPasswordValid = this._isPasswordValid(this.user.password);
+      if (!isPasswordValid) {
+        return;
+      }
 
-    this._progressService.show(this.signing_in);
+      this._progressService.show(this.signing_in);
 
-    // now try logging in with Kinvey user account
-    this._userService
-      .login(this.user.email, this.user.password)
-      .then(res => {
-        CLog('login result', res);
-        this._progressService.hide();
+      // now try logging in with Kinvey user account
+      const res = await this._userService.login(this.user.email, this.user.password);
+      CLog('login result', res);
+      this._progressService.hide();
 
+      const deviceToken = await this._userService._registerForPushNotifications();
+      console.log(`Registered for push notifications device token: ${deviceToken}`);
+
+      this.zone.run(() => {
         this._routerExtensions.navigate(['/home'], {
           clearHistory: true
         });
-      })
-      .catch(err => {
-        CLog('login error', err);
-        this._progressService.hide();
-        // parse the exceptions from kinvey sign up
-        let errorMessage = this.error_1;
-        if (err.toString().includes('InvalidCredentialsError')) {
-          errorMessage = this.error_2;
-        }
-        alert({
-          title: this.error,
-          message: errorMessage,
-          okButtonText: this.ok
-        });
-        this._logService.logException(err);
       });
+    } catch (error) {
+      CLog('login error', error);
+      this._progressService.hide();
+      // parse the exceptions from kinvey sign up
+      let errorMessage = this.error_1;
+      if (error.toString().includes('InvalidCredentialsError')) {
+        errorMessage = this.error_2;
+      }
+      alert({
+        title: this.error,
+        message: errorMessage,
+        okButtonText: this.ok
+      });
+      this._logService.logException(error);
+    }
   }
 
   navToForgotPassword() {

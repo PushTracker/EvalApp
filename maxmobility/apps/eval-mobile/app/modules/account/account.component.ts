@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, NgZone, OnInit, ViewContainerRef } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import { CLog, DidYouKnow } from '@maxmobility/core';
 import { FileService, LoggingService, ProgressService, UserService } from '@maxmobility/mobile';
@@ -68,7 +68,8 @@ export class AccountComponent implements OnInit {
     private _translateService: TranslateService,
     private _fileService: FileService,
     private modal: ModalDialogService,
-    private vcRef: ViewContainerRef
+    private vcRef: ViewContainerRef,
+    private zone: NgZone
   ) {
     this._page.enableSwipeBackNavigation = false;
     this.imageCropper = new ImageCropper();
@@ -179,14 +180,17 @@ export class AccountComponent implements OnInit {
   }
 
   onDrawerButtonTap() {
-    this._routerExtensions.navigate(['/home'], {
-      transition: {
-        name: 'slideBottom',
-        duration: 350,
-        curve: 'easeInOut'
-        // clearHistory: true
-      }
-    });
+    if (this._routerExtensions.canGoBack()) {
+      this._routerExtensions.back();
+    } else {
+      this._routerExtensions.navigate(['/home'], {
+        transition: {
+          name: 'slideBottom',
+          duration: 350,
+          curve: 'easeInOut'
+        }
+      });
+    }
   }
 
   onSaveAccountTap() {
@@ -226,27 +230,31 @@ export class AccountComponent implements OnInit {
   /**
    * Confirm with user to sign out. If confirmed, sign out, then nav to login.
    */
-  onSignOutTap() {
-    confirm({
-      title: this.sign_out,
-      message: this.sign_out_confirm,
-      okButtonText: this.yes,
-      cancelButtonText: this.no
-    }).then(result => {
+  async onSignOutTap() {
+    try {
+      const result = await confirm({
+        title: this.sign_out,
+        message: this.sign_out_confirm,
+        okButtonText: this.yes,
+        cancelButtonText: this.no
+      });
       CLog('signout confirm result', result);
       if (result) {
-        this._userService
-          .logout()
-          .then(() => {
-            this._routerExtensions.navigate(['/login'], {
-              clearHistory: true
-            });
-          })
-          .catch(error => {
-            this._loggingService.logException(error);
+        this.zone.run(async () => {
+          // go ahead and nav to login to keep UI moving without waiting
+          this._routerExtensions.navigate(['/login'], {
+            clearHistory: true
           });
+
+          const logoutResult = await this._userService.logout();
+          console.log('logoutResult', logoutResult);
+        });
       }
-    });
+    } catch (error) {
+      // calling logout here manually incase something goes wrong ^^^
+      Kinvey.User.logout();
+      this._loggingService.logException(error);
+    }
   }
 
   /**
