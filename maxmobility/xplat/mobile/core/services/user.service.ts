@@ -52,6 +52,7 @@ export class UserService {
         await Kinvey.User.logout();
         resolve(true);
       } catch (error) {
+        console.log(error);
         resolve(false);
       }
     });
