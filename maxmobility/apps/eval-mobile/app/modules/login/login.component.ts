@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { CLog } from '@maxmobility/core';
 import { LoggingService, preventKeyboardFromShowing, ProgressService, UserService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
@@ -38,7 +38,8 @@ export class LoginComponent implements OnInit {
     private _progressService: ProgressService,
     private _page: Page,
     private _translateService: TranslateService,
-    private _loggingService: LoggingService
+    private _loggingService: LoggingService,
+    private zone: NgZone
   ) {
     preventKeyboardFromShowing();
   }
@@ -81,8 +82,10 @@ export class LoginComponent implements OnInit {
       const deviceToken = await this._userService._registerForPushNotifications();
       console.log(`Registered for push notifications device token: ${deviceToken}`);
 
-      this._routerExtensions.navigate(['/home'], {
-        clearHistory: true
+      this.zone.run(() => {
+        this._routerExtensions.navigate(['/home'], {
+          clearHistory: true
+        });
       });
     } catch (error) {
       CLog('login error', error);
