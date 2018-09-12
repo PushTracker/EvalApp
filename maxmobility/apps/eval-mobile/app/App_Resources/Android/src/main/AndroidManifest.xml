@@ -30,10 +30,10 @@
 
     <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
          See README(https://goo.gl/l4GJaQ) for more. -->
-    <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@drawable/icon" />
+    <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@drawable/logo" />
     <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
          notification message. See README(https://goo.gl/6BKBk7) for more. -->
-    <meta-data android:name="com.google.firebase.messaging.default_notification_color" android:resource="@color/ns_accent" />
+    <meta-data android:name="com.google.firebase.messaging.default_notification_color" android:resource="@color/permobil_blue" />
 
     <activity android:name="com.tns.NativeScriptActivity" android:label="@string/title_activity_kimera" android:configChanges="keyboardHidden|orientation|screenSize" android:theme="@style/LaunchScreenTheme">
 
