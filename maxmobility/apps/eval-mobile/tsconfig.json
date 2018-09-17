@@ -21,6 +21,9 @@
             "~/*": [
                 "app/*"
             ],
+            "nativescript-bluetooth": [
+                "../../nativescript-bluetooth/bluetooth.ts"
+            ],
             "@maxmobility/*": [
                 "../../libs/*"
             ],
@@ -41,5 +44,8 @@
         "app/main.ts",
         "app/**/*.module.ts"
     ],
-    "compileOnSave": false
+    "exclude": [
+        "node_modules",
+        "platforms"
+    ],
 }
