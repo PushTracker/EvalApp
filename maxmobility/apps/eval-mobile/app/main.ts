@@ -5,5 +5,6 @@ import 'nativescript-localstorage'; // for local/session storage plugin
 // util functions (https://github.com/NathanaelA/nativescript-master-technology)
 import 'nativescript-master-technology';
 import { AppModule } from './app.module';
+import './async-await';
 
 platformNativeScriptDynamic().bootstrapModule(AppModule);

@@ -8,14 +8,14 @@
       <Label class="title" [text]="('ota.version' | translate) + ' ' + (currentVersion || '??')" textWrap="true"></Label>
 
       <GridLayout *ngIf="ready" columns="*, *" rows="*">
-        <Button b android:class="permobil-ocean-btn ota" ios:class="ota" col="0" textWrap="true" *ngIf="!updating" [text]="'ota.refresh' | translate"
-          (tap)="onRefreshDeviceList()"></Button>
-        <Button android:class="permobil-ocean-btn ota" ios:class="ota" textWrap="true" [col]="updating ? '0' : '1'" [colSpan]="updating ? '2' : '1'"
-          [text]="updatingButtonText" (tap)="onStartOtaUpdate()"></Button>
+        <Button b android:class="permobil-ocean-btn ota" ios:class="ota" col="0" textWrap="true" *ngIf="!updating"
+          [text]="'ota.refresh' | translate" (tap)="onRefreshDeviceList()"></Button>
+        <Button android:class="permobil-ocean-btn ota" ios:class="ota" textWrap="true" [col]="updating ? '0' : '1'"
+          [colSpan]="updating ? '2' : '1'" [text]="updatingButtonText" (tap)="onStartOtaUpdate()"></Button>
       </GridLayout>
       <Label class="otaDescription" *ngIf="!ready" textWrap="true" [text]="'ota.downloading' | translate"></Label>
 
-      //StackLayout in contains progress views for updates
+      // StackLayout in contains progress views for updates
       <StackLayout #otaProgressView padding="5, 0, 5, 0" orientation="vertical">
         // PushTracker Instructions //SmartDrive OTAs
         <StackLayout class="ota" *ngFor="let sd of smartDriveOTAs._array">
@@ -82,16 +82,8 @@
   </ScrollView>
 
   <GridLayout height="30%">
-    <Carousel #carousel 
-      (loaded)="onCarouselLoad($event)" 
-      ios:indicatorOffset="0,-10" 
-      ios:finite="true" 
-      ios:bounce="false" 
-      showIndicator="true"
-      height="100%" 
-      indicatorColor="#66ccff" 
-      indicatorColorUnselected="#cceeff" 
-      width="100%">
+    <Carousel #carousel (loaded)="onCarouselLoad($event)" ios:indicatorOffset="0,-10" ios:finite="true" ios:bounce="false"
+      showIndicator="true" height="100%" indicatorColor="#66ccff" indicatorColorUnselected="#cceeff" width="100%">
       <CarouselItem *ngFor="let desc of otaDescription">
         <Label class="features" textWrap="true" [text]="desc"></Label>
       </CarouselItem>

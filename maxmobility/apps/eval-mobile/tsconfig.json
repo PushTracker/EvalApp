@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "module": "commonjs",
-        "target": "es2017",
+        "target": "es2015",
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "noImplicitUseStrict": true,

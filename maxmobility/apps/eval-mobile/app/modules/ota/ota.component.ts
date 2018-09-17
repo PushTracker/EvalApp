@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import { PushTracker, SmartDrive } from '@maxmobility/core';
-import { BluetoothService, FirmwareService, ProgressService, LoggingService } from '@maxmobility/mobile';
+import { BluetoothService, FirmwareService, LoggingService, ProgressService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
@@ -155,6 +155,7 @@ export class OTAComponent implements OnInit {
   }
 
   async onStartOtaUpdate() {
+    // onStartOtaUpdate() {
     const isAvailable = await this._bluetoothService.available();
 
     if (!isAvailable) {
@@ -170,6 +171,7 @@ export class OTAComponent implements OnInit {
     }
 
     if (!this.updating) {
+      console.log('start performing OTAs...');
       // start updating
       this.performOTAs()
         .then(otaStatuses => {
