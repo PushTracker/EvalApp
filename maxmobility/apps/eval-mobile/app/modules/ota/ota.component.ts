@@ -155,7 +155,6 @@ export class OTAComponent implements OnInit {
   }
 
   async onStartOtaUpdate() {
-    // onStartOtaUpdate() {
     const isAvailable = await this._bluetoothService.available();
 
     if (!isAvailable) {

@@ -641,12 +641,13 @@ export class BluetoothService {
   }
 
   private isPushTracker(dev: any): boolean {
+    console.log('isPushTracker device: ' + JSON.stringify(dev));
     const UUIDs = (dev && dev.UUIDs) || [];
     const name = dev && dev.name;
-    //console.log(`isPushTracker - uuids: ${UUIDs}, name: ${name}`);
+    // console.log(`isPushTracker - uuids: ${UUIDs}, name: ${name}`);
     const hasUUID = UUIDs.reduce((a, e) => a || e.toUpperCase() === PushTracker.ServiceUUID.toUpperCase(), false);
     const isPT = (name && name.includes('PushTracker')) || (name && name.includes('Bluegiga')) || hasUUID;
-    //console.log(`isPT: ${isPT}`);
+    // console.log(`isPT: ${isPT}`);
     return isPT;
   }
 
