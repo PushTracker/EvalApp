@@ -16,12 +16,18 @@ import { alert } from 'tns-core-modules/ui/dialogs';
 })
 export class TrialComponent implements OnInit {
   // NON STATIC:
-  @ViewChild('withPage') withPageView: ElementRef;
-  @ViewChild('withoutPage') withoutPageView: ElementRef;
-  @ViewChild('startWith') startWithView: ElementRef;
-  @ViewChild('stopWith') stopWithView: ElementRef;
-  @ViewChild('startWithout') startWithoutView: ElementRef;
-  @ViewChild('stopWithout') stopWithoutView: ElementRef;
+  @ViewChild('withPage')
+  withPageView: ElementRef;
+  @ViewChild('withoutPage')
+  withoutPageView: ElementRef;
+  @ViewChild('startWith')
+  startWithView: ElementRef;
+  @ViewChild('stopWith')
+  stopWithView: ElementRef;
+  @ViewChild('startWithout')
+  startWithoutView: ElementRef;
+  @ViewChild('stopWithout')
+  stopWithoutView: ElementRef;
   snackbar = new SnackBar();
   trial = new Trial();
   trialTimeout = 15000; // 15 seconds
@@ -325,6 +331,7 @@ export class TrialComponent implements OnInit {
   // tslint:disable-next-line:adjacent-overload-signatures
   onStartWithoutTrial() {
     const connectedPTs = BluetoothService.PushTrackers.filter(pt => pt.connected);
+    console.log('connectedPTs', connectedPTs);
     if (connectedPTs.length <= 0) {
       // no pushtrackers are connected - wait for them to be connected
       this.snackbar.simple(this.please_connect_pt);

@@ -90,6 +90,11 @@ export class TNS_BroadcastReceiver extends android.content.BroadcastReceiver {
       this._owner.get().sendEvent(Bluetooth.device_acl_disconnected_event, {
         device: deviceToCentral(device)
       });
+    } else if (action === android.bluetooth.BluetoothAdapter.ACTION_DISCOVERY_FINISHED) {
+      CLog(CLogTypes.info, 'discovery finsihed in bluetooth adapter');
+      // discovery has finished, give a call to fetchUuidsWithSdp
+      const result = device.fetchUuidsWithSdp();
+      CLog(CLogTypes.info, 'fetchUuidsWithSdp result', result);
     }
   }
 }
