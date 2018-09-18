@@ -413,6 +413,7 @@
     "complete": "Trial Complete",
     "summary": "Summary",
     "please-connect-pt": "Please connect your PushTracker",
+    "connect_pushtracker_more_info": "A pushtracker must be connected to the app in order to communicate. Please see the Connectivity section on the home screen.",
     "starting-trial": "Starting Trial",
     "stopping-trial": "Stopping Trial",
     "errors": {
