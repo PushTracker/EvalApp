@@ -7,6 +7,7 @@ import { SnackBar } from 'nativescript-snackbar';
 import { isAndroid, isIOS } from 'tns-core-modules/platform';
 import { View } from 'tns-core-modules/ui/core/view';
 import { alert } from 'tns-core-modules/ui/dialogs';
+import { CFAlertDialog, CFAlertStyle } from 'nativescript-cfalert-dialog';
 
 @Component({
   selector: 'Trial',
@@ -41,6 +42,7 @@ export class TrialComponent implements OnInit {
   coastWithoutDisplay = '--';
   timeWithoutDisplay = '--';
   please_connect_pt: string = this._translateService.instant('trial.please-connect-pt');
+  connect_pushtracker_more_info: string = this._translateService.instant('trial.connect_pushtracker_more_info');
   starting_trial: string = this._translateService.instant('trial.starting-trial');
   stopping_trial: string = this._translateService.instant('trial.stopping-trial');
   okbuttontxt: string = this._translateService.instant('dialogs.ok');
@@ -51,6 +53,8 @@ export class TrialComponent implements OnInit {
   failed_stop_message: string = this._translateService.instant('trial.errors.failed-stop.message');
   pt_version_title: string = this._translateService.instant('trial.errors.pt-version.title');
   pt_version_message: string = this._translateService.instant('trial.errors.pt-version.message');
+
+  private _cfAlert = new CFAlertDialog();
 
   constructor(
     private routerExtensions: RouterExtensions,
@@ -112,7 +116,25 @@ export class TrialComponent implements OnInit {
     const connectedPTs = BluetoothService.PushTrackers.filter(pt => pt.connected);
     if (connectedPTs.length <= 0) {
       // no pushtrackers are connected - wait for them to be connected
-      this.snackbar.simple(this.please_connect_pt);
+      // this.snackbar.simple(this.please_connect_pt);
+      this.snackbar
+        .action({
+          actionText: 'More Info',
+          snackText: this.please_connect_pt,
+          hideDelay: 4000
+        })
+        .then(result => {
+          console.log(result);
+          if (result.command === 'Action') {
+            console.log('action tapped');
+
+            this._cfAlert.show({
+              dialogStyle: CFAlertStyle.ALERT,
+              message: this.connect_pushtracker_more_info,
+              cancellable: true
+            });
+          }
+        });
     } else if (connectedPTs.length > 1) {
       // too many pushtrackers connected - don't know which to use!
       this.snackbar.simple(this.too_many_pts);
