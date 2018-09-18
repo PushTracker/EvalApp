@@ -5,8 +5,8 @@
 <Gradient tkMainContent direction="to bottom" colors="#004F7E, #0070b3">
 
   <GridLayout>
-    <Carousel ios:indicatorOffset="0,-10" ios:finite="true" ios:bounce="false" indicatorColor="#66ccff" indicatorColorUnselected="#cceeff"
-      height="100%">
+    <Carousel ios:indicatorOffset="0,-10" ios:finite="true" ios:bounce="false" indicatorColor="#66ccff"
+      indicatorColorUnselected="#cceeff" height="100%">
       <CarouselItem height="100%">
         <GridLayout rows="auto, *" cols="*">
           <StackLayout backgroundImage="~/assets/images/background_1.jpg" row="0" height="20%" width="100%" orientation="horizontal"
@@ -57,8 +57,8 @@
                     row="0" col="1"></Label>
                 </DockLayout>
                 <GridLayout rows="auto" columns="*, auto">
-                  <Slider minValue="0" maxValue="10" verticalAlignment="center" class="trial-slider" [value]="trial.acceleration * 10" (valueChange)="onSliderUpdate('acceleration', $event)"
-                    row="0" col="0"></Slider>
+                  <Slider minValue="0" maxValue="10" verticalAlignment="center" class="trial-slider" [value]="trial.acceleration * 10"
+                    (valueChange)="onSliderUpdate('acceleration', $event)" row="0" col="0"></Slider>
                 </GridLayout>
 
                 //Max Speed
@@ -68,8 +68,8 @@
                     row="0" col="1"></Label>
                 </DockLayout>
                 <GridLayout rows="auto" columns="*, auto">
-                  <Slider minValue="0" maxValue="10" verticalAlignment="center" class="trial-slider" [value]="trial.max_speed * 10" (valueChange)="onSliderUpdate('max_speed', $event)"
-                    row="0" col="0"></Slider>
+                  <Slider minValue="0" maxValue="10" verticalAlignment="center" class="trial-slider" [value]="trial.max_speed * 10"
+                    (valueChange)="onSliderUpdate('max_speed', $event)" row="0" col="0"></Slider>
                 </GridLayout>
 
               </StackLayout>
@@ -175,6 +175,7 @@
               //Heading and description
               <Label [text]="'trial.complete' | translate" class="slideLowerLabel" textWrap="true"></Label>
 
+              <Label [text]="'trial.push_accuracy_disclaimer' | translate" class="value-label-left" textWrap="true"></Label>
 
               <StackLayout>
 
