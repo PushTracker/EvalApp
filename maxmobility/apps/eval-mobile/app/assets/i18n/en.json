@@ -411,6 +411,7 @@
     "time": "Time: ",
     "distance": "Distance: ",
     "complete": "Trial Complete",
+    "push_accuracy_disclaimer": "The push tracker uses movement to detect pushes. This can cause a varying degree of accuracy depending on how the user wears and moves with the push tracker. A better metric for evaluation is the relative difference between the pushes with the SmartDrive and without the SmartDrive.",
     "summary": "Summary",
     "please-connect-pt": "Please connect your PushTracker",
     "connect_pushtracker_more_info": "A pushtracker must be connected to the app in order to communicate. Please see the Connectivity section on the home screen.",
