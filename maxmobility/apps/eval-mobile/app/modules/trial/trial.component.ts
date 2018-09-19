@@ -112,29 +112,14 @@ export class TrialComponent implements OnInit {
     });
   }
 
+  /**
+   * Starts a trial WITH a SmartDrive unit
+   */
   onStartWithTrial() {
     const connectedPTs = BluetoothService.PushTrackers.filter(pt => pt.connected);
     if (connectedPTs.length <= 0) {
       // no pushtrackers are connected - wait for them to be connected
-      // this.snackbar.simple(this.please_connect_pt);
-      this.snackbar
-        .action({
-          actionText: 'More Info',
-          snackText: this.please_connect_pt,
-          hideDelay: 4000
-        })
-        .then(result => {
-          console.log(result);
-          if (result.command === 'Action') {
-            console.log('action tapped');
-
-            this._cfAlert.show({
-              dialogStyle: CFAlertStyle.ALERT,
-              message: this.connect_pushtracker_more_info,
-              cancellable: true
-            });
-          }
-        });
+      this._noPushTrackersConnectedAlert();
     } else if (connectedPTs.length > 1) {
       // too many pushtrackers connected - don't know which to use!
       this.snackbar.simple(this.too_many_pts);
@@ -244,7 +229,9 @@ export class TrialComponent implements OnInit {
     }
   }
 
-  // tslint:disable-next-line:adjacent-overload-signatures
+  /**
+   * Stops a Trial WITH a SmartDrive
+   */
   onStopWithTrial() {
     const connectedPTs = BluetoothService.PushTrackers.filter(pt => pt.connected);
     if (connectedPTs.length <= 0) {
@@ -350,13 +337,15 @@ export class TrialComponent implements OnInit {
     }
   }
 
-  // tslint:disable-next-line:adjacent-overload-signatures
+  /**
+   * Starts a Trial WITHOUT a SmartDrive
+   */
   onStartWithoutTrial() {
     const connectedPTs = BluetoothService.PushTrackers.filter(pt => pt.connected);
     console.log('connectedPTs', connectedPTs);
     if (connectedPTs.length <= 0) {
       // no pushtrackers are connected - wait for them to be connected
-      this.snackbar.simple(this.please_connect_pt);
+      this._noPushTrackersConnectedAlert();
     } else if (connectedPTs.length > 1) {
       // too many pushtrackers connected - don't know which to use!
       this.snackbar.simple(this.too_many_pts);
@@ -421,7 +410,9 @@ export class TrialComponent implements OnInit {
     }
   }
 
-  // tslint:disable-next-line:adjacent-overload-signatures
+  /**
+   * Stops a Trial WITHOUT a SmartDrive
+   */
   onStopWithoutTrial() {
     const connectedPTs = BluetoothService.PushTrackers.filter(pt => pt.connected);
     if (connectedPTs.length <= 0) {
@@ -496,5 +487,23 @@ export class TrialComponent implements OnInit {
 
   onSliderUpdate(key, args) {
     this.trial[key] = Math.round(args.object.value) / 10;
+  }
+
+  private _noPushTrackersConnectedAlert() {
+    this.snackbar
+      .action({
+        actionText: 'More Info',
+        snackText: this.please_connect_pt,
+        hideDelay: 4000
+      })
+      .then(result => {
+        if (result.command === 'Action') {
+          this._cfAlert.show({
+            dialogStyle: CFAlertStyle.ALERT,
+            message: this.connect_pushtracker_more_info,
+            cancellable: true
+          });
+        }
+      });
   }
 }
