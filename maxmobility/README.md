@@ -1,9 +1,5 @@
 # Max-Mobility
 
-### Project Structure
-
-The project structure follows the [Nx workspace](https://nrwl.io/nx/guide-nx-workspace#create-a-new-nx-workspace) approach with the added `xplat` directory for platform specific code for various environments: mobile, web, desktop, etc.
-
 ### Running the Smart Evaluation mobile app
 
 Execute - `npm run start.eval.mobile.android`
@@ -19,7 +15,7 @@ For the build to work successfully, the script will look for the keystore in the
 
 ![keystore](./apps/eval-mobile/tools/keystore_directory.png)
 
-- Execute `npm run android-release $KEYSTORE_PASSWORD` - replace $KEYSTORE_PASSWORD with the actual password for the keystore for eval-mobile). If you do not provide the password argument in the command, you'll be prompted for it.
+- Execute `npm run android-release $KEYSTORE_PASSWORD` - replace $KEYSTORE_PASSWORD with the actual password for the keystore for smart-eval). If you do not provide the password argument in the command, you'll be prompted for it.
 
 #### iOS
 
