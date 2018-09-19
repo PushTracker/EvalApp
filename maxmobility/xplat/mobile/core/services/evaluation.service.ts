@@ -4,7 +4,6 @@ import { Evaluation } from '@maxmobility/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 import { LoggingService } from './logging.service';
 
-// tslint:disable-next-line:max-classes-per-file
 @Injectable()
 export class EvaluationService {
   evaluation: Evaluation = null;
