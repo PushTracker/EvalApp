@@ -3,20 +3,20 @@
 @import '../../scss/carousel';
 
 Switch {
-    color: #fff;
-    margin: 5, 10, 5, 5;
-    padding: 10, 15, 10, 0;
+  color: #fff;
+  margin: 5, 10, 5, 5;
+  padding: 10, 15, 10, 0;
 }
 
 Switch[checked=true] {
-    background-color: $permobil-orange;//$permobil-ocean;
+  background-color: $permobil-orange; //$permobil-ocean;
 }
 
-Switch[checked=false] {
-    background-color: $permobil-charcoal;
+Switch[checked='false'] {
+  background-color: $permobil-charcoal;
 }
 
-Image {
+image {
   margin: 10, 0, 10, 0;
 }
 
@@ -30,7 +30,7 @@ TextField {
 }
 
 .trial-recommendation {
-    color: $white;
+  color: $white;
   font-family: $os-SemiBold;
   font-size: 13;
   text-align: left;
@@ -38,22 +38,22 @@ TextField {
 }
 
 .trial-stack-layout {
-    margin: 20, 0, 0, 0;
-    // background-color: $permobil-hero;
+  margin: 20, 0, 0, 0;
+  // background-color: $permobil-hero;
 }
 
 .trial-scroll-view {
-    height:80%;
-    // background-color: $permobil-hero;
+  height: 80%;
+  // background-color: $permobil-hero;
 }
 
 .trial-item {
-    // vertical-align: center;
-    text-overflow: none;
-    word-wrap: normal;
-    color: #fff;
-    font-weight: 500;
-    margin: 10, 0, 10, 15;
+  // vertical-align: center;
+  text-overflow: none;
+  word-wrap: normal;
+  color: #fff;
+  font-weight: 500;
+  margin: 10, 0, 10, 15;
 }
 
 .trial-slider-label {
@@ -63,8 +63,8 @@ TextField {
 }
 
 .trial-slider-value-label {
-    color: #fff;
-    min-width: 50%;
+  color: #fff;
+  min-width: 50%;
   font-family: $os-Light;
   margin: 10, 0, 10, 0;
 }
