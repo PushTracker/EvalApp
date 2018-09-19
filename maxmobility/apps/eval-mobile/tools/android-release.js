@@ -37,7 +37,7 @@ askKeystorePassword().then(result => {
   );
   // execute the android release build cmd with the result as password
   exec(
-    `npm run nuki && cd apps/eval-mobile && tns build android --release --key-store-path ./tools/smartevaluation.keystore --key-store-password ${result} --key-store-alias smartevaluation --key-store-alias-password ${result} --copy-to ./tools/smart-evaluation.apk`,
+    `npm run nuki && cd apps/eval-mobile && tns build android --release --key-store-path ./tools/smarteval-keystore.jks --key-store-password ${result} --key-store-alias upload --key-store-alias-password ${result} --copy-to ./tools/smart-eval.apk`,
     (err, stdout, stderr) => {
       if (err) {
         console.error('Error executing the android-release command.', err);
