@@ -6,7 +6,7 @@ import * as mustache from 'mustache';
 import { RouterExtensions } from 'nativescript-angular/router';
 import * as email from 'nativescript-email';
 import { SnackBar } from 'nativescript-snackbar';
-import { isAndroid, isIOS } from 'platform';
+import { isAndroid, isIOS } from 'tns-core-modules/platform';
 import { confirm } from 'tns-core-modules/ui/dialogs';
 import { TextField } from 'tns-core-modules/ui/text-field';
 import { Kinvey } from 'kinvey-nativescript-sdk';
@@ -20,12 +20,10 @@ import { Kinvey } from 'kinvey-nativescript-sdk';
 export class SummaryComponent {
   trialName = '';
   snackbar = new SnackBar();
-
   showFlatDifficulty = false;
   showRampDifficulty = false;
   showInclineDifficulty = false;
   showOtherDifficulty = false;
-
   hasFlatDifficulty = this.evaluation.flat_difficulty > 0;
   hasRampDifficulty = this.evaluation.ramp_difficulty > 0;
   hasInclineDifficulty = this.evaluation.incline_difficulty > 0;
@@ -100,6 +98,7 @@ export class SummaryComponent {
     this.difficulties.map(d => {
       d.has = this.evaluation[d.key] > 0;
     });
+
     this.evaluation.trials.map(t => {
       if (t.flat) {
         this.difficulties.filter(d => d.name === 'Flat')[0].show = true;
