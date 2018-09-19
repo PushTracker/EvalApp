@@ -61,7 +61,7 @@
     "nativescript-bluetooth": "file:../../nativescript-bluetooth",
     "nativescript-camera": "^4.0.2",
     "nativescript-carousel": "file:../../node_modules/nativescript-carousel",
-    "nativescript-cfalert-dialog": "^1.0.10",
+    "nativescript-cfalert-dialog": "^1.0.11",
     "nativescript-drop-down": "file:../../node_modules/nativescript-drop-down",
     "nativescript-email": "^1.5.3",
     "nativescript-feedback": "file:../../node_modules/nativescript-feedback",
