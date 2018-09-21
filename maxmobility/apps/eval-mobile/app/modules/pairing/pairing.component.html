@@ -4,14 +4,15 @@
 
 <GridLayout tkMainContent rows="*" columns="*" class="page">
 
-  <Carousel #carousel (loaded)="onCarouselLoad()" ios:indicatorOffset="0,-10" ios:finite="true" ios:bounce="false" height="100%"
-    indicatorColor="#66ccff" indicatorColorUnselected="#cceeff">
+  <Carousel #carousel (loaded)="onCarouselLoad()" ios:indicatorOffset="0,-10" ios:finite="true" ios:bounce="false"
+    height="100%" indicatorColor="#66ccff" indicatorColorUnselected="#cceeff">
     <CarouselItem *ngFor="let slide of slides">
 
       <GridLayout rows="auto, *" cols="*">
 
         <StackLayout row="0" class="topSlide" height="35%">
-          <Gif *ngIf="slide.Image.indexOf('.gif') > -1" [src]="slide.Image" (tap)="onGifTap($event)" height="100%" width="135"></Gif>
+          <Gif *ngIf="slide.Image.indexOf('.gif') > -1" [src]="slide.Image" (tap)="onGifTap($event)" height="100%"
+            width="135"></Gif>
         </StackLayout>
 
         <ScrollView row="1" class="lowerSlide" height="65%">

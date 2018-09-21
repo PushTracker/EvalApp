@@ -213,7 +213,8 @@
       "Bullets": [
         "Press and hold the right flat button on your PushTracker for three seconds to enter the settings menu",
         "Press the right button to scroll to the phone/PT icon.",
-        "Press the left raised button to initiate pairing."
+        "Press the left raised button to initiate pairing.",
+        "Note: On some Android devices, while pairing, you might receive a message about an `Incorrect Pin or Passkey`. As long as the PushTracker shows that it's connected you can ignore this."
       ]
     },
     {
