@@ -19,7 +19,7 @@ import { PrivacyPolicyComponent } from './privacy-policy';
 import { TNSTranslateLoader } from './utils';
 
 // https://github.com/danielgek/nativescript-sentry/issues/7
-import Raven = require('raven-js');
+import * as Raven from 'raven-js';
 (<any>Raven)._hasDocument = false;
 
 // factories

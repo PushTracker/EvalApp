@@ -140,6 +140,7 @@ export class UserService {
               alert: true,
               badge: true,
               sound: true,
+              interactiveSettings: null,
               notificationCallbackIOS: message => {
                 console.log(message);
                 console.log('message.alert', message.alert);

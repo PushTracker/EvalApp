@@ -26,15 +26,11 @@ registerElement('Gif', () => Gif);
   template: '<page-router-outlet></page-router-outlet>'
 })
 export class AppComponent {
-  private cfalertDialog = new CFAlertDialog();
   constructor(
     private _translateService: TranslateService,
     private _logService: LoggingService,
     private _userService: UserService,
-    private _router: RouterExtensions,
-    private _demoService: DemoService,
-    private _firmwareService: FirmwareService,
-    private _fileService: FileService
+    private _router: RouterExtensions
   ) {
     // init sentry
     const sentryDsn = 'https://aaa25eb556fa476a92e0edea6dd57af6:65c984b9260e47f0bb128def7eddd5f4@sentry.io/306438';
@@ -143,57 +139,4 @@ export class AppComponent {
   private _stopNetworkMonitoring() {
     stopMonitoring();
   }
-
-  // private _registerForPushNotifications() {
-  //   return new Promise(async (resolve, reject) => {
-  //     try {
-  //       console.log('*** register for push notifications ***');
-  //       if (!UserService.hasRegistered) {
-  //         const register = await Push.register({
-  //           android: {
-  //             senderID: '1053576736707',
-  //             notificationCallbackAndroid: (data, notification) => {
-  //               console.log(data);
-  //               console.log(notification);
-  //               this.cfalertDialog.show({
-  //                 // Options go here
-  //                 dialogStyle: CFAlertStyle.NOTIFICATION,
-  //                 title: 'New Message from Smart Evaluation',
-  //                 message: notification.getBody(),
-  //                 backgroundBlur: true,
-  //                 cancellable: true,
-  //                 onDismiss: dialog => {
-  //                   console.log('Dialog was dismissed');
-  //                 }
-  //               });
-  //             }
-  //           },
-  //           ios: {
-  //             alert: true,
-  //             badge: true,
-  //             sound: true,
-  //             notificationCallbackIOS: message => {
-  //               console.log(message);
-  //               console.log('message.alert', message.alert);
-  //               this.cfalertDialog.show({
-  //                 // Options go here
-  //                 dialogStyle: CFAlertStyle.NOTIFICATION,
-  //                 title: 'New Message from Smart Evaluation',
-  //                 message: message.alert,
-  //                 backgroundBlur: true,
-  //                 cancellable: true,
-  //                 onDismiss: dialog => {
-  //                   console.log('Dialog was dismissed');
-  //                 }
-  //               });
-  //             }
-  //           }
-  //         });
-  //         resolve(register);
-  //       }
-  //     } catch (error) {
-  //       reject(error);
-  //     }
-  //   });
-  // }
 }

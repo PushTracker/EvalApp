@@ -92,6 +92,8 @@ export class HomeComponent {
 
     this._fileService.downloadTranslationFiles();
 
+    this._firmwareService.initFirmwareService();
+
     // delaying since it typically won't be in the viewport initially on majority of devices
     setTimeout(() => {
       this._demoService
