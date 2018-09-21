@@ -18,17 +18,10 @@ export class PairingComponent {
   @ViewChild('carousel')
   carousel: ElementRef;
   selectedPage = 0;
-
   slides = this._translateService.instant('pairing');
-
   private feedback: Feedback;
 
-  constructor(
-    private pageRoute: PageRoute,
-    private routerExtensions: RouterExtensions,
-    private _bluetoothService: BluetoothService,
-    private _translateService: TranslateService
-  ) {
+  constructor(private pageRoute: PageRoute, private _translateService: TranslateService) {
     // update slides
     this.slides = this._translateService.instant('pairing');
 
@@ -41,6 +34,7 @@ export class PairingComponent {
     });
 
     this.feedback = new Feedback();
+
     // handle pushtracker pairing events for existing pushtrackers
     console.log('registering for pairing events!');
     BluetoothService.PushTrackers.map(pt => {
@@ -53,6 +47,7 @@ export class PairingComponent {
         }
       });
     });
+
     // listen for completely new pusthrackers (that we haven't seen before)
     BluetoothService.PushTrackers.on(ObservableArray.changeEvent, (args: ChangedData<number>) => {
       if (args.action === 'add') {
@@ -96,14 +91,6 @@ export class PairingComponent {
     });
   }
 
-  gifLoaded(args) {
-    console.log('gif loaded');
-    console.log(args.object);
-    const x = args.object as Gif;
-    console.log(x.src);
-    x.start();
-  }
-
   onGifTap(args) {
     const x = args.object as Gif;
     if (x.isPlaying()) {
@@ -113,39 +100,11 @@ export class PairingComponent {
     }
   }
 
-  // button events
-  onNext(): void {
-    this.routerExtensions.navigate(['/trial'], {
-      // clearHistory: true,
-      transition: {
-        name: 'wipe'
-      }
-    });
-  }
-
   onCarouselLoad() {
     setTimeout(() => {
       this.carousel.nativeElement.selectedPage = this.selectedPage;
       this.carousel.nativeElement.refresh();
       console.log('Carousel loaded to ' + this.selectedPage);
     }, 100);
-  }
-
-  onBack(): void {
-    this.routerExtensions.navigate(['/eval-entry'], {
-      // clearHistory: true,
-      transition: {
-        name: 'slideRight'
-      }
-    });
-  }
-
-  onNavButtonTap(): void {
-    this.routerExtensions.navigate(['/home'], {
-      // clearHistory: true,
-      transition: {
-        name: 'slideRight'
-      }
-    });
   }
 }
