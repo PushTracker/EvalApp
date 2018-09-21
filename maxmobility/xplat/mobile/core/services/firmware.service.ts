@@ -42,16 +42,7 @@ export class FirmwareService {
     }
   };
 
-  // private members
-
-  constructor(private _logService: LoggingService) {
-    this.initFirmwareService();
-    // this.loadFromFS().then(() => {
-    //   this.downloadFirmwares().catch(error => {
-    //     console.log('Error downloadFirmwares', error);
-    //   });
-    // });
-  }
+  constructor(private _logService: LoggingService) {}
 
   public async initFirmwareService() {
     try {
@@ -69,17 +60,6 @@ export class FirmwareService {
       return `${(version & 0xf0) >> 4}.${version & 0x0f}`;
     }
   }
-
-  // public loadFromFS() {
-  //   return this.loadMetadata().then(() => {
-  //     const tasks = Object.keys(this.firmwares).map(k => {
-  //       return this.loadFirmwareFile(this.firmwares[k].filename).catch(err => {
-  //         console.log(`Couldn't find firmware: ${err}`);
-  //       });
-  //     });
-  //     return Promise.all(tasks);
-  //   });
-  // }
 
   public async loadFromFS() {
     await this.loadMetadata();
@@ -224,103 +204,6 @@ export class FirmwareService {
     this.firmwares[fwKey].length = file.size;
     console.log(`${fwKey}: ${file._version} : ${file.size}`);
   }
-
-  // public downloadFirmwares(): Promise<any> {
-  //   console.log(`downloadFirmwares start ${performance.now()}`);
-
-  //   this.haveFirmwares = false;
-  //   const tasks = Object.keys(this.firmwares).map(fwKey => {
-  //     const query = new Kinvey.Query();
-  //     query.equalTo('_filename', this.firmwares[fwKey].filename);
-  //     return Kinvey.Files.find(query)
-  //       .then(files => {
-  //         if (files.length === 1) {
-  //           const file = files[0];
-  //           this.updateFirmware(fwKey, file);
-  //           // download the firmware data and save it to temporary storage
-  //           return this.getData(file._downloadURL, file._filename);
-  //         } else if (files.length > 1) {
-  //           console.log(JSON.stringify(files, null, 2));
-  //           throw new Error(`Found more than one OTA for ${fwKey}!`);
-  //         } else {
-  //           throw new Error(`Couldn't find OTA for ${fwKey}!`);
-  //         }
-  //       })
-  //       .then(file => {
-  //         // marshal the firmware data
-  //         return this.unpackFirmwareData(fwKey, file.readSync());
-  //       })
-  //       .then(() => {
-  //         // save the firmware data to persistent storage
-  //         try {
-  //           LS.setItem(this.firmwares[fwKey].filename, this.firmwares[fwKey].data);
-  //         } catch (err) {
-  //           console.log(`Couldn't save firmware data: ${err}`);
-  //         }
-  //       });
-  //   });
-  //   return Promise.all(tasks)
-  //     .then(() => {
-  //       this.haveFirmwares = true;
-  //       this.last_check = new Date();
-  //       this.saveMetadata();
-  //       console.log(`downloadFirmwares promise.all resolve ${performance.now()}`);
-  //     })
-  //     .catch(err => {
-  //       console.log(`Couldn't get firmware data: ${err}`);
-  //       console.log(`downloadFirmwares promise.all error ${performance.now()}`);
-  //       this.haveFirmwares = false;
-  //     });
-  // }
-
-  // public async downloadFirmwares(): Promise<any> {
-  //   console.log(`downloadFirmwares start ${performance.now()}`);
-
-  //   this.haveFirmwares = false;
-
-  //   const tasks = Object.keys(this.firmwares).map(fwKey => {
-  //     const query = new Kinvey.Query();
-  //     query.equalTo('_filename', this.firmwares[fwKey].filename);
-  //     return Kinvey.Files.find(query)
-  //       .then(files => {
-  //         if (files.length === 1) {
-  //           const file = files[0];
-  //           this.updateFirmware(fwKey, file);
-  //           // download the firmware data and save it to temporary storage
-  //           return this.getData(file._downloadURL, file._filename);
-  //         } else if (files.length > 1) {
-  //           console.log(JSON.stringify(files, null, 2));
-  //           throw new Error(`Found more than one OTA for ${fwKey}!`);
-  //         } else {
-  //           throw new Error(`Couldn't find OTA for ${fwKey}!`);
-  //         }
-  //       })
-  //       .then(file => {
-  //         // marshal the firmware data
-  //         return this.unpackFirmwareData(fwKey, file.readSync());
-  //       })
-  //       .then(() => {
-  //         // save the firmware data to persistent storage
-  //         try {
-  //           LS.setItem(this.firmwares[fwKey].filename, this.firmwares[fwKey].data);
-  //         } catch (err) {
-  //           console.log(`Couldn't save firmware data: ${err}`);
-  //         }
-  //       });
-  //   });
-  //   return Promise.all(tasks)
-  //     .then(() => {
-  //       this.haveFirmwares = true;
-  //       this.last_check = new Date();
-  //       this.saveMetadata();
-  //       console.log(`downloadFirmwares promise.all resolve ${performance.now()}`);
-  //     })
-  //     .catch(err => {
-  //       console.log(`Couldn't get firmware data: ${err}`);
-  //       console.log(`downloadFirmwares promise.all error ${performance.now()}`);
-  //       this.haveFirmwares = false;
-  //     });
-  // }
 
   public async downloadFirmwares(): Promise<any> {
     try {

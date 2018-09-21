@@ -20,7 +20,8 @@
               <Label row="1" [text]="item.Description | translate" textWrap="true"></Label>
             </GridLayout>
           </ng-template>
-          <ListViewLinearLayout tkListViewLayout dynamicItemSize="false" ios:itemHeight="210" ios:itemWidth="160" scrollDirection="Horizontal"></ListViewLinearLayout>
+          <ListViewLinearLayout tkListViewLayout dynamicItemSize="false" ios:itemHeight="210" ios:itemWidth="160"
+            scrollDirection="Horizontal"></ListViewLinearLayout>
         </RadListView>
 
       </GridLayout>
@@ -40,7 +41,8 @@
               </GridLayout>
             </GridLayout>
           </ng-template>
-          <ListViewLinearLayout tkListViewLayout dynamicItemSize="false" ios:itemHeight="160" ios:itemWidth="160" scrollDirection="Horizontal"></ListViewLinearLayout>
+          <ListViewLinearLayout tkListViewLayout dynamicItemSize="false" ios:itemHeight="160" ios:itemWidth="160"
+            scrollDirection="Horizontal"></ListViewLinearLayout>
         </RadListView>
       </GridLayout>
 
@@ -59,7 +61,8 @@
               <Label row="1" [text]="item.Description | translate" textWrap="true"></Label>
             </GridLayout>
           </ng-template>
-          <ListViewLinearLayout tkListViewLayout dynamicItemSize="false" ios:itemHeight="220" ios:itemWidth="160" scrollDirection="Horizontal"></ListViewLinearLayout>
+          <ListViewLinearLayout tkListViewLayout dynamicItemSize="false" ios:itemHeight="220" ios:itemWidth="160"
+            scrollDirection="Horizontal"></ListViewLinearLayout>
         </RadListView>
       </GridLayout>
 
@@ -80,8 +83,8 @@
         // Stock demo unit when no demo units are found
         <GridLayout rows="140, *" marginLeft="10" row="3" colSpan="2" class="list-item-layout" *ngIf="!Demos.length && demoUnitsLoaded"
           horizontalAlignment="left">
-          <Image row="0" width="140" src="~/assets/images/PushTracker-SmartDrive-pairing.png" (tap)="demoThumbTapped(null)" backgroundImage="~/assets/images/background_1.jpg"
-            stretch="aspectFill"></Image>
+          <Image row="0" width="140" src="~/assets/images/PushTracker-SmartDrive-pairing.png" (tap)="demoThumbTapped(null)"
+            backgroundImage="~/assets/images/background_1.jpg" stretch="aspectFill"></Image>
           <Label row="1" class="new-demo" color="white" [text]="'menu.new-demo' | translate" textWrap="true"></Label>
         </GridLayout>
 
@@ -91,7 +94,8 @@
             <GridLayout rows="*, *" class="list-item-layout">
               <Image row="0" *ngIf="!item.sd_image" src="~/assets/images/PushTracker-SmartDrive-pairing.png" (tap)="demoThumbTapped(item)"
                 backgroundImage="~/assets/images/background_1.jpg" stretch="aspectFill"></Image>
-              <Image row="0" *ngIf="item.sd_image" height="140" [src]="item.sd_image" (tap)="demoThumbTapped(item)" stretch="aspectFill"></Image>
+              <Image row="0" *ngIf="item.sd_image" height="140" [src]="item.sd_image" (tap)="demoThumbTapped(item)"
+                stretch="aspectFill"></Image>
               <GridLayout row="1" rows="auto, auto, auto" class="demo-item-description">
                 <Label row="0" textWrap="true" [text]="(item.smartdrive_serial_number || '# ??')"></Label>
                 <Label row="1" textWrap="true" [text]="item.location_string"></Label>
@@ -123,7 +127,8 @@
               <Label row="0" [text]="item.question" class="faq-question" textWrap="true"></Label>
             </GridLayout>
           </ng-template>
-          <ListViewLinearLayout tkListViewLayout dynamicItemSize="false" ios:itemHeight="160" ios:itemWidth="160" scrollDirection="Horizontal"></ListViewLinearLayout>
+          <ListViewLinearLayout tkListViewLayout dynamicItemSize="false" ios:itemHeight="160" ios:itemWidth="160"
+            scrollDirection="Horizontal"></ListViewLinearLayout>
         </RadListView>
       </GridLayout>
 
