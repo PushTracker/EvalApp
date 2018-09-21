@@ -4,8 +4,9 @@
 
 <Gradient tkMainContent margin-top="30" direction="to bottom" colors="#004F7E, #0070b3">
 
+    // Loading indicator - shown while data is being fetched
     <StackLayout *ngIf="!evalsLoaded" class="loader">
-        <Label text="Loading Evaluations..." class="h3" textWrap="true"></Label>
+        <Label text="Loading Evaluations..." class="h2" textWrap="true"></Label>
         <ActivityIndicator busy="true" width="26" height="26"></ActivityIndicator>
     </StackLayout>
 
@@ -13,12 +14,45 @@
 
     // Evals ListView
     <ListView height="100%" backgroundColor="transparent" [items]="evals" *ngIf="evalsLoaded" (itemTap)="onEvalItemTap($event)"
-        class="evals-list">
-        <ng-template let-item="item">
+        class="evals-list" separatorColor="#fff">
+        <ng-template nsTemplateKey="header" let-eval="item">
             <StackLayout>
-                <Label [text]="'Pushing Pain: ' + item.pushing_pain"></Label>
-                <Label [text]="'Chair: ' + item.chair"></Label>
-                <Label [text]="'Status: ' + item.status" textWrap="true"></Label>
+
+                // Eval Data
+                <GridLayout rows="*, *" columns="*, *">
+                    <Label row="0" col="0" [text]="eval.name ? 'Name: ' + eval.name : 'Name: N/A'" class="eval-data"></Label>
+                    <Label row="1" col="0" [text]="eval.chair ? 'Chair: ' + eval.chair : 'Chair: N/A'" class="eval-data"></Label>
+                    <Label row="1" col="1" [text]="eval.status ? 'Status: ' + eval.status : 'Status: N/A'" class="eval-data"
+                        textWrap="true"></Label>
+                </GridLayout>
+
+                <!-- <Label class="hr-light" text="" textWrap="true"></Label> -->
+
+                // Trials for the Eval
+                <GridLayout rows="*, *, *, *, *, *" columns="*, *" class="list-group-item" *ngFor="let trial of eval.trials">
+
+                    // General Info of the Trial
+                    <Label row="0" col="0" [text]="trial.flat ? 'Flat: YES' : 'Flat: NO'" class="trial-data"></Label>
+                    <Label row="0" col="1" [text]="trial.ramp ? 'Ramp: YES' : 'Ramp: NO'" class="trail-data"></Label>
+                    <Label row="1" col="0" [text]="trial.inclines ? 'Inclines: YES' : 'Inclines: NO'" class="trail-data"></Label>
+                    <Label row="1" col="1" [text]="trial.max_speed ? 'Max Speed: ' + trial.max_speed : 'Max Speed: N/A'"
+                        class="trail-data"></Label>
+
+                    // Without SmartDrive
+                    <Label row="2" colSpan="2" text="Without SmartDrive:" class="h2 text-white" textWrap="true"></Label>
+                    <Label row="3" col="0" [text]="trial.without_pushes ? 'Pushes: ' + trial.without_pushes : 'Pushes: N/A'"
+                        class="trail-data"></Label>
+                    <Label row="3" col="1" [text]="trial.without_coast ? 'Coast: ' + trial.without_coast : 'Coast: N/A'"
+                        class="trail-data"></Label>
+
+                    // With SmartDrive
+                    <Label row="4" colSpan="2" text="With SmartDrive:" class="h2 text-white" textWrap="true"></Label>
+                    <Label row="5" col="0" [text]="trial.with_pushes ? 'Pushes: ' + trial.with_pushes : 'Pushes: N/A'"
+                        class="trail-data"></Label>
+                    <Label row="5" col="1" [text]="trial.with_coast ? 'Coast: ' + trial.with_coast : 'Coast: N/A'"
+                        class="trail-data"></Label>
+                </GridLayout>
+
             </StackLayout>
         </ng-template>
     </ListView>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Evaluation } from '@maxmobility/core';
 import { EvaluationService } from '@maxmobility/mobile';
+import { alert } from 'tns-core-modules/ui/dialogs/dialogs';
 
 @Component({
   selector: 'Evals',
@@ -28,10 +29,16 @@ export class EvalsComponent implements OnInit {
     try {
       this.evals = await this._evalService.loadEvaluations();
       this.evalsLoaded = true;
-      console.log('evals', this.evals);
+      this.evals.forEach(item => {
+        console.log('eval', item);
+      });
     } catch (error) {
       this.evalsLoaded = true;
       console.log('ERROR', error);
+      alert({
+        message: 'An error occurred loading the evaluations.',
+        okButtonText: 'Okay'
+      });
     }
   }
 

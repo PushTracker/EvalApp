@@ -32,7 +32,19 @@
   width: 100%;
   color: $text-color-light;
 
+  StackLayout {
+    padding: 8;
+  }
+
   label {
     margin: 5;
+  }
+
+  .eval-data {
+    font-size: 17;
+  }
+
+  .trial-data {
+    font-size: 14;
   }
 }
