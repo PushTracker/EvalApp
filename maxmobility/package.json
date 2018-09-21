@@ -71,7 +71,7 @@
     "colors": "^1.2.1",
     "core-js": "^2.5.4",
     "email-validator": "^2.0.4",
-    "kinvey-nativescript-sdk": "^3.11.6",
+    "kinvey-nativescript-sdk": "^3.11.7",
     "nativescript-angular": "^6.1.0",
     "nativescript-intl": "^3.0.0",
     "nativescript-barcodescanner": "~2.7.8",
