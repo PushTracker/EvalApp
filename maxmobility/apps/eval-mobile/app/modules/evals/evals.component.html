@@ -2,23 +2,25 @@
     <NavigationButton android:visibility="collapse" tap="onNavBtnTap"></NavigationButton>
 </ActionBar>
 
-<StackLayout>
+<Gradient tkMainContent margin-top="30" direction="to bottom" colors="#004F7E, #0070b3">
 
-    <GridLayout rows="*" columns="auto, auto" orientation="horizontal" *ngIf="!evalsLoaded" class="loader">
-        <Label col="0" text="Loading Evaluations..." class="h3" textWrap="true"></Label>
-        <ActivityIndicator col="1" busy="true" width="26" height="26"></ActivityIndicator>
-    </GridLayout>
+    <StackLayout *ngIf="!evalsLoaded" class="loader">
+        <Label text="Loading Evaluations..." class="h3" textWrap="true"></Label>
+        <ActivityIndicator busy="true" width="26" height="26"></ActivityIndicator>
+    </StackLayout>
 
-    <Label text="No Evaluations Found." *ngIf="evalsLoaded && evals.length < 1" textWrap="true"></Label>
+    <Label #noEvalsLabel text="No Evaluations Found." *ngIf="evalsLoaded && evals.length < 1" textWrap="true"></Label>
 
-
-    <ListView height="100%" [items]="evals" *ngIf="evalsLoaded" (itemTap)="onEvalItemTap($event)" class="list-group">
+    // Evals ListView
+    <ListView height="100%" backgroundColor="transparent" [items]="evals" *ngIf="evalsLoaded" (itemTap)="onEvalItemTap($event)"
+        class="evals-list">
         <ng-template let-item="item">
             <StackLayout>
-                <Label [text]="'Pushing Pain: ' + item.pushing_pain" class="list-group-item"></Label>
-                <Label [text]="'Chair: ' + item.chair" class="list-group-item"></Label>
-                <Label [text]="'Status: ' + item.status" class="list-group-item" textWrap="true"></Label>
+                <Label [text]="'Pushing Pain: ' + item.pushing_pain"></Label>
+                <Label [text]="'Chair: ' + item.chair"></Label>
+                <Label [text]="'Status: ' + item.status" textWrap="true"></Label>
             </StackLayout>
         </ng-template>
     </ListView>
-</StackLayout>
+
+</Gradient>
