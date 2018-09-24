@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Evaluation } from '@maxmobility/core';
 import { EvaluationService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { RouterExtensions } from 'nativescript-angular/router';
 import * as app from 'tns-core-modules/application';
 import { confirm } from 'tns-core-modules/ui/dialogs';
+import { DropDown } from 'nativescript-drop-down';
 
 @Component({
   selector: 'EvalEntry',
@@ -13,6 +14,8 @@ import { confirm } from 'tns-core-modules/ui/dialogs';
   styleUrls: ['./eval-entry.component.css']
 })
 export class EvalEntryComponent implements OnInit {
+  @ViewChild('yearDropdown')
+  yearDropdown: ElementRef;
   hasPushingPain = false;
   hasPushingFatigue = false;
   impactsIndependence = false;
@@ -46,11 +49,13 @@ export class EvalEntryComponent implements OnInit {
             this.hasPushingFatigue = this.evaluation.pushing_fatigue ? true : false;
             this.hasPushingPain = this.evaluation.pushing_pain ? true : false;
             this.impactsIndependence = this.evaluation.impact_on_independence ? true : false;
+            // map the years string value to the dropdown UI Index value using indexOf
+            (this.yearDropdown.nativeElement as DropDown).selectedIndex = this.years.indexOf(this.evaluation.years);
           } else {
             this._evaluationService.evaluation = new Evaluation();
           }
         });
-      }, 650);
+      }, 300);
     } else {
       this._evaluationService.evaluation = new Evaluation();
     }

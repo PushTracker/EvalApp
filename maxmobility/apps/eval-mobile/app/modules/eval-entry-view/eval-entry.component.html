@@ -48,18 +48,7 @@
 
         <GridLayout class="eval-item" rows="auto" columns="*, auto">
           <Label col="0" [text]="'eval-entry.years-question' | translate" class="eval-label" textWrap="true"></Label>
-          <DropDown col="1" [hint]="'eval-entry.years-label' | translate" class="dropdown" [items]="years" (selectedIndexChanged)="selectedIndexChanged('years',$event)"></DropDown>
-
-          <!--
-              <Label row="1" col="0" text="Type of chair:" class="eval-label" textWrap="true"></Label>
-              <DropDown
-	             row="1"
-	             col="1"
-	             hint="chair type" 
-	             class="dropdown"
-	             [items]="chair" 
-	             (selectedIndexChanged)="selectedIndexChanged('chair',$event)" ></DropDown>
-              -->
+          <DropDown #yearDropdown col="1" [hint]="'eval-entry.years-label' | translate" class="dropdown" [items]="years" (selectedIndexChanged)="selectedIndexChanged('years',$event)"></DropDown>
         </GridLayout>
 
         <Button (tap)="onNext()" [text]="'buttons.next' | translate" class="nextButton"></Button>
