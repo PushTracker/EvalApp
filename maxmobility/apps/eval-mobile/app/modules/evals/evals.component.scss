@@ -32,19 +32,33 @@
   width: 100%;
   color: $text-color-light;
 
-  StackLayout {
+  .eval-block {
+    margin: 8;
     padding: 8;
   }
 
-  label {
-    margin: 5;
+  .list-line {
+    background-color: $permobil-orange;
+    height: 100%;
+    width: 8;
+    border-radius: 4;
+    vertical-align: middle;
+    margin: 4 1 4 1;
   }
 
   .eval-data {
     font-size: 17;
   }
 
+  .trial-label {
+    font-size: 17;
+    color: $permobil-steel;
+  }
+
   .trial-data {
     font-size: 14;
+    color: $white;
+    margin-left: 5;
+    padding-left: 10;
   }
 }

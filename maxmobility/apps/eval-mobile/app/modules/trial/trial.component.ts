@@ -16,7 +16,6 @@ import { CFAlertDialog, CFAlertStyle } from 'nativescript-cfalert-dialog';
   styleUrls: ['./trial.component.css']
 })
 export class TrialComponent implements OnInit {
-  // NON STATIC:
   @ViewChild('withPage')
   withPageView: ElementRef;
   @ViewChild('withoutPage')
@@ -29,9 +28,6 @@ export class TrialComponent implements OnInit {
   startWithoutView: ElementRef;
   @ViewChild('stopWithout')
   stopWithoutView: ElementRef;
-  snackbar = new SnackBar();
-  trial = new Trial();
-  trialTimeout = 15000; // 15 seconds
 
   // displaying trial info
   distanceDisplay = '--';
@@ -53,13 +49,15 @@ export class TrialComponent implements OnInit {
   failed_stop_message: string = this._translateService.instant('trial.errors.failed-stop.message');
   pt_version_title: string = this._translateService.instant('trial.errors.pt-version.title');
   pt_version_message: string = this._translateService.instant('trial.errors.pt-version.message');
+  trial = new Trial();
 
+  private _trialTimeout = 15000; // 15 seconds
   private _cfAlert = new CFAlertDialog();
+  private _snackbar = new SnackBar();
 
   constructor(
     private _routerExtensions: RouterExtensions,
     private _progressService: ProgressService,
-    private _bluetoothService: BluetoothService,
     private _evaluationService: EvaluationService,
     private _zone: NgZone,
     private _translateService: TranslateService,
@@ -73,10 +71,6 @@ export class TrialComponent implements OnInit {
 
   isIOS(): boolean {
     return isIOS;
-  }
-
-  isAndroid(): boolean {
-    return isAndroid;
   }
 
   // button events
@@ -213,7 +207,7 @@ export class TrialComponent implements OnInit {
       // set timeout on trial starting
       startWithTimeoutID = setTimeout(() => {
         trialStartWithFailed('Timeout!');
-      }, this.trialTimeout);
+      }, this._trialTimeout);
 
       // now actually try to send these data
       retry(3, sendSettings)
@@ -331,7 +325,7 @@ export class TrialComponent implements OnInit {
       // set timeout on trial starting
       stopWithTimeoutID = setTimeout(() => {
         trialStopWithFailed('Timeout!');
-      }, this.trialTimeout);
+      }, this._trialTimeout);
 
       // now actually send the distance command
       retry(3, sendDistance).catch(trialStopWithFailed);
@@ -402,7 +396,7 @@ export class TrialComponent implements OnInit {
       // set timeout on trial starting
       startWithoutTimeoutID = setTimeout(() => {
         trialStartWithoutFailed('Timeout!');
-      }, this.trialTimeout);
+      }, this._trialTimeout);
       pushTracker.on(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
     }
   }
@@ -469,7 +463,7 @@ export class TrialComponent implements OnInit {
       // set timeout on trial starting
       stopWithoutTimeoutID = setTimeout(() => {
         trialStopWithoutFailed('Timeout!');
-      }, this.trialTimeout);
+      }, this._trialTimeout);
 
       // wait for push / coast data and distance:
       pushTracker.on(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
@@ -511,7 +505,7 @@ export class TrialComponent implements OnInit {
     if (connectedPTs.length <= 0) {
       // this._noPushTrackersConnectedAlert();
 
-      this.snackbar
+      this._snackbar
         .action({
           actionText: 'More Info',
           snackText: this.please_connect_pt,
@@ -532,7 +526,7 @@ export class TrialComponent implements OnInit {
 
     // too many pushtrackers connected - don't know which to use!
     if (connectedPTs.length > 1) {
-      this.snackbar.simple(this.too_many_pts);
+      this._snackbar.simple(this.too_many_pts);
       return null;
     }
 
