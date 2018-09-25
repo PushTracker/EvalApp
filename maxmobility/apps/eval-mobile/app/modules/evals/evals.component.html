@@ -14,53 +14,56 @@
 
     // Evals ListView
     <ListView height="100%" backgroundColor="transparent" [items]="evals" *ngIf="evalsLoaded" (itemTap)="onEvalItemTap($event)"
-        class="evals-list" separatorColor="transparent">
+        class="evals-list" separatorColor="#ddd">
         <ng-template nsTemplateKey="header" let-eval="item">
-            <GridLayout rows="*, *" columns="20, *" class="eval-block">
-
+            <DockLayout stretchLastChild="true" class="eval-block">
                 // want this to span the rows vertically, using height 100% isn't working
-                <Label row="0" rowSpan="3" col="0" height="95%" width="7" class="list-line" textWrap="true"></Label>
+                <Label dock="left" height="100%" class="list-line" textWrap="true"></Label>
 
-                // Eval Data
-                <GridLayout row="0" col="1" rows="*, *" columns="*, *">
-                    <Label row="0" col="0" [text]="eval.name ? 'Name: ' + eval.name : 'Name: N/A'" class="eval-data"
-                        textWrap="true"></Label>
-                    <Label row="0" col="1" [text]="eval.chair ? 'Chair: ' + eval.chair : 'Chair: N/A'" class="eval-data"></Label>
-                    <!-- <Label row="1" col="1" [text]="eval.status ? 'Status: ' + eval.status : 'Status: N/A'" class="eval-data"
-                        textWrap="true"></Label> -->
+                <GridLayout dock="right" rows="*, *" columns="10, *">
+
+                    // Eval Data
+                    <GridLayout row="0" col="1" rows="*, *" columns="*, *">
+                        <Label row="0" col="0" [text]="eval.name ? 'Name: ' + eval.name : 'Name: N/A'" class="eval-data"
+                            textWrap="true"></Label>
+                        <Label row="0" col="1" [text]="eval.chair ? 'Chair: ' + eval.chair : 'Chair: N/A'" class="eval-data"></Label>
+
+                    </GridLayout>
+
+                    // Trials for the Eval
+                    <GridLayout row="1" col="1" rows="*, *, *, *, *, *, *" columns="*, *" class="list-group-item"
+                        *ngFor="let trial of eval.trials; index as i; count as c;">
+
+                        <Label row="0" colSpan="2" class="trial-name" [text]="trial.name ? 'Trial Name: ' + trial.name : 'Trial Name: N/A'"
+                            textWrap="true"></Label>
+
+                        // General Info of the Trial
+                        <Label row="1" col="0" [text]="trial.flat ? 'Flat: Yes' : 'Flat: No'" class="trial-data"></Label>
+                        <Label row="1" col="1" [text]="trial.ramp ? 'Ramp: Yes' : 'Ramp: No'" class="trial-data"></Label>
+                        <Label row="2" col="0" [text]="trial.inclines ? 'Inclines: Yes' : 'Inclines: No'" class="trial-data"></Label>
+                        <Label row="2" col="1" [text]="trial.max_speed ? 'Max Speed: ' + trial.max_speed : 'Max Speed: N/A'"
+                            class="trial-data"></Label>
+
+                        // Without SmartDrive
+                        <Label row="3" colSpan="2" [text]="'evals.without-smartdrive' | translate" class="trial-label"
+                            textWrap="true"></Label>
+                        <Label row="4" col="0" [text]="trial.without_pushes ? 'Pushes: ' + trial.without_pushes : 'Pushes: N/A'"
+                            class="trial-data"></Label>
+                        <Label row="4" col="1" [text]="trial.without_coast ? 'Coast: ' + trial.without_coast : 'Coast: N/A'"
+                            class="trial-data"></Label>
+
+                        // With SmartDrive
+                        <Label row="5" colSpan="2" [text]="'evals.with-smartdrive' | translate" class="trial-label"
+                            textWrap="true"></Label>
+                        <Label row="6" col="0" [text]="trial.with_pushes ? 'Pushes: ' + trial.with_pushes : 'Pushes: N/A'"
+                            class="trial-data"></Label>
+                        <Label row="6" col="1" [text]="trial.with_coast ? 'Coast: ' + trial.with_coast : 'Coast: N/A'"
+                            class="trial-data"></Label>
+                    </GridLayout>
+
                 </GridLayout>
+            </DockLayout>
 
-                // Trials for the Eval
-                <GridLayout row="1" col="1" rows="*, *, *, *, *, *, *" columns="*, *" class="list-group-item" *ngFor="let trial of eval.trials; index as i; count as c;">
-
-                    <Label row="0" [text]="'Trial: ' + c" textWrap="true"></Label>
-
-
-                    // General Info of the Trial
-                    <Label row="1" col="0" [text]="trial.flat ? 'Flat: Yes' : 'Flat: No'" class="trial-data"></Label>
-                    <Label row="1" col="1" [text]="trial.ramp ? 'Ramp: Yes' : 'Ramp: No'" class="trial-data"></Label>
-                    <Label row="2" col="0" [text]="trial.inclines ? 'Inclines: Yes' : 'Inclines: No'" class="trial-data"></Label>
-                    <Label row="2" col="1" [text]="trial.max_speed ? 'Max Speed: ' + trial.max_speed : 'Max Speed: N/A'"
-                        class="trial-data"></Label>
-
-                    // Without SmartDrive
-                    <Label row="3" colSpan="2" [text]="'evals.without-smartdrive' | translate" class="trial-label"
-                        textWrap="true"></Label>
-                    <Label row="4" col="0" [text]="trial.without_pushes ? 'Pushes: ' + trial.without_pushes : 'Pushes: N/A'"
-                        class="trial-data"></Label>
-                    <Label row="4" col="1" [text]="trial.without_coast ? 'Coast: ' + trial.without_coast : 'Coast: N/A'"
-                        class="trial-data"></Label>
-
-                    // With SmartDrive
-                    <Label row="5" colSpan="2" [text]="'evals.with-smartdrive' | translate" class="trial-label"
-                        textWrap="true"></Label>
-                    <Label row="6" col="0" [text]="trial.with_pushes ? 'Pushes: ' + trial.with_pushes : 'Pushes: N/A'"
-                        class="trial-data"></Label>
-                    <Label row="6" col="1" [text]="trial.with_coast ? 'Coast: ' + trial.with_coast : 'Coast: N/A'"
-                        class="trial-data"></Label>
-                </GridLayout>
-
-            </GridLayout>
         </ng-template>
     </ListView>
 
