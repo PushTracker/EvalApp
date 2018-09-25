@@ -14,7 +14,7 @@ export class EvalsComponent implements OnInit {
   /**
    * Evals array binded to the listview.
    */
-  evals: Evaluation[];
+  evals: Evaluation[] = [];
 
   /**
    * Boolean to track when the evals have loaded.

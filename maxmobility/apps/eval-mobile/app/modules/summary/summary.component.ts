@@ -5,7 +5,6 @@ import { TranslateService } from '@ngx-translate/core';
 import * as mustache from 'mustache';
 import { RouterExtensions } from 'nativescript-angular/router';
 import * as email from 'nativescript-email';
-import { SnackBar } from 'nativescript-snackbar';
 import { isAndroid, isIOS } from 'tns-core-modules/platform';
 import { confirm } from 'tns-core-modules/ui/dialogs';
 import { TextField } from 'tns-core-modules/ui/text-field';
@@ -19,7 +18,6 @@ import { Kinvey } from 'kinvey-nativescript-sdk';
 })
 export class SummaryComponent {
   trialName = '';
-  snackbar = new SnackBar();
   showFlatDifficulty = false;
   showRampDifficulty = false;
   showInclineDifficulty = false;
@@ -75,21 +73,10 @@ export class SummaryComponent {
   pushDiff = 0;
   coastDiff = 0;
   cadenceThresh = 10; // pushes per minute
-  error: string = this._translateService.instant('user.error');
-  ok: string = this._translateService.instant('dialogs.ok');
-  yes: string = this._translateService.instant('dialogs.yes');
-  no: string = this._translateService.instant('dialogs.no');
-  complete: string = this._translateService.instant('summary.complete');
-  confirm: string = this._translateService.instant('summary.confirm');
-  summary_email_subject: string = this._translateService.instant('summary.email-subject');
-  fewer: string = this._translateService.instant('summary.fewer');
-  more: string = this._translateService.instant('summary.more');
-  higher: string = this._translateService.instant('summary.higher');
-  lower: string = this._translateService.instant('summary.lower');
   lmnTemplate: string = this._translateService.instant('summary.lmnTemplate').join('\n');
 
   constructor(
-    private routerExtensions: RouterExtensions,
+    private _routerExtensions: RouterExtensions,
     private _evaluationService: EvaluationService,
     private _translateService: TranslateService,
     private _loggingService: LoggingService
@@ -156,22 +143,26 @@ export class SummaryComponent {
         return Trial.timeToString(this * 60);
       },
       pushComparison: () => {
-        return this.pushDiff > 0 ? this.fewer : this.more;
+        return this.pushDiff > 0
+          ? this._translateService.instant('summary.fewer')
+          : this._translateService.instant('summary.more');
       },
       coastComparison: () => {
-        return this.coastDiff > 1.0 ? this.higher : this.lower;
+        return this.coastDiff > 1.0
+          ? this._translateService.instant('summary.higher')
+          : this._translateService.instant('summary.lower');
       },
       showCadence: this.totalCadenceWithout > this.cadenceThresh
     });
   }
 
   // button events
-  async onNext() {
+  async onComplete() {
     const confirmResult = await confirm({
-      title: this.complete,
-      message: this.confirm,
-      okButtonText: this.yes,
-      cancelButtonText: this.no
+      title: this._translateService.instant('summary.complete'),
+      message: this._translateService.instant('summary.confirm'),
+      okButtonText: this._translateService.instant('dialogs.yes'),
+      cancelButtonText: this._translateService.instant('dialogs.no')
     });
 
     if (!confirmResult) {
@@ -190,7 +181,7 @@ export class SummaryComponent {
     email
       .compose({
         to: [],
-        subject: this.summary_email_subject,
+        subject: this._translateService.instant('summary.email-subject'),
         body: lmnBody,
         cc: []
       })
@@ -215,11 +206,8 @@ export class SummaryComponent {
 
     this._evaluationService.save();
 
-    // after saving to kinvey, null the instance
-    this._evaluationService.evaluation = null;
-
     // now go back to dashboard
-    this.routerExtensions.navigate(['/home'], {
+    this._routerExtensions.navigate(['/home'], {
       // clearHistory: true,
       transition: {
         name: 'fade'
@@ -239,21 +227,11 @@ export class SummaryComponent {
   }
 
   onBack(): void {
-    this.routerExtensions.navigate(['/trial'], {
+    this._routerExtensions.navigate(['/trial'], {
       transition: {
         name: 'slideRight'
       }
     });
-  }
-
-  onTextChange(args) {
-    const textField = <TextField>args.object;
-    this.trialName = textField.text;
-  }
-
-  onReturn(args) {
-    const textField = <TextField>args.object;
-    this.trialName = textField.text;
   }
 
   get evaluation() {

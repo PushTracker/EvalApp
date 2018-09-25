@@ -20,11 +20,14 @@
 }
 
 #noEvalsLabel {
+  height: 100%;
+  width: 100%;
   text-align: center;
   vertical-align: middle;
   horizontal-align: center;
   margin: 4;
-  color: $white;
+  font-size: 16;
+  color: $text-color-light;
 }
 
 .evals-list {
