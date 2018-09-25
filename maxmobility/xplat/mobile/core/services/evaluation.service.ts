@@ -1,4 +1,4 @@
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 import { Evaluation } from '@maxmobility/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
@@ -9,21 +9,19 @@ export class EvaluationService {
   evaluation: Evaluation = null;
   private datastore = Kinvey.DataStore.collection<Evaluation>('Evaluations');
 
-  constructor(private _logService: LoggingService, private zone: NgZone) {}
-
-  // tslint:disable-next-line:member-ordering
-  createEvaluation() {
-    this.evaluation = new Evaluation();
-  }
+  constructor(private _logService: LoggingService) {}
 
   save() {
-    return this.datastore
-      .save(this.evaluation.data())
-      .then(data => {
-        // now that we've saved the eval, clear it out
-        this.createEvaluation();
-      })
-      .catch(this.handleErrors);
+    return new Promise(async (resolve, reject) => {
+      try {
+        await this.datastore.save(this.evaluation.data());
+        await this.datastore.push();
+        this.evaluation = null;
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
   }
 
   async loadEvaluations(): Promise<any> {
