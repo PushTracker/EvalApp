@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Evaluation } from '@maxmobility/core';
 import { EvaluationService } from '@maxmobility/mobile';
 import { alert } from 'tns-core-modules/ui/dialogs/dialogs';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'Evals',
@@ -21,7 +22,7 @@ export class EvalsComponent implements OnInit {
    */
   evalsLoaded = false;
 
-  constructor(private _evalService: EvaluationService) {}
+  constructor(private _evalService: EvaluationService, private _translateService: TranslateService) {}
 
   async ngOnInit() {
     console.log('EvalsComponent onInit');
@@ -34,10 +35,10 @@ export class EvalsComponent implements OnInit {
       });
     } catch (error) {
       this.evalsLoaded = true;
-      console.log('ERROR', error);
+      console.log('ERROR ', error);
       alert({
-        message: 'An error occurred loading the evaluations.',
-        okButtonText: 'Okay'
+        message: this._translateService.instant('evals.evals-loading-error'),
+        okButtonText: this._translateService.instant('dialogs.ok')
       });
     }
   }
