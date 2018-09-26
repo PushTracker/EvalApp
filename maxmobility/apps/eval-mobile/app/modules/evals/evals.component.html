@@ -1,8 +1,12 @@
 <ActionBar class="action-bar" flat="true" [title]="'evals.title' | translate">
     <NavigationButton android:visibility="collapse" tap="onNavBtnTap"></NavigationButton>
+    <ActionItem (tap)="onSearchTap()">
+      <Button class="" text="Search" class="action-item"></Button>
+    </ActionItem>
 </ActionBar>
 
 <Gradient tkMainContent margin-top="30" direction="to bottom" colors="#004F7E, #0070b3">
+
 
     // Loading indicator - shown while data is being fetched
     <StackLayout *ngIf="!evalsLoaded" class="loader">

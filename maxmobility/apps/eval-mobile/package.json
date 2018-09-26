@@ -74,6 +74,7 @@
     "nativescript-loading-indicator": "file:../../node_modules/nativescript-loading-indicator",
     "nativescript-localstorage": "file:../../node_modules/nativescript-localstorage",
     "nativescript-master-technology": "../../node_modules/nativescript-master-technology",
+    "nativescript-modal-datetimepicker": "^1.1.4",
     "nativescript-ngx-fonticon": "file:../../node_modules/nativescript-ngx-fonticon",
     "nativescript-orientation": "^2.2.1",
     "nativescript-push-notifications": "^1.1.4",
