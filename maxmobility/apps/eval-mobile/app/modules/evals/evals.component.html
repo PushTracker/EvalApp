@@ -1,7 +1,7 @@
 <ActionBar class="action-bar" flat="true" [title]="'evals.title' | translate">
     <NavigationButton android:visibility="collapse" tap="onNavBtnTap"></NavigationButton>
-    <ActionItem (tap)="onSearchTap()">
-      <Button class="" text="Search" class="action-item"></Button>
+    <ActionItem (tap)="onSearchTap()" ios.position="right">
+        <Button class="" text="Search" class="action-item"></Button>
     </ActionItem>
 </ActionBar>
 
@@ -27,12 +27,21 @@
                 <GridLayout dock="right" rows="*, *" columns="10, *">
 
                     // Eval Data
-                    <GridLayout row="0" col="1" rows="*, *" columns="*, *">
-                        <Label row="0" col="0" [text]="eval.name ? 'Name: ' + eval.name : 'Name: N/A'" class="eval-data"
-                            textWrap="true"></Label>
-                        <Label row="0" col="1" [text]="eval.chair ? 'Chair: ' + eval.chair : 'Chair: N/A'" class="eval-data"></Label>
+                    <WrapLayout row="0" col="1" orientation="horizontal">
+                        <Label [text]="eval._kmd.ect | date: 'short'" class="eval-data" textWrap="true"></Label>
+                        <Label [text]="eval.name ? 'Name: ' + eval.name : ''" [visibility]="eval.name ? 'visible' : 'collapsed'"
+                            class="eval-data" textWrap="true"></Label>
+                        <Label [text]="'Chair: ' + eval.chair" [visibility]="eval.chair ? 'visible' : 'collapsed'"
+                            class="eval-data"></Label>
+                    </WrapLayout>
 
-                    </GridLayout>
+                    <!-- <GridLayout row="0" col="1" rows="*, *" columns="*, *">
+                        <Label row="0" col="0" [text]="eval._kmd.ect | date: 'short'" class="eval-data" textWrap="true"></Label>
+                        <Label row="0" col="1" [text]="eval.name ? 'Name: ' + eval.name : ''" class="eval-data"
+                            textWrap="true"></Label>
+                        <Label row="1" col="0" [text]="'Chair: ' + eval.chair" [visibility]="eval.chair ? 'visible' : 'collapsed'"
+                            class="eval-data"></Label>
+                    </GridLayout> -->
 
                     // Trials for the Eval
                     <GridLayout row="1" col="1" rows="*, *, *, *, *, *, *" columns="*, *" class="list-group-item"
