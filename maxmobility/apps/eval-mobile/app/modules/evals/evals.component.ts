@@ -153,8 +153,8 @@ export class EvalsComponent implements OnInit {
   async onEmailBtnTap(evaluation: Evaluation) {
     console.log('evaluation email tapped', evaluation);
     const confirmResult = await confirm({
-      title: this._translateService.instant('summary.complete'),
-      message: this._translateService.instant('summary.confirm'),
+      title: this._translateService.instant('evals.confirm-lmn-email-title'),
+      message: this._translateService.instant('evals.confirm-lmn-email-message'),
       okButtonText: this._translateService.instant('dialogs.yes'),
       cancelButtonText: this._translateService.instant('dialogs.no')
     });
@@ -243,7 +243,8 @@ export class EvalsComponent implements OnInit {
       totalCadenceWithout: this.totalCadenceWithout.toFixed(1),
       pushDiff: this.pushDiff.toFixed(0),
       coastDiff: this.coastDiff.toFixed(1),
-      toFixed() {
+      // tslint:disable-next-line:object-literal-shorthand
+      toFixed: function() {
         console.log(this);
         let str = this.toFixed(2);
         console.log(str);
@@ -252,7 +253,8 @@ export class EvalsComponent implements OnInit {
         }
         return str;
       },
-      toTimeString() {
+      // tslint:disable-next-line:object-literal-shorthand
+      toTimeString: function() {
         return Trial.timeToString(this * 60);
       },
       pushComparison: () => {
