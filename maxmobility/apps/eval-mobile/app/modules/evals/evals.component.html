@@ -24,7 +24,7 @@
                 // want this to span the rows vertically, using height 100% isn't working
                 <Label dock="left" height="100%" class="list-line" textWrap="true"></Label>
 
-                <GridLayout dock="right" rows="*, *" columns="10, *">
+                <GridLayout dock="right" rows="*, *, 30" columns="10, *">
 
                     // Eval Data
                     <WrapLayout row="0" col="1" orientation="horizontal">
@@ -72,6 +72,11 @@
                             class="trial-data"></Label>
                         <Label row="6" col="1" [text]="trial.with_coast ? 'Coast: ' + trial.with_coast : 'Coast: N/A'"
                             class="trial-data"></Label>
+                    </GridLayout>
+
+                    <GridLayout row="2" col="1" rows="*" columns="*, *, *">
+                        <Button row="0" col="2" text="&#xe0be;" class="material-icon btn-transparent" fontSize="22"
+                            (tap)="onEmailBtnTap(eval)"></Button>
                     </GridLayout>
 
                 </GridLayout>
