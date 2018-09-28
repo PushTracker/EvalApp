@@ -43,7 +43,9 @@
     "loading": "Loading Evals...",
     "evals-loading-error": "An error occurred trying to load your Evaluations.",
     "with-smartdrive": "With SmartDrive: ",
-    "without-smartdrive": "Without SmartDrive: "
+    "without-smartdrive": "Without SmartDrive: ",
+    "confirm-lmn-email-title": "Email LMN?",
+    "confirm-lmn-email-message": "Do you want to email this evaluation for LMN?"
   },
   "eval-entry": {
     "title": "Perform an Evaluation",
