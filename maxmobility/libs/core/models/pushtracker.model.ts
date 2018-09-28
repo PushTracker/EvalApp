@@ -2,9 +2,9 @@ import { bindingTypeToString, Packet } from '@maxmobility/core';
 import { BluetoothService } from '@maxmobility/mobile';
 import { Observable } from 'tns-core-modules/data/observable';
 import { isIOS } from 'tns-core-modules/platform';
+import { Color } from 'color';
 import * as timer from 'tns-core-modules/timer';
 
-// TODO: TRANSLATE
 enum OTAState {
   not_started = 'ota.pt.state.not-started',
   awaiting_version = 'ota.pt.state.awaiting-version',
@@ -29,6 +29,54 @@ export class PushTracker extends Observable {
   // STATIC:
   static readonly OTAState = OTAState;
   readonly OTAState = PushTracker.OTAState;
+
+  public static Settings = class extends Observable {
+    // settings classes
+    public static ControlMode = class {
+      public static Options: Array<string> = ['MX1', 'MX2', 'MX2+'];
+
+      public static Off: string = 'Off';
+
+      public static Beginner: string = 'MX1';
+      public static Intermediate: string = 'MX2';
+      public static Advanced: string = 'MX2+';
+
+      public static MX1: string = 'MX1';
+      public static MX2: string = 'MX2';
+      public static MX2plus: string = 'MX2+';
+
+      public static fromSettings(s: any): string {
+        let o = bindingTypeToString('SmartDriveControlMode', s.ControlMode);
+        return PushTracker.Settings.ControlMode[o];
+      }
+    };
+
+    public static Units = class {
+      public static Options: Array<string> = ['English', 'Metric'];
+
+      public static English: string = 'English';
+      public static Metric: string = 'Metric';
+
+      public static fromSettings(s: any): string {
+        let o = bindingTypeToString('Units', s.Units);
+        return PushTracker.Settings.Units[o];
+      }
+    };
+
+    // public members
+    public controlMode: string = PushTracker.Settings.ControlMode.Advanced;
+    public ezOn: boolean = false;
+    public units: string = PushTracker.Settings.Units.English;
+    public acceleration: number = 30;
+    public maxSpeed: number = 70;
+    public tapSensitivity: number = 100;
+
+    public ledColor: Color = new Color('#3c8aba');
+
+    constructor() {
+      super();
+    }
+  };
 
   // bluetooth info
   public static ServiceUUID = '1d14d6ee-fd63-4fa1-bfa4-8f47b42119f0';

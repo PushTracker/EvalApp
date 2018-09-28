@@ -4,6 +4,8 @@ import { BluetoothService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { PageRoute, RouterExtensions } from 'nativescript-angular/router';
 import { Feedback } from 'nativescript-feedback';
+import { SnackBar } from 'nativescript-snackbar';
+import { CFAlertDialog, CFAlertStyle } from 'nativescript-cfalert-dialog';
 import { Gif } from 'nativescript-gif';
 import { switchMap } from 'rxjs/operators';
 import { ChangedData, ObservableArray } from 'tns-core-modules/data/observable-array';
@@ -20,10 +22,20 @@ export class PairingComponent {
   selectedPage = 0;
   slides = this._translateService.instant('pairing');
   private feedback: Feedback;
+  private _cfAlert = new CFAlertDialog();
+  private _snackbar = new SnackBar();
+
+  please_connect_pt: string = this._translateService.instant('trial.please-connect-pt');
+  connect_pushtracker_more_info: string = this._translateService.instant('trial.connect_pushtracker_more_info');
+  too_many_pts: string = this._translateService.instant('trial.errors.too-many-pts');
+
+  public settings = new PushTracker.Settings();
 
   constructor(private pageRoute: PageRoute, private _translateService: TranslateService) {
     // update slides
     this.slides = this._translateService.instant('pairing');
+    this.settings = new PushTracker.Settings();
+    console.dir(this.settings);
 
     // figure out which slide we're going to
     this.pageRoute.activatedRoute.pipe(switchMap(activatedRoute => activatedRoute.queryParams)).forEach(params => {
@@ -64,6 +76,58 @@ export class PairingComponent {
         }
       }
     });
+  }
+
+  /**
+   * Helper method to check for a connected PushTracker from the BluetoothService.PushTrackers array.
+   */
+  private _getOneConnectedPushTracker() {
+    const connectedPTs = BluetoothService.PushTrackers.filter(pt => pt.connected);
+
+    // no pushtrackers are connected - will show snackbar alert
+    if (connectedPTs.length <= 0) {
+      // this._noPushTrackersConnectedAlert();
+
+      this._snackbar
+        .action({
+          actionText: 'More Info',
+          snackText: this.please_connect_pt,
+          hideDelay: 4000
+        })
+        .then(result => {
+          if (result.command === 'Action') {
+            this._cfAlert.show({
+              dialogStyle: CFAlertStyle.ALERT,
+              message: this.connect_pushtracker_more_info,
+              cancellable: true
+            });
+          }
+        });
+
+      return null;
+    }
+
+    // too many pushtrackers connected - don't know which to use!
+    if (connectedPTs.length > 1) {
+      this._snackbar.simple(this.too_many_pts);
+      return null;
+    }
+
+    return connectedPTs[0];
+  }
+
+  // settings controls
+  onSliderUpdate(key: string, args: any) {
+    this.settings[key] = args.object.value;
+  }
+
+  onSaveSettings(args: any) {
+    console.log('saving setings!');
+    const pushTracker = this._getOneConnectedPushTracker();
+    if (pushTracker === null) {
+      return;
+    }
+    // TODO: save the settings!
   }
 
   // Connectivity Events

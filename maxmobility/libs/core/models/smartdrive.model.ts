@@ -3,7 +3,6 @@ import { BluetoothService } from '@maxmobility/mobile';
 import { Observable } from 'tns-core-modules/data/observable';
 import * as timer from 'tns-core-modules/timer';
 
-// TODO: TRANSLATE
 enum OTAState {
   not_started = 'ota.sd.state.not-started',
   awaiting_versions = 'ota.sd.state.awaiting-versions',
@@ -1080,7 +1079,6 @@ export class SmartDrive extends Observable {
            }            deviceInfo;
         */
     this.ble_version = devInfo.version;
-    // TODO: send version event (for BLE_VERSION) to subscribers
     this.sendEvent(SmartDrive.smartdrive_ble_version_event, {
       ble: this.ble_version
     });
@@ -1103,7 +1101,6 @@ export class SmartDrive extends Observable {
         */
     this.mcu_version = motorInfo.version;
     this.battery = motorInfo.batteryLevel;
-    // TODO: send version event (for MCU_VERSION) to subscribers
     this.sendEvent(SmartDrive.smartdrive_mcu_version_event, {
       mcu: this.mcu_version
     });
