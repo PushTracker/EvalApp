@@ -45,13 +45,15 @@ export class UserService {
         console.log('user.service logout() UserService.hasRegistered = ' + UserService.hasRegistered);
         if (UserService.hasRegistered === true) {
           // kinvey docs might be out of date on `unregister` method
-          await Push.unregister({
-            android: {
-              senderID: '1053576736707'
-            }
-          }).catch(error => {
-            console.log('unregister in kinvey push error', error);
-          });
+          await (Push as any)
+            .unregister({
+              android: {
+                senderID: '1053576736707'
+              }
+            })
+            .catch(error => {
+              console.log('unregister in kinvey push error', error);
+            });
         }
         UserService.hasRegistered = false;
         await Kinvey.User.logout();
