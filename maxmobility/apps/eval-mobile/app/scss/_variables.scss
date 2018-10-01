@@ -4,31 +4,21 @@
 @import '~nativescript-theme-core/scss/light';
 
 /**** Fonts *****/
-.mdi {
-  font-family: 'Material Design Icons', materialdesignicons-webfont;
-}
-
-.material-icon {
-  font-family: MaterialIcons-Regular, Material Icons, 'Material Icons', 'MaterialIcons-Regular';
-}
-
-$material-icon: MaterialIcons-Regular, Material Icons, 'Material Icons', 'MaterialIcons-Regular';
+$material-icon: 'Material Design Icons', materialdesignicons-webfont;
 $fa: FontAwesome, 'FontAwesome', fontawesome-webfont, 'fontawesome-webfont';
 $ionicon: ionicons, 'ionicons', Ionicons, 'Ionicons';
-$os: 'OpenSans-Regular', 'OpenSans';
+$os: 'OpenSans-Regular', 'OpenSans', 'Open Sans', Open Sans;
 $os-Light: 'OpenSans-Light', 'OpenSans Light';
 $os-SemiBold: 'OpenSans-SemiBold', 'Open Sans SemiBold';
-$os-SemiBold-Italic: 'OpenSans-SemiBoldItalic, Open Sans SemiBold Italic';
+$os-SemiBold-Italic: 'OpenSans-SemiBoldItalic', 'Open Sans SemiBold Italic';
 /**************/
 
-// Custom colors
-$background-dark: #f8f8f8 !default;
-$background-light: #ffffff !default;
-
+// Permobil Colors
 $permobil-hero: rgb(0, 79, 126) !default;
-$permobil-hero-old: rgb(0, 103, 166) !default;
+$permobil-prussian: rgba(0, 40, 85, 1);
 $permobil-primary: rgb(0, 103, 166) !default;
 $permobil-ocean: rgb(0, 154, 199) !default;
+$permobil-sky: rgba(137, 212, 227, 1);
 $permobil-charcoal: rgb(65, 54, 66) !default;
 $permobil-steel: rgb(167, 169, 162) !default;
 $permobil-titan: rgb(220, 221, 222) !default;
@@ -37,28 +27,16 @@ $blue-20: rgba($permobil-hero, 0.2) !default;
 $blue-10: rgba($permobil-hero, 0.1) !default;
 
 //accents
+$permobil-yellow: rgba(251, 255, 34, 1);
 $permobil-orange: rgba(255, 103, 31, 1);
+$permobil-lime: rgba(196, 214, 0, 1);
+$permobil-cousteau: rgba(0, 193, 213, 1);
 $permobil-rose: rgba(227, 28, 121, 1);
+$permobil-violet: rgba(117, 59, 189, 1);
 $permobil-icon-shadow-orange: rgba(255, 103, 31, 0.6);
 
-$accent-dark: rgb(41, 104, 161) !default;
-$accent-light: rgb(80, 137, 182) !default;
-
-$success-dark: #06ce6a !default;
 $success-light: #00e676 !default;
-
-$warning-dark: #f39c11 !default;
-$warning-light: #f2c112 !default;
-
-$error-dark: #d84039 !default;
 $error-light: #ed473f !default;
-
-$midnight-dark: rgb(41, 104, 161) !default;
-$midnight-light: rgb(80, 137, 182) !default;
-
-$night-dark: rgb(41, 104, 161) !default;
-$night-light: rgb(80, 137, 182) !default;
-
 $page-icon-color: #d7d7d7 !default;
 
 // Sizes
@@ -77,34 +55,8 @@ $accent: $permobil-hero;
 $error: $error-light;
 $warning: $error-light;
 
-// SideDrawer
-$item-color-android: #737373;
-$item-active-background: #f8f8f8;
-$item-active-color: $accent;
-$item-active-icon-color: $item-active-color;
-$item-color-ios: $white;
-$item-color-android: $white;
-
-// $side-drawer-header-background: #fafafa;
-// $side-drawer-header-brand: #737373;
-// $side-drawer-background: #ffffff;
-
-// ActionBar
-$ab-background: $accent;
-$ab-color: $white;
-
-// Buttons
-$btn-color-inverse: $white;
-$btn-color: $accent;
-$btn-color-secondary: darken($btn-color, 10%);
-$btn-color-outline-highlighted: lighten($btn-color, 10%);
-
 //Text colors
-$headings-color: $permobil-hero;
-$secondary: $permobil-hero;
 $text-color-light: #fff;
-$text-color-dark: $permobil-charcoal;
-
 $white: #fff;
 $black: #000;
 $red: #ff0000;

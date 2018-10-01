@@ -1,6 +1,5 @@
 // customized variables
 @import 'variables';
-@import 'sidedrawer';
 @import 'carousel';
 @import 'buttons';
 @import 'action-bar';
@@ -9,10 +8,6 @@
 @import '~nativescript-theme-core/scss/index';
 
 /*** Fonts ***/
-.material-icon {
-  font-family: $material-icon;
-}
-
 .mdi {
   font-family: $material-icon;
 }
@@ -33,7 +28,7 @@
 .app-logo {
   font-size: 20;
   font-family: $os;
-  color: #fff;
+  color: $white;
   margin: 100, 0, 0, 0;
   text-align: center;
 }
@@ -54,7 +49,7 @@ label {
 }
 
 .light-background {
-    background-color: $background-light;
+  background-color: $white;
 }
 
 .firmWareCheckButton {

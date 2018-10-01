@@ -1,11 +1,11 @@
 @import 'variables';
 
 //Action bar
-ActionBar .action-bar-title {
-  font: $os;
+ActionBar[title] {
+  font-family: $os;
 }
 
-ActionBar.permobil-action-bar {
+ActionBar.action-bar {
   background-color: $permobil-hero;
   color: $white;
 }
