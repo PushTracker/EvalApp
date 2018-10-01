@@ -20,14 +20,15 @@
     <ListView height="100%" backgroundColor="transparent" [items]="evals" *ngIf="evalsLoaded" (itemTap)="onEvalItemTap($event)"
         class="evals-list" separatorColor="#ddd">
         <ng-template nsTemplateKey="header" let-eval="item">
-            <DockLayout stretchLastChild="true" class="eval-block">
-                // want this to span the rows vertically, using height 100% isn't working
-                <Label dock="left" height="100%" class="list-line" textWrap="true"></Label>
 
-                <GridLayout dock="right" rows="*, *, 30" columns="10, *">
+            <DockLayout stretchLastChild="true" height="100%">
+                // want this to span the rows vertically, using height 100% isn't working
+                <Label dock="left" height="100%" minHeight="100%" class="list-line" textWrap="true"></Label>
+
+                <StackLayout dock="right" class="eval-block">
 
                     // Eval Data
-                    <WrapLayout row="0" col="1" orientation="horizontal">
+                    <WrapLayout dock="right" orientation="horizontal">
                         <Label [text]="eval._kmd.ect | date: 'short'" class="eval-data" textWrap="true"></Label>
                         <Label [text]="eval.name ? 'Name: ' + eval.name : ''" [visibility]="eval.name ? 'visible' : 'collapsed'"
                             class="eval-data" textWrap="true"></Label>
@@ -35,17 +36,8 @@
                             class="eval-data"></Label>
                     </WrapLayout>
 
-                    <!-- <GridLayout row="0" col="1" rows="*, *" columns="*, *">
-                        <Label row="0" col="0" [text]="eval._kmd.ect | date: 'short'" class="eval-data" textWrap="true"></Label>
-                        <Label row="0" col="1" [text]="eval.name ? 'Name: ' + eval.name : ''" class="eval-data"
-                            textWrap="true"></Label>
-                        <Label row="1" col="0" [text]="'Chair: ' + eval.chair" [visibility]="eval.chair ? 'visible' : 'collapsed'"
-                            class="eval-data"></Label>
-                    </GridLayout> -->
-
                     // Trials for the Eval
-                    <GridLayout row="1" col="1" rows="*, *, *, *, *, *, *" columns="*, *" class="list-group-item"
-                        *ngFor="let trial of eval.trials; index as i; count as c;">
+                    <GridLayout rows="*, *, *, *, *, *, *" columns="*, *" class="list-group-item" *ngFor="let trial of eval.trials; index as i; count as c;">
 
                         <Label row="0" colSpan="2" class="trial-name" [text]="trial.name ? 'Trial Name: ' + trial.name : 'Trial Name: N/A'"
                             textWrap="true"></Label>
@@ -74,12 +66,13 @@
                             class="trial-data"></Label>
                     </GridLayout>
 
-                    <GridLayout row="2" col="1" rows="40" columns="*, *, *">
-                        <Button row="0" col="2" text="&#xe0be;" class="material-icon btn-transparent" verticalAlignment="middle"
+                    <GridLayout rows="40" columns="*, *, *">
+                        <Button row="0" col="2" text="&#xf1ee;" class="mdi btn-transparent" verticalAlignment="middle"
                             fontSize="22" (tap)="onEmailBtnTap(eval)"></Button>
                     </GridLayout>
 
-                </GridLayout>
+                </StackLayout>
+
             </DockLayout>
 
         </ng-template>

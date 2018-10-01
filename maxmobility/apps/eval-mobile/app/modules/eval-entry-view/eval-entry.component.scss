@@ -9,7 +9,8 @@ Switch {
 }
 
 Switch[checked=true] {
-    background-color: $success-light;//$permobil-ocean;
+    background-color: $success-light; 
+    //$permobil-ocean;
 }
 
 Switch[checked=false] {
@@ -111,7 +112,7 @@ Image {
 .dropdown {
     background-color: $permobil-hero;
     placeholder-color: rgba(250, 250, 250, 0.5);
-    color: $background-light;
+    color: $white;
     border-radius: 2;
     width: 35%;
     padding: 5;

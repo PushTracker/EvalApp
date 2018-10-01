@@ -27,25 +27,27 @@
   horizontal-align: center;
   margin: 4;
   font-size: 16;
-  color: $text-color-light;
+  color: $white;
 }
 
 .list-line {
   background-color: $permobil-orange;
   width: 5;
   border-radius: 2;
-  // vertical-align: middle;
-  margin: 4 1 4 1;
+  vertical-align: middle;
+  margin: 4 4 4 2;
+  padding: 2 5 2 0;
 }
 
 .evals-list {
   height: 100%;
   width: 100%;
-  color: $text-color-light;
+  color: $white;
 
   .eval-block {
     // margin: 8 5 20 1;
-    padding: 8 5 20 1;
+    padding: 8 5 20 2;
+    // margin: 2 2 6 2;
   }
 
   .eval-data {
