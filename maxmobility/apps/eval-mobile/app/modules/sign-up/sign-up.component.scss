@@ -6,25 +6,24 @@
   margin: 20;
 }
 
-
 .label {
-    color: $white;
-    padding: 5;
-    margin: 10 20;
-    font-size: 18;
-    vertical-align: center;
-    text-align: left;
+  color: $white;
+  padding: 5;
+  margin: 10 20;
+  font-size: 18;
+  vertical-align: center;
+  text-align: left;
 }
 
 .dropdown {
-    background-color: $permobil-hero;
-    placeholder-color: rgba(250, 250, 250, 0.5);
-    color: $white;
-    border-radius: 2;
-    padding: 5;
-    margin: 10 20;
-    vertical-align: center;
-    text-align: right;
+  background-color: $permobil-hero;
+  placeholder-color: rgba(250, 250, 250, 0.5);
+  color: $white;
+  border-radius: 2;
+  padding: 5;
+  margin: 10 20;
+  vertical-align: center;
+  text-align: right;
 }
 
 .error {

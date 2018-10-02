@@ -206,7 +206,9 @@
     "heading": "Sketch key points for the following:"
   },
   "demos": {
-    "loading": "Loading Demos..."
+    "loading": "Loading Demos...",
+    "location-confirm-message": "Do you want to update the demo's location to",
+    "location-calculating": "Location is being calculated..."
   },
   "demo-detail": {
     "scan-sd": "SD: Press scan or edit button",
@@ -319,7 +321,8 @@
     "logged-in": "You are now logged in",
     "reset-acct": "Reset Account",
     "change-pass": "Change Password",
-    "reset-pass-desc": "To reset your password, enter the email for your account. You will receive an email with instructions to reset your password."
+    "reset-pass-desc": "To reset your password, enter the email for your account. You will receive an email with instructions to reset your password.",
+    "type": "User Type"
   },
   "summary": {
     "lmnTemplate": [
@@ -560,5 +563,9 @@
     "1.2": [
       "Added 'About' to PushTracker 'Settings' menu which shows the firmware versions of the PushTracker, SmartDrive Bluetooth (BLE) and SmartDrive Microcontroller (MCU). Also shows the most recent error code and information."
     ]
+  },
+  "sign-up": {
+    "user-type-clinician": "Clinician",
+    "user-type-rep": "Representative"
   }
 }
