@@ -23,4 +23,10 @@ export class User {
   has_read_privacy_policy = false;
   consent_to_research = false;
   consent_to_product_development = false;
+  type = 0;
+}
+
+export enum UserTypes {
+  'Clinician',
+  'Representative'
 }

@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
-import { CLog, User } from '@maxmobility/core';
+import { CLog, User, UserTypes } from '@maxmobility/core';
 import { LoggingService, preventKeyboardFromShowing, ProgressService, UserService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { validate } from 'email-validator';
 import { ModalDialogService } from 'nativescript-angular/directives/dialogs';
 import { RouterExtensions } from 'nativescript-angular/router';
-import { ValueList } from 'nativescript-drop-down';
+import { SelectedIndexChangedEventData, ValueList } from 'nativescript-drop-down';
 import { alert } from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
 import { setMarginForNoActionBarOnPage } from '~/utils';
@@ -19,18 +19,25 @@ import { PrivacyPolicyComponent } from '../../privacy-policy';
 })
 export class SignUpComponent implements OnInit {
   user = new User();
-
   passwordError = '';
   emailError = '';
   firstNameError = '';
   lastNameError = '';
 
-  languages: ValueList<string> = new ValueList<string>(
+  // dropdown list of languages
+  languages = new ValueList<string>(
     this._translateService.getLangs().map(l => {
       return { value: l, display: this._translateService.instant('languages.' + l) };
     })
   );
-  selectedLanguageIndex: number = 0;
+  selectedLanguageIndex = 0;
+
+  usertypes = new ValueList([
+    { value: UserTypes.Clinician, display: this._translateService.instant('sign-up.user-type-clinician') },
+    { value: UserTypes.Representative, display: this._translateService.instant('sign-up.user-type-rep') }
+  ]);
+
+  selectedUserTypeIndex = 0;
 
   error: string = this._translateService.instant('user.error');
   ok: string = this._translateService.instant('dialogs.ok');
@@ -66,10 +73,22 @@ export class SignUpComponent implements OnInit {
     setMarginForNoActionBarOnPage(this._page);
   }
 
-  onLanguageChanged(args) {
+  /**
+   * User Language dropdown changed
+   */
+  onLanguageChanged(args: SelectedIndexChangedEventData) {
     const newLanguage = this.languages.getValue(args.newIndex) || 'en';
     this.user.language = newLanguage;
     this._translateService.use(newLanguage);
+  }
+
+  /**
+   * User Type drodown changed
+   * @param args
+   */
+  onUserTypeChanged(args: SelectedIndexChangedEventData) {
+    const type = this.usertypes.getValue(args.newIndex) || 0;
+    this.user.type = type;
   }
 
   async showModal(): Promise<boolean> {
@@ -186,6 +205,7 @@ export class SignUpComponent implements OnInit {
       this.emailError = this.email_required;
       return false;
     }
+
     // make sure it's a valid email
     const email = text.trim();
     if (!validate(email)) {
@@ -199,7 +219,6 @@ export class SignUpComponent implements OnInit {
 
   private _isPasswordValid(text: string): boolean {
     // validate the password
-
     if (!text) {
       this.passwordError = this.password_error;
       return false;
@@ -210,7 +229,6 @@ export class SignUpComponent implements OnInit {
 
   private _isFirstNameValid(text: string): boolean {
     // validate the password
-
     if (!text) {
       this.firstNameError = this.first_name_error;
       return false;
@@ -221,7 +239,6 @@ export class SignUpComponent implements OnInit {
 
   private _isLastNameValid(text: string): boolean {
     // validate the password
-
     if (!text) {
       this.lastNameError = this.last_name_error;
       return false;
