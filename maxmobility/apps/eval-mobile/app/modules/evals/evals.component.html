@@ -1,7 +1,7 @@
-<ActionBar class="action-bar" flat="true" [title]="'evals.title' | translate">
+<ActionBar class="action-bar" flat="true" [title]="evalsTitle">
     <NavigationButton android:visibility="collapse" tap="onNavBtnTap"></NavigationButton>
     <ActionItem (tap)="onSearchTap()" ios.position="right">
-        <Button class="" text="Search" class="action-item"></Button>
+        <Button class="" [text]="searchBtnText" class="action-item"></Button>
     </ActionItem>
 </ActionBar>
 
@@ -19,7 +19,7 @@
     </StackLayout>
 
     // Evals ListView
-    <ListView height="100%" backgroundColor="transparent" [items]="evals" *ngIf="evalsLoaded" (itemTap)="onEvalItemTap($event)"
+    <ListView height="100%" backgroundColor="transparent" *ngIf="evalsLoaded" [items]="evals" (itemTap)="onEvalItemTap($event)"
         class="evals-list" separatorColor="#ddd">
         <ng-template nsTemplateKey="header" let-eval="item">
 
