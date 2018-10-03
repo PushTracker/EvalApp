@@ -7,6 +7,7 @@ import * as mustache from 'mustache';
 import * as email from 'nativescript-email';
 import { DateResponse, ModalDatetimepicker } from 'nativescript-modal-datetimepicker';
 import { Toasty } from 'nativescript-toasty';
+import { isIOS } from 'tns-core-modules/platform';
 import { alert, confirm } from 'tns-core-modules/ui/dialogs/dialogs';
 
 @Component({
@@ -26,11 +27,6 @@ export class EvalsComponent implements OnInit {
    * Used to hide the activity indicator in UI and show the list.
    */
   evalsLoaded = false;
-
-  /**
-   * Actionbar Title to display the count of evaluations
-   */
-  evalsTitle: string = this._translateService.instant('evals.title');
 
   /**
    * Text of the action item button that will search or reset the list depending on state of data.
@@ -113,11 +109,9 @@ export class EvalsComponent implements OnInit {
       const modifiedEvals = this._modifyEvalsData(fetchedEvals);
       this._initialEvals = modifiedEvals; // setting the initial evals so during searches we can default back to full list data
       this.evals = modifiedEvals;
-      this.evalsTitle = `${this.evals.length + 1} ${this._translateService.instant('evals.title')}`;
       this.evalsLoaded = true;
     } catch (error) {
       this.evalsLoaded = true;
-      this.evalsTitle = `${this._translateService.instant('evals.title')}`;
       console.log('ERROR ', error);
       alert({
         message: this._translateService.instant('evals.evals-loading-error'),
@@ -132,7 +126,6 @@ export class EvalsComponent implements OnInit {
       if (this.isSearchData === true) {
         console.log('reset listview');
         this.evals = this._initialEvals;
-        this.evalsTitle = `${this.evals.length + 1} ${this._translateService.instant('evals.title')}`;
         this.searchBtnText = this._translateService.instant('evals.search-btn');
         this.evalsLoaded = true; // make sure the UI reflects the data
         this.isSearchData = false; // reset so the UI reflects that its the original list data and not search data
@@ -171,7 +164,6 @@ export class EvalsComponent implements OnInit {
         const modifiedEvals = this._modifyEvalsData(data);
         // assign the evals to bind to listview items
         this.evals = modifiedEvals;
-        this.evalsTitle = `${this.evals.length + 1} ${this._translateService.instant('evals.title')}`;
         this.isSearchData = true;
         this.searchBtnText = this._translateService.instant('evals.reset-btn');
       }
@@ -224,6 +216,17 @@ export class EvalsComponent implements OnInit {
         this._loggingService.logException(error);
         console.error(error);
       });
+  }
+
+  /**
+   * Disabling the cell highlight tap on iOS
+   * @param args
+   */
+  onItemLoading(args) {
+    if (isIOS) {
+      const cell = args.ios as UITableViewCell;
+      cell.selectionStyle = UITableViewCellSelectionStyle.None;
+    }
   }
 
   onEvalItemTap(event) {
