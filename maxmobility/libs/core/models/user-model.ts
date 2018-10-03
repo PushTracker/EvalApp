@@ -28,5 +28,6 @@ export class User {
 
 export enum UserTypes {
   'Clinician',
-  'Representative'
+  'Representative',
+  'Admin'
 }
