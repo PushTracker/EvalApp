@@ -41,10 +41,13 @@
   "evals": {
     "title": "Evaluations",
     "loading": "Loading Evals...",
+    "no-evals-message": "No Evaluations found.",
+    "no-evals-search-result": "No Evaluations found for date",
     "evals-loading-error": "An error occurred trying to load your Evaluations.",
+    "select-date": "Select Eval Date",
     "with-smartdrive": "With SmartDrive: ",
     "without-smartdrive": "Without SmartDrive: ",
-    "confirm-lmn-email-title": "Email LMN?",
+    "confirm-lmn-email-title": "Email LMN",
     "confirm-lmn-email-message": "Do you want to email this evaluation for LMN?"
   },
   "eval-entry": {
