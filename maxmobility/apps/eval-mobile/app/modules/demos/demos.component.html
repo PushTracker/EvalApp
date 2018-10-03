@@ -8,18 +8,18 @@
 <Gradient tkMainContent margin-top="30" direction="to bottom" colors="#004F7E, #0070b3">
   <ListView backgroundColor="transparent" class="" [items]="Demos" (itemTap)="onDemoTap($event)">
     <ng-template let-item="item">
-      <GridLayout rows="auto" columns="auto, *">
+      <GridLayout rows="auto, auto" columns="auto, *, *">
         <!-- Note: we should probably have model type so that we can have the image pulled from a server according to MX2+ vs MX3 vs others. -->
         <Image *ngIf="!item.sd_image" backgroundColor="white" col="0" height="100" width="100" class="demo-image" src="~/assets/images/PushTracker-SmartDrive-pairing.png"
           stretch="aspectFit"></Image>
         <Image *ngIf="item.sd_image" class="demo-image" col="0" width="100" height="100" [src]="item.sd_image" stretch="aspectFit"></Image>
 
-        <GridLayout height="100" col="1" rows="*, *, *" columns="auto, *, auto">
-          <!-- SD Serial Number & Model -->
+        <GridLayout height="100" col="1" colSpan="2" rows="*, *, *" columns="auto, *, auto">
+          // SD Serial Number & Model
           <Label text="&#xf071;" row="0" col="0" class="mdi icon"></Label>
           <Label [text]="(item.smartdrive_serial_number || '# ??')" row="0" col="1" colSpan="2" class="info"></Label>
           <Label [text]="item.model" row="0" col="2" class="info"></Label>
-          <!-- SD Firmware versions -->
+          // SD Firmware versions
           <Label text="&#xf628;" row="1" col="0" class="mdi icon"></Label>
           <Label row="1" col="1" class="info" textWrap="true">
             <FormattedString>
@@ -28,11 +28,15 @@
             </FormattedString>
           </Label>
           <Label row="1" col="2" class="mdi icon" [text]="item.version_badge(currentVersion)"></Label>
-          <!-- Demo Location -->
+          // Demo Location
           <Label text="&#xf5f5;" row="2" col="0" class="mdi icon"></Label>
           <Label [text]="item.location_string" row="2" col="1" colSpan="2" class="info" textWrap="true"></Label>
 
         </GridLayout>
+
+        <Button text="&#xf1a4;" row="1" col="1" class="demo-action-btn btn-transparent" (tap)="onUpdateLocationButtonTap(item)"></Button>
+        <!-- <Button text="2" row="3" col="1" (tap)=""></Button> -->
+        <Button text="&#xf1d8;" row="1" col="2" class="demo-action-btn btn-transparent" (tap)="onDemoActionsButtonTap(item)"></Button>
 
       </GridLayout>
 

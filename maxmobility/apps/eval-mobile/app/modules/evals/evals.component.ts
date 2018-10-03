@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Evaluation, Trial } from '@maxmobility/core';
 import { EvaluationService, LoggingService } from '@maxmobility/mobile';
-import { alert, confirm } from 'tns-core-modules/ui/dialogs/dialogs';
 import { TranslateService } from '@ngx-translate/core';
-import { ModalDatetimepicker, DateResponse } from 'nativescript-modal-datetimepicker';
 import { Kinvey } from 'kinvey-nativescript-sdk';
-import { Toasty } from 'nativescript-toasty';
-import * as email from 'nativescript-email';
 import * as mustache from 'mustache';
+import * as email from 'nativescript-email';
+import { DateResponse, ModalDatetimepicker } from 'nativescript-modal-datetimepicker';
+import { Toasty } from 'nativescript-toasty';
+import { alert, confirm } from 'tns-core-modules/ui/dialogs/dialogs';
 
 @Component({
   selector: 'Evals',
@@ -91,14 +91,14 @@ export class EvalsComponent implements OnInit {
 
   async ngOnInit() {
     console.log('EvalsComponent onInit');
+
     // load the evaluations for this user
     try {
-      this.evals = await this._evalService.loadEvaluations();
-      this._initialEvals = this.evals; // setting the initial evals so during searches we can default back to full list data
+      const fetchedEvals = await this._evalService.loadEvaluations();
+      const modifiedEvals = this._modifyEvalsData(fetchedEvals);
+      this._initialEvals = modifiedEvals; // setting the initial evals so during searches we can default back to full list data
+      this.evals = modifiedEvals;
       this.evalsLoaded = true;
-      this.evals.forEach(item => {
-        console.log('eval', item);
-      });
     } catch (error) {
       this.evalsLoaded = true;
       console.log('ERROR ', error);
@@ -111,9 +111,8 @@ export class EvalsComponent implements OnInit {
 
   async onSearchTap() {
     try {
-      console.log('onSearchTap');
       const dateResult = (await this._picker.pickDate({
-        title: 'Select Eval Date',
+        title: this._translateService.instant('evals.select-date'),
         theme: 'dark',
         maxDate: new Date(),
         is24HourView: false
@@ -132,18 +131,19 @@ export class EvalsComponent implements OnInit {
       console.log('data', data, data.length);
 
       if (!data || data.length <= 0) {
-        new Toasty(`No Evaluations found for date ${dateResult.month}/${dateResult.day}/${dateResult.year}`).show();
+        new Toasty(
+          `${this._translateService.instant('evals.no-evals-search-result')} ${dateResult.month}/${dateResult.day}/${
+            dateResult.year
+          }`
+        ).show();
         this.evals = this._initialEvals;
         return;
       }
 
       if (data && data.length >= 1) {
-        data.forEach(item => {
-          console.log('eval', item);
-        });
-
+        const modifiedEvals = this._modifyEvalsData(data);
         // assign the evals to bind to listview items
-        this.evals = data;
+        this.evals = modifiedEvals;
       }
     } catch (error) {
       console.log(error);
@@ -151,7 +151,6 @@ export class EvalsComponent implements OnInit {
   }
 
   async onEmailBtnTap(evaluation: Evaluation) {
-    console.log('evaluation email tapped', evaluation);
     const confirmResult = await confirm({
       title: this._translateService.instant('evals.confirm-lmn-email-title'),
       message: this._translateService.instant('evals.confirm-lmn-email-message'),
@@ -269,5 +268,29 @@ export class EvalsComponent implements OnInit {
       },
       showCadence: this.totalCadenceWithout > this.cadenceThresh
     });
+  }
+
+  private _modifyEvalsData(evalsArray: Evaluation[]) {
+    // need to modify the number values to be truncated, after the loop we will bind the listview items
+    evalsArray.forEach((e: Evaluation) => {
+      // console.log('eval', e);
+      e.trials.forEach((t: Trial) => {
+        // truncate the number data here
+        t.acceleration = this._truncateNumber(t.acceleration);
+        t.max_speed = this._truncateNumber(t.max_speed);
+        t.with_pushes = this._truncateNumber(t.with_pushes);
+        t.with_coast = this._truncateNumber(t.with_coast);
+        t.with_elapsed = this._truncateNumber(t.with_elapsed);
+        t.without_coast = this._truncateNumber(t.without_coast);
+        t.without_pushes = this._truncateNumber(t.without_pushes);
+        t.without_elapsed = this._truncateNumber(t.without_elapsed);
+      });
+    });
+
+    return evalsArray;
+  }
+
+  private _truncateNumber(x: number): number {
+    return parseFloat(x.toFixed(2));
   }
 }
