@@ -14,7 +14,9 @@
         <ActivityIndicator busy="true" width="26" height="26"></ActivityIndicator>
     </StackLayout>
 
-    <Label #noEvalsLabel text="No Evaluations Found." *ngIf="evalsLoaded && evals.length < 1" textWrap="true"></Label>
+    <StackLayout *ngIf="evalsLoaded && evals.length < 1" class="no-evals-container">
+        <Label #noEvalsLabel [text]="'evals.no-evals-message' | translate" class="h2" textWrap="true"></Label>
+    </StackLayout>
 
     // Evals ListView
     <ListView height="100%" backgroundColor="transparent" [items]="evals" *ngIf="evalsLoaded" (itemTap)="onEvalItemTap($event)"

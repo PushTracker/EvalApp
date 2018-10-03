@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Evaluation, Trial } from '@maxmobility/core';
 import { EvaluationService, LoggingService } from '@maxmobility/mobile';
-import { alert, confirm } from 'tns-core-modules/ui/dialogs/dialogs';
 import { TranslateService } from '@ngx-translate/core';
-import { ModalDatetimepicker, DateResponse } from 'nativescript-modal-datetimepicker';
 import { Kinvey } from 'kinvey-nativescript-sdk';
-import { Toasty } from 'nativescript-toasty';
-import * as email from 'nativescript-email';
 import * as mustache from 'mustache';
+import * as email from 'nativescript-email';
+import { DateResponse, ModalDatetimepicker } from 'nativescript-modal-datetimepicker';
+import { Toasty } from 'nativescript-toasty';
+import { alert, confirm } from 'tns-core-modules/ui/dialogs/dialogs';
 
 @Component({
   selector: 'Evals',
@@ -111,9 +111,8 @@ export class EvalsComponent implements OnInit {
 
   async onSearchTap() {
     try {
-      console.log('onSearchTap');
       const dateResult = (await this._picker.pickDate({
-        title: 'Select Eval Date',
+        title: this._translateService.instant('evals.select-date'),
         theme: 'dark',
         maxDate: new Date(),
         is24HourView: false
@@ -132,7 +131,11 @@ export class EvalsComponent implements OnInit {
       console.log('data', data, data.length);
 
       if (!data || data.length <= 0) {
-        new Toasty(`No Evaluations found for date ${dateResult.month}/${dateResult.day}/${dateResult.year}`).show();
+        new Toasty(
+          `${this._translateService.instant('evals.no-evals-search-result')} ${dateResult.month}/${dateResult.day}/${
+            dateResult.year
+          }`
+        ).show();
         this.evals = this._initialEvals;
         return;
       }
@@ -151,7 +154,6 @@ export class EvalsComponent implements OnInit {
   }
 
   async onEmailBtnTap(evaluation: Evaluation) {
-    console.log('evaluation email tapped', evaluation);
     const confirmResult = await confirm({
       title: this._translateService.instant('evals.confirm-lmn-email-title'),
       message: this._translateService.instant('evals.confirm-lmn-email-message'),
