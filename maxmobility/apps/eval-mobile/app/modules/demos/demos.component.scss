@@ -1,57 +1,55 @@
 @import '../../scss/variables';
 
-
 .button {
-    background-color: $permobil-hero;
-    border-color: transparent;
-    border-width: 1;
+  background-color: $permobil-hero;
+  border-color: transparent;
+  border-width: 1;
 }
 
-.icon{
-    font-size: 24;
-    margin: 5, 5, 5, 0;
-    color: #fff;
-    text-align: left;
-    vertical-align: center;
+.icon {
+  font-size: 24;
+  margin: 5, 5, 5, 0;
+  color: #fff;
+  text-align: left;
+  vertical-align: center;
 }
 
-.icon-scan{
-    font-size: 24;
-    border: none;
-    background-color: transparent;
-    color: #FF671F;
-    background-color: transparent;
-    border-color: transparent;
-    border-width: 1 1 1 1;
+.icon-scan {
+  font-size: 24;
+  border: none;
+  background-color: transparent;
+  color: #ff671f;
+  background-color: transparent;
+  border-color: transparent;
+  border-width: 1 1 1 1;
 }
 
 .demo-image {
-    margin: 5, 5, 5, 10;
+  margin: 5, 5, 5, 10;
 }
 
-.info{
-    margin: 0, 10, 0, 0;
-    color: #fff;
-    font-size: 14;
-    text-wrap: true;
-    vertical-align: center;
+.info {
+  margin: 0, 10, 0, 0;
+  color: #fff;
+  font-size: 14;
+  text-wrap: true;
+  vertical-align: center;
 }
 
-.heading{
-    text-align: left;
-    font-size: 20;
-    padding: 5;
-    color: #fff;
+.heading {
+  text-align: left;
+  font-size: 20;
+  padding: 5;
+  color: #fff;
 }
 
-.description{
-    color: #fff;
-    padding: 0;
+.description {
+  color: #fff;
+  padding: 0;
 }
-
 
 .demo-action-btn {
-    color: $white;
-    font-size: 16;
-    font-family: $material-icon;
+  color: $white;
+  font-size: 20;
+  font-family: $material-icon;
 }

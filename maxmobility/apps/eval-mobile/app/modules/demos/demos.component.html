@@ -8,7 +8,7 @@
 <Gradient tkMainContent margin-top="30" direction="to bottom" colors="#004F7E, #0070b3">
   <ListView backgroundColor="transparent" class="" [items]="Demos" (itemTap)="onDemoTap($event)">
     <ng-template let-item="item">
-      <GridLayout rows="auto, auto" columns="auto, *, *">
+      <GridLayout rows="auto, auto" columns="auto, *, *" (tap)="onDemoTap($event)">
         <!-- Note: we should probably have model type so that we can have the image pulled from a server according to MX2+ vs MX3 vs others. -->
         <Image *ngIf="!item.sd_image" backgroundColor="white" col="0" height="100" width="100" class="demo-image" src="~/assets/images/PushTracker-SmartDrive-pairing.png"
           stretch="aspectFit"></Image>
