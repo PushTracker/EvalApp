@@ -188,8 +188,8 @@ export class PushTracker extends Observable {
   public paired: boolean = false; // Is this PushTracker paired?
   public connected: boolean = false; // Is this PushTracker connected?
 
-  public settings: PushTracker.Settings = PushTracker.Settings();
-  public pushSettings: PushTracker.PushSettings = PushTracker.PushSettings();
+  public settings = new PushTracker.Settings();
+  public pushSettings = new PushTracker.PushSettings();
 
   // not serialized
   public device: any = null; // the actual device (ios:CBCentral, android:BluetoothDevice)

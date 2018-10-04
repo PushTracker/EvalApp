@@ -35,6 +35,7 @@ export class PairingComponent {
   too_many_pts: string = this._translateService.instant('trial.errors.too-many-pts');
 
   public settings = new PushTracker.Settings();
+  public pushSettings = new PushTracker.PushSettings();
 
   constructor(
     private pageRoute: PageRoute,
@@ -126,8 +127,20 @@ export class PairingComponent {
   }
 
   // settings controls
-  onSliderUpdate(key: string, args: any) {
+  onSettingsUpdate(key: string, args: any) {
     this.settings[key] = args.object.value;
+  }
+
+  onSettingsChecked(key, args) {
+    this.settings[key] = args.value;
+  }
+
+  onPushSettingsUpdate(key: string, args: any) {
+    this.pushSettings[key] = args.object.value;
+  }
+
+  onPushSettingsChecked(key, args) {
+    this.pushSettings[key] = args.value;
   }
 
   onSaveSettings(args: any) {
@@ -175,13 +188,23 @@ export class PairingComponent {
       return pushTracker.sendSettings(
         this.settings.controlMode,
         this.settings.units,
-        0x00, // TODO: update this to set a bit flag for ezOn
+        this.settings.ezOn ? 0x01 : 0x00,
         this.settings.tapSensitivity / 100.0,
         this.settings.acceleration / 100.0,
         this.settings.maxSpeed / 100.0
       );
     };
+    const sendPushSettings = () => {
+      return pushTracker.sendPushSettings(
+        this.pushSettings.threshold,
+        this.pushSettings.timeWindow,
+        this.pushSettings.clearCounter
+      );
+    };
     retry(3, sendSettings)
+      .then(() => {
+        return retry(3, sendPushSettings);
+      })
       .then(settingsSucceeded)
       .catch(settingsFailed);
   }
