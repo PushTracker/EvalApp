@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
-import { CLog, DemoService, FileService, FirmwareService, LoggingService, UserService } from '@maxmobility/mobile';
+import { CLog, LoggingService, UserService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 import { registerElement } from 'nativescript-angular/element-registry';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { Carousel, CarouselItem } from 'nativescript-carousel';
-import { CFAlertDialog } from 'nativescript-cfalert-dialog';
 import { Gif } from 'nativescript-gif';
 import * as orientation from 'nativescript-orientation';
 import { Sentry } from 'nativescript-sentry';
