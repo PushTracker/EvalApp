@@ -1,6 +1,13 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Demo } from '@maxmobility/core';
-import { DemoService, FileService, FirmwareService, LoggingService, UserService } from '@maxmobility/mobile';
+import {
+  BluetoothService,
+  DemoService,
+  FileService,
+  FirmwareService,
+  LoggingService,
+  UserService
+} from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { Feedback, FeedbackPosition, FeedbackType } from 'nativescript-feedback';
@@ -85,6 +92,7 @@ export class HomeComponent {
     private _loggingService: LoggingService,
     private _fileService: FileService,
     private _userService: UserService,
+    private _bluetoothService: BluetoothService,
     private translateService: TranslateService
   ) {
     console.log(`Home.Component start constructor ${performance.now()}`);
@@ -100,6 +108,7 @@ export class HomeComponent {
         .load()
         .then(() => {
           this.demoUnitsLoaded = true;
+          console.log('bluetoothService enabled', this._bluetoothService.enabled);
         })
         .catch(err => {
           this._loggingService.logException(err);
