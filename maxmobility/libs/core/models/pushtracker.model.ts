@@ -76,6 +76,19 @@ export class PushTracker extends Observable {
     constructor() {
       super();
     }
+
+    public static getBoolSetting(flags: number, settingBit: number): boolean {
+      return ((flags >> settingBit) & 0x01) > 0;
+    }
+
+    public fromSettings(s: any): void {
+      this.controlMode = PushTracker.Settings.ControlMode.fromSettings(s);
+      this.units = PushTracker.Settings.Units.fromSettings(s);
+      this.ezOn = PushTracker.Settings.getBoolSetting(s.Flags, 0);
+      this.acceleration = s.acceleration;
+      this.maxSpeed = s.maxSpeed;
+      this.tapSensitivity = s.tapSensitivity;
+    }
   };
 
   public static PushSettings = class extends Observable {
@@ -88,6 +101,12 @@ export class PushTracker extends Observable {
 
     constructor() {
       super();
+    }
+
+    public fromPushSettings(ps: any): void {
+      this.threshold = ps.threshold;
+      this.timeWindow = ps.timeWindow;
+      this.clearCounter = ps.clearCounter > 0;
     }
   };
 
@@ -113,6 +132,7 @@ export class PushTracker extends Observable {
   public static pushtracker_error_event = 'pushtracker_error_event';
   public static pushtracker_distance_event = 'pushtracker_distance_event';
   public static pushtracker_settings_event = 'pushtracker_settings_event';
+  public static pushtracker_push_settings_event = 'pushtracker_push_settings_event';
 
   public static pushtracker_daily_info_event = 'pushtracker_daily_info_event';
   public static pushtracker_awake_event = 'pushtracker_awake_event';
@@ -167,6 +187,9 @@ export class PushTracker extends Observable {
   public address: string = ''; // MAC Address
   public paired: boolean = false; // Is this PushTracker paired?
   public connected: boolean = false; // Is this PushTracker connected?
+
+  public settings: PushTracker.Settings = PushTracker.Settings();
+  public pushSettings: PushTracker.PushSettings = PushTracker.PushSettings();
 
   // not serialized
   public device: any = null; // the actual device (ios:CBCentral, android:BluetoothDevice)
@@ -733,6 +756,9 @@ export class PushTracker extends Observable {
         case 'DailyInfo':
           this.handleDailyInfo(p);
           break;
+        case 'PushSettings':
+          this.handlePushSettings(p);
+          break;
         case 'Ready':
           this.handleReady(p);
           break;
@@ -840,10 +866,26 @@ export class PushTracker extends Observable {
            float       maxSpeed;        /** Slider setting, range: [0.1, 1.0]
            } settings;
         */
+    this.settings.fromSettings(settings);
     this.sendEvent(PushTracker.pushtracker_settings_event, {
-      // TODO: fill in this
+      settings: this.settings
     });
-    // TODO: update our stored settings
+  }
+
+  private handlePushSettings(p: Packet) {
+    // This is sent by the PushTracker when it connects
+    const pushSettings = p.data('pushSettings');
+    /* PushSettings
+	       struct PushSettings {
+   		   uint8_t     threshold;       /** Push Detection Threshold, [0, 255]
+			   uint8_t     timeWindow;      /** Push Detection Time Window, [0, 255]
+			   uint8_t     clearCounter;    /** Clear the counter for data below threshold? [0, 1]
+		   }  pushSettings;
+    */
+    this.pushSettings.fromPushSettings(pushSettings);
+    this.sendEvent(PushTracker.pushtracker_push_settings_event, {
+      pushSettings: this.pushSettings
+    });
   }
 
   private handleDailyInfo(p: Packet) {
