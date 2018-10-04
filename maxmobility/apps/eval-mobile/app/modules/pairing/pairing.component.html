@@ -37,15 +37,15 @@
           <StackLayout>
 			// EZ On
             <DockLayout stretchLastChild="false">
-              <Label text="EZ-ON"></Label>
+              <Label text="EZ-ON" class="slider-label"></Label>
               <Switch dock="right" class="" [checked]="settings.ezOn" (checkedChange)="onSettingsChecked('ezOn', $event)"></Switch>
             </DockLayout>
             // Max Speed
             <DockLayout stretchLastChild="false">
-              <Label text="Max Speed"></Label>
+              <Label text="Max Speed" class="slider-label"></Label>
               <Label verticalAlignment="center" dock="right"
 					 [text]="settings.maxSpeed+'%'"
-                     row="0" col="1"></Label>
+                     row="0" col="1" class="slider-value-label"></Label>
             </DockLayout>
             <GridLayout rows="auto" columns="*, auto">
               <Slider minValue="0" maxValue="100" verticalAlignment="center"
@@ -55,10 +55,10 @@
             </GridLayout>
             // Acceleration
             <DockLayout stretchLastChild="false">
-              <Label text="Acceleration"></Label>
+              <Label text="Acceleration" class="slider-label"></Label>
               <Label verticalAlignment="center" dock="right"
 					 [text]="settings.acceleration+'%'"
-                     row="0" col="1"></Label>
+                     row="0" col="1" class="slider-value-label"></Label>
             </DockLayout>
             <GridLayout rows="auto" columns="*, auto">
               <Slider minValue="0" maxValue="100" verticalAlignment="center"
@@ -68,10 +68,10 @@
             </GridLayout>
             // Tap Sensitivity
             <DockLayout stretchLastChild="false">
-              <Label text="Tap Sensitivity"></Label>
+              <Label text="Tap Sensitivity" class="slider-label"></Label>
               <Label verticalAlignment="center" dock="right"
 					 [text]="settings.tapSensitivity+'%'"
-                     row="0" col="1"></Label>
+                     row="0" col="1" class="slider-value-label"></Label>
             </DockLayout>
             <GridLayout rows="auto" columns="*, auto">
               <Slider minValue="0" maxValue="100" verticalAlignment="center"
@@ -83,10 +83,10 @@
 			// Push Settings:
             // Push Threshold
             <DockLayout stretchLastChild="false">
-              <Label text="Push Threshold"></Label>
+              <Label text="Push Threshold" class="slider-label"></Label>
               <Label verticalAlignment="center" dock="right"
 					 [text]="pushSettings.threshold"
-                     row="0" col="1"></Label>
+                     row="0" col="1" class="slider-value-label"></Label>
             </DockLayout>
             <GridLayout rows="auto" columns="*, auto">
               <Slider minValue="0" maxValue="127" verticalAlignment="center"
@@ -96,10 +96,10 @@
             </GridLayout>
             // Time Window
             <DockLayout stretchLastChild="false">
-              <Label text="Time Window"></Label>
+              <Label text="Push Detection Time Window" class="slider-label"></Label>
               <Label verticalAlignment="center" dock="right"
 					 [text]="pushSettings.timeWindow"
-                     row="0" col="1"></Label>
+                     row="0" col="1" class="slider-value-label"></Label>
             </DockLayout>
             <GridLayout rows="auto" columns="*, auto">
               <Slider minValue="0" maxValue="255" verticalAlignment="center"
@@ -109,7 +109,7 @@
             </GridLayout>
             // Clear Counter
             <DockLayout stretchLastChild="false">
-              <Label text="Clear Counter"></Label>
+              <Label text="Clear Push Detection Counter" class="slider-label"></Label>
               <Switch dock="right" class="" [checked]="pushSettings.clearCounter" (checkedChange)="onPushSettingsChecked('clearCounter', $event)"></Switch>
             </DockLayout>
 

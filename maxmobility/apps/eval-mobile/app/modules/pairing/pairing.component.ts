@@ -144,10 +144,30 @@ export class PairingComponent {
   }
 
   onSaveSettings(args: any) {
-    console.log('saving setings!');
     const pushTracker = this._getOneConnectedPushTracker();
     if (pushTracker === null) {
       return;
+    } else if (pushTracker.version < 0x16) {
+      this._snackbar
+        .action({
+          actionText: 'More Info',
+          snackText: 'PushTracker out of Date!',
+          hideDelay: 4000
+        })
+        .then(result => {
+          if (result.command === 'Action') {
+            this._cfAlert.show({
+              dialogStyle: CFAlertStyle.ALERT,
+              message:
+                'PushTracker is version ' +
+                pushTracker.version_string +
+                ', needs to be at least ' +
+                PushTracker.versionByteToString(0x16) +
+                ' to receive PushSettings. PushSettings will not work!',
+              cancellable: true
+            });
+          }
+        });
     }
     // let user know we're doing something
     this._progressService.show(this.saving_settings);
