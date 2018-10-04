@@ -78,6 +78,19 @@ export class PushTracker extends Observable {
     }
   };
 
+  public static PushSettings = class extends Observable {
+    // settings classes
+
+    // public members
+    public threshold: number = 4;
+    public timeWindow: number = 20;
+    public clearCounter: boolean = true;
+
+    constructor() {
+      super();
+    }
+  };
+
   // bluetooth info
   public static ServiceUUID = '1d14d6ee-fd63-4fa1-bfa4-8f47b42119f0';
   public static Characteristics = [
@@ -651,6 +664,23 @@ export class PushTracker extends Observable {
     settings.MaxSpeed = max_speed;
     p.destroy();
     return this.sendPacket('Command', 'SetSettings', 'settings', null, settings);
+  }
+
+  public sendPushSettings(threshold: number, timeWindow: number, clearCounter: boolean): Promise<any> {
+    let p = new Packet();
+    let pushSettings = p.data('pushSettings');
+    // clamp numbers
+    const clamp = n => {
+      return Math.round(Math.max(0, Math.min(n, 255.0)));
+    };
+    threshold = clamp(threshold);
+    timeWindow = clamp(timeWindow);
+    // now fill in the packet
+    pushSettings.threshold = threshold;
+    pushSettings.timeWindow = timeWindow;
+    pushSettings.clearCounter = clearCounter ? 1 : 0;
+    p.destroy();
+    return this.sendPacket('Command', 'SetPushSettings', 'pushSettings', null, pushSettings);
   }
 
   /**
