@@ -2,9 +2,9 @@ import { bindingTypeToString, Packet } from '@maxmobility/core';
 import { BluetoothService } from '@maxmobility/mobile';
 import { Observable } from 'tns-core-modules/data/observable';
 import { isIOS } from 'tns-core-modules/platform';
+import { Color } from 'color';
 import * as timer from 'tns-core-modules/timer';
 
-// TODO: TRANSLATE
 enum OTAState {
   not_started = 'ota.pt.state.not-started',
   awaiting_version = 'ota.pt.state.awaiting-version',
@@ -30,6 +30,86 @@ export class PushTracker extends Observable {
   static readonly OTAState = OTAState;
   readonly OTAState = PushTracker.OTAState;
 
+  public static Settings = class extends Observable {
+    // settings classes
+    public static ControlMode = class {
+      public static Options: Array<string> = ['MX1', 'MX2', 'MX2+'];
+
+      public static Off: string = 'Off';
+
+      public static Beginner: string = 'MX1';
+      public static Intermediate: string = 'MX2';
+      public static Advanced: string = 'MX2+';
+
+      public static MX1: string = 'MX1';
+      public static MX2: string = 'MX2';
+      public static MX2plus: string = 'MX2+';
+
+      public static fromSettings(s: any): string {
+        let o = bindingTypeToString('SmartDriveControlMode', s.ControlMode);
+        return PushTracker.Settings.ControlMode[o];
+      }
+    };
+
+    public static Units = class {
+      public static Options: Array<string> = ['English', 'Metric'];
+
+      public static English: string = 'English';
+      public static Metric: string = 'Metric';
+
+      public static fromSettings(s: any): string {
+        let o = bindingTypeToString('Units', s.Units);
+        return PushTracker.Settings.Units[o];
+      }
+    };
+
+    // public members
+    public controlMode: string = PushTracker.Settings.ControlMode.Advanced;
+    public ezOn: boolean = false;
+    public units: string = PushTracker.Settings.Units.English;
+    public acceleration: number = 30;
+    public maxSpeed: number = 70;
+    public tapSensitivity: number = 100;
+
+    public ledColor: Color = new Color('#3c8aba');
+
+    constructor() {
+      super();
+    }
+
+    public static getBoolSetting(flags: number, settingBit: number): boolean {
+      return ((flags >> settingBit) & 0x01) > 0;
+    }
+
+    public fromSettings(s: any): void {
+      this.controlMode = PushTracker.Settings.ControlMode.fromSettings(s);
+      this.units = PushTracker.Settings.Units.fromSettings(s);
+      this.ezOn = PushTracker.Settings.getBoolSetting(s.Flags, 0);
+      this.acceleration = s.acceleration;
+      this.maxSpeed = s.maxSpeed;
+      this.tapSensitivity = s.tapSensitivity;
+    }
+  };
+
+  public static PushSettings = class extends Observable {
+    // settings classes
+
+    // public members
+    public threshold: number = 4;
+    public timeWindow: number = 20;
+    public clearCounter: boolean = true;
+
+    constructor() {
+      super();
+    }
+
+    public fromPushSettings(ps: any): void {
+      this.threshold = ps.threshold;
+      this.timeWindow = ps.timeWindow;
+      this.clearCounter = ps.clearCounter > 0;
+    }
+  };
+
   // bluetooth info
   public static ServiceUUID = '1d14d6ee-fd63-4fa1-bfa4-8f47b42119f0';
   public static Characteristics = [
@@ -52,6 +132,7 @@ export class PushTracker extends Observable {
   public static pushtracker_error_event = 'pushtracker_error_event';
   public static pushtracker_distance_event = 'pushtracker_distance_event';
   public static pushtracker_settings_event = 'pushtracker_settings_event';
+  public static pushtracker_push_settings_event = 'pushtracker_push_settings_event';
 
   public static pushtracker_daily_info_event = 'pushtracker_daily_info_event';
   public static pushtracker_awake_event = 'pushtracker_awake_event';
@@ -106,6 +187,9 @@ export class PushTracker extends Observable {
   public address: string = ''; // MAC Address
   public paired: boolean = false; // Is this PushTracker paired?
   public connected: boolean = false; // Is this PushTracker connected?
+
+  public settings = new PushTracker.Settings();
+  public pushSettings = new PushTracker.PushSettings();
 
   // not serialized
   public device: any = null; // the actual device (ios:CBCentral, android:BluetoothDevice)
@@ -605,6 +689,23 @@ export class PushTracker extends Observable {
     return this.sendPacket('Command', 'SetSettings', 'settings', null, settings);
   }
 
+  public sendPushSettings(threshold: number, timeWindow: number, clearCounter: boolean): Promise<any> {
+    let p = new Packet();
+    let pushSettings = p.data('pushSettings');
+    // clamp numbers
+    const clamp = n => {
+      return Math.round(Math.max(0, Math.min(n, 255.0)));
+    };
+    threshold = clamp(threshold);
+    timeWindow = clamp(timeWindow);
+    // now fill in the packet
+    pushSettings.threshold = threshold;
+    pushSettings.timeWindow = timeWindow;
+    pushSettings.clearCounter = clearCounter ? 1 : 0;
+    p.destroy();
+    return this.sendPacket('Command', 'SetPushSettings', 'pushSettings', null, pushSettings);
+  }
+
   /**
    * Notify events by name and optionally pass data
    */
@@ -654,6 +755,9 @@ export class PushTracker extends Observable {
           break;
         case 'DailyInfo':
           this.handleDailyInfo(p);
+          break;
+        case 'PushSettings':
+          this.handlePushSettings(p);
           break;
         case 'Ready':
           this.handleReady(p);
@@ -762,10 +866,26 @@ export class PushTracker extends Observable {
            float       maxSpeed;        /** Slider setting, range: [0.1, 1.0]
            } settings;
         */
+    this.settings.fromSettings(settings);
     this.sendEvent(PushTracker.pushtracker_settings_event, {
-      // TODO: fill in this
+      settings: this.settings
     });
-    // TODO: update our stored settings
+  }
+
+  private handlePushSettings(p: Packet) {
+    // This is sent by the PushTracker when it connects
+    const pushSettings = p.data('pushSettings');
+    /* PushSettings
+	       struct PushSettings {
+   		   uint8_t     threshold;       /** Push Detection Threshold, [0, 255]
+			   uint8_t     timeWindow;      /** Push Detection Time Window, [0, 255]
+			   uint8_t     clearCounter;    /** Clear the counter for data below threshold? [0, 1]
+		   }  pushSettings;
+    */
+    this.pushSettings.fromPushSettings(pushSettings);
+    this.sendEvent(PushTracker.pushtracker_push_settings_event, {
+      pushSettings: this.pushSettings
+    });
   }
 
   private handleDailyInfo(p: Packet) {

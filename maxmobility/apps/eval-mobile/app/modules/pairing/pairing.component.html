@@ -24,5 +24,102 @@
 
       </GridLayout>
     </CarouselItem>
+
+	// for pushtracker settings control
+	<CarouselItem>
+      <GridLayout rows="auto, *" cols="*">
+
+        <StackLayout row="0" class="topSlide" height="35%">
+		  <Label text="Settings" class="label"></Label>
+        </StackLayout>
+
+        <ScrollView row="1" class="lowerSlide" height="65%">
+          <StackLayout>
+			// EZ On
+            <DockLayout stretchLastChild="false">
+              <Label text="EZ-ON" class="slider-label"></Label>
+              <Switch dock="right" class="" [checked]="settings.ezOn" (checkedChange)="onSettingsChecked('ezOn', $event)"></Switch>
+            </DockLayout>
+            // Max Speed
+            <DockLayout stretchLastChild="false">
+              <Label text="Max Speed" class="slider-label"></Label>
+              <Label verticalAlignment="center" dock="right"
+					 [text]="settings.maxSpeed+'%'"
+                     row="0" col="1" class="slider-value-label"></Label>
+            </DockLayout>
+            <GridLayout rows="auto" columns="*, auto">
+              <Slider minValue="0" maxValue="100" verticalAlignment="center"
+					  [value]="settings.maxSpeed"
+                      (valueChange)="onSettingsUpdate('maxSpeed', $event)"
+					  row="0" col="0"></Slider>
+            </GridLayout>
+            // Acceleration
+            <DockLayout stretchLastChild="false">
+              <Label text="Acceleration" class="slider-label"></Label>
+              <Label verticalAlignment="center" dock="right"
+					 [text]="settings.acceleration+'%'"
+                     row="0" col="1" class="slider-value-label"></Label>
+            </DockLayout>
+            <GridLayout rows="auto" columns="*, auto">
+              <Slider minValue="0" maxValue="100" verticalAlignment="center"
+					  [value]="settings.acceleration"
+                      (valueChange)="onSettingsUpdate('acceleration', $event)"
+                      row="0" col="0"></Slider>
+            </GridLayout>
+            // Tap Sensitivity
+            <DockLayout stretchLastChild="false">
+              <Label text="Tap Sensitivity" class="slider-label"></Label>
+              <Label verticalAlignment="center" dock="right"
+					 [text]="settings.tapSensitivity+'%'"
+                     row="0" col="1" class="slider-value-label"></Label>
+            </DockLayout>
+            <GridLayout rows="auto" columns="*, auto">
+              <Slider minValue="0" maxValue="100" verticalAlignment="center"
+					  [value]="settings.tapSensitivity"
+                      (valueChange)="onSettingsUpdate('tapSensitivity', $event)"
+                      row="0" col="0"></Slider>
+            </GridLayout>
+
+			// Push Settings:
+            // Push Threshold
+            <DockLayout stretchLastChild="false">
+              <Label text="Push Threshold" class="slider-label"></Label>
+              <Label verticalAlignment="center" dock="right"
+					 [text]="pushSettings.threshold"
+                     row="0" col="1" class="slider-value-label"></Label>
+            </DockLayout>
+            <GridLayout rows="auto" columns="*, auto">
+              <Slider minValue="0" maxValue="127" verticalAlignment="center"
+					  [value]="pushSettings.threshold"
+                      (valueChange)="onPushSettingsUpdate('threshold', $event)"
+					  row="0" col="0"></Slider>
+            </GridLayout>
+            // Time Window
+            <DockLayout stretchLastChild="false">
+              <Label text="Push Detection Time Window" class="slider-label"></Label>
+              <Label verticalAlignment="center" dock="right"
+					 [text]="pushSettings.timeWindow"
+                     row="0" col="1" class="slider-value-label"></Label>
+            </DockLayout>
+            <GridLayout rows="auto" columns="*, auto">
+              <Slider minValue="0" maxValue="255" verticalAlignment="center"
+					  [value]="pushSettings.timeWindow"
+                      (valueChange)="onPushSettingsUpdate('timeWindow', $event)"
+					  row="0" col="0"></Slider>
+            </GridLayout>
+            // Clear Counter
+            <DockLayout stretchLastChild="false">
+              <Label text="Clear Push Detection Counter" class="slider-label"></Label>
+              <Switch dock="right" class="" [checked]="pushSettings.clearCounter" (checkedChange)="onPushSettingsChecked('clearCounter', $event)"></Switch>
+            </DockLayout>
+
+			// Send these settings to PushTracker
+			<button text="Save to PushTracker" class="start-button"
+					(tap)="onSaveSettings($event)"></button>
+          </StackLayout>
+        </ScrollView>
+
+      </GridLayout>
+	</CarouselItem>
   </Carousel>
 </GridLayout>
