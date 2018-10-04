@@ -122,7 +122,7 @@
 
         <RadListView row="3" colSpan="2" ios:height="160" [items]="faqItems">
           <ng-template tkListItemTemplate let-item="item">
-            <GridLayout rows="140" class="list-item-layout" (tap)="faqThumbTapped(item)">
+            <GridLayout rows="150" class="list-item-layout" (tap)="faqThumbTapped(item)">
               <Image row="0" colSpan="2" src="~/assets/images/background_1.jpg" stretch="aspectFill"></Image>
               <Label row="0" [text]="item.question" class="faq-question" textWrap="true"></Label>
             </GridLayout>
