@@ -25,14 +25,16 @@
 			// Control Mode
             <DockLayout stretchLastChild="false">
               <Label [text]="'pushtracker.settings.control-mode.label' | translate" class="slider-label"></Label>
-			  <DropDown [hint]="'pushtracker.settings.control-mode.label' | translate"
+			  <DropDown #controlModeDropDown
+						[hint]="'pushtracker.settings.control-mode.label' | translate"
 						dock="right" class="dropdown" [items]="ControlModeOptions"
 						(selectedIndexChanged)="onSettingsDropdown('controlMode', $event)"></DropDown>
             </DockLayout>
 			// Units
             <DockLayout stretchLastChild="false">
               <Label [text]="'pushtracker.settings.units.label' | translate" class="slider-label"></Label>
-			  <DropDown [hint]="'pushtracker.settings.units.label' | translate"
+			  <DropDown #unitsDropDown
+						[hint]="'pushtracker.settings.units.label' | translate"
 						dock="right" class="dropdown" [items]="UnitsOptions"
 						(selectedIndexChanged)="onSettingsDropdown('units', $event)"></DropDown>
             </DockLayout>

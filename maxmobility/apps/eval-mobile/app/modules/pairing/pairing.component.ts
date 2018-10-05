@@ -9,6 +9,7 @@ import { CFAlertDialog, CFAlertStyle } from 'nativescript-cfalert-dialog';
 import { Gif } from 'nativescript-gif';
 import { switchMap } from 'rxjs/operators';
 import { ChangedData, ObservableArray } from 'tns-core-modules/data/observable-array';
+import { DropDown } from 'nativescript-drop-down';
 
 @Component({
   selector: 'Pairing',
@@ -17,8 +18,14 @@ import { ChangedData, ObservableArray } from 'tns-core-modules/data/observable-a
   styleUrls: ['./pairing.component.css']
 })
 export class PairingComponent {
+  @ViewChild('controlModeDropDown')
+  controlModeDropDown: ElementRef;
+  @ViewChild('unitsDropDown')
+  unitsDropDown: ElementRef;
+
   @ViewChild('carousel')
   carousel: ElementRef;
+
   selectedPage = 0;
   slides = this._translateService.instant('pairing');
   private feedback: Feedback;
@@ -71,6 +78,9 @@ export class PairingComponent {
           this.pushTrackerConnectionSuccess();
         }
       });
+      // register for settings and push settings
+      pt.on(PushTracker.pushtracker_settings_event, this.onPushTrackerSettings, this);
+      pt.on(PushTracker.pushtracker_push_settings_event, this.onPushTrackerPushSettings, this);
     });
 
     // listen for completely new pusthrackers (that we haven't seen before)
@@ -86,9 +96,20 @@ export class PairingComponent {
               this.pushTrackerConnectionSuccess();
             }
           });
+          // register for settings and push settings
+          pt.on(PushTracker.pushtracker_settings_event, this.onPushTrackerSettings, this);
+          pt.on(PushTracker.pushtracker_push_settings_event, this.onPushTrackerPushSettings, this);
         }
       }
     });
+  }
+
+  ngOnInit(): void {
+    // update drop downs
+    (this.unitsDropDown.nativeElement as DropDown).selectedIndex = this.UnitsOptions.indexOf(this.settings.units);
+    (this.controlModeDropDown.nativeElement as DropDown).selectedIndex = this.ControlModeOptions.indexOf(
+      this.settings.controlMode
+    );
   }
 
   /**
@@ -130,6 +151,22 @@ export class PairingComponent {
   }
 
   // settings controls
+  async onPushTrackerSettings(args: any) {
+    this._zone.run(() => {
+      this.settings.copy(args.data.settings);
+      // update drop downs
+      (this.unitsDropDown.nativeElement as DropDown).selectedIndex = this.UnitsOptions.indexOf(this.settings.units);
+      (this.controlModeDropDown.nativeElement as DropDown).selectedIndex = this.ControlModeOptions.indexOf(
+        this.settings.controlMode
+      );
+    });
+  }
+  async onPushTrackerPushSettings(args: any) {
+    this._zone.run(() => {
+      this.pushSettings.copy(args.data.pushSettings);
+    });
+  }
+
   onSettingsDropdown(key: string, args: any) {
     let optionKey = key.substr(0, 1).toUpperCase() + key.substr(1);
     this.settings[key] = PushTracker.Settings[optionKey].Options[args.newIndex];

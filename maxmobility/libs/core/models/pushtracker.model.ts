@@ -68,7 +68,7 @@ export class PushTracker extends Observable {
     };
 
     // public members
-    public controlMode: string = PushTracker.Settings.ControlMode.Advanced;
+    public controlMode: string = PushTracker.Settings.ControlMode.MX2plus;
     public ezOn: boolean = false;
     public units: string = PushTracker.Settings.Units.English;
     public acceleration: number = 30;
@@ -86,9 +86,21 @@ export class PushTracker extends Observable {
     }
 
     public fromSettings(s: any): void {
+      // from c++ settings bound array to c++ class
       this.controlMode = PushTracker.Settings.ControlMode.fromSettings(s);
       this.units = PushTracker.Settings.Units.fromSettings(s);
       this.ezOn = PushTracker.Settings.getBoolSetting(s.Flags, 0);
+      // these floats are [0,1] on pushtracker
+      this.acceleration = Math.round(s.Acceleration * 100.0);
+      this.maxSpeed = Math.round(s.MaxSpeed * 100.0);
+      this.tapSensitivity = Math.round(s.TapSensitivity * 100.0);
+    }
+
+    public copy(s: any) {
+      // from a settings class exactly like this
+      this.controlMode = s.controlMode;
+      this.units = s.units;
+      this.ezOn = s.ezOn;
       this.acceleration = s.acceleration;
       this.maxSpeed = s.maxSpeed;
       this.tapSensitivity = s.tapSensitivity;
@@ -108,9 +120,17 @@ export class PushTracker extends Observable {
     }
 
     public fromPushSettings(ps: any): void {
+      // from c++ push settings bound array to c++ class
       this.threshold = ps.threshold;
       this.timeWindow = ps.timeWindow;
       this.clearCounter = ps.clearCounter > 0;
+    }
+
+    public copy(ps: any) {
+      // from a push settings class exactly like this
+      this.threshold = ps.threshold;
+      this.timeWindow = ps.timeWindow;
+      this.clearCounter = ps.clearCounter;
     }
   };
 
@@ -881,11 +901,11 @@ export class PushTracker extends Observable {
     const pushSettings = p.data('pushSettings');
     /* PushSettings
 	       struct PushSettings {
-   		   uint8_t     threshold;       /** Push Detection Threshold, [0, 255]
-			   uint8_t     timeWindow;      /** Push Detection Time Window, [0, 255]
-			   uint8_t     clearCounter;    /** Clear the counter for data below threshold? [0, 1]
+   	   uint8_t     threshold;       /** Push Detection Threshold, [0, 255]
+		   uint8_t     timeWindow;      /** Push Detection Time Window, [0, 255]
+		   uint8_t     clearCounter;    /** Clear the counter for data below threshold? [0, 1]
 		   }  pushSettings;
-    */
+		*/
     this.pushSettings.fromPushSettings(pushSettings);
     this.sendEvent(PushTracker.pushtracker_push_settings_event, {
       pushSettings: this.pushSettings
