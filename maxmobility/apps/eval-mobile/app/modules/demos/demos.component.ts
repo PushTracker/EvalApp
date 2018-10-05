@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Demo, User, UserTypes } from '@maxmobility/core';
 import { DemoService, FirmwareService, LocationService, LoggingService, UserService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
@@ -6,6 +6,7 @@ import { Kinvey } from 'kinvey-nativescript-sdk';
 import { RouterExtensions } from 'nativescript-angular/router';
 import * as geolocation from 'nativescript-geolocation';
 import { SnackBar } from 'nativescript-snackbar';
+import { Toasty } from 'nativescript-toasty';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
 import * as http from 'tns-core-modules/http';
 import { isAndroid, isIOS } from 'tns-core-modules/platform';
@@ -18,10 +19,12 @@ import { action, confirm, prompt } from 'tns-core-modules/ui/dialogs';
   templateUrl: './demos.component.html',
   styleUrls: ['./demos.component.css']
 })
-export class DemosComponent {
+export class DemosComponent implements OnInit {
   get Demos(): ObservableArray<Demo> {
     return DemoService.Demos;
   }
+
+  currentUserId = Kinvey.User.getActiveUser()._id;
 
   private _snackBar = new SnackBar();
   private _datastore = Kinvey.DataStore.collection<any>('SmartDrives');
@@ -34,6 +37,11 @@ export class DemosComponent {
     private _translateService: TranslateService,
     private _userService: UserService
   ) {}
+
+  ngOnInit() {
+    console.log('Demos.Component OnInit');
+    new Toasty(this._translateService.instant('owner-color-explanation')).show();
+  }
 
   isIOS(): boolean {
     return isIOS;
@@ -130,6 +138,7 @@ export class DemosComponent {
     const result = await action({
       message: 'Demo Unit Actions',
       actions: userType === UserTypes.Representative ? repOpts : clinicianOpts,
+      // actions: repOpts,
       cancelable: true,
       cancelButtonText: 'Cancel'
     });
@@ -157,18 +166,23 @@ export class DemosComponent {
           })
         });
         console.log('response', response.statusCode);
-
         break;
       case toClinicianAction:
         console.log('handing to clinician');
 
-        const clinicianEmail = await prompt({
+        const promptResult = await prompt({
           message: `Clinician's email?`,
           okButtonText: 'Enter',
           cancelButtonText: 'Cancel'
         });
 
-        console.log(clinicianEmail.text);
+        if (!promptResult.text) {
+          console.log('no email entered into prompt for clinician');
+          return;
+        }
+
+        const clinicianEmail = promptResult.text;
+        console.log('clinicianEmail', clinicianEmail);
 
         response = await http.request({
           method: 'POST',
@@ -179,11 +193,11 @@ export class DemosComponent {
           },
           content: JSON.stringify({
             action: '1',
-            demoId: demo.id
+            demoId: demo.id,
+            clinicianEmail
           })
         });
         console.log('response', response.statusCode);
-
         break;
       case fromClinicianAction:
         console.log('retrieve from clinician');
@@ -200,7 +214,6 @@ export class DemosComponent {
           })
         });
         console.log('response', response.statusCode);
-
         break;
     }
   }
