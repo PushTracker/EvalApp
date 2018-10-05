@@ -101,7 +101,7 @@ export class AppComponent {
     });
     Kinvey.ping()
       .then(res => {
-        CLog(`Kinvey ping successful, SDK is active ${String.fromCodePoint(0x1f60e)}`);
+        CLog(`Kinvey ping successful, SDK is active 💯`);
       })
       .catch(err => {
         this._logService.logException(err);

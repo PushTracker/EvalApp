@@ -211,9 +211,14 @@
     "heading": "Sketch key points for the following:"
   },
   "demos": {
+    "demos-title": "Demos",
     "loading": "Loading Demos...",
     "location-confirm-message": "Do you want to update the demo's location to",
-    "location-calculating": "Location is being calculated..."
+    "location-calculating": "Location is being calculated...",
+    "firmware-string": "Firmware",
+    "request-demo-action": "Request Demo from Rep.",
+    "demo-to-clinician-action": "Handing Demo to Clinician",
+    "retrieve-from-clinician-action": "Retrieve Demo from Clinician"
   },
   "demo-detail": {
     "scan-sd": "SD: Press scan or edit button",
