@@ -159,19 +159,14 @@ export class PairingComponent {
       this._snackbar
         .action({
           actionText: this._translateService.instant('buttons.more-info'),
-          snackText: 'PushTracker out of Date!',
+          snackText: this._translateService.instant('pushtracker.push-settings.out-of-date-dialog.title'),
           hideDelay: 4000
         })
         .then(result => {
           if (result.command === 'Action') {
             this._cfAlert.show({
               dialogStyle: CFAlertStyle.ALERT,
-              message:
-                'PushTracker is version ' +
-                pushTracker.version_string +
-                ', needs to be at least ' +
-                PushTracker.versionByteToString(0x16) +
-                ' to receive PushSettings. PushSettings will not work!',
+              message: this._translateService.instant('pushtracker.push-settings.out-of-date-dialog.message'),
               cancellable: true
             });
           }

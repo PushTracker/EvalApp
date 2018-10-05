@@ -41,6 +41,10 @@
 		},
 		"push-settings": {
 			"label": "Push Settings",
+			"out-of-date-dialog": {
+				"title": "PushTracker out of Date",
+				"message": "PushTracker needs to be at least version 1.6 to receive PushSettings. PushSettings will be ignored."
+			},
 			"threshold": "Threshold",
 			"time-window": "Time Window",
 			"clear-counter": "Clear Counter"
