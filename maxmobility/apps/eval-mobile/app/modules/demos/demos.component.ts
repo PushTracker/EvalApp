@@ -45,8 +45,7 @@ export class DemosComponent {
     return this._firmwareService.currentVersion;
   }
 
-  onDemoTap(args) {
-    const index = args.index;
+  onDemoTap(index: any) {
     this.routerExtensions.navigate(['/demo-detail'], {
       queryParams: {
         index
