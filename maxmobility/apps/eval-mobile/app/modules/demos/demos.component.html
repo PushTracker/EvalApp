@@ -14,7 +14,7 @@
           stretch="aspectFit"></Image>
         <Image *ngIf="item.sd_image" class="demo-image" col="0" width="100" height="100" [src]="item.sd_image" stretch="aspectFit"></Image>
 
-        <GridLayout height="100" col="1" colSpan="2" rows="*, *, *" columns="auto, *, auto">
+        <GridLayout col="1" colSpan="2" rows="*, *, *" columns="auto, *, auto">
           // SD Serial Number & Model
           <Label text="&#xf071;" row="0" col="0" class="mdi icon"></Label>
           <Label [text]="(item.smartdrive_serial_number || '# ??')" row="0" col="1" colSpan="2" class="info"></Label>
@@ -23,7 +23,7 @@
           <Label text="&#xf628;" row="1" col="0" class="mdi icon"></Label>
           <Label row="1" col="1" class="info" textWrap="true">
             <FormattedString>
-              <Span text="Firmware: "></Span>
+              <Span [text]="('demos.firmware-string' | translate) + ': '"></Span>
               <Span [text]="item.version_string"></Span>
             </FormattedString>
           </Label>

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Demo, UserTypes } from '@maxmobility/core';
+import { Demo, User, UserTypes } from '@maxmobility/core';
 import { DemoService, FirmwareService, LocationService, LoggingService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
@@ -106,22 +106,28 @@ export class DemosComponent {
   }
 
   /**
-   * show list actions for clinicians
+   * show list actions for clinicians and reps based on the user type.
    * 1. handing over a demo unit to a clinician
    * 2. retrieving a demo unit from a clinician
    * 3. requesting a demo unit from nearby reps
    */
 
   async onDemoActionsButtonTap(demo: Demo) {
+    // setting the action strings here for both creating the actions based on type
+    // and for the switch to determine the action selected
+    const requestAction = this._translateService.instant('demos.request-demo-action');
+    const toClinicianAction = this._translateService.instant('demos.demo-to-clinician-action');
+    const fromClinicianAction = this._translateService.instant('demos.retrieve-from-clinician-action');
+
     // clinician user type options
-    const cOpts = ['Request Demo from Rep.'];
+    const clinicianOpts = [requestAction];
     // rep user type options
-    const rOpts = ['Handing Demo to Clinician', 'Retrieve Demo from Clinician'];
-    console.log('Kinvey.User.getActiveUser().type', Kinvey.User.getActiveUser().data.type);
+    const repOpts = [toClinicianAction, fromClinicianAction];
+    const userType = (Kinvey.User.getActiveUser().data as User).type as number;
 
     const result = await action({
       message: 'Demo Unit Actions',
-      actions: Kinvey.User.getActiveUser().data.type === UserTypes.Representative ? rOpts : cOpts,
+      actions: userType === UserTypes.Representative ? repOpts : clinicianOpts,
       cancelable: true,
       cancelButtonText: 'Cancel'
     });
@@ -132,14 +138,14 @@ export class DemosComponent {
     }
 
     switch (result) {
-      case 'Handing Demo to Clinician':
+      case requestAction:
+        console.log('request demo from rep');
+        break;
+      case toClinicianAction:
         console.log('handing to clinician');
         break;
-      case 'Retrieve Demo from Clinician':
+      case fromClinicianAction:
         console.log('retrieve from clinician');
-        break;
-      case 'Request Demo from Rep':
-        console.log('request demo from rep');
         break;
     }
   }
