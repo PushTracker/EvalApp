@@ -85,8 +85,8 @@
     "without-smartdrive": "Without SmartDrive: ",
     "confirm-lmn-email-title": "Email LMN",
     "confirm-lmn-email-message": "Do you want to email this evaluation for LMN?",
-    "evals.search-btn": "Search",
-    "evals.reset-btn": "Reset"
+    "search-btn": "Search",
+    "reset-btn": "Reset"
   },
   "eval-entry": {
     "title": "Perform an Evaluation",
