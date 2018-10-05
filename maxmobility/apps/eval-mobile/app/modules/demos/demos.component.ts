@@ -1,15 +1,16 @@
 import { Component } from '@angular/core';
 import { Demo, User, UserTypes } from '@maxmobility/core';
-import { DemoService, FirmwareService, LocationService, LoggingService } from '@maxmobility/mobile';
+import { DemoService, FirmwareService, LocationService, LoggingService, UserService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 import { RouterExtensions } from 'nativescript-angular/router';
 import * as geolocation from 'nativescript-geolocation';
 import { SnackBar } from 'nativescript-snackbar';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
+import * as http from 'tns-core-modules/http';
 import { isAndroid, isIOS } from 'tns-core-modules/platform';
 import { clearTimeout, setTimeout } from 'tns-core-modules/timer/timer';
-import { action, confirm } from 'tns-core-modules/ui/dialogs';
+import { action, confirm, prompt } from 'tns-core-modules/ui/dialogs';
 
 @Component({
   selector: 'Demos',
@@ -30,7 +31,8 @@ export class DemosComponent {
     private _demoService: DemoService,
     private _firmwareService: FirmwareService,
     private _logService: LoggingService,
-    private _translateService: TranslateService
+    private _translateService: TranslateService,
+    private _userService: UserService
   ) {}
 
   isIOS(): boolean {
@@ -136,15 +138,68 @@ export class DemosComponent {
       return;
     }
 
+    const token = (this._userService.user._kmd as any).authtoken;
+    let response;
+
     switch (result) {
       case requestAction:
         console.log('request demo from rep');
+        response = await http.request({
+          method: 'POST',
+          url: 'https://baas.kinvey.com/rpc/kid_SyIIDJjdM/custom/demo-unit-actions',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Kinvey ${token}`
+          },
+          content: JSON.stringify({
+            action: '0'
+          })
+        });
+        console.log('response', response.statusCode);
+
         break;
       case toClinicianAction:
         console.log('handing to clinician');
+
+        const clinicianEmail = await prompt({
+          message: `Clinician's email?`,
+          okButtonText: 'Enter',
+          cancelButtonText: 'Cancel'
+        });
+
+        console.log(clinicianEmail.text);
+
+        response = await http.request({
+          method: 'POST',
+          url: 'https://baas.kinvey.com/rpc/kid_SyIIDJjdM/custom/demo-unit-actions',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Kinvey ${token}`
+          },
+          content: JSON.stringify({
+            action: '1',
+            demoId: demo.id
+          })
+        });
+        console.log('response', response.statusCode);
+
         break;
       case fromClinicianAction:
         console.log('retrieve from clinician');
+        response = await http.request({
+          method: 'POST',
+          url: 'https://baas.kinvey.com/rpc/kid_SyIIDJjdM/custom/demo-unit-actions',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Kinvey ${token}`
+          },
+          content: JSON.stringify({
+            action: '2',
+            demoId: demo.id
+          })
+        });
+        console.log('response', response.statusCode);
+
         break;
     }
   }
