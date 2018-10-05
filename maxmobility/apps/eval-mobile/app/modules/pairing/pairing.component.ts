@@ -25,16 +25,19 @@ export class PairingComponent {
   private _cfAlert = new CFAlertDialog();
   private _snackbar = new SnackBar();
 
-  // TODO: make these use this._translateService.instant();
-  saving_settings: string = 'Saving Settings';
-  failed_settings_title: string = 'Failed';
-  failed_settings_message: string = 'Could not save settings:';
+  saving_settings: string = this._translateService.instant('pushtracker.settings.saving');
+  failed_settings_title: string = this._translateService.instant('pushtracker.settings.save-dialogs.failed.title');
+  failed_settings_message: string = this._translateService.instant('pushtracker.settings.save-dialogs.failed.message');
   okbuttontxt: string = this._translateService.instant('dialogs.ok');
   please_connect_pt: string = this._translateService.instant('trial.please-connect-pt');
   connect_pushtracker_more_info: string = this._translateService.instant('trial.connect_pushtracker_more_info');
   too_many_pts: string = this._translateService.instant('trial.errors.too-many-pts');
 
   public settings = new PushTracker.Settings();
+  // Control modes are not translated
+  public ControlModeOptions = PushTracker.Settings.ControlMode.Options;
+  // Have to use translations for Units
+  public UnitsOptions = PushTracker.Settings.Units.Translations.map(t => this._translateService.instant(t));
   public pushSettings = new PushTracker.PushSettings();
 
   constructor(
@@ -100,7 +103,7 @@ export class PairingComponent {
 
       this._snackbar
         .action({
-          actionText: 'More Info',
+          actionText: this._translateService.instant('buttons.more-info'),
           snackText: this.please_connect_pt,
           hideDelay: 4000
         })
@@ -127,6 +130,11 @@ export class PairingComponent {
   }
 
   // settings controls
+  onSettingsDropdown(key: string, args: any) {
+    let optionKey = key.substr(0, 1).toUpperCase() + key.substr(1);
+    this.settings[key] = PushTracker.Settings[optionKey].Options[args.newIndex];
+  }
+
   onSettingsUpdate(key: string, args: any) {
     this.settings[key] = args.object.value;
   }
@@ -150,7 +158,7 @@ export class PairingComponent {
     } else if (pushTracker.version < 0x16) {
       this._snackbar
         .action({
-          actionText: 'More Info',
+          actionText: this._translateService.instant('buttons.more-info'),
           snackText: 'PushTracker out of Date!',
           hideDelay: 4000
         })

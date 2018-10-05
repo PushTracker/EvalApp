@@ -53,6 +53,10 @@ export class PushTracker extends Observable {
 
     public static Units = class {
       public static Options: Array<string> = ['English', 'Metric'];
+      public static Translations: Array<string> = [
+        'pushtracker.settings.units.english',
+        'pushtracker.settings.units.metric'
+      ];
 
       public static English: string = 'English';
       public static Metric: string = 'Metric';

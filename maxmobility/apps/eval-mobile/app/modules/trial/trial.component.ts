@@ -507,7 +507,7 @@ export class TrialComponent implements OnInit {
 
       this._snackbar
         .action({
-          actionText: 'More Info',
+          actionText: this._translateService.instant('buttons.more-info'),
           snackText: this.please_connect_pt,
           hideDelay: 4000
         })

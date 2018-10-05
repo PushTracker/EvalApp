@@ -12,8 +12,40 @@
   },
   "buttons": {
     "next": "Next",
-    "back": "Back"
+      "back": "Back",
+	  "more-info": "More Info"
   },
+	"pushtracker": {
+		"settings": {
+			"label": "Settings",
+			"save-button": "Save to PushTracker",
+			"saving": "Saving PushTracker Settings",
+			"save-dialogs": {
+				"failed": {
+					"title": "Failed Saving Settings",
+					"message": "We were unable to save the PushTracker settings to your PushTracker."
+				}
+			},
+			"units": {
+				"label": "Units",
+				"english": "English",
+				"metric": "Metric"
+			},
+			"control-mode": {
+				"label": "Control Mode"
+			},
+			"ez-on": "EZ-On",
+			"acceleration": "Acceleration",
+			"max-speed": "Max Speed",
+			"tap-sensitivity": "Tap Sensitivity"
+		},
+		"push-settings": {
+			"label": "Push Settings",
+			"threshold": "Threshold",
+			"time-window": "Time Window",
+			"clear-counter": "Clear Counter"
+		}
+	},
   "menu": {
     "home": "SmartDrive",
     "connectivity": "Connectivity",
