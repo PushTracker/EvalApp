@@ -26,6 +26,10 @@
 					"message": "We were unable to save the PushTracker settings to your PushTracker."
 				}
 			},
+			"copy-dialog": {
+				"title": "Copy From PushTracker?",
+				"message": "PushTracker's settings differ from the app's settings, do you want to overwrite the app's settings with the PushTracker's settings?"
+			},
 			"units": {
 				"label": "Units",
 				"english": "English",
@@ -44,6 +48,10 @@
 			"out-of-date-dialog": {
 				"title": "PushTracker out of Date",
 				"message": "PushTracker needs to be at least version 1.6 to receive PushSettings. PushSettings will be ignored."
+			},
+			"copy-dialog": {
+				"title": "Copy From PushTracker?",
+				"message": "PushTracker's push settings differ from the app's push settings, do you want to overwrite the app's push settings with the PushTracker's push settings?"
 			},
 			"threshold": "Threshold",
 			"time-window": "Time Window",

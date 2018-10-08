@@ -19,31 +19,31 @@
           <StackLayout>
 			// EZ On
             <DockLayout stretchLastChild="false">
-              <Label [text]="'pushtracker.settings.ez-on' | translate" class="slider-label"></Label>
-              <Switch dock="right" class="" [checked]="settings.ezOn" (checkedChange)="onSettingsChecked('ezOn', $event)"></Switch>
+              <Label [text]="'pushtracker.settings.ez-on' | translate" class="setting"></Label>
+              <Switch dock="right" [checked]="settings.ezOn" (checkedChange)="onSettingsChecked('ezOn', $event)"></Switch>
             </DockLayout>
 			// Control Mode
             <DockLayout stretchLastChild="false">
-              <Label [text]="'pushtracker.settings.control-mode.label' | translate" class="slider-label"></Label>
+              <Label [text]="'pushtracker.settings.control-mode.label' | translate" class="setting"></Label>
 			  <DropDown #controlModeDropDown
 						[hint]="'pushtracker.settings.control-mode.label' | translate"
-						dock="right" class="dropdown" [items]="ControlModeOptions"
+						dock="right" [items]="ControlModeOptions"
 						(selectedIndexChanged)="onSettingsDropdown('controlMode', $event)"></DropDown>
             </DockLayout>
 			// Units
             <DockLayout stretchLastChild="false">
-              <Label [text]="'pushtracker.settings.units.label' | translate" class="slider-label"></Label>
+              <Label [text]="'pushtracker.settings.units.label' | translate" class="setting"></Label>
 			  <DropDown #unitsDropDown
 						[hint]="'pushtracker.settings.units.label' | translate"
-						dock="right" class="dropdown" [items]="UnitsOptions"
+						dock="right" [items]="UnitsOptions"
 						(selectedIndexChanged)="onSettingsDropdown('units', $event)"></DropDown>
             </DockLayout>
             // Max Speed
             <DockLayout stretchLastChild="false">
-              <Label [text]="'pushtracker.settings.max-speed' | translate" class="slider-label"></Label>
+              <Label [text]="'pushtracker.settings.max-speed' | translate" class="setting"></Label>
               <Label verticalAlignment="center" dock="right"
 					 [text]="settings.maxSpeed+'%'"
-                     row="0" col="1" class="slider-value-label"></Label>
+                     row="0" col="1" class="value"></Label>
             </DockLayout>
             <GridLayout rows="auto" columns="*, auto">
               <Slider minValue="0" maxValue="100" verticalAlignment="center"
@@ -53,10 +53,10 @@
             </GridLayout>
             // Acceleration
             <DockLayout stretchLastChild="false">
-              <Label [text]="'pushtracker.settings.acceleration' | translate" class="slider-label"></Label>
+              <Label [text]="'pushtracker.settings.acceleration' | translate" class="setting"></Label>
               <Label verticalAlignment="center" dock="right"
 					 [text]="settings.acceleration+'%'"
-                     row="0" col="1" class="slider-value-label"></Label>
+                     row="0" col="1" class="value"></Label>
             </DockLayout>
             <GridLayout rows="auto" columns="*, auto">
               <Slider minValue="0" maxValue="100" verticalAlignment="center"
@@ -66,10 +66,10 @@
             </GridLayout>
             // Tap Sensitivity
             <DockLayout stretchLastChild="false">
-              <Label [text]="'pushtracker.settings.tap-sensitivity' | translate" class="slider-label"></Label>
+              <Label [text]="'pushtracker.settings.tap-sensitivity' | translate" class="setting"></Label>
               <Label verticalAlignment="center" dock="right"
 					 [text]="settings.tapSensitivity+'%'"
-                     row="0" col="1" class="slider-value-label"></Label>
+                     row="0" col="1" class="value"></Label>
             </DockLayout>
             <GridLayout rows="auto" columns="*, auto">
               <Slider minValue="0" maxValue="100" verticalAlignment="center"
@@ -80,13 +80,13 @@
 
 			// Push Settings:
 			<Label [text]="'pushtracker.push-settings.label' | translate"
-				   class="slider-label"></Label>
+				   class="section"></Label>
             // Push Threshold
             <DockLayout stretchLastChild="false">
-              <Label [text]="'pushtracker.push-settings.threshold' | translate" class="slider-label"></Label>
+              <Label [text]="'pushtracker.push-settings.threshold' | translate" class="setting"></Label>
               <Label verticalAlignment="center" dock="right"
 					 [text]="pushSettings.threshold"
-                     row="0" col="1" class="slider-value-label"></Label>
+                     row="0" col="1" class="value"></Label>
             </DockLayout>
             <GridLayout rows="auto" columns="*, auto">
               <Slider minValue="0" maxValue="10" verticalAlignment="center"
@@ -96,10 +96,10 @@
             </GridLayout>
             // Time Window
             <DockLayout stretchLastChild="false">
-              <Label [text]="'pushtracker.push-settings.time-window' | translate" class="slider-label"></Label>
+              <Label [text]="'pushtracker.push-settings.time-window' | translate" class="setting"></Label>
               <Label verticalAlignment="center" dock="right"
 					 [text]="pushSettings.timeWindow"
-                     row="0" col="1" class="slider-value-label"></Label>
+                     row="0" col="1" class="value"></Label>
             </DockLayout>
             <GridLayout rows="auto" columns="*, auto">
               <Slider minValue="0" maxValue="50" verticalAlignment="center"
@@ -109,8 +109,8 @@
             </GridLayout>
             // Clear Counter
             <DockLayout stretchLastChild="false">
-              <Label [text]="'pushtracker.push-settings.clear-counter' | translate" class="slider-label"></Label>
-              <Switch dock="right" class="" [checked]="pushSettings.clearCounter" (checkedChange)="onPushSettingsChecked('clearCounter', $event)"></Switch>
+              <Label [text]="'pushtracker.push-settings.clear-counter' | translate" class="setting"></Label>
+              <Switch dock="right" [checked]="pushSettings.clearCounter" (checkedChange)="onPushSettingsChecked('clearCounter', $event)"></Switch>
             </DockLayout>
 
 			// Send these settings to PushTracker

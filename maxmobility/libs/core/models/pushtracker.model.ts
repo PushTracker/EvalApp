@@ -105,6 +105,17 @@ export class PushTracker extends Observable {
       this.maxSpeed = s.maxSpeed;
       this.tapSensitivity = s.tapSensitivity;
     }
+
+    public diff(s: any): boolean {
+      return (
+        this.controlMode !== s.controlMode ||
+        this.units !== s.units ||
+        this.ezOn !== s.ezOn ||
+        this.acceleration !== s.acceleration ||
+        this.maxSpeed !== s.maxSpeed ||
+        this.tapSensitivity !== s.tapSensitivity
+      );
+    }
   };
 
   public static PushSettings = class extends Observable {
@@ -131,6 +142,12 @@ export class PushTracker extends Observable {
       this.threshold = ps.threshold;
       this.timeWindow = ps.timeWindow;
       this.clearCounter = ps.clearCounter;
+    }
+
+    public diff(ps: any): boolean {
+      return (
+        this.threshold !== ps.threshold || this.timeWindow !== ps.timeWindow || this.clearCounter !== ps.clearCounter
+      );
     }
   };
 

@@ -9,6 +9,7 @@ import { CFAlertDialog, CFAlertStyle } from 'nativescript-cfalert-dialog';
 import { Gif } from 'nativescript-gif';
 import { switchMap } from 'rxjs/operators';
 import { ChangedData, ObservableArray } from 'tns-core-modules/data/observable-array';
+import { confirm } from 'tns-core-modules/ui/dialogs';
 import { DropDown } from 'nativescript-drop-down';
 
 @Component({
@@ -79,6 +80,8 @@ export class PairingComponent {
         }
       });
       // register for settings and push settings
+      pt.off(PushTracker.pushtracker_settings_event, this.onPushTrackerSettings, this);
+      pt.off(PushTracker.pushtracker_push_settings_event, this.onPushTrackerPushSettings, this);
       pt.on(PushTracker.pushtracker_settings_event, this.onPushTrackerSettings, this);
       pt.on(PushTracker.pushtracker_push_settings_event, this.onPushTrackerPushSettings, this);
     });
@@ -97,6 +100,8 @@ export class PairingComponent {
             }
           });
           // register for settings and push settings
+          pt.off(PushTracker.pushtracker_settings_event, this.onPushTrackerSettings, this);
+          pt.off(PushTracker.pushtracker_push_settings_event, this.onPushTrackerPushSettings, this);
           pt.on(PushTracker.pushtracker_settings_event, this.onPushTrackerSettings, this);
           pt.on(PushTracker.pushtracker_push_settings_event, this.onPushTrackerPushSettings, this);
         }
@@ -153,17 +158,39 @@ export class PairingComponent {
   // settings controls
   async onPushTrackerSettings(args: any) {
     this._zone.run(() => {
-      this.settings.copy(args.data.settings);
-      // update drop downs
-      (this.unitsDropDown.nativeElement as DropDown).selectedIndex = this.UnitsOptions.indexOf(this.settings.units);
-      (this.controlModeDropDown.nativeElement as DropDown).selectedIndex = this.ControlModeOptions.indexOf(
-        this.settings.controlMode
-      );
+      if (this.settings.diff(args.data.settings)) {
+        // ask to copy the settings
+        confirm({
+          message: this._translateService.instant('pushtracker.settings.copy-dialog.message'),
+          okButtonText: this._translateService.instant('dialogs.ok'),
+          cancelButtonText: this._translateService.instant('dialogs.no')
+        }).then(result => {
+          if (result === true) {
+            this.settings.copy(args.data.settings);
+            // update drop downs
+            let newUnitsIndex = this.UnitsOptions.indexOf(this.settings.units);
+            (this.unitsDropDown.nativeElement as DropDown).selectedIndex = newUnitsIndex;
+            let newControlIndex = this.ControlModeOptions.indexOf(this.settings.controlMode);
+            (this.controlModeDropDown.nativeElement as DropDown).selectedIndex = newControlIndex;
+          }
+        });
+      }
     });
   }
   async onPushTrackerPushSettings(args: any) {
     this._zone.run(() => {
-      this.pushSettings.copy(args.data.pushSettings);
+      if (this.pushSettings.diff(args.data.pushSettings)) {
+        // ask to copy the settings
+        confirm({
+          message: this._translateService.instant('pushtracker.push-settings.copy-dialog.message'),
+          okButtonText: this._translateService.instant('dialogs.ok'),
+          cancelButtonText: this._translateService.instant('dialogs.no')
+        }).then(result => {
+          if (result === true) {
+            this.pushSettings.copy(args.data.pushSettings);
+          }
+        });
+      }
     });
   }
 
