@@ -652,6 +652,12 @@ export class BluetoothService {
   }
 
   private notify(text: string): void {
-    this.snackbar.simple(text);
+    try {
+      this.snackbar.simple(text).catch(err => {
+        console.log('snackbar promise rejection:', err);
+      });
+    } catch (ex) {
+      console.log('snackbar exception:', ex);
+    }
   }
 }
