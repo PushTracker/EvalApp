@@ -2,7 +2,10 @@
   <NavigationButton android:visibility="collapse"></NavigationButton>
 </ActionBar>
 
-<GridLayout tkMainContent rows="*" columns="*" class="page">
+
+<Gradient tkMainContent direction="to bottom" colors="#004F7E, #0070b3">
+
+<GridLayout>
 
   <Carousel #carousel (loaded)="onCarouselLoad()" ios:indicatorOffset="0,-10" ios:finite="true" ios:bounce="false"
     height="100%" indicatorColor="#66ccff" indicatorColorUnselected="#cceeff">
@@ -144,3 +147,5 @@
 
   </Carousel>
 </GridLayout>
+
+</Gradient>

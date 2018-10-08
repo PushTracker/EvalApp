@@ -64,7 +64,7 @@ export class HomeComponent {
     },
     {
       Image: '~/assets/images/trial-history-transparent.png',
-      Description: 'Evals',
+      Description: 'menu.eval-history',
       Route: '/evals'
     },
     {

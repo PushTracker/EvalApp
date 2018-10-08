@@ -39,6 +39,39 @@
 		margin: 20, 5;
 	}
 
+    .label {
+      text-align: left;
+      font-family: $os-Light;
+      font-size: 25;
+      margin: 20, 0, 10, 15;
+      color: $white;
+    }
+
+    .bullet {
+      color: #fff;
+      font-family: $os-Light;
+      font-size: 13;
+      text-align: left;
+      margin: 10, 20, 10, 15;
+    }
+
+	.item {
+		// vertical-align: center;
+		text-overflow: none;
+		word-wrap: normal;
+		color: #fff;
+		font-weight: 500;
+		margin: 10, 0, 10, 15;
+	}
+
+	.saveButton{
+		width: 150;
+		color: #fff;
+		background-color: $permobil-ocean;
+		border-radius: 2;
+		//margin: 20, 20, 50, 20;
+	}
+
 	DockLayout {
 		color: #fff;
 		margin: 10, 10;
@@ -83,39 +116,6 @@
 			font-weight: 500;
 			text-align: left;
 		}
-	}
-
-    .label {
-      text-align: left;
-      font-family: $os-Light;
-      font-size: 25;
-      margin: 20, 0, 10, 15;
-      color: $white;
-    }
-
-    .bullet {
-      color: #fff;
-      font-family: $os-Light;
-      font-size: 13;
-      text-align: left;
-      margin: 10, 20, 10, 15;
-    }
-
-	.item {
-		// vertical-align: center;
-		text-overflow: none;
-		word-wrap: normal;
-		color: #fff;
-		font-weight: 500;
-		margin: 10, 0, 10, 15;
-	}
-
-	.saveButton{
-		width: 150;
-		color: #fff;
-		background-color: $permobil-ocean;
-		border-radius: 2;
-		//margin: 20, 20, 50, 20;
 	}
   }
 }

@@ -6,16 +6,23 @@
     background-color: $permobil-hero;
 }
 
-.gridImage {
-    background-image: "~/assets/images/background_1.jpg";
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
+.topSlide {
+  background-image: url('~/assets/images/background_1.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+
+  Image {
+	margin: 0;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+  }
 }
 
 .next-button{
     width: 150;
-    height: 40; 
+    height: 40;
     color: #fff;
     background-color: $permobil-ocean;
     border-radius: 2;
@@ -23,7 +30,7 @@
 }
 .back-button{
     width: 150;
-    height: 40; 
+    height: 40;
     color: $permobil-charcoal;
     background-color: $permobil-ocean;
     border-radius: 2;
@@ -35,15 +42,6 @@
     padding: 10;
     margin-top: 20;
     border-radius: 2;
-}
-
-Image {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin: 20, 0, 20, 0;
-    // width: 50%;
-    // height: 50%;
 }
 
 .icon{

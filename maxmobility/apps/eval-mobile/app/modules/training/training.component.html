@@ -8,11 +8,11 @@
       indicatorColorUnselected="#cceeff">
       <CarouselItem *ngFor="let slide of slides">
         <GridLayout rows="auto, *" cols="*">
-          <StackLayout backgroundImage="~/assets/images/background_1.jpg" row="0" height="35%" width="100%" orientation="horizontal"
+          <StackLayout class="topSlide" row="0" height="45%" width="100%" orientation="horizontal"
             horizontalAlignment="center">
             <Image [src]="slide.Image" stretch="aspectFit"></Image>
           </StackLayout>
-          <ScrollView row="1" height="65%">
+          <ScrollView row="1" height="55%">
             <StackLayout orientation="vertical" horizontalAlignment="center" width="100%">
               <Label [text]="slide.Label" class="slideLowerLabel" textWrap="true"></Label>
               <Label *ngFor="let bullet of slide.Bullets" [text]="bullet" class="bullet" textWrap="true"></Label>
