@@ -139,13 +139,13 @@ export class EvalsComponent implements OnInit {
         is24HourView: false
       })) as DateResponse;
 
-      const jsdate = new Date(dateResult.year, dateResult.month - 1, dateResult.day);
+      const jsdate = new Date(dateResult.year, dateResult.month - 1, dateResult.day + 1);
 
       // now query Kinvey evals for only current logged in user for the date selected
       const query = new Kinvey.Query();
-      query
-        .greaterThanOrEqualTo('_kmd.ect', jsdate.toISOString())
-        .equalTo('_acl.creator', Kinvey.User.getActiveUser()._id);
+      query.equalTo('creator_id', Kinvey.User.getActiveUser()._id);
+      query.lessThanOrEqualTo('_kmd.ect', jsdate.toISOString());
+      query.descending('_kmd.ect');
 
       const stream = this._datastore.find(query);
       const data = await stream.toPromise();

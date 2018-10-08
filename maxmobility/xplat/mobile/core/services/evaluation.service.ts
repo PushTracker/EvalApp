@@ -30,6 +30,7 @@ export class EvaluationService {
       await this.datastore.sync();
       const query = new Kinvey.Query();
       query.equalTo('creator_id', Kinvey.User.getActiveUser()._id);
+      query.descending('_kmd.ect');
 
       const stream = this.datastore.find(query);
       const data = await stream.toPromise();
