@@ -27,16 +27,17 @@
             </FormattedString>
           </Label>
 
-          // coast time
+          // speed
           <Label textWrap="true" class="summaryDescription">
             <FormattedString>
-              <Span [text]="'summary.coast-time' | translate" color="#fff"></Span>
-              <Span [text]="coastDiff.toFixed(1)+' times ' + ((coastDiff > 1.0) ? this.higher : this.lower)" color="#43D551"
+              <Span [text]="'summary.average-speed' | translate" color="#fff"></Span>
+              <Span [text]="speedDiff.toFixed(1)+' x ' + ((speedDiff > 1.0) ? this.higher : this.lower)" color="#43D551"
                 fontAttributes="Bold"></Span>
               <Span [text]="'summary.with-sd' | translate" color="#fff"></Span>
             </FormattedString>
           </Label>
 
+		  <!--
           // cadence
           <Label textWrap="true" class="summaryDescription">
             <FormattedString>
@@ -45,6 +46,7 @@
               <Span [text]="'summary.cadence' | translate" color="#fff"></Span>
             </FormattedString>
           </Label>
+		  -->
 
           // difficulties
           <StackLayout *ngFor="let diff of difficulties">

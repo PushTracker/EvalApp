@@ -6,19 +6,19 @@
 
   <GridLayout>
     <Carousel ios:indicatorOffset="0,-10" ios:finite="true" ios:bounce="false" indicatorColor="#66ccff"
-      indicatorColorUnselected="#cceeff" height="100%">
+			  indicatorColorUnselected="#cceeff" height="100%">
 
       // Page 1
       <CarouselItem height="100%">
         <GridLayout rows="auto, *" cols="*">
-          <StackLayout backgroundImage="~/assets/images/background_1.jpg" row="0" height="20%" width="100%" orientation="horizontal"
-            horizontalAlignment="center">
+          <StackLayout row="0" height="20%" width="100%" class="topSlide" orientation="horizontal"
+					   horizontalAlignment="center">
             <Image src="~/assets/images/trial-setup.png" stretch="aspectFit"></Image>
           </StackLayout>
 
           // First Page: Configure Trial
           <ScrollView class="trial-scroll-view" row="1">
-            <StackLayout orientation="vertical" horizontalAlignment="center">
+            <StackLayout class="trial-stack-layout" orientation="vertical" horizontalAlignment="center">
 
               // Heading and description
               <Label [text]="'trial.set-up' | translate" class="slideLowerLabel" textWrap="true"></Label>
@@ -26,55 +26,129 @@
 
               // Trial Name
               <TextField [hint]="'trial.name' | translate" autocorrect="false" [text]="trial.name" (textChange)="onTextChange('name', $event)"
-                class="trial-name-textfield"></TextField>
+						 class="trial-name-textfield"></TextField>
 
               // Trial options
-              <StackLayout class="trial-stack-layout">
-                <Label [text]="'trial.recommendation' | translate" textWrap="true" class="trial-recommendation"></Label>
+              <Label [text]="'trial.recommendation' | translate" textWrap="true" class="trial-recommendation"></Label>
 
-                // Terrain Options
-                <DockLayout stretchLastChild="false">
-                  <Label [text]="'trial.flat-surfaces' | translate" class="trial-item" dock="left"></Label>
-                  <Switch dock="right" class="" [checked]="trial.flat" (checkedChange)="onSwitchChecked('flat', $event)"></Switch>
-                </DockLayout>
-                <DockLayout stretchLastChild="false">
-                  <Label [text]="'trial.ramp' | translate" class="trial-item" dock="left"></Label>
-                  <Switch dock="right" [checked]="trial.ramp" (checkedChange)="onSwitchChecked('ramp', $event)"></Switch>
-                </DockLayout>
-                <DockLayout stretchLastChild="false">
-                  <Label [text]="'trial.inclines' | translate" class="trial-item" dock="left"></Label>
-                  <Switch dock="right" [checked]="trial.inclines" (checkedChange)="onSwitchChecked('inclines', $event)"></Switch>
-                </DockLayout>
-                <DockLayout stretchLastChild="false">
-                  <Label [text]="'trial.other' | translate" class="trial-item" dock="left"></Label>
-                  <Switch dock="right" [checked]="trial.other" (checkedChange)="onSwitchChecked('other', $event)"></Switch>
-                </DockLayout>
-                <TextField [hint]="'trial.description' | translate" *ngIf="trial.other" autocorrect="false" [text]="trial.other_description"
-                  (textChange)="onTextChange('other_description', $event)" class="trial-description-textfield"></TextField>
+              // Terrain Options
+              <DockLayout stretchLastChild="false">
+                <Label [text]="'trial.flat-surfaces' | translate"></Label>
+                <Switch dock="right" class="" [checked]="trial.flat" (checkedChange)="onSwitchChecked('flat', $event)"></Switch>
+              </DockLayout>
+              <DockLayout stretchLastChild="false">
+                <Label [text]="'trial.ramp' | translate"></Label>
+                <Switch dock="right" [checked]="trial.ramp" (checkedChange)="onSwitchChecked('ramp', $event)"></Switch>
+              </DockLayout>
+              <DockLayout stretchLastChild="false">
+                <Label [text]="'trial.inclines' | translate"></Label>
+                <Switch dock="right" [checked]="trial.inclines" (checkedChange)="onSwitchChecked('inclines', $event)"></Switch>
+              </DockLayout>
+              <DockLayout stretchLastChild="false">
+                <Label [text]="'trial.other' | translate"></Label>
+                <Switch dock="right" [checked]="trial.other" (checkedChange)="onSwitchChecked('other', $event)"></Switch>
+              </DockLayout>
+              <TextField [hint]="'trial.description' | translate" *ngIf="trial.other" autocorrect="false" [text]="trial.other_description"
+						 (textChange)="onTextChange('other_description', $event)" class="trial-description-textfield"></TextField>
 
-                // SmartDrive Settings //Acceleration
-                <DockLayout stretchLastChild="false">
-                  <Label [text]="'trial.accelleration' | translate" class="trial-slider-label"></Label>
-                  <Label verticalAlignment="center" dock="right" class="trial-slider-value-label" [text]="(trial.acceleration*100).toFixed(0)+'%'"
-                    row="0" col="1"></Label>
-                </DockLayout>
-                <GridLayout rows="auto" columns="*, auto">
-                  <Slider minValue="0" maxValue="10" verticalAlignment="center" class="trial-slider" [value]="trial.acceleration * 10"
-                    (valueChange)="onSliderUpdate('acceleration', $event)" row="0" col="0"></Slider>
-                </GridLayout>
+              // SmartDrive Settings:
+			  <Label [text]="'pushtracker.settings.label' | translate"
+					 class="section"></Label>
+			  // EZ On
+			  <DockLayout stretchLastChild="false">
+				<Label [text]="'pushtracker.settings.ez-on' | translate" class="setting"></Label>
+				<Switch dock="right" [checked]="settings.ezOn" (checkedChange)="onSettingsChecked('ezOn', $event)"></Switch>
+			  </DockLayout>
+			  // Control Mode
+			  <DockLayout stretchLastChild="false">
+				<Label [text]="'pushtracker.settings.control-mode.label' | translate" class="setting"></Label>
+				<DropDown #controlModeDropDown
+						  [hint]="'pushtracker.settings.control-mode.label' | translate"
+						  dock="right" [items]="ControlModeOptions"
+						  (selectedIndexChanged)="onSettingsDropdown('controlMode', $event)"></DropDown>
+			  </DockLayout>
+			  // Units
+			  <DockLayout stretchLastChild="false">
+				<Label [text]="'pushtracker.settings.units.label' | translate" class="setting"></Label>
+				<DropDown #unitsDropDown
+						  [hint]="'pushtracker.settings.units.label' | translate"
+						  dock="right" [items]="UnitsOptions"
+						  (selectedIndexChanged)="onSettingsDropdown('units', $event)"></DropDown>
+			  </DockLayout>
+			  // Max Speed
+			  <DockLayout stretchLastChild="false">
+				<Label [text]="'pushtracker.settings.max-speed' | translate" class="setting"></Label>
+				<Label verticalAlignment="center" dock="right"
+					   [text]="settings.maxSpeed+'%'"
+					   row="0" col="1" class="value"></Label>
+			  </DockLayout>
+			  <GridLayout rows="auto" columns="*, auto">
+				<Slider minValue="0" maxValue="10" verticalAlignment="center"
+						[value]="settings.maxSpeed / 10"
+						(valueChange)="onSettingsUpdate('maxSpeed', $event)"
+						row="0" col="0"></Slider>
+			  </GridLayout>
+			  // Acceleration
+			  <DockLayout stretchLastChild="false">
+				<Label [text]="'pushtracker.settings.acceleration' | translate" class="setting"></Label>
+				<Label verticalAlignment="center" dock="right"
+					   [text]="settings.acceleration+'%'"
+					   row="0" col="1" class="value"></Label>
+			  </DockLayout>
+			  <GridLayout rows="auto" columns="*, auto">
+				<Slider minValue="0" maxValue="10" verticalAlignment="center"
+						[value]="settings.acceleration / 10"
+						(valueChange)="onSettingsUpdate('acceleration', $event)"
+						row="0" col="0"></Slider>
+			  </GridLayout>
+			  // Tap Sensitivity
+			  <DockLayout stretchLastChild="false">
+				<Label [text]="'pushtracker.settings.tap-sensitivity' | translate" class="setting"></Label>
+				<Label verticalAlignment="center" dock="right"
+					   [text]="settings.tapSensitivity+'%'"
+					   row="0" col="1" class="value"></Label>
+			  </DockLayout>
+			  <GridLayout rows="auto" columns="*, auto">
+				<Slider minValue="0" maxValue="10" verticalAlignment="center"
+						[value]="settings.tapSensitivity / 10"
+						(valueChange)="onSettingsUpdate('tapSensitivity', $event)"
+						row="0" col="0"></Slider>
+			  </GridLayout>
 
-                // Max Speed
-                <DockLayout stretchLastChild="false">
-                  <Label [text]="'trial.max-speed' | translate" class="trial-slider-label"></Label>
-                  <Label verticalAlignment="center" dock="right" class="trial-slider-value-label" [text]="(trial.max_speed*100).toFixed(0)+'%'"
-                    row="0" col="1"></Label>
-                </DockLayout>
-                <GridLayout rows="auto" columns="*, auto">
-                  <Slider minValue="0" maxValue="10" verticalAlignment="center" class="trial-slider" [value]="trial.max_speed * 10"
-                    (valueChange)="onSliderUpdate('max_speed', $event)" row="0" col="0"></Slider>
-                </GridLayout>
-
-              </StackLayout>
+			  // Push Settings:
+			  <Label [text]="'pushtracker.push-settings.label' | translate"
+					 class="section"></Label>
+			  // Push Threshold
+			  <DockLayout stretchLastChild="false">
+				<Label [text]="'pushtracker.push-settings.threshold' | translate" class="setting"></Label>
+				<Label verticalAlignment="center" dock="right"
+					   [text]="pushSettings.threshold"
+					   row="0" col="1" class="value"></Label>
+			  </DockLayout>
+			  <GridLayout rows="auto" columns="*, auto">
+				<Slider minValue="0" maxValue="10" verticalAlignment="center"
+						[value]="pushSettings.threshold"
+						(valueChange)="onPushSettingsUpdate('threshold', $event)"
+						row="0" col="0"></Slider>
+			  </GridLayout>
+			  // Time Window
+			  <DockLayout stretchLastChild="false">
+				<Label [text]="'pushtracker.push-settings.time-window' | translate" class="setting"></Label>
+				<Label verticalAlignment="center" dock="right"
+					   [text]="pushSettings.timeWindow"
+					   row="0" col="1" class="value"></Label>
+			  </DockLayout>
+			  <GridLayout rows="auto" columns="*, auto">
+				<Slider minValue="0" maxValue="50" verticalAlignment="center"
+						[value]="pushSettings.timeWindow"
+						(valueChange)="onPushSettingsUpdate('timeWindow', $event)"
+						row="0" col="0"></Slider>
+			  </GridLayout>
+			  // Clear Counter
+			  <DockLayout stretchLastChild="false">
+				<Label [text]="'pushtracker.push-settings.clear-counter' | translate" class="setting"></Label>
+				<Switch dock="right" [checked]="pushSettings.clearCounter" (checkedChange)="onPushSettingsChecked('clearCounter', $event)"></Switch>
+			  </DockLayout>
             </StackLayout>
           </ScrollView>
         </GridLayout>
@@ -84,39 +158,33 @@
       <CarouselItem #withPage height="100%">
         <GridLayout rows="auto, *" cols="*">
 
-          <StackLayout backgroundImage="~/assets/images/background_1.jpg" row="0" height="20%" width="100%" orientation="horizontal"
-            horizontalAlignment="center">
+          <StackLayout row="0" height="20%" width="100%" class="topSlide" orientation="horizontal"
+					   horizontalAlignment="center">
             <Image src="~/assets/images/trial-sd.png" stretch="aspectFit"></Image>
           </StackLayout>
 
           <ScrollView class="trial-scroll-view" row="1">
-            <StackLayout orientation="vertical" horizontalAlignment="center">
+            <StackLayout class="trial-stack-layout" orientation="vertical" horizontalAlignment="center">
 
               // Heading and description
               <Label [text]="'trial.phase-1' | translate" class="slideLowerLabel" textWrap="true"></Label>
               <Label [text]="'trial.with-sd' | translate" class="slideLowerLabel" textWrap="true"></Label>
               <Label [text]="'trial.phase-1-desc' | translate" class="slideDescription" textWrap="true"></Label>
 
-              <StackLayout class="input-field">
-
                 <button #startWith row="2" [text]="'trial.start' | translate" class="start-button" (tap)="onStartWithTrial($event)"></button>
                 <button #stopWith row="2" [text]="'trial.stop' | translate" class="start-button" (tap)="onStopWithTrial($event)"></button>
 
                 // Data Fields
-                <GridLayout rows="auto, auto" columns="auto, *, auto, *">
+                <GridLayout rows="auto, auto, auto, auto" columns="auto, *, auto, *">
                   <Label row="0" col="0" [text]="'trial.pushes' | translate" class="value-label-left" textWrap="true"></Label>
                   <Label row="0" col="1" [text]="pushWithDisplay" class="value-left" textWrap="true"></Label>
-                  <Label row="0" col="2" [text]="'trial.coast-time' | translate" class="value-label-right" textWrap="true"></Label>
-                  <Label row="0" col="3" [text]="coastWithDisplay" class="value-right" textWrap="true"></Label>
+                  <Label row="0" col="2" [text]="'trial.average-speed' | translate" class="value-label-right" textWrap="true"></Label>
+                  <Label row="0" col="3" [text]="speedWithDisplay" class="value-right" textWrap="true"></Label>
+                  <Label row="1" col="0" [text]="'trial.time' | translate" class="value-label-left" textWrap="true"></Label>
+                  <Label row="1" col="1" [text]="timeWithDisplay" class="value-left" textWrap="true"></Label>
+                  <Label row="1" col="2" [text]="'trial.distance' | translate" class="value-label-right" textWrap="true"></Label>
+                  <Label row="1" col="3" [text]="distanceDisplay" class="value-right" textWrap="true"></Label>
                 </GridLayout>
-
-                <GridLayout rows="auto, auto" columns="auto, *, auto, *">
-                  <Label row="0" col="0" [text]="'trial.time' | translate" class="value-label-left" textWrap="true"></Label>
-                  <Label row="0" col="1" [text]="timeWithDisplay" class="value-left" textWrap="true"></Label>
-                  <Label row="0" col="2" [text]="'trial.distance' | translate" class="value-label-right" textWrap="true"></Label>
-                  <Label row="0" col="3" [text]="distanceDisplay" class="value-right" textWrap="true"></Label>
-                </GridLayout>
-              </StackLayout>
             </StackLayout>
           </ScrollView>
         </GridLayout>
@@ -125,39 +193,33 @@
       // Page 3 Without SmartDrive
       <CarouselItem #withoutPage height="100%">
         <GridLayout rows="auto, *" cols="*">
-          <StackLayout backgroundImage="~/assets/images/background_1.jpg" row="0" height="20%" width="100%" orientation="horizontal"
-            horizontalAlignment="center">
+          <StackLayout row="0" height="20%" width="100%" class="topSlide" orientation="horizontal"
+					   horizontalAlignment="center">
             <Image src="~/assets/images/trial-no-sd.png" stretch="aspectFit"></Image>
           </StackLayout>
 
           <ScrollView class="trial-scroll-view" row="1">
-            <StackLayout class=" lowerSlide" orientation="vertical" horizontalAlignment="center">
+            <StackLayout class="trial-stack-layout" orientation="vertical" horizontalAlignment="center">
 
               // Heading and description
               <Label [text]="'trial.phase-2' | translate" class="slideLowerLabel" textWrap="true"></Label>
               <Label [text]="'trial.without-sd' | translate" class="slideLowerLabel" textWrap="true"></Label>
               <Label [text]="'trial.phase-2-desc' | translate" class="slideDescription" textWrap="true"></Label>
 
-              <StackLayout class="input-field">
-
                 <button #startWithout row="2" [text]="'trial.start' | translate" class="start-button" (tap)="onStartWithoutTrial($event)"></button>
                 <button #stopWithout row="2" [text]="'trial.stop' | translate" class="start-button" (tap)="onStopWithoutTrial($event)"></button>
 
                 // Data Fields
-                <GridLayout rows="auto, auto" columns="auto, *, auto, *">
+                <GridLayout rows="auto, auto, auto, auto" columns="auto, *, auto, *">
                   <Label row="0" col="0" [text]="'trial.pushes' | translate" class="value-label-left" textWrap="true"></Label>
                   <Label row="0" col="1" [text]="pushWithoutDisplay" class="value-left" textWrap="true"></Label>
-                  <Label row="0" col="2" [text]="'trial.coast-time' | translate" class="value-label-right" textWrap="true"></Label>
-                  <Label row="0" col="3" [text]="coastWithoutDisplay" class="value-right" textWrap="true"></Label>
+                  <Label row="0" col="2" [text]="'trial.average-speed' | translate" class="value-label-right" textWrap="true"></Label>
+                  <Label row="0" col="3" [text]="speedWithoutDisplay" class="value-right" textWrap="true"></Label>
+                  <Label row="1" col="0" [text]="'trial.time' | translate" class="value-label-left" textWrap="true"></Label>
+                  <Label row="1" col="1" [text]="timeWithoutDisplay" class="value-left" textWrap="true"></Label>
+                  <Label row="1" col="2" [text]="'trial.distance' | translate" class="value-label-right" textWrap="true"></Label>
+                  <Label row="1" col="3" [text]="distanceDisplay" class="value-right" textWrap="true"></Label>
                 </GridLayout>
-
-                <GridLayout rows="auto, auto" columns="auto, *, auto, *">
-                  <Label row="0" col="0" [text]="'trial.time' | translate" class="value-label-left" textWrap="true"></Label>
-                  <Label row="0" col="1" [text]="timeWithoutDisplay" class="value-left" textWrap="true"></Label>
-                  <Label row="0" col="2" [text]="'trial.distance' | translate" class="value-label-right" textWrap="true"></Label>
-                  <Label row="0" col="3" [text]="distanceDisplay" class="value-right" textWrap="true"></Label>
-                </GridLayout>
-              </StackLayout>
             </StackLayout>
           </ScrollView>
         </GridLayout>
@@ -166,51 +228,45 @@
       // Page 4 Trial Complete
       <CarouselItem height="100%">
         <GridLayout rows="auto, *" cols="*">
-          <StackLayout backgroundImage="~/assets/images/background_1.jpg" row="0" height="20%" width="100%" orientation="horizontal"
-            horizontalAlignment="center">
+          <StackLayout row="0" height="20%" width="100%" class="topSlide" orientation="horizontal"
+					   horizontalAlignment="center">
             <Image src="~/assets/images/trial-complete.png" stretch="aspectFit"></Image>
           </StackLayout>
 
           <ScrollView class=" trial-scroll-view" row="1">
-            <StackLayout class=" lowerSlide" orientation="vertical" horizontalAlignment="center">
+            <StackLayout class="trial-stack-layout" orientation="vertical" horizontalAlignment="center">
 
               // Heading and description
               <Label [text]="'trial.complete' | translate" class="slideLowerLabel" textWrap="true"></Label>
 
-              <Label [text]="'trial.push_accuracy_disclaimer' | translate" class="value-label-left" textWrap="true"></Label>
+              <Label [text]="'trial.push_accuracy_disclaimer' | translate" class="trial-recommendation" textWrap="true"></Label>
 
               <StackLayout>
 
                 // Data Fields with SmartDrive
                 <Label [text]="'trial.with-sd' | translate" class="sub-heading" textWrap="true" margin="30,0,0,15"></Label>
-                <GridLayout rows="auto, auto" columns="auto, *, auto, *">
+                <GridLayout rows="auto, auto, auto, auto" columns="auto, *, auto, *">
                   <Label row="0" col="0" [text]="'trial.pushes' | translate" class="value-label-left" textWrap="true"></Label>
                   <Label row="0" col="1" [text]="pushWithDisplay" class="value-left" textWrap="true"></Label>
-                  <Label row="0" col="2" [text]="'trial.coast-time' | translate" class="value-label-right" textWrap="true"></Label>
-                  <Label row="0" col="3" [text]="coastWithDisplay" class="value-right" textWrap="true"></Label>
-                </GridLayout>
-
-                <GridLayout rows="auto, auto" columns="auto, *, auto, *">
-                  <Label row="0" col="0" [text]="'trial.time' | translate" class="value-label-left" textWrap="true"></Label>
-                  <Label row="0" col="1" [text]="timeWithDisplay" class="value-left" textWrap="true"></Label>
-                  <Label row="0" col="2" [text]="'trial.distance' | translate" class="value-label-right" textWrap="true"></Label>
-                  <Label row="0" col="3" [text]="distanceDisplay" class="value-right" textWrap="true"></Label>
+                  <Label row="0" col="2" [text]="'trial.average-speed' | translate" class="value-label-right" textWrap="true"></Label>
+                  <Label row="0" col="3" [text]="speedWithDisplay" class="value-right" textWrap="true"></Label>
+                  <Label row="1" col="0" [text]="'trial.time' | translate" class="value-label-left" textWrap="true"></Label>
+                  <Label row="1" col="1" [text]="timeWithDisplay" class="value-left" textWrap="true"></Label>
+                  <Label row="1" col="2" [text]="'trial.distance' | translate" class="value-label-right" textWrap="true"></Label>
+                  <Label row="1" col="3" [text]="distanceDisplay" class="value-right" textWrap="true"></Label>
                 </GridLayout>
 
                 // Data Fields without SmartDrive
                 <Label [text]="'trial.without-sd' | translate" class="sub-heading" textWrap="true" margin="30,0,0,15"></Label>
-                <GridLayout rows="auto, auto" columns="auto, *, auto, *">
+                <GridLayout rows="auto, auto, auto, auto" columns="auto, *, auto, *">
                   <Label row="0" col="0" [text]="'trial.pushes' | translate" class="value-label-left" textWrap="true"></Label>
                   <Label row="0" col="1" [text]="pushWithoutDisplay" class="value-left" textWrap="true"></Label>
-                  <Label row="0" col="2" [text]="'trial.coast-time' | translate" class="value-label-right" textWrap="true"></Label>
-                  <Label row="0" col="3" [text]="coastWithoutDisplay" class="value-right" textWrap="true"></Label>
-                </GridLayout>
-
-                <GridLayout rows="auto, auto" columns="auto, *, auto, *">
-                  <Label row="0" col="0" [text]="'trial.time' | translate" class="value-label-left" textWrap="true"></Label>
-                  <Label row="0" col="1" [text]="timeWithoutDisplay" class="value-left" textWrap="true"></Label>
-                  <Label row="0" col="2" [text]="'trial.distance' | translate" class="value-label-right" textWrap="true"></Label>
-                  <Label row="0" col="3" [text]="distanceDisplay" class="value-right" textWrap="true"></Label>
+                  <Label row="0" col="2" [text]="'trial.average-speed' | translate" class="value-label-right" textWrap="true"></Label>
+                  <Label row="0" col="3" [text]="speedWithoutDisplay" class="value-right" textWrap="true"></Label>
+                  <Label row="1" col="0" [text]="'trial.time' | translate" class="value-label-left" textWrap="true"></Label>
+                  <Label row="1" col="1" [text]="timeWithoutDisplay" class="value-left" textWrap="true"></Label>
+                  <Label row="1" col="2" [text]="'trial.distance' | translate" class="value-label-right" textWrap="true"></Label>
+                  <Label row="1" col="3" [text]="distanceDisplay" class="value-right" textWrap="true"></Label>
                 </GridLayout>
 
                 <button row="2" [text]="'trial.summary' | translate" class="start-button" (tap)="onNext()"></button>

@@ -2,198 +2,190 @@
 @import '../../scss/variables';
 @import '../../scss/carousel';
 
-Switch {
-  color: #fff;
-  margin: 5, 10, 5, 5;
-  padding: 10, 15, 10, 0;
+.trial-scroll-view {
+	height: 80%;
+	// background-color: $permobil-hero;
 }
 
-Switch[checked=true] {
-  background-color: $permobil-orange; //$permobil-ocean;
-}
+.topSlide {
+  background-image: url('~/assets/images/background_1.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 
-Switch[checked='false'] {
-  background-color: $permobil-charcoal;
-}
-
-image {
-  margin: 10, 0, 10, 0;
-}
-
-.top {
-  background: #fff;
-}
-
-button,
-TextField {
-  margin: 15, 15, 75, 15;
-}
-
-.trial-recommendation {
-  color: $white;
-  font-family: $os-SemiBold;
-  font-size: 13;
-  text-align: left;
-  margin: 0, 15, 0, 15;
+  Image {
+	margin: 10, 0, 10, 0;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+  }
 }
 
 .trial-stack-layout {
-  margin: 20, 0, 0, 0;
-  // background-color: $permobil-hero;
+    horizontal-align: center;
+    width: 100%;
+	padding: 0, 0, 30, 0;
+
+	.section {
+		color: #fff;
+		font-weight: 700;
+		text-decoration: underline;
+		margin: 20, 5;
+	}
+
+	button {
+		width: 45%;
+		color: #fff;
+		background-color: $permobil-ocean;
+		border-radius: 2;
+		margin: 10, 10;
+	}
+
+	DockLayout {
+		color: #fff;
+		margin: 10, 10;
+
+		Slider {
+			background-color: $permobil-orange;
+			padding: 0, 25, 0, 25;
+		}
+
+		Switch {
+			margin: 0;
+			padding: 0;
+		}
+		Switch[checked=true] {
+			background-color: $success-light;
+		}
+		Switch[checked=false] {
+			background-color: $permobil-charcoal;
+		}
+
+		DropDown {
+			background-color: $permobil-hero;
+			placeholder-color: rgba(250, 250, 250, 0.5);
+			color: $white;
+			border-radius: 2;
+			width: 35%;
+			padding: 0, 0;
+			margin: 5, 0;
+			text-align: right;
+			vertical-align: center;
+			horizontal-align: right;
+		}
+
+		.value {
+			min-width: 50%;
+			font-family: $os-Light;
+			text-align: right;
+			margin: 0, 5;
+		}
+		.setting {
+			color: #fff;
+			font-weight: 500;
+			text-align: left;
+		}
+	}
 }
 
-.trial-scroll-view {
-  height: 80%;
-  // background-color: $permobil-hero;
+TextField {
+	margin: 15, 15, 75, 15;
+}
+
+.trial-recommendation {
+	color: $white;
+	font-family: $os-SemiBold;
+	font-size: 13;
+	text-align: left;
+	margin: 0, 15, 0, 15;
 }
 
 .trial-item {
-  // vertical-align: center;
-  text-overflow: none;
-  word-wrap: normal;
-  color: #fff;
-  font-weight: 500;
-  margin: 10, 0, 10, 15;
-}
-
-.trial-slider-label {
-  color: #fff;
-  font-weight: 500;
-  margin: 10, 0, 10, 15;
-}
-
-.trial-slider-value-label {
-  color: #fff;
-  min-width: 50%;
-  font-family: $os-Light;
-  margin: 10, 0, 10, 0;
-}
-
-.trial-slider {
-  margin: 5, 15, 15, 15;
-  color: #fff;
-  background-color: $permobil-orange;
+	// vertical-align: center;
+	text-overflow: none;
+	word-wrap: normal;
+	color: #fff;
+	font-weight: 500;
+	margin: 10, 0, 10, 15;
 }
 
 .trial-description-textfield {
-  background-color: rgba(255, 255, 255, 0.2);
-  padding: 7;
-  font-size: 14;
-  margin: 5, 15, 5, 15;
-  color: #fff;
-  border-radius: 2;
-  placeholder-color: lightgray;
+	background-color: rgba(255, 255, 255, 0.2);
+	padding: 7;
+	font-size: 14;
+	margin: 5, 15, 5, 15;
+	color: #fff;
+	border-radius: 2;
+	placeholder-color: lightgray;
 }
+
 .trial-name-textfield {
-  background-color: rgba(255, 255, 255, 0.2);
-  padding: 7;
-  margin: 5, 15, 5, 15;
-  color: #fff;
-  border-radius: 2;
-  placeholder-color: lightgray;
+	background-color: rgba(255, 255, 255, 0.2);
+	padding: 7;
+	margin: 5, 15, 5, 15;
+	color: #fff;
+	border-radius: 2;
+	placeholder-color: lightgray;
 }
+
 .start-button {
-  width: 150;
-  height: 40;
-  color: #fff;
-  background-color: $permobil-ocean;
-  border-radius: 2;
-  margin: 45, 10, 50, 10;
+	color: #fff;
+	background-color: $permobil-ocean;
+	border-radius: 2;
+	//margin: 45, 10, 50, 10;
 }
+
 .back-button {
-  width: 150;
-  height: 40;
-  color: #fff;
-  background-color: $permobil-hero;
-  border-radius: 2;
-  margin: 25, 10, 50, 10;
-}
-
-image {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.icon {
-  font-size: 30em;
-  padding: 10;
-  color: $permobil-ocean;
-  text-shadow: 5px, 5px, 5px, $permobil-icon-shadow-orange;
-}
-
-.bullet {
-  color: #fff;
-  font-family: $os-Light;
-  font-size: 13;
-  text-align: left;
-  margin: 10, 20, 0, 20;
+	width: 150;
+	height: 40;
+	color: #fff;
+	background-color: $permobil-hero;
+	border-radius: 2;
+	margin: 25, 10, 50, 10;
 }
 
 .sub-heading {
-  text-align: left;
-  font-size: 20;
-  margin: 20, 0, 10, 15;
-  color: $white;
-  font-weight: 500;
+	text-align: left;
+	font-size: 20;
+	margin: 20, 0, 10, 15;
+	color: $white;
+	font-weight: 500;
 }
 
 .value-label-left {
-  // background: black;
-  text-align: left;
-  font-family: $os-Light;
-  font-size: 15;
-  margin: 5, 10, 0, 15;
-  color: #fff;
+	// background: black;
+	text-align: right;
+	font-family: $os-Light;
+	font-size: 15;
+	margin: 5, 10, 0, 15;
+	color: #fff;
 }
 
 .value-left {
-  // background: black;
-  text-align: left;
-  width: 100%;
-  font-family: $os-Light;
-  font-size: 15;
-  margin: 5, 5, 0, 10;
-  color: #fff;
+	// background: black;
+	text-align: left;
+	width: 100%;
+	font-family: $os-Light;
+	font-size: 15;
+	margin: 5, 5, 0, 10;
+	color: #fff;
 }
 
 .value-label-right {
-  // background: black;
-  text-align: left;
-  font-family: $os-Light;
-  font-size: 15;
-  margin: 5, 10, 0, 15;
-  color: #fff;
+	// background: black;
+	text-align: right;
+	font-family: $os-Light;
+	font-size: 15;
+	margin: 5, 10, 0, 15;
+	color: #fff;
 }
 
 .value-right {
-  // background: black;
-  text-align: left;
-  width: 100%;
-  font-family: $os-Light;
-  font-size: 15;
-  margin: 5, 5, 0, 10;
-  color: #fff;
-}
-
-.slide-indicator-inactive {
-  background-color: #fff;
-  opacity: 0.4;
-  width: 10;
-  height: 10;
-  margin-left: 2.5;
-  margin-right: 2.5;
-  margin-top: 0;
-  border-radius: 5;
-}
-
-.slide-indicator-active {
-  background-color: #fff;
-  opacity: 0.9;
-  width: 10;
-  height: 10;
-  margin-left: 2.5;
-  margin-right: 2.5;
-  margin-top: 0;
-  border-radius: 5;
+	// background: black;
+	text-align: left;
+	width: 100%;
+	font-family: $os-Light;
+	font-size: 15;
+	margin: 5, 5, 0, 10;
+	color: #fff;
 }

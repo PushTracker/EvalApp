@@ -8,6 +8,7 @@ import { isAndroid, isIOS } from 'tns-core-modules/platform';
 import { View } from 'tns-core-modules/ui/core/view';
 import { alert } from 'tns-core-modules/ui/dialogs';
 import { CFAlertDialog, CFAlertStyle } from 'nativescript-cfalert-dialog';
+import { DropDown } from 'nativescript-drop-down';
 
 @Component({
   selector: 'Trial',
@@ -29,13 +30,21 @@ export class TrialComponent implements OnInit {
   @ViewChild('stopWithout')
   stopWithoutView: ElementRef;
 
+  // for settings
+  @ViewChild('controlModeDropDown')
+  controlModeDropDown: ElementRef;
+  @ViewChild('unitsDropDown')
+  unitsDropDown: ElementRef;
+
   // displaying trial info
   distanceDisplay = '--';
   pushWithDisplay = '--';
   coastWithDisplay = '--';
+  speedWithDisplay = '--';
   timeWithDisplay = '--';
   pushWithoutDisplay = '--';
   coastWithoutDisplay = '--';
+  speedWithoutDisplay = '--';
   timeWithoutDisplay = '--';
   please_connect_pt: string = this._translateService.instant('trial.please-connect-pt');
   connect_pushtracker_more_info: string = this._translateService.instant('trial.connect_pushtracker_more_info');
@@ -55,6 +64,13 @@ export class TrialComponent implements OnInit {
   private _cfAlert = new CFAlertDialog();
   private _snackbar = new SnackBar();
 
+  public settings = new PushTracker.Settings();
+  public pushSettings = new PushTracker.PushSettings();
+  // Control modes are not translated
+  public ControlModeOptions = PushTracker.Settings.ControlMode.Options;
+  // Have to use translations for Units
+  public UnitsOptions = PushTracker.Settings.Units.Translations.map(t => this._translateService.instant(t));
+
   constructor(
     private _routerExtensions: RouterExtensions,
     private _progressService: ProgressService,
@@ -62,11 +78,18 @@ export class TrialComponent implements OnInit {
     private _zone: NgZone,
     private _translateService: TranslateService,
     private _loggingService: LoggingService
-  ) {}
+  ) {
+    this.trial.setSettings(this.settings);
+  }
 
   ngOnInit() {
     this._hideview(this.stopWithView.nativeElement);
     this._hideview(this.stopWithoutView.nativeElement);
+    // update drop downs
+    (this.unitsDropDown.nativeElement as DropDown).selectedIndex = this.UnitsOptions.indexOf(this.settings.units);
+    (this.controlModeDropDown.nativeElement as DropDown).selectedIndex = this.ControlModeOptions.indexOf(
+      this.settings.controlMode
+    );
   }
 
   isIOS(): boolean {
@@ -94,6 +117,32 @@ export class TrialComponent implements OnInit {
         name: 'slideRight'
       }
     });
+  }
+
+  onSettingsDropdown(key: string, args: any) {
+    let optionKey = key.substr(0, 1).toUpperCase() + key.substr(1);
+    this.settings[key] = PushTracker.Settings[optionKey].Options[args.newIndex];
+    this.trial.setSettings(this.settings);
+  }
+
+  onSettingsUpdate(key: string, args: any) {
+    // slider
+    this.settings[key] = args.object.value * 10;
+    this.trial.setSettings(this.settings);
+  }
+
+  onSettingsChecked(key, args) {
+    this.settings[key] = args.value;
+    this.trial.setSettings(this.settings);
+  }
+
+  onPushSettingsUpdate(key: string, args: any) {
+    this.pushSettings[key] = args.object.value;
+  }
+
+  onPushSettingsChecked(key, args) {
+    // slider
+    this.pushSettings[key] = args.value;
   }
 
   /**
@@ -195,11 +244,23 @@ export class TrialComponent implements OnInit {
       const sendDistance = () => {
         return pushTracker.sendPacket('Command', 'DistanceRequest');
       };
-
       const sendSettings = () => {
-        return pushTracker.sendSettings('MX2+', 'English', 0x00, 1.0, this.trial.acceleration, this.trial.max_speed);
+        return pushTracker.sendSettings(
+          this.settings.controlMode,
+          this.settings.units,
+          this.settings.ezOn ? 0x01 : 0x00,
+          this.settings.tapSensitivity / 100.0,
+          this.settings.acceleration / 100.0,
+          this.settings.maxSpeed / 100.0
+        );
       };
-
+      const sendPushSettings = () => {
+        return pushTracker.sendPushSettings(
+          this.pushSettings.threshold,
+          this.pushSettings.timeWindow,
+          this.pushSettings.clearCounter
+        );
+      };
       // wait for push / coast data and distance:
       pushTracker.on(PushTracker.pushtracker_distance_event, distanceHandler);
       pushTracker.on(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
@@ -211,6 +272,9 @@ export class TrialComponent implements OnInit {
 
       // now actually try to send these data
       retry(3, sendSettings)
+        .then(() => {
+          return retry(3, sendPushSettings);
+        })
         .then(() => {
           return retry(3, sendDistance);
         })
@@ -250,9 +314,12 @@ export class TrialComponent implements OnInit {
           pushTracker.off(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
           this._progressService.hide();
           this._hideview(<View>this.stopWithView.nativeElement);
-          this.distanceDisplay = `${this.trial.distance.toFixed(2)} m`;
+          let ft = (this.trial.distance * 5280.0) / 1609.0;
+          this.distanceDisplay = `${ft.toFixed(2)} ft`;
           this.pushWithDisplay = `${this.trial.with_pushes}`;
           this.coastWithDisplay = `${this.trial.with_coast.toFixed(2)} s`;
+          let speedWith = this.trial.distance / 1609.0 / (this.trial.with_elapsed / 60.0);
+          this.speedWithDisplay = `${speedWith.toFixed(2)} mph`;
           this.timeWithDisplay = Trial.timeToString(this.trial.with_elapsed * 60);
         });
       };
@@ -433,6 +500,8 @@ export class TrialComponent implements OnInit {
           this._hideview(<View>this.stopWithoutView.nativeElement);
           this.pushWithoutDisplay = `${this.trial.without_pushes}`;
           this.coastWithoutDisplay = `${this.trial.without_coast.toFixed(2)} s`;
+          let speedWithout = this.trial.distance / 1609.0 / (this.trial.without_elapsed / 60.0);
+          this.speedWithoutDisplay = `${speedWithout.toFixed(2)} mph`;
           this.timeWithoutDisplay = Trial.timeToString(this.trial.without_elapsed * 60);
         });
       };

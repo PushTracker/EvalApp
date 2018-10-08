@@ -62,16 +62,20 @@ export class SummaryComponent {
     }
   ];
 
+  totalDistance = 0;
   totalPushesWith = 0;
   totalPushesWithout = 0;
   totalTimeWith = 0;
   totalTimeWithout = 0;
   totalCoastWith = 0;
   totalCoastWithout = 0;
+  totalSpeedWith = 0;
+  totalSpeedWithout = 0;
   totalCadenceWith = 0;
   totalCadenceWithout = 0;
   pushDiff = 0;
   coastDiff = 0;
+  speedDiff = 0;
   cadenceThresh = 10; // pushes per minute
   lmnTemplate: string = this._translateService.instant('summary.lmnTemplate').join('\n');
 
@@ -103,15 +107,22 @@ export class SummaryComponent {
       this.totalPushesWithout += t.without_pushes;
       this.totalTimeWith += t.with_elapsed;
       this.totalTimeWithout += t.without_elapsed;
+      this.totalDistance += t.distance;
     });
     this.totalCoastWith = this.totalPushesWith ? (this.totalTimeWith * 60) / this.totalPushesWith : 0;
     this.totalCoastWithout = this.totalPushesWithout ? (this.totalTimeWithout * 60) / this.totalPushesWithout : 0;
     this.totalCadenceWith = this.totalTimeWith ? this.totalPushesWith / this.totalTimeWith : 0;
     this.totalCadenceWithout = this.totalTimeWithout ? this.totalPushesWithout / this.totalTimeWithout : 0;
+    this.totalSpeedWith =
+      this.totalTimeWith && this.totalDistance ? this.totalDistance / 1609.0 / (this.totalTimeWith / 610.0) : 0.0;
+    this.totalSpeedWithout =
+      this.totalTimeWithout && this.totalDistance ? this.totalDistance / 1609.0 / (this.totalTimeWithout / 610.0) : 0.0;
     // pushes
     this.pushDiff = 100 - (this.totalPushesWith / this.totalPushesWithout) * 100 || 0;
     // coast
     this.coastDiff = this.totalCoastWith / this.totalCoastWithout || 0;
+    // speed
+    this.speedDiff = (this.totalSpeedWithout && this.totalSpeedWith / this.totalSpeedWithout) || 0;
   }
 
   isIOS(): boolean {
@@ -130,6 +141,7 @@ export class SummaryComponent {
       totalCadenceWithout: this.totalCadenceWithout.toFixed(1),
       pushDiff: this.pushDiff.toFixed(0),
       coastDiff: this.coastDiff.toFixed(1),
+      speedDiff: this.speedDiff.toFixed(1),
       toFixed: function() {
         console.log(this);
         let str = this.toFixed(2);

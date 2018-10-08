@@ -19,8 +19,11 @@ export class Trial extends Observable {
   public other: boolean = false;
   public other_description: string = '';
   // settings
+  public ez_on: boolean = false;
+  public control_mode: string = 'MX2+';
   public max_speed: number = 0.7;
   public acceleration: number = 0.3;
+  public tap_sensitivity: number = 1.0;
   // state
   public startedWith: boolean = false;
   public startedWithout: boolean = false;
@@ -46,6 +49,21 @@ export class Trial extends Observable {
     if (obj !== null && obj !== undefined) {
       this.fromObject(obj);
     }
+  }
+
+  setSettings(s: any) {
+    const getValue = (val, scale, _default) => {
+      if (val !== undefined) {
+        return val / scale;
+      } else {
+        return _default;
+      }
+    };
+    this.ez_on = s.ezOn || false;
+    this.control_mode = s.controlMode || 'MX2+';
+    this.max_speed = getValue(s.maxSpeed, 100.0, 0.7);
+    this.acceleration = getValue(s.acceleration, 100.0, 0.3);
+    this.tap_sensitivity = getValue(s.tap_sensitivity, 100.0, 1.0);
   }
 
   fromObject(obj: any) {
