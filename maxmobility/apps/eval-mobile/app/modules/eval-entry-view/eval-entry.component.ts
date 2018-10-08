@@ -52,8 +52,15 @@ export class EvalEntryComponent implements OnInit {
             this.hasPushingPain = this.evaluation.pushing_pain ? true : false;
             this.impactsIndependence = this.evaluation.impact_on_independence ? true : false;
             // map the years string value to the dropdown UI Index value using indexOf
-            (this.yearDropdown.nativeElement as DropDown).selectedIndex = this.years.indexOf(this.evaluation.years);
-            (this.chairDropdown.nativeElement as DropDown).selectedIndex = this.chair.indexOf(this.evaluation.chair);
+            let yearIndex = this.years.indexOf(this.evaluation.years);
+            if (yearIndex !== -1) {
+              (this.yearDropdown.nativeElement as DropDown).selectedIndex = yearIndex;
+            }
+            // map the chair string value to the dropdown UI Index value using indexOf
+            let chairIndex = this.chair.indexOf(this.evaluation.chair);
+            if (chairIndex !== -1) {
+              (this.chairDropdown.nativeElement as DropDown).selectedIndex = chairIndex;
+            }
           } else {
             this._evaluationService.evaluation = new Evaluation();
           }
