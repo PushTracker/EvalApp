@@ -314,12 +314,22 @@ export class TrialComponent implements OnInit {
           pushTracker.off(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
           this._progressService.hide();
           this._hideview(<View>this.stopWithView.nativeElement);
-          let ft = (this.trial.distance * 5280.0) / 1609.0;
-          this.distanceDisplay = `${ft.toFixed(2)} ft`;
+          let meters = this.trial.distance;
+          let ft = (meters * 5280.0) / 1609.0;
+          if (this.settings.units == PushTracker.Settings.Units.English) {
+            this.distanceDisplay = `${ft.toFixed(2)} ft`;
+          } else {
+            this.distanceDisplay = `${meters.toFixed(2)} m`;
+          }
           this.pushWithDisplay = `${this.trial.with_pushes}`;
           this.coastWithDisplay = `${this.trial.with_coast.toFixed(2)} s`;
-          let speedWith = this.trial.distance / 1609.0 / (this.trial.with_elapsed / 60.0);
-          this.speedWithDisplay = `${speedWith.toFixed(2)} mph`;
+          let mph = meters / 1609.0 / (this.trial.with_elapsed / 60.0);
+          let kph = meters / 1000.0 / (this.trial.with_elapsed / 60.0);
+          if (this.settings.units == PushTracker.Settings.Units.English) {
+            this.speedWithDisplay = `${mph.toFixed(2)} mph`;
+          } else {
+            this.speedWithDisplay = `${kph.toFixed(2)} kph`;
+          }
           this.timeWithDisplay = Trial.timeToString(this.trial.with_elapsed * 60);
         });
       };
@@ -500,8 +510,13 @@ export class TrialComponent implements OnInit {
           this._hideview(<View>this.stopWithoutView.nativeElement);
           this.pushWithoutDisplay = `${this.trial.without_pushes}`;
           this.coastWithoutDisplay = `${this.trial.without_coast.toFixed(2)} s`;
-          let speedWithout = this.trial.distance / 1609.0 / (this.trial.without_elapsed / 60.0);
-          this.speedWithoutDisplay = `${speedWithout.toFixed(2)} mph`;
+          let mph = this.trial.distance / 1609.0 / (this.trial.without_elapsed / 60.0);
+          let kph = this.trial.distance / 1000.0 / (this.trial.without_elapsed / 60.0);
+          if (this.settings.units == PushTracker.Settings.Units.English) {
+            this.speedWithoutDisplay = `${mph.toFixed(2)} mph`;
+          } else {
+            this.speedWithoutDisplay = `${kph.toFixed(2)} mph`;
+          }
           this.timeWithoutDisplay = Trial.timeToString(this.trial.without_elapsed * 60);
         });
       };
