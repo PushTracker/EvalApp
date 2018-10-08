@@ -24,7 +24,7 @@ export class EvalEntryComponent implements OnInit {
   isAndroid = false;
 
   years = ['1', '2', '3', '4', '5+', '10+', '20+', '30+'];
-  chair = ['TiLite', 'Quickie', 'Other'];
+  chair = ['TiLite', 'Sunrise / Quickie', 'Invacare', 'Colours', 'Motion Composites', 'Top End', 'Karman', 'Other'];
 
   constructor(
     private routerExtensions: RouterExtensions,
