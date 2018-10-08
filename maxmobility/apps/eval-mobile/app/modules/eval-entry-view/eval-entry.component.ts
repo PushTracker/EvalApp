@@ -16,6 +16,8 @@ import { DropDown } from 'nativescript-drop-down';
 export class EvalEntryComponent implements OnInit {
   @ViewChild('yearDropdown')
   yearDropdown: ElementRef;
+  @ViewChild('chairDropdown')
+  chairDropdown: ElementRef;
   hasPushingPain = false;
   hasPushingFatigue = false;
   impactsIndependence = false;
@@ -36,9 +38,9 @@ export class EvalEntryComponent implements OnInit {
       setTimeout(() => {
         console.log('the evaluation is not complete');
         confirm({
-          message: 'You have an evaluation that has not been completed. Would you like to continue working on it?',
-          okButtonText: 'Yes',
-          cancelButtonText: 'No'
+          message: this._translateService.instant('evals.incomplete-dialog.message'),
+          okButtonText: this._translateService.instant('dialogs.ok'),
+          cancelButtonText: this._translateService.instant('dialogs.no')
         }).then(result => {
           console.log('confirm result', result);
           if (result === true) {
@@ -51,6 +53,7 @@ export class EvalEntryComponent implements OnInit {
             this.impactsIndependence = this.evaluation.impact_on_independence ? true : false;
             // map the years string value to the dropdown UI Index value using indexOf
             (this.yearDropdown.nativeElement as DropDown).selectedIndex = this.years.indexOf(this.evaluation.years);
+            (this.chairDropdown.nativeElement as DropDown).selectedIndex = this.chair.indexOf(this.evaluation.chair);
           } else {
             this._evaluationService.evaluation = new Evaluation();
           }

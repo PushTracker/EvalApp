@@ -86,7 +86,11 @@
     "confirm-lmn-email-title": "Email LMN",
     "confirm-lmn-email-message": "Do you want to email this evaluation for LMN?",
     "search-btn": "Search",
-    "reset-btn": "Reset"
+      "reset-btn": "Reset",
+	  "incomplete-dialog": {
+		  "title": "Resume Evaluation?",
+		  "message": "You have an evaluation that has not been completed. Would you like to continue working on it?"
+	  }
   },
   "eval-entry": {
     "title": "Perform an Evaluation",
@@ -98,7 +102,9 @@
     "independence-question": "Does it impact your independence?",
     "independence-label": "Impact on Independence:",
     "years-question": "How many years have you been in a manual chair?",
-    "years-label": "Years"
+      "years-label": "Years",
+    "chair-question": "What is your Manual Wheelchair?",
+      "chair-label": "Chair Make"
   },
   "training": [
     {
