@@ -49,7 +49,11 @@ export class LocationService {
       // TODO: might also add '&types=postcode' to the query to only get postcode
       httpModule.getJSON(query).then(
         r => {
-          const location = (r as any).features.filter(f => f.place_type.indexOf('postcode') > -1)[0].place_name;
+          console.log('mapbox result', r);
+
+          // BRAD - using POI to get street address
+          // postcode on the place_type filter only returns city, state, zip
+          const location = (r as any).features.filter(f => f.place_type.indexOf('poi') > -1)[0].place_name;
           resolve(location);
         },
         e => {
