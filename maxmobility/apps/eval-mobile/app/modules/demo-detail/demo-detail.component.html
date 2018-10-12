@@ -1,89 +1,70 @@
 <ActionBar class="action-bar" flat="true" [title]="title">
   <NavigationButton android:visibility="collapse"></NavigationButton>
 
-  <ActionItem (tap)="onSave()"
-              ios.systemIcon="3" ios.position="right"
-              [ios:text]="'general.save' | translate" color="white">
+  <ActionItem (tap)="onSave()" ios.systemIcon="3" ios.position="right" [ios:text]="'general.save' | translate" color="white">
     <Button [text]="'general.save' | translate" class="button"></Button>
   </ActionItem>
 </ActionBar>
 
 <Gradient tkMainContent direction="to bottom" colors="#004F7E, #0070b3">
-  <GridLayout padding="0" margin="0"  rows="auto, *" cols="auto">
-    <StackLayout backgroundImage="~/assets/images/background_1.jpg" row="0"  height="30%" width="100%" orientation="horizontal" horizontalAlignment="center">
+  <GridLayout padding="0" margin="0" rows="auto, *" cols="auto">
+    <StackLayout backgroundImage="~/assets/images/background_1.jpg" row="0" height="30%" width="100%" orientation="horizontal"
+      horizontalAlignment="center">
       <AbsoluteLayout>
-        <Image #sdImage
-               *ngIf="demo.sd_image"
-               class="demo-image"
-               [src]="demo.sd_image"
-               stretch="aspectFit" 
-               (tap)="onUpdateSDImageTap()"></Image>
-        <Image *ngIf="!demo.sd_image"
-               class="demo-image"
-               src="~/assets/images/SD-TOP-1.png"
-               stretch="aspectFit" 
-               (tap)="onUpdateSDImageTap()"></Image>
-        <Label top="15" left="5" (tap)="onUpdateSDImageTap()"
-               text="&#xf100;" class="mdi icon-scan" ></Label>
+        <Image #sdImage *ngIf="demo.sd_image" class="demo-image" [src]="demo.sd_image" stretch="aspectFit" (tap)="onUpdateSDImageTap()"></Image>
+        <Image *ngIf="!demo.sd_image" class="demo-image" src="~/assets/images/SD-TOP-1.png" stretch="aspectFit" (tap)="onUpdateSDImageTap()"></Image>
+        <Label top="15" left="5" (tap)="onUpdateSDImageTap()" text="&#xf100;" class="mdi  demo-btn orange-text"></Label>
       </AbsoluteLayout>
       <AbsoluteLayout>
-      <Image  #ptImage 
-              *ngIf="demo.pt_image"
-              class="demo-image"
-              [src]="demo.pt_image"
-              stretch="aspectFit" 
-              (tap)="onUpdatePTImageTap()"></Image>
-      <Image *ngIf="!demo.pt_image"
-              class="demo-image"
-              src="~/assets/images/pushTrackerFull.png"
-              stretch="aspectFit" 
-              (tap)="onUpdatePTImageTap()"></Image>
-        <Label top="15" left="5" (tap)="onUpdatePTImageTap()"
-               text="&#xf100;" class="mdi icon-scan" ></Label>
+        <Image #ptImage *ngIf="demo.pt_image" class="demo-image" [src]="demo.pt_image" stretch="aspectFit" (tap)="onUpdatePTImageTap()"></Image>
+        <Image *ngIf="!demo.pt_image" class="demo-image" src="~/assets/images/pushTrackerFull.png" stretch="aspectFit"
+          (tap)="onUpdatePTImageTap()"></Image>
+        <Label top="15" left="5" (tap)="onUpdatePTImageTap()" text="&#xf100;" class="mdi demo-btn orange-text"></Label>
       </AbsoluteLayout>
     </StackLayout>
 
-	<ScrollView  row="1" class="" height="70%">
-      <StackLayout orientation="vertical" width ="100%">
+    <ScrollView row="1" class="" height="70%">
+      <StackLayout orientation="vertical" width="100%">
 
-
+        // SmartDrive Serial
         <DockLayout stretchLastChild="true" margin="15, 10, 5, 0">
-          <Label dock="left"
-                 text="&#xf072;" class="mdi icon" ></Label>
-          <Label dock="left" (tap)="onScan('smartdrive')"
-                 text="&#xf100;" class="mdi icon-scan" ></Label>
-          <Label dock="left" (tap)="onEditSD()"
-                 text="&#xf3ed;" class="mdi icon-scan"></Label>
+          <Label dock="left" text="&#xf072;" class="mdi demo-btn"></Label>
+          <Button dock="left" (tap)="onScan('smartdrive')" text="&#xf100;" class="mdi demo-btn orange-text"></Button>
+          <Button dock="left" (tap)="onEditSD()" text="&#xf3ed;" class="mdi demo-btn orange-text"></Button>
           <Label [text]="sd_serial_label" class="info" dock="left"></Label>
         </DockLayout>
 
-        <StackLayout class="hr-light m-10" backgroundColor="#FFF" width="100%"></StackLayout>
+        <Label class="hr-light m-10" backgroundColor="#FFF" width="100%"></Label>
 
+        // PT Serial
+        <!-- <StackLayout orientation="horizontal" margin="5, 10, 5, 0">
+          <Label text="&#xf072;" class="mdi demo-btn"></Label>
+          <Button (tap)="onScan('pushtracker')" text="&#xf100;" class="mdi demo-btn orange-text"></Button>
+          <Button (tap)="onEditPT()" text="&#xf3ed;" class="mdi demo-btn orange-text"></Button>
+          <Label [text]="pt_serial_label" class="info"></Label>
+        </StackLayout> -->
         <DockLayout stretchLastChild="true" margin="5, 10, 5, 0">
-          <Label dock="left"
-                 text="&#xf072;" class="mdi icon" ></Label>
-          <Label dock="left" (tap)="onScan('pushtracker')"
-                 text="&#xf100;" class="mdi icon-scan" ></Label>
-          <Label dock="left" (tap)="onEditPT()"
-                 text="&#xf3ed;" class="mdi icon-scan" ></Label>
+          <Label dock="left" text="&#xf072;" class="mdi demo-btn"></Label>
+          <Button dock="left" (tap)="onScan('pushtracker')" text="&#xf100;" class="mdi demo-btn orange-text"></Button>
+          <Button dock="left" (tap)="onEditPT()" text="&#xf3ed;" class="mdi demo-btn orange-text"></Button>
           <Label [text]="pt_serial_label" class="info" dock="left"></Label>
         </DockLayout>
 
-        <StackLayout class="hr-light m-10" backgroundColor="#FFF" width="100%"></StackLayout>
+        <Label class="hr-light m-10" backgroundColor="#FFF" width="100%"></Label>
 
+        // Location
         <DockLayout stretchLastChild="true" margin="5, 10, 5, 0">
-          <Label text="&#xf5f5;" class="mdi icon"></Label>
-          <Label [text]="demo.location_string" class="info"></Label>
+          <Button text="&#xf1a4;" row="1" col="1" class="mdi demo-btn orange-text" (tap)="onUpdateLocationButtonTap(demo)"></Button>
+          <Label [text]="demo.location_string" class="info" textWrap="true"></Label>
         </DockLayout>
 
-        <StackLayout class="hr-light m-10" backgroundColor="#FFF" width="100%"></StackLayout>
+        <Label class="hr-light m-10" backgroundColor="#FFF" width="100%"></Label>
 
+        // SD MCU Version
         <DockLayout (onTap)="onVersionTap()" stretchLastChild="true" margin="5, 10, 10, 0">
-          <Label text="&#xf628;" class="mdi icon"></Label>
-          <Label dock="left" (tap)="onVersionTap()"
-                 text="&#xf0af;" class="mdi icon-scan" ></Label>
-          <Label class="mdi icon"
-                 [text]="demo.version_badge(currentVersion, 'mcu')"></Label>
+          <Label text="&#xf628;" class="mdi demo-btn"></Label>
+          <Button dock="left" (tap)="onVersionTap()" text="&#xf0af;" class="mdi demo-btn orange-text"></Button>
+          <Label class="mdi demo-btn" [text]="demo.version_badge(currentVersion, 'mcu')"></Label>
           <Label class="info" textWrap="true">
             <FormattedString>
               <Span [text]="demo.mcu_version_string"></Span>
@@ -92,14 +73,13 @@
           </Label>
         </DockLayout>
 
-        <StackLayout class="hr-light m-10" backgroundColor="#FFF" width="100%"></StackLayout>
+        <Label class="hr-light m-10" backgroundColor="#FFF" width="100%"></Label>
 
+        // SD BLE Version
         <DockLayout (onTap)="onVersionTap()" stretchLastChild="true" margin="5, 10, 10, 0">
-          <Label text="&#xf628;" class="mdi icon"></Label>
-          <Label dock="left" (tap)="onVersionTap()"
-                 text="&#xf0af;" class="mdi icon-scan" ></Label>
-          <Label class="mdi icon"
-                 [text]="demo.version_badge(currentVersion, 'ble')"></Label>
+          <Label text="&#xf628;" class="mdi demo-btn"></Label>
+          <Button dock="left" (tap)="onVersionTap()" text="&#xf0af;" class="mdi  demo-btn orange-text"></Button>
+          <Label class="mdi demo-btn" [text]="demo.version_badge(currentVersion, 'ble')"></Label>
           <Label class="info" textWrap="true">
             <FormattedString>
               <Span [text]="demo.ble_version_string"></Span>
@@ -108,14 +88,13 @@
           </Label>
         </DockLayout>
 
-        <StackLayout class="hr-light m-10" backgroundColor="#FFF" width="100%"></StackLayout>
+        <Label class="hr-light m-10" backgroundColor="#FFF" width="100%"></Label>
 
+        // PT Version
         <DockLayout (onTap)="onVersionTap()" stretchLastChild="true" margin="5, 10, 10, 0">
-          <Label text="&#xf628;" class="mdi icon"></Label>
-          <Label dock="left" (tap)="onVersionTap()"
-                 text="&#xf0af;" class="mdi icon-scan" ></Label>
-          <Label class="mdi icon"
-                 [text]="demo.version_badge(currentVersion, 'pt')"></Label>
+          <Label text="&#xf628;" class="mdi demo-btn"></Label>
+          <Button dock="left" (tap)="onVersionTap()" text="&#xf0af;" class="mdi demo-btn orange-text"></Button>
+          <Label class="mdi demo-btn" [text]="demo.version_badge(currentVersion, 'pt')"></Label>
           <Label class="info" textWrap="true">
             <FormattedString>
               <Span [text]="demo.pt_version_string"></Span>
@@ -124,12 +103,10 @@
           </Label>
         </DockLayout>
 
-        <StackLayout class="hr-light m-10" backgroundColor="#FFF" width="100%"></StackLayout>
+        <Label class="hr-light m-10" backgroundColor="#FFF" width="100%"></Label>
 
-      </StackLayout>  
-	</ScrollView>
+      </StackLayout>
+    </ScrollView>
 
   </GridLayout>
 </Gradient>
-
-

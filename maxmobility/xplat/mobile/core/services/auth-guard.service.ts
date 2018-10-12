@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Route, CanActivate, CanLoad } from '@angular/router';
+import { CanActivate, CanLoad, Route } from '@angular/router';
+import { CLog } from '@maxmobility/core';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { UserService } from '../services/user.service';
-import { CLog, LoggingService } from '@maxmobility/core';
 
 @Injectable()
 export class AuthGuardService implements CanActivate, CanLoad {
@@ -15,7 +15,7 @@ export class AuthGuardService implements CanActivate, CanLoad {
       if (user) {
         resolve(true);
       } else {
-        CLog(`${String.fromCodePoint(0x1f44b)} User not authenticated, cannot pass authGuard`);
+        CLog(`✋ 🛑 User not authenticated, cannot pass authGuard`);
         this.router.navigate(['/login'], {
           clearHistory: true
         });

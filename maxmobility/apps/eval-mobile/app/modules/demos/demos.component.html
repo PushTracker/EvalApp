@@ -17,7 +17,7 @@
         <GridLayout col="1" colSpan="2" rows="*, *, *" columns="auto, *, auto">
           // SD Serial Number & Model
           <Label text="&#xf071;" row="0" col="0" class="mdi icon"></Label>
-          <Label [text]="(item.smartdrive_serial_number || '# ??')" row="0" col="1" colSpan="2" class="info"></Label>
+          <Label [text]="(item.smartdrive_serial_number || '# ??')" row="0" col="1" colSpan="2" [class]="item.owner_id === currentUserId ? 'info demo-owner' : 'info'"></Label>
           <Label [text]="item.model" row="0" col="2" class="info"></Label>
           // SD Firmware versions
           <Label text="&#xf628;" row="1" col="0" class="mdi icon"></Label>
