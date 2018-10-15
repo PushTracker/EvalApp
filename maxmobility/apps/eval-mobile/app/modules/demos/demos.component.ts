@@ -40,7 +40,7 @@ export class DemosComponent implements OnInit {
 
   ngOnInit() {
     console.log('Demos.Component OnInit');
-    new Toasty(this._translateService.instant('owner-color-explanation')).show();
+    new Toasty(this._translateService.instant('demos.owner-color-explanation'), 'long').show();
   }
 
   isIOS(): boolean {

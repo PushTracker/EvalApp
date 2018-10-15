@@ -270,7 +270,7 @@
     "request-demo-action": "Request Demo from Rep.",
     "demo-to-clinician-action": "Handing Demo to Clinician",
     "retrieve-from-clinician-action": "Retrieve Demo from Clinician",
-    "owner-color-explanation": "Items with an orange serial number are in your possession. Items without the orange serial number, should be in a clinician's possession."
+    "owner-color-explanation": "Items with an orange serial number are in your possession. Items without the orange serial number should be in a clinician's possession."
   },
   "demo-detail": {
     "scan-sd": "SD: Press scan or edit button",
