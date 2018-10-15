@@ -12,52 +12,52 @@
   },
   "buttons": {
     "next": "Next",
-      "back": "Back",
-	  "more-info": "More Info"
+    "back": "Back",
+    "more-info": "More Info"
   },
-	"pushtracker": {
-		"settings": {
-			"label": "Settings",
-			"save-button": "Save to PushTracker",
-			"saving": "Saving PushTracker Settings",
-			"save-dialogs": {
-				"failed": {
-					"title": "Failed Saving Settings",
-					"message": "We were unable to save the PushTracker settings to your PushTracker."
-				}
-			},
-			"copy-dialog": {
-				"title": "Copy From PushTracker?",
-				"message": "PushTracker's settings differ from the app's settings, do you want to overwrite the app's settings with the PushTracker's settings?"
-			},
-			"units": {
-				"label": "Units",
-				"english": "English",
-				"metric": "Metric"
-			},
-			"control-mode": {
-				"label": "Control Mode"
-			},
-			"ez-on": "EZ-On",
-			"acceleration": "Acceleration",
-			"max-speed": "Max Speed",
-			"tap-sensitivity": "Tap Sensitivity"
-		},
-		"push-settings": {
-			"label": "Push Settings",
-			"out-of-date-dialog": {
-				"title": "PushTracker out of Date",
-				"message": "PushTracker needs to be at least version 1.6 to receive PushSettings. PushSettings will be ignored."
-			},
-			"copy-dialog": {
-				"title": "Copy From PushTracker?",
-				"message": "PushTracker's push settings differ from the app's push settings, do you want to overwrite the app's push settings with the PushTracker's push settings?"
-			},
-			"threshold": "Threshold",
-			"time-window": "Time Window",
-			"clear-counter": "Clear Counter"
-		}
-	},
+  "pushtracker": {
+    "settings": {
+      "label": "Settings",
+      "save-button": "Save to PushTracker",
+      "saving": "Saving PushTracker Settings",
+      "save-dialogs": {
+        "failed": {
+          "title": "Failed Saving Settings",
+          "message": "We were unable to save the PushTracker settings to your PushTracker."
+        }
+      },
+      "copy-dialog": {
+        "title": "Copy From PushTracker?",
+        "message": "PushTracker's settings differ from the app's settings, do you want to overwrite the app's settings with the PushTracker's settings?"
+      },
+      "units": {
+        "label": "Units",
+        "english": "English",
+        "metric": "Metric"
+      },
+      "control-mode": {
+        "label": "Control Mode"
+      },
+      "ez-on": "EZ-On",
+      "acceleration": "Acceleration",
+      "max-speed": "Max Speed",
+      "tap-sensitivity": "Tap Sensitivity"
+    },
+    "push-settings": {
+      "label": "Push Settings",
+      "out-of-date-dialog": {
+        "title": "PushTracker out of Date",
+        "message": "PushTracker needs to be at least version 1.6 to receive PushSettings. PushSettings will be ignored."
+      },
+      "copy-dialog": {
+        "title": "Copy From PushTracker?",
+        "message": "PushTracker's push settings differ from the app's push settings, do you want to overwrite the app's push settings with the PushTracker's push settings?"
+      },
+      "threshold": "Threshold",
+      "time-window": "Time Window",
+      "clear-counter": "Clear Counter"
+    }
+  },
   "menu": {
     "home": "SmartDrive",
     "connectivity": "Connectivity",
@@ -95,11 +95,11 @@
     "confirm-lmn-email-title": "Email LMN",
     "confirm-lmn-email-message": "Do you want to email this evaluation for LMN?",
     "search-btn": "Search",
-      "reset-btn": "Reset",
-	  "incomplete-dialog": {
-		  "title": "Resume Evaluation?",
-		  "message": "You have an evaluation that has not been completed. Would you like to continue working on it?"
-	  }
+    "reset-btn": "Reset",
+    "incomplete-dialog": {
+      "title": "Resume Evaluation?",
+      "message": "You have an evaluation that has not been completed. Would you like to continue working on it?"
+    }
   },
   "eval-entry": {
     "title": "Perform an Evaluation",
@@ -111,9 +111,9 @@
     "independence-question": "Does it impact your independence?",
     "independence-label": "Impact on Independence:",
     "years-question": "How many years have you been in a manual chair?",
-      "years-label": "Years",
+    "years-label": "Years",
     "chair-question": "What is your Manual Wheelchair?",
-      "chair-label": "Chair Make"
+    "chair-label": "Chair Make"
   },
   "training": [
     {
@@ -606,7 +606,8 @@
         "title": "Bluetooth Unavailable",
         "message": "Bluetooth service unavailable - re-initializing!"
       }
-    }
+    },
+    "enable-bluetooth": "Please enable bluetooth on your device to perform OTAs."
   },
   "firmware": {
     "not-found": ["We were unable to find the description for the latest firmware!"],
