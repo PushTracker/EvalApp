@@ -15,55 +15,55 @@
     "back": "Back",
     "more-info": "More Info"
   },
-  "pushtracker": {
-    "settings": {
-      "label": "Settings",
-      "save-button": "Save to PushTracker",
-      "saving": "Saving PushTracker Settings",
-      "save-dialogs": {
-        "failed": {
-          "title": "Failed Saving Settings",
-          "message": "We were unable to save the PushTracker settings to your PushTracker."
-        }
-      },
-      "copy-dialog": {
-        "title": "Copy From PushTracker?",
-        "message": "PushTracker's settings differ from the app's settings, do you want to overwrite the app's settings with the PushTracker's settings?"
-      },
-      "units": {
-        "label": "Units",
-        "english": "English",
-        "metric": "Metric"
-      },
-      "control-mode": {
-        "label": "Control Mode"
-      },
-      "ez-on": "EZ-On",
-      "acceleration": "Acceleration",
-      "max-speed": "Max Speed",
-      "tap-sensitivity": "Tap Sensitivity"
-    },
-    "push-settings": {
-      "label": "Push Settings",
-      "out-of-date-dialog": {
-        "title": "PushTracker out of Date",
-        "message": "PushTracker needs to be at least version 1.6 to receive PushSettings. PushSettings will be ignored."
-      },
-      "copy-dialog": {
-        "title": "Copy From PushTracker?",
-        "message": "PushTracker's push settings differ from the app's push settings, do you want to overwrite the app's push settings with the PushTracker's push settings?"
-      },
-      "threshold": "Threshold",
-      "time-window": "Time Window",
-      "clear-counter": "Clear Counter"
-    }
-  },
+	"pushtracker": {
+		"settings": {
+			"label": "Settings",
+			"save-button": "Save to PushTracker",
+			"saving": "Saving PushTracker Settings",
+			"save-dialogs": {
+				"failed": {
+					"title": "Failed Saving Settings",
+					"message": "We were unable to save the PushTracker settings to your PushTracker."
+				}
+			},
+			"copy-dialog": {
+				"title": "Copy From PushTracker?",
+				"message": "PushTracker's settings differ from the saved settings, do you want to overwrite the saved settings with the PushTracker's settings?"
+			},
+			"units": {
+				"label": "Units",
+				"english": "English",
+				"metric": "Metric"
+			},
+			"control-mode": {
+				"label": "Control Mode"
+			},
+			"ez-on": "EZ-On",
+			"acceleration": "Acceleration",
+			"max-speed": "Max Speed",
+			"tap-sensitivity": "Tap Sensitivity"
+		},
+		"push-settings": {
+			"label": "Push Settings",
+			"out-of-date-dialog": {
+				"title": "PushTracker out of Date",
+				"message": "PushTracker needs to be at least version 1.6 to receive PushSettings. PushSettings will be ignored."
+			},
+			"copy-dialog": {
+				"title": "Copy From PushTracker?",
+				"message": "PushTracker's push settings differ from the saved push settings, do you want to overwrite the saved push settings with the PushTracker's push settings?"
+			},
+			"threshold": "Threshold",
+			"time-window": "Time Window",
+			"clear-counter": "Clear Counter"
+		}
+	},
   "menu": {
     "home": "SmartDrive",
     "connectivity": "Connectivity Overview",
     "con-desc": "Connect with PushTracker and SmartDrive",
-    "pair-pt-app": "Pair a PushTracker to the app",
-    "connect-app": "Connect a Pushtracker to the app",
+    "pair-pt-app": "Pair a PushTracker to Smart Eval App",
+    "connect-app": "Connect a Pushtracker to Smart Eval App",
     "pair-pt-sd": "Pair a PushTracker to a SmartDrive",
     "ota": "Update a PushTracker and SmartDrive",
     "clinical-tools": "Clinical Tools",
@@ -279,7 +279,7 @@
   "pairing": [
     {
       "Image": "~/assets/images/gifs/PT-APP-CONNECT2.gif",
-      "Label": "Pairing Your PushTracker to the App",
+      "Label": "Pairing Your PushTracker to Smart Evaluation App",
       "Bullets": [
         "Press and hold the right flat button on your PushTracker for three seconds to enter the settings menu",
         "Press the right button to scroll to the phone/PT icon.",
@@ -289,11 +289,11 @@
     },
     {
       "Image": "~/assets/images/gifs/PT-APP-CONNECTION1.gif",
-      "Label": "Connecting your PushTracker to the App",
+      "Label": "Connecting your PushTracker to Smart Evaluation App",
       "Bullets": [
-        "With the PushTracker app open, press the right flat button on the PushTracker",
-        "You will see a 'Success' notification in the app.",
-        "Note: if you don't see a 'Success' notification in the app then you may need to re-pair your PushTracker"
+        "With the Smart Evaluation app open, press the right flat button on the PushTracker",
+        "You will see a 'Success' notification in the Smart Evaluation app.",
+        "Note: if you don't see a 'Success' notification in the Smart Evaluation app then you may need to re-pair your PushTracker"
       ]
     },
     {
@@ -488,7 +488,7 @@
     "push_accuracy_disclaimer": "The push tracker uses movement to detect pushes. This can cause a varying degree of accuracy depending on how the user wears and moves with the push tracker. A better metric for evaluation is the relative difference between the pushes with the SmartDrive and without the SmartDrive.",
     "summary": "Summary",
     "please-connect-pt": "Please connect your PushTracker",
-    "connect_pushtracker_more_info": "A pushtracker must be connected to the app in order to communicate. Please see the Connectivity section on the home screen.",
+    "connect_pushtracker_more_info": "A pushtracker must be connected to the Smart Evaluation app in order to communicate. Please see the Connectivity section on the home screen.",
     "starting-trial": "Starting Trial",
     "stopping-trial": "Stopping Trial",
     "errors": {
@@ -522,7 +522,7 @@
     },
     {
       "question": "Why won't my PushTracker connect to my phone?",
-      "answer": "If you are using Android then it might be because the phone has saved the pairing information - which will prevent the PushTracker from establishing a solid connection.  To fix this, simply open your phone's bluetooth settings menu and click 'Forget' on the PushTracker that shows up in that menu.  Once you have done that, restart the app and the PushTracker should be able to reliably connect - without needing to re-pair to the phone!"
+      "answer": "If you are using Android then it might be because the phone has saved the pairing information - which will prevent the PushTracker from establishing a solid connection.  To fix this, simply open your phone's bluetooth settings menu and click 'Forget' on the PushTracker that shows up in that menu.  Once you have done that, restart the Smart Evaluation app and the PushTracker should be able to reliably connect - without needing to re-pair to the phone!"
     },
     {
       "question": "How can I make the SmartDrive safe for children?",
@@ -598,8 +598,8 @@
     "pairing-success": "Successfully paired with PushTracker!",
     "connection-success": "Successfully connected with PushTracker!",
     "searching": "Searching for Devices",
-    "sd_app_conn_instructions": "For the app to be able to see and connect to a SmartDrive, you must have the SmartDrive ON and power assist OFF / 'SD Off'.  If you have trouble, turn the SmartDrive OFF and then ON.",
-    "pt_app_conn_instructions": "To connect the PushTracker to the app, you must have the app open on your phone, then press and release the right button on the PushTracker. This will either connect your PushTracker to your app or take you into the pairing settings of the PushTracker. After pairing, you will need to leave the settings menu and then press the right button to connect to the app. If you have trouble, put the PushTracker to SLEEP and then turn it ON.",
+    "sd_app_conn_instructions": "For the Smart Evaluation app to be able to see and connect to a SmartDrive, you must have the SmartDrive ON and power assist OFF / 'SD Off'.  If you have trouble, turn the SmartDrive OFF and then ON.",
+    "pt_app_conn_instructions": "To connect the PushTracker to the Smart Evaluation app, you must have the app open on your phone, then press and release the right button on the PushTracker. This will either connect your PushTracker to your app or take you into the pairing settings of the PushTracker. After pairing, you will need to leave the settings menu and then press the right button to connect to the app. If you have trouble, put the PushTracker to SLEEP and then turn it ON.",
     "waiting": "Waiting for bluetooth to initialize",
     "errors": {
       "unavailable": {
@@ -616,7 +616,7 @@
       "Now show estimated drive range on the PushTracker in DisplayInfo  battery status screen.",
       "Now show OTA status bar and percentage on PushTracker when performing PushTracker OTA.",
       "When the SD is not paired (e.g. after OTA) and the left button is pressed to turn 'SD On', the PushTracker goes directly into pairing to SD mode.",
-      "When the App is not paired (e.g. after OTA) and the right button is pressed to connect to the app, the PushTracker goes directly into pairing to app mode.",
+      "When the PushTracker is not paired to the phone (e.g. after OTA) and the right button is pressed to connect to the phone, the PushTracker goes directly into pairing to phone mode.",
       "Bugfixes to the pairing process for handling multiple devices."
     ],
     "1.4": [
