@@ -13,6 +13,7 @@ export class User {
   client = '';
   uid = '';
   password = '';
+  profile_picture: any;
   wristband_serial_number = '';
   smartdrive_serial_number = '';
   login_state = '';
