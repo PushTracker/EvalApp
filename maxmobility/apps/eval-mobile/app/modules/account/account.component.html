@@ -10,17 +10,21 @@
 <Gradient direction="to bottom" colors="#004F7E, #0070b3">
   <ScrollView>
     <StackLayout class="account-layout" orientation="vertical">
-      <Image #accountImage class="account-picture" *ngIf="user.data.profile_picture" [src]="user.data.profile_picture" (tap)="onUpdateProfilePictureTap()"></Image>
-      <Label color="#fff" *ngIf="!user.data.profile_picture" (tap)="onUpdateProfilePictureTap()" class="account-icon fa" text="&#xf2be;"></Label>
+      <Image #accountImage class="account-picture" *ngIf="user.data.profile_picture" [src]="user.data.profile_picture"
+        (tap)="onUpdateProfilePictureTap()"></Image>
+      <Label color="#fff" *ngIf="!user.data.profile_picture" (tap)="onUpdateProfilePictureTap()" class="account-icon fa"
+        text="&#xf2be;"></Label>
       <GridLayout rows="auto" columns="auto, *">
         <Label col="0" class="label" [text]="'user.language' | translate"></Label>
-        <DropDown col="1" class="dropdown" [hint]="'user.language' | translate" [selectedIndex]="selectedLanguageIndex" [items]="languages"
-          (selectedIndexChanged)="onLanguageChanged($event)"></DropDown>
+        <DropDown col="1" class="dropdown" [hint]="'user.language' | translate" [selectedIndex]="selectedLanguageIndex"
+          [items]="languages" (selectedIndexChanged)="onLanguageChanged($event)"></DropDown>
       </GridLayout>
       <TextField [(ngModel)]="user.data.first_name" returnKeyType="next" class="account-text-entry" [hint]="'user.first-name' | translate"></TextField>
       <TextField [(ngModel)]="user.data.last_name" returnKeyType="next" class="account-text-entry" [hint]="'user.last-name' | translate"></TextField>
-      <TextField [(ngModel)]="user.data.email" keyboardType="email" returnKeyType="next" class="account-text-entry" [hint]="'user.email' | translate"></TextField>
-      <TextField [(ngModel)]="user.data.phone_number" keyboardType="phone" returnKeyType="done" class="account-text-entry" [hint]="'user.phone' | translate"></TextField>
+      <TextField [(ngModel)]="user.data.email" keyboardType="email" returnKeyType="next" class="account-text-entry"
+        [hint]="'user.email' | translate"></TextField>
+      <TextField [(ngModel)]="user.data.phone_number" keyboardType="phone" returnKeyType="done" class="account-text-entry"
+        [hint]="'user.phone' | translate"></TextField>
       <DockLayout stretchLastChild="true" class="account-dock">
         <Label [text]="'user.consent.product-development' | translate" textWrap="true" class="consent" dock="left"></Label>
         <Switch dock="right" [(ngModel)]="user.data.consent_to_product_development"></Switch>
@@ -38,8 +42,8 @@
               (tap)="onDebugMenuTap()"></Button> -->
 
       // hidden layout for Devon to submit 'Did You Knows' to Kinvey which triggers Push Notifications
-      <StackLayout [visibility]="isAdminAccount ? 'visible' : 'collapsed'" borderColor="orange" borderRadius="4" backgroundColor="#fff"
-        margin="5">
+      <StackLayout [visibility]="isAdminAccount ? 'visible' : 'collapsed'" borderColor="orange" borderRadius="4"
+        backgroundColor="#fff" margin="5">
         <GridLayout rows="auto" columns="auto, *">
           <Label col="0" text="Send to All Smart Eval Users?" textWrap="true"></Label>
           <Switch col="1" [(ngModel)]="didyouknow.all_users" class="switch" horizontalAlignment="right"></Switch>
