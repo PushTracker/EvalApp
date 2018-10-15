@@ -60,7 +60,7 @@
 	},
   "menu": {
     "home": "SmartDrive",
-    "connectivity": "Connectivity",
+    "connectivity": "Connectivity Overview",
     "con-desc": "Connect with PushTracker and SmartDrive",
     "pair-pt-app": "Pair a PushTracker to the app",
     "connect-app": "Connect a Pushtracker to the app",
