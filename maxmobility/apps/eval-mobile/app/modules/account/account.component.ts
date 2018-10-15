@@ -1,6 +1,6 @@
 import { Component, NgZone, OnInit, ViewContainerRef } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
-import { CLog, DidYouKnow } from '@maxmobility/core';
+import { CLog, DidYouKnow, User, UserTypes } from '@maxmobility/core';
 import { FileService, LoggingService, ProgressService, UserService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
@@ -73,7 +73,13 @@ export class AccountComponent implements OnInit {
   ) {
     this._page.enableSwipeBackNavigation = false;
     this.imageCropper = new ImageCropper();
-    this.isAdminAccount = this._userService.user.email === 'devon.doebele@permobil.com';
+    const user = this._userService.user;
+    console.log('current user', user);
+
+    this.user = Kinvey.User.getActiveUser();
+
+    // this.isAdminAccount = this._userService.user.email === 'devon.doebele@permobil.com';
+    this.isAdminAccount = (this.user.data as User).type === UserTypes.Admin;
     console.log('isAdmin', this.isAdminAccount);
   }
 
@@ -84,7 +90,9 @@ export class AccountComponent implements OnInit {
       if (event instanceof NavigationStart) {
         // now save
         console.log('Saving user data when navigating away from account.');
-        this._saveUserToKinvey();
+        this._saveUserToKinvey().then(() => {
+          console.log('SAVED THE DAMN USER SUCCESSFULLY');
+        });
       }
     });
 
@@ -105,7 +113,8 @@ export class AccountComponent implements OnInit {
     try {
       const b64 = source.toBase64String('png');
       LS.setItem(this.profileImageKey, b64);
-      (this.user.data as any).profile_picture = source;
+      const data = this.user.data as User;
+      data.profile_picture = source;
     } catch (err) {
       this._loggingService.logException(err);
     }
@@ -377,14 +386,18 @@ export class AccountComponent implements OnInit {
   }
 
   private _saveUserToKinvey() {
+    console.log('userService.user', this._userService.user);
     if (this._userService.user) {
+      const data = this._userService.user.data as User;
+      console.log('user data', data);
       return this.user
         .update({
-          email: (this.user.data as any).email,
-          language: (this.user.data as any).language,
-          first_name: (this.user.data as any).first_name,
-          last_name: (this.user.data as any).last_name,
-          phone_number: (this.user.data as any).phone_number
+          email: data.email,
+          language: data.language,
+          first_name: data.first_name,
+          last_name: data.last_name,
+          phone_number: data.phone_number,
+          type: data.type
         })
         .catch(err => {
           this._loggingService.logException(err);
