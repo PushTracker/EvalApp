@@ -16,6 +16,7 @@ import * as camera from 'nativescript-camera';
 import * as geolocation from 'nativescript-geolocation';
 import { ImageCropper, Result as ImageCropperResult } from 'nativescript-imagecropper';
 import * as LS from 'nativescript-localstorage';
+import { Mapbox } from 'nativescript-mapbox';
 import { SnackBar } from 'nativescript-snackbar';
 import { switchMap } from 'rxjs/operators';
 import { ImageAsset } from 'tns-core-modules/image-asset/image-asset';
@@ -331,6 +332,7 @@ export class DemoDetailComponent {
       this._loggingService.logException(error);
     }
   }
+
   onSDRowTapped() {
     dialogs
       .confirm({
@@ -343,6 +345,31 @@ export class DemoDetailComponent {
         // result argument is boolean
         console.log('Dialog result: ' + result);
       });
+  }
+
+  /**
+   * When the mapbox map loads, ensure we have geo coords for the unit and then show marker on the map where unit is located.
+   * @param args
+   */
+  async onMapReady(args) {
+    // make sure we have demo unit with lat/lng
+    if (!this.demo.geo) {
+      console.log('no geo for demo', this.demo);
+      return;
+    }
+
+    console.log('map ready', args.map);
+    const map = args.map as Mapbox;
+    const marker = {
+      lat: this.demo.geo[1],
+      lng: this.demo.geo[0],
+      icon: 'res://sd_side_no_logo',
+      subtitle: `Demo: ${this.demo.smartdrive_serial_number.toString()}`,
+      selected: true
+    };
+    map.addMarkers([marker]).catch(err => {
+      this._loggingService.logException(err);
+    });
   }
 
   private _handleSerial(text: string, forDevices?: string[]) {
