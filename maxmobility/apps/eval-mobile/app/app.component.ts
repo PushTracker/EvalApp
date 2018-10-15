@@ -6,6 +6,7 @@ import { registerElement } from 'nativescript-angular/element-registry';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { Carousel, CarouselItem } from 'nativescript-carousel';
 import { Gif } from 'nativescript-gif';
+import { MapboxView } from 'nativescript-mapbox';
 import * as orientation from 'nativescript-orientation';
 import { Sentry } from 'nativescript-sentry';
 import * as application from 'tns-core-modules/application';
@@ -19,6 +20,7 @@ registerElement('CarouselItem', () => <any>CarouselItem);
 registerElement('BarcodeScanner', () => require('nativescript-barcodescanner').BarcodeScannerView);
 registerElement('Gradient', () => require('nativescript-gradient').Gradient);
 registerElement('Gif', () => Gif);
+registerElement('Mapbox', () => MapboxView);
 
 @Component({
   selector: 'ns-app',
