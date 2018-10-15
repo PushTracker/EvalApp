@@ -12,7 +12,7 @@
       horizontalAlignment="center">
       <AbsoluteLayout>
         <Image #sdImage *ngIf="demo.sd_image" class="demo-image" [src]="demo.sd_image" stretch="aspectFit" (tap)="onUpdateSDImageTap()"></Image>
-        <Image *ngIf="!demo.sd_image" class="demo-image" src="~/assets/images/SD-TOP-1.png" stretch="aspectFit" (tap)="onUpdateSDImageTap()"></Image>
+        <Image *ngIf="!demo.sd_image" class="demo-image" src="~/assets/images/sd_side.png" stretch="aspectFit" (tap)="onUpdateSDImageTap()"></Image>
         <Label top="15" left="5" (tap)="onUpdateSDImageTap()" text="&#xf100;" class="mdi  demo-btn orange-text"></Label>
       </AbsoluteLayout>
       <AbsoluteLayout>
@@ -53,10 +53,17 @@
         <Label class="hr-light m-10" backgroundColor="#FFF" width="100%"></Label>
 
         // Location
-        <DockLayout stretchLastChild="true" margin="5, 10, 5, 0">
-          <Button text="&#xf1a4;" row="1" col="1" class="mdi demo-btn orange-text" (tap)="onUpdateLocationButtonTap(demo)"></Button>
-          <Label [text]="demo.location_string" class="info" textWrap="true"></Label>
-        </DockLayout>
+        <GridLayout rows="*, *" columns="auto, *" orientation="horizontal" margin="5, 10, 5, 0">
+          <Button rowSpan="2" col="0" text="&#xf1a4;" class="mdi demo-btn orange-text" (tap)="onUpdateLocationButtonTap(demo)"></Button>
+          <Label row="0" col="1" [text]="demo.location_string" class="info" textWrap="true"></Label>
+          <ContentView row="1" col="1" height="200" width="100%">
+            <Mapbox accessToken="pk.eyJ1IjoiZmluZ2VyNTYzIiwiYSI6ImNqYXZmYTZ0bDVtYmcyd28yZ2ZwandxYWcifQ.ROCLEdkuzALMsVQedcIeAQ"
+              mapStyle="satellite_streets" [latitude]="demo.geo[1]" [longitude]="demo.geo[0]" zoomLevel="14"
+              disableZoom="false" disableRotation="true" disableScroll="true" disableTilt="true" showUserLocation="false"
+              (mapReady)="onMapReady($event)">
+            </Mapbox>
+          </ContentView>
+        </GridLayout>
 
         <Label class="hr-light m-10" backgroundColor="#FFF" width="100%"></Label>
 
