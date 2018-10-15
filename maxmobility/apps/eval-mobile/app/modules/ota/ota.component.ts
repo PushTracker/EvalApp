@@ -188,7 +188,18 @@ export class OTAComponent implements OnInit {
     }
   }
 
-  onRefreshDeviceList(): Promise<any> {
+  async onRefreshDeviceList(): Promise<any> {
+    // if bluetooth is not enabled, return and alert user
+    const isEnabled = await this._bluetoothService.radioEnabled();
+    if (!this._bluetoothService.enabled || !isEnabled) {
+      console.log('bluetooth service is not enabled');
+      alert({
+        message: this._translateService.instant('bluetooth.enable-bluetooth'),
+        okButtonText: this._translateService.instant('dialogs.ok')
+      });
+      return;
+    }
+
     if (!this.updating && !this.searching) {
       this.smartDriveOTAs.splice(0, this.smartDriveOTAs.length);
       this.pushTrackerOTAs.splice(0, this.pushTrackerOTAs.length);

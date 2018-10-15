@@ -93,6 +93,9 @@ export class BluetoothService {
     BluetoothService.PushTrackers.splice(0, BluetoothService.PushTrackers.length);
   }
 
+  /**
+   * Check if bluetooth is enabled.
+   */
   public radioEnabled(): Promise<boolean> {
     return this._bluetooth.isBluetoothEnabled();
   }
