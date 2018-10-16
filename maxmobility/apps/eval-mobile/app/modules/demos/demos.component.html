@@ -1,46 +1,62 @@
 <ActionBar class="action-bar" flat="true" [title]="'menu.demos' | translate">
   <NavigationButton android:visibility="collapse"></NavigationButton>
-  <ActionItem (tap)="addDemo()" ios.systemIcon="4" ios.position="right" ios:text="add" color="#fff">
-    <Button text="Add" class="button"></Button>
+  // Add Demo Button
+  <ActionItem (tap)="addDemo()" ios.systemIcon="4" ios.position="right" text="Add" color="#fff">
+    <!-- <Button text="Add" class="button"></Button> -->
   </ActionItem>
 </ActionBar>
 
 <Gradient tkMainContent margin-top="30" direction="to bottom" colors="#004F7E, #0070b3">
-  <ListView backgroundColor="transparent" class="" [items]="Demos">
-    <ng-template let-item="item" let-index="index">
-      <GridLayout rows="auto, auto" columns="auto, *, *" (tap)="onDemoTap(index)">
-        <!-- Note: we should probably have model type so that we can have the image pulled from a server according to MX2+ vs MX3 vs others. -->
-        <Image *ngIf="!item.sd_image" backgroundColor="white" col="0" height="100" width="100" class="demo-image" src="~/assets/images/PushTracker-SmartDrive-pairing.png"
-          stretch="aspectFit"></Image>
-        <Image *ngIf="item.sd_image" class="demo-image" col="0" width="100" height="100" [src]="item.sd_image" stretch="aspectFit"></Image>
 
-        <GridLayout col="1" colSpan="2" rows="*, *, *" columns="auto, *, auto">
-          // SD Serial Number & Model
-          <Label text="&#xf071;" row="0" col="0" class="mdi icon"></Label>
-          <Label [text]="(item.smartdrive_serial_number || '# ??')" row="0" col="1" colSpan="2" [class]="item.owner_id === currentUserId ? 'info demo-owner' : 'info'"></Label>
-          <Label [text]="item.model" row="0" col="2" class="info"></Label>
-          // SD Firmware versions
-          <Label text="&#xf628;" row="1" col="0" class="mdi icon"></Label>
-          <Label row="1" col="1" class="info" textWrap="true">
-            <FormattedString>
-              <Span [text]="('demos.firmware-string' | translate) + ': '"></Span>
-              <Span [text]="item.version_string"></Span>
-            </FormattedString>
-          </Label>
-          <Label row="1" col="2" class="mdi icon" [text]="item.version_badge(currentVersion)"></Label>
-          // Demo Location
-          <Label text="&#xf5f5;" row="2" col="0" class="mdi icon"></Label>
-          <Label [text]="item.location_string" row="2" col="1" colSpan="2" class="info" textWrap="true"></Label>
+  <GridLayout rows="*, auto">
+    <ListView row="0" backgroundColor="transparent" [items]="Demos">
+      <ng-template let-item="item" let-index="index">
+        <GridLayout rows="auto, auto" columns="auto, *, *" (tap)="onDemoTap(index)">
+          <!-- Note: we should probably have model type so that we can have the image pulled from a server according to MX2+ vs MX3 vs others. -->
+          <Image *ngIf="!item.sd_image" backgroundColor="white" col="0" height="100" width="100" class="demo-image" src="~/assets/images/PushTracker-SmartDrive-pairing.png"
+            stretch="aspectFit"></Image>
+          <Image *ngIf="item.sd_image" class="demo-image" col="0" width="100" height="100" [src]="item.sd_image"
+            stretch="aspectFit"></Image>
+
+          <GridLayout col="1" colSpan="2" rows="*, *, *" columns="auto, *, auto">
+            // SD Serial Number & Model
+            <Label text="&#xf071;" row="0" col="0" class="mdi icon"></Label>
+            <Label [text]="(item.smartdrive_serial_number || '# ??')" row="0" col="1" colSpan="2" [class]="item.owner_id === currentUserId ? 'info demo-owner' : 'info'"></Label>
+            <Label [text]="item.model" row="0" col="2" class="info"></Label>
+            // SD Firmware versions
+            <Label text="&#xf628;" row="1" col="0" class="mdi icon"></Label>
+            <Label row="1" col="1" class="info" textWrap="true">
+              <FormattedString>
+                <Span [text]="('demos.firmware-string' | translate) + ': '"></Span>
+                <Span [text]="item.version_string"></Span>
+              </FormattedString>
+            </Label>
+            <Label row="1" col="2" class="mdi icon" [text]="item.version_badge(currentVersion)"></Label>
+            // Demo Location
+            <Label text="&#xf5f5;" row="2" col="0" class="mdi icon"></Label>
+            <Label [text]="item.location_string" row="2" col="1" colSpan="2" class="info" textWrap="true"></Label>
+          </GridLayout>
+
+          <StackLayout row="1" col="2" orientation="horizontal">
+            // Location update button
+            <Button text="&#xf1a4;" class="demo-action-btn btn-transparent" (tap)="onUpdateLocationButtonTap(item)"></Button>
+            // Rep Demo Actions (hand to clinician or retrieve from clinician)
+            <Button text="&#xf1d8;" class="demo-action-btn btn-transparent" [visibility]="userType == 1 ? 'visible' : 'collapsed'"
+              (tap)="onRepDemoActionButtonTap(item)"></Button>
+          </StackLayout>
+
+
 
         </GridLayout>
 
-        <Button text="&#xf1a4;" row="1" col="1" class="demo-action-btn btn-transparent" (tap)="onUpdateLocationButtonTap(item)"></Button>
-        <!-- <Button text="2" row="3" col="1" (tap)=""></Button> -->
-        <Button text="&#xf1d8;" row="1" col="2" class="demo-action-btn btn-transparent" (tap)="onDemoActionsButtonTap(item)"></Button>
+      </ng-template>
+    </ListView>
 
-      </GridLayout>
+    // Clinician Request Unit Button
+    <!-- <Button text="Request Demo Unit" class="requestDemoBtn" (tap)="requestDemo()" [visibility]="userType == 0 ? 'visible' : 'collapsed'"></Button> -->
+    <Button row="1" text="Request Demo Unit" class="requestDemoBtn" (tap)="requestDemo()"></Button>
 
-    </ng-template>
-  </ListView>
+  </GridLayout>
+
 
 </Gradient>

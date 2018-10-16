@@ -360,6 +360,7 @@ export class DemoDetailComponent {
       console.log('no geo for demo', this.demo);
       const nsMapView = args.object as View;
       nsMapView.visibility = 'collapse';
+      nsMapView.height = 0;
       return;
     }
 

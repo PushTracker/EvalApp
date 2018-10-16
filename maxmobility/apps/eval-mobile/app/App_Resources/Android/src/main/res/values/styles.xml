@@ -10,8 +10,8 @@
         <item name="colorAccent">@color/ns_accent</item>
 
         <item name="android:windowBackground">@drawable/splash_screen</item>
-        
-        <item name="android:windowActionBarOverlay">true</item>  
+
+        <item name="android:windowActionBarOverlay">true</item>
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
@@ -28,6 +28,8 @@
     </style>
 
     <style name="AppTheme" parent="AppThemeBase">
+        <item name="android:actionMenuTextColor">@color/actionbar_text</item>
+        <item name="actionMenuTextColor">@color/actionbar_text</item>
     </style>
 
     <!-- theme for actioon-bar -->
