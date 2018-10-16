@@ -607,7 +607,8 @@
         "message": "Bluetooth service unavailable - re-initializing!"
       }
     },
-    "enable-bluetooth": "Please enable bluetooth on your device to perform OTAs."
+    "service-failure": "Bluetooth Service Failure",
+    "enable-bluetooth": "Smart Evaluation has detected that Bluetooth is not enabled on your device. Please enable bluetooth to perform OTAs and perform evaluations."
   },
   "firmware": {
     "not-found": ["We were unable to find the description for the latest firmware!"],
