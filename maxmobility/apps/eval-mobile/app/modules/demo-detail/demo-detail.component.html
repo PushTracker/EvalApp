@@ -57,10 +57,11 @@
           <Button rowSpan="2" col="0" text="&#xf1a4;" class="mdi demo-btn orange-text" (tap)="onUpdateLocationButtonTap(demo)"></Button>
           <Label row="0" col="1" [text]="demo.location_string" class="info" textWrap="true"></Label>
           <ContentView row="1" col="1" height="200" width="100%">
+            // we set the lat and lng of the map in the `mapReady` event to ensure we have coords and the map won't
+            throw errors
             <Mapbox accessToken="pk.eyJ1IjoiZmluZ2VyNTYzIiwiYSI6ImNqYXZmYTZ0bDVtYmcyd28yZ2ZwandxYWcifQ.ROCLEdkuzALMsVQedcIeAQ"
-              mapStyle="satellite_streets" [latitude]="demo.geo[1]" [longitude]="demo.geo[0]" zoomLevel="14"
-              disableZoom="false" disableRotation="true" disableScroll="true" disableTilt="true" showUserLocation="false"
-              (mapReady)="onMapReady($event)">
+              mapStyle="satellite_streets" zoomLevel="14" disableZoom="false" disableRotation="true" disableScroll="true"
+              disableTilt="true" showUserLocation="false" (mapReady)="onMapReady($event)">
             </Mapbox>
           </ContentView>
         </GridLayout>

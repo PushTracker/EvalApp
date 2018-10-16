@@ -23,6 +23,7 @@ import { ImageAsset } from 'tns-core-modules/image-asset/image-asset';
 import { fromBase64, ImageSource } from 'tns-core-modules/image-source/image-source';
 import { isIOS } from 'tns-core-modules/platform';
 import { setTimeout } from 'tns-core-modules/timer';
+import { View } from 'tns-core-modules/ui/core/view';
 import * as dialogs from 'tns-core-modules/ui/dialogs';
 
 @Component({
@@ -352,24 +353,38 @@ export class DemoDetailComponent {
    * @param args
    */
   async onMapReady(args) {
+    const map = args.map as Mapbox;
+
     // make sure we have demo unit with lat/lng
-    if (!this.demo.geo) {
+    if (!this.demo.geo || !this.demo.geo[0] || !this.demo.geo[1]) {
       console.log('no geo for demo', this.demo);
+      const nsMapView = args.object as View;
+      nsMapView.visibility = 'collapse';
       return;
     }
 
     console.log('map ready', args.map);
-    const map = args.map as Mapbox;
-    const marker = {
+    // set center of the map to the unit's coords
+    map.setCenter({
       lat: this.demo.geo[1],
       lng: this.demo.geo[0],
-      icon: 'res://sd_side_no_logo',
-      subtitle: `Demo: ${this.demo.smartdrive_serial_number.toString()}`,
-      selected: true
-    };
-    map.addMarkers([marker]).catch(err => {
-      this._loggingService.logException(err);
+      animated: false
     });
+
+    // adding the one demo unit marker to the map
+    map
+      .addMarkers([
+        {
+          lat: this.demo.geo[1],
+          lng: this.demo.geo[0],
+          icon: 'res://sd_side_no_logo',
+          subtitle: `Demo: ${this.demo.smartdrive_serial_number.toString()}`,
+          selected: true
+        }
+      ])
+      .catch(err => {
+        this._loggingService.logException(err);
+      });
   }
 
   private _handleSerial(text: string, forDevices?: string[]) {
