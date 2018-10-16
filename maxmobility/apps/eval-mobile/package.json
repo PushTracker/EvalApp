@@ -73,7 +73,7 @@
     "nativescript-iqkeyboardmanager": "file:../../node_modules/nativescript-iqkeyboardmanager",
     "nativescript-loading-indicator": "file:../../node_modules/nativescript-loading-indicator",
     "nativescript-localstorage": "file:../../node_modules/nativescript-localstorage",
-    "nativescript-mapbox": "^4.4.0",
+    "nativescript-mapbox": "4.3.1",
     "nativescript-master-technology": "../../node_modules/nativescript-master-technology",
     "nativescript-modal-datetimepicker": "^1.1.5",
     "nativescript-ngx-fonticon": "file:../../node_modules/nativescript-ngx-fonticon",

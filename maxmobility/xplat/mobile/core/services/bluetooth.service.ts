@@ -2,12 +2,14 @@
 
 import { Injectable } from '@angular/core';
 import { Packet, PushTracker, SmartDrive } from '@maxmobility/core';
+import { TranslateService } from '@ngx-translate/core';
 import { Bluetooth, BondState, Central, ConnectionState } from 'nativescript-bluetooth';
 import { Feedback } from 'nativescript-feedback';
 import { SnackBar } from 'nativescript-snackbar';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
 import { isAndroid, isIOS } from 'tns-core-modules/platform';
-import * as dialogsModule from 'tns-core-modules/ui/dialogs';
+import { alert } from 'tns-core-modules/ui/dialogs';
+import { LoggingService } from './logging.service';
 
 @Injectable()
 export class BluetoothService {
@@ -27,20 +29,44 @@ export class BluetoothService {
   private snackbar = new SnackBar();
   private feedback = new Feedback();
 
-  constructor() {
+  constructor(private _translateService: TranslateService, private _loggingService: LoggingService) {
     // enabling `debug` will output console.logs from the bluetooth source code
     this._bluetooth.debug = false;
-    this.advertise().catch(err => {
-      const msg = `bluetooth.service::advertise error: ${err}`;
-      dialogsModule
-        .alert({
-          title: 'Bluetooth Service failure',
-          message: msg,
-          okButtonText: 'OK'
-        })
-        .then(() => {
-          console.log(msg);
+
+    // check to make sure that bluetooth is enabled, or this will always fail and we don't need to show the error
+    this._bluetooth.isBluetoothEnabled().then(result => {
+      if (result === true) {
+        this.advertise().catch(err => {
+          const msg = `bluetooth.service::advertise error: ${err}`;
+          console.log('error msg', msg);
+          alert({
+            title: this._translateService.instant('bluetooth.service-failure'),
+            okButtonText: this._translateService.instant('dialogs.ok'),
+            message: msg
+          });
         });
+      } else {
+        // only Android can enable bluetooth, iOS requires the user to do on the device
+        if (isAndroid) {
+          // confirm({
+          //   message: 'Bluetooth is not enabled on your device. Would you like to enable bluetooth?',
+          //   okButtonText: this._translateService.instant('dialogs.yes'),
+          //   cancelButtonText: this._translateService.instant('dialogs.no'),
+          //   cancelable: true
+          // }).then(result => {
+          //   if (result === true) {
+          this._bluetooth.enable().catch(error => {
+            this._loggingService.logException(error);
+          });
+          //   }
+          // });
+        } else {
+          alert({
+            message: this._translateService.instant('bluetooth.enable-bluetooth'),
+            okButtonText: this._translateService.instant('dialogs.ok')
+          });
+        }
+      }
     });
 
     this.setEventListeners();
