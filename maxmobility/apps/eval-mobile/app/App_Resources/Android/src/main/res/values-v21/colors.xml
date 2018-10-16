@@ -2,4 +2,5 @@
 <!-- Devon - updated for Permobil pallette -->
 <resources>
 	<color name="ns_accent">#FF671F</color>
+	<color name="actionbar_text">#FFF</color>
 </resources>
