@@ -472,6 +472,7 @@
     "other": "Other",
     "description": "Course or Obstacle Description",
     "recommendation": "Note: trials are recommended to contain ramps, multiple surface types, and should last at least a few minutes or 100 yards / 100 meters.",
+	  "evaluator-range": "Note: the PushTracker does not need to stay connected to the phone throughout this phase - it only needs to connect at the start and end.",
     "accelleration": "Acceleration",
     "max-speed": "Max Speed",
     "phase-1": "Phase 1",

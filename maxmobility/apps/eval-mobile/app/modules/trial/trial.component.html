@@ -5,7 +5,7 @@
 <Gradient tkMainContent direction="to bottom" colors="#004F7E, #0070b3">
 
   <GridLayout>
-    <Carousel ios:indicatorOffset="0,-10" ios:finite="true" ios:bounce="false" indicatorColor="#66ccff"
+    <Carousel #carousel ios:indicatorOffset="0,-10" ios:finite="true" ios:bounce="false" indicatorColor="#66ccff"
 			  indicatorColorUnselected="#cceeff" height="100%">
 
       // Page 1
@@ -149,6 +149,7 @@
 				<Label [text]="'pushtracker.push-settings.clear-counter' | translate" class="setting"></Label>
 				<Switch dock="right" [checked]="pushSettings.clearCounter" (checkedChange)="onPushSettingsChecked('clearCounter', $event)"></Switch>
 			  </DockLayout>
+              <button [text]="'buttons.next' | translate" class="start-button" (tap)="onNextWith($event)"></button>
             </StackLayout>
           </ScrollView>
         </GridLayout>
@@ -170,9 +171,11 @@
               <Label [text]="'trial.phase-1' | translate" class="slideLowerLabel" textWrap="true"></Label>
               <Label [text]="'trial.with-sd' | translate" class="slideLowerLabel" textWrap="true"></Label>
               <Label [text]="'trial.phase-1-desc' | translate" class="slideDescription" textWrap="true"></Label>
+              <Label [text]="'trial.evaluator-range' | translate" textWrap="true" class="trial-recommendation"></Label>
 
                 <button #startWith row="2" [text]="'trial.start' | translate" class="start-button" (tap)="onStartWithTrial($event)"></button>
                 <button #stopWith row="2" [text]="'trial.stop' | translate" class="start-button" (tap)="onStopWithTrial($event)"></button>
+                <button #nextWith row="2" [text]="'buttons.next' | translate" class="start-button" (tap)="onNextWith($event)"></button>
 
                 // Data Fields
                 <GridLayout rows="auto, auto, auto, auto" columns="auto, *, auto, *">
@@ -205,9 +208,11 @@
               <Label [text]="'trial.phase-2' | translate" class="slideLowerLabel" textWrap="true"></Label>
               <Label [text]="'trial.without-sd' | translate" class="slideLowerLabel" textWrap="true"></Label>
               <Label [text]="'trial.phase-2-desc' | translate" class="slideDescription" textWrap="true"></Label>
+              <Label [text]="'trial.evaluator-range' | translate" textWrap="true" class="trial-recommendation"></Label>
 
                 <button #startWithout row="2" [text]="'trial.start' | translate" class="start-button" (tap)="onStartWithoutTrial($event)"></button>
                 <button #stopWithout row="2" [text]="'trial.stop' | translate" class="start-button" (tap)="onStopWithoutTrial($event)"></button>
+                <button #nextWithout row="2" [text]="'buttons.next' | translate" class="start-button" (tap)="onNextWithout($event)"></button>
 
                 // Data Fields
                 <GridLayout rows="auto, auto, auto, auto" columns="auto, *, auto, *">

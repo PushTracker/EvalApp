@@ -19,16 +19,24 @@ import { alert } from 'tns-core-modules/ui/dialogs';
 export class TrialComponent implements OnInit {
   @ViewChild('withPage')
   withPageView: ElementRef;
-  @ViewChild('withoutPage')
-  withoutPageView: ElementRef;
   @ViewChild('startWith')
   startWithView: ElementRef;
   @ViewChild('stopWith')
   stopWithView: ElementRef;
+  @ViewChild('nextWith')
+  nextWithView: ElementRef;
+
+  @ViewChild('withoutPage')
+  withoutPageView: ElementRef;
   @ViewChild('startWithout')
   startWithoutView: ElementRef;
   @ViewChild('stopWithout')
   stopWithoutView: ElementRef;
+  @ViewChild('nextWithout')
+  nextWithoutView: ElementRef;
+
+  @ViewChild('carousel')
+  carousel: ElementRef;
   // for settings
   @ViewChild('controlModeDropDown')
   controlModeDropDown: ElementRef;
@@ -75,7 +83,9 @@ export class TrialComponent implements OnInit {
 
   ngOnInit() {
     this._hideview(this.stopWithView.nativeElement);
+    this._hideview(this.nextWithView.nativeElement);
     this._hideview(this.stopWithoutView.nativeElement);
+    this._hideview(this.nextWithoutView.nativeElement);
     // update drop downs
     (this.unitsDropDown.nativeElement as DropDown).selectedIndex = this.UnitsOptions.indexOf(this.settings.units);
     (this.controlModeDropDown.nativeElement as DropDown).selectedIndex = this.ControlModeOptions.indexOf(
@@ -322,6 +332,7 @@ export class TrialComponent implements OnInit {
             this.speedWithDisplay = `${kph.toFixed(2)} kph`;
           }
           this.timeWithDisplay = Trial.timeToString(this.trial.with_elapsed * 60);
+          this._animateViewIn(<View>this.nextWithView.nativeElement);
         });
       };
 
@@ -398,6 +409,16 @@ export class TrialComponent implements OnInit {
       // now actually send the distance command
       retry(3, sendDistance).catch(trialStopWithFailed);
     }
+  }
+
+  onNextWith(event: any) {
+    this.carousel.nativeElement.selectedPage++;
+    this.carousel.nativeElement.refresh();
+  }
+
+  onNextWithout(event: any) {
+    this.carousel.nativeElement.selectedPage++;
+    this.carousel.nativeElement.refresh();
   }
 
   /**
@@ -509,6 +530,7 @@ export class TrialComponent implements OnInit {
             this.speedWithoutDisplay = `${kph.toFixed(2)} mph`;
           }
           this.timeWithoutDisplay = Trial.timeToString(this.trial.without_elapsed * 60);
+          this._animateViewIn(<View>this.nextWithoutView.nativeElement);
         });
       };
 
