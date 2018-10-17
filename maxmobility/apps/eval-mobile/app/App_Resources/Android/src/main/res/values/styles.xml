@@ -28,8 +28,8 @@
     </style>
 
     <style name="AppTheme" parent="AppThemeBase">
-        <item name="android:actionMenuTextColor">@color/actionbar_text</item>
-        <item name="actionMenuTextColor">@color/actionbar_text</item>
+        <!-- <item name="android:actionMenuTextColor">@color/actionbar_text</item>
+        <item name="actionMenuTextColor">@color/actionbar_text</item> -->
     </style>
 
     <!-- theme for actioon-bar -->
