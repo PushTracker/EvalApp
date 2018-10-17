@@ -122,6 +122,10 @@ export class OTAComponent implements OnInit {
         .catch(error => {
           this._progressService.hide();
           this._loggingService.logException(error);
+          alert({
+            message: this._translateService.instant('ota.check_firmware_error'),
+            okButtonText: this._translateService.instant('dialogs.ok')
+          });
         });
     }
   }
@@ -308,8 +312,10 @@ export class OTAComponent implements OnInit {
     carousel.removeChildren();
 
     const firmwareDescriptionItems = this._translateService.instant('firmware.' + this._firmwareService.currentVersion);
+    console.log('current firmware description items', firmwareDescriptionItems);
+
     firmwareDescriptionItems.forEach((item: string) => {
-      console.log('description', item);
+      // console.log('description', item);
       // create a new label for the carousel item
       const label = new Label();
       label.text = item;

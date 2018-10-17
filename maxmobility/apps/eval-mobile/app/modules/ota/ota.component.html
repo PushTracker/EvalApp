@@ -87,10 +87,7 @@
   <GridLayout height="30%">
     <Carousel #carousel (loaded)="onCarouselLoad($event)" ios:indicatorOffset="0,-10" ios:finite="true" ios:bounce="false"
       showIndicator="true" height="100%" indicatorColor="#66ccff" indicatorColorUnselected="#cceeff" width="100%">
-      <!-- <CarouselItem *ngFor="let desc of otaDescription"> -->
-      <!-- <CarouselItem *ngFor="let desc of otaDescriptionCarouselItems">
-        <Label class="features" textWrap="true" [text]="desc"></Label>
-      </CarouselItem> -->
+      // we create the carousel items in the code
     </Carousel>
   </GridLayout>
 
