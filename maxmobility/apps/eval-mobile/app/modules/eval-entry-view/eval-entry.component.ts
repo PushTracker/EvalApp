@@ -25,8 +25,8 @@ export class EvalEntryComponent implements OnInit {
   isIOS = false;
   isAndroid = false;
 
-  years = ['1', '2', '3', '4', '5+', '10+', '20+', '30+'];
-  chair = ['TiLite', 'Sunrise / Quickie', 'Invacare', 'Colours', 'Motion Composites', 'Top End', 'Karman', 'Other'];
+  years = this._translateService.instant('eval-entry.years-options');
+  chair = this._translateService.instant('eval-entry.chair-options');
 
   constructor(
     private routerExtensions: RouterExtensions,
