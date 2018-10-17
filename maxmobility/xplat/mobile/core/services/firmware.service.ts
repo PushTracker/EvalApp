@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { User } from '@maxmobility/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 import * as LS from 'nativescript-localstorage';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
@@ -212,7 +213,7 @@ export class FirmwareService {
       this.haveFirmwares = false;
       // determine whether or not to download the beta firmware files
       let currentUser = Kinvey.User.getActiveUser();
-      let downloadBetaFirmware = currentUser.data.beta_firmware_tester;
+      let downloadBetaFirmware = (currentUser.data as User).beta_firmware_tester;
 
       const tasks = await Object.keys(this.firmwares).map(async fwKey => {
         const query = new Kinvey.Query();
