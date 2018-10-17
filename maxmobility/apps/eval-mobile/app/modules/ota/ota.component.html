@@ -6,7 +6,7 @@
   <ScrollView height="70%" borderRadius="4" backgroundColor="white" margin="5, 10, 0, 10">
     <Gradient direction="to bottom" colors="rgba(255, 255, 255, 0.95), rgb(255, 255, 255)" margin="5, 10, 0, 10">
 
-      <Button [text]="('ota.check_new_firmware' | translate)" (tap)="checkForNewFirmwareTap()"></Button>
+      <Button [text]="('ota.check_new_firmware' | translate)" class="orange-btn" (tap)="checkForNewFirmwareTap()"></Button>
 
       <Label class="title" [text]="('ota.version' | translate) + ' ' + (currentVersion || '??')" textWrap="true"></Label>
 
@@ -87,9 +87,10 @@
   <GridLayout height="30%">
     <Carousel #carousel (loaded)="onCarouselLoad($event)" ios:indicatorOffset="0,-10" ios:finite="true" ios:bounce="false"
       showIndicator="true" height="100%" indicatorColor="#66ccff" indicatorColorUnselected="#cceeff" width="100%">
-      <CarouselItem *ngFor="let desc of otaDescription">
+      <!-- <CarouselItem *ngFor="let desc of otaDescription"> -->
+      <!-- <CarouselItem *ngFor="let desc of otaDescriptionCarouselItems">
         <Label class="features" textWrap="true" [text]="desc"></Label>
-      </CarouselItem>
+      </CarouselItem> -->
     </Carousel>
   </GridLayout>
 
