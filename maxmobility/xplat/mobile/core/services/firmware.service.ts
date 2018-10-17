@@ -206,66 +206,70 @@ export class FirmwareService {
     console.log(`${fwKey}: ${file._version} : ${file.size}`);
   }
 
-  public async downloadFirmwares(): Promise<any> {
-    try {
-      console.log(`downloadFirmwares start ${performance.now()}`);
+  public async downloadFirmwares() {
+    return new Promise(async (resolve, reject) => {
+      try {
+        console.log(`downloadFirmwares start ${performance.now()}`);
 
-      this.haveFirmwares = false;
-      // determine whether or not to download the beta firmware files
-      let currentUser = Kinvey.User.getActiveUser();
-      let downloadBetaFirmware = (currentUser.data as User).beta_firmware_tester;
+        this.haveFirmwares = false;
+        // determine whether or not to download the beta firmware files
+        const currentUser = Kinvey.User.getActiveUser();
+        const downloadBetaFirmware = (currentUser.data as User).beta_firmware_tester;
 
-      const tasks = await Object.keys(this.firmwares).map(async fwKey => {
-        const query = new Kinvey.Query();
-        let fileName = this.firmwares[fwKey].filename;
-        if (downloadBetaFirmware) {
-          fileName += '.beta';
-        }
-        console.log('Querying fw file:', fileName);
-        query.equalTo('_filename', fileName);
-        const files = await Kinvey.Files.find(query);
-
-        if (files.length > 1) {
-          console.log(JSON.stringify(files, null, 2));
-          throw new Error(`Found more than one OTA for ${fwKey}!`);
-        }
-
-        if (files.length === 1) {
-          const file = files[0];
-          this.updateFirmware(fwKey, file);
-          // download the firmware data and save it to temporary storage
-          const fileData = await this.getData(file._downloadURL, file._filename);
-          // marshal the firmware data
-          await this.unpackFirmwareData(fwKey, fileData.readSync());
-
-          // save the firmware data to persistent storage
-          try {
-            LS.setItem(this.firmwares[fwKey].filename, this.firmwares[fwKey].data);
-          } catch (err) {
-            console.log(`Couldn't save firmware data: ${err}`);
+        const tasks = await Object.keys(this.firmwares).map(async fwKey => {
+          const query = new Kinvey.Query();
+          let fileName = this.firmwares[fwKey].filename;
+          if (downloadBetaFirmware) {
+            fileName += '.beta';
           }
-        } else {
-          throw new Error(`Couldn't find OTA for ${fwKey}!`);
-        }
-      });
+          console.log('Querying fw file:', fileName);
+          query.equalTo('_filename', fileName);
+          const files = await Kinvey.Files.find(query);
 
-      console.log('*** ALL THE DAMN TASKS ***', tasks);
+          if (files.length > 1) {
+            console.log(JSON.stringify(files, null, 2));
+            throw new Error(`Found more than one OTA for ${fwKey}!`);
+          }
 
-      Promise.all(tasks)
-        .then(() => {
-          this.haveFirmwares = true;
-          this.last_check = new Date();
-          this.saveMetadata();
-          console.log(`downloadFirmwares promise.all resolve ${performance.now()}`);
-        })
-        .catch(err => {
-          console.log(`Couldn't get firmware data: ${err}`);
-          console.log(`downloadFirmwares promise.all error ${performance.now()}`);
-          this.haveFirmwares = false;
+          if (files.length === 1) {
+            const file = files[0];
+            this.updateFirmware(fwKey, file);
+            // download the firmware data and save it to temporary storage
+            const fileData = await this.getData(file._downloadURL, file._filename);
+            // marshal the firmware data
+            await this.unpackFirmwareData(fwKey, fileData.readSync());
+
+            // save the firmware data to persistent storage
+            try {
+              LS.setItem(this.firmwares[fwKey].filename, this.firmwares[fwKey].data);
+            } catch (err) {
+              console.log(`Couldn't save firmware data: ${err}`);
+            }
+          } else {
+            throw new Error(`Couldn't find OTA for ${fwKey}!`);
+          }
         });
-    } catch (error) {
-      this._logService.logException(error);
-    }
+
+        console.log('*** ALL THE DAMN TASKS ***', tasks);
+
+        Promise.all(tasks)
+          .then(() => {
+            this.haveFirmwares = true;
+            this.last_check = new Date();
+            this.saveMetadata();
+            console.log(`downloadFirmwares promise.all resolve ${performance.now()}`);
+            resolve();
+          })
+          .catch(err => {
+            console.log(`Couldn't get firmware data: ${err}`);
+            console.log(`downloadFirmwares promise.all error ${performance.now()}`);
+            this.haveFirmwares = false;
+            reject(err);
+          });
+      } catch (error) {
+        this._logService.logException(error);
+      }
+    });
   }
 
   // END FOR LOADING A FW FILE FROM SERVER
