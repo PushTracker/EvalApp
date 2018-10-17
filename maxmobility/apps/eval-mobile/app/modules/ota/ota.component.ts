@@ -83,6 +83,14 @@ export class OTAComponent implements OnInit {
     return otaDesc;
   }
 
+  checkForNewFirmwareTap() {
+    console.log('check for new firmware on Kinvey');
+    const x = this._firmwareService.currentVersion;
+    console.log('current firmware', x);
+
+    this._firmwareService.downloadFirmwares();
+  }
+
   onCarouselLoad(args: EventData): void {
     const carousel = args.object as any;
 
