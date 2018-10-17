@@ -48,7 +48,7 @@ export class AccountComponent implements OnInit {
 
   private imageCropper: ImageCropper;
   private _routeSub: Subscription; // subscription to route observer
-  private profileImageKey = this.fsKeyPrefix + this.user._id + '.' + this.fsKeyProfilePicture;
+  private profileImageKey: string;
 
   constructor(
     private _userService: UserService,
@@ -64,6 +64,7 @@ export class AccountComponent implements OnInit {
 
     this.imageCropper = new ImageCropper();
     this.user = Kinvey.User.getActiveUser();
+    this.profileImageKey = this.fsKeyPrefix + this.user._id + '.' + this.fsKeyProfilePicture;
 
     // configure if they are an admin account
     this.isAdminAccount = (this.user.data as User).type === UserTypes.Admin;

@@ -3,13 +3,15 @@ import { NavigationStart, Router } from '@angular/router';
 import { PushTracker, SmartDrive } from '@maxmobility/core';
 import { BluetoothService, FirmwareService, LoggingService, ProgressService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
+import { Carousel, CarouselItem } from 'nativescript-carousel';
 import { Subscription } from 'rxjs';
+import { Color } from 'tns-core-modules/color';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
+import { isAndroid } from 'tns-core-modules/platform';
 import { EventData } from 'tns-core-modules/ui/core/view';
-import { alert } from 'tns-core-modules/ui/dialogs';
+import { alert, confirm } from 'tns-core-modules/ui/dialogs';
+import { Label } from 'tns-core-modules/ui/label';
 import { Page } from 'tns-core-modules/ui/page';
-const Carousel = require('nativescript-carousel').Carousel;
-const CarouselItem = require('nativescript-carousel').CarouselItem;
 
 @Component({
   selector: 'OTA',
@@ -65,6 +67,14 @@ export class OTAComponent implements OnInit {
     }
   }
 
+  get currentVersion(): string {
+    return this._firmwareService.currentVersion;
+  }
+
+  get ready(): boolean {
+    return this._firmwareService.haveFirmwares;
+  }
+
   get otaDescription(): string[] {
     let otaDesc = [this._translateService.instant('ota.downloading')];
     if (this.ready) {
@@ -83,46 +93,45 @@ export class OTAComponent implements OnInit {
     return otaDesc;
   }
 
-  checkForNewFirmwareTap() {
-    console.log('check for new firmware on Kinvey');
+  async checkForNewFirmwareTap() {
     const x = this._firmwareService.currentVersion;
-    console.log('current firmware', x);
 
-    this._firmwareService.downloadFirmwares();
+    const result = await confirm({
+      message: this._translateService.instant('ota.check_new_firmware_message'),
+      okButtonText: this._translateService.instant('dialogs.yes'),
+      cancelButtonText: this._translateService.instant('dialogs.no'),
+      cancelable: true
+    });
+
+    if (result === true) {
+      // show indicator for download
+      this._progressService.show(this._translateService.instant('ota.downloading'));
+
+      const carousel = this.carousel.nativeElement as Carousel;
+      console.log('carousel', carousel);
+
+      this._firmwareService
+        .downloadFirmwares()
+        .then(() => {
+          console.log('firmwares updated');
+          this._progressService.hide();
+
+          // remove old items and add new from the translation file firmware string array
+          this._loadFirmwareDescriptionItems(carousel);
+        })
+        .catch(error => {
+          this._progressService.hide();
+          this._loggingService.logException(error);
+        });
+    }
   }
 
+  /**
+   * Load the initial carousel items based on the firmware.currentversion string array from translation files
+   */
   onCarouselLoad(args: EventData): void {
-    const carousel = args.object as any;
-
-    // setTimeout(() => {
-    //   console.log('timeout adding slide');
-    //   const x = new Label();
-    //   x.color = new Color('#fff');
-    //   x.text = 'What is going to happen?!?!';
-    //   // create carouselItem
-    //   const item = new CarouselItem();
-    //   item.addChild(x);
-    //   // add carouselItem to the carousel
-    //   carousel.addChild(item);
-
-    //   if (isAndroid) {
-    //     const adapter = carousel.android.getAdapter();
-    //     if (adapter) {
-    //       adapter.notifyDataSetChanged();
-    //       carousel._pageIndicatorView.setCount(this.otaDescription.length);
-    //     }
-    //   }
-
-    //   carousel.refresh();
-    // }, 2000);
-  }
-
-  get currentVersion(): string {
-    return this._firmwareService.currentVersion;
-  }
-
-  get ready(): boolean {
-    return this._firmwareService.haveFirmwares;
+    const carousel = args.object as Carousel;
+    this._loadFirmwareDescriptionItems(carousel);
   }
 
   rssiToColor(_rssi): string {
@@ -198,6 +207,7 @@ export class OTAComponent implements OnInit {
 
   async onRefreshDeviceList(): Promise<any> {
     // if bluetooth is not enabled, return and alert user
+
     const isEnabled = await this._bluetoothService.radioEnabled();
     if (!this._bluetoothService.enabled || !isEnabled) {
       console.log('bluetooth service is not enabled');
@@ -207,7 +217,6 @@ export class OTAComponent implements OnInit {
       });
       return;
     }
-
     if (!this.updating && !this.searching) {
       this.smartDriveOTAs.splice(0, this.smartDriveOTAs.length);
       this.pushTrackerOTAs.splice(0, this.pushTrackerOTAs.length);
@@ -288,5 +297,46 @@ export class OTAComponent implements OnInit {
       this.smartDriveOTAs.map(sd => sd.cancelOTA());
       this.pushTrackerOTAs.map(pt => pt.cancelOTA());
     }
+  }
+
+  /**
+   * Will update the items in the carousel based on the firmware.VERSION string array
+   * @param carousel [Carousel]
+   */
+  private _loadFirmwareDescriptionItems(carousel: Carousel) {
+    // remove all children from the carousel (carousel extends GridLayout)
+    carousel.removeChildren();
+
+    const firmwareDescriptionItems = this._translateService.instant('firmware.' + this._firmwareService.currentVersion);
+    firmwareDescriptionItems.forEach((item: string) => {
+      console.log('description', item);
+      // create a new label for the carousel item
+      const label = new Label();
+      label.text = item;
+      label.color = new Color('#fff');
+      label.margin = 5;
+      label.fontSize = 20;
+      label.verticalAlignment = 'middle';
+      label.padding = 15;
+      label.textWrap = true;
+      label.className = 'features';
+
+      // create new carousel item and add label to it
+      const newCarouselItem = new CarouselItem();
+      newCarouselItem.addChild(label);
+
+      // add the carouselItem to the carousel
+      carousel.addChild(newCarouselItem);
+
+      if (isAndroid) {
+        const adapter = carousel.android.getAdapter() as android.support.v4.view.PagerAdapter;
+        if (adapter) {
+          adapter.notifyDataSetChanged();
+          carousel._pageIndicatorView.setCount(firmwareDescriptionItems.length);
+        }
+      }
+
+      carousel.refresh();
+    });
   }
 }
