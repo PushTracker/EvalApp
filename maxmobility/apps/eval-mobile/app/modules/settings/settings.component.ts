@@ -31,14 +31,14 @@ export class SettingsComponent {
     let bleFW = null;
     let mcuFW = null;
     // load firmware files here!
-    return this.loadFile('/assets/ota/PushTracker.15.ota')
+    return this.loadFile('/assets/ota/PushTracker.16.ota')
       .then(otaData => {
         ptFW = otaData;
-        return this.loadFile('/assets/ota/SmartDriveBluetooth.15.ota');
+        return this.loadFile('/assets/ota/SmartDriveBluetooth.16.ota');
       })
       .then(otaData => {
         bleFW = otaData;
-        return this.loadFile('/assets/ota/MX2+.15.ota');
+        return this.loadFile('/assets/ota/MX2+.16.ota');
       })
       .then(otaData => {
         mcuFW = otaData;
@@ -48,21 +48,21 @@ export class SettingsComponent {
         console.log(`size: ${mcuFW.readSync().length}`);
         console.log(`size: ${bleFW.readSync().length}`);
         const ptMD = {
-          filename: 'PushTracker.ota',
+          filename: 'PushTracker.ota.beta',
           size: ptFW.readSync().length,
-          version: '1.5',
+          version: '1.6',
           public: true
         };
         const mcuMD = {
-          filename: 'SmartDriveMCU.ota',
+          filename: 'SmartDriveMCU.ota.beta',
           size: mcuFW.readSync().length,
-          version: '1.5',
+          version: '1.6',
           public: true
         };
         const bleMD = {
-          filename: 'SmartDriveBLE.ota',
+          filename: 'SmartDriveBLE.ota.beta',
           size: bleFW.readSync().length,
-          version: '1.5',
+          version: '1.6',
           public: true
         };
         const ptPromise = Kinvey.Files.upload(ptFW, ptMD);

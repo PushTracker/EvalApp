@@ -210,10 +210,18 @@ export class FirmwareService {
       console.log(`downloadFirmwares start ${performance.now()}`);
 
       this.haveFirmwares = false;
+      // determine whether or not to download the beta firmware files
+      let currentUser = Kinvey.User.getActiveUser();
+      let downloadBetaFirmware = currentUser.data.beta_firmware_tester;
 
       const tasks = await Object.keys(this.firmwares).map(async fwKey => {
         const query = new Kinvey.Query();
-        query.equalTo('_filename', this.firmwares[fwKey].filename);
+        let fileName = this.firmwares[fwKey].filename;
+        if (downloadBetaFirmware) {
+          fileName += '.beta';
+        }
+        console.log('Querying fw file:', fileName);
+        query.equalTo('_filename', fileName);
         const files = await Kinvey.Files.find(query);
 
         if (files.length > 1) {

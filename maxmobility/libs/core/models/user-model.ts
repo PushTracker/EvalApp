@@ -19,6 +19,8 @@ export class User {
   login_state = '';
   gender = '';
   ability = '';
+  // beta test
+  beta_firmware_tester = false;
   // data protection
   has_agreed_to_user_agreement = false;
   has_read_privacy_policy = false;

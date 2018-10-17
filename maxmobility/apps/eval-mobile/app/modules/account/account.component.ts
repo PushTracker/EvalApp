@@ -32,6 +32,7 @@ export class AccountComponent implements OnInit {
   didyouknow = new DidYouKnow();
 
   isAdminAccount = false;
+  canBetaTest = false;
 
   languages = new ValueList<string>(
     this._translateService.getLangs().map(l => {
@@ -78,9 +79,16 @@ export class AccountComponent implements OnInit {
 
     this.user = Kinvey.User.getActiveUser();
 
-    // this.isAdminAccount = this._userService.user.email === 'devon.doebele@permobil.com';
+    // configure if they are an admin account
     this.isAdminAccount = (this.user.data as User).type === UserTypes.Admin;
     console.log('isAdmin', this.isAdminAccount);
+
+    // configure if they can opt in for beta testing firmware - only
+    // allowed for @permobil.com and @max-mobility.com email
+    // addresses
+    let emailRegEx = /[^@]+@(permobil.com|max\-mobility.com)/i;
+    this.canBetaTest = emailRegEx.test((this.user.data as User).email);
+    console.log('canBetaTest', this.canBetaTest);
   }
 
   ngOnInit() {

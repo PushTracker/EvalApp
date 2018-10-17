@@ -328,6 +328,7 @@
       }
     },
     "consent": {
+		"beta-test": "I opt into firmware beta testing and understand the associated risks.",
       "header": "You can give or withdraw any of your consents at any time during the use of the service by going to the 'Account' page of the application.",
       "research": "I give my consent to the usage of my data for product development as described in the privacy policy",
       "product-development": "I give my consent to the usage of my data for research as described in the privacy policy"
@@ -615,7 +616,14 @@
     "enable-bluetooth": "Smart Evaluation has detected that Bluetooth is not enabled on your device. Please enable bluetooth to perform OTAs and perform evaluations."
   },
   "firmware": {
-    "not-found": ["We were unable to find the description for the latest firmware!"],
+      "not-found": ["We were unable to find the description for the latest firmware!"],
+	  "1.6": [
+		  "Added Push Settings Control.",
+		  "Show App connectivity when connecting to the app.",
+		  "Improved speed filtering for smoother ride.",
+		  "Improved MCU to BLE Communication",
+		  "Only send status to MCU when not sending PT data."
+	  ],
     "1.5": [
       "Updated company logo branding when booting PushTracker from sleep.",
       "Now show estimated drive range on the PushTracker in DisplayInfo  battery status screen.",
