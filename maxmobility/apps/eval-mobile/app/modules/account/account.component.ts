@@ -1,5 +1,5 @@
 import { Component, NgZone, OnInit } from '@angular/core';
-import { NavigationStart, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { CLog, DidYouKnow, User, UserTypes } from '@maxmobility/core';
 import { FileService, LoggingService, UserService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
@@ -10,6 +10,7 @@ import { ValueList } from 'nativescript-drop-down';
 import * as email from 'nativescript-email';
 import { ImageCropper } from 'nativescript-imagecropper';
 import * as LS from 'nativescript-localstorage';
+import { SnackBar } from 'nativescript-snackbar';
 import { Subscription } from 'rxjs';
 import * as http from 'tns-core-modules/http';
 import * as imageSource from 'tns-core-modules/image-source';
@@ -49,6 +50,7 @@ export class AccountComponent implements OnInit {
   private imageCropper: ImageCropper;
   private _routeSub: Subscription; // subscription to route observer
   private profileImageKey: string;
+  private _snackbar = new SnackBar();
 
   constructor(
     private _userService: UserService,
@@ -77,18 +79,6 @@ export class AccountComponent implements OnInit {
   }
 
   ngOnInit() {
-    // save when we navigate away!
-    // see https://github.com/NativeScript/nativescript-angular/issues/1049
-    this._routeSub = this.router.events.subscribe(event => {
-      if (event instanceof NavigationStart) {
-        // now save
-        console.log('Saving user data when navigating away from account.');
-        this._saveUserToKinvey().then(() => {
-          console.log('SAVED THE USER SUCCESSFULLY 💯');
-        });
-      }
-    });
-
     // load profile picture
     this.loadProfilePicture();
 
@@ -205,11 +195,7 @@ export class AccountComponent implements OnInit {
       if (result) {
         this._saveUserToKinvey().then(resp => {
           CLog('update response', JSON.stringify(resp));
-          alert({
-            title: this._translateService.instant('user.success'),
-            message: this._translateService.instant('user.account-update-complete'),
-            okButtonText: this._translateService.instant('dialogs.ok')
-          });
+          this._snackbar.simple(this._translateService.instant('user.account-update-complete'));
         });
       }
     });
