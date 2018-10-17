@@ -493,8 +493,8 @@
     "summary": "Summary",
     "please-connect-pt": "Please connect your PushTracker",
     "connect_pushtracker_more_info": "A pushtracker must be connected to the Smart Evaluation app in order to communicate. Please see the Connectivity section on the home screen.",
-    "starting-trial": "Starting Trial",
-    "stopping-trial": "Stopping Trial",
+    "starting-trial": "Starting Trial - may take up to 10 seconds.",
+    "stopping-trial": "Stopping Trial - may take up to 10 seconds.",
     "errors": {
       "too-many-pts": "Too many PushTrackers connected - please only connect one!",
       "failed-start": {
