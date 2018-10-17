@@ -26,7 +26,7 @@ import { Page } from 'tns-core-modules/ui/page';
 export class AccountComponent implements OnInit {
   fsKeyPrefix = 'AccountComponent.';
   fsKeyProfilePicture = 'ProfilePicture';
-  user: Kinvey.User = this._userService.user;
+  user: Kinvey.User;
 
   didyouknow = new DidYouKnow();
 
@@ -71,7 +71,7 @@ export class AccountComponent implements OnInit {
     // configure if they can opt in for beta testing firmware - only
     // allowed for @permobil.com and @max-mobility.com email
     // addresses
-    let emailRegEx = /[^@]+@(permobil.com|max\-mobility.com)/i;
+    const emailRegEx = /[^@]+@(permobil.com|max\-mobility.com)/i;
     this.canBetaTest = emailRegEx.test((this.user.data as User).email);
   }
 
@@ -83,7 +83,7 @@ export class AccountComponent implements OnInit {
         // now save
         console.log('Saving user data when navigating away from account.');
         this._saveUserToKinvey().then(() => {
-          console.log('SAVED THE DAMN USER SUCCESSFULLY');
+          console.log('SAVED THE USER SUCCESSFULLY 💯');
         });
       }
     });
