@@ -32,7 +32,7 @@ export class DemosComponent implements OnInit {
   private _datastore = Kinvey.DataStore.collection<any>('SmartDrives');
 
   constructor(
-    private routerExtensions: RouterExtensions,
+    private _routerExtensions: RouterExtensions,
     private _demoService: DemoService,
     private _firmwareService: FirmwareService,
     private _logService: LoggingService,
@@ -62,7 +62,7 @@ export class DemosComponent implements OnInit {
   }
 
   onDemoTap(index: any) {
-    this.routerExtensions.navigate(['/demo-detail'], {
+    this._routerExtensions.navigate(['/demo-detail'], {
       queryParams: {
         index
       }
@@ -72,7 +72,7 @@ export class DemosComponent implements OnInit {
   addDemo() {
     // add a new demo
     console.log('add a new demo');
-    this.routerExtensions.navigate(['/demo-detail'], {});
+    this._routerExtensions.navigate(['/demo-detail'], {});
   }
 
   /**

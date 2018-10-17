@@ -20,17 +20,6 @@ export class LoginComponent implements OnInit {
   passwordError = '';
   emailError = '';
 
-  error_1: string = this._translateService.instant('user.sign-in-error-1');
-  error_2: string = this._translateService.instant('user.sign-in-error-2');
-  error: string = this._translateService.instant('user.error');
-  ok: string = this._translateService.instant('dialogs.ok');
-  signing_in: string = this._translateService.instant('user.signing-in');
-  success: string = this._translateService.instant('user.success');
-  password_error: string = this._translateService.instant('user.password-error');
-  email_error: string = this._translateService.instant('user.email-error');
-  check_email: string = this._translateService.instant('user.check-email');
-  email_required: string = this._translateService.instant('user.email-required');
-
   constructor(
     private _routerExtensions: RouterExtensions,
     private _logService: LoggingService,
@@ -38,8 +27,7 @@ export class LoginComponent implements OnInit {
     private _progressService: ProgressService,
     private _page: Page,
     private _translateService: TranslateService,
-    private _loggingService: LoggingService,
-    private zone: NgZone
+    private _zone: NgZone
   ) {
     preventKeyboardFromShowing();
   }
@@ -72,7 +60,7 @@ export class LoginComponent implements OnInit {
         return;
       }
 
-      this._progressService.show(this.signing_in);
+      this._progressService.show(this._translateService.instant('user.signing-in'));
 
       // now try logging in with Kinvey user account
       const res = await this._userService.login(this.user.email, this.user.password);
@@ -82,7 +70,7 @@ export class LoginComponent implements OnInit {
       const deviceToken = await this._userService._registerForPushNotifications();
       console.log(`Registered for push notifications device token: ${deviceToken}`);
 
-      this.zone.run(() => {
+      this._zone.run(() => {
         this._routerExtensions.navigate(['/home'], {
           clearHistory: true
         });
@@ -91,14 +79,14 @@ export class LoginComponent implements OnInit {
       CLog('login error', error);
       this._progressService.hide();
       // parse the exceptions from kinvey sign up
-      let errorMessage = this.error_1;
+      let errorMessage = this._translateService.instant('user.sign-in-error-1');
       if (error.toString().includes('InvalidCredentialsError')) {
-        errorMessage = this.error_2;
+        errorMessage = this._translateService.instant('user.sign-in-error-2');
       }
       alert({
-        title: this.error,
+        title: this._translateService.instant('user.error'),
         message: errorMessage,
-        okButtonText: this.ok
+        okButtonText: this._translateService.instant('dialogs.ok')
       });
       this._logService.logException(error);
     }
@@ -128,13 +116,13 @@ export class LoginComponent implements OnInit {
   private _isEmailValid(text: string): boolean {
     // validate the email
     if (!text) {
-      this.emailError = this.email_required;
+      this.emailError = this._translateService.instant('user.email-required');
       return false;
     }
     // make sure it's a valid email
     const email = text.trim();
     if (!validate(email)) {
-      this.emailError = `"${email}" ` + this.email_error;
+      this.emailError = `"${email}" ${this._translateService.instant('user.email-error')}`;
       return false;
     }
 
@@ -145,7 +133,7 @@ export class LoginComponent implements OnInit {
   private _isPasswordValid(text: string): boolean {
     // validate the password
     if (!text) {
-      this.passwordError = this.password_error;
+      this.passwordError = this._translateService.instant('user.password-error');
       return false;
     }
     this.passwordError = '';

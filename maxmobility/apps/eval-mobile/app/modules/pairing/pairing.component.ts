@@ -1,16 +1,16 @@
-import { Component, ElementRef, NgZone, ViewChild } from '@angular/core';
+import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { PushTracker } from '@maxmobility/core';
 import { BluetoothService, LoggingService, ProgressService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
-import { PageRoute, RouterExtensions } from 'nativescript-angular/router';
-import { Feedback } from 'nativescript-feedback';
-import { SnackBar } from 'nativescript-snackbar';
+import { PageRoute } from 'nativescript-angular/router';
 import { CFAlertDialog, CFAlertStyle } from 'nativescript-cfalert-dialog';
+import { DropDown } from 'nativescript-drop-down';
+import { Feedback } from 'nativescript-feedback';
 import { Gif } from 'nativescript-gif';
+import { SnackBar } from 'nativescript-snackbar';
 import { switchMap } from 'rxjs/operators';
 import { ChangedData, ObservableArray } from 'tns-core-modules/data/observable-array';
 import { confirm } from 'tns-core-modules/ui/dialogs';
-import { DropDown } from 'nativescript-drop-down';
 
 @Component({
   selector: 'Pairing',
@@ -18,7 +18,7 @@ import { DropDown } from 'nativescript-drop-down';
   templateUrl: './pairing.component.html',
   styleUrls: ['./pairing.component.css']
 })
-export class PairingComponent {
+export class PairingComponent implements OnInit {
   @ViewChild('controlModeDropDown')
   controlModeDropDown: ElementRef;
   @ViewChild('unitsDropDown')
@@ -28,28 +28,24 @@ export class PairingComponent {
   carousel: ElementRef;
 
   selectedPage = 0;
-  slides = this._translateService.instant('pairing');
+
+  /**
+   * Slides for carousel in UI
+   */
+  slides;
+
+  settings = new PushTracker.Settings();
+  // Control modes are not translated
+  ControlModeOptions = PushTracker.Settings.ControlMode.Options;
+  // Have to use translations for Units
+  UnitsOptions = PushTracker.Settings.Units.Translations.map(t => this._translateService.instant(t));
+  pushSettings = new PushTracker.PushSettings();
   private feedback: Feedback;
   private _cfAlert = new CFAlertDialog();
   private _snackbar = new SnackBar();
 
-  saving_settings: string = this._translateService.instant('pushtracker.settings.saving');
-  failed_settings_title: string = this._translateService.instant('pushtracker.settings.save-dialogs.failed.title');
-  failed_settings_message: string = this._translateService.instant('pushtracker.settings.save-dialogs.failed.message');
-  okbuttontxt: string = this._translateService.instant('dialogs.ok');
-  please_connect_pt: string = this._translateService.instant('trial.please-connect-pt');
-  connect_pushtracker_more_info: string = this._translateService.instant('trial.connect_pushtracker_more_info');
-  too_many_pts: string = this._translateService.instant('trial.errors.too-many-pts');
-
-  public settings = new PushTracker.Settings();
-  // Control modes are not translated
-  public ControlModeOptions = PushTracker.Settings.ControlMode.Options;
-  // Have to use translations for Units
-  public UnitsOptions = PushTracker.Settings.Units.Translations.map(t => this._translateService.instant(t));
-  public pushSettings = new PushTracker.PushSettings();
-
   constructor(
-    private pageRoute: PageRoute,
+    private _pageRoute: PageRoute,
     private _zone: NgZone,
     private _translateService: TranslateService,
     private _progressService: ProgressService,
@@ -59,7 +55,7 @@ export class PairingComponent {
     this.slides = this._translateService.instant('pairing');
 
     // figure out which slide we're going to
-    this.pageRoute.activatedRoute.pipe(switchMap(activatedRoute => activatedRoute.queryParams)).forEach(params => {
+    this._pageRoute.activatedRoute.pipe(switchMap(activatedRoute => activatedRoute.queryParams)).forEach(params => {
       if (params.index) {
         this.selectedPage = params.index;
         console.log(this.selectedPage);
@@ -117,44 +113,6 @@ export class PairingComponent {
     );
   }
 
-  /**
-   * Helper method to check for a connected PushTracker from the BluetoothService.PushTrackers array.
-   */
-  private _getOneConnectedPushTracker() {
-    const connectedPTs = BluetoothService.PushTrackers.filter(pt => pt.connected);
-
-    // no pushtrackers are connected - will show snackbar alert
-    if (connectedPTs.length <= 0) {
-      // this._noPushTrackersConnectedAlert();
-
-      this._snackbar
-        .action({
-          actionText: this._translateService.instant('buttons.more-info'),
-          snackText: this.please_connect_pt,
-          hideDelay: 4000
-        })
-        .then(result => {
-          if (result.command === 'Action') {
-            this._cfAlert.show({
-              dialogStyle: CFAlertStyle.ALERT,
-              message: this.connect_pushtracker_more_info,
-              cancellable: true
-            });
-          }
-        });
-
-      return null;
-    }
-
-    // too many pushtrackers connected - don't know which to use!
-    if (connectedPTs.length > 1) {
-      this._snackbar.simple(this.too_many_pts);
-      return null;
-    }
-
-    return connectedPTs[0];
-  }
-
   // settings controls
   async onPushTrackerSettings(args: any) {
     this._zone.run(() => {
@@ -168,9 +126,9 @@ export class PairingComponent {
           if (result === true) {
             this.settings.copy(args.data.settings);
             // update drop downs
-            let newUnitsIndex = this.UnitsOptions.indexOf(this.settings.units);
+            const newUnitsIndex = this.UnitsOptions.indexOf(this.settings.units);
             (this.unitsDropDown.nativeElement as DropDown).selectedIndex = newUnitsIndex;
-            let newControlIndex = this.ControlModeOptions.indexOf(this.settings.controlMode);
+            const newControlIndex = this.ControlModeOptions.indexOf(this.settings.controlMode);
             (this.controlModeDropDown.nativeElement as DropDown).selectedIndex = newControlIndex;
           }
         });
@@ -195,7 +153,7 @@ export class PairingComponent {
   }
 
   onSettingsDropdown(key: string, args: any) {
-    let optionKey = key.substr(0, 1).toUpperCase() + key.substr(1);
+    const optionKey = key.substr(0, 1).toUpperCase() + key.substr(1);
     this.settings[key] = PushTracker.Settings[optionKey].Options[args.newIndex];
   }
 
@@ -237,7 +195,7 @@ export class PairingComponent {
         });
     }
     // let user know we're doing something
-    this._progressService.show(this.saving_settings);
+    this._progressService.show(this._translateService.instant('pushtracker.settings.saving'));
     const settingsSucceeded = () => {
       this._zone.run(() => {
         this._progressService.hide();
@@ -248,9 +206,9 @@ export class PairingComponent {
         this._progressService.hide();
         console.log(`Couldn't save settings: ${err}`);
         alert({
-          title: this.failed_settings_title,
-          message: this.failed_settings_message + err,
-          okButtonText: this.okbuttontxt
+          title: this._translateService.instant('pushtracker.settings.save-dialogs.failed.title'),
+          message: `${this._translateService.instant('pushtracker.settings.save-dialogs.failed.message')} ${err}`,
+          okButtonText: this._translateService.instant('dialogs.ok')
         });
       });
     };
@@ -336,5 +294,43 @@ export class PairingComponent {
       this.carousel.nativeElement.refresh();
       console.log('Carousel loaded to ' + this.selectedPage);
     }, 100);
+  }
+
+  /**
+   * Helper method to check for a connected PushTracker from the BluetoothService.PushTrackers array.
+   */
+  private _getOneConnectedPushTracker() {
+    const connectedPTs = BluetoothService.PushTrackers.filter(pt => pt.connected);
+
+    // no pushtrackers are connected - will show snackbar alert
+    if (connectedPTs.length <= 0) {
+      // this._noPushTrackersConnectedAlert();
+
+      this._snackbar
+        .action({
+          actionText: this._translateService.instant('buttons.more-info'),
+          snackText: this._translateService.instant('trial.please-connect-pt'),
+          hideDelay: 4000
+        })
+        .then(result => {
+          if (result.command === 'Action') {
+            this._cfAlert.show({
+              dialogStyle: CFAlertStyle.ALERT,
+              message: this._translateService.instant('trial.connect_pushtracker_more_info'),
+              cancellable: true
+            });
+          }
+        });
+
+      return null;
+    }
+
+    // too many pushtrackers connected - don't know which to use!
+    if (connectedPTs.length > 1) {
+      this._snackbar.simple(this._translateService.instant('trial.errors.too-many-pts'));
+      return null;
+    }
+
+    return connectedPTs[0];
   }
 }

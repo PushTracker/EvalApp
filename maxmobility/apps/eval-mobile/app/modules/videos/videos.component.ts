@@ -1,10 +1,7 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { alert } from 'tns-core-modules/ui/dialogs';
-import { RouterExtensions } from 'nativescript-angular/router';
-import { LoadEventData, WebView } from 'tns-core-modules/ui/web-view';
-import { CLog } from '@maxmobility/core';
-import { isAndroid, isIOS } from 'platform';
+import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { RouterExtensions } from 'nativescript-angular/router';
+import { isAndroid, isIOS } from 'platform';
 
 @Component({
   selector: 'Videos',

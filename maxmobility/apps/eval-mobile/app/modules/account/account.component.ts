@@ -1,10 +1,9 @@
-import { Component, NgZone, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import { CLog, DidYouKnow, User, UserTypes } from '@maxmobility/core';
-import { FileService, LoggingService, ProgressService, UserService } from '@maxmobility/mobile';
+import { FileService, LoggingService, UserService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
-import { ModalDialogService } from 'nativescript-angular/directives/dialogs';
 import { RouterExtensions } from 'nativescript-angular/router';
 import * as camera from 'nativescript-camera';
 import { ValueList } from 'nativescript-drop-down';
@@ -33,6 +32,9 @@ export class AccountComponent implements OnInit {
 
   isAdminAccount = false;
 
+  /**
+   * Languages for translation language dropdown
+   */
   languages = new ValueList<string>(
     this._translateService.getLangs().map(l => {
       return { value: l, display: this._translateService.instant('languages.' + l) };
@@ -42,51 +44,32 @@ export class AccountComponent implements OnInit {
 
   yes: string = this._translateService.instant('dialogs.yes');
   no: string = this._translateService.instant('dialogs.no');
-  success: string = this._translateService.instant('user.success');
-  ok: string = this._translateService.instant('dialogs.ok');
-  account_update: string = this._translateService.instant('user.account-update');
-  account_update_confirm: string = this._translateService.instant('user.account-update-confirm');
-  account_update_complete: string = this._translateService.instant('user.account-update-complete');
-  account_reset: string = this._translateService.instant('user.account-reset');
-  account_reset_confirm: string = this._translateService.instant('user.account-reset-confirm');
-  password_change: string = this._translateService.instant('user.password-change');
-  password_change_confirm: string = this._translateService.instant('user.password-change-confirm');
-  sign_out: string = this._translateService.instant('user.sign-out');
-  sign_out_confirm: string = this._translateService.instant('user.sign-out-confirm');
 
   private imageCropper: ImageCropper;
-  private routeSub: Subscription; // subscription to route observer
-  private profileImageKey = this.fsKeyPrefix + (this.user.data as any)._id + '.' + this.fsKeyProfilePicture;
+  private _routeSub: Subscription; // subscription to route observer
+  private profileImageKey = this.fsKeyPrefix + this.user._id + '.' + this.fsKeyProfilePicture;
 
   constructor(
     private _userService: UserService,
-    private _progressService: ProgressService,
     private _loggingService: LoggingService,
     private _routerExtensions: RouterExtensions,
     private router: Router,
     private _page: Page,
     private _translateService: TranslateService,
     private _fileService: FileService,
-    private modal: ModalDialogService,
-    private vcRef: ViewContainerRef,
-    private zone: NgZone
+    private _zone: NgZone
   ) {
     this._page.enableSwipeBackNavigation = false;
+
     this.imageCropper = new ImageCropper();
-    const user = this._userService.user;
-    console.log('current user', user);
-
     this.user = Kinvey.User.getActiveUser();
-
-    // this.isAdminAccount = this._userService.user.email === 'devon.doebele@permobil.com';
     this.isAdminAccount = (this.user.data as User).type === UserTypes.Admin;
-    console.log('isAdmin', this.isAdminAccount);
   }
 
   ngOnInit() {
     // save when we navigate away!
     // see https://github.com/NativeScript/nativescript-angular/issues/1049
-    this.routeSub = this.router.events.subscribe(event => {
+    this._routeSub = this.router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
         // now save
         console.log('Saving user data when navigating away from account.');
@@ -204,15 +187,19 @@ export class AccountComponent implements OnInit {
 
   onSaveAccountTap() {
     confirm({
-      title: this.account_update,
-      message: this.account_update_confirm,
+      title: this._translateService.instant('user.account-update'),
+      message: this._translateService.instant('user.account-update-confirm'),
       okButtonText: this.yes,
       cancelButtonText: this.no
     }).then(result => {
       if (result) {
         this._saveUserToKinvey().then(resp => {
           CLog('update response', JSON.stringify(resp));
-          alert({ title: this.success, message: this.account_update_complete, okButtonText: this.ok });
+          alert({
+            title: this._translateService.instant('user.success'),
+            message: this._translateService.instant('user.account-update-complete'),
+            okButtonText: this._translateService.instant('dialogs.ok')
+          });
         });
       }
     });
@@ -220,8 +207,8 @@ export class AccountComponent implements OnInit {
 
   onChangePasswordTap() {
     confirm({
-      title: this.password_change,
-      message: this.password_change_confirm,
+      title: this._translateService.instant('user.password-change'),
+      message: this._translateService.instant('user.password-change-confirm'),
       okButtonText: this.yes,
       cancelButtonText: this.no
     });
@@ -229,8 +216,8 @@ export class AccountComponent implements OnInit {
 
   onResetAccountTap() {
     confirm({
-      title: this.account_reset,
-      message: this.account_reset_confirm,
+      title: this._translateService.instant('user.account-reset'),
+      message: this._translateService.instant('user.account-reset-confirm'),
       okButtonText: this.yes,
       cancelButtonText: this.no
     });
@@ -242,14 +229,14 @@ export class AccountComponent implements OnInit {
   async onSignOutTap() {
     try {
       const result = await confirm({
-        title: this.sign_out,
-        message: this.sign_out_confirm,
+        title: this._translateService.instant('user.sign-out'),
+        message: this._translateService.instant('user.sign-out-confirm'),
         okButtonText: this.yes,
         cancelButtonText: this.no
       });
       CLog('signout confirm result', result);
       if (result) {
-        this.zone.run(async () => {
+        this._zone.run(async () => {
           // go ahead and nav to login to keep UI moving without waiting
           this._routerExtensions.navigate(['/login'], {
             clearHistory: true
