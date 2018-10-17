@@ -15,49 +15,49 @@
     "back": "Back",
     "more-info": "More Info"
   },
-	"pushtracker": {
-		"settings": {
-			"label": "Settings",
-			"save-button": "Save to PushTracker",
-			"saving": "Saving PushTracker Settings",
-			"save-dialogs": {
-				"failed": {
-					"title": "Failed Saving Settings",
-					"message": "We were unable to save the PushTracker settings to your PushTracker."
-				}
-			},
-			"copy-dialog": {
-				"title": "Copy From PushTracker?",
-				"message": "PushTracker's settings differ from the saved settings, do you want to overwrite the saved settings with the PushTracker's settings?"
-			},
-			"units": {
-				"label": "Units",
-				"english": "English",
-				"metric": "Metric"
-			},
-			"control-mode": {
-				"label": "Control Mode"
-			},
-			"ez-on": "EZ-On",
-			"acceleration": "Acceleration",
-			"max-speed": "Max Speed",
-			"tap-sensitivity": "Tap Sensitivity"
-		},
-		"push-settings": {
-			"label": "Push Settings",
-			"out-of-date-dialog": {
-				"title": "PushTracker out of Date",
-				"message": "PushTracker needs to be at least version 1.6 to receive PushSettings. PushSettings will be ignored."
-			},
-			"copy-dialog": {
-				"title": "Copy From PushTracker?",
-				"message": "PushTracker's push settings differ from the saved push settings, do you want to overwrite the saved push settings with the PushTracker's push settings?"
-			},
-			"threshold": "Threshold",
-			"time-window": "Time Window",
-			"clear-counter": "Clear Counter"
-		}
-	},
+  "pushtracker": {
+    "settings": {
+      "label": "Settings",
+      "save-button": "Save to PushTracker",
+      "saving": "Saving PushTracker Settings",
+      "save-dialogs": {
+        "failed": {
+          "title": "Failed Saving Settings",
+          "message": "We were unable to save the PushTracker settings to your PushTracker."
+        }
+      },
+      "copy-dialog": {
+        "title": "Copy From PushTracker?",
+        "message": "PushTracker's settings differ from the saved settings, do you want to overwrite the saved settings with the PushTracker's settings?"
+      },
+      "units": {
+        "label": "Units",
+        "english": "English",
+        "metric": "Metric"
+      },
+      "control-mode": {
+        "label": "Control Mode"
+      },
+      "ez-on": "EZ-On",
+      "acceleration": "Acceleration",
+      "max-speed": "Max Speed",
+      "tap-sensitivity": "Tap Sensitivity"
+    },
+    "push-settings": {
+      "label": "Push Settings",
+      "out-of-date-dialog": {
+        "title": "PushTracker out of Date",
+        "message": "PushTracker needs to be at least version 1.6 to receive PushSettings. PushSettings will be ignored."
+      },
+      "copy-dialog": {
+        "title": "Copy From PushTracker?",
+        "message": "PushTracker's push settings differ from the saved push settings, do you want to overwrite the saved push settings with the PushTracker's push settings?"
+      },
+      "threshold": "Threshold",
+      "time-window": "Time Window",
+      "clear-counter": "Clear Counter"
+    }
+  },
   "menu": {
     "home": "SmartDrive",
     "connectivity": "Connectivity Overview",
@@ -534,10 +534,10 @@
       "question": "Why should I want a SmartDrive?",
       "answer": "You should be active and go out into the world! With pushing however, unlike the general advice with walking (where people really cannot walk too much) - people CAN push too much! If you push too much then you will be more likely to get pain and injury in your arms and shoulders - which may limit your mobility and independence.  With the SmartDrive you are still able to push around in your chair as you normally would - you can now go farther faster and with less effort! Use it when you need to get somewhere fast or up a big hill - don't kill your shoulders if you don't have to! Enjoy your journey with your SmartDrive!"
     },
-	  {
-		  "question": "PushTracker App and Smart Evaluation App",
-		  "answer": "If you have both the PushTracker and Smart Evaluation apps on your phone, you should ensure that only the one you want to connect the PushTracker to is running - otherwise the PushTracker might connect to the other app than the one you intend!"
-	  }
+    {
+      "question": "PushTracker App and Smart Evaluation App",
+      "answer": "If you have both the PushTracker and Smart Evaluation apps on your phone, you should ensure that only the one you want to connect the PushTracker to is running - otherwise the PushTracker might connect to the other app than the one you intend!"
+    }
   ],
   "ota": {
     "action": {
@@ -585,6 +585,7 @@
     "up-to-date": "(Up to date)",
     "title": "Firmware Updates",
     "version": "Version",
+    "check_new_firmware": "Check For New Firmware",
     "refresh": "Refresh Device List",
     "begin": "Begin Updates",
     "cancel": "Cancel All Firmware Updates",
