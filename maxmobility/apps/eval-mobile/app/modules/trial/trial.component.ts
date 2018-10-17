@@ -53,6 +53,7 @@ export class TrialComponent implements OnInit {
   speedWithoutDisplay = '--';
   timeWithoutDisplay = '--';
   starting_trial: string = this._translateService.instant('trial.starting-trial');
+  stopping_trial: string = this._translateService.instant('trial.stopping-trial');
   okbuttontxt: string = this._translateService.instant('dialogs.ok');
   failed_start_title: string = this._translateService.instant('trial.errors.failed-start.title');
   failed_start_message: string = this._translateService.instant('trial.errors.failed-start.message');
@@ -294,7 +295,7 @@ export class TrialComponent implements OnInit {
 
     if (!this.trial.finishedWith && pushTracker) {
       // let user know we're doing something
-      this._progressService.show('Stopping Trial');
+      this._progressService.show(this.stopping_trial);
 
       this.trial.with_end = new Date();
       let haveDailyInfo = false;
@@ -501,7 +502,7 @@ export class TrialComponent implements OnInit {
 
     if (!this.trial.finishedWithout && pushTracker) {
       // let user know we're doing something
-      this._progressService.show(this._translateService.instant('trial.stopping-trial'));
+      this._progressService.show(this.stopping_trial);
 
       this.trial.without_end = new Date();
       let stopWithoutTimeoutID = null;
