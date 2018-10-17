@@ -120,7 +120,7 @@ export class HomeComponent {
           this._loggingService.logException(err);
           this.demoUnitsLoaded = true;
         });
-    }, 2500);
+    }, 2000);
 
     console.log(`Home.Component end constructor ${performance.now()}`);
   }

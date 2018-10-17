@@ -1,14 +1,14 @@
 import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
-import { PushTracker, Trial, Evaluation } from '@maxmobility/core';
+import { Evaluation, PushTracker, Trial } from '@maxmobility/core';
 import { BluetoothService, EvaluationService, LoggingService, ProgressService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { RouterExtensions } from 'nativescript-angular/router';
-import { SnackBar } from 'nativescript-snackbar';
-import { isAndroid, isIOS } from 'tns-core-modules/platform';
-import { View } from 'tns-core-modules/ui/core/view';
-import { alert } from 'tns-core-modules/ui/dialogs';
 import { CFAlertDialog, CFAlertStyle } from 'nativescript-cfalert-dialog';
 import { DropDown } from 'nativescript-drop-down';
+import { SnackBar } from 'nativescript-snackbar';
+import { isIOS } from 'tns-core-modules/platform';
+import { View } from 'tns-core-modules/ui/core/view';
+import { alert } from 'tns-core-modules/ui/dialogs';
 
 @Component({
   selector: 'Trial',
@@ -29,13 +29,11 @@ export class TrialComponent implements OnInit {
   startWithoutView: ElementRef;
   @ViewChild('stopWithout')
   stopWithoutView: ElementRef;
-
   // for settings
   @ViewChild('controlModeDropDown')
   controlModeDropDown: ElementRef;
   @ViewChild('unitsDropDown')
   unitsDropDown: ElementRef;
-
   // displaying trial info
   distanceDisplay = '--';
   pushWithDisplay = '--';
@@ -46,30 +44,23 @@ export class TrialComponent implements OnInit {
   coastWithoutDisplay = '--';
   speedWithoutDisplay = '--';
   timeWithoutDisplay = '--';
-  please_connect_pt: string = this._translateService.instant('trial.please-connect-pt');
-  connect_pushtracker_more_info: string = this._translateService.instant('trial.connect_pushtracker_more_info');
   starting_trial: string = this._translateService.instant('trial.starting-trial');
-  stopping_trial: string = this._translateService.instant('trial.stopping-trial');
   okbuttontxt: string = this._translateService.instant('dialogs.ok');
-  too_many_pts: string = this._translateService.instant('trial.errors.too-many-pts');
   failed_start_title: string = this._translateService.instant('trial.errors.failed-start.title');
   failed_start_message: string = this._translateService.instant('trial.errors.failed-start.message');
   failed_stop_title: string = this._translateService.instant('trial.errors.failed-stop.title');
   failed_stop_message: string = this._translateService.instant('trial.errors.failed-stop.message');
-  pt_version_title: string = this._translateService.instant('trial.errors.pt-version.title');
-  pt_version_message: string = this._translateService.instant('trial.errors.pt-version.message');
   trial = new Trial();
+  settings = new PushTracker.Settings();
+  pushSettings = new PushTracker.PushSettings();
+  // Control modes are not translated
+  ControlModeOptions = PushTracker.Settings.ControlMode.Options;
+  // Have to use translations for Units
+  UnitsOptions = PushTracker.Settings.Units.Translations.map(t => this._translateService.instant(t));
 
   private _trialTimeout = 15000; // 15 seconds
   private _cfAlert = new CFAlertDialog();
   private _snackbar = new SnackBar();
-
-  public settings = new PushTracker.Settings();
-  public pushSettings = new PushTracker.PushSettings();
-  // Control modes are not translated
-  public ControlModeOptions = PushTracker.Settings.ControlMode.Options;
-  // Have to use translations for Units
-  public UnitsOptions = PushTracker.Settings.Units.Translations.map(t => this._translateService.instant(t));
 
   constructor(
     private _routerExtensions: RouterExtensions,
@@ -120,7 +111,7 @@ export class TrialComponent implements OnInit {
   }
 
   onSettingsDropdown(key: string, args: any) {
-    let optionKey = key.substr(0, 1).toUpperCase() + key.substr(1);
+    const optionKey = key.substr(0, 1).toUpperCase() + key.substr(1);
     this.settings[key] = PushTracker.Settings[optionKey].Options[args.newIndex];
     this.trial.setSettings(this.settings);
   }
@@ -314,18 +305,18 @@ export class TrialComponent implements OnInit {
           pushTracker.off(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
           this._progressService.hide();
           this._hideview(<View>this.stopWithView.nativeElement);
-          let meters = this.trial.distance;
-          let ft = (meters * 5280.0) / 1609.0;
-          if (this.settings.units == PushTracker.Settings.Units.English) {
+          const meters = this.trial.distance;
+          const ft = (meters * 5280.0) / 1609.0;
+          if (this.settings.units === PushTracker.Settings.Units.English) {
             this.distanceDisplay = `${ft.toFixed(2)} ft`;
           } else {
             this.distanceDisplay = `${meters.toFixed(2)} m`;
           }
           this.pushWithDisplay = `${this.trial.with_pushes}`;
           this.coastWithDisplay = `${this.trial.with_coast.toFixed(2)} s`;
-          let mph = meters / 1609.0 / (this.trial.with_elapsed / 60.0);
-          let kph = meters / 1000.0 / (this.trial.with_elapsed / 60.0);
-          if (this.settings.units == PushTracker.Settings.Units.English) {
+          const mph = meters / 1609.0 / (this.trial.with_elapsed / 60.0);
+          const kph = meters / 1000.0 / (this.trial.with_elapsed / 60.0);
+          if (this.settings.units === PushTracker.Settings.Units.English) {
             this.speedWithDisplay = `${mph.toFixed(2)} mph`;
           } else {
             this.speedWithDisplay = `${kph.toFixed(2)} kph`;
@@ -489,7 +480,7 @@ export class TrialComponent implements OnInit {
 
     if (!this.trial.finishedWithout && pushTracker) {
       // let user know we're doing something
-      this._progressService.show(this.stopping_trial);
+      this._progressService.show(this._translateService.instant('trial.stopping-trial'));
 
       this.trial.without_end = new Date();
       let stopWithoutTimeoutID = null;
@@ -510,9 +501,9 @@ export class TrialComponent implements OnInit {
           this._hideview(<View>this.stopWithoutView.nativeElement);
           this.pushWithoutDisplay = `${this.trial.without_pushes}`;
           this.coastWithoutDisplay = `${this.trial.without_coast.toFixed(2)} s`;
-          let mph = this.trial.distance / 1609.0 / (this.trial.without_elapsed / 60.0);
-          let kph = this.trial.distance / 1000.0 / (this.trial.without_elapsed / 60.0);
-          if (this.settings.units == PushTracker.Settings.Units.English) {
+          const mph = this.trial.distance / 1609.0 / (this.trial.without_elapsed / 60.0);
+          const kph = this.trial.distance / 1000.0 / (this.trial.without_elapsed / 60.0);
+          if (this.settings.units === PushTracker.Settings.Units.English) {
             this.speedWithoutDisplay = `${mph.toFixed(2)} mph`;
           } else {
             this.speedWithoutDisplay = `${kph.toFixed(2)} mph`;
@@ -592,14 +583,14 @@ export class TrialComponent implements OnInit {
       this._snackbar
         .action({
           actionText: this._translateService.instant('buttons.more-info'),
-          snackText: this.please_connect_pt,
+          snackText: this._translateService.instant('trial.please-connect-pt'),
           hideDelay: 4000
         })
         .then(result => {
           if (result.command === 'Action') {
             this._cfAlert.show({
               dialogStyle: CFAlertStyle.ALERT,
-              message: this.connect_pushtracker_more_info,
+              message: this._translateService.instant('trial.connect_pushtracker_more_info'),
               cancellable: true
             });
           }
@@ -610,7 +601,7 @@ export class TrialComponent implements OnInit {
 
     // too many pushtrackers connected - don't know which to use!
     if (connectedPTs.length > 1) {
-      this._snackbar.simple(this.too_many_pts);
+      this._snackbar.simple(this._translateService.instant('trial.errors.too-many-pts'));
       return null;
     }
 
@@ -621,8 +612,10 @@ export class TrialComponent implements OnInit {
     // check the version here (must be >= 1.5)
     if (pt.version === 0xff || pt.version < 0x15) {
       alert({
-        title: this.pt_version_title,
-        message: this.pt_version_message + PushTracker.versionByteToString(pt.version),
+        title: this._translateService.instant('trial.errors.pt-version.title'),
+        message:
+          this._translateService.instant('trial.errors.pt-version.message') +
+          PushTracker.versionByteToString(pt.version),
         okButtonText: this.okbuttontxt
       });
       return false;

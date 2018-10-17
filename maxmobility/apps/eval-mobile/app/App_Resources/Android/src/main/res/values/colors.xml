@@ -6,4 +6,5 @@
     <color name="ns_accent">#FF671F</color>
     <color name="ns_blue">#004F7E</color>
     <color name="permobil_blue">#0067a6</color>
+    <color name="actionbar_text">#FFF</color>
 </resources>

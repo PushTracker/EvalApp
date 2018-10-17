@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Demo, User, UserTypes } from '@maxmobility/core';
+import { Demo, User } from '@maxmobility/core';
 import { DemoService, FirmwareService, LocationService, LoggingService, UserService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
@@ -24,13 +24,15 @@ export class DemosComponent implements OnInit {
     return DemoService.Demos;
   }
 
-  currentUserId = Kinvey.User.getActiveUser()._id;
+  userType: number;
+
+  currentUserId: string;
 
   private _snackBar = new SnackBar();
   private _datastore = Kinvey.DataStore.collection<any>('SmartDrives');
 
   constructor(
-    private routerExtensions: RouterExtensions,
+    private _routerExtensions: RouterExtensions,
     private _demoService: DemoService,
     private _firmwareService: FirmwareService,
     private _logService: LoggingService,
@@ -41,6 +43,10 @@ export class DemosComponent implements OnInit {
   ngOnInit() {
     console.log('Demos.Component OnInit');
     new Toasty(this._translateService.instant('demos.owner-color-explanation'), 'long').show();
+    const activeUser = Kinvey.User.getActiveUser();
+    this.userType = (activeUser.data as User).type as number;
+    this.currentUserId = activeUser._id;
+    console.log('userType', this.userType);
   }
 
   isIOS(): boolean {
@@ -56,7 +62,7 @@ export class DemosComponent implements OnInit {
   }
 
   onDemoTap(index: any) {
-    this.routerExtensions.navigate(['/demo-detail'], {
+    this._routerExtensions.navigate(['/demo-detail'], {
       queryParams: {
         index
       }
@@ -66,7 +72,7 @@ export class DemosComponent implements OnInit {
   addDemo() {
     // add a new demo
     console.log('add a new demo');
-    this.routerExtensions.navigate(['/demo-detail'], {});
+    this._routerExtensions.navigate(['/demo-detail'], {});
   }
 
   /**
@@ -115,29 +121,64 @@ export class DemosComponent implements OnInit {
   }
 
   /**
+   * Action for Clinicians to request a demo unit.
+   * Brad  - moving this to the action bar and only showing for Clinician Users, this isn't tied to a demo unit
+   * so it doesn't need to be in the list. Which would not work if they had no demo units in their posession.
+   */
+  async requestDemo() {
+    console.log('clinician requesting demo tap');
+
+    const confirmResult = await confirm({
+      title: 'Demo Unit Actions',
+      message: this._translateService.instant('demos.request-demo-action'),
+      okButtonText: this._translateService.instant('dialogs.yes'),
+      cancelable: true,
+      cancelButtonText: this._translateService.instant('dialogs.cancel')
+    });
+
+    if (confirmResult === true) {
+      const token = (this._userService.user._kmd as any).authtoken;
+
+      console.log('request demo from rep');
+      const response = await http.request({
+        method: 'POST',
+        url: 'https://baas.kinvey.com/rpc/kid_SyIIDJjdM/custom/demo-unit-actions',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Kinvey ${token}`
+        },
+        content: JSON.stringify({
+          action: '0'
+        })
+      });
+      console.log('response code', response.statusCode);
+      if (response.statusCode === 200) {
+        this._snackBar.simple(this._translateService.instant('demos.demo-request-success'));
+      } else {
+        alert({
+          message: this._translateService.instant('demos.demo-request-error'),
+          okButtonText: this._translateService.instant('dialogs.ok')
+        });
+      }
+    }
+  }
+
+  /**
    * show list actions for clinicians and reps based on the user type.
    * 1. handing over a demo unit to a clinician
    * 2. retrieving a demo unit from a clinician
    * 3. requesting a demo unit from nearby reps
    */
 
-  async onDemoActionsButtonTap(demo: Demo) {
-    // setting the action strings here for both creating the actions based on type
-    // and for the switch to determine the action selected
-    const requestAction = this._translateService.instant('demos.request-demo-action');
+  async onRepDemoActionButtonTap(demo: Demo) {
+    // create the Rep user type actions for demos
     const toClinicianAction = this._translateService.instant('demos.demo-to-clinician-action');
     const fromClinicianAction = this._translateService.instant('demos.retrieve-from-clinician-action');
-
-    // clinician user type options
-    const clinicianOpts = [requestAction];
-    // rep user type options
     const repOpts = [toClinicianAction, fromClinicianAction];
-    const userType = (Kinvey.User.getActiveUser().data as User).type as number;
 
     const result = await action({
       message: 'Demo Unit Actions',
-      actions: userType === UserTypes.Representative ? repOpts : clinicianOpts,
-      // actions: repOpts,
+      actions: repOpts,
       cancelable: true,
       cancelButtonText: 'Cancel'
     });
@@ -151,21 +192,6 @@ export class DemosComponent implements OnInit {
     let response;
 
     switch (result) {
-      case requestAction:
-        console.log('request demo from rep');
-        response = await http.request({
-          method: 'POST',
-          url: 'https://baas.kinvey.com/rpc/kid_SyIIDJjdM/custom/demo-unit-actions',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Kinvey ${token}`
-          },
-          content: JSON.stringify({
-            action: '0'
-          })
-        });
-        console.log('response', response.statusCode);
-        break;
       case toClinicianAction:
         console.log('handing to clinician');
 

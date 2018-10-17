@@ -1,11 +1,11 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Evaluation } from '@maxmobility/core';
 import { EvaluationService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { RouterExtensions } from 'nativescript-angular/router';
+import { DropDown } from 'nativescript-drop-down';
 import * as app from 'tns-core-modules/application';
 import { confirm } from 'tns-core-modules/ui/dialogs';
-import { DropDown } from 'nativescript-drop-down';
 
 @Component({
   selector: 'EvalEntry',
@@ -51,13 +51,15 @@ export class EvalEntryComponent implements OnInit {
             this.hasPushingFatigue = this.evaluation.pushing_fatigue ? true : false;
             this.hasPushingPain = this.evaluation.pushing_pain ? true : false;
             this.impactsIndependence = this.evaluation.impact_on_independence ? true : false;
+
             // map the years string value to the dropdown UI Index value using indexOf
-            let yearIndex = this.years.indexOf(this.evaluation.years);
+            const yearIndex = this.years.indexOf(this.evaluation.years);
             if (yearIndex !== -1) {
               (this.yearDropdown.nativeElement as DropDown).selectedIndex = yearIndex;
             }
+
             // map the chair string value to the dropdown UI Index value using indexOf
-            let chairIndex = this.chair.indexOf(this.evaluation.chair);
+            const chairIndex = this.chair.indexOf(this.evaluation.chair);
             if (chairIndex !== -1) {
               (this.chairDropdown.nativeElement as DropDown).selectedIndex = chairIndex;
             }

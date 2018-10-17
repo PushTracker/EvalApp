@@ -34,18 +34,20 @@ import * as dialogs from 'tns-core-modules/ui/dialogs';
 })
 export class DemoDetailComponent {
   demo = new Demo();
-  mcu_version_label = ' - SmartDrive MCU ' + this._translateService.instant('general.version');
-  ble_version_label = ' - SmartDrive BLE ' + this._translateService.instant('general.version');
-  pt_version_label = ' - PushTracker ' + this._translateService.instant('general.version');
-  private imageCropper: ImageCropper;
+  // translation strings in UI
+  mcu_version_label: string = ` - SmartDrive MCU ${this._translateService.instant('general.version')}`;
+  ble_version_label: string = ` - SmartDrive BLE ${this._translateService.instant('general.version')}`;
+  pt_version_label: string = ` - PushTracker ${this._translateService.instant('general.version')}`;
+
+  private _imageCropper: ImageCropper;
   private _snackbar = new SnackBar();
-  private index = -1; // index into DemoService.Demos
+  private _index = -1; // index into DemoService.Demos
   private _datastore = Kinvey.DataStore.collection<any>('SmartDrives');
 
   constructor(
-    private pageRoute: PageRoute,
-    private zone: NgZone,
-    private barcodeScanner: BarcodeScanner,
+    private _pageRoute: PageRoute,
+    private _zone: NgZone,
+    private _barcodeScanner: BarcodeScanner,
     private _progressService: ProgressService,
     private _demoService: DemoService,
     private _bluetoothService: BluetoothService,
@@ -53,12 +55,12 @@ export class DemoDetailComponent {
     private _translateService: TranslateService,
     private _loggingService: LoggingService
   ) {
-    this.imageCropper = new ImageCropper();
-    this.pageRoute.activatedRoute.pipe(switchMap(activatedRoute => activatedRoute.queryParams)).forEach(params => {
+    this._imageCropper = new ImageCropper();
+    this._pageRoute.activatedRoute.pipe(switchMap(activatedRoute => activatedRoute.queryParams)).forEach(params => {
       console.log('route params', params);
       if (params.index !== undefined && params.index > -1) {
-        this.index = params.index;
-        const demo = DemoService.Demos.getItem(this.index);
+        this._index = params.index;
+        const demo = DemoService.Demos.getItem(this._index);
         // BRAD - fix the image before binding to UI - https://github.com/PushTracker/EvalApp/issues/144
         if (demo.pt_image && demo.pt_image_base64) {
           demo.pt_image = fromBase64(demo.pt_image_base64);
@@ -101,7 +103,7 @@ export class DemoDetailComponent {
       if (result && result.image) {
         console.log('ImageCropper returned cropped image.');
         this.demo.sd_image = result.image;
-        if (this.index && this.demo.sd_image) {
+        if (this._index && this.demo.sd_image) {
           // auto-save if this demo already exists
           const picKey = this.demo.getSDImageFSKey();
           const b64 = this.demo.sd_image.toBase64String('png');
@@ -122,7 +124,7 @@ export class DemoDetailComponent {
       if (result && result.image !== null) {
         console.log('ImageCropper return cropped image.');
         this.demo.pt_image = result.image;
-        if (this.index && this.demo.pt_image) {
+        if (this._index && this.demo.pt_image) {
           // auto-save if this demo already exists
           const picKey = this.demo.getPTImageFSKey();
           const b64 = this.demo.pt_image.toBase64String('png');
@@ -159,16 +161,16 @@ export class DemoDetailComponent {
 
       // the demo service calls load() at the end ofa create
       // now re-load our data from the service
-      if (this.index > -1) {
+      if (this._index > -1) {
         console.log('index is greater than -1');
       } else {
-        this.index = DemoService.Demos.indexOf(
+        this._index = DemoService.Demos.indexOf(
           this._demoService.getDemoBySmartDriveSerialNumber(this.demo.smartdrive_serial_number)
         );
       }
 
-      console.log('this.index', this.index);
-      const demo = DemoService.Demos.getItem(this.index);
+      console.log('this._index', this._index);
+      const demo = DemoService.Demos.getItem(this._index);
       console.log('demo', demo);
 
       // BRAD - https://github.com/PushTracker/EvalApp/issues/144
@@ -189,7 +191,7 @@ export class DemoDetailComponent {
   }
 
   onScan(deviceName) {
-    this.barcodeScanner
+    this._barcodeScanner
       .scan({
         formats: 'QR_CODE, EAN_13',
         cancelLabel: 'Cancel Scan', // iOS only
@@ -253,7 +255,7 @@ export class DemoDetailComponent {
   }
 
   onVersionTap() {
-    this.zone.run(() => {
+    this._zone.run(() => {
       const connectedPTs = BluetoothService.PushTrackers.filter(pt => pt.connected);
       if (connectedPTs.length > 1) {
         const pts = connectedPTs.map(pt => pt.address);
@@ -360,6 +362,7 @@ export class DemoDetailComponent {
       console.log('no geo for demo', this.demo);
       const nsMapView = args.object as View;
       nsMapView.visibility = 'collapse';
+      nsMapView.height = 0;
       return;
     }
 
@@ -472,7 +475,7 @@ export class DemoDetailComponent {
       const iSrc = await source.fromAsset(imageAsset);
 
       console.log('Showing ImageCropper.');
-      const result = (await this.imageCropper.show(iSrc, {
+      const result = (await this._imageCropper.show(iSrc, {
         width: 256,
         height: 256,
         lockSquare: true

@@ -1,5 +1,3 @@
-// /// <reference path="../../../typings/android27.d.ts" />
-
 import { Injectable } from '@angular/core';
 import { Packet, PushTracker, SmartDrive } from '@maxmobility/core';
 import { TranslateService } from '@ngx-translate/core';

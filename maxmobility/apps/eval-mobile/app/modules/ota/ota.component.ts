@@ -25,7 +25,7 @@ export class OTAComponent implements OnInit {
   updating = false;
   searching = false;
   bluetoothReady = false;
-  // text
+  // translation - changes depending on state
   updatingButtonText = this._translateService.instant('ota.begin');
   smartDriveOTAs = new ObservableArray<SmartDrive>();
   pushTrackerOTAs = new ObservableArray<PushTracker>();

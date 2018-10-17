@@ -1,8 +1,8 @@
 <ActionBar class="action-bar" flat="true" [title]="title">
   <NavigationButton android:visibility="collapse"></NavigationButton>
 
-  <ActionItem (tap)="onSave()" ios.systemIcon="3" ios.position="right" [ios:text]="'general.save' | translate" color="white">
-    <Button [text]="'general.save' | translate" class="button"></Button>
+  <ActionItem (tap)="onSave()" ios.systemIcon="3" ios.position="right" [text]="'general.save' | translate" color="white">
+    <!-- <Button [text]="'general.save' | translate" class="button"></Button> -->
   </ActionItem>
 </ActionBar>
 

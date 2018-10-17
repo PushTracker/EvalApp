@@ -39,19 +39,7 @@ export class SignUpComponent implements OnInit {
 
   selectedUserTypeIndex = 0;
 
-  error: string = this._translateService.instant('user.error');
   ok: string = this._translateService.instant('dialogs.ok');
-  form_invalid: string = this._translateService.instant('user.form-invalid');
-  email_invalid: string = this._translateService.instant('user.email-invalid');
-  account_creating: string = this._translateService.instant('user.account-creating');
-  success: string = this._translateService.instant('user.success');
-  sign_up_success: string = this._translateService.instant('user.sign-up-success');
-  sign_up_error: string = this._translateService.instant('user.sign-up-error');
-  first_name_error: string = this._translateService.instant('user.first-name-error');
-  last_name_error: string = this._translateService.instant('user.last-name-error');
-  password_error: string = this._translateService.instant('user.password-error');
-  email_error: string = this._translateService.instant('user.email-error');
-  email_required: string = this._translateService.instant('user.email-required');
 
   constructor(
     private _userService: UserService,
@@ -149,7 +137,7 @@ export class SignUpComponent implements OnInit {
     //       user cannot create the account without reading and
     //       agreeing to both!
 
-    this._progressService.show(this.account_creating);
+    this._progressService.show(this._translateService.instant('user.account-creating'));
     // need to make sure the username is not already taken
     this._userService
       .isUsernameTaken(this.user.username)
@@ -161,8 +149,8 @@ export class SignUpComponent implements OnInit {
             CLog(JSON.stringify(user));
             this._progressService.hide();
             alert({
-              title: this.success,
-              message: this.sign_up_success + ` ${user.email}`,
+              title: this._translateService.instant('user.success'),
+              message: this._translateService.instant('user.sign-up-success') + ` ${user.email}`,
               okButtonText: this.ok
             }).then(() => {
               this._router.navigate(['/home'], { clearHistory: true });
@@ -176,7 +164,11 @@ export class SignUpComponent implements OnInit {
       .catch(err => {
         this._progressService.hide();
         this._logService.logException(err);
-        alert({ title: this.error, message: this.sign_up_error, okButtonText: this.ok });
+        alert({
+          title: this._translateService.instant('user.error'),
+          message: this._translateService.instant('user.sign-up-error'),
+          okButtonText: this.ok
+        });
       });
   }
 
@@ -202,14 +194,14 @@ export class SignUpComponent implements OnInit {
     CLog('isEmailValid', text);
 
     if (!text) {
-      this.emailError = this.email_required;
+      this.emailError = this._translateService.instant('user.email-required');
       return false;
     }
 
     // make sure it's a valid email
     const email = text.trim();
     if (!validate(email)) {
-      this.emailError = `"${email}" ` + this.email_error;
+      this.emailError = `"${email}" ${this._translateService.instant('user.email-error')}`;
       return false;
     }
 
@@ -220,7 +212,7 @@ export class SignUpComponent implements OnInit {
   private _isPasswordValid(text: string): boolean {
     // validate the password
     if (!text) {
-      this.passwordError = this.password_error;
+      this.passwordError = this._translateService.instant('user.password-error');
       return false;
     }
     this.passwordError = '';
@@ -230,7 +222,7 @@ export class SignUpComponent implements OnInit {
   private _isFirstNameValid(text: string): boolean {
     // validate the password
     if (!text) {
-      this.firstNameError = this.first_name_error;
+      this.firstNameError = this._translateService.instant('user.first-name-error');
       return false;
     }
     this.firstNameError = '';
@@ -240,7 +232,7 @@ export class SignUpComponent implements OnInit {
   private _isLastNameValid(text: string): boolean {
     // validate the password
     if (!text) {
-      this.lastNameError = this.last_name_error;
+      this.lastNameError = this._translateService.instant('user.last-name-error');
       return false;
     }
     this.lastNameError = '';
