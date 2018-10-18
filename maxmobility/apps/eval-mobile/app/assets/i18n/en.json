@@ -107,13 +107,35 @@
     "pain-question": "Do you have pain from pushing?",
     "pain-label": "Pain Level:",
     "fatigue-question": "Do you have fatigue from pushing?",
-    "fatigue-label": "Fatigue Level:",
-    "independence-question": "Does it impact your independence?",
-    "independence-label": "Impact on Independence:",
-    "years-question": "How many years have you been in a manual chair?",
-    "years-label": "Years",
-    "chair-question": "What is your Manual Wheelchair?",
-    "chair-label": "Chair Make"
+      "fatigue-label": "Fatigue Level:",
+      "independence-question": "Does it impact your independence?",
+      "independence-label": "Impact on Independence:",
+      "years-question": "How many years have you been in a manual chair?",
+      "years-label": "Years",
+	  "years-options": [
+		  "1",
+		  "2",
+		  "3",
+		  "4",
+		  "5+",
+		  "10+",
+		  "20+",
+		  "30+"
+	  ],
+      "chair-question": "What is your Manual Wheelchair?",
+      "chair-label": "Chair Make",
+	  "chair-options": [
+		  "Colours",
+		  "Invacare / Küschall",
+		  "Karman",
+		  "Ki",
+		  "Motion Composites",
+		  "Panthera",
+		  "Quickie / Sopur / RGK",
+		  "TiLite",
+		  "Top End",
+		  "Other"
+	  ]
   },
   "training": [
     {
@@ -286,7 +308,7 @@
         "Press and hold the right flat button on your PushTracker for three seconds to enter the settings menu",
         "Press the right button to scroll to the phone/PT icon.",
         "Press the left raised button to initiate pairing.",
-        "Note: On some Android devices, while pairing, you might receive a message about an `Incorrect Pin or Passkey`. As long as the PushTracker shows that it's connected you can ignore this."
+        "Note: On some Android devices, while pairing, you might receive a message about an 'Incorrect Pin or Passkey'. As long as the PushTracker shows that it's connected you can ignore this."
       ]
     },
     {
