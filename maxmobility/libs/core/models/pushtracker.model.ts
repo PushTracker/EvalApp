@@ -568,7 +568,7 @@ export class PushTracker extends Observable {
               break;
             case PushTracker.OTAState.awaiting_version:
               if (this.ableToSend && haveVersion) {
-                if (this.version == fwVersion) {
+                if (this.version >= fwVersion) {
                   this.otaActions = ['ota.action.force', 'ota.action.cancel'];
                 } else {
                   this.otaState = PushTracker.OTAState.awaiting_ready;

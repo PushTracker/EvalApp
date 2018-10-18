@@ -330,6 +330,9 @@ export class BluetoothService {
     console.log(`${dev.address} - bond state - ${bondState}`);
     switch (bondState) {
       case BondState.bonding:
+        if (isAndroid) {
+          dev.device.fetchUuidsWithSdp();
+        }
         break;
       case BondState.bonded:
         if (isAndroid) {
@@ -424,7 +427,9 @@ export class BluetoothService {
         // be something we move into the bluetooth layer
 
         // TODO: move this into the bluetooth layer!
-        //device.fetchUuidsWithSdp();
+        if (isAndroid) {
+          device.device.fetchUuidsWithSdp();
+        }
 
         // TODO: use BluetoothGatt to get the service (by UUID 1800)
 
