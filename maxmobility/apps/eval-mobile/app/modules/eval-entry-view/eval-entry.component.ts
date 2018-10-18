@@ -1,10 +1,10 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Evaluation } from '@maxmobility/core';
 import { EvaluationService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { DropDown } from 'nativescript-drop-down';
-import * as app from 'tns-core-modules/application';
+import { isAndroid, isIOS } from 'tns-core-modules/platform';
 import { confirm } from 'tns-core-modules/ui/dialogs';
 
 @Component({
@@ -13,7 +13,7 @@ import { confirm } from 'tns-core-modules/ui/dialogs';
   templateUrl: './eval-entry.component.html',
   styleUrls: ['./eval-entry.component.css']
 })
-export class EvalEntryComponent implements OnInit {
+export class EvalEntryComponent {
   @ViewChild('yearDropdown')
   yearDropdown: ElementRef;
   @ViewChild('chairDropdown')
@@ -22,30 +22,37 @@ export class EvalEntryComponent implements OnInit {
   hasPushingFatigue = false;
   impactsIndependence = false;
 
-  isIOS = false;
-  isAndroid = false;
-
   years = ['1', '2', '3', '4', '5+', '10+', '20+', '30+'];
   chair = ['TiLite', 'Sunrise / Quickie', 'Invacare', 'Colours', 'Motion Composites', 'Top End', 'Karman', 'Other'];
+
+  evaluation: Evaluation;
 
   constructor(
     private routerExtensions: RouterExtensions,
     private _evaluationService: EvaluationService,
     private _translateService: TranslateService
   ) {
-    // make sure we clear out any previous evaluation info!
+    console.log('Eval-Entry.component Constructor ***');
+    // set the eval to the eval on the service
+    this.evaluation = this._evaluationService.evaluation;
+    console.log('this.evaluation', this.evaluation);
+
+    // if the evaluation from the service is not null then ask the user if they want to continue or start new eval
     if (this.evaluation !== null) {
+      console.log('the eval is not null', this.evaluation);
       setTimeout(() => {
         console.log('the evaluation is not complete');
         confirm({
           message: this._translateService.instant('evals.incomplete-dialog.message'),
-          okButtonText: this._translateService.instant('dialogs.ok'),
+          okButtonText: this._translateService.instant('dialogs.yes'),
           cancelButtonText: this._translateService.instant('dialogs.no')
         }).then(result => {
           console.log('confirm result', result);
           if (result === true) {
             console.log('need to load the last data set on the evaluation...');
             console.log(this.evaluation);
+            console.log('evalService.evaluation', this._evaluationService.evaluation);
+            this.evaluation = this._evaluationService.evaluation;
             // we have the data on the `evaluation` on the service so just let it load
             // we have to check the toggles bc we have props here that set them false when the component loads ^^^
             this.hasPushingFatigue = this.evaluation.pushing_fatigue ? true : false;
@@ -64,13 +71,27 @@ export class EvalEntryComponent implements OnInit {
               (this.chairDropdown.nativeElement as DropDown).selectedIndex = chairIndex;
             }
           } else {
+            console.log('creating new Evaluation object');
+            // brad - for the record I don't like this approach 🤮
             this._evaluationService.evaluation = new Evaluation();
+            this.evaluation = this._evaluationService.evaluation;
           }
         });
       }, 300);
     } else {
+      console.log('the eval is null so making new one');
       this._evaluationService.evaluation = new Evaluation();
+      // have to assign the new eval on the service to the eval member of this component
+      this.evaluation = this._evaluationService.evaluation;
     }
+  }
+
+  get isIOS(): boolean {
+    return isIOS;
+  }
+
+  get isAndroid(): boolean {
+    return isAndroid;
   }
 
   onSliderUpdate(key, args) {
@@ -107,17 +128,5 @@ export class EvalEntryComponent implements OnInit {
     if (!this.impactsIndependence) {
       this.evaluation.impact_on_independence = 0;
     }
-  }
-
-  ngOnInit(): void {
-    if (app.ios) {
-      this.isIOS = true;
-    } else if (app.android) {
-      this.isAndroid = true;
-    }
-  }
-
-  get evaluation() {
-    return this._evaluationService.evaluation;
   }
 }
