@@ -608,7 +608,7 @@ export class SmartDrive extends Observable {
               break;
             case SmartDrive.OTAState.awaiting_versions:
               if (haveBLEVersion && haveMCUVersion) {
-                if (bleVersion == bleFWVersion && mcuVersion == mcuFWVersion) {
+                if (bleVersion >= bleFWVersion && mcuVersion >= mcuFWVersion) {
                   this.otaActions = ['ota.action.force', 'ota.action.cancel'];
                 } else {
                   this.otaState = SmartDrive.OTAState.awaiting_mcu_ready;
