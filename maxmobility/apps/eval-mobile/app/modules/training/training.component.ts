@@ -1,12 +1,11 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import { NavigationStart, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { RouterExtensions } from 'nativescript-angular/router';
+import { Toasty } from 'nativescript-toasty';
 import { Subscription } from 'rxjs';
-import { Page } from 'tns-core-modules/ui/page';
-import { SnackBar } from 'nativescript-snackbar';
 import { isAndroid, isIOS } from 'tns-core-modules/platform';
-const carousel = require('nativescript-carousel').Carousel;
+import { Page } from 'tns-core-modules/ui/page';
 
 @Component({
   selector: 'Training',
@@ -17,11 +16,10 @@ const carousel = require('nativescript-carousel').Carousel;
 export class TrainingComponent implements AfterViewInit {
   @ViewChild('carousel')
   carousel: ElementRef;
-  snackbar = new SnackBar();
   slides = this.translateService.instant('training');
 
   private routeSub: Subscription; // subscription to route observer
-  private snackbarTimeoutID: any;
+  private toastTimeoutID: any;
 
   constructor(
     private _page: Page,
@@ -51,28 +49,15 @@ export class TrainingComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.snackbarTimeoutID = setTimeout(() => {
-      try {
-        this.snackbar.simple('Swipe left to view more slides.').catch(err => {
-          this.snackbarTimeoutID = null;
-        });
-      } catch (ex) {
-        this.snackbarTimeoutID = null;
-      }
-      this.snackbarTimeoutID = null;
+    this.toastTimeoutID = setTimeout(() => {
+      new Toasty(this.translateService.instant('training_component.swipe-left-message'), 'long').show();
     }, 1000);
 
     this.routeSub = this._router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
-        if (this.snackbarTimeoutID) {
-          clearTimeout(this.snackbarTimeoutID);
+        if (this.toastTimeoutID) {
+          clearTimeout(this.toastTimeoutID);
         }
-      }
-    });
-
-    this._page.on(Page.navigatingFromEvent, event => {
-      if (this.snackbarTimeoutID) {
-        clearTimeout(this.snackbarTimeoutID);
       }
     });
   }

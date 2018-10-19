@@ -5,7 +5,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 import { RouterExtensions } from 'nativescript-angular/router';
 import * as geolocation from 'nativescript-geolocation';
-import { SnackBar } from 'nativescript-snackbar';
 import { Toasty } from 'nativescript-toasty';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
 import * as http from 'tns-core-modules/http';
@@ -28,7 +27,6 @@ export class DemosComponent implements OnInit {
 
   currentUserId: string;
 
-  private _snackBar = new SnackBar();
   private _datastore = Kinvey.DataStore.collection<any>('SmartDrives');
 
   constructor(
@@ -87,9 +85,9 @@ export class DemosComponent implements OnInit {
 
       const isEnabled = await geolocation.isEnabled();
       if (isEnabled) {
-        // if more than 750ms pass then show a snackbar that location is being calculated...
+        // if more than 750ms pass then show a toasty that location is being calculated...
         processTimeout = setTimeout(() => {
-          this._snackBar.simple(this._translateService.instant('demos.location-calculating'));
+          new Toasty(this._translateService.instant('demos.location-calculating')).show();
         }, 750);
       }
 
@@ -153,7 +151,7 @@ export class DemosComponent implements OnInit {
       });
       console.log('response code', response.statusCode);
       if (response.statusCode === 200) {
-        this._snackBar.simple(this._translateService.instant('demos.demo-request-success'));
+        new Toasty(this._translateService.instant('demos.demo-request-success')).show();
       } else {
         alert({
           message: this._translateService.instant('demos.demo-request-error'),

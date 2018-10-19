@@ -10,7 +10,7 @@ import { ValueList } from 'nativescript-drop-down';
 import * as email from 'nativescript-email';
 import { ImageCropper } from 'nativescript-imagecropper';
 import * as LS from 'nativescript-localstorage';
-import { SnackBar } from 'nativescript-snackbar';
+import { Toasty } from 'nativescript-toasty';
 import { Subscription } from 'rxjs';
 import * as http from 'tns-core-modules/http';
 import * as imageSource from 'tns-core-modules/image-source';
@@ -50,7 +50,6 @@ export class AccountComponent implements OnInit {
   private imageCropper: ImageCropper;
   private _routeSub: Subscription; // subscription to route observer
   private profileImageKey: string;
-  private _snackbar = new SnackBar();
 
   constructor(
     private _userService: UserService,
@@ -193,10 +192,17 @@ export class AccountComponent implements OnInit {
       cancelButtonText: this.no
     }).then(result => {
       if (result) {
-        this._saveUserToKinvey().then(resp => {
-          CLog('update response', JSON.stringify(resp));
-          this._snackbar.simple(this._translateService.instant('user.account-update-complete'));
-        });
+        this._saveUserToKinvey()
+          .then(resp => {
+            CLog('update response', JSON.stringify(resp));
+            new Toasty(this._translateService.instant('user.account-update-complete'), 'short', 'center').show();
+          })
+          .catch(error => {
+            alert({
+              message: this._translateService.instant('user.account-update-error'),
+              okButtonText: this._translateService.instant('dialogs.ok')
+            });
+          });
       }
     });
   }

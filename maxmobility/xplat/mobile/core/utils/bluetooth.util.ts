@@ -1,13 +1,10 @@
-import * as dialogsModule from 'tns-core-modules/ui/dialogs';
 import { Injectable } from '@angular/core';
+import { Bluetooth } from 'nativescript-bluetooth';
+import { Feedback } from 'nativescript-feedback';
+import { SnackBar } from 'nativescript-snackbar';
 import { fromObject } from 'tns-core-modules/data/observable';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
-import { SnackBar } from 'nativescript-snackbar';
-import { Feedback } from 'nativescript-feedback';
-import { Bluetooth } from 'nativescript-bluetooth';
-import { Packet, DailyInfo } from '@maxmobility/core';
-//import { DailyInfo } from "./daily-info";
-//const Packet = require("./packet/packet");
+import * as dialogsModule from 'tns-core-modules/ui/dialogs';
 
 @Injectable()
 export class BluetoothService {

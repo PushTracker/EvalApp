@@ -304,8 +304,6 @@ export class PairingComponent implements OnInit {
 
     // no pushtrackers are connected - will show snackbar alert
     if (connectedPTs.length <= 0) {
-      // this._noPushTrackersConnectedAlert();
-
       this._snackbar
         .action({
           actionText: this._translateService.instant('buttons.more-info'),

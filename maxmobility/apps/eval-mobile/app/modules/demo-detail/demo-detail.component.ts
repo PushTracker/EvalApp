@@ -13,11 +13,12 @@ import { Kinvey } from 'kinvey-nativescript-sdk';
 import { PageRoute } from 'nativescript-angular/router';
 import { BarcodeScanner } from 'nativescript-barcodescanner';
 import * as camera from 'nativescript-camera';
+import { Feedback } from 'nativescript-feedback';
 import * as geolocation from 'nativescript-geolocation';
 import { ImageCropper, Result as ImageCropperResult } from 'nativescript-imagecropper';
 import * as LS from 'nativescript-localstorage';
 import { Mapbox } from 'nativescript-mapbox';
-import { SnackBar } from 'nativescript-snackbar';
+import { Toasty } from 'nativescript-toasty';
 import { switchMap } from 'rxjs/operators';
 import { ImageAsset } from 'tns-core-modules/image-asset/image-asset';
 import { fromBase64, ImageSource } from 'tns-core-modules/image-source/image-source';
@@ -40,7 +41,7 @@ export class DemoDetailComponent {
   pt_version_label: string = ` - PushTracker ${this._translateService.instant('general.version')}`;
 
   private _imageCropper: ImageCropper;
-  private _snackbar = new SnackBar();
+  private _feedback = new Feedback();
   private _index = -1; // index into DemoService.Demos
   private _datastore = Kinvey.DataStore.collection<any>('SmartDrives');
 
@@ -286,7 +287,9 @@ export class DemoDetailComponent {
         this.demo.ble_version = PushTracker.versionByteToString(pt.ble_version);
         this.demo.pt_mac_addr = pt.address;
       } else {
-        this._snackbar.simple('Please connect a PushTracker');
+        this._feedback.info({
+          message: this._translateService.instant('demo-detail.connect-pt')
+        });
       }
     });
   }
@@ -303,9 +306,9 @@ export class DemoDetailComponent {
 
       const isEnabled = await geolocation.isEnabled();
       if (isEnabled) {
-        // if more than 750ms pass then show a snackbar that location is being calculated...
+        // if more than 750ms pass then show a toasty that location is being calculated...
         processTimeout = setTimeout(() => {
-          this._snackbar.simple(this._translateService.instant('demos.location-calculating'));
+          new Toasty(this._translateService.instant('demos.location-calculating')).show();
         }, 750);
       }
 
