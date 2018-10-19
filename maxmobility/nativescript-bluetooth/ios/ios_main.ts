@@ -2,27 +2,23 @@
 
 declare var NSMakeRange;
 
-import { ios as iOS_Utils } from 'tns-core-modules/utils/utils';
 import {
-  Central,
-  Peripheral,
-  BondState,
-  ConnectionState,
   BluetoothCommon,
+  Central,
   CLog,
-  StopNotifyingOptions,
-  StartNotifyingOptions,
+  CLogTypes,
   ConnectOptions,
-  StartScanningOptions,
-  StartAdvertisingOptions,
-  MakeServiceOptions,
   MakeCharacteristicOptions,
-  CharacteristicProperties,
-  CLogTypes
+  MakeServiceOptions,
+  Peripheral,
+  StartAdvertisingOptions,
+  StartNotifyingOptions,
+  StartScanningOptions,
+  StopNotifyingOptions
 } from '../common';
-import { CBPeripheralManagerDelegateImpl } from './CBPeripheralManagerDelegateImpl';
-import { CBPeripheralDelegateImpl } from './CBPeripheralDelegateImpl';
 import { CBCentralManagerDelegateImpl } from './CBCentralManagerDelegateImpl';
+import { CBPeripheralDelegateImpl } from './CBPeripheralDelegateImpl';
+import { CBPeripheralManagerDelegateImpl } from './CBPeripheralManagerDelegateImpl';
 
 // These are global for the entire Bluetooth class
 let singleton: WeakRef<Bluetooth> = null;
@@ -33,7 +29,7 @@ export function deviceToCentral(dev: CBCentral): Central {
     device: dev,
     UUIDs: [], // TODO: fix
     address: dev.identifier.UUIDString,
-    name: dev.name || 'PushTracker', // TODO: fix
+    name: (dev as any).name || 'PushTracker', // TODO: fix
     RSSI: null,
     manufacturerId: null,
     manufacturerData: null
@@ -52,7 +48,7 @@ export function deviceToPeripheral(dev: CBPeripheral): Peripheral {
   };
 }
 
-export { Central, Peripheral, BondState, ConnectionState } from '../common';
+export { BondState, Central, ConnectionState, Peripheral } from '../common';
 
 export class Bluetooth extends BluetoothCommon {
   private readonly _centralDelegate: CBCentralManagerDelegate = null;
@@ -454,6 +450,7 @@ export class Bluetooth extends BluetoothCommon {
 
         CLog(CLogTypes.info, `Bluetooth.startAdvertising ---- creating advertisement`);
         const advertisement = NSDictionary.dictionaryWithObjectsForKeys(
+          // @ts-ignore
           [[uuid], 'data_service'],
           [CBAdvertisementDataServiceUUIDsKey, CBAdvertisementDataLocalNameKey]
         );
