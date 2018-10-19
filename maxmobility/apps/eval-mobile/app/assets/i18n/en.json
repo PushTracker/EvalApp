@@ -107,35 +107,26 @@
     "pain-question": "Do you have pain from pushing?",
     "pain-label": "Pain Level:",
     "fatigue-question": "Do you have fatigue from pushing?",
-      "fatigue-label": "Fatigue Level:",
-      "independence-question": "Does it impact your independence?",
-      "independence-label": "Impact on Independence:",
-      "years-question": "How many years have you been in a manual chair?",
-      "years-label": "Years",
-	  "years-options": [
-		  "1",
-		  "2",
-		  "3",
-		  "4",
-		  "5+",
-		  "10+",
-		  "20+",
-		  "30+"
-	  ],
-      "chair-question": "What is your Manual Wheelchair?",
-      "chair-label": "Chair Make",
-	  "chair-options": [
-		  "Colours",
-		  "Invacare / Küschall",
-		  "Karman",
-		  "Ki",
-		  "Motion Composites",
-		  "Panthera",
-		  "Quickie / Sopur / RGK",
-		  "TiLite",
-		  "Top End",
-		  "Other"
-	  ]
+    "fatigue-label": "Fatigue Level:",
+    "independence-question": "Does it impact your independence?",
+    "independence-label": "Impact on Independence:",
+    "years-question": "How many years have you been in a manual chair?",
+    "years-label": "Years",
+    "years-options": ["1", "2", "3", "4", "5+", "10+", "20+", "30+"],
+    "chair-question": "What is your Manual Wheelchair?",
+    "chair-label": "Chair Make",
+    "chair-options": [
+      "Colours",
+      "Invacare / Küschall",
+      "Karman",
+      "Ki",
+      "Motion Composites",
+      "Panthera",
+      "Quickie / Sopur / RGK",
+      "TiLite",
+      "Top End",
+      "Other"
+    ]
   },
   "training": [
     {
@@ -199,6 +190,9 @@
       ]
     }
   ],
+  "training_component": {
+    "swipe-left-message": "Swipe left to view more slides."
+  },
   "videos": [
     {
       "Url": "8fn26J59WJ4",
@@ -298,7 +292,8 @@
   },
   "demo-detail": {
     "scan-sd": "SD: Press scan or edit button",
-    "scan-pt": "PT: Press scan or edit button"
+    "scan-pt": "PT: Press scan or edit button",
+    "connect-pt": "Please connect a PushTracker."
   },
   "pairing": [
     {
@@ -366,6 +361,7 @@
     "account-update": "Update User Account?",
     "account-update-confirm": "Send these settings to the Server?",
     "account-update-complete": "Your profile has been updated.",
+    "account-update-error": "An error occurred updating your profile. Please try again.",
     "account-reset": "Reset Account?",
     "account-reset-confirm": "Are you sure you want to reset your account (remove all your data / settings)?",
     "account-error": "An error occurred trying to retrieve your account information. Try again later.",
