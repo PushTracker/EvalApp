@@ -8,6 +8,9 @@
     "id": "com.permobil.smarteval",
     "tns-ios": {
       "version": "4.2.0"
+    },
+    "tns-android": {
+      "version": "4.2.0"
     }
   },
   "scripts": {
@@ -79,7 +82,7 @@
     "nativescript-sentry": "^1.5.2",
     "nativescript-snackbar": "file:../../node_modules/nativescript-snackbar",
     "nativescript-theme-core": "file:../../node_modules/nativescript-theme-core",
-    "nativescript-toasty": "^1.1.5",
+    "nativescript-toasty": "^1.2.0",
     "nativescript-ui-listview": "~3.7.2",
     "nativescript-youtubeplayer": "^2.2.6",
     "reflect-metadata": "file:../../node_modules/reflect-metadata",

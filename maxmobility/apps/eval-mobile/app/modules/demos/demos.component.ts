@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 import { RouterExtensions } from 'nativescript-angular/router';
 import * as geolocation from 'nativescript-geolocation';
-import { Toasty } from 'nativescript-toasty';
+import { ToastDuration, Toasty } from 'nativescript-toasty';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
 import * as http from 'tns-core-modules/http';
 import { isAndroid, isIOS } from 'tns-core-modules/platform';
@@ -40,7 +40,7 @@ export class DemosComponent implements OnInit {
 
   ngOnInit() {
     console.log('Demos.Component OnInit');
-    new Toasty(this._translateService.instant('demos.owner-color-explanation'), 'long').show();
+    new Toasty(this._translateService.instant('demos.owner-color-explanation'), ToastDuration.LONG).show();
     const activeUser = Kinvey.User.getActiveUser();
     this.userType = (activeUser.data as User).type as number;
     this.currentUserId = activeUser._id;

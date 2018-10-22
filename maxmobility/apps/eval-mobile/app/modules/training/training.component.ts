@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { RouterExtensions } from 'nativescript-angular/router';
-import { Toasty } from 'nativescript-toasty';
+import { ToastDuration, Toasty } from 'nativescript-toasty';
 import { Subscription } from 'rxjs';
 import { isAndroid, isIOS } from 'tns-core-modules/platform';
 import { Page } from 'tns-core-modules/ui/page';
@@ -50,7 +50,7 @@ export class TrainingComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.toastTimeoutID = setTimeout(() => {
-      new Toasty(this.translateService.instant('training_component.swipe-left-message'), 'long').show();
+      new Toasty(this.translateService.instant('training_component.swipe-left-message'), ToastDuration.LONG).show();
     }, 1000);
 
     this.routeSub = this._router.events.subscribe(event => {

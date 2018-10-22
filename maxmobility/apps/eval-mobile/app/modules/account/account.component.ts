@@ -10,7 +10,7 @@ import { ValueList } from 'nativescript-drop-down';
 import * as email from 'nativescript-email';
 import { ImageCropper } from 'nativescript-imagecropper';
 import * as LS from 'nativescript-localstorage';
-import { Toasty } from 'nativescript-toasty';
+import { ToastDuration, ToastPosition, Toasty } from 'nativescript-toasty';
 import { Subscription } from 'rxjs';
 import * as http from 'tns-core-modules/http';
 import * as imageSource from 'tns-core-modules/image-source';
@@ -195,7 +195,11 @@ export class AccountComponent implements OnInit {
         this._saveUserToKinvey()
           .then(resp => {
             CLog('update response', JSON.stringify(resp));
-            new Toasty(this._translateService.instant('user.account-update-complete'), 'short', 'center').show();
+            new Toasty(
+              this._translateService.instant('user.account-update-complete'),
+              ToastDuration.SHORT,
+              ToastPosition.CENTER
+            ).show();
           })
           .catch(error => {
             alert({
