@@ -4,11 +4,14 @@ import { BluetoothService, EvaluationService, LoggingService, ProgressService } 
 import { TranslateService } from '@ngx-translate/core';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { CFAlertDialog, CFAlertStyle } from 'nativescript-cfalert-dialog';
-import { DropDown } from 'nativescript-drop-down';
+import { DropDown, SelectedIndexChangedEventData } from 'nativescript-drop-down';
 import { SnackBar } from 'nativescript-snackbar';
 import { isIOS } from 'tns-core-modules/platform';
 import { View } from 'tns-core-modules/ui/core/view';
 import { alert } from 'tns-core-modules/ui/dialogs';
+import { Slider } from 'tns-core-modules/ui/slider';
+import { Switch } from 'tns-core-modules/ui/switch/switch';
+import { TextField } from 'tns-core-modules/ui/text-field/text-field';
 
 @Component({
   selector: 'Trial',
@@ -17,24 +20,18 @@ import { alert } from 'tns-core-modules/ui/dialogs';
   styleUrls: ['./trial.component.css']
 })
 export class TrialComponent implements OnInit {
-  @ViewChild('withPage')
-  withPageView: ElementRef;
   @ViewChild('startWith')
   startWithView: ElementRef;
   @ViewChild('stopWith')
   stopWithView: ElementRef;
   @ViewChild('nextWith')
   nextWithView: ElementRef;
-
-  @ViewChild('withoutPage')
-  withoutPageView: ElementRef;
   @ViewChild('startWithout')
   startWithoutView: ElementRef;
   @ViewChild('stopWithout')
   stopWithoutView: ElementRef;
   @ViewChild('nextWithout')
   nextWithoutView: ElementRef;
-
   @ViewChild('carousel')
   carousel: ElementRef;
   // for settings
@@ -82,6 +79,10 @@ export class TrialComponent implements OnInit {
     this.trial.setSettings(this.settings);
   }
 
+  isIOS(): boolean {
+    return isIOS;
+  }
+
   ngOnInit() {
     this._hideview(this.stopWithView.nativeElement);
     this._hideview(this.nextWithView.nativeElement);
@@ -94,12 +95,15 @@ export class TrialComponent implements OnInit {
     );
   }
 
-  isIOS(): boolean {
-    return isIOS;
+  goToNextSlide(event: any) {
+    this.carousel.nativeElement.selectedPage++;
+    this.carousel.nativeElement.refresh();
   }
 
-  // button events
-  onNext(): void {
+  /**
+   * Summary Button tap. Push the trial to the evaluation.trials array and navigate to summary component.
+   */
+  onSummaryTap(): void {
     // make sure we have an evaluation on the service since it defaults null
     if (!this._evaluationService.evaluation) {
       this._evaluationService.evaluation = new Evaluation();
@@ -113,38 +117,42 @@ export class TrialComponent implements OnInit {
     });
   }
 
-  onBack(): void {
-    this._routerExtensions.navigate(['/training'], {
-      transition: {
-        name: 'slideRight'
-      }
-    });
-  }
-
-  onSettingsDropdown(key: string, args: any) {
+  onSettingsDropdownChanged(key: string, args: SelectedIndexChangedEventData) {
     const optionKey = key.substr(0, 1).toUpperCase() + key.substr(1);
     this.settings[key] = PushTracker.Settings[optionKey].Options[args.newIndex];
     this.trial.setSettings(this.settings);
   }
 
-  onSettingsUpdate(key: string, args: any) {
+  onSettingsSliderChange(key: string, args: any) {
     // slider
-    this.settings[key] = args.object.value * 10;
+    this.settings[key] = (args.object as Slider).value * 10;
     this.trial.setSettings(this.settings);
   }
 
-  onSettingsChecked(key, args) {
-    this.settings[key] = args.value;
+  onSettingsSwitchChanged(key, args) {
+    const xSwitch = args.object as Switch;
+    this.settings[key] = xSwitch.checked;
     this.trial.setSettings(this.settings);
   }
 
-  onPushSettingsUpdate(key: string, args: any) {
-    this.pushSettings[key] = args.object.value;
+  onPushSettingsSliderUpdate(key: string, args) {
+    this.pushSettings[key] = (args.object as Slider).value;
   }
 
   onPushSettingsChecked(key, args) {
     // slider
-    this.pushSettings[key] = args.value;
+    const xSwitch = args.object as Switch;
+    this.pushSettings[key] = xSwitch.checked;
+  }
+
+  onSwitchChecked(key, args) {
+    const xSwitch = args.object as Switch;
+    this.trial[key] = xSwitch.checked;
+  }
+
+  onTextChange(key, args) {
+    const xTextfield = args.object as TextField;
+    this.trial[key] = xTextfield.text;
   }
 
   /**
@@ -412,16 +420,6 @@ export class TrialComponent implements OnInit {
     }
   }
 
-  onNextWith(event: any) {
-    this.carousel.nativeElement.selectedPage++;
-    this.carousel.nativeElement.refresh();
-  }
-
-  onNextWithout(event: any) {
-    this.carousel.nativeElement.selectedPage++;
-    this.carousel.nativeElement.refresh();
-  }
-
   /**
    * Starts a Trial WITHOUT a SmartDrive
    */
@@ -568,17 +566,9 @@ export class TrialComponent implements OnInit {
     }
   }
 
-  onSwitchChecked(key, args) {
-    this.trial[key] = args.value;
-  }
-
-  onTextChange(key, args) {
-    this.trial[key] = args.value;
-  }
-
-  onSliderUpdate(key, args) {
-    this.trial[key] = Math.round(args.object.value) / 10;
-  }
+  // onSliderUpdate(key, args) {
+  //   this.trial[key] = Math.round(args.object.value) / 10;
+  // }
 
   private _hideview(view: View) {
     view.opacity = 0;
@@ -645,9 +635,5 @@ export class TrialComponent implements OnInit {
     } else {
       return true;
     }
-  }
-
-  private _trialFailureUXError() {
-    console.log('_trialFailureUXError');
   }
 }
