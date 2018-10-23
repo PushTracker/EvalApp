@@ -16,7 +16,7 @@
         <RadListView row="2" colSpan="2" ios:height="210" [items]="connectivityItems">
           <ng-template tkListItemTemplate let-item="item">
             <GridLayout rows="140, auto" class="list-item-layout">
-              <Image row="0" [src]="item.Image" (tap)="connectivityThumbTapped(item)" stretch="aspectFill"></Image>
+              <Image row="0" [src]="item.Image" (tap)="connectivityThumbTapped(item)" stretch="aspectFit"></Image>
               <Label row="1" [text]="item.Description | translate" textWrap="true"></Label>
             </GridLayout>
           </ng-template>

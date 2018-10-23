@@ -13,6 +13,7 @@ import * as application from 'tns-core-modules/application';
 import { connectionType, startMonitoring, stopMonitoring } from 'tns-core-modules/connectivity';
 import { device } from 'tns-core-modules/platform';
 import { alert } from 'tns-core-modules/ui/dialogs/dialogs';
+import { KinveyKeys } from './kinvey-keys';
 
 // Register Custom Elements for Angular
 registerElement('Carousel', () => <any>Carousel);
@@ -98,8 +99,8 @@ export class AppComponent {
     });
 
     Kinvey.init({
-      appKey: `${UserService.Kinvey_App_Key}`,
-      appSecret: `${UserService.Kinvey_App_Secret}`
+      appKey: `${KinveyKeys.APP_KEY}`,
+      appSecret: `${KinveyKeys.APP_SECRET}`
     });
     Kinvey.ping()
       .then(res => {

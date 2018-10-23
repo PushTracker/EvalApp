@@ -17,6 +17,7 @@ import * as imageSource from 'tns-core-modules/image-source';
 import { isIOS } from 'tns-core-modules/platform';
 import { alert, confirm, prompt } from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
+import { KinveyKeys } from '~/kinvey-keys';
 
 @Component({
   selector: 'Account',
@@ -344,7 +345,7 @@ export class AccountComponent implements OnInit {
       const token = (this._userService.user._kmd as any).authtoken;
       const response = await http.request({
         method: 'POST',
-        url: 'https://baas.kinvey.com/rpc/kid_SyIIDJjdM/custom/didyouknow',
+        url: `${KinveyKeys.HOST_URL}/rpc/${KinveyKeys.APP_KEY}/custom/didyouknow`,
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Kinvey ${token}`

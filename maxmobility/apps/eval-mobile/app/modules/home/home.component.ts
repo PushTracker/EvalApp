@@ -25,7 +25,7 @@ import { Page } from 'tns-core-modules/ui/page';
 export class HomeComponent {
   connectivityItems = [
     {
-      Image: '~/assets/images/pushTrackerFull.png',
+      Image: '~/assets/images/pt-settings-gear.png',
       Description: 'PushTracker Settings',
       Directive: 'pt-sd',
       Route: '/pairing'

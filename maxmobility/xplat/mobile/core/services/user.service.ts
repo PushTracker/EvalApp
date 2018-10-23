@@ -7,9 +7,6 @@ import * as fs from 'tns-core-modules/file-system/file-system';
 
 @Injectable()
 export class UserService {
-  public static Kinvey_App_Key = 'kid_SyIIDJjdM';
-  public static Kinvey_App_Secret = '3cfe36e6ac8f4d80b04014cc980a4d47';
-  public static Kinvey_Host_Url = 'https://baas.kinvey.com/';
   public static hasRegistered = false;
   private _cfAlertDialog = new CFAlertDialog();
 
