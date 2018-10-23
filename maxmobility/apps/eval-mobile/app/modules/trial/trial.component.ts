@@ -623,12 +623,19 @@ export class TrialComponent implements OnInit {
 
   private _checkPushTrackerVersion(pt: PushTracker) {
     // check the version here (must be >= 1.5)
-    if (pt.version === 0xff || pt.version < 0x15) {
+    if (pt.version < 0x15) {
       alert({
         title: this._translateService.instant('trial.errors.pt-version.title'),
         message:
           this._translateService.instant('trial.errors.pt-version.message') +
           PushTracker.versionByteToString(pt.version),
+        okButtonText: this.okbuttontxt
+      });
+      return false;
+    } else if (pt.version === 0xff) {
+      alert({
+        title: this._translateService.instant('trial.errors.pt-reconnect.title'),
+        message: this._translateService.instant('trial.errors.pt-reconnect.message'),
         okButtonText: this.okbuttontxt
       });
       return false;

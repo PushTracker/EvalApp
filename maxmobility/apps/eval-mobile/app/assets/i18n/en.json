@@ -526,6 +526,10 @@
       "pt-version": {
         "title": "PushTracker Version Error",
         "message": "Your PushTracker version is out of date, please perform an OTA! Current version: "
+      },
+      "pt-reconnect": {
+        "title": "Unknown PushTracker Version",
+        "message": "Your PushTracker has not sent it's version, please disconnect and reconnect the PushTracker to re-send the version information to the Smart Evaluation app."
       }
     }
   },
