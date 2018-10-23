@@ -133,6 +133,22 @@ export class SummaryComponent {
     return isAndroid;
   }
 
+  pushComparison(): string {
+    if (this.pushDiff > 0) {
+      return this._translateService.instant('summary.fewer');
+    } else {
+      return this._translateService.instant('summary.more');
+    }
+  }
+
+  speedComparison(): string {
+    if (this.speedDiff > 1.0) {
+      return this._translateService.instant('summary.higher');
+    } else {
+      return this._translateService.instant('summary.lower');
+    }
+  }
+
   generateLMN(): string {
     // const that = this;
     return mustache.render(this.lmnTemplate, {

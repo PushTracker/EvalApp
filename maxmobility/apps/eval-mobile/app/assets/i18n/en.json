@@ -456,9 +456,9 @@
       "{{/showCadence}}"
     ],
     "user-performed": "User performed ",
-    "pushes": " fewer pushes with SmartDrive.",
+    "pushes": " pushes with SmartDrive.",
     "coast-time": "Average coast time was ",
-    "average-speed": "Average speed time was ",
+    "average-speed": "Average speed was ",
     "with-sd": " with SmartDrive.",
     "at": "At ",
     "cadence": " pushes per minute, user's cadence is exceptionally high. Consider looking at rear wheel placement and efficient push technique.",

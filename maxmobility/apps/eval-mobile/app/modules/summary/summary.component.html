@@ -22,7 +22,7 @@
           <Label textWrap="true" class="summaryDescription">
             <FormattedString>
               <Span [text]="'summary.user-performed' | translate" color="#fff"></Span>
-              <Span [text]="pushDiff.toFixed(0) + '%'" color="#43D551" fontAttributes="Bold"></Span>
+              <Span [text]="pushDiff.toFixed(0) + '% ' + pushComparison()" color="#43D551" fontAttributes="Bold"></Span>
               <Span [text]="'summary.pushes' | translate" color="#fff"></Span>
             </FormattedString>
           </Label>
@@ -31,7 +31,7 @@
           <Label textWrap="true" class="summaryDescription">
             <FormattedString>
               <Span [text]="'summary.average-speed' | translate" color="#fff"></Span>
-              <Span [text]="speedDiff.toFixed(1)+' x ' + ((speedDiff > 1.0) ? this.higher : this.lower)" color="#43D551"
+              <Span [text]="speedDiff.toFixed(1)+' x ' + speedComparison()" color="#43D551"
                 fontAttributes="Bold"></Span>
               <Span [text]="'summary.with-sd' | translate" color="#fff"></Span>
             </FormattedString>
