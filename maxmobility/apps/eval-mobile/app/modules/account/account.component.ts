@@ -291,7 +291,7 @@ export class AccountComponent implements OnInit {
 
     email
       .compose({
-        to: ['feedback@max-mobility.com'],
+        to: ['Feedback.SmartDrive@permobil.com'],
         subject: this._translateService.instant('user.feedback-email-subject'),
         body: '',
         cc: []
