@@ -529,7 +529,7 @@
       },
       "pt-reconnect": {
         "title": "Unknown PushTracker Version",
-        "message": "Your PushTracker has not sent it's version, please disconnect and reconnect the PushTracker to re-send the version information to the Smart Evaluation app."
+        "message": "Your PushTracker has not sent its version, please disconnect and reconnect the PushTracker to re-send the version information to the Smart Evaluation app."
       }
     }
   },
