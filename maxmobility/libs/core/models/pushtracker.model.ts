@@ -622,7 +622,7 @@ export class PushTracker extends Observable {
               //       and re-connect the PT to the App
               this.otaEndTime = new Date();
               let msg = '';
-              if (this.version == 0x15) {
+              if (this.version == fwVersion) {
                 msg = `PushTracker OTA Succeeded! ${this.version.toString(16)}`;
                 this.otaState = PushTracker.OTAState.complete;
               } else {
