@@ -27,6 +27,11 @@ export class User {
   consent_to_research = false;
   consent_to_product_development = false;
   type = 0;
+
+  /**
+   * Last known location from the user's device.
+   */
+  _geoloc = '';
 }
 
 export enum UserTypes {
