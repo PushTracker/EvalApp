@@ -5,10 +5,12 @@ import {
   DemoService,
   FileService,
   FirmwareService,
+  LocationService,
   LoggingService,
   UserService
 } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
+import { Kinvey } from 'kinvey-nativescript-sdk';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { Feedback, FeedbackPosition, FeedbackType } from 'nativescript-feedback';
 import { Color } from 'tns-core-modules/color';
@@ -122,6 +124,18 @@ export class HomeComponent {
         });
     }, 2000);
 
+    // update the users geolocation tag so we can query by location
+    LocationService.getCoordinates()
+      .then(result => {
+        console.log('location coords result', result);
+        Kinvey.User.update({
+          _geoloc: [result.longitude, result.latitude]
+        });
+      })
+      .catch(error => {
+        console.log('location error', error);
+      });
+
     console.log(`Home.Component end constructor ${performance.now()}`);
   }
 
@@ -205,17 +219,19 @@ export class HomeComponent {
   faqThumbTapped(item: any) {
     const answer = item.answer;
     const question = item.question;
+    const whiteColor = new Color('#fff');
+    const blueColor = new Color('#004F7E');
     this.feedback.show({
       title: question,
-      titleColor: new Color('#fff'),
+      titleColor: whiteColor,
       message: answer,
-      messageColor: new Color('#fff'),
+      messageColor: whiteColor,
       position: FeedbackPosition.Bottom,
       duration: 14500,
       type: FeedbackType.Info,
-      backgroundColor: new Color('#004F7E'),
+      backgroundColor: blueColor,
       onTap: () => {
-        console.log('showSuccess tapped');
+        console.log('feedback tapped');
       }
     });
   }
