@@ -314,12 +314,14 @@ export class OTAComponent implements OnInit {
     const firmwareDescriptionItems = this._translateService.instant('firmware.' + this._firmwareService.currentVersion);
     console.log('current firmware description items', firmwareDescriptionItems);
 
+    const whiteColor = new Color('#fff');
+
     firmwareDescriptionItems.forEach((item: string) => {
       // console.log('description', item);
       // create a new label for the carousel item
       const label = new Label();
       label.text = item;
-      label.color = new Color('#fff');
+      label.color = whiteColor;
       label.margin = 5;
       label.fontSize = 20;
       label.verticalAlignment = 'middle';
