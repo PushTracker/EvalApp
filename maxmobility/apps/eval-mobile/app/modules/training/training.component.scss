@@ -11,12 +11,20 @@
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+  margin: 0;
 
   Image {
 	margin: 0;
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
+	margin-top: 0;
+	margin-bottom: 0;
+  }
+
+  Gif {
+	  margin-top: 0;
+	  margin-bottom: 0;
   }
 }
 
