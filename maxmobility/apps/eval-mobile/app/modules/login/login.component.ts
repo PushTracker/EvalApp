@@ -43,7 +43,6 @@ export class LoginComponent implements OnInit {
       'LoginComponent ngOnInit',
       'Logging out any active user. Login screen should only be used when no user is authenticated.'
     );
-
     Kinvey.User.logout();
   }
 

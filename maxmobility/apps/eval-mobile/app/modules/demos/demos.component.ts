@@ -125,37 +125,66 @@ export class DemosComponent implements OnInit {
    * so it doesn't need to be in the list. Which would not work if they had no demo units in their posession.
    */
   async requestDemo() {
-    console.log('clinician requesting demo tap');
+    try {
+      console.log('clinician requesting demo tap');
 
-    const confirmResult = await confirm({
-      title: 'Demo Unit Actions',
-      message: this._translateService.instant('demos.request-demo-action'),
-      okButtonText: this._translateService.instant('dialogs.yes'),
-      cancelable: true,
-      cancelButtonText: this._translateService.instant('dialogs.cancel')
-    });
-
-    if (confirmResult === true) {
-      const token = (this._userService.user._kmd as any).authtoken;
-
-      console.log('request demo from rep');
-      const response = await http.request({
-        method: 'POST',
-        url: `${KinveyKeys.HOST_URL}/rpc/${KinveyKeys.APP_KEY}/custom/request-demo-unit`,
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Kinvey ${token}`
-        }
+      const confirmResult = await confirm({
+        title: 'Demo Unit Actions',
+        message: this._translateService.instant('demos.request-demo-action'),
+        okButtonText: this._translateService.instant('dialogs.yes'),
+        cancelable: true,
+        cancelButtonText: this._translateService.instant('dialogs.cancel')
       });
-      console.log('response code', response.statusCode);
-      if (response.statusCode === 200) {
-        new Toasty(this._translateService.instant('demos.demo-request-success')).show();
-      } else {
-        alert({
-          message: this._translateService.instant('demos.demo-request-error'),
-          okButtonText: this._translateService.instant('dialogs.ok')
+
+      if (confirmResult === true) {
+        const token = (this._userService.user._kmd as any).authtoken;
+
+        // also need to get user location - it is required or we won't do demo requests per William
+        const userLoc = await LocationService.getCoordinates().catch(error => {
+          console.log(error);
+          alert({
+            message: this._translateService.instant('demos.location-is-required'),
+            okButtonText: this._translateService.instant('dialogs.ok')
+          });
+          return;
         });
+        console.log('user location', userLoc);
+
+        // make sure we have location to send to kinvey request
+        if (!userLoc) {
+          this._logService.logMessage('No user location for the demo request.');
+          return;
+        }
+
+        console.log('request demo from rep');
+        const response = await http.request({
+          method: 'POST',
+          url: `${KinveyKeys.HOST_URL}/rpc/${KinveyKeys.APP_KEY}/custom/request-demo-unit`,
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Kinvey ${token}`
+          },
+          content: JSON.stringify({
+            lng: userLoc.longitude,
+            lat: userLoc.latitude
+          })
+        });
+        console.log('response code', response.statusCode);
+        if (response.statusCode === 200) {
+          new Toasty(this._translateService.instant('demos.demo-request-success')).show();
+        } else {
+          this._logService.logException(
+            new Error(`request-demo-unit error code: ${response.statusCode} - message: ${response.content.toJSON()}`)
+          );
+          alert({
+            message: this._translateService.instant('demos.demo-request-error'),
+            okButtonText: this._translateService.instant('dialogs.ok')
+          });
+        }
       }
+    } catch (error) {
+      console.log(error);
+      this._logService.logException(error);
     }
   }
 
