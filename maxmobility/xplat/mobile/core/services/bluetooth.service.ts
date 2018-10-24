@@ -33,7 +33,10 @@ export class BluetoothService {
 
     // check to make sure that bluetooth is enabled, or this will always fail and we don't need to show the error
     this._bluetooth.isBluetoothEnabled().then(result => {
-      if (result === true) {
+      console.log('**** isBluetoothEnabled result ****', result);
+      // Brad - adding isIOS check bc the CBManager may not return the `ON` state
+      // when this executes so we'll try to advertise anyway
+      if (isIOS || result === true) {
         this.advertise().catch(err => {
           const msg = `bluetooth.service::advertise error: ${err}`;
           console.log('error msg', msg);
@@ -46,18 +49,9 @@ export class BluetoothService {
       } else {
         // only Android can enable bluetooth, iOS requires the user to do on the device
         if (isAndroid) {
-          // confirm({
-          //   message: 'Bluetooth is not enabled on your device. Would you like to enable bluetooth?',
-          //   okButtonText: this._translateService.instant('dialogs.yes'),
-          //   cancelButtonText: this._translateService.instant('dialogs.no'),
-          //   cancelable: true
-          // }).then(result => {
-          //   if (result === true) {
           this._bluetooth.enable().catch(error => {
             this._loggingService.logException(error);
           });
-          //   }
-          // });
         } else {
           alert({
             message: this._translateService.instant('bluetooth.enable-bluetooth'),
