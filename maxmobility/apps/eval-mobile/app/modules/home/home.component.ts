@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Demo } from '@maxmobility/core';
+import { Demo, User } from '@maxmobility/core';
 import {
   BluetoothService,
   DemoService,
@@ -53,6 +53,11 @@ export class HomeComponent {
       Description: 'menu.ota',
       Directive: 'ota',
       Route: '/ota'
+    },
+    {
+      Image: '~/assets/images/training-transparent.png',
+      Description: 'menu.training',
+      Route: '/training'
     }
   ];
 
@@ -68,11 +73,6 @@ export class HomeComponent {
       Route: '/evals'
     },
     {
-      Image: '~/assets/images/training-transparent.png',
-      Description: 'menu.training',
-      Route: '/training'
-    },
-    {
       Image: '~/assets/images/trial-transparent.png',
       Description: 'menu.trial',
       Route: '/trial'
@@ -86,6 +86,8 @@ export class HomeComponent {
    * Boolean to track when the demo unit loading has finished to hide the loading indicator and show the list data
    */
   demoUnitsLoaded = false;
+
+  userType: number;
 
   private feedback = new Feedback();
 
@@ -107,6 +109,9 @@ export class HomeComponent {
     this._fileService.downloadTranslationFiles();
 
     this._firmwareService.initFirmwareService();
+
+    const activeUser = this._userService.user;
+    this.userType = (activeUser.data as User).type as number;
 
     // delaying since it typically won't be in the viewport initially on majority of devices
     setTimeout(() => {

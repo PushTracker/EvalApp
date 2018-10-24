@@ -34,7 +34,8 @@ export class SignUpComponent implements OnInit {
 
   usertypes = new ValueList([
     { value: UserTypes.Clinician, display: this._translateService.instant('sign-up.user-type-clinician') },
-    { value: UserTypes.Representative, display: this._translateService.instant('sign-up.user-type-rep') }
+    { value: UserTypes.Representative, display: this._translateService.instant('sign-up.user-type-rep') },
+    { value: UserTypes.EndUser, display: this._translateService.instant('sign-up.user-type-end-user') }
   ]);
 
   selectedUserTypeIndex = 0;

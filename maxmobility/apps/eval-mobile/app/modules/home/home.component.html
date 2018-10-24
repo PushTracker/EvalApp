@@ -16,7 +16,8 @@
         <RadListView row="2" colSpan="2" ios:height="210" [items]="connectivityItems">
           <ng-template tkListItemTemplate let-item="item">
             <GridLayout rows="140, auto" class="list-item-layout">
-              <Image row="0" [src]="item.Image" (tap)="connectivityThumbTapped(item)" stretch="aspectFit"></Image>
+              <Image row="0" colSpan="2" src="~/assets/images/background_1.jpg" stretch="aspectFill"></Image>
+              <Image row="0" [src]="item.Image" margin="20" (tap)="connectivityThumbTapped(item)" stretch="aspectFit"></Image>
               <Label row="1" [text]="item.Description | translate" textWrap="true"></Label>
             </GridLayout>
           </ng-template>
@@ -47,7 +48,7 @@
       </GridLayout>
 
       // Evaluation-Clinical Tools
-      <GridLayout rows="auto, auto, auto, *" columns="*, auto" class="list-grid-layout" row="3">
+      <GridLayout rows="auto, auto, auto, *" columns="*, auto" class="list-grid-layout" row="3" [visibility]="userType != 3 ? 'visible' : 'collapsed'">
         <Label row="0" colSpan="2" class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></Label>
         <Label row="1" col="0" [text]="'menu.clinical-tools' | translate" class="list-heading" (tap)="chevronButtonTapped('/eval-entry')"></Label>
         <Label row="1" col="1" horizontalAlignment="right" text="&#xf142;" class="mdi chev" (tap)="chevronButtonTapped('/eval-entry')"></Label>
@@ -68,7 +69,7 @@
 
       // Demos
 
-      <GridLayout rows="auto, auto, auto, *" columns="*, auto" class="list-grid-layout" row="4">
+      <GridLayout rows="auto, auto, auto, *" columns="*, auto" class="list-grid-layout" row="4" [visibility]="userType != 3 ? 'visible' : 'collapsed'">
         <Label row="0" colSpan="2" class="hr-light m-10" backgroundColor="#FF671F" width="92.5%"></Label>
         <Label row="1" col="0" [text]="'menu.demos' | translate" class="list-heading" (tap)="chevronButtonTapped('/demos')"></Label>
         <Label row="1" col="1" horizontalAlignment="right" text="&#xf142;" class="mdi chev" (tap)="chevronButtonTapped('/demos')"></Label>

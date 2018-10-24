@@ -672,6 +672,7 @@
   },
   "sign-up": {
     "user-type-clinician": "Clinician",
-    "user-type-rep": "Representative"
+      "user-type-rep": "Representative",
+	  "user-type-end-user": "End User"
   }
 }
