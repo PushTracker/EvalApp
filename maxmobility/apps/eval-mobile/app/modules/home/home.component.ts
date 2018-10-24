@@ -56,7 +56,7 @@ export class HomeComponent {
       Route: '/pairing'
     },
     {
-      Image: '~/assets/images/pt-sd-bt.jpg',
+      Image: '~/assets/images/pt-sd-ota.png',
       Description: 'menu.ota',
       Directive: 'ota',
       Route: '/ota'
