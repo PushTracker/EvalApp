@@ -163,7 +163,7 @@ export class HomeComponent {
   }
 
   connectivityThumbTapped(item: any) {
-    //const index = this.connectivityItems.indexOf(item);
+    // const index = this.connectivityItems.indexOf(item);
     // Determines the pairing processs to perform
     const directive = item.Directive;
 
