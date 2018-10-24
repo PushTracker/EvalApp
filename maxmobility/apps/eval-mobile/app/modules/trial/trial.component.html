@@ -32,21 +32,22 @@
 
               // Terrain Options
               <DockLayout stretchLastChild="false">
-                <Label [text]="'trial.flat-surfaces' | translate"></Label>
+                <Label [text]="'trial.flat-surfaces' | translate" class="value-label-left"></Label>
                 <Switch dock="right" class="" [checked]="trial.flat" (checkedChange)="onSwitchChecked('flat', $event)"></Switch>
               </DockLayout>
               <DockLayout stretchLastChild="false">
-                <Label [text]="'trial.ramp' | translate"></Label>
+                <Label [text]="'trial.ramp' | translate" class="value-label-left"></Label>
                 <Switch dock="right" [checked]="trial.ramp" (checkedChange)="onSwitchChecked('ramp', $event)"></Switch>
               </DockLayout>
               <DockLayout stretchLastChild="false">
-                <Label [text]="'trial.inclines' | translate"></Label>
+                <Label [text]="'trial.inclines' | translate" class="value-label-left"></Label>
                 <Switch dock="right" [checked]="trial.inclines" (checkedChange)="onSwitchChecked('inclines', $event)"></Switch>
               </DockLayout>
               <DockLayout stretchLastChild="false">
-                <Label [text]="'trial.other' | translate"></Label>
+                <Label [text]="'trial.other' | translate" class="value-label-left"></Label>
                 <Switch dock="right" [checked]="trial.other" (checkedChange)="onSwitchChecked('other', $event)"></Switch>
               </DockLayout>
+
               <TextField [hint]="'trial.description' | translate" *ngIf="trial.other" autocorrect="false" [text]="trial.other_description"
                 (textChange)="onTextChange('other_description', $event)" class="trial-description-textfield"></TextField>
 
@@ -54,24 +55,24 @@
               <Label [text]="'pushtracker.settings.label' | translate" class="section"></Label>
               // EZ On
               <DockLayout stretchLastChild="false">
-                <Label [text]="'pushtracker.settings.ez-on' | translate" class="setting"></Label>
+                <Label [text]="'pushtracker.settings.ez-on' | translate" class="value-label-left"></Label>
                 <Switch dock="right" [checked]="settings.ezOn" (checkedChange)="onSettingsSwitchChanged('ezOn', $event)"></Switch>
               </DockLayout>
               // Control Mode
               <DockLayout stretchLastChild="false">
-                <Label [text]="'pushtracker.settings.control-mode.label' | translate" class="setting"></Label>
+                <Label [text]="'pushtracker.settings.control-mode.label' | translate" class="value-label-left"></Label>
                 <DropDown #controlModeDropDown [hint]="'pushtracker.settings.control-mode.label' | translate" dock="right"
                   [items]="ControlModeOptions" (selectedIndexChanged)="onSettingsDropdownChanged('controlMode', $event)"></DropDown>
               </DockLayout>
               // Units
               <DockLayout stretchLastChild="false">
-                <Label [text]="'pushtracker.settings.units.label' | translate" class="setting"></Label>
+                <Label [text]="'pushtracker.settings.units.label' | translate" class="value-label-left"></Label>
                 <DropDown #unitsDropDown [hint]="'pushtracker.settings.units.label' | translate" dock="right" [items]="UnitsOptions"
                   (selectedIndexChanged)="onSettingsDropdownChanged('units', $event)"></DropDown>
               </DockLayout>
               // Max Speed
               <DockLayout stretchLastChild="false">
-                <Label [text]="'pushtracker.settings.max-speed' | translate" class="setting"></Label>
+                <Label [text]="'pushtracker.settings.max-speed' | translate" class="value-label-left"></Label>
                 <Label verticalAlignment="center" dock="right" [text]="settings.maxSpeed+'%'" row="0" col="1" class="value"></Label>
               </DockLayout>
               <GridLayout rows="auto" columns="*, auto">
@@ -80,7 +81,7 @@
               </GridLayout>
               // Acceleration
               <DockLayout stretchLastChild="false">
-                <Label [text]="'pushtracker.settings.acceleration' | translate" class="setting"></Label>
+                <Label [text]="'pushtracker.settings.acceleration' | translate" class="value-label-left"></Label>
                 <Label verticalAlignment="center" dock="right" [text]="settings.acceleration+'%'" row="0" col="1" class="value"></Label>
               </DockLayout>
               <GridLayout rows="auto" columns="*, auto">
@@ -89,7 +90,7 @@
               </GridLayout>
               // Tap Sensitivity
               <DockLayout stretchLastChild="false">
-                <Label [text]="'pushtracker.settings.tap-sensitivity' | translate" class="setting"></Label>
+                <Label [text]="'pushtracker.settings.tap-sensitivity' | translate" class="value-label-left"></Label>
                 <Label verticalAlignment="center" dock="right" [text]="settings.tapSensitivity+'%'" row="0" col="1"
                   class="value"></Label>
               </DockLayout>
@@ -102,7 +103,7 @@
               <Label [text]="'pushtracker.push-settings.label' | translate" class="section"></Label>
               // Push Threshold
               <DockLayout stretchLastChild="false">
-                <Label [text]="'pushtracker.push-settings.threshold' | translate" class="setting"></Label>
+                <Label [text]="'pushtracker.push-settings.threshold' | translate" class="value-label-left"></Label>
                 <Label verticalAlignment="center" dock="right" [text]="pushSettings.threshold" row="0" col="1" class="value"></Label>
               </DockLayout>
               <GridLayout rows="auto" columns="*, auto">
@@ -111,7 +112,7 @@
               </GridLayout>
               // Time Window
               <DockLayout stretchLastChild="false">
-                <Label [text]="'pushtracker.push-settings.time-window' | translate" class="setting"></Label>
+                <Label [text]="'pushtracker.push-settings.time-window' | translate" class="value-label-left"></Label>
                 <Label verticalAlignment="center" dock="right" [text]="pushSettings.timeWindow" row="0" col="1" class="value"></Label>
               </DockLayout>
               <GridLayout rows="auto" columns="*, auto">
@@ -120,7 +121,7 @@
               </GridLayout>
               // Clear Counter
               <DockLayout stretchLastChild="false">
-                <Label [text]="'pushtracker.push-settings.clear-counter' | translate" class="setting"></Label>
+                <Label [text]="'pushtracker.push-settings.clear-counter' | translate" class="value-label-left"></Label>
                 <Switch dock="right" [checked]="pushSettings.clearCounter" (checkedChange)="onPushSettingsChecked('clearCounter', $event)"></Switch>
               </DockLayout>
               <button [text]="'buttons.next' | translate" class="start-button" (tap)="goToNextSlide($event)"></button>
