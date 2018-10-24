@@ -60,8 +60,8 @@
   },
   "menu": {
     "home": "SmartDrive",
-    "connectivity": "Connectivity Overview",
-    "con-desc": "Connect with PushTracker and SmartDrive",
+    "connectivity": "Device Overview",
+    "con-desc": "How to use your PushTracker and SmartDrive",
     "pair-pt-app": "Pair a PushTracker to Smart Eval App",
     "connect-app": "Connect a Pushtracker to Smart Eval App",
     "pair-pt-sd": "Pair a PushTracker to a SmartDrive",
@@ -130,12 +130,12 @@
   },
   "training": [
     {
-      "Image": "~/assets/images/PowerOn.png",
+      "Image": "~/assets/images/gifs/SD-POWER.gif",
       "Label": "Powering SmartDrive",
       "Bullets": ["Press back on the rocker switch to power on the SmartDrive, and forward to power off."]
     },
     {
-      "Image": "~/assets/images/BandPower.png",
+		"Image": "~/assets/images/gifs/PT-POWER.gif",
       "Label": "Powering PushTracker",
       "Bullets": [
         "Press the left raised button on the PushTracker to power on.",
@@ -673,6 +673,7 @@
   },
   "sign-up": {
     "user-type-clinician": "Clinician",
-    "user-type-rep": "Representative"
+      "user-type-rep": "Representative",
+	  "user-type-end-user": "End User"
   }
 }

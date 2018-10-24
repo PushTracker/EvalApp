@@ -10,13 +10,14 @@
         <GridLayout rows="auto, *" cols="*">
           <StackLayout class="topSlide" row="0" height="45%" width="100%" orientation="horizontal"
             horizontalAlignment="center">
-            <Image [src]="slide.Image" stretch="aspectFit"></Image>
+            <Gif *ngIf="slide.Image.indexOf('.gif') > -1" [src]="slide.Image" height="100%"></Gif>
+            <Image *ngIf="slide.Image.indexOf('.gif') == -1" [src]="slide.Image" stretch="aspectFit"></Image>
           </StackLayout>
           <ScrollView row="1" height="55%">
             <StackLayout orientation="vertical" horizontalAlignment="center" width="100%">
               <Label [text]="slide.Label" class="slideLowerLabel" textWrap="true"></Label>
               <Label *ngFor="let bullet of slide.Bullets" [text]="bullet" class="bullet" textWrap="true"></Label>
-              <Button *ngIf="slides.indexOf(slide) == (slides.length-1)" class="next-button" [text]="'buttons.next' | translate" (tap)="onNext()"></Button>
+              <Button *ngIf="slides.indexOf(slide) == (slides.length-1) && previousUrl == '/eval-entry'" class="next-button" [text]="'buttons.next' | translate" (tap)="onNext()"></Button>
             </StackLayout>
           </ScrollView>
         </GridLayout>

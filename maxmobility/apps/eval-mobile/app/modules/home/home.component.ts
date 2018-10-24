@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Demo } from '@maxmobility/core';
+import { Demo, User } from '@maxmobility/core';
 import {
   BluetoothService,
   DemoService,
@@ -27,27 +27,32 @@ import { Page } from 'tns-core-modules/ui/page';
 export class HomeComponent {
   connectivityItems = [
     {
-      Image: '~/assets/images/pt-settings-gear.png',
-      Description: 'PushTracker Settings',
-      Directive: 'pt-sd',
-      Route: '/pairing'
+      Image: '~/assets/images/training-transparent.png',
+      Description: 'menu.training',
+      Route: '/training'
     },
     {
       Image: '~/assets/images/pt-phone-home.png',
       Description: 'menu.pair-pt-app',
-      Directive: 'pt-phone',
+      Directive: 0,
       Route: '/pairing'
     },
     {
       Image: '~/assets/images/pt-connect-home.png',
       Description: 'menu.connect-app',
-      Directive: 'pt-phone-connect',
+      Directive: 1,
       Route: 'pairing'
     },
     {
       Image: '~/assets/images/pt-sd-pairing-home.png',
       Description: 'menu.pair-pt-sd',
-      Directive: 'pt-sd',
+      Directive: 2,
+      Route: '/pairing'
+    },
+    {
+      Image: '~/assets/images/pt-settings-gear.png',
+      Description: 'PushTracker Settings',
+      Directive: 3,
       Route: '/pairing'
     },
     {
@@ -70,11 +75,6 @@ export class HomeComponent {
       Route: '/evals'
     },
     {
-      Image: '~/assets/images/training-transparent.png',
-      Description: 'menu.training',
-      Route: '/training'
-    },
-    {
       Image: '~/assets/images/trial-transparent.png',
       Description: 'menu.trial',
       Route: '/trial'
@@ -88,6 +88,8 @@ export class HomeComponent {
    * Boolean to track when the demo unit loading has finished to hide the loading indicator and show the list data
    */
   demoUnitsLoaded = false;
+
+  userType: number;
 
   private feedback = new Feedback();
 
@@ -109,6 +111,9 @@ export class HomeComponent {
     this._fileService.downloadTranslationFiles();
 
     this._firmwareService.initFirmwareService();
+
+    const activeUser = this._userService.user;
+    this.userType = (activeUser.data as User).type as number;
 
     // delaying since it typically won't be in the viewport initially on majority of devices
     setTimeout(() => {
@@ -158,13 +163,13 @@ export class HomeComponent {
   }
 
   connectivityThumbTapped(item: any) {
-    const index = this.connectivityItems.indexOf(item);
+    //const index = this.connectivityItems.indexOf(item);
     // Determines the pairing processs to perform
     const directive = item.Directive;
 
     this._routerExtensions.navigate([item.Route], {
       queryParams: {
-        index
+        index: directive
       }
     });
   }

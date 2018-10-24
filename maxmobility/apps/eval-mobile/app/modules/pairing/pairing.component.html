@@ -10,6 +10,26 @@
     <Carousel #carousel (loaded)="onCarouselLoad()" ios:indicatorOffset="0,-10" ios:finite="true" ios:bounce="false"
       height="100%" indicatorColor="#66ccff" indicatorColorUnselected="#cceeff">
 
+      // For all the info / gifs:
+      <CarouselItem *ngFor="let slide of slides">
+
+        <GridLayout rows="auto, *" cols="*">
+
+          <StackLayout row="0" class="topSlide" height="35%">
+            <Gif *ngIf="slide.Image.indexOf('.gif') > -1" [src]="slide.Image" (tap)="onGifTap($event)" height="100%"
+              width="135"></Gif>
+          </StackLayout>
+
+          <ScrollView row="1" class="lowerSlide" height="65%">
+            <StackLayout>
+              <Label [text]="slide.Label" class="label" textWrap="true"></Label>
+              <Label *ngFor="let bullet of slide.Bullets" [text]="bullet" class="bullet" textWrap="true"></Label>
+            </StackLayout>
+          </ScrollView>
+
+        </GridLayout>
+      </CarouselItem>
+
       // for pushtracker settings control
       <CarouselItem>
         <GridLayout rows="auto, *" cols="*">
@@ -95,26 +115,6 @@
 
               // Send these settings to PushTracker
               <button [text]="'pushtracker.settings.save-button' | translate" class="saveButton" (tap)="onSaveSettings($event)"></button>
-            </StackLayout>
-          </ScrollView>
-
-        </GridLayout>
-      </CarouselItem>
-
-      // For all the info / gifs:
-      <CarouselItem *ngFor="let slide of slides">
-
-        <GridLayout rows="auto, *" cols="*">
-
-          <StackLayout row="0" class="topSlide" height="35%">
-            <Gif *ngIf="slide.Image.indexOf('.gif') > -1" [src]="slide.Image" (tap)="onGifTap($event)" height="100%"
-              width="135"></Gif>
-          </StackLayout>
-
-          <ScrollView row="1" class="lowerSlide" height="65%">
-            <StackLayout>
-              <Label [text]="slide.Label" class="label" textWrap="true"></Label>
-              <Label *ngFor="let bullet of slide.Bullets" [text]="bullet" class="bullet" textWrap="true"></Label>
             </StackLayout>
           </ScrollView>
 
