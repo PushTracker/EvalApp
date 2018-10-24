@@ -43,6 +43,14 @@ export class TrainingComponent implements AfterViewInit, OnInit {
     return isAndroid;
   }
 
+  isGif(value: string) {
+    if (value.endsWith('.gif')) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   // button events
   onNext(): void {
     this.routerExtensions.navigate(['/trial'], {
