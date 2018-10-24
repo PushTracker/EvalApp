@@ -280,6 +280,7 @@
   "demos": {
     "demos-title": "Demos",
     "loading": "Loading Demos...",
+    "location-is-required": "Your location is required to submit a demo unit request. Your location is used to contact representatives near your location for the demo request.",
     "location-confirm-message": "Do you want to update the demo's location to",
     "location-calculating": "Location is being calculated...",
     "firmware-string": "Firmware",
