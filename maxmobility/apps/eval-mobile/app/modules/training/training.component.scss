@@ -14,7 +14,6 @@
   margin: 0;
 
   Image {
-	margin: 0;
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
@@ -23,8 +22,9 @@
   }
 
   Gif {
-	  margin-top: 0;
-	  margin-bottom: 0;
+	  display: block;
+	  margin: 0;
+	  padding: 0;
   }
 }
 

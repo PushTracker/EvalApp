@@ -16,8 +16,7 @@
         <GridLayout rows="auto, *" cols="*">
 
           <StackLayout row="0" class="topSlide" height="35%">
-            <Gif *ngIf="slide.Image.indexOf('.gif') > -1" [src]="slide.Image" (tap)="onGifTap($event)" height="100%"
-              width="135"></Gif>
+            <Gif *ngIf="slide.Image.indexOf('.gif') > -1" [src]="slide.Image" (tap)="onGifTap($event)" height="100%" width="100%"></Gif>
           </StackLayout>
 
           <ScrollView row="1" class="lowerSlide" height="65%">
