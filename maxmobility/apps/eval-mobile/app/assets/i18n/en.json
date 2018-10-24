@@ -130,12 +130,12 @@
   },
   "training": [
     {
-      "Image": "~/assets/images/PowerOn.png",
+      "Image": "~/assets/images/gifs/SD-POWER.gif",
       "Label": "Powering SmartDrive",
       "Bullets": ["Press back on the rocker switch to power on the SmartDrive, and forward to power off."]
     },
     {
-      "Image": "~/assets/images/BandPower.png",
+		"Image": "~/assets/images/gifs/PT-POWER.gif",
       "Label": "Powering PushTracker",
       "Bullets": [
         "Press the left raised button on the PushTracker to power on.",
