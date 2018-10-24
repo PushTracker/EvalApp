@@ -27,27 +27,32 @@ import { Page } from 'tns-core-modules/ui/page';
 export class HomeComponent {
   connectivityItems = [
     {
-      Image: '~/assets/images/pt-settings-gear.png',
-      Description: 'PushTracker Settings',
-      Directive: 'pt-sd',
-      Route: '/pairing'
+      Image: '~/assets/images/training-transparent.png',
+      Description: 'menu.training',
+      Route: '/training'
     },
     {
       Image: '~/assets/images/pt-phone-home.png',
       Description: 'menu.pair-pt-app',
-      Directive: 'pt-phone',
+      Directive: 0,
       Route: '/pairing'
     },
     {
       Image: '~/assets/images/pt-connect-home.png',
       Description: 'menu.connect-app',
-      Directive: 'pt-phone-connect',
+      Directive: 1,
       Route: 'pairing'
     },
     {
       Image: '~/assets/images/pt-sd-pairing-home.png',
       Description: 'menu.pair-pt-sd',
-      Directive: 'pt-sd',
+      Directive: 2,
+      Route: '/pairing'
+    },
+    {
+      Image: '~/assets/images/pt-settings-gear.png',
+      Description: 'PushTracker Settings',
+      Directive: 3,
       Route: '/pairing'
     },
     {
@@ -55,11 +60,6 @@ export class HomeComponent {
       Description: 'menu.ota',
       Directive: 'ota',
       Route: '/ota'
-    },
-    {
-      Image: '~/assets/images/training-transparent.png',
-      Description: 'menu.training',
-      Route: '/training'
     }
   ];
 
@@ -163,13 +163,13 @@ export class HomeComponent {
   }
 
   connectivityThumbTapped(item: any) {
-    const index = this.connectivityItems.indexOf(item);
+    //const index = this.connectivityItems.indexOf(item);
     // Determines the pairing processs to perform
     const directive = item.Directive;
 
     this._routerExtensions.navigate([item.Route], {
       queryParams: {
-        index
+        index: directive
       }
     });
   }

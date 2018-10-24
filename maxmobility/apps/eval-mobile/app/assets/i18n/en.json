@@ -60,8 +60,8 @@
   },
   "menu": {
     "home": "SmartDrive",
-    "connectivity": "Connectivity Overview",
-    "con-desc": "Connect with PushTracker and SmartDrive",
+    "connectivity": "Device Overview",
+    "con-desc": "How to use your PushTracker and SmartDrive",
     "pair-pt-app": "Pair a PushTracker to Smart Eval App",
     "connect-app": "Connect a Pushtracker to Smart Eval App",
     "pair-pt-sd": "Pair a PushTracker to a SmartDrive",
