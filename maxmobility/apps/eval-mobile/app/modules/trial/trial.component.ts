@@ -68,6 +68,8 @@ export class TrialComponent implements OnInit {
   private _cfAlert = new CFAlertDialog();
   private _snackbar = new SnackBar();
 
+  private hasAddedToTrial = false;
+
   constructor(
     private _routerExtensions: RouterExtensions,
     private _progressService: ProgressService,
@@ -107,9 +109,14 @@ export class TrialComponent implements OnInit {
     // make sure we have an evaluation on the service since it defaults null
     if (!this._evaluationService.evaluation) {
       this._evaluationService.evaluation = new Evaluation();
+      this.hasAddedToTrial = false;
     }
 
-    this._evaluationService.evaluation.trials.push(this.trial);
+    if (!this.hasAddedToTrial) {
+      this._evaluationService.evaluation.trials.push(this.trial);
+      this.hasAddedToTrial = true;
+    }
+
     this._routerExtensions.navigate(['/summary'], {
       transition: {
         name: 'slide'
