@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { isAndroid, isIOS } from 'tns-core-modules/platform';
 import { LoadingIndicator } from 'nativescript-loading-indicator';
 
 /**
@@ -28,7 +29,12 @@ export class ProgressService {
    * Shows the loading indicator with the default options
    */
   show(message = 'Processing') {
-    this._defaultOptions.message = message;
+    this._defaultOptions.message = '';
+    if (isAndroid) {
+      this._defaultOptions.message = message;
+    } else if (isIOS) {
+      this._defaultOptions.ios.details = message;
+    }
     this._loader.show(this._defaultOptions);
   }
 
