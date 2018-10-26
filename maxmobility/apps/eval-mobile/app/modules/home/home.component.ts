@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Demo, User } from '@maxmobility/core';
+import { Demo, User, RouterExtService } from '@maxmobility/core';
 import {
   BluetoothService,
   DemoService,
@@ -95,6 +95,7 @@ export class HomeComponent {
 
   constructor(
     private _page: Page,
+    private _routerExtService: RouterExtService,
     private _routerExtensions: RouterExtensions,
     private _logService: LoggingService,
     private _demoService: DemoService,
