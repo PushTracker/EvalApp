@@ -7,7 +7,7 @@ import { RouterExtensions } from 'nativescript-angular/router';
 import { PropertyChangeData } from 'tns-core-modules/data/observable';
 import { alert } from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
-import { setMarginForNoActionBarOnPage } from '~/utils';
+import { setMarginForIosSafeArea } from '~/utils';
 
 @Component({
   selector: 'forgot-password',
@@ -44,7 +44,7 @@ export class ForgotPasswordComponent implements OnInit {
     CLog('ForgotPasswordComponent OnInit');
     this._page.actionBarHidden = true;
     this._page.backgroundSpanUnderStatusBar = true;
-    setMarginForNoActionBarOnPage(this._page);
+    setMarginForIosSafeArea(this._page);
   }
 
   goBack() {

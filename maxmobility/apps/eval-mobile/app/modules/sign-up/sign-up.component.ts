@@ -8,7 +8,7 @@ import { RouterExtensions } from 'nativescript-angular/router';
 import { SelectedIndexChangedEventData, ValueList } from 'nativescript-drop-down';
 import { alert } from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
-import { setMarginForNoActionBarOnPage } from '~/utils';
+import { setMarginForIosSafeArea } from '~/utils';
 import { PrivacyPolicyComponent } from '../../privacy-policy';
 
 @Component({
@@ -59,7 +59,7 @@ export class SignUpComponent implements OnInit {
     CLog('SignUpComponent OnInit');
     this._page.actionBarHidden = true;
     this._page.backgroundSpanUnderStatusBar = true;
-    setMarginForNoActionBarOnPage(this._page);
+    setMarginForIosSafeArea(this._page);
   }
 
   /**
