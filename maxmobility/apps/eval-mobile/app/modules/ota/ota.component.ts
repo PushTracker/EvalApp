@@ -340,8 +340,10 @@ export class OTAComponent implements OnInit {
         const adapter = carousel.android.getAdapter() as android.support.v4.view.PagerAdapter;
         if (adapter) {
           adapter.notifyDataSetChanged();
+          console.log('BRAD - FIX THIS WHEN 4.1.0 is published, PR is pending to correct the types and simplify this.');
           carousel._pageIndicatorView.setCount(firmwareDescriptionItems.length);
         }
+        // carousel.pageIndicatorCount = firmwareDescriptionItems.length;
       }
 
       carousel.refresh();
