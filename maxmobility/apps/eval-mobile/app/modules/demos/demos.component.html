@@ -45,8 +45,6 @@
               (tap)="onRepDemoActionButtonTap(item)"></Button>
           </StackLayout>
 
-
-
         </GridLayout>
 
       </ng-template>
@@ -54,9 +52,8 @@
 
     // Clinician Request Unit Button
     <!-- <Button text="Request Demo Unit" class="requestDemoBtn" (tap)="requestDemo()" [visibility]="userType == 0 ? 'visible' : 'collapsed'"></Button> -->
-    <Button row="1" text="Request Demo Unit" class="requestDemoBtn" (tap)="requestDemo()"></Button>
+    <Button row="1" [text]="'demos.request-demo-action' | translate" class="requestDemoBtn" (tap)="requestDemo()"></Button>
 
   </GridLayout>
-
 
 </Gradient>

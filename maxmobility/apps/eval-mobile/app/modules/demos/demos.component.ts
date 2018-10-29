@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 import { RouterExtensions } from 'nativescript-angular/router';
 import * as geolocation from 'nativescript-geolocation';
-import { ToastDuration, Toasty } from 'nativescript-toasty';
+import { ToastDuration, ToastPosition, Toasty } from 'nativescript-toasty';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
 import * as http from 'tns-core-modules/http';
 import { isAndroid, isIOS } from 'tns-core-modules/platform';
@@ -120,71 +120,88 @@ export class DemosComponent implements OnInit {
   }
 
   /**
-   * Action for Clinicians to request a demo unit.
-   * Brad  - moving this to the action bar and only showing for Clinician Users, this isn't tied to a demo unit
-   * so it doesn't need to be in the list. Which would not work if they had no demo units in their posession.
+   * Gives user action dialog with max distance options for requesting demo.
    */
   async requestDemo() {
-    try {
-      console.log('clinician requesting demo tap');
+    const actionResult = await action({
+      message: this._translateService.instant('demos.request-demo-distance'),
+      cancelable: true,
+      cancelButtonText: this._translateService.instant('dialogs.cancel'),
+      actions: ['25', '50', '100', '150', '200', '250+']
+    });
 
-      const confirmResult = await confirm({
-        title: 'Demo Unit Actions',
-        message: this._translateService.instant('demos.request-demo-action'),
-        okButtonText: this._translateService.instant('dialogs.yes'),
-        cancelable: true,
-        cancelButtonText: this._translateService.instant('dialogs.cancel')
-      });
+    if (actionResult.toLowerCase() === 'cancel') {
+      console.log('Demo request cancelled.');
+      return;
+    }
 
-      if (confirmResult === true) {
-        const token = (this._userService.user._kmd as any).authtoken;
+    console.log('action result', actionResult);
 
-        // also need to get user location - it is required or we won't do demo requests per William
-        const userLoc = await LocationService.getCoordinates().catch(error => {
-          console.log(error);
-          alert({
-            message: this._translateService.instant('demos.location-is-required'),
-            okButtonText: this._translateService.instant('dialogs.ok')
-          });
-          return;
-        });
-        console.log('user location', userLoc);
+    let maxDistance = 25;
+    if (actionResult === '25') {
+      maxDistance = 25;
+    } else if (actionResult === '50') {
+      maxDistance = 50;
+    } else if (actionResult === '100') {
+      maxDistance = 100;
+    } else if (actionResult === '150') {
+      maxDistance = 150;
+    } else if (actionResult === '200') {
+      maxDistance = 200;
+    } else if (actionResult === '250+') {
+      maxDistance = 250;
+    }
 
-        // make sure we have location to send to kinvey request
-        if (!userLoc) {
-          this._logService.logMessage('No user location for the demo request.');
-          return;
-        }
+    const token = (this._userService.user._kmd as any).authtoken;
 
-        console.log('request demo from rep');
-        const response = await http.request({
-          method: 'POST',
-          url: `${KinveyKeys.HOST_URL}/rpc/${KinveyKeys.APP_KEY}/custom/request-demo-unit`,
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Kinvey ${token}`
-          },
-          content: JSON.stringify({
-            lng: userLoc.longitude,
-            lat: userLoc.latitude
-          })
-        });
-        console.log('response code', response.statusCode);
-        if (response.statusCode === 200) {
-          new Toasty(this._translateService.instant('demos.demo-request-success')).show();
-        } else {
-          this._logService.logException(
-            new Error(`request-demo-unit error code: ${response.statusCode} - message: ${response.content.toJSON()}`)
-          );
-          alert({
-            message: this._translateService.instant('demos.demo-request-error'),
-            okButtonText: this._translateService.instant('dialogs.ok')
-          });
-        }
-      }
-    } catch (error) {
+    // also need to get user location - it is required or we won't do demo requests per William
+    const userLoc = await LocationService.getCoordinates().catch(error => {
       console.log(error);
-      this._logService.logException(error);
+      alert({
+        message: this._translateService.instant('demos.demo-request-location-is-required'),
+        okButtonText: this._translateService.instant('dialogs.ok')
+      });
+      return;
+    });
+    console.log('user location', userLoc);
+
+    // make sure we have location to send to kinvey request
+    if (!userLoc) {
+      this._logService.logMessage('No user location for the demo request.');
+      return;
+    }
+
+    console.log('request demo from rep');
+    const response = await http.request({
+      method: 'POST',
+      url: `${KinveyKeys.HOST_URL}/rpc/${KinveyKeys.APP_KEY}/custom/request-demo-unit`,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Kinvey ${token}`
+      },
+      content: JSON.stringify({
+        lng: userLoc.longitude,
+        lat: userLoc.latitude,
+        maxDistance
+      })
+    });
+    console.log('response code', response.statusCode);
+
+    if (response.statusCode === 200) {
+      new Toasty(
+        this._translateService.instant('demos.demo-request-success'),
+        ToastDuration.LONG,
+        ToastPosition.CENTER
+      ).show();
+    } else {
+      console.log(JSON.stringify(response.content.toJSON()));
+      this._logService.logException(
+        new Error(`request-demo-unit error code: ${response.statusCode} - message: ${response.content.toJSON()}`)
+      );
+      alert({
+        message: this._translateService.instant('demos.demo-request-error'),
+        okButtonText: this._translateService.instant('dialogs.ok')
+      });
     }
   }
 
@@ -234,6 +251,17 @@ export class DemosComponent implements OnInit {
         const clinicianEmail = promptResult.text;
         console.log('clinicianEmail', clinicianEmail);
 
+        // also need to get user location - it is required or we won't do demo requests per William
+        const userLoc = await LocationService.getCoordinates().catch(error => {
+          console.log(error);
+          alert({
+            message: this._translateService.instant('demos.demo-change-owner-location-required'),
+            okButtonText: this._translateService.instant('dialogs.ok')
+          });
+          return;
+        });
+        console.log('user location', userLoc);
+
         response = await http.request({
           method: 'POST',
           url: `${KinveyKeys.HOST_URL}/rpc/${KinveyKeys.APP_KEY}/custom/demo-unit-actions`,
@@ -244,7 +272,8 @@ export class DemosComponent implements OnInit {
           content: JSON.stringify({
             action: '1',
             demoId: demo.id,
-            clinicianEmail
+            clinicianEmail,
+            newLocation: [userLoc.longitude, userLoc.latitude]
           })
         });
         console.log('response', response.statusCode);
@@ -260,7 +289,8 @@ export class DemosComponent implements OnInit {
           },
           content: JSON.stringify({
             action: '2',
-            demoId: demo.id
+            demoId: demo.id,
+            newLocation: [userLoc.longitude, userLoc.latitude]
           })
         });
         console.log('response', response.statusCode);
