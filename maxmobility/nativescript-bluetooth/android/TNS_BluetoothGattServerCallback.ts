@@ -1,5 +1,4 @@
-/// <reference path="../node_modules/tns-platform-declarations/android.d.ts" />
-/// <reference path="../typings/android27.d.ts" />
+/// <reference path="../node_modules/tns-platform-declarations/android-27.d.ts" />
 
 import { Bluetooth, deviceToCentral, deviceToPeripheral } from './android_main';
 import { CLog, CLogTypes, ConnectionState } from '../common';
