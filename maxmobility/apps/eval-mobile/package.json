@@ -33,7 +33,7 @@
     "start": "tns run ios --emulator --syncAllFiles"
   },
   "dependencies": {
-    "@_/nativescript-swift-fix": "file:./swift-fix",
+    "@_/nativescript-swift-fix": "file:./plugins/swift-fix",
     "@angular/animations": "file:../../node_modules/@angular/animations",
     "@angular/common": "file:../../node_modules/@angular/common",
     "@angular/compiler": "file:../../node_modules/@angular/compiler",
@@ -73,7 +73,7 @@
     "nativescript-iqkeyboardmanager": "file:../../node_modules/nativescript-iqkeyboardmanager",
     "nativescript-loading-indicator": "file:../../node_modules/nativescript-loading-indicator",
     "nativescript-localstorage": "file:../../node_modules/nativescript-localstorage",
-    "nativescript-mapbox": "4.3.1",
+    "nativescript-mapbox": "file:./plugins/nativescript-mapbox-4.3.1.tgz",
     "nativescript-master-technology": "../../node_modules/nativescript-master-technology",
     "nativescript-modal-datetimepicker": "^1.1.8",
     "nativescript-ngx-fonticon": "file:../../node_modules/nativescript-ngx-fonticon",
