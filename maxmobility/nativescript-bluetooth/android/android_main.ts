@@ -1,5 +1,4 @@
-// /// <reference path="../node_modules/tns-platform-declarations/android.d.ts" />
-/// <reference path="../typings/android27.d.ts" />
+/// <reference path="../node_modules/tns-platform-declarations/android-27.d.ts" />
 
 import * as utils from 'tns-core-modules/utils/utils';
 import * as application from 'tns-core-modules/application';
@@ -301,7 +300,7 @@ export class Bluetooth extends BluetoothCommon {
               return;
             }
           } else {
-            let scanFilters = null as java.util.ArrayList;
+            let scanFilters = null as java.util.ArrayList<any>;
             if (uuids.length > 0) {
               scanFilters = new java.util.ArrayList();
               for (const u in uuids) {
