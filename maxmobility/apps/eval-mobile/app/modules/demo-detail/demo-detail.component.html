@@ -10,16 +10,16 @@
   <GridLayout padding="0" margin="0" rows="auto, *" cols="auto">
     <StackLayout backgroundImage="~/assets/images/background_1.jpg" row="0" height="30%" width="100%" orientation="horizontal"
       horizontalAlignment="center">
-      <AbsoluteLayout>
+      <AbsoluteLayout width="40%" height="80%" margin="5%">
         <Image #sdImage *ngIf="demo.sd_image" class="demo-image" [src]="demo.sd_image" stretch="aspectFit" (tap)="onUpdateSDImageTap()"></Image>
         <Image *ngIf="!demo.sd_image" class="demo-image" src="~/assets/images/sd_side.png" stretch="aspectFit" (tap)="onUpdateSDImageTap()"></Image>
-        <Label top="15" left="5" (tap)="onUpdateSDImageTap()" text="&#xf100;" class="mdi  demo-btn orange-text"></Label>
+        <Label top="15%" left="10%" (tap)="onUpdateSDImageTap()" text="&#xf100;" class="mdi  demo-btn orange-text"></Label>
       </AbsoluteLayout>
-      <AbsoluteLayout>
+      <AbsoluteLayout width="40%" height="80%" margin="5%">
         <Image #ptImage *ngIf="demo.pt_image" class="demo-image" [src]="demo.pt_image" stretch="aspectFit" (tap)="onUpdatePTImageTap()"></Image>
         <Image *ngIf="!demo.pt_image" class="demo-image" src="~/assets/images/pushTrackerFull.png" stretch="aspectFit"
           (tap)="onUpdatePTImageTap()"></Image>
-        <Label top="15" left="5" (tap)="onUpdatePTImageTap()" text="&#xf100;" class="mdi demo-btn orange-text"></Label>
+        <Label top="15%" left="10%" (tap)="onUpdatePTImageTap()" text="&#xf100;" class="mdi demo-btn orange-text"></Label>
       </AbsoluteLayout>
     </StackLayout>
 
