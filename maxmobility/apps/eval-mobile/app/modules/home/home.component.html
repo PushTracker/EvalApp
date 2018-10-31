@@ -13,7 +13,7 @@
         <Label row="0" col="1" horizontalAlignment="right" text="&#xf142;" class="mdi chev" (tap)="chevronButtonTapped('/pairing')"></Label>
         <Label row="1" [text]="'menu.con-desc' | translate" class="list-description" textWrap="true"></Label>
 
-        <RadListView row="2" colSpan="2" ios:height="210" [items]="connectivityItems">
+        <RadListView row="2" colSpan="2" [items]="connectivityItems" ios:height="210">
           <ng-template tkListItemTemplate let-item="item">
             <GridLayout rows="140, auto" class="list-item-layout">
               <Image row="0" colSpan="2" src="~/assets/images/background_1.jpg" stretch="aspectFill"></Image>
@@ -21,8 +21,7 @@
               <Label row="1" [text]="item.Description | translate" textWrap="true"></Label>
             </GridLayout>
           </ng-template>
-          <ListViewLinearLayout tkListViewLayout dynamicItemSize="false" ios:itemHeight="210" ios:itemWidth="160"
-            scrollDirection="Horizontal"></ListViewLinearLayout>
+          <ListViewLinearLayout tkListViewLayout dynamicItemSize="false" scrollDirection="Horizontal"></ListViewLinearLayout>
         </RadListView>
 
       </GridLayout>
@@ -34,16 +33,15 @@
         <Label row="1" col="1" horizontalAlignment="right" text="&#xf142;" class="mdi chev" (tap)="chevronButtonTapped('/videos')"></Label>
         <Label row="2" colSpan="2" [text]="'menu.videos-description' | translate" class="list-description" textWrap="true"></Label>
 
-        <RadListView row="3" colSpan="2" ios:height="160" [items]="videoItems">
+        <RadListView row="3" colSpan="2" [items]="videoItems" ios:height="160">
           <ng-template tkListItemTemplate let-item="item">
-            <GridLayout rows="auto, auto" columns="*" class="video-layout">
-              <GridLayout row="0" class="video-title" (tap)="videoThumbTapped(item)">
-                <Label textWrap="true" [text]="item.Title"></Label>
-              </GridLayout>
+            <GridLayout rows="*" class="list-item-layout" (tap)="videoThumbTapped(item)">
+              <Image row="0" colSpan="2" src="~/assets/images/video-item-background.png"
+					 stretch="aspectFill"></Image>
+              <Label row="0" [text]="item.Title" class="faq-question" textWrap="true"></Label>
             </GridLayout>
           </ng-template>
-          <ListViewLinearLayout tkListViewLayout dynamicItemSize="false" ios:itemHeight="160" ios:itemWidth="160"
-            scrollDirection="Horizontal"></ListViewLinearLayout>
+          <ListViewLinearLayout tkListViewLayout dynamicItemSize="false" scrollDirection="Horizontal"></ListViewLinearLayout>
         </RadListView>
       </GridLayout>
 
@@ -54,7 +52,7 @@
         <Label row="1" col="1" horizontalAlignment="right" text="&#xf142;" class="mdi chev" (tap)="chevronButtonTapped('/eval-entry')"></Label>
         <Label row="2" colSpan="2" [text]="'menu.clinical-tools-desc' | translate" class="list-description" textWrap="true"></Label>
 
-        <RadListView row="3" colSpan="2" ios:height="210" [items]="evalItems">
+        <RadListView row="3" colSpan="2" [items]="evalItems" ios:height="210">
           <ng-template tkListItemTemplate let-item="item">
             <GridLayout rows="140, auto" class="list-item-layout">
               <Image row="0" colSpan="2" src="~/assets/images/background_1.jpg" stretch="aspectFill"></Image>
@@ -62,8 +60,7 @@
               <Label row="1" [text]="item.Description | translate" textWrap="true"></Label>
             </GridLayout>
           </ng-template>
-          <ListViewLinearLayout tkListViewLayout dynamicItemSize="false" ios:itemHeight="220" ios:itemWidth="160"
-            scrollDirection="Horizontal"></ListViewLinearLayout>
+          <ListViewLinearLayout tkListViewLayout dynamicItemSize="false" scrollDirection="Horizontal"></ListViewLinearLayout>
         </RadListView>
       </GridLayout>
 
@@ -90,13 +87,24 @@
         </GridLayout>
 
         // Demo unit listview
-        <RadListView row="3" colSpan="2" ios:height="312" [items]="Demos._array" *ngIf="Demos.length && demoUnitsLoaded">
+        <RadListView row="3" colSpan="2" [items]="Demos._array" *ngIf="Demos.length && demoUnitsLoaded" ios:height="312">
           <ng-template tkListItemTemplate let-item="item">
-            <GridLayout rows="*, *" class="list-item-layout">
-              <Image row="0" *ngIf="!item.sd_image" src="~/assets/images/stock-image.png" (tap)="demoThumbTapped(item)" margin="5"
-                backgroundImage="~/assets/images/background_1.jpg" stretch="aspectFill"></Image>
-              <Image row="0" *ngIf="item.sd_image" height="140" [src]="item.sd_image" (tap)="demoThumbTapped(item)"
-                stretch="aspectFill"></Image>
+            <GridLayout rows="auto, auto" columns="*" class="list-item-layout">
+              <Image row="0"
+					 *ngIf="!item.sd_image"
+					 width="130"
+					 margin="5"
+					 src="~/assets/images/stock-image.png"
+					 (tap)="demoThumbTapped(item)"
+					 backgroundImage="~/assets/images/background_1.jpg"
+					 stretch="aspectFill"></Image>
+              <Image row="0"
+					 *ngIf="item.sd_image"
+					 width="130"
+					 margin="5"
+					 [src]="item.sd_image"
+					 (tap)="demoThumbTapped(item)"
+					 stretch="aspectFill"></Image>
               <GridLayout row="1" rows="auto, auto, auto" class="demo-item-description">
                 <Label row="0" textWrap="true" [text]="(item.smartdrive_serial_number || '# ??')"></Label>
                 <Label row="1" textWrap="true" [text]="item.location_string"></Label>
@@ -121,15 +129,14 @@
         <Label row="1" col="1" horizontalAlignment="right" text="&#xf142;" class="mdi chev" (tap)="chevronButtonTapped('/faq')"></Label>
         <Label row="2" [text]="'menu.faq-desc' | translate" class="list-description" textWrap="true"></Label>
 
-        <RadListView row="3" colSpan="2" ios:height="160" [items]="faqItems">
+        <RadListView row="3" colSpan="2" [items]="faqItems" ios:height="160">
           <ng-template tkListItemTemplate let-item="item">
-            <GridLayout rows="150" class="list-item-layout" (tap)="faqThumbTapped(item)">
+            <GridLayout rows="*" class="list-item-layout" (tap)="faqThumbTapped(item)">
               <Image row="0" colSpan="2" src="~/assets/images/background_1.jpg" stretch="aspectFill"></Image>
               <Label row="0" [text]="item.question" class="faq-question" textWrap="true"></Label>
             </GridLayout>
           </ng-template>
-          <ListViewLinearLayout tkListViewLayout dynamicItemSize="false" ios:itemHeight="160" ios:itemWidth="160"
-            scrollDirection="Horizontal"></ListViewLinearLayout>
+          <ListViewLinearLayout tkListViewLayout dynamicItemSize="false" scrollDirection="Horizontal"></ListViewLinearLayout>
         </RadListView>
       </GridLayout>
 
