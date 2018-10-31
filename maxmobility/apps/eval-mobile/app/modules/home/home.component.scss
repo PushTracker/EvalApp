@@ -41,7 +41,6 @@
   width: 150;
   // margin: 5, 10, 5, 10;
   image {
-    height: 140;
     border: solid;
     border-radius: 4;
     margin: 5, 10, 5, 10;
@@ -62,40 +61,6 @@
     font-size: 16;
     font-weight: 500;
     color: $white;
-  }
-}
-
-// video list styles
-.video-layout {
-  width: 140;
-  height: 140;
-  margin: 5, 10, 5, 10;
-
-  .video-title {
-    height: 140;
-    background-image: url('~/assets/images/video-item-background.png');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 100% 100%;
-    border-radius: 4;
-    label {
-      font-family: $os-Light;
-      color: $white;
-      text-align: center;
-      font-size: 16;
-      font-weight: 400;
-      margin: 4;
-      horizontal-align: center;
-      vertical-align: middle;
-    }
-  }
-
-  .video-description {
-    font-family: $os-Light;
-    color: $permobil-charcoal;
-    font-size: 14;
-    font-weight: 400;
-    margin: 5, 0, 0, 0;
   }
 }
 
