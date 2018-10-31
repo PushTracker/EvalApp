@@ -94,10 +94,10 @@ export class AccountComponent implements OnInit {
     this.loadProfilePicture();
 
     // set language data
-    this.selectedLanguageIndex =
-      this.languages.indexOf((this.user.data as any).language) > -1
-        ? this.languages.indexOf((this.user.data as any).language)
-        : 0;
+    this.selectedLanguageIndex = this.languages.getIndex((this.user.data as any).language) || 0;
+
+    // set account type data
+    this.selectedUserTypeIndex = this.usertypes.getIndex((this.user.data as any).type) || 0;
 
     // get translation files
     this._fileService.downloadTranslationFiles();
