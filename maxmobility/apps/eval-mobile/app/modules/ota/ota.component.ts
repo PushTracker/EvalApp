@@ -307,7 +307,7 @@ export class OTAComponent implements OnInit {
    * Will update the items in the carousel based on the firmware.VERSION string array
    * @param carousel [Carousel]
    */
-  private _loadFirmwareDescriptionItems(carousel: Carousel) {
+  private _loadFirmwareDescriptionItems(carousel: any) {
     // remove all children from the carousel (carousel extends GridLayout)
     carousel.removeChildren();
 
@@ -330,7 +330,7 @@ export class OTAComponent implements OnInit {
       label.className = 'features';
 
       // create new carousel item and add label to it
-      const newCarouselItem = new CarouselItem();
+      const newCarouselItem = new CarouselItem() as any;
       newCarouselItem.addChild(label);
 
       // add the carouselItem to the carousel
