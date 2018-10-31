@@ -12,6 +12,7 @@ import { EventData } from 'tns-core-modules/ui/core/view';
 import { alert, confirm } from 'tns-core-modules/ui/dialogs';
 import { Label } from 'tns-core-modules/ui/label';
 import { Page } from 'tns-core-modules/ui/page';
+import { ScrollView } from 'tns-core-modules/ui/scroll-view';
 
 @Component({
   selector: 'OTA',
@@ -317,6 +318,9 @@ export class OTAComponent implements OnInit {
     const whiteColor = new Color('#fff');
 
     firmwareDescriptionItems.forEach((item: string) => {
+      // create a new scrollview for the carousel item
+      const sv = new ScrollView();
+
       // console.log('description', item);
       // create a new label for the carousel item
       const label = new Label();
@@ -329,9 +333,12 @@ export class OTAComponent implements OnInit {
       label.textWrap = true;
       label.className = 'features';
 
+      // add the label as a child of the scrollview
+      sv.content = label;
+
       // create new carousel item and add label to it
       const newCarouselItem = new CarouselItem() as any;
-      newCarouselItem.addChild(label);
+      newCarouselItem.addChild(sv);
 
       // add the carouselItem to the carousel
       carousel.addChild(newCarouselItem);
