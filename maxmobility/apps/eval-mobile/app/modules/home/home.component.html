@@ -93,7 +93,7 @@
         <RadListView row="3" colSpan="2" ios:height="312" [items]="Demos._array" *ngIf="Demos.length && demoUnitsLoaded">
           <ng-template tkListItemTemplate let-item="item">
             <GridLayout rows="*, *" class="list-item-layout">
-              <Image row="0" *ngIf="!item.sd_image" src="~/assets/images/PushTracker-SmartDrive-pairing.png" (tap)="demoThumbTapped(item)"
+              <Image row="0" *ngIf="!item.sd_image" src="~/assets/images/stock-image.png" (tap)="demoThumbTapped(item)" margin="5"
                 backgroundImage="~/assets/images/background_1.jpg" stretch="aspectFill"></Image>
               <Image row="0" *ngIf="item.sd_image" height="140" [src]="item.sd_image" (tap)="demoThumbTapped(item)"
                 stretch="aspectFill"></Image>
