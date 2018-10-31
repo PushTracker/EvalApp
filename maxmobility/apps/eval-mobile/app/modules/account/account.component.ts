@@ -48,6 +48,15 @@ export class AccountComponent implements OnInit {
   yes: string = this._translateService.instant('dialogs.yes');
   no: string = this._translateService.instant('dialogs.no');
 
+  usertypes = new ValueList([
+    { value: UserTypes.Admin, display: 'Admin' },
+    { value: UserTypes.Clinician, display: this._translateService.instant('sign-up.user-type-clinician') },
+    { value: UserTypes.Representative, display: this._translateService.instant('sign-up.user-type-rep') },
+    { value: UserTypes.EndUser, display: this._translateService.instant('sign-up.user-type-end-user') }
+  ]);
+
+  selectedUserTypeIndex = 0;
+
   private imageCropper: ImageCropper;
   private _routeSub: Subscription; // subscription to route observer
   private profileImageKey: string;
@@ -69,7 +78,9 @@ export class AccountComponent implements OnInit {
     this.profileImageKey = this.fsKeyPrefix + this.user._id + '.' + this.fsKeyProfilePicture;
 
     // configure if they are an admin account
-    this.isAdminAccount = (this.user.data as User).type === UserTypes.Admin;
+    const adminRegEx = /(william|ben|ken|guo)@max\-mobility.com/i;
+    const isAdminEmail = adminRegEx.test((this.user.data as User).email);
+    this.isAdminAccount = (this.user.data as User).type === UserTypes.Admin || isAdminEmail;
 
     // configure if they can opt in for beta testing firmware - only
     // allowed for @permobil.com and @max-mobility.com email
@@ -90,6 +101,15 @@ export class AccountComponent implements OnInit {
 
     // get translation files
     this._fileService.downloadTranslationFiles();
+  }
+
+  /**
+   * User Type drodown changed
+   * @param args
+   */
+  onUserTypeChanged(args: SelectedIndexChangedEventData) {
+    const type = this.usertypes.getValue(args.newIndex) || 0;
+    (this.user.data as User).type = type;
   }
 
   saveProfilePicture(source: imageSource.ImageSource) {
@@ -167,8 +187,6 @@ export class AccountComponent implements OnInit {
     const newLanguage = this.languages.getValue(args.newIndex) || 'en';
     (this.user.data as any).language = newLanguage;
     this._translateService.use(newLanguage);
-    // save the user setting to their account when changed
-    this._saveUserToKinvey();
   }
 
   onDrawerButtonTap() {
@@ -380,10 +398,8 @@ export class AccountComponent implements OnInit {
   }
 
   private _saveUserToKinvey() {
-    console.log('userService.user', this._userService.user);
-    if (this._userService.user) {
-      const data = this._userService.user.data as User;
-      console.log('user data', data);
+    if (this.user.data) {
+      const data = this.user.data as User;
       return this.user
         .update({
           email: data.email,

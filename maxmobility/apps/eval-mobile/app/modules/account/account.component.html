@@ -49,6 +49,12 @@
       // hidden layout for Devon to submit 'Did You Knows' to Kinvey which triggers Push Notifications
       <StackLayout [visibility]="isAdminAccount ? 'visible' : 'collapsed'" borderColor="orange" borderRadius="4"
         backgroundColor="#fff" margin="5">
+        // User Type Dropdown
+		<GridLayout rows="auto" columns="auto, *">
+          <Label row="1" col="0" class="label" textColor="#000" [text]="'user.type' | translate"></Label>
+          <DropDown row="1" col="1" class="dropdown" [hint]="'user.type' | translate" [selectedIndex]="selectedUserTypeIndex"
+					[items]="usertypes" (selectedIndexChanged)="onUserTypeChanged($event)"></DropDown>
+		</GridLayout>
 		<Button class="acct-btn" text="Debug" (tap)="onDebugMenuTap()"></Button>
         <GridLayout rows="auto" columns="auto, *">
           <Label col="0" text="Send to All Smart Eval Users?" textWrap="true"></Label>
