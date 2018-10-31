@@ -10,7 +10,7 @@
         <GridLayout rows="auto, *" cols="*">
           <StackLayout class="topSlide" row="0" height="45%" width="100%" orientation="horizontal" horizontalAlignment="center">
             // only shows when the slide.Image is a gif
-            <Gif *ngIf="isGif(slide.Image)" [src]="slide.Image" height="100%" width="100%"></Gif>
+            <Gif *ngIf="isGif(slide.Image)" [src]="slide.Image" height="100%" [width]="(slide.Image.indexOf('SD') > -1) ? '300' : '200'" android:width="100%"></Gif>
             // show only when not a gif
             <Image *ngIf="!isGif(slide.Image)" [src]="slide.Image" stretch="aspectFit"></Image>
           </StackLayout>
