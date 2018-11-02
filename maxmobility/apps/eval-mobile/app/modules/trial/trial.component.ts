@@ -272,11 +272,15 @@ export class TrialComponent implements OnInit {
         );
       };
       const sendPushSettings = () => {
-        return pushTracker.sendPushSettings(
-          this.pushSettings.threshold,
-          this.pushSettings.timeWindow,
-          this.pushSettings.clearCounter
-        );
+        if (pushTracker.version >= 0x16) {
+          return pushTracker.sendPushSettings(
+            this.pushSettings.threshold,
+            this.pushSettings.timeWindow,
+            this.pushSettings.clearCounter
+          );
+        } else {
+          return Promise.resolve();
+        }
       };
       // wait for push / coast data and distance:
       pushTracker.on(PushTracker.pushtracker_distance_event, distanceHandler);

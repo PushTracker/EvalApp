@@ -240,13 +240,17 @@ export class PairingComponent implements OnInit {
       );
     };
     const sendPushSettings = () => {
-      return pushTracker.sendPushSettings(
-        this.pushSettings.threshold,
-        this.pushSettings.timeWindow,
-        this.pushSettings.clearCounter
-      );
+      if (pushTracker.version >= 0x16) {
+        return pushTracker.sendPushSettings(
+          this.pushSettings.threshold,
+          this.pushSettings.timeWindow,
+          this.pushSettings.clearCounter
+        );
+      } else {
+        return Promise.resolve();
+      }
     };
-    retry(3, sendSettings)
+    return retry(3, sendSettings)
       .then(() => {
         return retry(3, sendPushSettings);
       })

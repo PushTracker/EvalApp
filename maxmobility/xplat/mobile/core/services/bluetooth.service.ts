@@ -83,6 +83,7 @@ export class BluetoothService {
 
     this._bluetooth.on(Bluetooth.server_connection_state_changed_event, this.onServerConnectionStateChanged, this);
     this._bluetooth.on(Bluetooth.characteristic_write_request_event, this.onCharacteristicWriteRequest, this);
+    this._bluetooth.on(Bluetooth.characteristic_read_request_event, this.onCharacteristicReadRequest, this);
     this._bluetooth.on(Bluetooth.bluetooth_advertise_failure_event, this.onAdvertiseFailure, this);
     this._bluetooth.on(Bluetooth.bluetooth_advertise_success_event, this.onAdvertiseSuccess, this);
   }
@@ -98,6 +99,7 @@ export class BluetoothService {
     this._bluetooth.off(Bluetooth.device_acl_disconnected_event);
     this._bluetooth.off(Bluetooth.server_connection_state_changed_event);
     this._bluetooth.off(Bluetooth.characteristic_write_request_event);
+    this._bluetooth.off(Bluetooth.characteristic_read_request_event);
     this._bluetooth.off(Bluetooth.bluetooth_advertise_failure_event);
     this._bluetooth.off(Bluetooth.bluetooth_advertise_success_event);
   }
