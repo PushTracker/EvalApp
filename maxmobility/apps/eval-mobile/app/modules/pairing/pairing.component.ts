@@ -1,5 +1,5 @@
 import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
-import { PushTracker } from '@maxmobility/core';
+import { PushTracker, SettingsService } from '@maxmobility/core';
 import { BluetoothService, LoggingService, ProgressService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { PageRoute } from 'nativescript-angular/router';
@@ -34,12 +34,13 @@ export class PairingComponent implements OnInit {
    */
   slides;
 
-  settings = new PushTracker.Settings();
+  settings: any = null;
   // Control modes are not translated
   ControlModeOptions = PushTracker.Settings.ControlMode.Options;
   // Have to use translations for Units
   UnitsOptions = PushTracker.Settings.Units.Translations.map(t => this._translateService.instant(t));
-  pushSettings = new PushTracker.PushSettings();
+  pushSettings: any = null;
+
   private feedback: Feedback;
   private _cfAlert = new CFAlertDialog();
   private _snackbar = new SnackBar();
@@ -47,10 +48,14 @@ export class PairingComponent implements OnInit {
   constructor(
     private _pageRoute: PageRoute,
     private _zone: NgZone,
+    private _settingsService: SettingsService,
     private _translateService: TranslateService,
     private _progressService: ProgressService,
     private _loggingService: LoggingService
   ) {
+    this.settings = this._settingsService.settings;
+    this.pushSettings = this._settingsService.pushSettings;
+
     // update slides
     this.slides = this._translateService.instant('pairing');
 

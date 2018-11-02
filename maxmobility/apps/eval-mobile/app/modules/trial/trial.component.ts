@@ -1,5 +1,5 @@
 import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
-import { Evaluation, PushTracker, Trial } from '@maxmobility/core';
+import { Evaluation, PushTracker, Trial, SettingsService } from '@maxmobility/core';
 import { BluetoothService, EvaluationService, LoggingService, ProgressService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { RouterExtensions } from 'nativescript-angular/router';
@@ -57,8 +57,9 @@ export class TrialComponent implements OnInit {
   failed_stop_title: string = this._translateService.instant('trial.errors.failed-stop.title');
   failed_stop_message: string = this._translateService.instant('trial.errors.failed-stop.message');
   trial = new Trial();
-  settings = new PushTracker.Settings();
-  pushSettings = new PushTracker.PushSettings();
+
+  settings: any = null;
+  pushSettings: any = null;
   // Control modes are not translated
   ControlModeOptions = PushTracker.Settings.ControlMode.Options;
   // Have to use translations for Units
@@ -72,12 +73,15 @@ export class TrialComponent implements OnInit {
 
   constructor(
     private _routerExtensions: RouterExtensions,
+    private _settingsService: SettingsService,
     private _progressService: ProgressService,
     private _evaluationService: EvaluationService,
     private _zone: NgZone,
     private _translateService: TranslateService,
     private _loggingService: LoggingService
   ) {
+    this.settings = this._settingsService.settings;
+    this.pushSettings = this._settingsService.pushSettings;
     this.trial.setSettings(this.settings);
   }
 
