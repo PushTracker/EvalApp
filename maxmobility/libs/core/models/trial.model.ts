@@ -16,6 +16,7 @@ export class Trial extends Observable {
   public flat: boolean = false;
   public ramp: boolean = false;
   public inclines: boolean = false;
+  public rampIncline: boolean = false;
   public other: boolean = false;
   public other_description: string = '';
   // settings
@@ -29,6 +30,8 @@ export class Trial extends Observable {
   public startedWithout: boolean = false;
   public finishedWith: boolean = false;
   public finishedWithout: boolean = false;
+  public unableToCompleteWith: boolean = false;
+  public unableToCompleteWithout: boolean = false;
   // metrics
   public distance: number = 0;
   // with SD

@@ -63,6 +63,10 @@
                 <Slider maxValue="10" verticalAlignment="center" class="trial-slider" [value]="(evaluation[diff.key]).toFixed(0)"
                   (valueChange)="onSliderUpdate(diff.key, $event)" row="0" col="0"></Slider>
               </GridLayout>
+              <DockLayout *ngIf="evaluation[diff.key] == 10" stretchLastChild="false">
+                <Label [text]="diff.unableText | translate" class="trial-item" dock="left" textWrap="true" width="70%"></Label>
+                <Switch (checkedChange)="onUnableChecked(diff,$event)" [checked]="diff.unable" dock="right"></Switch>
+              </DockLayout>
             </StackLayout>
           </StackLayout>
 

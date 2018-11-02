@@ -36,12 +36,8 @@
                 <Switch dock="right" class="" [checked]="trial.flat" (checkedChange)="onSwitchChecked('flat', $event)"></Switch>
               </DockLayout>
               <DockLayout stretchLastChild="false">
-                <Label [text]="'trial.ramp' | translate" class="value-label-left"></Label>
-                <Switch dock="right" [checked]="trial.ramp" (checkedChange)="onSwitchChecked('ramp', $event)"></Switch>
-              </DockLayout>
-              <DockLayout stretchLastChild="false">
-                <Label [text]="'trial.inclines' | translate" class="value-label-left"></Label>
-                <Switch dock="right" [checked]="trial.inclines" (checkedChange)="onSwitchChecked('inclines', $event)"></Switch>
+                <Label [text]="'trial.ramp-incline' | translate" class="value-label-left"></Label>
+                <Switch dock="right" [checked]="trial.rampIncline" (checkedChange)="onSwitchChecked('rampIncline', $event)"></Switch>
               </DockLayout>
               <DockLayout stretchLastChild="false">
                 <Label [text]="'trial.other' | translate" class="value-label-left"></Label>
@@ -147,9 +143,10 @@
               <Label [text]="'trial.phase-1-desc' | translate" class="slideDescription" textWrap="true"></Label>
               <Label [text]="'trial.evaluator-range' | translate" textWrap="true" class="trial-recommendation"></Label>
 
-              <button #startWith row="2" [text]="'trial.start' | translate" class="start-button" (tap)="onStartWithTrial($event)"></button>
-              <button #stopWith row="2" [text]="'trial.stop' | translate" class="start-button" (tap)="onStopWithTrial($event)"></button>
-              <button #nextWith row="2" [text]="'buttons.next' | translate" class="start-button" (tap)="goToNextSlide($event)"></button>
+              <button #startWith [text]="'trial.start' | translate" class="start-button" (tap)="onStartWithTrial($event)"></button>
+              <button #stopWith [text]="'trial.stop' | translate" class="start-button" (tap)="onStopWithTrial($event)"></button>
+              <button #cannotCompleteWith [text]="'trial.unable' | translate" class="start-button" (tap)="onCannotCompleteWith($event)"></button>
+              <button #nextWith [text]="'buttons.next' | translate" class="start-button" (tap)="goToNextSlide($event)"></button>
 
               // Data Fields
               <GridLayout rows="auto, auto, auto, auto" columns="auto, *, auto, *">
@@ -185,6 +182,7 @@
 
               <button #startWithout row="2" [text]="'trial.start' | translate" class="start-button" (tap)="onStartWithoutTrial($event)"></button>
               <button #stopWithout row="2" [text]="'trial.stop' | translate" class="start-button" (tap)="onStopWithoutTrial($event)"></button>
+              <button #cannotCompleteWithout [text]="'trial.unable' | translate" class="start-button" (tap)="onCannotCompleteWithout($event)"></button>
               <button #nextWithout row="2" [text]="'buttons.next' | translate" class="start-button" (tap)="goToNextSlide($event)"></button>
 
               // Data Fields

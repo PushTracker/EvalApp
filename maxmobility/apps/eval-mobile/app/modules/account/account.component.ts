@@ -6,7 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 import { RouterExtensions } from 'nativescript-angular/router';
 import * as camera from 'nativescript-camera';
-import { ValueList } from 'nativescript-drop-down';
+import { ValueList, SelectedIndexChangedEventData } from 'nativescript-drop-down';
 import * as email from 'nativescript-email';
 import { ImageCropper } from 'nativescript-imagecropper';
 import * as LS from 'nativescript-localstorage';

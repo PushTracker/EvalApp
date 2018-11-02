@@ -24,12 +24,16 @@ export class TrialComponent implements OnInit {
   startWithView: ElementRef;
   @ViewChild('stopWith')
   stopWithView: ElementRef;
+  @ViewChild('cannotCompleteWith')
+  cannotCompleteWithView: ElementRef;
   @ViewChild('nextWith')
   nextWithView: ElementRef;
   @ViewChild('startWithout')
   startWithoutView: ElementRef;
   @ViewChild('stopWithout')
   stopWithoutView: ElementRef;
+  @ViewChild('cannotCompleteWithout')
+  cannotCompleteWithoutView: ElementRef;
   @ViewChild('nextWithout')
   nextWithoutView: ElementRef;
   @ViewChild('carousel')
@@ -91,8 +95,10 @@ export class TrialComponent implements OnInit {
 
   ngOnInit() {
     this._hideview(this.stopWithView.nativeElement);
+    this._hideview(this.cannotCompleteWithView.nativeElement);
     this._hideview(this.nextWithView.nativeElement);
     this._hideview(this.stopWithoutView.nativeElement);
+    this._hideview(this.cannotCompleteWithoutView.nativeElement);
     this._hideview(this.nextWithoutView.nativeElement);
     // update drop downs
     (this.unitsDropDown.nativeElement as DropDown).selectedIndex = this.UnitsOptions.indexOf(this.settings.units);
@@ -203,6 +209,7 @@ export class TrialComponent implements OnInit {
           pushTracker.off(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
           this.trial.startedWith = true;
           this._animateViewIn(this.stopWithView.nativeElement as View);
+          this._animateViewIn(this.cannotCompleteWithView.nativeElement as View);
         });
       };
 
@@ -307,6 +314,11 @@ export class TrialComponent implements OnInit {
     }
   }
 
+  onCannotCompleteWith() {
+    this.trial.unableToCompleteWith = true;
+    this.onStopWithTrial();
+  }
+
   /**
    * Stops a Trial WITH a SmartDrive
    */
@@ -339,6 +351,7 @@ export class TrialComponent implements OnInit {
           pushTracker.off(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
           this._progressService.hide();
           this._hideview(<View>this.stopWithView.nativeElement);
+          this._hideview(this.cannotCompleteWithView.nativeElement);
           const meters = this.trial.distance;
           const ft = (meters * 5280.0) / 1609.0;
           if (this.settings.units === PushTracker.Settings.Units.English) {
@@ -469,6 +482,7 @@ export class TrialComponent implements OnInit {
           this.trial.without_start = new Date();
           pushTracker.off(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
           this._animateViewIn(<View>this.stopWithoutView.nativeElement);
+          this._animateViewIn(this.cannotCompleteWithoutView.nativeElement as View);
         });
       };
 
@@ -504,6 +518,11 @@ export class TrialComponent implements OnInit {
     }
   }
 
+  onCannotCompleteWithout() {
+    this.trial.unableToCompleteWithout = true;
+    this.onStopWithoutTrial();
+  }
+
   /**
    * Stops a Trial WITHOUT a SmartDrive
    */
@@ -534,6 +553,7 @@ export class TrialComponent implements OnInit {
           pushTracker.off(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
           this._progressService.hide();
           this._hideview(<View>this.stopWithoutView.nativeElement);
+          this._hideview(this.cannotCompleteWithoutView.nativeElement);
           this.pushWithoutDisplay = `${this.trial.without_pushes}`;
           this.coastWithoutDisplay = `${this.trial.without_coast.toFixed(2)} s`;
           const mph = this.trial.distance / 1609.0 / (this.trial.without_elapsed / 60.0);

@@ -20,14 +20,6 @@ export class SummaryComponent {
   evaluation: any = null;
 
   trialName = '';
-  showFlatDifficulty = false;
-  showRampDifficulty = false;
-  showInclineDifficulty = false;
-  showOtherDifficulty = false;
-  hasFlatDifficulty = false;
-  hasRampDifficulty = false;
-  hasInclineDifficulty = false;
-  hasOtherDifficulty = false;
 
   difficulties = [
     {
@@ -35,32 +27,33 @@ export class SummaryComponent {
       key: 'flat_difficulty',
       labelText: 'summary.difficulty-flat',
       sliderLabelText: 'summary.flat-surface-difficulty',
+      unableText: 'summary.unable-flat',
       has: false,
-      show: false
+      show: false,
+      unable: false,
+      unableKey: 'unableToCompleteFlat'
     },
     {
-      name: 'Ramp',
-      key: 'ramp_difficulty',
-      labelText: 'summary.difficulty-ramp',
-      sliderLabelText: 'summary.ramp-difficulty',
+      name: 'Ramp/Incline',
+      key: 'ramp_incline_difficulty',
+      labelText: 'summary.difficulty-ramp-incline',
+      sliderLabelText: 'summary.ramp-incline-difficulty',
+      unableText: 'summary.unable-ramp-incline',
       has: false,
-      show: false
-    },
-    {
-      name: 'Incline',
-      key: 'incline_difficulty',
-      labelText: 'summary.difficulty-incline',
-      sliderLabelText: 'summary.incline-difficulty',
-      has: false,
-      show: false
+      show: false,
+      unable: false,
+      unableKey: 'unableToCompleteRampIncline'
     },
     {
       name: 'Other',
       key: 'other_difficulty',
       labelText: 'summary.difficulty-other',
       sliderLabelText: 'summary.other-surface-difficulty',
+      unableText: 'summary.unable-other',
       has: false,
-      show: false
+      show: false,
+      unable: false,
+      unableKey: 'unableToCompleteOther'
     }
   ];
 
@@ -89,11 +82,6 @@ export class SummaryComponent {
   ) {
     this.evaluation = this._evaluationService.evaluation;
     if (this.evaluation) {
-      this.hasFlatDifficulty = this.evaluation.flat_difficulty > 0;
-      this.hasRampDifficulty = this.evaluation.ramp_difficulty > 0;
-      this.hasInclineDifficulty = this.evaluation.incline_difficulty > 0;
-      this.hasOtherDifficulty = this.evaluation.other_difficulty > 0;
-
       // update difficulties
       this.difficulties.map(d => {
         d.has = this.evaluation[d.key] > 0;
@@ -103,11 +91,8 @@ export class SummaryComponent {
         if (t.flat) {
           this.difficulties.filter(d => d.name === 'Flat')[0].show = true;
         }
-        if (t.ramp) {
-          this.difficulties.filter(d => d.name === 'Ramp')[0].show = true;
-        }
-        if (t.inclines) {
-          this.difficulties.filter(d => d.name === 'Incline')[0].show = true;
+        if (t.rampIncline) {
+          this.difficulties.filter(d => d.name === 'Ramp/Incline')[0].show = true;
         }
         if (t.other) {
           this.difficulties.filter(d => d.name === 'Other')[0].show = true;
@@ -153,6 +138,14 @@ export class SummaryComponent {
     }
   }
 
+  coastComparison(): string {
+    if (this.coastDiff > 1.0) {
+      return this._translateService.instant('summary.higher');
+    } else {
+      return this._translateService.instant('summary.lower');
+    }
+  }
+
   speedComparison(): string {
     if (this.speedDiff > 1.0) {
       return this._translateService.instant('summary.higher');
@@ -173,7 +166,6 @@ export class SummaryComponent {
       toFixed: function() {
         console.log(this);
         let str = this.toFixed(2);
-        console.log(str);
         if (!str.length) {
           str = '0';
         }
@@ -183,14 +175,13 @@ export class SummaryComponent {
         return Trial.timeToString(this * 60);
       },
       pushComparison: () => {
-        return this.pushDiff > 0
-          ? this._translateService.instant('summary.fewer')
-          : this._translateService.instant('summary.more');
+        return this.pushComparison();
       },
       coastComparison: () => {
-        return this.coastDiff > 1.0
-          ? this._translateService.instant('summary.higher')
-          : this._translateService.instant('summary.lower');
+        return this.coastComparison();
+      },
+      speedComparison: () => {
+        return this.speedComparison();
       },
       showCadence: this.totalCadenceWithout > this.cadenceThresh
     });
@@ -276,6 +267,11 @@ export class SummaryComponent {
     if (!diff.has) {
       this.evaluation[diff.key] = 0;
     }
+  }
+
+  onUnableChecked(diff: any, args): void {
+    diff.unable = args.value;
+    this.evaluation[diff.unableKey] = diff.unable;
   }
 
   onSliderUpdate(key, args) {

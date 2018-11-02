@@ -14,6 +14,10 @@ export class Evaluation extends Observable {
   ramp_difficulty = 0.0;
   incline_difficulty = 0.0;
   other_difficulty = 0.0;
+  ramp_incline_difficulty = 0.0;
+  unableToCompleteFlat = false;
+  unableToCompleteRampIncline = false;
+  unableToCompleteOther = false;
   years = '';
   chair = '';
   trials: ObservableArray<Trial> = new ObservableArray();
@@ -38,7 +42,7 @@ export class Evaluation extends Observable {
       trials: []
     };
     Object.keys(this).map(k => {
-      if (typeof this[k] === 'number' || typeof this[k] === 'string') {
+      if (typeof this[k] === 'number' || typeof this[k] === 'string' || typeof this[k] === 'boolean') {
         obj[k] = this[k];
       }
     });
