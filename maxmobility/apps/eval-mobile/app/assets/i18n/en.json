@@ -488,6 +488,7 @@
 	  "unable-other": "Unable to complete Other Surface?",
     "flat-surface-difficulty": "Flat Surface Difficulty",
     "ramp-difficulty": "Ramp Difficulty",
+    "ramp-incline-difficulty": "Ramp/Incline Difficulty",
     "incline-difficulty": "Incline Difficulty",
     "other-surface-difficulty": "Other Surface Difficulty",
     "complete": "Complete Evaluation?",
