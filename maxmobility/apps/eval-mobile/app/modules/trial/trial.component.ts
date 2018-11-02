@@ -143,7 +143,7 @@ export class TrialComponent implements OnInit {
   }
 
   onPushSettingsSliderUpdate(key: string, args) {
-    this.pushSettings[key] = (args.object as Slider).value;
+    this.pushSettings[key] = Math.floor((args.object as Slider).value);
   }
 
   onPushSettingsChecked(key, args) {

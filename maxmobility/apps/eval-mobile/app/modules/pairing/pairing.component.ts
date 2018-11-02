@@ -158,7 +158,7 @@ export class PairingComponent implements OnInit {
   }
 
   onSettingsUpdate(key: string, args: any) {
-    this.settings[key] = args.object.value;
+    this.settings[key] = Math.floor(args.object.value) * 10;
   }
 
   onSettingsChecked(key, args) {
@@ -166,7 +166,7 @@ export class PairingComponent implements OnInit {
   }
 
   onPushSettingsUpdate(key: string, args: any) {
-    this.pushSettings[key] = args.object.value;
+    this.pushSettings[key] = Math.floor(args.object.value);
   }
 
   onPushSettingsChecked(key, args) {

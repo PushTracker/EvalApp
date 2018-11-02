@@ -39,6 +39,7 @@
 		background-color: $permobil-ocean;
 		border-radius: 2;
 		margin: 10, 10;
+		padding: 20;
 	}
 
 	GridLayout {
@@ -135,15 +136,6 @@ TextField {
 	background-color: $permobil-ocean;
 	border-radius: 2;
 	//margin: 45, 10, 50, 10;
-}
-
-.back-button {
-	width: 150;
-	height: 40;
-	color: #fff;
-	background-color: $permobil-hero;
-	border-radius: 2;
-	margin: 25, 10, 50, 10;
 }
 
 .sub-heading {
