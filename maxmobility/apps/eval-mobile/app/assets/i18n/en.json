@@ -481,7 +481,13 @@
     "fewer": "fewer",
     "more": "more",
     "higher": "higher",
-    "lower": "lower"
+      "lower": "lower",
+      "errors": {
+	  "save-failed": {
+	      "title": "Error Saving Evaluation",
+	      "message": "Could not save evaluation into database, error: "
+	  }
+      }
   },
   "trial": {
     "title": "Trial",

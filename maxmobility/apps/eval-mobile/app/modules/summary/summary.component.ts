@@ -6,7 +6,7 @@ import * as mustache from 'mustache';
 import { RouterExtensions } from 'nativescript-angular/router';
 import * as email from 'nativescript-email';
 import { isAndroid, isIOS } from 'tns-core-modules/platform';
-import { confirm } from 'tns-core-modules/ui/dialogs';
+import { alert, confirm } from 'tns-core-modules/ui/dialogs';
 import { TextField } from 'tns-core-modules/ui/text-field';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 
@@ -17,15 +17,17 @@ import { Kinvey } from 'kinvey-nativescript-sdk';
   styleUrls: ['./summary.component.css']
 })
 export class SummaryComponent {
+  evaluation: any = null;
+
   trialName = '';
   showFlatDifficulty = false;
   showRampDifficulty = false;
   showInclineDifficulty = false;
   showOtherDifficulty = false;
-  hasFlatDifficulty = this.evaluation.flat_difficulty > 0;
-  hasRampDifficulty = this.evaluation.ramp_difficulty > 0;
-  hasInclineDifficulty = this.evaluation.incline_difficulty > 0;
-  hasOtherDifficulty = this.evaluation.other_difficulty > 0;
+  hasFlatDifficulty = false;
+  hasRampDifficulty = false;
+  hasInclineDifficulty = false;
+  hasOtherDifficulty = false;
 
   difficulties = [
     {
@@ -85,44 +87,54 @@ export class SummaryComponent {
     private _translateService: TranslateService,
     private _loggingService: LoggingService
   ) {
-    // update difficulties
-    this.difficulties.map(d => {
-      d.has = this.evaluation[d.key] > 0;
-    });
+    this.evaluation = this._evaluationService.evaluation;
+    if (this.evaluation) {
+      this.hasFlatDifficulty = this.evaluation.flat_difficulty > 0;
+      this.hasRampDifficulty = this.evaluation.ramp_difficulty > 0;
+      this.hasInclineDifficulty = this.evaluation.incline_difficulty > 0;
+      this.hasOtherDifficulty = this.evaluation.other_difficulty > 0;
 
-    this.evaluation.trials.map(t => {
-      if (t.flat) {
-        this.difficulties.filter(d => d.name === 'Flat')[0].show = true;
-      }
-      if (t.ramp) {
-        this.difficulties.filter(d => d.name === 'Ramp')[0].show = true;
-      }
-      if (t.inclines) {
-        this.difficulties.filter(d => d.name === 'Incline')[0].show = true;
-      }
-      if (t.other) {
-        this.difficulties.filter(d => d.name === 'Other')[0].show = true;
-      }
-      this.totalPushesWith += t.with_pushes;
-      this.totalPushesWithout += t.without_pushes;
-      this.totalTimeWith += t.with_elapsed;
-      this.totalTimeWithout += t.without_elapsed;
-      this.totalDistance += t.distance;
-    });
-    this.totalCoastWith = this.totalPushesWith ? (this.totalTimeWith * 60) / this.totalPushesWith : 0;
-    this.totalCoastWithout = this.totalPushesWithout ? (this.totalTimeWithout * 60) / this.totalPushesWithout : 0;
-    this.totalCadenceWith = this.totalTimeWith ? this.totalPushesWith / this.totalTimeWith : 0;
-    this.totalCadenceWithout = this.totalTimeWithout ? this.totalPushesWithout / this.totalTimeWithout : 0;
-    this.totalSpeedWith =
-      this.totalTimeWith && this.totalDistance ? this.totalDistance / 1609.0 / (this.totalTimeWith / 610.0) : 0.0;
-    this.totalSpeedWithout =
-      this.totalTimeWithout && this.totalDistance ? this.totalDistance / 1609.0 / (this.totalTimeWithout / 610.0) : 0.0;
-    // pushes
-    this.pushDiff = 100 - (this.totalPushesWith / this.totalPushesWithout) * 100 || 0;
-    // coast
-    this.coastDiff = this.totalCoastWith / this.totalCoastWithout || 0;
-    // speed
-    this.speedDiff = (this.totalSpeedWithout && this.totalSpeedWith / this.totalSpeedWithout) || 0;
+      // update difficulties
+      this.difficulties.map(d => {
+        d.has = this.evaluation[d.key] > 0;
+      });
+
+      this.evaluation.trials.map(t => {
+        if (t.flat) {
+          this.difficulties.filter(d => d.name === 'Flat')[0].show = true;
+        }
+        if (t.ramp) {
+          this.difficulties.filter(d => d.name === 'Ramp')[0].show = true;
+        }
+        if (t.inclines) {
+          this.difficulties.filter(d => d.name === 'Incline')[0].show = true;
+        }
+        if (t.other) {
+          this.difficulties.filter(d => d.name === 'Other')[0].show = true;
+        }
+        this.totalPushesWith += t.with_pushes;
+        this.totalPushesWithout += t.without_pushes;
+        this.totalTimeWith += t.with_elapsed;
+        this.totalTimeWithout += t.without_elapsed;
+        this.totalDistance += t.distance;
+      });
+      this.totalCoastWith = this.totalPushesWith ? (this.totalTimeWith * 60) / this.totalPushesWith : 0;
+      this.totalCoastWithout = this.totalPushesWithout ? (this.totalTimeWithout * 60) / this.totalPushesWithout : 0;
+      this.totalCadenceWith = this.totalTimeWith ? this.totalPushesWith / this.totalTimeWith : 0;
+      this.totalCadenceWithout = this.totalTimeWithout ? this.totalPushesWithout / this.totalTimeWithout : 0;
+      this.totalSpeedWith =
+        this.totalTimeWith && this.totalDistance ? this.totalDistance / 1609.0 / (this.totalTimeWith / 610.0) : 0.0;
+      this.totalSpeedWithout =
+        this.totalTimeWithout && this.totalDistance
+          ? this.totalDistance / 1609.0 / (this.totalTimeWithout / 610.0)
+          : 0.0;
+      // pushes
+      this.pushDiff = 100 - (this.totalPushesWith / this.totalPushesWithout) * 100 || 0;
+      // coast
+      this.coastDiff = this.totalCoastWith / this.totalCoastWithout || 0;
+      // speed
+      this.speedDiff = (this.totalSpeedWithout && this.totalSpeedWith / this.totalSpeedWithout) || 0;
+    }
   }
 
   isIOS(): boolean {
@@ -232,15 +244,31 @@ export class SummaryComponent {
     this.evaluation.status = EvaluationStatus.Complete;
     this.evaluation.creator_id = Kinvey.User.getActiveUser()._id;
 
-    this._evaluationService.save();
-
-    // now go back to dashboard
-    this._routerExtensions.navigate(['/home'], {
-      // clearHistory: true,
-      transition: {
-        name: 'fade'
-      }
-    });
+    this._evaluationService
+      .save()
+      .then(() => {
+        // now go back to dashboard
+        this._routerExtensions.navigate(['/home'], {
+          // clearHistory: true,
+          transition: {
+            name: 'fade'
+          }
+        });
+      })
+      .catch(err => {
+        alert({
+          title: this._translateService.instant('summary.errors.save-failed.title'),
+          message: this._translateService.instant('summary.errors.save-failed.message') + err,
+          okButtonText: this._translateService.instant('dialogs.ok')
+        });
+        // now go back to dashboard
+        this._routerExtensions.navigate(['/home'], {
+          // clearHistory: true,
+          transition: {
+            name: 'fade'
+          }
+        });
+      });
   }
 
   onDifficultyChecked(diff: any, args): void {
@@ -260,9 +288,5 @@ export class SummaryComponent {
         name: 'slideRight'
       }
     });
-  }
-
-  get evaluation() {
-    return this._evaluationService.evaluation;
   }
 }
