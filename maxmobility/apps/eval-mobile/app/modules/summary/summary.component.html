@@ -60,7 +60,7 @@
                   row="0" col="1"></Label>
               </DockLayout>
               <GridLayout *ngIf="diff.has" rows="auto" columns="*, auto">
-                <Slider maxValue="10" verticalAlignment="center" class="trial-slider" [value]="evaluation[diff.key]"
+                <Slider maxValue="10" verticalAlignment="center" class="trial-slider" [value]="(evaluation[diff.key]).toFixed(0)"
                   (valueChange)="onSliderUpdate(diff.key, $event)" row="0" col="0"></Slider>
               </GridLayout>
             </StackLayout>

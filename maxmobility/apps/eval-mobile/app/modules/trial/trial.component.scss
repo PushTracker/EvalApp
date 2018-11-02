@@ -41,14 +41,16 @@
 		margin: 10, 10;
 	}
 
+	GridLayout {
+		Slider {
+			background-color: $permobil-orange;
+			margin: 5, 25, 10, 25;
+		}
+	}
+
 	DockLayout {
 		color: #fff;
 		margin: 10, 10;
-
-		Slider {
-			background-color: $permobil-orange;
-			padding: 0, 25, 0, 25;
-		}
 
 		Switch {
 			margin: 0;

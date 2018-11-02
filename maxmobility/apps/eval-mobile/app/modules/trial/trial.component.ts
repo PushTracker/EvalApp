@@ -132,7 +132,7 @@ export class TrialComponent implements OnInit {
 
   onSettingsSliderChange(key: string, args: any) {
     // slider
-    this.settings[key] = (args.object as Slider).value * 10;
+    this.settings[key] = Math.floor((args.object as Slider).value) * 10;
     this.trial.setSettings(this.settings);
   }
 

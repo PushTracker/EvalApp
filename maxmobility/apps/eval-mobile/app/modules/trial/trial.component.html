@@ -73,7 +73,7 @@
               // Max Speed
               <DockLayout stretchLastChild="false">
                 <Label [text]="'pushtracker.settings.max-speed' | translate" class="value-label-left"></Label>
-                <Label verticalAlignment="center" dock="right" [text]="settings.maxSpeed+'%'" row="0" col="1" class="value"></Label>
+                <Label verticalAlignment="center" dock="right" [text]="settings.maxSpeed.toFixed(0)+'%'" row="0" col="1" class="value"></Label>
               </DockLayout>
               <GridLayout rows="auto" columns="*, auto">
                 <Slider minValue="0" maxValue="10" verticalAlignment="center" [value]="settings.maxSpeed / 10"
@@ -82,7 +82,7 @@
               // Acceleration
               <DockLayout stretchLastChild="false">
                 <Label [text]="'pushtracker.settings.acceleration' | translate" class="value-label-left"></Label>
-                <Label verticalAlignment="center" dock="right" [text]="settings.acceleration+'%'" row="0" col="1" class="value"></Label>
+                <Label verticalAlignment="center" dock="right" [text]="settings.acceleration.toFixed(0)+'%'" row="0" col="1" class="value"></Label>
               </DockLayout>
               <GridLayout rows="auto" columns="*, auto">
                 <Slider minValue="0" maxValue="10" verticalAlignment="center" [value]="settings.acceleration / 10"
@@ -91,7 +91,7 @@
               // Tap Sensitivity
               <DockLayout stretchLastChild="false">
                 <Label [text]="'pushtracker.settings.tap-sensitivity' | translate" class="value-label-left"></Label>
-                <Label verticalAlignment="center" dock="right" [text]="settings.tapSensitivity+'%'" row="0" col="1"
+                <Label verticalAlignment="center" dock="right" [text]="settings.tapSensitivity.toFixed(0)+'%'" row="0" col="1"
                   class="value"></Label>
               </DockLayout>
               <GridLayout rows="auto" columns="*, auto">
@@ -104,7 +104,7 @@
               // Push Threshold
               <DockLayout stretchLastChild="false">
                 <Label [text]="'pushtracker.push-settings.threshold' | translate" class="value-label-left"></Label>
-                <Label verticalAlignment="center" dock="right" [text]="pushSettings.threshold" row="0" col="1" class="value"></Label>
+                <Label verticalAlignment="center" dock="right" [text]="pushSettings.threshold.toFixed(0)" row="0" col="1" class="value"></Label>
               </DockLayout>
               <GridLayout rows="auto" columns="*, auto">
                 <Slider minValue="0" maxValue="10" verticalAlignment="center" [value]="pushSettings.threshold"
@@ -113,7 +113,7 @@
               // Time Window
               <DockLayout stretchLastChild="false">
                 <Label [text]="'pushtracker.push-settings.time-window' | translate" class="value-label-left"></Label>
-                <Label verticalAlignment="center" dock="right" [text]="pushSettings.timeWindow" row="0" col="1" class="value"></Label>
+                <Label verticalAlignment="center" dock="right" [text]="pushSettings.timeWindow.toFixed(0)" row="0" col="1" class="value"></Label>
               </DockLayout>
               <GridLayout rows="auto" columns="*, auto">
                 <Slider minValue="0" maxValue="50" verticalAlignment="center" [value]="pushSettings.timeWindow"
