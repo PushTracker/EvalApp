@@ -371,34 +371,50 @@ export class Bluetooth extends BluetoothCommon {
   public notifyCentrals(value: any, characteristic: any, centrals: any) {
     return new Promise((resolve, reject) => {
       let resendTimeoutID = null;
-      // handle when we've timed out
-      const timeoutID = setTimeout(() => {
-        this.off(Bluetooth.peripheralmanager_ready_update_subscribers_event, readyToUpdate);
-        if (resendTimeoutID) {
-          clearTimeout(resendTimeoutID);
-        }
-        reject('Notify Timeout!');
-      }, 10000);
-      // handle when the notification fails
-      const readyToUpdate = args => {
-        this.off(Bluetooth.peripheralmanager_ready_update_subscribers_event, readyToUpdate);
-        if (resendTimeoutID) {
-          clearTimeout(resendTimeoutID);
-        }
-        resendTimeoutID = setTimeout(sendUpdate, 30);
-      };
+      let readyToUpdate = null;
+      let timeoutID = null;
+      let didUpdate = false;
       // send data function
       const sendUpdate = () => {
+        // register in case notification fails
         this.on(Bluetooth.peripheralmanager_ready_update_subscribers_event, readyToUpdate);
-        const didUpdate = this._peripheralManager.updateValueForCharacteristicOnSubscribedCentrals(
+        // try to send data to central
+        didUpdate = this._peripheralManager.updateValueForCharacteristicOnSubscribedCentrals(
           value,
           characteristic,
           centrals
         );
         if (didUpdate) {
+          // clear the timeout
+          if (timeoutID) {
+            clearTimeout(timeoutID);
+          }
+          // unregister since the notification didn't fail
+          this.off(Bluetooth.peripheralmanager_ready_update_subscribers_event);
+          // return
           resolve(true);
         }
       };
+      // handle when the notification fails
+      readyToUpdate = args => {
+        this.off(Bluetooth.peripheralmanager_ready_update_subscribers_event, readyToUpdate);
+        if (resendTimeoutID) {
+          clearTimeout(resendTimeoutID);
+        }
+        resendTimeoutID = setTimeout(sendUpdate, 10);
+      };
+      // handle when we've timed out
+      timeoutID = setTimeout(() => {
+        // unregister since we're no longer trying anymore
+        this.off(Bluetooth.peripheralmanager_ready_update_subscribers_event, readyToUpdate);
+        // clear the resend timer so that we don't keep trying to send
+        if (resendTimeoutID) {
+          clearTimeout(resendTimeoutID);
+        }
+        // return
+        reject('Notify Timeout!');
+      }, 1000);
+      // now actually send it
       sendUpdate();
     });
   }
