@@ -341,20 +341,38 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
       requests: requests
     });
 
+    // per docs:
+    /*
+		In the same way that you respond to a read request, each time
+		this method is invoked, you call the respond(to:withResult:)
+		method of the CBPeripheralManager class exactly once. If the
+		requests parameter contains multiple requests, treat them as
+		you would a single request—if any individual request cannot be
+		fulfilled, you should not fulfill any of them. Instead, call
+		the respond(to:withResult:) method immediately, and provide a
+		result that indicates the cause of the failure.
+
+		When you respond to a write request, note that the first
+		parameter of the respond(to:withResult:) method expects a
+		single CBATTRequest object, even though you received an array
+		of them from the peripheralManager(_:didReceiveWrite:)
+		method. To respond properly, pass in the first request of the
+		requests array.
+	   */
+    peripheral.respondToRequestWithResult(requests.objectAtIndex(0), CBATTError.Success);
+
     for (let i = 0; i < requests.count; i++) {
       const r = requests.objectAtIndex(i);
 
       // set low connection latency
       //console.log('Setting desired connection latency to low!');
-      peripheral.setDesiredConnectionLatencyForCentral(CBPeripheralManagerConnectionLatency.Low, r.central);
-
-      peripheral.respondToRequestWithResult(r, CBATTError.Success);
+      //peripheral.setDesiredConnectionLatencyForCentral(CBPeripheralManagerConnectionLatency.Low, r.central);
 
       const dev = deviceToCentral(r.central);
       owner.sendEvent(Bluetooth.characteristic_write_request_event, {
         device: dev,
         manager: peripheral,
-        requestId: 0, // TODO: see if we need to change it
+        requestId: i,
         characteristic: r.characteristic,
         preparedWrite: null,
         responseNeeded: false,
