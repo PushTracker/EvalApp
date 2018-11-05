@@ -233,6 +233,10 @@ export class EvalsComponent implements OnInit {
     console.log(`Eval item tapped`);
   }
 
+  public timeString(time: any) {
+    return Trial.timeToString(time * 60);
+  }
+
   private _updateEvalForLmnReport(evaluation: Evaluation) {
     // update difficulties
     this.difficulties.map(d => {
@@ -309,6 +313,7 @@ export class EvalsComponent implements OnInit {
       // console.log('eval', e);
       e.trials.forEach((t: Trial) => {
         // truncate the number data here
+        t.distance = this._truncateNumber(t.distance);
         t.acceleration = this._truncateNumber(t.acceleration);
         t.max_speed = this._truncateNumber(t.max_speed);
         t.with_pushes = this._truncateNumber(t.with_pushes);
