@@ -130,18 +130,6 @@ export class HomeComponent {
         });
     }, 2000);
 
-    // update the users geolocation tag so we can query by location
-    LocationService.getCoordinates()
-      .then(result => {
-        console.log('location coords result', result);
-        Kinvey.User.update({
-          _geoloc: [result.longitude, result.latitude]
-        });
-      })
-      .catch(error => {
-        console.log('location error', error);
-      });
-
     console.log(`Home.Component end constructor ${performance.now()}`);
   }
 
@@ -177,7 +165,6 @@ export class HomeComponent {
 
   otaThumbTapped(item: any) {
     // Determines the OTA process to perform
-    const directive = item.Directive;
     this._routerExtensions.navigate([item.Route]);
   }
 
