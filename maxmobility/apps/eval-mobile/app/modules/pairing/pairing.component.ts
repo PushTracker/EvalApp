@@ -11,6 +11,8 @@ import { SnackBar } from 'nativescript-snackbar';
 import { switchMap } from 'rxjs/operators';
 import { ChangedData, ObservableArray } from 'tns-core-modules/data/observable-array';
 import { confirm } from 'tns-core-modules/ui/dialogs';
+import { NavigationStart, Router } from '@angular/router';
+import { Page } from 'tns-core-modules/ui/page';
 
 @Component({
   selector: 'Pairing',
@@ -46,6 +48,8 @@ export class PairingComponent implements OnInit {
   private _snackbar = new SnackBar();
 
   constructor(
+    private _page: Page,
+    private _router: Router,
     private _pageRoute: PageRoute,
     private _zone: NgZone,
     private _settingsService: SettingsService,
@@ -69,8 +73,9 @@ export class PairingComponent implements OnInit {
 
     this.feedback = new Feedback();
 
+    this.unregister();
     // handle pushtracker pairing events for existing pushtrackers
-    console.log('registering for pairing events!');
+    console.log('pairing: registering for events!');
     BluetoothService.PushTrackers.map(pt => {
       pt.on(PushTracker.pushtracker_paired_event, args => {
         this.pushTrackerPairingSuccess();
@@ -81,8 +86,6 @@ export class PairingComponent implements OnInit {
         }
       });
       // register for settings and push settings
-      pt.off(PushTracker.pushtracker_settings_event, this.onPushTrackerSettings, this);
-      pt.off(PushTracker.pushtracker_push_settings_event, this.onPushTrackerPushSettings, this);
       pt.on(PushTracker.pushtracker_settings_event, this.onPushTrackerSettings, this);
       pt.on(PushTracker.pushtracker_push_settings_event, this.onPushTrackerPushSettings, this);
     });
@@ -101,8 +104,6 @@ export class PairingComponent implements OnInit {
             }
           });
           // register for settings and push settings
-          pt.off(PushTracker.pushtracker_settings_event, this.onPushTrackerSettings, this);
-          pt.off(PushTracker.pushtracker_push_settings_event, this.onPushTrackerPushSettings, this);
           pt.on(PushTracker.pushtracker_settings_event, this.onPushTrackerSettings, this);
           pt.on(PushTracker.pushtracker_push_settings_event, this.onPushTrackerPushSettings, this);
         }
@@ -110,7 +111,29 @@ export class PairingComponent implements OnInit {
     });
   }
 
+  unregister(): void {
+    console.log('pairing: unregistering for events!');
+    BluetoothService.PushTrackers.off(ObservableArray.changeEvent);
+    BluetoothService.PushTrackers.map(pt => {
+      pt.off(PushTracker.pushtracker_paired_event);
+      pt.off(PushTracker.pushtracker_connect_event);
+      pt.off(PushTracker.pushtracker_settings_event);
+      pt.off(PushTracker.pushtracker_push_settings_event);
+    });
+  }
+
   ngOnInit(): void {
+    // see https://github.com/NativeScript/nativescript-angular/issues/1049
+    this.routeSub = this._router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        this.unregister();
+      }
+    });
+
+    this._page.on(Page.navigatingFromEvent, event => {
+      this.unregister();
+    });
+
     // update drop downs
     (this.unitsDropDown.nativeElement as DropDown).selectedIndex = this.UnitsOptions.indexOf(this.settings.units);
     (this.controlModeDropDown.nativeElement as DropDown).selectedIndex = this.ControlModeOptions.indexOf(
