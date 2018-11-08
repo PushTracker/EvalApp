@@ -87,6 +87,7 @@
                   (valueChange)="onSettingsUpdate('tapSensitivity', $event)" row="0" col="0"></Slider>
               </GridLayout>
 
+	      <!--
               // Push Settings:
               <Label [text]="'pushtracker.push-settings.label' | translate" class="section"></Label>
               // Push Threshold
@@ -112,6 +113,7 @@
                 <Label [text]="'pushtracker.push-settings.clear-counter' | translate" class="setting"></Label>
                 <Switch dock="right" [checked]="pushSettings.clearCounter" (checkedChange)="onPushSettingsChecked('clearCounter', $event)"></Switch>
               </DockLayout>
+	      -->
 
               // Send these settings to PushTracker
               <button [text]="'pushtracker.settings.save-button' | translate" class="saveButton" (tap)="onSaveSettings($event)"></button>

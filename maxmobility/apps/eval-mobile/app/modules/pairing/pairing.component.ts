@@ -87,7 +87,7 @@ export class PairingComponent implements OnInit {
       });
       // register for settings and push settings
       pt.on(PushTracker.pushtracker_settings_event, this.onPushTrackerSettings, this);
-      pt.on(PushTracker.pushtracker_push_settings_event, this.onPushTrackerPushSettings, this);
+      //pt.on(PushTracker.pushtracker_push_settings_event, this.onPushTrackerPushSettings, this);
     });
 
     // listen for completely new pusthrackers (that we haven't seen before)
@@ -105,7 +105,7 @@ export class PairingComponent implements OnInit {
           });
           // register for settings and push settings
           pt.on(PushTracker.pushtracker_settings_event, this.onPushTrackerSettings, this);
-          pt.on(PushTracker.pushtracker_push_settings_event, this.onPushTrackerPushSettings, this);
+          //pt.on(PushTracker.pushtracker_push_settings_event, this.onPushTrackerPushSettings, this);
         }
       }
     });
@@ -118,7 +118,7 @@ export class PairingComponent implements OnInit {
       pt.off(PushTracker.pushtracker_paired_event);
       pt.off(PushTracker.pushtracker_connect_event);
       pt.off(PushTracker.pushtracker_settings_event);
-      pt.off(PushTracker.pushtracker_push_settings_event);
+      //pt.off(PushTracker.pushtracker_push_settings_event);
     });
   }
 
