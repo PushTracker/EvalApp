@@ -130,6 +130,10 @@ export class SummaryComponent {
     return isAndroid;
   }
 
+  evalIsMax(key, val): boolean {
+    return Math.round(this.evaluation[key]) >= val;
+  }
+
   pushComparison(): string {
     if (this.pushDiff > 0) {
       return this._translateService.instant('summary.fewer');
