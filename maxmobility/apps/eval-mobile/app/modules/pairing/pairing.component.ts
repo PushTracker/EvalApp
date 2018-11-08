@@ -13,6 +13,7 @@ import { ChangedData, ObservableArray } from 'tns-core-modules/data/observable-a
 import { confirm } from 'tns-core-modules/ui/dialogs';
 import { NavigationStart, Router } from '@angular/router';
 import { Page } from 'tns-core-modules/ui/page';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'Pairing',
@@ -46,6 +47,7 @@ export class PairingComponent implements OnInit {
   private feedback: Feedback;
   private _cfAlert = new CFAlertDialog();
   private _snackbar = new SnackBar();
+  private routeSub: Subscription; // subscription to route observer
 
   constructor(
     private _page: Page,
