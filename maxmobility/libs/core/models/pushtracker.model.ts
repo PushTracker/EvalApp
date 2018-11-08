@@ -122,9 +122,9 @@ export class PushTracker extends Observable {
     // settings classes
 
     // public members
-    public threshold: number = 4;
-    public timeWindow: number = 20;
-    public clearCounter: boolean = true;
+    public threshold: number = 3;
+    public timeWindow: number = 15;
+    public clearCounter: boolean = false;
 
     constructor() {
       super();
