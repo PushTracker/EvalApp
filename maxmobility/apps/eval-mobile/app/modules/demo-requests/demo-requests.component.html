@@ -1,0 +1,20 @@
+<ActionBar class="action-bar" flat="true" [title]="'menu.demo-requests' | translate">
+    <NavigationButton android:visibility="collapse"></NavigationButton>
+</ActionBar>
+
+<Gradient tkMainContent margin-top="30" direction="to bottom" colors="#004F7E, #0070b3">
+
+    <GridLayout rows="*, auto">
+        <ListView row="0" backgroundColor="transparent" [items]="demoRequests">
+            <ng-template let-item="item" let-index="index">
+                <GridLayout rows="auto, auto" columns="auto, *, *">
+                    <Label [text]="item.user" textWrap="true"></Label>
+
+                </GridLayout>
+
+            </ng-template>
+        </ListView>
+
+    </GridLayout>
+
+</Gradient>

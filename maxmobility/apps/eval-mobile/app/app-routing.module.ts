@@ -97,6 +97,11 @@ const routes: Routes = [
     canActivate: [AuthGuardService]
   },
   {
+    path: 'demo-requests',
+    loadChildren: './modules/demo-requests/demo-requests.module#DemoRequestsModule',
+    canActivate: [AuthGuardService]
+  },
+  {
     path: 'faq',
     loadChildren: './modules/faq/faq.module#FAQModule',
     canActivate: [AuthGuardService]
