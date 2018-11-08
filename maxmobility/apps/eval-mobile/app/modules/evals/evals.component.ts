@@ -39,51 +39,19 @@ export class EvalsComponent implements OnInit {
   isSearchData = false;
 
   /*** LMN PROPS  ***/
-  difficulties = [
-    {
-      name: 'Flat',
-      key: 'flat_difficulty',
-      labelText: 'summary.difficulty-flat',
-      sliderLabelText: 'summary.flat-surface-difficulty',
-      has: false,
-      show: false
-    },
-    {
-      name: 'Ramp',
-      key: 'ramp_difficulty',
-      labelText: 'summary.difficulty-ramp',
-      sliderLabelText: 'summary.ramp-difficulty',
-      has: false,
-      show: false
-    },
-    {
-      name: 'Incline',
-      key: 'incline_difficulty',
-      labelText: 'summary.difficulty-incline',
-      sliderLabelText: 'summary.incline-difficulty',
-      has: false,
-      show: false
-    },
-    {
-      name: 'Other',
-      key: 'other_difficulty',
-      labelText: 'summary.difficulty-other',
-      sliderLabelText: 'summary.other-surface-difficulty',
-      has: false,
-      show: false
-    }
-  ];
-
   totalPushesWith = 0;
   totalPushesWithout = 0;
   totalTimeWith = 0;
   totalTimeWithout = 0;
   totalCoastWith = 0;
   totalCoastWithout = 0;
+  totalSpeedWith = 0;
+  totalSpeedWithout = 0;
   totalCadenceWith = 0;
   totalCadenceWithout = 0;
   pushDiff = 0;
   coastDiff = 0;
+  speedDiff = 0;
   cadenceThresh = 10; // pushes per minute
   lmnTemplate: string = this._translateService.instant('summary.lmnTemplate').join('\n');
 
@@ -238,24 +206,7 @@ export class EvalsComponent implements OnInit {
   }
 
   private _updateEvalForLmnReport(evaluation: Evaluation) {
-    // update difficulties
-    this.difficulties.map(d => {
-      d.has = evaluation[d.key] > 0;
-    });
-
     evaluation.trials.map(t => {
-      if (t.flat) {
-        this.difficulties.filter(d => d.name === 'Flat')[0].show = true;
-      }
-      if (t.ramp) {
-        this.difficulties.filter(d => d.name === 'Ramp')[0].show = true;
-      }
-      if (t.inclines) {
-        this.difficulties.filter(d => d.name === 'Incline')[0].show = true;
-      }
-      if (t.other) {
-        this.difficulties.filter(d => d.name === 'Other')[0].show = true;
-      }
       this.totalPushesWith += t.with_pushes;
       this.totalPushesWithout += t.without_pushes;
       this.totalTimeWith += t.with_elapsed;
@@ -265,23 +216,53 @@ export class EvalsComponent implements OnInit {
     this.totalCoastWithout = this.totalPushesWithout ? (this.totalTimeWithout * 60) / this.totalPushesWithout : 0;
     this.totalCadenceWith = this.totalTimeWith ? this.totalPushesWith / this.totalTimeWith : 0;
     this.totalCadenceWithout = this.totalTimeWithout ? this.totalPushesWithout / this.totalTimeWithout : 0;
+    this.totalSpeedWith =
+      this.totalTimeWith && this.totalDistance ? this.totalDistance / 1609.0 / (this.totalTimeWith / 610.0) : 0.0;
+    this.totalSpeedWithout =
+      this.totalTimeWithout && this.totalDistance ? this.totalDistance / 1609.0 / (this.totalTimeWithout / 610.0) : 0.0;
     // pushes
     this.pushDiff = 100 - (this.totalPushesWith / this.totalPushesWithout) * 100 || 0;
     // coast
     this.coastDiff = this.totalCoastWith / this.totalCoastWithout || 0;
+    // speed
+    this.speedDiff = (this.totalSpeedWithout && this.totalSpeedWith / this.totalSpeedWithout) || 0;
+  }
+
+  pushComparison(): string {
+    if (this.pushDiff > 0) {
+      return this._translateService.instant('summary.fewer');
+    } else {
+      return this._translateService.instant('summary.more');
+    }
+  }
+
+  coastComparison(): string {
+    if (this.coastDiff > 1.0) {
+      return this._translateService.instant('summary.higher');
+    } else {
+      return this._translateService.instant('summary.lower');
+    }
+  }
+
+  speedComparison(): string {
+    if (this.speedDiff > 1.0) {
+      return this._translateService.instant('summary.higher');
+    } else {
+      return this._translateService.instant('summary.lower');
+    }
   }
 
   private _generateLMN(evaluation: Evaluation): string {
     // const that = this;
     return mustache.render(this.lmnTemplate, {
-      evaluation,
+      evaluation: evaluation,
       trials: evaluation.trials,
       totalCadenceWithout: this.totalCadenceWithout.toFixed(1),
       pushDiff: this.pushDiff.toFixed(0),
       coastDiff: this.coastDiff.toFixed(1),
+      speedDiff: this.speedDiff.toFixed(1),
       // tslint:disable-next-line:object-literal-shorthand
       toFixed: function() {
-        console.log(this);
         let str = this.toFixed(2);
         console.log(str);
         if (!str.length) {
@@ -294,14 +275,13 @@ export class EvalsComponent implements OnInit {
         return Trial.timeToString(this * 60);
       },
       pushComparison: () => {
-        return this.pushDiff > 0
-          ? this._translateService.instant('summary.fewer')
-          : this._translateService.instant('summary.more');
+        return this.pushComparison();
       },
       coastComparison: () => {
-        return this.coastDiff > 1.0
-          ? this._translateService.instant('summary.higher')
-          : this._translateService.instant('summary.lower');
+        return this.coastComparison();
+      },
+      speedComparison: () => {
+        return this.speedComparison();
       },
       showCadence: this.totalCadenceWithout > this.cadenceThresh
     });

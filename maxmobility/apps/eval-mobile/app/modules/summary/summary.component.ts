@@ -168,7 +168,6 @@ export class SummaryComponent {
       coastDiff: this.coastDiff.toFixed(1),
       speedDiff: this.speedDiff.toFixed(1),
       toFixed: function() {
-        console.log(this);
         let str = this.toFixed(2);
         if (!str.length) {
           str = '0';
