@@ -18,11 +18,14 @@ export class EvalEntryComponent {
   yearDropdown: ElementRef;
   @ViewChild('chairDropdown')
   chairDropdown: ElementRef;
+  @ViewChild('chairTypeDropdown')
+  chairTypeDropdown: ElementRef;
   hasPushingPain = false;
   hasPushingFatigue = false;
   impactsIndependence = false;
   years = this._translateService.instant('eval-entry.years-options');
   chair = this._translateService.instant('eval-entry.chair-options');
+  chairTypes = this._translateService.instant('eval-entry.chair-type.options');
 
   evaluation: Evaluation;
 
@@ -68,6 +71,12 @@ export class EvalEntryComponent {
             const chairIndex = this.chair.indexOf(this.evaluation.chair);
             if (chairIndex !== -1) {
               (this.chairDropdown.nativeElement as DropDown).selectedIndex = chairIndex;
+            }
+
+            // map the chair type string value to the dropdown UI Index value using indexOf
+            const chairTypeIndex = this.chairTypes.indexOf(this.evaluation.chairType);
+            if (chairTypeIndex !== -1) {
+              (this.chairTypeDropdown.nativeElement as DropDown).selectedIndex = chairTypeIndex;
             }
           } else {
             console.log('creating new Evaluation object');

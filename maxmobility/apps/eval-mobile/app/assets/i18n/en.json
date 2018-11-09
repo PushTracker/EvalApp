@@ -126,7 +126,15 @@
       "TiLite",
       "Top End",
       "Other"
-    ]
+    ],
+	  "chair-type": {
+		  "question": "What type is your manual wheelchair?",
+		  "label": "Chair Type",
+		  "options": [
+			  "Folding Frame",
+			  "Rigid Frame"
+		  ]
+	  }
   },
   "training": [
     {

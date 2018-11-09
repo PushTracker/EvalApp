@@ -39,6 +39,7 @@ export class EvalsComponent implements OnInit {
   isSearchData = false;
 
   /*** LMN PROPS  ***/
+  totalDistance = 0;
   totalPushesWith = 0;
   totalPushesWithout = 0;
   totalTimeWith = 0;
@@ -211,6 +212,7 @@ export class EvalsComponent implements OnInit {
       this.totalPushesWithout += t.without_pushes;
       this.totalTimeWith += t.with_elapsed;
       this.totalTimeWithout += t.without_elapsed;
+      this.totalDistance += t.distance;
     });
     this.totalCoastWith = this.totalPushesWith ? (this.totalTimeWith * 60) / this.totalPushesWith : 0;
     this.totalCoastWithout = this.totalPushesWithout ? (this.totalTimeWithout * 60) / this.totalPushesWithout : 0;
