@@ -7,7 +7,7 @@
     <ng-template let-item="item">
       <GridLayout rows="*" columns="145, *">
         <GridLayout rows="auto" columns="*" class="video-layout">
-          <GridLayout row="0" class="video-title" (tap)="videoThumbTapped(item)">
+          <GridLayout row="0" class="video-title">
             <Label textWrap="true" [text]="item.Title"></Label>
           </GridLayout>
         </GridLayout>
