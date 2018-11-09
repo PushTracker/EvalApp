@@ -1,6 +1,7 @@
 <ActionBar class="action-bar" flat="true" [title]="'menu.home' | translate">
-  <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
-  <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem>
+  <ActionItem ios.position="right" (tap)="onDrawerButtonTap()">
+    <Label text="&#xf2be;" class="account-icon fa"></Label>
+  </ActionItem>
 </ActionBar>
 
 <StackLayout tkMainContent>
