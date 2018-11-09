@@ -1,4 +1,5 @@
 <ActionBar class="action-bar" [title]="'user.account' | translate" flat="true">
+  <NavigationButton android:visibility="collapse"></NavigationButton>
   <ActionItem ios.position="right" (tap)="onSaveAccountTap()">
     <Button text="Save" (tap)="onSaveAccountTap()" class="action-item"></Button>
   </ActionItem>
