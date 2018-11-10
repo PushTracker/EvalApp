@@ -2,6 +2,13 @@
 @import '../../scss/common';
 @import '../../scss/variables';
 
+.account-icon {
+  color: $white;
+  font-size: 30;
+  margin: 10;
+  padding: 0, 10;
+}
+
 .main-scroll-view {
   background-color: #fff;
   // padding: 0, 30, 0, 30;

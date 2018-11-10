@@ -20,6 +20,7 @@ export class Evaluation extends Observable {
   unableToCompleteOther = false;
   years = '';
   chair = '';
+  chairType = '';
   trials: ObservableArray<Trial> = new ObservableArray();
 
   // private members

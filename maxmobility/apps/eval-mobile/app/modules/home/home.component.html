@@ -1,11 +1,7 @@
 <ActionBar class="action-bar" flat="true" [title]="'menu.home' | translate">
-  <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
-  <ActionItem
-    icon="res://navigation/menu"
-    android:visibility="collapsed"
-    (tap)="onDrawerButtonTap()"
-    ios.position="left"
-  ></ActionItem>
+  <ActionItem ios.position="right" (tap)="onDrawerButtonTap()">
+    <Label text="&#xf2be;" class="account-icon fa"></Label>
+  </ActionItem>
 </ActionBar>
 
 <StackLayout tkMainContent>
@@ -190,24 +186,16 @@
         </StackLayout>
 
         // Stock demo unit when no demo units are found
-        <GridLayout
-          rows="140, *"
-          marginLeft="10"
-          row="3"
-          colSpan="2"
-          class="list-item-layout"
-          *ngIf="!Demos.length && demoUnitsLoaded"
-          horizontalAlignment="left"
-        >
-          <image
-            row="0"
-            width="140"
-            src="~/assets/images/PushTracker-SmartDrive-pairing.png"
-            (tap)="demoThumbTapped(null)"
-            backgroundImage="~/assets/images/background_1.jpg"
-            stretch="aspectFill"
-          ></image>
-          <label row="1" class="new-demo" color="white" [text]="'menu.new-demo' | translate" textWrap="true"></label>
+        <GridLayout rows="140, *" marginLeft="10" row="3" colSpan="2" class="list-item-layout" *ngIf="!Demos.length && demoUnitsLoaded"
+          horizontalAlignment="left">
+              <Image row="0"
+					 width="130"
+					 margin="5"
+					 src="~/assets/images/stock-image.png"
+					 (tap)="demoThumbTapped(null)"
+					 backgroundImage="~/assets/images/background_1.jpg"
+					 stretch="aspectFill"></Image>
+          <Label row="1" class="new-demo" color="white" [text]="'menu.new-demo' | translate" textWrap="true"></Label>
         </GridLayout>
 
         // Demo unit listview
