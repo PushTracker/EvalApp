@@ -80,6 +80,7 @@
     "demos": "Demos",
     "new-demo": "You have no demos registered to your account. Tap the image above to register a new demo unit to your account.",
     "demos-desc": "Demo location and management",
+    "demo-refresh": "Refresh Demos",
     "faq": "FAQs",
     "faq-desc": "Some frequently asked questions"
   },
@@ -135,7 +136,7 @@
       "Bullets": ["Press back on the rocker switch to power on the SmartDrive, and forward to power off."]
     },
     {
-		"Image": "~/assets/images/gifs/PT-POWER.gif",
+      "Image": "~/assets/images/gifs/PT-POWER.gif",
       "Label": "Powering PushTracker",
       "Bullets": [
         "Press the either button on the PushTracker to power on.",
@@ -521,10 +522,10 @@
     "difficulty-ramp": "Difficulty on Ramp?",
     "difficulty-incline": "Difficulty on Incline?",
     "difficulty-ramp-incline": "Difficulty on Ramp/Incline?",
-      "difficulty-other": "Difficulty on Other Surface?",
-	  "unable-flat": "Unable to complete Flat?",
-	  "unable-ramp-incline": "Unable to complete Ramp/Incline?",
-	  "unable-other": "Unable to complete Other Surface?",
+    "difficulty-other": "Difficulty on Other Surface?",
+    "unable-flat": "Unable to complete Flat?",
+    "unable-ramp-incline": "Unable to complete Ramp/Incline?",
+    "unable-other": "Unable to complete Other Surface?",
     "flat-surface-difficulty": "Flat Surface Difficulty",
     "ramp-difficulty": "Ramp Difficulty",
     "ramp-incline-difficulty": "Ramp/Incline Difficulty",
@@ -537,21 +538,21 @@
     "fewer": "fewer",
     "more": "more",
     "higher": "higher",
-      "lower": "lower",
-      "errors": {
-	  "save-failed": {
-	      "title": "Error Saving Evaluation",
-	      "message": "Could not save evaluation into database, error: "
-	  }
+    "lower": "lower",
+    "errors": {
+      "save-failed": {
+        "title": "Error Saving Evaluation",
+        "message": "Could not save evaluation into database, error: "
       }
+    }
   },
   "trial": {
     "title": "Trial",
     "set-up": "Trial Set-Up",
     "select-options": "Select options and settings for SmartDrive trial.",
     "name": "Enter trial name",
-      "flat-surfaces": "Flat Surfaces",
-	  "ramp-incline": "Ramps / Inclines",
+    "flat-surfaces": "Flat Surfaces",
+    "ramp-incline": "Ramps / Inclines",
     "ramp": "Ramp",
     "inclines": "Inclines",
     "other": "Other",
@@ -567,8 +568,8 @@
     "phase-1-desc": "Go through the trial course with the SmartDrive - press start to begin.",
     "phase-2-desc": "Now redo the same trial course without the SmartDrive - press start to begin.",
     "start": "Start",
-      "stop": "Stop",
-	  "unable": "Cannot complete",
+    "stop": "Stop",
+    "unable": "Cannot complete",
     "pushes": "Pushes: ",
     "average-speed": "Average Speed: ",
     "coast-time": "Coast Time: ",
@@ -740,7 +741,7 @@
   },
   "sign-up": {
     "user-type-clinician": "Clinician",
-      "user-type-rep": "Representative",
-	  "user-type-end-user": "End User"
+    "user-type-rep": "Representative",
+    "user-type-end-user": "End User"
   }
 }

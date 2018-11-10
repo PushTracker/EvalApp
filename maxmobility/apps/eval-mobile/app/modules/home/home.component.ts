@@ -117,18 +117,15 @@ export class HomeComponent {
     this.userType = (activeUser.data as User).type as number;
 
     // delaying since it typically won't be in the viewport initially on majority of devices
-    setTimeout(() => {
-      this._demoService
-        .load()
-        .then(() => {
-          this.demoUnitsLoaded = true;
-          console.log('bluetoothService enabled', this._bluetoothService.enabled);
-        })
-        .catch(err => {
-          this._loggingService.logException(err);
-          this.demoUnitsLoaded = true;
-        });
-    }, 2000);
+    // only loading if the static demos member of the service has no items
+    // adding a refresh button in the UI to query on demand for the list items
+    if (DemoService.Demos.length <= 0) {
+      setTimeout(() => {
+        this.loadDemoUnits();
+      }, 2000);
+    } else {
+      this.demoUnitsLoaded = true;
+    }
 
     console.log(`Home.Component end constructor ${performance.now()}`);
   }
@@ -151,8 +148,27 @@ export class HomeComponent {
     });
   }
 
+  loadDemoUnits() {
+    console.log('refresh demo list');
+    try {
+      this.demoUnitsLoaded = false; // toggle the display of the loading indicator
+      DemoService.Demos.splice(0, DemoService.Demos.length); // empty the current items
+
+      this._demoService
+        .load()
+        .then(() => {
+          this.demoUnitsLoaded = true;
+        })
+        .catch(err => {
+          this._loggingService.logException(err);
+          this.demoUnitsLoaded = true;
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   connectivityThumbTapped(item: any) {
-    // const index = this.connectivityItems.indexOf(item);
     // Determines the pairing processs to perform
     const directive = item.Directive;
 
