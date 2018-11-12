@@ -1,6 +1,6 @@
 <ActionBar class="action-bar" flat="true" [title]="'menu.home' | translate">
   <ActionItem ios.position="right" (tap)="onDrawerButtonTap()">
-    <Label text="&#xf2be;" class="account-icon fa"></Label>
+    <label text="&#xf2be;" class="account-icon fa"></label>
   </ActionItem>
 </ActionBar>
 
@@ -186,16 +186,25 @@
         </StackLayout>
 
         // Stock demo unit when no demo units are found
-        <GridLayout rows="140, *" marginLeft="10" row="3" colSpan="2" class="list-item-layout" *ngIf="!Demos.length && demoUnitsLoaded"
-          horizontalAlignment="left">
-              <Image row="0"
-					 width="130"
-					 margin="5"
-					 src="~/assets/images/stock-image.png"
-					 (tap)="demoThumbTapped(null)"
-					 backgroundImage="~/assets/images/background_1.jpg"
-					 stretch="aspectFill"></Image>
-          <Label row="1" class="new-demo" color="white" [text]="'menu.new-demo' | translate" textWrap="true"></Label>
+        <GridLayout
+          rows="140, *"
+          marginLeft="10"
+          row="3"
+          colSpan="2"
+          class="list-item-layout"
+          *ngIf="!Demos.length && demoUnitsLoaded"
+          horizontalAlignment="left"
+        >
+          <image
+            row="0"
+            width="130"
+            margin="5"
+            src="~/assets/images/stock-image.png"
+            (tap)="demoThumbTapped(null)"
+            backgroundImage="~/assets/images/background_1.jpg"
+            stretch="aspectFill"
+          ></image>
+          <label row="1" class="new-demo" color="white" [text]="'menu.new-demo' | translate" textWrap="true"></label>
         </GridLayout>
 
         // Demo unit listview
