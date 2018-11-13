@@ -72,10 +72,9 @@
                   col="1"
                 ></label>
               </DockLayout>
-              <GridLayout *ngIf="diff.has" rows="auto" columns="*, auto">
+              <GridLayout *ngIf="diff.has" rows="auto" columns="*, auto" class="slider-container">
                 <Slider
                   maxValue="10"
-                  verticalAlignment="center"
                   margin="10"
                   [value]="evaluation[diff.key].toFixed(0)"
                   (valueChange)="onSliderUpdate(diff.key, $event)"
