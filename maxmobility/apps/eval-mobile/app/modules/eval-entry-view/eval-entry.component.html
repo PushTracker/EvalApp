@@ -20,7 +20,7 @@
           <GridLayout row="1" colSpan="2" *ngIf="hasPushingPain" class="eval-item" rows="auto, auto" columns="*, auto">
             <Label row="0" col="0" class="eval-slider-label" [text]="'eval-entry.pain-label' | translate" textWrap="true"></Label>
             <Label row="0" col="1" class="eval-slider-value-label" [text]="evaluation.pushing_pain.toFixed(0)+' / 10'"></Label>
-            <Slider row="1" colSpan="2" maxValue="10" class="eval-slider" [value]="evaluation.pushing_pain" (valueChange)="onSliderUpdate('pushing_pain', $event)"></Slider>
+            <Slider row="1" colSpan="2" maxValue="10" [value]="evaluation.pushing_pain" (valueChange)="onSliderUpdate('pushing_pain', $event)"></Slider>
           </GridLayout>
         </GridLayout>
 
@@ -31,7 +31,7 @@
           <GridLayout row="1" colSpan="2" *ngIf="hasPushingFatigue" class="eval-item" rows="auto, auto" columns="*, auto">
             <Label row="0" col="0" class="eval-slider-label" [text]="'eval-entry.fatigue-label' | translate" textWrap="true"></Label>
             <Label row="0" col="1" class="eval-slider-value-label" [text]="evaluation.pushing_fatigue.toFixed(0)+' / 10'"></Label>
-            <Slider row="1" colSpan="2" maxValue="10" class="eval-slider" [value]="evaluation.pushing_fatigue" (valueChange)="onSliderUpdate('pushing_fatigue', $event)"></Slider>
+            <Slider row="1" colSpan="2" maxValue="10" [value]="evaluation.pushing_fatigue" (valueChange)="onSliderUpdate('pushing_fatigue', $event)"></Slider>
           </GridLayout>
         </GridLayout>
 
@@ -42,7 +42,7 @@
           <GridLayout row="1" colSpan="2" *ngIf="impactsIndependence" class="eval-item" rows="auto, auto" columns="*, auto">
             <Label row="0" col="0" class="eval-slider-label" [text]="'eval-entry.independence-label' | translate" textWrap="true"></Label>
             <Label row="0" col="1" class="eval-slider-value-label" [text]="evaluation.impact_on_independence.toFixed(0)+' / 10'"></Label>
-            <Slider row="1" colSpan="2" maxValue="10" class="eval-slider" [value]="evaluation.impact_on_independence" (valueChange)="onSliderUpdate('impact_on_independence', $event)"></Slider>
+            <Slider row="1" colSpan="2" maxValue="10" [value]="evaluation.impact_on_independence" (valueChange)="onSliderUpdate('impact_on_independence', $event)"></Slider>
           </GridLayout>
         </GridLayout>
 
