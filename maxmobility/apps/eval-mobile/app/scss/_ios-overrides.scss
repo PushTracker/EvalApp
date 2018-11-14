@@ -1,9 +1,24 @@
 @import '~nativescript-theme-core/scss/platforms/index.ios';
+@import './variables';
+
 listview {
   height: 100%;
-  //   background-color: $base;
 }
 RadListView {
   height: 100%;
-  //   background-color: $base;
+}
+
+Switch {
+  margin: 0 5 0 5;
+  padding: 0;
+}
+
+Switch[checked='true'] {
+  color: #ff671f;
+  background-color: #b88c78;
+}
+
+Switch[checked='false'] {
+  color: #fff;
+  background-color: $permobil-hero;
 }

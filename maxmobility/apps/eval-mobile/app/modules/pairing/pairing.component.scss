@@ -81,20 +81,13 @@
       }
     }
 
-    DockLayout {
-      color: #fff;
-      margin: 10, 10;
+    // ensure all the labels are colored WHITE
+    label {
+      color: $white;
+    }
 
-      Switch {
-        margin: 0;
-        padding: 0;
-      }
-      Switch[checked='true'] {
-        background-color: $success-light;
-      }
-      Switch[checked='false'] {
-        background-color: $permobil-charcoal;
-      }
+    DockLayout {
+      margin: 10, 10;
 
       DropDown {
         background-color: $permobil-hero;

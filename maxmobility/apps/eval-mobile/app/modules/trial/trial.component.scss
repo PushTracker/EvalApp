@@ -1,6 +1,6 @@
 // Custom common variables
-@import '../../scss/variables';
 @import '../../scss/carousel';
+@import '../../scss/variables';
 
 .trial-scroll-view {
   height: 80%;
@@ -42,29 +42,22 @@
     padding: 20;
   }
 
+  // ensure all the labels are colored WHITE
+  label {
+    color: $white;
+  }
+
   .slider-container {
-	Slider {
-	  width: 80%;
-	  margin: 5, 25, 10, 25;
-	  vertical-align: center;
-	  horizontal-align: center;
-	}
+    Slider {
+      width: 80%;
+      margin: 5, 25, 10, 25;
+      vertical-align: center;
+      horizontal-align: center;
+    }
   }
 
   DockLayout {
-    color: #fff;
     margin: 10, 10;
-
-    Switch {
-      margin: 0;
-      padding: 0;
-    }
-    Switch[checked='true'] {
-      background-color: $success-light;
-    }
-    Switch[checked='false'] {
-      background-color: $permobil-charcoal;
-    }
 
     DropDown {
       background-color: $permobil-hero;
@@ -72,7 +65,7 @@
       color: $white;
       border-radius: 2;
       width: 35%;
-      padding: 0, 0;
+      padding: 2;
       margin: 5, 0;
       text-align: right;
       vertical-align: center;

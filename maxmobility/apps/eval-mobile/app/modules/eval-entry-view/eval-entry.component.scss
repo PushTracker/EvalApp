@@ -8,126 +8,116 @@
   background-position: center;
   background-size: cover;
 
-  Image {
-	margin: 10, 0, 10, 0;
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
-  }
-}
-
-Switch {
-    color: #fff;
-    margin: 5, 5, 5, 5;
-    padding: 10, 15, 10, 0;
-}
-
-Switch[checked=true] {
-    background-color: $success-light; 
-    //$permobil-ocean;
-}
-
-Switch[checked=false] {
-    background-color: $permobil-charcoal;
-}
-
-.eval-stack-layout{
-    padding: 0, 10, 20, 10;
-    background: transparent;
-    horizontal-align: center;
-}
-
-.heading {
-    text-align: center;
-    horizontal-align: center;
-    font-family: $os-Light;
-    font-size: 25;
-    margin: 0;
-    padding: 0;
-    color: $white;
-}
-
-.hero {
-    background-color: $permobil-hero;
-}
-
-.action-item {
-    color: white;
-    font-size: 18;
-    text-transform: none;
-}
-
-.gridImage {
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-}
-
-Image {
+  image {
+    margin: 10, 0, 10, 0;
     display: block;
     margin-left: auto;
     margin-right: auto;
+  }
+}
+
+.eval-stack-layout {
+  padding: 0, 10, 20, 10;
+  background: transparent;
+  horizontal-align: center;
+}
+
+.heading {
+  text-align: center;
+  horizontal-align: center;
+  font-family: $os-Light;
+  font-size: 25;
+  margin: 0;
+  padding: 0;
+  color: $white;
+}
+
+.hero {
+  background-color: $permobil-hero;
+}
+
+.action-item {
+  color: white;
+  font-size: 18;
+  text-transform: none;
+}
+
+.gridImage {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+image {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .eval-item {
-    width: 100%;
-    padding: 0, 0, 20, 0;
+  width: 100%;
+  padding: 0, 0, 20, 0;
+
+  Slider {
+    width: 80%;
+    margin: 5, 25, 10, 25;
+    vertical-align: center;
+    horizontal-align: center;
+  }
 }
 
 .eval-label {
-    vertical-align: center;
-    text-overflow: none;
-    word-wrap: normal;
-    color: #fff;
-    font-weight: 500;
-    padding: 5;
+  vertical-align: center;
+  text-overflow: none;
+  word-wrap: normal;
+  color: #fff;
+  font-weight: 500;
+  padding: 5;
 }
 
 .eval-slider-label {
-    color: #fff;
-    font-weight: 500;
-    padding: 5;
+  color: #fff;
+  font-weight: 500;
+  padding: 5;
 }
 
 .eval-slider-value-label {
-    color: #fff;
-    font-family: $os-Light;
-    horizontal-align: right;
+  color: #fff;
+  font-family: $os-Light;
+  horizontal-align: right;
 }
 
-.eval-segmentedBar{
-    vertical-align: center;
-    selected-background-color: #fff;
-    //padding: 0, 15, 0, 0;
-    color: #fff;
+.eval-segmentedBar {
+  vertical-align: center;
+  selected-background-color: #fff;
+  //padding: 0, 15, 0, 0;
+  color: #fff;
 }
 
-.nextButton{
-    width: 150;
-    height: 40; 
-    color: #fff;
-    background-color: $permobil-ocean;
-    border-radius: 2;
-    //padding: 50, 10, 0, 10;
+.nextButton {
+  width: 150;
+  height: 40;
+  color: #fff;
+  background-color: $permobil-ocean;
+  border-radius: 2;
+  //padding: 50, 10, 0, 10;
 }
 
-.videoPlayer{
-    background: $permobil-charcoal;
-    //padding: 30, 0, 0, 0;
-    border-radius: 5;
+.videoPlayer {
+  background: $permobil-charcoal;
+  //padding: 30, 0, 0, 0;
+  border-radius: 5;
 }
 
 .dropdown {
-    background-color: $permobil-hero;
-    placeholder-color: rgba(250, 250, 250, 0.5);
-    color: $white;
-    border-radius: 2;
-    width: 35%;
-    padding: 5;
-    margin: 5;
-    text-align: center;
-    vertical-align: center;
-    horizontal-align: right;
+  background-color: $permobil-hero;
+  placeholder-color: rgba(250, 250, 250, 0.5);
+  color: $white;
+  border-radius: 2;
+  width: 35%;
+  padding: 5;
+  margin: 5;
+  text-align: center;
+  vertical-align: center;
+  horizontal-align: right;
 }
-
-
