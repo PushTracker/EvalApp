@@ -8,7 +8,10 @@ import { LoggingService } from './logging.service';
 
 @Injectable()
 export class FileService {
-  constructor(private _translateService: TranslateService, private _loggingService: LoggingService) {}
+  constructor(
+    private _translateService: TranslateService,
+    private _loggingService: LoggingService
+  ) {}
 
   private static fsKeyMetadata = 'Metadata';
 
@@ -24,18 +27,26 @@ export class FileService {
       this._loggingService.logException(e);
     })) as Kinvey.File[];
 
-    if (files.length >= 1) {
+    if (files && files.length >= 1) {
       files.forEach(async file => {
         // check if we have the latest version of the translation files - if not return out to next item
-        const data = localStorage.getItem(`${file._filename}-${FileService.fsKeyMetadata}`);
-        console.log(`file ${file._filename} stored metadata`, JSON.stringify(data));
+        const data = localStorage.getItem(
+          `${file._filename}-${FileService.fsKeyMetadata}`
+        );
+        console.log(
+          `file ${file._filename} stored metadata`,
+          JSON.stringify(data)
+        );
 
         // _version is a property on our Kinvey files
         if (data && data.file_version >= (file as any)._version) {
           return;
         }
 
-        const filePath = fs.path.join(fs.knownFolders.currentApp().path, `assets/i18n/${file._filename}`);
+        const filePath = fs.path.join(
+          fs.knownFolders.currentApp().path,
+          `assets/i18n/${file._filename}`
+        );
         await http.getFile(file._downloadURL, filePath).catch(err => {
           this._loggingService.logException(err);
           console.log('error http.getFile', err);
@@ -71,8 +82,13 @@ export class FileService {
       file_version: (file as any)._version
     };
 
-    localStorage.setItem(`${file._filename}-${FileService.fsKeyMetadata}`, metadata);
+    localStorage.setItem(
+      `${file._filename}-${FileService.fsKeyMetadata}`,
+      metadata
+    );
 
-    console.log(`${file._filename} updated metadata ${JSON.stringify(metadata)}`);
+    console.log(
+      `${file._filename} updated metadata ${JSON.stringify(metadata)}`
+    );
   }
 }
