@@ -6,11 +6,12 @@ repositories {
   google() // Google's Maven repository
 }
 
-android {  
+android {    
   defaultConfig {  
     generatedDensities = []
     applicationId = "com.permobil.smarteval"  
-
+    minSdkVersion 21
+    targetSdkVersion 27
   }  
   aaptOptions {  
     additionalParameters "--no-version-vectors"  
