@@ -30,7 +30,8 @@
     "start-ios-bundle": "npm run ns-bundle --ios --run-app",
     "build-android-bundle": "npm run ns-bundle --android --build-app",
     "build-ios-bundle": "npm run ns-bundle --ios --build-app",
-    "start": "tns run ios --emulator --syncAllFiles"
+    "start": "tns run ios --emulator --syncAllFiles",
+    "make-changelog": "github_changelog_generator -u PushTracker -p EvalApp"
   },
   "dependencies": {
     "@_/nativescript-swift-fix": "file:./plugins/swift-fix",
