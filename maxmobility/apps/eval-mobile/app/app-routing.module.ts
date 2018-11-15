@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes } from '@angular/router';
-import { NativeScriptRouterModule } from 'nativescript-angular/router';
 import { AuthGuardService } from '@maxmobility/mobile';
+import { NativeScriptRouterModule } from 'nativescript-angular/router';
 
 const routes: Routes = [
   {
@@ -19,7 +19,8 @@ const routes: Routes = [
   },
   {
     path: 'forgot-password',
-    loadChildren: './modules/forgot-password/forgot-password.module#ForgotPasswordModule'
+    loadChildren:
+      './modules/forgot-password/forgot-password.module#ForgotPasswordModule'
   },
   {
     path: 'home',
@@ -79,11 +80,6 @@ const routes: Routes = [
   {
     path: 'summary',
     loadChildren: './modules/summary/summary.module#SummaryModule',
-    canActivate: [AuthGuardService]
-  },
-  {
-    path: 'ota',
-    loadChildren: './modules/featured/featured.module#FeaturedModule',
     canActivate: [AuthGuardService]
   },
   {
