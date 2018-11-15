@@ -11,13 +11,13 @@ android {
     generatedDensities = []
     applicationId = "com.permobil.smarteval"  
     minSdkVersion 21
-    targetSdkVersion 27
+    targetSdkVersion 28
   }  
   aaptOptions {  
     additionalParameters "--no-version-vectors"  
   }
   project.ext {
-    googlePlayServicesVersion = "11.6.+"
+    googlePlayServicesVersion = "15.0.+"
     firebaseMessagingVersion = "11.6.+"
   }
 } 
