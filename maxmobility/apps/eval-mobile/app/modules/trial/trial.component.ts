@@ -1,10 +1,29 @@
-import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
-import { Evaluation, PushTracker, Trial, SettingsService } from '@maxmobility/core';
-import { BluetoothService, EvaluationService, LoggingService, ProgressService } from '@maxmobility/mobile';
+import {
+  Component,
+  ElementRef,
+  NgZone,
+  OnInit,
+  ViewChild
+} from '@angular/core';
+import {
+  Evaluation,
+  PushTracker,
+  SettingsService,
+  Trial
+} from '@maxmobility/core';
+import {
+  BluetoothService,
+  EvaluationService,
+  LoggingService,
+  ProgressService
+} from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { RouterExtensions } from 'nativescript-angular/router';
-import { CFAlertDialog, CFAlertStyle } from 'nativescript-cfalert-dialog';
-import { DropDown, SelectedIndexChangedEventData } from 'nativescript-drop-down';
+import {
+  DropDown,
+  SelectedIndexChangedEventData
+} from 'nativescript-drop-down';
+import { Feedback } from 'nativescript-feedback';
 import { SnackBar } from 'nativescript-snackbar';
 import { isIOS } from 'tns-core-modules/platform';
 import { View } from 'tns-core-modules/ui/core/view';
@@ -53,13 +72,25 @@ export class TrialComponent implements OnInit {
   coastWithoutDisplay = '--';
   speedWithoutDisplay = '--';
   timeWithoutDisplay = '--';
-  starting_trial: string = this._translateService.instant('trial.starting-trial');
-  stopping_trial: string = this._translateService.instant('trial.stopping-trial');
+  starting_trial: string = this._translateService.instant(
+    'trial.starting-trial'
+  );
+  stopping_trial: string = this._translateService.instant(
+    'trial.stopping-trial'
+  );
   okbuttontxt: string = this._translateService.instant('dialogs.ok');
-  failed_start_title: string = this._translateService.instant('trial.errors.failed-start.title');
-  failed_start_message: string = this._translateService.instant('trial.errors.failed-start.message');
-  failed_stop_title: string = this._translateService.instant('trial.errors.failed-stop.title');
-  failed_stop_message: string = this._translateService.instant('trial.errors.failed-stop.message');
+  failed_start_title: string = this._translateService.instant(
+    'trial.errors.failed-start.title'
+  );
+  failed_start_message: string = this._translateService.instant(
+    'trial.errors.failed-start.message'
+  );
+  failed_stop_title: string = this._translateService.instant(
+    'trial.errors.failed-stop.title'
+  );
+  failed_stop_message: string = this._translateService.instant(
+    'trial.errors.failed-stop.message'
+  );
   trial = new Trial();
 
   settings: any = null;
@@ -67,10 +98,12 @@ export class TrialComponent implements OnInit {
   // Control modes are not translated
   ControlModeOptions = PushTracker.Settings.ControlMode.Options;
   // Have to use translations for Units
-  UnitsOptions = PushTracker.Settings.Units.Translations.map(t => this._translateService.instant(t));
+  UnitsOptions = PushTracker.Settings.Units.Translations.map(t =>
+    this._translateService.instant(t)
+  );
 
   private _trialTimeout = 15000; // 15 seconds
-  private _cfAlert = new CFAlertDialog();
+  private _feedback = new Feedback();
   private _snackbar = new SnackBar();
 
   private hasAddedToTrial = false;
@@ -101,8 +134,12 @@ export class TrialComponent implements OnInit {
     this._hideview(this.cannotCompleteWithoutView.nativeElement);
     this._hideview(this.nextWithoutView.nativeElement);
     // update drop downs
-    (this.unitsDropDown.nativeElement as DropDown).selectedIndex = this.UnitsOptions.indexOf(this.settings.units);
-    (this.controlModeDropDown.nativeElement as DropDown).selectedIndex = this.ControlModeOptions.indexOf(
+    (this.unitsDropDown
+      .nativeElement as DropDown).selectedIndex = this.UnitsOptions.indexOf(
+      this.settings.units
+    );
+    (this.controlModeDropDown
+      .nativeElement as DropDown).selectedIndex = this.ControlModeOptions.indexOf(
       this.settings.controlMode
     );
   }
@@ -205,11 +242,18 @@ export class TrialComponent implements OnInit {
           }
           this._progressService.hide();
           this.trial.with_start = new Date();
-          pushTracker.off(PushTracker.pushtracker_distance_event, distanceHandler);
-          pushTracker.off(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
+          pushTracker.off(
+            PushTracker.pushtracker_distance_event,
+            distanceHandler
+          );
+          pushTracker.off(
+            PushTracker.pushtracker_daily_info_event,
+            dailyInfoHandler
+          );
           this.trial.startedWith = true;
           this._animateViewIn(this.stopWithView.nativeElement as View);
-          this._animateViewIn(this.cannotCompleteWithView.nativeElement as View);
+          this._animateViewIn(this.cannotCompleteWithView
+            .nativeElement as View);
         });
       };
 
@@ -219,8 +263,14 @@ export class TrialComponent implements OnInit {
             clearTimeout(startWithTimeoutID);
           }
           this._progressService.hide();
-          pushTracker.off(PushTracker.pushtracker_distance_event, distanceHandler);
-          pushTracker.off(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
+          pushTracker.off(
+            PushTracker.pushtracker_distance_event,
+            distanceHandler
+          );
+          pushTracker.off(
+            PushTracker.pushtracker_daily_info_event,
+            dailyInfoHandler
+          );
           this._animateViewIn(this.startWithView.nativeElement as View);
           console.log(`Couldn't start trial: ${err}`);
           alert({
@@ -243,7 +293,9 @@ export class TrialComponent implements OnInit {
 
       const distanceHandler = data => {
         // get the data
-        this.trial.distance = PushTracker.caseTicksToMiles(data.data.coastDistance);
+        this.trial.distance = PushTracker.caseTicksToMiles(
+          data.data.coastDistance
+        );
         // record that we've gotten it
         haveDistance = true;
         if (haveDailyInfo && haveDistance) {
@@ -295,7 +347,10 @@ export class TrialComponent implements OnInit {
       };
       // wait for push / coast data and distance:
       pushTracker.on(PushTracker.pushtracker_distance_event, distanceHandler);
-      pushTracker.on(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
+      pushTracker.on(
+        PushTracker.pushtracker_daily_info_event,
+        dailyInfoHandler
+      );
 
       // set timeout on trial starting
       startWithTimeoutID = setTimeout(() => {
@@ -345,10 +400,20 @@ export class TrialComponent implements OnInit {
           }
           this.trial.finishedWith = true;
           // diff is in ms
-          this.trial.with_elapsed = (this.trial.with_end.getTime() - this.trial.with_start.getTime()) / 60000;
-          this.trial.with_coast = this.trial.with_pushes ? (this.trial.with_elapsed * 60) / this.trial.with_pushes : 0;
-          pushTracker.off(PushTracker.pushtracker_distance_event, distanceHandler);
-          pushTracker.off(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
+          this.trial.with_elapsed =
+            (this.trial.with_end.getTime() - this.trial.with_start.getTime()) /
+            60000;
+          this.trial.with_coast = this.trial.with_pushes
+            ? (this.trial.with_elapsed * 60) / this.trial.with_pushes
+            : 0;
+          pushTracker.off(
+            PushTracker.pushtracker_distance_event,
+            distanceHandler
+          );
+          pushTracker.off(
+            PushTracker.pushtracker_daily_info_event,
+            dailyInfoHandler
+          );
           this._progressService.hide();
           this._hideview(<View>this.stopWithView.nativeElement);
           this._hideview(this.cannotCompleteWithView.nativeElement);
@@ -368,7 +433,9 @@ export class TrialComponent implements OnInit {
           } else {
             this.speedWithDisplay = `${kph.toFixed(2)} kph`;
           }
-          this.timeWithDisplay = Trial.timeToString(this.trial.with_elapsed * 60);
+          this.timeWithDisplay = Trial.timeToString(
+            this.trial.with_elapsed * 60
+          );
           this._animateViewIn(<View>this.nextWithView.nativeElement);
         });
       };
@@ -380,8 +447,14 @@ export class TrialComponent implements OnInit {
             clearTimeout(stopWithTimeoutID);
           }
           this._progressService.hide();
-          pushTracker.off(PushTracker.pushtracker_distance_event, distanceHandler);
-          pushTracker.off(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
+          pushTracker.off(
+            PushTracker.pushtracker_distance_event,
+            distanceHandler
+          );
+          pushTracker.off(
+            PushTracker.pushtracker_daily_info_event,
+            dailyInfoHandler
+          );
           console.log(`Couldn't stop trial: ${err}`);
           alert({
             title: this.failed_stop_title,
@@ -393,7 +466,10 @@ export class TrialComponent implements OnInit {
 
       const dailyInfoHandler = data => {
         // get the data
-        this.trial.with_pushes = data.data.pushesWithout + data.data.pushesWith - this.trial.with_pushes;
+        this.trial.with_pushes =
+          data.data.pushesWithout +
+          data.data.pushesWith -
+          this.trial.with_pushes;
         // record that we've gotten it
         haveDailyInfo = true;
         if (haveDailyInfo && haveDistance) {
@@ -403,7 +479,9 @@ export class TrialComponent implements OnInit {
 
       const distanceHandler = data => {
         // get the data
-        this.trial.distance = PushTracker.caseTicksToMiles(data.data.coastDistance) - this.trial.distance;
+        this.trial.distance =
+          PushTracker.caseTicksToMiles(data.data.coastDistance) -
+          this.trial.distance;
         this.trial.distance = this.trial.distance * 1604; // convert to meters
         // record that we've gotten it
         haveDistance = true;
@@ -436,7 +514,10 @@ export class TrialComponent implements OnInit {
 
       // wait for push / coast data and distance:
       pushTracker.on(PushTracker.pushtracker_distance_event, distanceHandler);
-      pushTracker.on(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
+      pushTracker.on(
+        PushTracker.pushtracker_daily_info_event,
+        dailyInfoHandler
+      );
 
       // set timeout on trial starting
       stopWithTimeoutID = setTimeout(() => {
@@ -480,9 +561,13 @@ export class TrialComponent implements OnInit {
           this._progressService.hide();
           this.trial.startedWithout = true;
           this.trial.without_start = new Date();
-          pushTracker.off(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
+          pushTracker.off(
+            PushTracker.pushtracker_daily_info_event,
+            dailyInfoHandler
+          );
           this._animateViewIn(<View>this.stopWithoutView.nativeElement);
-          this._animateViewIn(this.cannotCompleteWithoutView.nativeElement as View);
+          this._animateViewIn(this.cannotCompleteWithoutView
+            .nativeElement as View);
         });
       };
 
@@ -492,7 +577,10 @@ export class TrialComponent implements OnInit {
             clearTimeout(startWithoutTimeoutID);
           }
           this._progressService.hide();
-          pushTracker.off(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
+          pushTracker.off(
+            PushTracker.pushtracker_daily_info_event,
+            dailyInfoHandler
+          );
           this._animateViewIn(<View>this.startWithoutView.nativeElement);
           console.log(`Couldn't start trial: ${err}`);
           alert({
@@ -505,7 +593,8 @@ export class TrialComponent implements OnInit {
 
       const dailyInfoHandler = data => {
         // get the data
-        this.trial.without_pushes = data.data.pushesWithout + data.data.pushesWith;
+        this.trial.without_pushes =
+          data.data.pushesWithout + data.data.pushesWith;
         // record that we've gotten it
         trialStartedHandler();
       };
@@ -514,7 +603,10 @@ export class TrialComponent implements OnInit {
       startWithoutTimeoutID = setTimeout(() => {
         trialStartWithoutFailed('Timeout!');
       }, this._trialTimeout);
-      pushTracker.on(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
+      pushTracker.on(
+        PushTracker.pushtracker_daily_info_event,
+        dailyInfoHandler
+      );
     }
   }
 
@@ -546,24 +638,34 @@ export class TrialComponent implements OnInit {
             clearTimeout(stopWithoutTimeoutID);
           }
           this.trial.finishedWithout = true;
-          this.trial.without_elapsed = (this.trial.without_end.getTime() - this.trial.without_start.getTime()) / 60000;
+          this.trial.without_elapsed =
+            (this.trial.without_end.getTime() -
+              this.trial.without_start.getTime()) /
+            60000;
           this.trial.without_coast = this.trial.without_pushes
             ? (this.trial.without_elapsed * 60) / this.trial.without_pushes
             : 0;
-          pushTracker.off(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
+          pushTracker.off(
+            PushTracker.pushtracker_daily_info_event,
+            dailyInfoHandler
+          );
           this._progressService.hide();
           this._hideview(<View>this.stopWithoutView.nativeElement);
           this._hideview(this.cannotCompleteWithoutView.nativeElement);
           this.pushWithoutDisplay = `${this.trial.without_pushes}`;
           this.coastWithoutDisplay = `${this.trial.without_coast.toFixed(2)} s`;
-          const mph = this.trial.distance / 1609.0 / (this.trial.without_elapsed / 60.0);
-          const kph = this.trial.distance / 1000.0 / (this.trial.without_elapsed / 60.0);
+          const mph =
+            this.trial.distance / 1609.0 / (this.trial.without_elapsed / 60.0);
+          const kph =
+            this.trial.distance / 1000.0 / (this.trial.without_elapsed / 60.0);
           if (this.settings.units === PushTracker.Settings.Units.English) {
             this.speedWithoutDisplay = `${mph.toFixed(2)} mph`;
           } else {
             this.speedWithoutDisplay = `${kph.toFixed(2)} mph`;
           }
-          this.timeWithoutDisplay = Trial.timeToString(this.trial.without_elapsed * 60);
+          this.timeWithoutDisplay = Trial.timeToString(
+            this.trial.without_elapsed * 60
+          );
           this._animateViewIn(<View>this.nextWithoutView.nativeElement);
         });
       };
@@ -574,7 +676,10 @@ export class TrialComponent implements OnInit {
             clearTimeout(stopWithoutTimeoutID);
           }
           this._progressService.hide();
-          pushTracker.off(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
+          pushTracker.off(
+            PushTracker.pushtracker_daily_info_event,
+            dailyInfoHandler
+          );
           console.log(`Couldn't stop trial: ${err}`);
           alert({
             title: this.failed_stop_title,
@@ -586,7 +691,10 @@ export class TrialComponent implements OnInit {
 
       const dailyInfoHandler = data => {
         // get the data
-        this.trial.without_pushes = data.data.pushesWithout + data.data.pushesWith - this.trial.without_pushes;
+        this.trial.without_pushes =
+          data.data.pushesWithout +
+          data.data.pushesWith -
+          this.trial.without_pushes;
         // record that we've gotten it
         trialStoppedHandler();
       };
@@ -597,7 +705,10 @@ export class TrialComponent implements OnInit {
       }, this._trialTimeout);
 
       // wait for push / coast data and distance:
-      pushTracker.on(PushTracker.pushtracker_daily_info_event, dailyInfoHandler);
+      pushTracker.on(
+        PushTracker.pushtracker_daily_info_event,
+        dailyInfoHandler
+      );
     }
   }
 
@@ -622,7 +733,9 @@ export class TrialComponent implements OnInit {
    * Helper method to check for a connected PushTracker from the BluetoothService.PushTrackers array.
    */
   private _getOneConnectedPushTracker() {
-    const connectedPTs = BluetoothService.PushTrackers.filter(pt => pt.connected);
+    const connectedPTs = BluetoothService.PushTrackers.filter(
+      pt => pt.connected
+    );
 
     // no pushtrackers are connected - will show snackbar alert
     if (connectedPTs.length <= 0) {
@@ -636,10 +749,16 @@ export class TrialComponent implements OnInit {
         })
         .then(result => {
           if (result.command === 'Action') {
-            this._cfAlert.show({
-              dialogStyle: CFAlertStyle.ALERT,
-              message: this._translateService.instant('trial.connect_pushtracker_more_info'),
-              cancellable: true
+            this._feedback.info({
+              title: '',
+              message: this._translateService.instant(
+                'trial.connect_pushtracker_more_info'
+              ),
+              duration: 6000,
+              // type: FeedbackType.Success, // no need to specify when using 'success' instead of 'show'
+              onTap: () => {
+                console.log('feedback warning tapped');
+              }
             });
           }
         });
@@ -649,7 +768,9 @@ export class TrialComponent implements OnInit {
 
     // too many pushtrackers connected - don't know which to use!
     if (connectedPTs.length > 1) {
-      this._snackbar.simple(this._translateService.instant('trial.errors.too-many-pts'));
+      this._snackbar.simple(
+        this._translateService.instant('trial.errors.too-many-pts')
+      );
       return null;
     }
 
@@ -669,8 +790,12 @@ export class TrialComponent implements OnInit {
       return false;
     } else if (pt.version === 0xff) {
       alert({
-        title: this._translateService.instant('trial.errors.pt-reconnect.title'),
-        message: this._translateService.instant('trial.errors.pt-reconnect.message'),
+        title: this._translateService.instant(
+          'trial.errors.pt-reconnect.title'
+        ),
+        message: this._translateService.instant(
+          'trial.errors.pt-reconnect.message'
+        ),
         okButtonText: this.okbuttontxt
       });
       return false;

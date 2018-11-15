@@ -1,19 +1,31 @@
-import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  NgZone,
+  OnInit,
+  ViewChild
+} from '@angular/core';
+import { NavigationStart, Router } from '@angular/router';
 import { PushTracker, SettingsService } from '@maxmobility/core';
-import { BluetoothService, LoggingService, ProgressService } from '@maxmobility/mobile';
+import {
+  BluetoothService,
+  LoggingService,
+  ProgressService
+} from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { PageRoute } from 'nativescript-angular/router';
-import { CFAlertDialog, CFAlertStyle } from 'nativescript-cfalert-dialog';
 import { DropDown } from 'nativescript-drop-down';
 import { Feedback } from 'nativescript-feedback';
 import { Gif } from 'nativescript-gif';
 import { SnackBar } from 'nativescript-snackbar';
-import { switchMap } from 'rxjs/operators';
-import { ChangedData, ObservableArray } from 'tns-core-modules/data/observable-array';
-import { confirm } from 'tns-core-modules/ui/dialogs';
-import { NavigationStart, Router } from '@angular/router';
-import { Page } from 'tns-core-modules/ui/page';
 import { Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import {
+  ChangedData,
+  ObservableArray
+} from 'tns-core-modules/data/observable-array';
+import { confirm } from 'tns-core-modules/ui/dialogs';
+import { Page } from 'tns-core-modules/ui/page';
 
 @Component({
   selector: 'Pairing',
@@ -41,11 +53,12 @@ export class PairingComponent implements OnInit {
   // Control modes are not translated
   ControlModeOptions = PushTracker.Settings.ControlMode.Options;
   // Have to use translations for Units
-  UnitsOptions = PushTracker.Settings.Units.Translations.map(t => this._translateService.instant(t));
+  UnitsOptions = PushTracker.Settings.Units.Translations.map(t =>
+    this._translateService.instant(t)
+  );
   pushSettings: any = null;
 
-  private feedback: Feedback;
-  private _cfAlert = new CFAlertDialog();
+  private _feedback: Feedback;
   private _snackbar = new SnackBar();
   private routeSub: Subscription; // subscription to route observer
 
@@ -66,14 +79,16 @@ export class PairingComponent implements OnInit {
     this.slides = this._translateService.instant('pairing');
 
     // figure out which slide we're going to
-    this._pageRoute.activatedRoute.pipe(switchMap(activatedRoute => activatedRoute.queryParams)).forEach(params => {
-      if (params.index) {
-        this.selectedPage = params.index;
-        console.log(this.selectedPage);
-      }
-    });
+    this._pageRoute.activatedRoute
+      .pipe(switchMap(activatedRoute => activatedRoute.queryParams))
+      .forEach(params => {
+        if (params.index) {
+          this.selectedPage = params.index;
+          console.log(this.selectedPage);
+        }
+      });
 
-    this.feedback = new Feedback();
+    this._feedback = new Feedback();
 
     this.unregister();
     // handle pushtracker pairing events for existing pushtrackers
@@ -88,29 +103,42 @@ export class PairingComponent implements OnInit {
         }
       });
       // register for settings and push settings
-      pt.on(PushTracker.pushtracker_settings_event, this.onPushTrackerSettings, this);
-      //pt.on(PushTracker.pushtracker_push_settings_event, this.onPushTrackerPushSettings, this);
+      pt.on(
+        PushTracker.pushtracker_settings_event,
+        this.onPushTrackerSettings,
+        this
+      );
+      // pt.on(PushTracker.pushtracker_push_settings_event, this.onPushTrackerPushSettings, this);
     });
 
     // listen for completely new pusthrackers (that we haven't seen before)
-    BluetoothService.PushTrackers.on(ObservableArray.changeEvent, (args: ChangedData<number>) => {
-      if (args.action === 'add') {
-        const pt = BluetoothService.PushTrackers.getItem(BluetoothService.PushTrackers.length - 1);
-        if (pt) {
-          pt.on(PushTracker.pushtracker_paired_event, pairedArgs => {
-            this.pushTrackerPairingSuccess();
-          });
-          pt.on(PushTracker.pushtracker_connect_event, arg => {
-            if (pt.paired) {
-              this.pushTrackerConnectionSuccess();
-            }
-          });
-          // register for settings and push settings
-          pt.on(PushTracker.pushtracker_settings_event, this.onPushTrackerSettings, this);
-          //pt.on(PushTracker.pushtracker_push_settings_event, this.onPushTrackerPushSettings, this);
+    BluetoothService.PushTrackers.on(
+      ObservableArray.changeEvent,
+      (args: ChangedData<number>) => {
+        if (args.action === 'add') {
+          const pt = BluetoothService.PushTrackers.getItem(
+            BluetoothService.PushTrackers.length - 1
+          );
+          if (pt) {
+            pt.on(PushTracker.pushtracker_paired_event, pairedArgs => {
+              this.pushTrackerPairingSuccess();
+            });
+            pt.on(PushTracker.pushtracker_connect_event, arg => {
+              if (pt.paired) {
+                this.pushTrackerConnectionSuccess();
+              }
+            });
+            // register for settings and push settings
+            pt.on(
+              PushTracker.pushtracker_settings_event,
+              this.onPushTrackerSettings,
+              this
+            );
+            // pt.on(PushTracker.pushtracker_push_settings_event, this.onPushTrackerPushSettings, this);
+          }
         }
       }
-    });
+    );
   }
 
   unregister(): void {
@@ -120,7 +148,7 @@ export class PairingComponent implements OnInit {
       pt.off(PushTracker.pushtracker_paired_event);
       pt.off(PushTracker.pushtracker_connect_event);
       pt.off(PushTracker.pushtracker_settings_event);
-      //pt.off(PushTracker.pushtracker_push_settings_event);
+      // pt.off(PushTracker.pushtracker_push_settings_event);
     });
   }
 
@@ -137,8 +165,12 @@ export class PairingComponent implements OnInit {
     });
 
     // update drop downs
-    (this.unitsDropDown.nativeElement as DropDown).selectedIndex = this.UnitsOptions.indexOf(this.settings.units);
-    (this.controlModeDropDown.nativeElement as DropDown).selectedIndex = this.ControlModeOptions.indexOf(
+    (this.unitsDropDown
+      .nativeElement as DropDown).selectedIndex = this.UnitsOptions.indexOf(
+      this.settings.units
+    );
+    (this.controlModeDropDown
+      .nativeElement as DropDown).selectedIndex = this.ControlModeOptions.indexOf(
       this.settings.controlMode
     );
   }
@@ -149,17 +181,25 @@ export class PairingComponent implements OnInit {
       if (this.settings.diff(args.data.settings)) {
         // ask to copy the settings
         confirm({
-          message: this._translateService.instant('pushtracker.settings.copy-dialog.message'),
+          message: this._translateService.instant(
+            'pushtracker.settings.copy-dialog.message'
+          ),
           okButtonText: this._translateService.instant('dialogs.ok'),
           cancelButtonText: this._translateService.instant('dialogs.no')
         }).then(result => {
           if (result === true) {
             this.settings.copy(args.data.settings);
             // update drop downs
-            const newUnitsIndex = this.UnitsOptions.indexOf(this.settings.units);
-            (this.unitsDropDown.nativeElement as DropDown).selectedIndex = newUnitsIndex;
-            const newControlIndex = this.ControlModeOptions.indexOf(this.settings.controlMode);
-            (this.controlModeDropDown.nativeElement as DropDown).selectedIndex = newControlIndex;
+            const newUnitsIndex = this.UnitsOptions.indexOf(
+              this.settings.units
+            );
+            (this.unitsDropDown
+              .nativeElement as DropDown).selectedIndex = newUnitsIndex;
+            const newControlIndex = this.ControlModeOptions.indexOf(
+              this.settings.controlMode
+            );
+            (this.controlModeDropDown
+              .nativeElement as DropDown).selectedIndex = newControlIndex;
           }
         });
       }
@@ -170,7 +210,9 @@ export class PairingComponent implements OnInit {
       if (this.pushSettings.diff(args.data.pushSettings)) {
         // ask to copy the settings
         confirm({
-          message: this._translateService.instant('pushtracker.push-settings.copy-dialog.message'),
+          message: this._translateService.instant(
+            'pushtracker.push-settings.copy-dialog.message'
+          ),
           okButtonText: this._translateService.instant('dialogs.ok'),
           cancelButtonText: this._translateService.instant('dialogs.no')
         }).then(result => {
@@ -211,21 +253,31 @@ export class PairingComponent implements OnInit {
       this._snackbar
         .action({
           actionText: this._translateService.instant('buttons.more-info'),
-          snackText: this._translateService.instant('pushtracker.push-settings.out-of-date-dialog.title'),
+          snackText: this._translateService.instant(
+            'pushtracker.push-settings.out-of-date-dialog.title'
+          ),
           hideDelay: 4000
         })
         .then(result => {
           if (result.command === 'Action') {
-            this._cfAlert.show({
-              dialogStyle: CFAlertStyle.ALERT,
-              message: this._translateService.instant('pushtracker.push-settings.out-of-date-dialog.message'),
-              cancellable: true
+            this._feedback.warning({
+              title: '',
+              message: this._translateService.instant(
+                'pushtracker.push-settings.out-of-date-dialog.message'
+              ),
+              duration: 6000,
+              // type: FeedbackType.Success, // no need to specify when using 'success' instead of 'show'
+              onTap: () => {
+                console.log('feedback warning tapped');
+              }
             });
           }
         });
     }
     // let user know we're doing something
-    this._progressService.show(this._translateService.instant('pushtracker.settings.saving'));
+    this._progressService.show(
+      this._translateService.instant('pushtracker.settings.saving')
+    );
     const settingsSucceeded = () => {
       this._zone.run(() => {
         this._progressService.hide();
@@ -236,8 +288,12 @@ export class PairingComponent implements OnInit {
         this._progressService.hide();
         console.log(`Couldn't save settings: ${err}`);
         alert({
-          title: this._translateService.instant('pushtracker.settings.save-dialogs.failed.title'),
-          message: `${this._translateService.instant('pushtracker.settings.save-dialogs.failed.message')} ${err}`,
+          title: this._translateService.instant(
+            'pushtracker.settings.save-dialogs.failed.title'
+          ),
+          message: `${this._translateService.instant(
+            'pushtracker.settings.save-dialogs.failed.message'
+          )} ${err}`,
           okButtonText: this._translateService.instant('dialogs.ok')
         });
       });
@@ -290,7 +346,7 @@ export class PairingComponent implements OnInit {
 
   // Connectivity Events
   pushTrackerPairingSuccess() {
-    this.feedback.success({
+    this._feedback.success({
       title: this._translateService.instant('dialogs.success'),
       message: this._translateService.instant('bluetooth.pairing-success'),
       duration: 4500,
@@ -302,7 +358,7 @@ export class PairingComponent implements OnInit {
   }
 
   pushTrackerConnectionSuccess() {
-    this.feedback.success({
+    this._feedback.success({
       title: this._translateService.instant('dialogs.success'),
       message: this._translateService.instant('bluetooth.connection-success'),
       duration: 4500,
@@ -334,7 +390,9 @@ export class PairingComponent implements OnInit {
    * Helper method to check for a connected PushTracker from the BluetoothService.PushTrackers array.
    */
   private _getOneConnectedPushTracker() {
-    const connectedPTs = BluetoothService.PushTrackers.filter(pt => pt.connected);
+    const connectedPTs = BluetoothService.PushTrackers.filter(
+      pt => pt.connected
+    );
 
     // no pushtrackers are connected - will show snackbar alert
     if (connectedPTs.length <= 0) {
@@ -346,10 +404,16 @@ export class PairingComponent implements OnInit {
         })
         .then(result => {
           if (result.command === 'Action') {
-            this._cfAlert.show({
-              dialogStyle: CFAlertStyle.ALERT,
-              message: this._translateService.instant('trial.connect_pushtracker_more_info'),
-              cancellable: true
+            this._feedback.info({
+              title: '',
+              message: this._translateService.instant(
+                'trial.connect_pushtracker_more_info'
+              ),
+              duration: 6000,
+              // type: FeedbackType.Success, // no need to specify when using 'success' instead of 'show'
+              onTap: () => {
+                console.log('feedback warning tapped');
+              }
             });
           }
         });
@@ -359,7 +423,9 @@ export class PairingComponent implements OnInit {
 
     // too many pushtrackers connected - don't know which to use!
     if (connectedPTs.length > 1) {
-      this._snackbar.simple(this._translateService.instant('trial.errors.too-many-pts'));
+      this._snackbar.simple(
+        this._translateService.instant('trial.errors.too-many-pts')
+      );
       return null;
     }
 
