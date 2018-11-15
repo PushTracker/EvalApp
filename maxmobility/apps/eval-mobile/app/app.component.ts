@@ -10,7 +10,11 @@ import { MapboxView } from 'nativescript-mapbox';
 import * as orientation from 'nativescript-orientation';
 import { Sentry } from 'nativescript-sentry';
 import * as application from 'tns-core-modules/application';
-import { connectionType, startMonitoring, stopMonitoring } from 'tns-core-modules/connectivity';
+import {
+  connectionType,
+  startMonitoring,
+  stopMonitoring
+} from 'tns-core-modules/connectivity';
 import { device } from 'tns-core-modules/platform';
 import { alert } from 'tns-core-modules/ui/dialogs/dialogs';
 import { KinveyKeys } from './kinvey-keys';
@@ -18,7 +22,10 @@ import { KinveyKeys } from './kinvey-keys';
 // Register Custom Elements for Angular
 registerElement('Carousel', () => <any>Carousel);
 registerElement('CarouselItem', () => <any>CarouselItem);
-registerElement('BarcodeScanner', () => require('nativescript-barcodescanner').BarcodeScannerView);
+registerElement(
+  'BarcodeScanner',
+  () => require('nativescript-barcodescanner').BarcodeScannerView
+);
 registerElement('Gradient', () => require('nativescript-gradient').Gradient);
 registerElement('Gif', () => Gif);
 registerElement('Mapbox', () => MapboxView);
@@ -35,7 +42,8 @@ export class AppComponent {
     private _router: RouterExtensions
   ) {
     // init sentry
-    const sentryDsn = 'https://aaa25eb556fa476a92e0edea6dd57af6:65c984b9260e47f0bb128def7eddd5f4@sentry.io/306438';
+    const sentryDsn =
+      'https://aaa25eb556fa476a92e0edea6dd57af6:65c984b9260e47f0bb128def7eddd5f4@sentry.io/306438';
     Sentry.init(sentryDsn, {
       environment: 'mobile',
       release: '0.1.0'
@@ -70,15 +78,20 @@ export class AppComponent {
       // this._translateService.use(device.language);
       console.log(`device language: ${device.language}`);
     } catch (error) {
-      CLog('Error trying to set the TranslateService.use() default to device.language.');
+      CLog(
+        'Error trying to set the TranslateService.use() default to device.language.'
+      );
       console.log(JSON.stringify(error));
     }
 
     // application level events
-    application.on(application.uncaughtErrorEvent, (args: application.UnhandledErrorEventData) => {
-      console.log('**** App Uncaught Error Event ****', args.error);
-      this._stopNetworkMonitoring();
-    });
+    application.on(
+      application.uncaughtErrorEvent,
+      (args: application.UnhandledErrorEventData) => {
+        console.log('**** App Uncaught Error Event ****', args.error);
+        this._stopNetworkMonitoring();
+      }
+    );
 
     application.on(application.suspendEvent, () => {
       console.log('**** App Suspended Event ****');
@@ -90,13 +103,16 @@ export class AppComponent {
       this._stopNetworkMonitoring();
     });
 
-    application.on(application.resumeEvent, (args: application.ApplicationEventData) => {
-      console.log('**** App Resume Event ****');
-      this._startNetworkMonitor();
-      // set the orientation to be portrait and don't allow orientation changes
-      orientation.setOrientation('portrait');
-      orientation.disableRotation(); // may not need to call this - docs say 'set' calls this
-    });
+    application.on(
+      application.resumeEvent,
+      (args: application.ApplicationEventData) => {
+        console.log('**** App Resume Event ****');
+        this._startNetworkMonitor();
+        // set the orientation to be portrait and don't allow orientation changes
+        orientation.setOrientation('portrait');
+        orientation.disableRotation(); // may not need to call this - docs say 'set' calls this
+      }
+    );
 
     Kinvey.init({
       appKey: `${KinveyKeys.APP_KEY}`,
