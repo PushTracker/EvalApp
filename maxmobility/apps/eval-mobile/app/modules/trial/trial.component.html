@@ -24,15 +24,30 @@
             orientation="horizontal"
             horizontalAlignment="center"
           >
-            <image src="~/assets/images/trial-setup.png" stretch="aspectFit"></image>
+            <image
+              src="~/assets/images/trial-setup.png"
+              stretch="aspectFit"
+            ></image>
           </StackLayout>
 
           // First Page: Configure Trial
           <ScrollView class="trial-scroll-view" row="1">
-            <StackLayout class="trial-stack-layout" orientation="vertical" horizontalAlignment="center">
+            <StackLayout
+              class="trial-stack-layout"
+              orientation="vertical"
+              horizontalAlignment="center"
+            >
               // Heading and description
-              <label [text]="'trial.set-up' | translate" class="slideLowerLabel" textWrap="true"></label>
-              <label [text]="'trial.select-options' | translate" class="slideDescription" textWrap="true"></label>
+              <label
+                [text]="'trial.set-up' | translate"
+                class="slideLowerLabel"
+                textWrap="true"
+              ></label>
+              <label
+                [text]="'trial.select-options' | translate"
+                class="slideDescription"
+                textWrap="true"
+              ></label>
 
               // Trial Name
               <TextField
@@ -44,11 +59,18 @@
               ></TextField>
 
               // Trial options
-              <label [text]="'trial.recommendation' | translate" textWrap="true" class="trial-recommendation"></label>
+              <label
+                [text]="'trial.recommendation' | translate"
+                textWrap="true"
+                class="trial-recommendation"
+              ></label>
 
               // Terrain Options
               <DockLayout stretchLastChild="false">
-                <label [text]="'trial.flat-surfaces' | translate" class="value-label-left"></label>
+                <label
+                  [text]="'trial.flat-surfaces' | translate"
+                  class="value-label-left"
+                ></label>
                 <Switch
                   dock="right"
                   [checked]="trial.flat"
@@ -56,7 +78,10 @@
                 ></Switch>
               </DockLayout>
               <DockLayout stretchLastChild="false">
-                <label [text]="'trial.ramp-incline' | translate" class="value-label-left"></label>
+                <label
+                  [text]="'trial.ramp-incline' | translate"
+                  class="value-label-left"
+                ></label>
                 <Switch
                   dock="right"
                   [checked]="trial.rampIncline"
@@ -64,7 +89,10 @@
                 ></Switch>
               </DockLayout>
               <DockLayout stretchLastChild="false">
-                <label [text]="'trial.other' | translate" class="value-label-left"></label>
+                <label
+                  [text]="'trial.other' | translate"
+                  class="value-label-left"
+                ></label>
                 <Switch
                   dock="right"
                   [checked]="trial.other"
@@ -82,9 +110,16 @@
               ></TextField>
 
               // SmartDrive Settings:
-              <label [text]="'pushtracker.settings.label' | translate" class="section"></label> // EZ On
+              <label
+                [text]="'pushtracker.settings.label' | translate"
+                class="section"
+              ></label>
+              // EZ On
               <DockLayout stretchLastChild="false">
-                <label [text]="'pushtracker.settings.ez-on' | translate" class="value-label-left"></label>
+                <label
+                  [text]="'pushtracker.settings.ez-on' | translate"
+                  class="value-label-left"
+                ></label>
                 <Switch
                   dock="right"
                   [checked]="settings.ezOn"
@@ -93,29 +128,42 @@
               </DockLayout>
               // Control Mode
               <DockLayout stretchLastChild="false">
-                <label [text]="'pushtracker.settings.control-mode.label' | translate" class="value-label-left"></label>
+                <label
+                  [text]="'pushtracker.settings.control-mode.label' | translate"
+                  class="value-label-left"
+                ></label>
                 <DropDown
                   #controlModeDropDown
                   [hint]="'pushtracker.settings.control-mode.label' | translate"
                   dock="right"
                   [items]="ControlModeOptions"
-                  (selectedIndexChanged)="onSettingsDropdownChanged('controlMode', $event)"
+                  (selectedIndexChanged)="
+                    onSettingsDropdownChanged('controlMode', $event)
+                  "
                 ></DropDown>
               </DockLayout>
               // Units
               <DockLayout stretchLastChild="false">
-                <label [text]="'pushtracker.settings.units.label' | translate" class="value-label-left"></label>
+                <label
+                  [text]="'pushtracker.settings.units.label' | translate"
+                  class="value-label-left"
+                ></label>
                 <DropDown
                   #unitsDropDown
                   [hint]="'pushtracker.settings.units.label' | translate"
                   dock="right"
                   [items]="UnitsOptions"
-                  (selectedIndexChanged)="onSettingsDropdownChanged('units', $event)"
+                  (selectedIndexChanged)="
+                    onSettingsDropdownChanged('units', $event)
+                  "
                 ></DropDown>
               </DockLayout>
               // Max Speed
               <DockLayout stretchLastChild="false">
-                <label [text]="'pushtracker.settings.max-speed' | translate" class="value-label-left"></label>
+                <label
+                  [text]="'pushtracker.settings.max-speed' | translate"
+                  class="value-label-left"
+                ></label>
                 <label
                   verticalAlignment="center"
                   dock="right"
@@ -125,7 +173,11 @@
                   class="value"
                 ></label>
               </DockLayout>
-              <GridLayout rows="auto" columns="*, auto" class="slider-container">
+              <GridLayout
+                rows="auto"
+                columns="*, auto"
+                class="slider-container"
+              >
                 <Slider
                   minValue="0"
                   maxValue="10"
@@ -137,7 +189,10 @@
               </GridLayout>
               // Acceleration
               <DockLayout stretchLastChild="false">
-                <label [text]="'pushtracker.settings.acceleration' | translate" class="value-label-left"></label>
+                <label
+                  [text]="'pushtracker.settings.acceleration' | translate"
+                  class="value-label-left"
+                ></label>
                 <label
                   verticalAlignment="center"
                   dock="right"
@@ -147,7 +202,11 @@
                   class="value"
                 ></label>
               </DockLayout>
-              <GridLayout rows="auto" columns="*, auto" class="slider-container">
+              <GridLayout
+                rows="auto"
+                columns="*, auto"
+                class="slider-container"
+              >
                 <Slider
                   minValue="0"
                   maxValue="10"
@@ -159,7 +218,10 @@
               </GridLayout>
               // Tap Sensitivity
               <DockLayout stretchLastChild="false">
-                <label [text]="'pushtracker.settings.tap-sensitivity' | translate" class="value-label-left"></label>
+                <label
+                  [text]="'pushtracker.settings.tap-sensitivity' | translate"
+                  class="value-label-left"
+                ></label>
                 <label
                   verticalAlignment="center"
                   dock="right"
@@ -169,13 +231,19 @@
                   class="value"
                 ></label>
               </DockLayout>
-              <GridLayout rows="auto" columns="*, auto" class="slider-container">
+              <GridLayout
+                rows="auto"
+                columns="*, auto"
+                class="slider-container"
+              >
                 <Slider
                   minValue="0"
                   maxValue="10"
                   verticalAlignment="center"
                   [value]="settings.tapSensitivity / 10"
-                  (valueChange)="onSettingsSliderChange('tapSensitivity', $event)"
+                  (valueChange)="
+                    onSettingsSliderChange('tapSensitivity', $event)
+                  "
                   row="0"
                   col="0"
                 ></Slider>
@@ -208,7 +276,11 @@
                   <Switch dock="right" [checked]="pushSettings.clearCounter" (checkedChange)="onPushSettingsChecked('clearCounter', $event)"></Switch>
                 </DockLayout>
               -->
-              <button [text]="'buttons.next' | translate" class="start-button" (tap)="goToNextSlide($event)"></button>
+              <button
+                [text]="'buttons.next' | translate"
+                class="start-button"
+                (tap)="goToNextSlide($event)"
+              ></button>
             </StackLayout>
           </ScrollView>
         </GridLayout>
@@ -225,16 +297,39 @@
             orientation="horizontal"
             horizontalAlignment="center"
           >
-            <image src="~/assets/images/trial-sd.png" stretch="aspectFit"></image>
+            <image
+              src="~/assets/images/trial-sd.png"
+              stretch="aspectFit"
+            ></image>
           </StackLayout>
 
           <ScrollView class="trial-scroll-view" row="1">
-            <StackLayout class="trial-stack-layout" orientation="vertical" horizontalAlignment="center">
+            <StackLayout
+              class="trial-stack-layout"
+              orientation="vertical"
+              horizontalAlignment="center"
+            >
               // Heading and description
-              <label [text]="'trial.phase-1' | translate" class="slideLowerLabel" textWrap="true"></label>
-              <label [text]="'trial.with-sd' | translate" class="slideLowerLabel" textWrap="true"></label>
-              <label [text]="'trial.phase-1-desc' | translate" class="slideDescription" textWrap="true"></label>
-              <label [text]="'trial.evaluator-range' | translate" textWrap="true" class="trial-recommendation"></label>
+              <label
+                [text]="'trial.phase-1' | translate"
+                class="slideLowerLabel"
+                textWrap="true"
+              ></label>
+              <label
+                [text]="'trial.with-sd' | translate"
+                class="slideLowerLabel"
+                textWrap="true"
+              ></label>
+              <label
+                [text]="'trial.phase-1-desc' | translate"
+                class="slideDescription"
+                textWrap="true"
+              ></label>
+              <label
+                [text]="'trial.evaluator-range' | translate"
+                textWrap="true"
+                class="trial-recommendation"
+              ></label>
 
               <button
                 #startWith
@@ -262,7 +357,10 @@
               ></button>
 
               // Data Fields
-              <GridLayout rows="auto, auto, auto, auto" columns="auto, *, auto, *">
+              <GridLayout
+                rows="auto, auto, auto, auto"
+                columns="auto, *, auto, *"
+              >
                 <label
                   row="0"
                   col="0"
@@ -270,7 +368,13 @@
                   class="value-label-left"
                   textWrap="true"
                 ></label>
-                <label row="0" col="1" [text]="pushWithDisplay" class="value-left" textWrap="true"></label>
+                <label
+                  row="0"
+                  col="1"
+                  [text]="pushWithDisplay"
+                  class="value-left"
+                  textWrap="true"
+                ></label>
                 <label
                   row="0"
                   col="2"
@@ -278,7 +382,13 @@
                   class="value-label-right"
                   textWrap="true"
                 ></label>
-                <label row="0" col="3" [text]="speedWithDisplay" class="value-right" textWrap="true"></label>
+                <label
+                  row="0"
+                  col="3"
+                  [text]="speedWithDisplay"
+                  class="value-right"
+                  textWrap="true"
+                ></label>
                 <label
                   row="1"
                   col="0"
@@ -286,7 +396,13 @@
                   class="value-label-left"
                   textWrap="true"
                 ></label>
-                <label row="1" col="1" [text]="timeWithDisplay" class="value-left" textWrap="true"></label>
+                <label
+                  row="1"
+                  col="1"
+                  [text]="timeWithDisplay"
+                  class="value-left"
+                  textWrap="true"
+                ></label>
                 <label
                   row="1"
                   col="2"
@@ -294,7 +410,13 @@
                   class="value-label-right"
                   textWrap="true"
                 ></label>
-                <label row="1" col="3" [text]="distanceDisplay" class="value-right" textWrap="true"></label>
+                <label
+                  row="1"
+                  col="3"
+                  [text]="distanceDisplay"
+                  class="value-right"
+                  textWrap="true"
+                ></label>
               </GridLayout>
             </StackLayout>
           </ScrollView>
@@ -312,16 +434,39 @@
             orientation="horizontal"
             horizontalAlignment="center"
           >
-            <image src="~/assets/images/trial-no-sd.png" stretch="aspectFit"></image>
+            <image
+              src="~/assets/images/trial-no-sd.png"
+              stretch="aspectFit"
+            ></image>
           </StackLayout>
 
           <ScrollView class="trial-scroll-view" row="1">
-            <StackLayout class="trial-stack-layout" orientation="vertical" horizontalAlignment="center">
+            <StackLayout
+              class="trial-stack-layout"
+              orientation="vertical"
+              horizontalAlignment="center"
+            >
               // Heading and description
-              <label [text]="'trial.phase-2' | translate" class="slideLowerLabel" textWrap="true"></label>
-              <label [text]="'trial.without-sd' | translate" class="slideLowerLabel" textWrap="true"></label>
-              <label [text]="'trial.phase-2-desc' | translate" class="slideDescription" textWrap="true"></label>
-              <label [text]="'trial.evaluator-range' | translate" textWrap="true" class="trial-recommendation"></label>
+              <label
+                [text]="'trial.phase-2' | translate"
+                class="slideLowerLabel"
+                textWrap="true"
+              ></label>
+              <label
+                [text]="'trial.without-sd' | translate"
+                class="slideLowerLabel"
+                textWrap="true"
+              ></label>
+              <label
+                [text]="'trial.phase-2-desc' | translate"
+                class="slideDescription"
+                textWrap="true"
+              ></label>
+              <label
+                [text]="'trial.evaluator-range' | translate"
+                textWrap="true"
+                class="trial-recommendation"
+              ></label>
 
               <button
                 #startWithout
@@ -352,7 +497,10 @@
               ></button>
 
               // Data Fields
-              <GridLayout rows="auto, auto, auto, auto" columns="auto, *, auto, *">
+              <GridLayout
+                rows="auto, auto, auto, auto"
+                columns="auto, *, auto, *"
+              >
                 <label
                   row="0"
                   col="0"
@@ -360,7 +508,13 @@
                   class="value-label-left"
                   textWrap="true"
                 ></label>
-                <label row="0" col="1" [text]="pushWithoutDisplay" class="value-left" textWrap="true"></label>
+                <label
+                  row="0"
+                  col="1"
+                  [text]="pushWithoutDisplay"
+                  class="value-left"
+                  textWrap="true"
+                ></label>
                 <label
                   row="0"
                   col="2"
@@ -368,7 +522,13 @@
                   class="value-label-right"
                   textWrap="true"
                 ></label>
-                <label row="0" col="3" [text]="speedWithoutDisplay" class="value-right" textWrap="true"></label>
+                <label
+                  row="0"
+                  col="3"
+                  [text]="speedWithoutDisplay"
+                  class="value-right"
+                  textWrap="true"
+                ></label>
                 <label
                   row="1"
                   col="0"
@@ -376,7 +536,13 @@
                   class="value-label-left"
                   textWrap="true"
                 ></label>
-                <label row="1" col="1" [text]="timeWithoutDisplay" class="value-left" textWrap="true"></label>
+                <label
+                  row="1"
+                  col="1"
+                  [text]="timeWithoutDisplay"
+                  class="value-left"
+                  textWrap="true"
+                ></label>
                 <label
                   row="1"
                   col="2"
@@ -384,7 +550,13 @@
                   class="value-label-right"
                   textWrap="true"
                 ></label>
-                <label row="1" col="3" [text]="distanceDisplay" class="value-right" textWrap="true"></label>
+                <label
+                  row="1"
+                  col="3"
+                  [text]="distanceDisplay"
+                  class="value-right"
+                  textWrap="true"
+                ></label>
               </GridLayout>
             </StackLayout>
           </ScrollView>
@@ -402,13 +574,24 @@
             orientation="horizontal"
             horizontalAlignment="center"
           >
-            <image src="~/assets/images/trial-complete.png" stretch="aspectFit"></image>
+            <image
+              src="~/assets/images/trial-complete.png"
+              stretch="aspectFit"
+            ></image>
           </StackLayout>
 
           <ScrollView class=" trial-scroll-view" row="1">
-            <StackLayout class="trial-stack-layout" orientation="vertical" horizontalAlignment="center">
+            <StackLayout
+              class="trial-stack-layout"
+              orientation="vertical"
+              horizontalAlignment="center"
+            >
               // Heading and description
-              <label [text]="'trial.complete' | translate" class="slideLowerLabel" textWrap="true"></label>
+              <label
+                [text]="'trial.complete' | translate"
+                class="slideLowerLabel"
+                textWrap="true"
+              ></label>
 
               <label
                 [text]="'trial.push_accuracy_disclaimer' | translate"
@@ -424,7 +607,10 @@
                   textWrap="true"
                   margin="30,0,0,15"
                 ></label>
-                <GridLayout rows="auto, auto, auto, auto" columns="auto, *, auto, *">
+                <GridLayout
+                  rows="auto, auto, auto, auto"
+                  columns="auto, *, auto, *"
+                >
                   <label
                     row="0"
                     col="0"
@@ -432,7 +618,13 @@
                     class="value-label-left"
                     textWrap="true"
                   ></label>
-                  <label row="0" col="1" [text]="pushWithDisplay" class="value-left" textWrap="true"></label>
+                  <label
+                    row="0"
+                    col="1"
+                    [text]="pushWithDisplay"
+                    class="value-left"
+                    textWrap="true"
+                  ></label>
                   <label
                     row="0"
                     col="2"
@@ -440,7 +632,13 @@
                     class="value-label-right"
                     textWrap="true"
                   ></label>
-                  <label row="0" col="3" [text]="speedWithDisplay" class="value-right" textWrap="true"></label>
+                  <label
+                    row="0"
+                    col="3"
+                    [text]="speedWithDisplay"
+                    class="value-right"
+                    textWrap="true"
+                  ></label>
                   <label
                     row="1"
                     col="0"
@@ -448,7 +646,13 @@
                     class="value-label-left"
                     textWrap="true"
                   ></label>
-                  <label row="1" col="1" [text]="timeWithDisplay" class="value-left" textWrap="true"></label>
+                  <label
+                    row="1"
+                    col="1"
+                    [text]="timeWithDisplay"
+                    class="value-left"
+                    textWrap="true"
+                  ></label>
                   <label
                     row="1"
                     col="2"
@@ -456,7 +660,13 @@
                     class="value-label-right"
                     textWrap="true"
                   ></label>
-                  <label row="1" col="3" [text]="distanceDisplay" class="value-right" textWrap="true"></label>
+                  <label
+                    row="1"
+                    col="3"
+                    [text]="distanceDisplay"
+                    class="value-right"
+                    textWrap="true"
+                  ></label>
                 </GridLayout>
 
                 // Data Fields without SmartDrive
@@ -466,7 +676,10 @@
                   textWrap="true"
                   margin="30,0,0,15"
                 ></label>
-                <GridLayout rows="auto, auto, auto, auto" columns="auto, *, auto, *">
+                <GridLayout
+                  rows="auto, auto, auto, auto"
+                  columns="auto, *, auto, *"
+                >
                   <label
                     row="0"
                     col="0"
@@ -474,7 +687,13 @@
                     class="value-label-left"
                     textWrap="true"
                   ></label>
-                  <label row="0" col="1" [text]="pushWithoutDisplay" class="value-left" textWrap="true"></label>
+                  <label
+                    row="0"
+                    col="1"
+                    [text]="pushWithoutDisplay"
+                    class="value-left"
+                    textWrap="true"
+                  ></label>
                   <label
                     row="0"
                     col="2"
@@ -482,7 +701,13 @@
                     class="value-label-right"
                     textWrap="true"
                   ></label>
-                  <label row="0" col="3" [text]="speedWithoutDisplay" class="value-right" textWrap="true"></label>
+                  <label
+                    row="0"
+                    col="3"
+                    [text]="speedWithoutDisplay"
+                    class="value-right"
+                    textWrap="true"
+                  ></label>
                   <label
                     row="1"
                     col="0"
@@ -490,7 +715,13 @@
                     class="value-label-left"
                     textWrap="true"
                   ></label>
-                  <label row="1" col="1" [text]="timeWithoutDisplay" class="value-left" textWrap="true"></label>
+                  <label
+                    row="1"
+                    col="1"
+                    [text]="timeWithoutDisplay"
+                    class="value-left"
+                    textWrap="true"
+                  ></label>
                   <label
                     row="1"
                     col="2"
@@ -498,7 +729,13 @@
                     class="value-label-right"
                     textWrap="true"
                   ></label>
-                  <label row="1" col="3" [text]="distanceDisplay" class="value-right" textWrap="true"></label>
+                  <label
+                    row="1"
+                    col="3"
+                    [text]="distanceDisplay"
+                    class="value-right"
+                    textWrap="true"
+                  ></label>
                 </GridLayout>
 
                 <button

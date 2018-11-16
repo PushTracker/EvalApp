@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Demo, User } from '@maxmobility/core';
-import { DemoService, FirmwareService, LocationService, LoggingService, UserService } from '@maxmobility/mobile';
+import {
+  DemoService,
+  FirmwareService,
+  LocationService,
+  LoggingService,
+  UserService
+} from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 import { RouterExtensions } from 'nativescript-angular/router';
@@ -28,6 +34,11 @@ export class DemosComponent implements OnInit {
 
   currentUserId: string;
 
+  /**
+   * Boolean to track when the demo unit loading has finished to hide the loading indicator and show the list data
+   */
+  demoUnitsLoaded = false;
+
   private _datastore = Kinvey.DataStore.collection<any>('SmartDrives');
 
   constructor(
@@ -41,11 +52,16 @@ export class DemosComponent implements OnInit {
 
   ngOnInit() {
     console.log('Demos.Component OnInit');
-    new Toasty(this._translateService.instant('demos.owner-color-explanation'), ToastDuration.LONG).show();
+    new Toasty(
+      this._translateService.instant('demos.owner-color-explanation'),
+      ToastDuration.LONG
+    ).show();
     const activeUser = Kinvey.User.getActiveUser();
     this.userType = (activeUser.data as User).type as number;
     this.currentUserId = activeUser._id;
     console.log('userType', this.userType);
+
+    this.loadDemoUnits();
   }
 
   isIOS(): boolean {
@@ -68,6 +84,26 @@ export class DemosComponent implements OnInit {
     });
   }
 
+  loadDemoUnits() {
+    console.log('refresh demo list');
+    try {
+      this.demoUnitsLoaded = false; // toggle the display of the loading indicator
+      DemoService.Demos.splice(0, DemoService.Demos.length); // empty the current items
+
+      this._demoService
+        .load()
+        .then(() => {
+          this.demoUnitsLoaded = true;
+        })
+        .catch(err => {
+          this._logService.logException(err);
+          this.demoUnitsLoaded = true;
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   addDemo() {
     // add a new demo
     console.log('add a new demo');
@@ -88,7 +124,9 @@ export class DemosComponent implements OnInit {
       if (isEnabled) {
         // if more than 750ms pass then show a toasty that location is being calculated...
         processTimeout = setTimeout(() => {
-          new Toasty(this._translateService.instant('demos.location-calculating')).show();
+          new Toasty(
+            this._translateService.instant('demos.location-calculating')
+          ).show();
         }, 750);
       }
 
@@ -100,7 +138,9 @@ export class DemosComponent implements OnInit {
 
       // confirm with user if they want to update the demo location
       const result = await confirm({
-        message: `${this._translateService.instant('demos.location-confirm-message')} ${loc.place_name}?`,
+        message: `${this._translateService.instant(
+          'demos.location-confirm-message'
+        )} ${loc.place_name}?`,
         okButtonText: this._translateService.instant('dialogs.yes'),
         neutralButtonText: this._translateService.instant('dialogs.no')
       });
@@ -158,7 +198,9 @@ export class DemosComponent implements OnInit {
     const userLoc = await LocationService.getCoordinates().catch(error => {
       console.log(error);
       alert({
-        message: this._translateService.instant('demos.demo-request-location-is-required'),
+        message: this._translateService.instant(
+          'demos.demo-request-location-is-required'
+        ),
         okButtonText: this._translateService.instant('dialogs.ok')
       });
       return;
@@ -174,7 +216,9 @@ export class DemosComponent implements OnInit {
     console.log('request demo from rep');
     const response = await http.request({
       method: 'POST',
-      url: `${KinveyKeys.HOST_URL}/rpc/${KinveyKeys.APP_KEY}/custom/request-demo-unit`,
+      url: `${KinveyKeys.HOST_URL}/rpc/${
+        KinveyKeys.APP_KEY
+      }/custom/request-demo-unit`,
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Kinvey ${token}`
@@ -196,7 +240,11 @@ export class DemosComponent implements OnInit {
     } else {
       console.log(JSON.stringify(response.content.toJSON()));
       this._logService.logException(
-        new Error(`request-demo-unit error code: ${response.statusCode} - message: ${response.content.toJSON()}`)
+        new Error(
+          `request-demo-unit error code: ${
+            response.statusCode
+          } - message: ${response.content.toJSON()}`
+        )
       );
       alert({
         message: this._translateService.instant('demos.demo-request-error'),
@@ -214,8 +262,12 @@ export class DemosComponent implements OnInit {
 
   async onRepDemoActionButtonTap(demo: Demo) {
     // create the Rep user type actions for demos
-    const toClinicianAction = this._translateService.instant('demos.demo-to-clinician-action');
-    const fromClinicianAction = this._translateService.instant('demos.retrieve-from-clinician-action');
+    const toClinicianAction = this._translateService.instant(
+      'demos.demo-to-clinician-action'
+    );
+    const fromClinicianAction = this._translateService.instant(
+      'demos.retrieve-from-clinician-action'
+    );
     const repOpts = [toClinicianAction, fromClinicianAction];
 
     const result = await action({
@@ -255,7 +307,9 @@ export class DemosComponent implements OnInit {
         const userLoc = await LocationService.getCoordinates().catch(error => {
           console.log(error);
           alert({
-            message: this._translateService.instant('demos.demo-change-owner-location-required'),
+            message: this._translateService.instant(
+              'demos.demo-change-owner-location-required'
+            ),
             okButtonText: this._translateService.instant('dialogs.ok')
           });
           return;
@@ -264,7 +318,9 @@ export class DemosComponent implements OnInit {
 
         response = await http.request({
           method: 'POST',
-          url: `${KinveyKeys.HOST_URL}/rpc/${KinveyKeys.APP_KEY}/custom/demo-unit-actions`,
+          url: `${KinveyKeys.HOST_URL}/rpc/${
+            KinveyKeys.APP_KEY
+          }/custom/demo-unit-actions`,
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Kinvey ${token}`
@@ -282,7 +338,9 @@ export class DemosComponent implements OnInit {
         console.log('retrieve from clinician');
         response = await http.request({
           method: 'POST',
-          url: `${KinveyKeys.HOST_URL}/rpc/${KinveyKeys.APP_KEY}/custom/demo-unit-actions`,
+          url: `${KinveyKeys.HOST_URL}/rpc/${
+            KinveyKeys.APP_KEY
+          }/custom/demo-unit-actions`,
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Kinvey ${token}`

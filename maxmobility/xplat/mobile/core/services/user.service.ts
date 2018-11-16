@@ -44,6 +44,7 @@ export class UserService {
             UserService.hasRegistered
         );
         if (UserService.hasRegistered === true) {
+          console.log('unregistering user from push notifications');
           // kinvey docs might be out of date on `unregister` method
           await (Push as any)
             .unregister({
@@ -151,7 +152,7 @@ export class UserService {
                 this._feedback.info({
                   title: 'New Message from Smart Evaluation',
                   message: message.alert,
-                  duration: 10000,
+                  duration: 60000, // show for one minute without interaction, touch will close it
                   // type: FeedbackType.Success, // no need to specify when using 'success' instead of 'show'
                   onTap: () => {
                     console.log('feedback warning tapped');
