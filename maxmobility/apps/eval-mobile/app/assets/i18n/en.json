@@ -128,20 +128,19 @@
       "Top End",
       "Other"
     ],
-	  "chair-type": {
-		  "question": "What type is your manual wheelchair?",
-		  "label": "Chair Type",
-		  "options": [
-			  "Folding Frame",
-			  "Rigid Frame"
-		  ]
-	  }
+    "chair-type": {
+      "question": "What type is your manual wheelchair?",
+      "label": "Chair Type",
+      "options": ["Folding Frame", "Rigid Frame"]
+    }
   },
   "training": [
     {
       "Image": "~/assets/images/gifs/SD-POWER.gif",
       "Label": "Powering SmartDrive",
-      "Bullets": ["Press back on the rocker switch to power on the SmartDrive, and forward to power off."]
+      "Bullets": [
+        "Press back on the rocker switch to power on the SmartDrive, and forward to power off."
+      ]
     },
     {
       "Image": "~/assets/images/gifs/PT-POWER.gif",
@@ -289,6 +288,7 @@
   "demos": {
     "demos-title": "Demos",
     "loading": "Loading Demos...",
+    "no-demos": "No demos found for your current user.",
     "demo-request-location-is-required": "Your location is required to submit a demo unit request. Your location is used to contact representatives near your location for the demo request.",
     "demo-change-owner-location-required": "Your location is required to transfer the demo unit ownership. This allows Smart Eval to track the last known location of demo units for inventory.",
     "location-confirm-message": "Do you want to update the demo's location to",
@@ -721,7 +721,9 @@
     "enable-bluetooth": "Smart Evaluation has detected that Bluetooth is not enabled on your device. Please enable bluetooth to perform OTAs and perform evaluations."
   },
   "firmware": {
-    "not-found": ["We were unable to find the description for the latest firmware!"],
+    "not-found": [
+      "We were unable to find the description for the latest firmware!"
+    ],
     "1.6": [
       "Added Push Settings Control.",
       "Show App connectivity when connecting to the app.",
