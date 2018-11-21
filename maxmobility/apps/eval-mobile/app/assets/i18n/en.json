@@ -265,6 +265,7 @@
   "general": {
     "title": "Smart Evaluation",
     "demo": "Demo",
+    "no-connection": "You might have lost your internet connection. Smart Evaluation works best when connected to the internet to ensure latest data is in sync with the servers.", 
     "version": "Version",
     "submit": "Submit",
     "tip": "Tip",
