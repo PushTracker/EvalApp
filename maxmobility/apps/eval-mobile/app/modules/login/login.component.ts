@@ -1,6 +1,11 @@
 import { Component, NgZone, OnInit } from '@angular/core';
 import { CLog } from '@maxmobility/core';
-import { LoggingService, preventKeyboardFromShowing, ProgressService, UserService } from '@maxmobility/mobile';
+import {
+  LoggingService,
+  preventKeyboardFromShowing,
+  ProgressService,
+  UserService
+} from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { validate } from 'email-validator';
 import { Kinvey } from 'kinvey-nativescript-sdk';
@@ -59,15 +64,22 @@ export class LoginComponent implements OnInit {
         return;
       }
 
-      this._progressService.show(this._translateService.instant('user.signing-in'));
+      this._progressService.show(
+        this._translateService.instant('user.signing-in')
+      );
 
       // now try logging in with Kinvey user account
-      const res = await this._userService.login(this.user.email, this.user.password);
+      const res = await this._userService.login(
+        this.user.email,
+        this.user.password
+      );
       CLog('login result', res);
       this._progressService.hide();
 
       const deviceToken = await this._userService._registerForPushNotifications();
-      console.log(`Registered for push notifications device token: ${deviceToken}`);
+      console.log(
+        `Registered for push notifications device token: ${deviceToken}`
+      );
 
       this._zone.run(() => {
         this._routerExtensions.navigate(['/home'], {
@@ -121,7 +133,9 @@ export class LoginComponent implements OnInit {
     // make sure it's a valid email
     const email = text.trim();
     if (!validate(email)) {
-      this.emailError = `"${email}" ${this._translateService.instant('user.email-error')}`;
+      this.emailError = `"${email}" ${this._translateService.instant(
+        'user.email-error'
+      )}`;
       return false;
     }
 
@@ -132,7 +146,9 @@ export class LoginComponent implements OnInit {
   private _isPasswordValid(text: string): boolean {
     // validate the password
     if (!text) {
-      this.passwordError = this._translateService.instant('user.password-error');
+      this.passwordError = this._translateService.instant(
+        'user.password-error'
+      );
       return false;
     }
     this.passwordError = '';
