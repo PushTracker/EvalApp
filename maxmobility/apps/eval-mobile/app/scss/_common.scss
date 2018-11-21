@@ -71,6 +71,10 @@ label {
   }
 }
 
+.blue-gradient-down {
+  background: linear-gradient(to bottom, #004f7e, #0070b3);
+}
+
 .text-accent {
   color: $accent;
 }

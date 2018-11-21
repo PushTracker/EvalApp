@@ -2,14 +2,23 @@
   <NavigationButton android:visibility="collapse"></NavigationButton>
 </ActionBar>
 
-<Gradient tkMainContent margin-top="30" direction="to bottom" colors="#004F7E, #0070b3"  class="page-content hero">
+<StackLayout margin-top="30">
   <ListView backgroundColor="transparent" [items]="faqs">
     <ng-template let-item="item">
       <DockLayout>
-        <Label dock="top" [text]="item.question" textWrap="true" class="faq-question"></Label>
-        <Label dock="bottom" [text]="item.answer" textWrap="true" class="faq-answer"></Label>
+        <label
+          dock="top"
+          [text]="item.question"
+          textWrap="true"
+          class="faq-question"
+        ></label>
+        <label
+          dock="bottom"
+          [text]="item.answer"
+          textWrap="true"
+          class="faq-answer"
+        ></label>
       </DockLayout>
     </ng-template>
   </ListView>
-</Gradient>
-
+</StackLayout>

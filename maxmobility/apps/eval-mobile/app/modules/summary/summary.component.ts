@@ -7,6 +7,7 @@ import { RouterExtensions } from 'nativescript-angular/router';
 import * as email from 'nativescript-email';
 import { isAndroid, isIOS } from 'tns-core-modules/platform';
 import { alert, confirm } from 'tns-core-modules/ui/dialogs';
+import { Page } from 'tns-core-modules/ui/page';
 import { TextField } from 'tns-core-modules/ui/text-field';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 
@@ -72,14 +73,19 @@ export class SummaryComponent {
   coastDiff = 0;
   speedDiff = 0;
   cadenceThresh = 10; // pushes per minute
-  lmnTemplate: string = this._translateService.instant('summary.lmnTemplate').join('\n');
+  lmnTemplate: string = this._translateService
+    .instant('summary.lmnTemplate')
+    .join('\n');
 
   constructor(
+    private _page: Page,
     private _routerExtensions: RouterExtensions,
     private _evaluationService: EvaluationService,
     private _translateService: TranslateService,
     private _loggingService: LoggingService
   ) {
+    this._page.className = 'blue-gradient-down';
+
     this.evaluation = this._evaluationService.evaluation;
     if (this.evaluation) {
       // update difficulties
@@ -92,7 +98,9 @@ export class SummaryComponent {
           this.difficulties.filter(d => d.name === 'Flat')[0].show = true;
         }
         if (t.rampIncline) {
-          this.difficulties.filter(d => d.name === 'Ramp/Incline')[0].show = true;
+          this.difficulties.filter(
+            d => d.name === 'Ramp/Incline'
+          )[0].show = true;
         }
         if (t.other) {
           this.difficulties.filter(d => d.name === 'Other')[0].show = true;
@@ -103,22 +111,36 @@ export class SummaryComponent {
         this.totalTimeWithout += t.without_elapsed;
         this.totalDistance += t.distance;
       });
-      this.totalCoastWith = this.totalPushesWith ? (this.totalTimeWith * 60) / this.totalPushesWith : 0;
-      this.totalCoastWithout = this.totalPushesWithout ? (this.totalTimeWithout * 60) / this.totalPushesWithout : 0;
-      this.totalCadenceWith = this.totalTimeWith ? this.totalPushesWith / this.totalTimeWith : 0;
-      this.totalCadenceWithout = this.totalTimeWithout ? this.totalPushesWithout / this.totalTimeWithout : 0;
+      this.totalCoastWith = this.totalPushesWith
+        ? (this.totalTimeWith * 60) / this.totalPushesWith
+        : 0;
+      this.totalCoastWithout = this.totalPushesWithout
+        ? (this.totalTimeWithout * 60) / this.totalPushesWithout
+        : 0;
+      this.totalCadenceWith = this.totalTimeWith
+        ? this.totalPushesWith / this.totalTimeWith
+        : 0;
+      this.totalCadenceWithout = this.totalTimeWithout
+        ? this.totalPushesWithout / this.totalTimeWithout
+        : 0;
       this.totalSpeedWith =
-        this.totalTimeWith && this.totalDistance ? this.totalDistance / 1609.0 / (this.totalTimeWith / 610.0) : 0.0;
+        this.totalTimeWith && this.totalDistance
+          ? this.totalDistance / 1609.0 / (this.totalTimeWith / 610.0)
+          : 0.0;
       this.totalSpeedWithout =
         this.totalTimeWithout && this.totalDistance
           ? this.totalDistance / 1609.0 / (this.totalTimeWithout / 610.0)
           : 0.0;
       // pushes
-      this.pushDiff = 100 - (this.totalPushesWith / this.totalPushesWithout) * 100 || 0;
+      this.pushDiff =
+        100 - (this.totalPushesWith / this.totalPushesWithout) * 100 || 0;
       // coast
       this.coastDiff = this.totalCoastWith / this.totalCoastWithout || 0;
       // speed
-      this.speedDiff = (this.totalSpeedWithout && this.totalSpeedWith / this.totalSpeedWithout) || 0;
+      this.speedDiff =
+        (this.totalSpeedWithout &&
+          this.totalSpeedWith / this.totalSpeedWithout) ||
+        0;
     }
   }
 
@@ -251,8 +273,13 @@ export class SummaryComponent {
       })
       .catch(err => {
         alert({
-          title: this._translateService.instant('summary.errors.save-failed.title'),
-          message: this._translateService.instant('summary.errors.save-failed.message') + err,
+          title: this._translateService.instant(
+            'summary.errors.save-failed.title'
+          ),
+          message:
+            this._translateService.instant(
+              'summary.errors.save-failed.message'
+            ) + err,
           okButtonText: this._translateService.instant('dialogs.ok')
         });
         // now go back to dashboard

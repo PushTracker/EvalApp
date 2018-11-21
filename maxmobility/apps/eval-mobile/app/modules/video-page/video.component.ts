@@ -3,6 +3,7 @@ import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import * as orientation from 'nativescript-orientation';
 import { YoutubePlayer } from 'nativescript-youtubeplayer';
 import { Subscription } from 'rxjs';
+import { Page } from 'tns-core-modules/ui/page';
 
 @Component({
   selector: 'Video',
@@ -17,7 +18,13 @@ export class VideoComponent implements OnInit {
 
   private routeSub: Subscription; // subscription to route observer
 
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  constructor(
+    private _page: Page,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
+    this._page.className = 'blue-gradient-down';
+  }
 
   ngOnInit() {
     // see https://github.com/NativeScript/nativescript-angular/issues/1049

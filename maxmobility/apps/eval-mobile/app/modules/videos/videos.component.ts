@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { RouterExtensions } from 'nativescript-angular/router';
-import { isAndroid, isIOS } from 'platform';
+import { isAndroid, isIOS } from 'tns-core-modules/platform';
+import { Page } from 'tns-core-modules/ui/page';
 
 @Component({
   selector: 'Videos',
@@ -12,7 +13,13 @@ import { isAndroid, isIOS } from 'platform';
 export class VideosComponent {
   videos = this._translateService.instant('videos');
 
-  constructor(private _routerExtensions: RouterExtensions, private _translateService: TranslateService) {}
+  constructor(
+    private _page: Page,
+    private _routerExtensions: RouterExtensions,
+    private _translateService: TranslateService
+  ) {
+    this._page.className = 'blue-gradient-down';
+  }
 
   isIOS(): boolean {
     return isIOS;

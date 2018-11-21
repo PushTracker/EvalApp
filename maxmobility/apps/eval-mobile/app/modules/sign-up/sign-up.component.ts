@@ -1,11 +1,19 @@
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { CLog, User, UserTypes } from '@maxmobility/core';
-import { LoggingService, preventKeyboardFromShowing, ProgressService, UserService } from '@maxmobility/mobile';
+import {
+  LoggingService,
+  preventKeyboardFromShowing,
+  ProgressService,
+  UserService
+} from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { validate } from 'email-validator';
 import { ModalDialogService } from 'nativescript-angular/directives/dialogs';
 import { RouterExtensions } from 'nativescript-angular/router';
-import { SelectedIndexChangedEventData, ValueList } from 'nativescript-drop-down';
+import {
+  SelectedIndexChangedEventData,
+  ValueList
+} from 'nativescript-drop-down';
 import { alert } from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
 import { setMarginForIosSafeArea } from '~/utils';
@@ -27,15 +35,27 @@ export class SignUpComponent implements OnInit {
   // dropdown list of languages
   languages = new ValueList<string>(
     this._translateService.getLangs().map(l => {
-      return { value: l, display: this._translateService.instant('languages.' + l) };
+      return {
+        value: l,
+        display: this._translateService.instant('languages.' + l)
+      };
     })
   );
   selectedLanguageIndex = 0;
 
   usertypes = new ValueList([
-    { value: UserTypes.Clinician, display: this._translateService.instant('sign-up.user-type-clinician') },
-    { value: UserTypes.Representative, display: this._translateService.instant('sign-up.user-type-rep') },
-    { value: UserTypes.EndUser, display: this._translateService.instant('sign-up.user-type-end-user') }
+    {
+      value: UserTypes.Clinician,
+      display: this._translateService.instant('sign-up.user-type-clinician')
+    },
+    {
+      value: UserTypes.Representative,
+      display: this._translateService.instant('sign-up.user-type-rep')
+    },
+    {
+      value: UserTypes.EndUser,
+      display: this._translateService.instant('sign-up.user-type-end-user')
+    }
   ]);
 
   selectedUserTypeIndex = 0;
@@ -52,6 +72,7 @@ export class SignUpComponent implements OnInit {
     private modal: ModalDialogService,
     private vcRef: ViewContainerRef
   ) {
+    this._page.className = 'blue-gradient-down';
     preventKeyboardFromShowing();
   }
 
@@ -91,11 +112,15 @@ export class SignUpComponent implements OnInit {
     return this.modal.showModal(PrivacyPolicyComponent, options).then(res => {
       if (res) {
         this.user.has_read_privacy_policy = res.has_read_privacy_policy;
-        this.user.has_agreed_to_user_agreement = res.has_agreed_to_user_agreement;
+        this.user.has_agreed_to_user_agreement =
+          res.has_agreed_to_user_agreement;
         this.user.consent_to_research = res.consent_to_research;
-        this.user.consent_to_product_development = res.consent_to_product_development;
+        this.user.consent_to_product_development =
+          res.consent_to_product_development;
       }
-      const hasAgreed = this.user.has_read_privacy_policy && this.user.has_agreed_to_user_agreement;
+      const hasAgreed =
+        this.user.has_read_privacy_policy &&
+        this.user.has_agreed_to_user_agreement;
       return hasAgreed;
     });
   }
@@ -127,7 +152,9 @@ export class SignUpComponent implements OnInit {
     if (!agreed) {
       return alert({
         title: this._translateService.instant('user.accept.accept-error.title'),
-        message: this._translateService.instant('user.accept.accept-error.message'),
+        message: this._translateService.instant(
+          'user.accept.accept-error.message'
+        ),
         okButtonText: this.ok
       });
     }
@@ -138,7 +165,9 @@ export class SignUpComponent implements OnInit {
     //       user cannot create the account without reading and
     //       agreeing to both!
 
-    this._progressService.show(this._translateService.instant('user.account-creating'));
+    this._progressService.show(
+      this._translateService.instant('user.account-creating')
+    );
     // need to make sure the username is not already taken
     this._userService
       .isUsernameTaken(this.user.username)
@@ -151,7 +180,9 @@ export class SignUpComponent implements OnInit {
             this._progressService.hide();
             alert({
               title: this._translateService.instant('user.success'),
-              message: this._translateService.instant('user.sign-up-success') + ` ${user.email}`,
+              message:
+                this._translateService.instant('user.sign-up-success') +
+                ` ${user.email}`,
               okButtonText: this.ok
             }).then(() => {
               this._router.navigate(['/home'], { clearHistory: true });
@@ -202,7 +233,9 @@ export class SignUpComponent implements OnInit {
     // make sure it's a valid email
     const email = text.trim();
     if (!validate(email)) {
-      this.emailError = `"${email}" ${this._translateService.instant('user.email-error')}`;
+      this.emailError = `"${email}" ${this._translateService.instant(
+        'user.email-error'
+      )}`;
       return false;
     }
 
@@ -213,7 +246,9 @@ export class SignUpComponent implements OnInit {
   private _isPasswordValid(text: string): boolean {
     // validate the password
     if (!text) {
-      this.passwordError = this._translateService.instant('user.password-error');
+      this.passwordError = this._translateService.instant(
+        'user.password-error'
+      );
       return false;
     }
     this.passwordError = '';
@@ -223,7 +258,9 @@ export class SignUpComponent implements OnInit {
   private _isFirstNameValid(text: string): boolean {
     // validate the password
     if (!text) {
-      this.firstNameError = this._translateService.instant('user.first-name-error');
+      this.firstNameError = this._translateService.instant(
+        'user.first-name-error'
+      );
       return false;
     }
     this.firstNameError = '';
@@ -233,7 +270,9 @@ export class SignUpComponent implements OnInit {
   private _isLastNameValid(text: string): boolean {
     // validate the password
     if (!text) {
-      this.lastNameError = this._translateService.instant('user.last-name-error');
+      this.lastNameError = this._translateService.instant(
+        'user.last-name-error'
+      );
       return false;
     }
     this.lastNameError = '';

@@ -2,18 +2,18 @@
   <NavigationButton android:visibility="collapse"></NavigationButton>
 </ActionBar>
 
-<Gradient tkMainContent direction="to bottom" colors="#004F7E, #0070b3">
-  <ScrollView row="1" class="">
-    <StackLayout orientation="vertical" horizontalAlignment="center" width="100%">
-      <YoutubePlayer id="player" 
-      (loaded)="playerLoaded($event)" 
-      android:width="90%" 
-      ios:height="300" 
-      [options]="options" 
+<ScrollView tkMainContent>
+  <StackLayout orientation="vertical" horizontalAlignment="center" width="100%">
+    <YoutubePlayer
+      id="player"
+      (loaded)="playerLoaded($event)"
+      android:width="90%"
+      ios:height="300"
+      [options]="options"
       apiKey="AIzaSyBLlWMu4GcwFcUmcBtK7R9gWBtloBswfHg"
-        backgroundColor="gray"></YoutubePlayer>
-      <Label [text]="title" class="title" textWrap="true"></Label>
-      <Label [text]="desc" class="bullet" textWrap="true"></Label>
-    </StackLayout>
-  </ScrollView>
-</Gradient>
+      backgroundColor="gray"
+    ></YoutubePlayer>
+    <label [text]="title" class="title" textWrap="true"></label>
+    <label [text]="desc" class="bullet" textWrap="true"></label>
+  </StackLayout>
+</ScrollView>

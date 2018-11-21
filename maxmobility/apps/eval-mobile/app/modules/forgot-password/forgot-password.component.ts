@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CLog, LoggingService } from '@maxmobility/core';
-import { preventKeyboardFromShowing, ProgressService, UserService } from '@maxmobility/mobile';
+import {
+  preventKeyboardFromShowing,
+  ProgressService,
+  UserService
+} from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { validate } from 'email-validator';
 import { RouterExtensions } from 'nativescript-angular/router';
@@ -26,7 +30,9 @@ export class ForgotPasswordComponent implements OnInit {
   account_error: string = this._translateService.instant('user.account-error');
   email_error: string = this._translateService.instant('user.email-error');
   check_email: string = this._translateService.instant('user.check-email');
-  email_required: string = this._translateService.instant('user.email-required');
+  email_required: string = this._translateService.instant(
+    'user.email-required'
+  );
   email_sent: string = this._translateService.instant('user.email-sent');
 
   constructor(
@@ -37,6 +43,7 @@ export class ForgotPasswordComponent implements OnInit {
     private _page: Page,
     private _translateService: TranslateService
   ) {
+    this._page.className = 'blue-gradient-down';
     preventKeyboardFromShowing();
   }
 

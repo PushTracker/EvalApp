@@ -18,6 +18,7 @@ import { isAndroid, isIOS } from 'tns-core-modules/platform';
 import { clearTimeout, setTimeout } from 'tns-core-modules/timer/timer';
 import { action, confirm, prompt } from 'tns-core-modules/ui/dialogs';
 import { KinveyKeys } from '~/kinvey-keys';
+import { Page } from 'tns-core-modules/ui/page';
 
 @Component({
   selector: 'Demos',
@@ -42,13 +43,16 @@ export class DemosComponent implements OnInit {
   private _datastore = Kinvey.DataStore.collection<any>('SmartDrives');
 
   constructor(
+    private _page: Page,
     private _routerExtensions: RouterExtensions,
     private _demoService: DemoService,
     private _firmwareService: FirmwareService,
     private _logService: LoggingService,
     private _translateService: TranslateService,
     private _userService: UserService
-  ) {}
+  ) {
+    this._page.className = 'blue-gradient-down';
+  }
 
   ngOnInit() {
     console.log('Demos.Component OnInit');

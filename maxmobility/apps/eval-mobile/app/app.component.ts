@@ -26,7 +26,6 @@ registerElement(
   'BarcodeScanner',
   () => require('nativescript-barcodescanner').BarcodeScannerView
 );
-registerElement('Gradient', () => require('nativescript-gradient').Gradient);
 registerElement('Gif', () => Gif);
 registerElement('Mapbox', () => MapboxView);
 
@@ -51,7 +50,10 @@ export class AppComponent {
 
     // REGISTER FOR PUSH NOTIFICATIONS
     console.log('*** app.component constructor ***');
-    console.log('UserService.hasRegistered', UserService.hasRegistered);
+    console.log(
+      'UserService.hasRegistered for push notifications',
+      UserService.hasRegistered
+    );
 
     if (UserService.hasRegistered === false) {
       this._userService
@@ -141,7 +143,7 @@ export class AppComponent {
       switch (newConnectionType) {
         case connectionType.none:
           alert({
-            message: `Smart Evaluation has detected a network change. Please make sure you are connected to wifi or a cell network. The app`,
+            message: this._translateService.instant('general.no-connection'),
             okButtonText: 'Okay'
           });
           break;

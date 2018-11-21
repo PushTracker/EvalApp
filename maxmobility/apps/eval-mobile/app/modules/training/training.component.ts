@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { RouterExtensions } from 'nativescript-angular/router';
@@ -31,6 +37,7 @@ export class TrainingComponent implements AfterViewInit, OnInit {
     private routerExtensions: RouterExtensions,
     private translateService: TranslateService
   ) {
+    this._page.className = 'blue-gradient-down';
     // re-update slides every time it's created
     this.slides = this.translateService.instant('training');
   }
@@ -66,7 +73,10 @@ export class TrainingComponent implements AfterViewInit, OnInit {
 
   ngAfterViewInit() {
     this.toastTimeoutID = setTimeout(() => {
-      new Toasty(this.translateService.instant('training_component.swipe-left-message'), ToastDuration.LONG).show();
+      new Toasty(
+        this.translateService.instant('training_component.swipe-left-message'),
+        ToastDuration.LONG
+      ).show();
     }, 1000);
 
     this.routeSub = this._router.events.subscribe(event => {

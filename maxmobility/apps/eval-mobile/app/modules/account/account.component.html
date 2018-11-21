@@ -5,117 +5,170 @@
   </ActionItem>
 </ActionBar>
 
-<Gradient direction="to bottom" colors="#004F7E, #0070b3">
-  <ScrollView>
-    <StackLayout class="account-layout" orientation="vertical">
-      <image
-        #accountImage
-        class="account-picture"
-        *ngIf="user.data.profile_picture"
-        [src]="user.data.profile_picture"
-        (tap)="onUpdateProfilePictureTap()"
-      ></image>
+<ScrollView iosOverflowSafeArea="false">
+  <StackLayout class="account-layout" orientation="vertical">
+    <image
+      #accountImage
+      class="account-picture"
+      *ngIf="user.data.profile_picture"
+      [src]="user.data.profile_picture"
+      (tap)="onUpdateProfilePictureTap()"
+    ></image>
+    <label
+      color="#fff"
+      *ngIf="!user.data.profile_picture"
+      (tap)="onUpdateProfilePictureTap()"
+      class="account-icon fa"
+      text="&#xf2be;"
+    ></label>
+    <GridLayout rows="auto" columns="auto, *">
+      <label col="0" class="label" [text]="'user.language' | translate"></label>
+      <DropDown
+        col="1"
+        class="dropdown"
+        [hint]="'user.language' | translate"
+        [selectedIndex]="selectedLanguageIndex"
+        [items]="languages"
+        (selectedIndexChanged)="onLanguageChanged($event)"
+      ></DropDown>
+    </GridLayout>
+    <TextField
+      [(ngModel)]="user.data.first_name"
+      returnKeyType="next"
+      class="account-text-entry"
+      [hint]="'user.first-name' | translate"
+    ></TextField>
+    <TextField
+      [(ngModel)]="user.data.last_name"
+      returnKeyType="next"
+      class="account-text-entry"
+      [hint]="'user.last-name' | translate"
+    ></TextField>
+    <TextField
+      [(ngModel)]="user.data.email"
+      keyboardType="email"
+      returnKeyType="next"
+      class="account-text-entry"
+      [hint]="'user.email' | translate"
+    ></TextField>
+    <TextField
+      [(ngModel)]="user.data.phone_number"
+      keyboardType="phone"
+      returnKeyType="done"
+      class="account-text-entry"
+      [hint]="'user.phone' | translate"
+    ></TextField>
+    <DockLayout
+      [visibility]="canBetaTest ? 'visible' : 'collapsed'"
+      stretchLastChild="true"
+      class="account-dock"
+    >
       <label
-        color="#fff"
-        *ngIf="!user.data.profile_picture"
-        (tap)="onUpdateProfilePictureTap()"
-        class="account-icon fa"
-        text="&#xf2be;"
+        [text]="'user.consent.beta-test' | translate"
+        textWrap="true"
+        class="consent"
+        dock="left"
       ></label>
+      <Switch
+        dock="right"
+        [(ngModel)]="user.data.beta_firmware_tester"
+      ></Switch>
+    </DockLayout>
+    <DockLayout stretchLastChild="true" class="account-dock">
+      <label
+        [text]="'user.consent.product-development' | translate"
+        textWrap="true"
+        class="consent"
+        dock="left"
+      ></label>
+      <Switch
+        dock="right"
+        [(ngModel)]="user.data.consent_to_product_development"
+      ></Switch>
+    </DockLayout>
+    <DockLayout stretchLastChild="true" class="account-dock">
+      <label
+        [text]="'user.consent.research' | translate"
+        textWrap="true"
+        class="consent"
+        dock="left"
+      ></label>
+      <Switch dock="right" [(ngModel)]="user.data.consent_to_research"></Switch>
+    </DockLayout>
+    <button
+      class="acct-btn "
+      [text]="'user.change-pass' | translate"
+      (tap)="onChangePasswordTap()"
+    ></button>
+    <button
+      class="acct-btn"
+      [text]="'user.reset-acct' | translate"
+      (tap)="onResetAccountTap()"
+    ></button>
+    <button
+      class="acct-btn"
+      [text]="'user.sign-out' | translate"
+      (tap)="onSignOutTap()"
+    ></button>
+    <button
+      class="acct-btn"
+      [text]="'user.provide-feedback-btn' | translate"
+      (tap)="onFeedbackTap()"
+    ></button>
+    <!--
+      <Button class="acct-btn"
+         text="Debug Menu"
+         (tap)="onDebugMenuTap()"></Button>
+    -->
+
+    // hidden layout for Devon to submit 'Did You Knows' to Kinvey which
+    triggers Push Notifications
+    <StackLayout
+      [visibility]="isAdminAccount ? 'visible' : 'collapsed'"
+      borderColor="orange"
+      borderRadius="4"
+      backgroundColor="#fff"
+      margin="5"
+    >
+      // User Type Dropdown
       <GridLayout rows="auto" columns="auto, *">
-        <label col="0" class="label" [text]="'user.language' | translate"></label>
+        <label
+          row="1"
+          col="0"
+          class="label"
+          textColor="#000"
+          [text]="'user.type' | translate"
+        ></label>
         <DropDown
+          row="1"
           col="1"
           class="dropdown"
-          [hint]="'user.language' | translate"
-          [selectedIndex]="selectedLanguageIndex"
-          [items]="languages"
-          (selectedIndexChanged)="onLanguageChanged($event)"
+          [hint]="'user.type' | translate"
+          [selectedIndex]="selectedUserTypeIndex"
+          [items]="usertypes"
+          (selectedIndexChanged)="onUserTypeChanged($event)"
         ></DropDown>
       </GridLayout>
-      <TextField
-        [(ngModel)]="user.data.first_name"
-        returnKeyType="next"
-        class="account-text-entry"
-        [hint]="'user.first-name' | translate"
-      ></TextField>
-      <TextField
-        [(ngModel)]="user.data.last_name"
-        returnKeyType="next"
-        class="account-text-entry"
-        [hint]="'user.last-name' | translate"
-      ></TextField>
-      <TextField
-        [(ngModel)]="user.data.email"
-        keyboardType="email"
-        returnKeyType="next"
-        class="account-text-entry"
-        [hint]="'user.email' | translate"
-      ></TextField>
-      <TextField
-        [(ngModel)]="user.data.phone_number"
-        keyboardType="phone"
-        returnKeyType="done"
-        class="account-text-entry"
-        [hint]="'user.phone' | translate"
-      ></TextField>
-      <DockLayout [visibility]="canBetaTest ? 'visible' : 'collapsed'" stretchLastChild="true" class="account-dock">
-        <label [text]="'user.consent.beta-test' | translate" textWrap="true" class="consent" dock="left"></label>
-        <Switch dock="right" [(ngModel)]="user.data.beta_firmware_tester"></Switch>
-      </DockLayout>
-      <DockLayout stretchLastChild="true" class="account-dock">
+      <button class="acct-btn" text="Debug" (tap)="onDebugMenuTap()"></button>
+      <GridLayout rows="auto" columns="auto, *">
         <label
-          [text]="'user.consent.product-development' | translate"
+          col="0"
+          text="Send to All Smart Eval Users?"
           textWrap="true"
-          class="consent"
-          dock="left"
         ></label>
-        <Switch dock="right" [(ngModel)]="user.data.consent_to_product_development"></Switch>
-      </DockLayout>
-      <DockLayout stretchLastChild="true" class="account-dock">
-        <label [text]="'user.consent.research' | translate" textWrap="true" class="consent" dock="left"></label>
-        <Switch dock="right" [(ngModel)]="user.data.consent_to_research"></Switch>
-      </DockLayout>
-      <button class="acct-btn " [text]="'user.change-pass' | translate" (tap)="onChangePasswordTap()"></button>
-      <button class="acct-btn" [text]="'user.reset-acct' | translate" (tap)="onResetAccountTap()"></button>
-      <button class="acct-btn" [text]="'user.sign-out' | translate" (tap)="onSignOutTap()"></button>
-      <button class="acct-btn" [text]="'user.provide-feedback-btn' | translate" (tap)="onFeedbackTap()"></button>
-      <!--
-        <Button class="acct-btn"
-           text="Debug Menu"
-           (tap)="onDebugMenuTap()"></Button>
-      -->
+        <Switch
+          col="1"
+          [(ngModel)]="didyouknow.all_users"
+          horizontalAlignment="right"
+        ></Switch>
+      </GridLayout>
 
-      // hidden layout for Devon to submit 'Did You Knows' to Kinvey which triggers Push Notifications
-      <StackLayout
-        [visibility]="isAdminAccount ? 'visible' : 'collapsed'"
-        borderColor="orange"
-        borderRadius="4"
-        backgroundColor="#fff"
-        margin="5"
-      >
-        // User Type Dropdown
-        <GridLayout rows="auto" columns="auto, *">
-          <label row="1" col="0" class="label" textColor="#000" [text]="'user.type' | translate"></label>
-          <DropDown
-            row="1"
-            col="1"
-            class="dropdown"
-            [hint]="'user.type' | translate"
-            [selectedIndex]="selectedUserTypeIndex"
-            [items]="usertypes"
-            (selectedIndexChanged)="onUserTypeChanged($event)"
-          ></DropDown>
-        </GridLayout>
-        <button class="acct-btn" text="Debug" (tap)="onDebugMenuTap()"></button>
-        <GridLayout rows="auto" columns="auto, *">
-          <label col="0" text="Send to All Smart Eval Users?" textWrap="true"></label>
-          <Switch col="1" [(ngModel)]="didyouknow.all_users" horizontalAlignment="right"></Switch>
-        </GridLayout>
-
-        <TextView hint="Did you know..." [(ngModel)]="didyouknow.text" editable="true"></TextView>
-        <button text="Submit" (tap)="submitDidYouKnow()"></button>
-      </StackLayout>
+      <TextView
+        hint="Did you know..."
+        [(ngModel)]="didyouknow.text"
+        editable="true"
+      ></TextView>
+      <button text="Submit" (tap)="submitDidYouKnow()"></button>
     </StackLayout>
-  </ScrollView>
-</Gradient>
+  </StackLayout>
+</ScrollView>

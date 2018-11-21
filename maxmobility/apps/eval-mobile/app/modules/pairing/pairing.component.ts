@@ -72,6 +72,8 @@ export class PairingComponent implements OnInit {
     private _progressService: ProgressService,
     private _loggingService: LoggingService
   ) {
+    this._page.className = 'blue-gradient-down';
+
     this.settings = this._settingsService.settings;
     this.pushSettings = this._settingsService.pushSettings;
 

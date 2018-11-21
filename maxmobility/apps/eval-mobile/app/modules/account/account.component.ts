@@ -6,7 +6,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 import { RouterExtensions } from 'nativescript-angular/router';
 import * as camera from 'nativescript-camera';
-import { ValueList, SelectedIndexChangedEventData } from 'nativescript-drop-down';
+import {
+  ValueList,
+  SelectedIndexChangedEventData
+} from 'nativescript-drop-down';
 import * as email from 'nativescript-email';
 import { ImageCropper } from 'nativescript-imagecropper';
 import * as LS from 'nativescript-localstorage';
@@ -40,7 +43,10 @@ export class AccountComponent implements OnInit {
    */
   languages = new ValueList<string>(
     this._translateService.getLangs().map(l => {
-      return { value: l, display: this._translateService.instant('languages.' + l) };
+      return {
+        value: l,
+        display: this._translateService.instant('languages.' + l)
+      };
     })
   );
   selectedLanguageIndex = 0;
@@ -50,9 +56,18 @@ export class AccountComponent implements OnInit {
 
   usertypes = new ValueList([
     { value: UserTypes.Admin, display: 'Admin' },
-    { value: UserTypes.Clinician, display: this._translateService.instant('sign-up.user-type-clinician') },
-    { value: UserTypes.Representative, display: this._translateService.instant('sign-up.user-type-rep') },
-    { value: UserTypes.EndUser, display: this._translateService.instant('sign-up.user-type-end-user') }
+    {
+      value: UserTypes.Clinician,
+      display: this._translateService.instant('sign-up.user-type-clinician')
+    },
+    {
+      value: UserTypes.Representative,
+      display: this._translateService.instant('sign-up.user-type-rep')
+    },
+    {
+      value: UserTypes.EndUser,
+      display: this._translateService.instant('sign-up.user-type-end-user')
+    }
   ]);
 
   selectedUserTypeIndex = 0;
@@ -72,15 +87,18 @@ export class AccountComponent implements OnInit {
     private _zone: NgZone
   ) {
     this._page.enableSwipeBackNavigation = false;
+    this._page.className = 'blue-gradient-down';
 
     this.imageCropper = new ImageCropper();
     this.user = Kinvey.User.getActiveUser();
-    this.profileImageKey = this.fsKeyPrefix + this.user._id + '.' + this.fsKeyProfilePicture;
+    this.profileImageKey =
+      this.fsKeyPrefix + this.user._id + '.' + this.fsKeyProfilePicture;
 
     // configure if they are an admin account
     const adminRegEx = /(william|ben|ken|guo)@max\-mobility.com/i;
     const isAdminEmail = adminRegEx.test((this.user.data as User).email);
-    this.isAdminAccount = (this.user.data as User).type === UserTypes.Admin || isAdminEmail;
+    this.isAdminAccount =
+      (this.user.data as User).type === UserTypes.Admin || isAdminEmail;
 
     // configure if they can opt in for beta testing firmware - only
     // allowed for @permobil.com and @max-mobility.com email
@@ -94,10 +112,12 @@ export class AccountComponent implements OnInit {
     this.loadProfilePicture();
 
     // set language data
-    this.selectedLanguageIndex = this.languages.getIndex((this.user.data as any).language) || 0;
+    this.selectedLanguageIndex =
+      this.languages.getIndex((this.user.data as any).language) || 0;
 
     // set account type data
-    this.selectedUserTypeIndex = this.usertypes.getIndex((this.user.data as any).type) || 0;
+    this.selectedUserTypeIndex =
+      this.usertypes.getIndex((this.user.data as any).type) || 0;
 
     // get translation files
     this._fileService.downloadTranslationFiles();
@@ -222,7 +242,9 @@ export class AccountComponent implements OnInit {
           })
           .catch(error => {
             alert({
-              message: this._translateService.instant('user.account-update-error'),
+              message: this._translateService.instant(
+                'user.account-update-error'
+              ),
               okButtonText: this._translateService.instant('dialogs.ok')
             });
           });
@@ -283,8 +305,12 @@ export class AccountComponent implements OnInit {
    */
   async onFeedbackTap() {
     const confirmResult = await confirm({
-      title: this._translateService.instant('user.provide-feedback-confirm-title'),
-      message: this._translateService.instant('user.provide-feedback-confirm-message'),
+      title: this._translateService.instant(
+        'user.provide-feedback-confirm-title'
+      ),
+      message: this._translateService.instant(
+        'user.provide-feedback-confirm-message'
+      ),
       okButtonText: this.yes,
       cancelButtonText: this.no
     }).catch(e => {
@@ -293,7 +319,9 @@ export class AccountComponent implements OnInit {
 
     if (confirmResult === false) {
       // user denied the confirmation
-      console.log('User denied the confirmation to open email to send feedback.');
+      console.log(
+        'User denied the confirmation to open email to send feedback.'
+      );
       return;
     }
 
@@ -363,7 +391,9 @@ export class AccountComponent implements OnInit {
       const token = (this._userService.user._kmd as any).authtoken;
       const response = await http.request({
         method: 'POST',
-        url: `${KinveyKeys.HOST_URL}/rpc/${KinveyKeys.APP_KEY}/custom/didyouknow`,
+        url: `${KinveyKeys.HOST_URL}/rpc/${
+          KinveyKeys.APP_KEY
+        }/custom/didyouknow`,
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Kinvey ${token}`
@@ -379,8 +409,12 @@ export class AccountComponent implements OnInit {
 
       // if error show alert with error from Kinvey endpoint
       if (response.statusCode !== 200) {
-        this._loggingService.logException(new Error(response.content.toString()));
-        const message = response.content.toJSON().debug ? `${response.content.toJSON().debug}` : 'Error sending data.';
+        this._loggingService.logException(
+          new Error(response.content.toString())
+        );
+        const message = response.content.toJSON().debug
+          ? `${response.content.toJSON().debug}`
+          : 'Error sending data.';
         alert({
           message,
           okButtonText: 'Okay'

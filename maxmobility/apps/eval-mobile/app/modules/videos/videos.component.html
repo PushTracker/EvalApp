@@ -1,22 +1,39 @@
-<ActionBar class="action-bar" flat="true" [title]="'menu.videos-title' | translate">
+<ActionBar
+  class="action-bar"
+  flat="true"
+  [title]="'menu.videos-title' | translate"
+>
   <NavigationButton android:visibility="collapse"></NavigationButton>
 </ActionBar>
 
-<Gradient tkMainContent margin-top="30" direction="to bottom" colors="#004F7E, #0070b3">
-  <ListView marginLeft="5" backgroundColor="transparent" separatorColor="transparent" [items]="videos" (itemTap)="onItemTap($event)">
+<StackLayout tkMainContent margin-top="30">
+  <ListView
+    marginLeft="5"
+    backgroundColor="transparent"
+    separatorColor="transparent"
+    [items]="videos"
+    (itemTap)="onItemTap($event)"
+  >
     <ng-template let-item="item">
       <GridLayout rows="*" columns="145, *">
         <GridLayout rows="auto" columns="*" class="video-layout">
           <GridLayout row="0" class="video-title">
-            <Label textWrap="true" [text]="item.Title"></Label>
+            <label textWrap="true" [text]="item.Title"></label>
           </GridLayout>
         </GridLayout>
         <!-- <Image col="0" class="thumb" [src]="item.Thumb" ></Image> -->
         <GridLayout col="1" rows="auto, *, auto" columns="*" height="100%">
-          <!-- <Label row="0" class="title" textWrap="true"  [text]="item.Title"></Label> -->
-          <Label class="video-description" row="1" textWrap="true" [text]="item.Description"></Label>
+          <!--
+            <Label row="0" class="title" textWrap="true"  [text]="item.Title"></Label>
+          -->
+          <label
+            class="video-description"
+            row="1"
+            textWrap="true"
+            [text]="item.Description"
+          ></label>
         </GridLayout>
       </GridLayout>
     </ng-template>
   </ListView>
-</Gradient>
+</StackLayout>

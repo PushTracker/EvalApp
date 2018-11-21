@@ -14,6 +14,17 @@
   margin: 5, 5, 5, 5;
 }
 
+.ota-gradient {
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.95),
+    rgb(255, 255, 255)
+  );
+  border-radius: 4;
+  padding: 8;
+  margin: 5, 10, 0, 10;
+}
+
 .progress {
   color: $permobil-ocean;
   border-radius: 3;

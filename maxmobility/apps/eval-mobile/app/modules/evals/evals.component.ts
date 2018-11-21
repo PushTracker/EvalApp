@@ -5,10 +5,14 @@ import { TranslateService } from '@ngx-translate/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 import * as mustache from 'mustache';
 import * as email from 'nativescript-email';
-import { DateResponse, ModalDatetimepicker } from 'nativescript-modal-datetimepicker';
+import {
+  DateResponse,
+  ModalDatetimepicker
+} from 'nativescript-modal-datetimepicker';
 import { Toasty } from 'nativescript-toasty';
 import { isIOS } from 'tns-core-modules/platform';
 import { alert, confirm } from 'tns-core-modules/ui/dialogs/dialogs';
+import { Page } from 'tns-core-modules/ui/page';
 
 @Component({
   selector: 'Evals',
@@ -54,7 +58,9 @@ export class EvalsComponent implements OnInit {
   coastDiff = 0;
   speedDiff = 0;
   cadenceThresh = 10; // pushes per minute
-  lmnTemplate: string = this._translateService.instant('summary.lmnTemplate').join('\n');
+  lmnTemplate: string = this._translateService
+    .instant('summary.lmnTemplate')
+    .join('\n');
 
   /*** LMN PROPS  ***/
 
@@ -64,10 +70,13 @@ export class EvalsComponent implements OnInit {
   private _datastore = Kinvey.DataStore.collection<Evaluation>('Evaluations');
 
   constructor(
+    private _page: Page,
     private _evalService: EvaluationService,
     private _translateService: TranslateService,
     private _loggingService: LoggingService
-  ) {}
+  ) {
+    this._page.className = 'blue-gradient-down';
+  }
 
   async ngOnInit() {
     console.log('EvalsComponent onInit');
@@ -108,7 +117,11 @@ export class EvalsComponent implements OnInit {
         is24HourView: false
       })) as DateResponse;
 
-      const jsdate = new Date(dateResult.year, dateResult.month - 1, dateResult.day + 1);
+      const jsdate = new Date(
+        dateResult.year,
+        dateResult.month - 1,
+        dateResult.day + 1
+      );
 
       // now query Kinvey evals for only current logged in user for the date selected
       const query = new Kinvey.Query();
@@ -121,9 +134,9 @@ export class EvalsComponent implements OnInit {
 
       if (!data || data.length <= 0) {
         new Toasty(
-          `${this._translateService.instant('evals.no-evals-search-result')} ${dateResult.month}/${dateResult.day}/${
-            dateResult.year
-          }`
+          `${this._translateService.instant('evals.no-evals-search-result')} ${
+            dateResult.month
+          }/${dateResult.day}/${dateResult.year}`
         ).show();
         this.evals = this._initialEvals;
         return;
@@ -144,7 +157,9 @@ export class EvalsComponent implements OnInit {
   async onEmailBtnTap(evaluation: Evaluation) {
     const confirmResult = await confirm({
       title: this._translateService.instant('evals.confirm-lmn-email-title'),
-      message: this._translateService.instant('evals.confirm-lmn-email-message'),
+      message: this._translateService.instant(
+        'evals.confirm-lmn-email-message'
+      ),
       okButtonText: this._translateService.instant('dialogs.yes'),
       cancelButtonText: this._translateService.instant('dialogs.no')
     });
@@ -202,32 +217,8 @@ export class EvalsComponent implements OnInit {
     console.log(`Eval item tapped`);
   }
 
-  public timeString(time: any) {
+  timeString(time: any) {
     return Trial.timeToString(time * 60);
-  }
-
-  private _updateEvalForLmnReport(evaluation: Evaluation) {
-    evaluation.trials.map(t => {
-      this.totalPushesWith += t.with_pushes;
-      this.totalPushesWithout += t.without_pushes;
-      this.totalTimeWith += t.with_elapsed;
-      this.totalTimeWithout += t.without_elapsed;
-      this.totalDistance += t.distance;
-    });
-    this.totalCoastWith = this.totalPushesWith ? (this.totalTimeWith * 60) / this.totalPushesWith : 0;
-    this.totalCoastWithout = this.totalPushesWithout ? (this.totalTimeWithout * 60) / this.totalPushesWithout : 0;
-    this.totalCadenceWith = this.totalTimeWith ? this.totalPushesWith / this.totalTimeWith : 0;
-    this.totalCadenceWithout = this.totalTimeWithout ? this.totalPushesWithout / this.totalTimeWithout : 0;
-    this.totalSpeedWith =
-      this.totalTimeWith && this.totalDistance ? this.totalDistance / 1609.0 / (this.totalTimeWith / 610.0) : 0.0;
-    this.totalSpeedWithout =
-      this.totalTimeWithout && this.totalDistance ? this.totalDistance / 1609.0 / (this.totalTimeWithout / 610.0) : 0.0;
-    // pushes
-    this.pushDiff = 100 - (this.totalPushesWith / this.totalPushesWithout) * 100 || 0;
-    // coast
-    this.coastDiff = this.totalCoastWith / this.totalCoastWithout || 0;
-    // speed
-    this.speedDiff = (this.totalSpeedWithout && this.totalSpeedWith / this.totalSpeedWithout) || 0;
   }
 
   pushComparison(): string {
@@ -254,10 +245,50 @@ export class EvalsComponent implements OnInit {
     }
   }
 
+  private _updateEvalForLmnReport(evaluation: Evaluation) {
+    evaluation.trials.map(t => {
+      this.totalPushesWith += t.with_pushes;
+      this.totalPushesWithout += t.without_pushes;
+      this.totalTimeWith += t.with_elapsed;
+      this.totalTimeWithout += t.without_elapsed;
+      this.totalDistance += t.distance;
+    });
+    this.totalCoastWith = this.totalPushesWith
+      ? (this.totalTimeWith * 60) / this.totalPushesWith
+      : 0;
+    this.totalCoastWithout = this.totalPushesWithout
+      ? (this.totalTimeWithout * 60) / this.totalPushesWithout
+      : 0;
+    this.totalCadenceWith = this.totalTimeWith
+      ? this.totalPushesWith / this.totalTimeWith
+      : 0;
+    this.totalCadenceWithout = this.totalTimeWithout
+      ? this.totalPushesWithout / this.totalTimeWithout
+      : 0;
+    this.totalSpeedWith =
+      this.totalTimeWith && this.totalDistance
+        ? this.totalDistance / 1609.0 / (this.totalTimeWith / 610.0)
+        : 0.0;
+    this.totalSpeedWithout =
+      this.totalTimeWithout && this.totalDistance
+        ? this.totalDistance / 1609.0 / (this.totalTimeWithout / 610.0)
+        : 0.0;
+    // pushes
+    this.pushDiff =
+      100 - (this.totalPushesWith / this.totalPushesWithout) * 100 || 0;
+    // coast
+    this.coastDiff = this.totalCoastWith / this.totalCoastWithout || 0;
+    // speed
+    this.speedDiff =
+      (this.totalSpeedWithout &&
+        this.totalSpeedWith / this.totalSpeedWithout) ||
+      0;
+  }
+
   private _generateLMN(evaluation: Evaluation): string {
     // const that = this;
     return mustache.render(this.lmnTemplate, {
-      evaluation: evaluation,
+      evaluation,
       trials: evaluation.trials,
       totalCadenceWithout: this.totalCadenceWithout.toFixed(1),
       pushDiff: this.pushDiff.toFixed(0),

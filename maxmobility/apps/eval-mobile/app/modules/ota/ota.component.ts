@@ -1,7 +1,12 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import { PushTracker, SmartDrive } from '@maxmobility/core';
-import { BluetoothService, FirmwareService, LoggingService, ProgressService } from '@maxmobility/mobile';
+import {
+  BluetoothService,
+  FirmwareService,
+  LoggingService,
+  ProgressService
+} from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { Carousel, CarouselItem } from 'nativescript-carousel';
 import { Subscription } from 'rxjs';
@@ -44,7 +49,9 @@ export class OTAComponent implements OnInit {
     private _bluetoothService: BluetoothService,
     private _firmwareService: FirmwareService,
     private _loggingService: LoggingService
-  ) {}
+  ) {
+    this._page.className = 'blue-gradient-down';
+  }
 
   ngOnInit() {
     // see https://github.com/NativeScript/nativescript-angular/issues/1049
@@ -79,7 +86,9 @@ export class OTAComponent implements OnInit {
   get otaDescription(): string[] {
     let otaDesc = [this._translateService.instant('ota.downloading')];
     if (this.ready) {
-      let tmp = this._translateService.instant('firmware.' + this.currentVersion);
+      let tmp = this._translateService.instant(
+        'firmware.' + this.currentVersion
+      );
       if (typeof tmp !== 'string' && tmp.length) {
         otaDesc = tmp;
       } else {
@@ -106,7 +115,9 @@ export class OTAComponent implements OnInit {
 
     if (result === true) {
       // show indicator for download
-      this._progressService.show(this._translateService.instant('ota.downloading'));
+      this._progressService.show(
+        this._translateService.instant('ota.downloading')
+      );
 
       const carousel = this.carousel.nativeElement as Carousel;
       console.log('carousel', carousel);
@@ -163,7 +174,9 @@ export class OTAComponent implements OnInit {
 
   // Connectivity
   discoverSmartDrives() {
-    this._progressService.show(this._translateService.instant('bluetooth.searching'));
+    this._progressService.show(
+      this._translateService.instant('bluetooth.searching')
+    );
     return this._bluetoothService
       .scanForSmartDrive()
       .then(() => {
@@ -234,8 +247,12 @@ export class OTAComponent implements OnInit {
           } else {
             // bluetooth is not available
             return alert({
-              title: this._translateService.instant('bluetooth.errors.unavailable.title'),
-              message: this._translateService.instant('bluetooth.errors.unavailable.message'),
+              title: this._translateService.instant(
+                'bluetooth.errors.unavailable.title'
+              ),
+              message: this._translateService.instant(
+                'bluetooth.errors.unavailable.message'
+              ),
               okButtonText: this._translateService.instant('dialogs.ok')
             }).then(() => {
               this.searching = false;
@@ -312,7 +329,9 @@ export class OTAComponent implements OnInit {
     // remove all children from the carousel (carousel extends GridLayout)
     carousel.removeChildren();
 
-    const firmwareDescriptionItems = this._translateService.instant('firmware.' + this._firmwareService.currentVersion);
+    const firmwareDescriptionItems = this._translateService.instant(
+      'firmware.' + this._firmwareService.currentVersion
+    );
     console.log('current firmware description items', firmwareDescriptionItems);
 
     const whiteColor = new Color('#fff');
@@ -347,7 +366,9 @@ export class OTAComponent implements OnInit {
         const adapter = carousel.android.getAdapter() as android.support.v4.view.PagerAdapter;
         if (adapter) {
           adapter.notifyDataSetChanged();
-          console.log('BRAD - FIX THIS WHEN 4.1.0 is published, PR is pending to correct the types and simplify this.');
+          console.log(
+            'BRAD - FIX THIS WHEN 4.1.0 is published, PR is pending to correct the types and simplify this.'
+          );
           carousel._pageIndicatorView.setCount(firmwareDescriptionItems.length);
         }
         // carousel.pageIndicatorCount = firmwareDescriptionItems.length;

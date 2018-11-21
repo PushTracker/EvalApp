@@ -27,6 +27,7 @@ import { Feedback } from 'nativescript-feedback';
 import { SnackBar } from 'nativescript-snackbar';
 import { isIOS } from 'tns-core-modules/platform';
 import { View } from 'tns-core-modules/ui/core/view';
+import { Page } from 'tns-core-modules/ui/page';
 import { alert } from 'tns-core-modules/ui/dialogs';
 import { Slider } from 'tns-core-modules/ui/slider';
 import { Switch } from 'tns-core-modules/ui/switch/switch';
@@ -109,6 +110,7 @@ export class TrialComponent implements OnInit {
   private hasAddedToTrial = false;
 
   constructor(
+    private _page: Page,
     private _routerExtensions: RouterExtensions,
     private _settingsService: SettingsService,
     private _progressService: ProgressService,
@@ -117,6 +119,7 @@ export class TrialComponent implements OnInit {
     private _translateService: TranslateService,
     private _loggingService: LoggingService
   ) {
+    this._page.className = 'blue-gradient-down';
     this.settings = this._settingsService.settings;
     this.pushSettings = this._settingsService.pushSettings;
     this.trial.setSettings(this.settings);

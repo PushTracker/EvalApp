@@ -2,29 +2,71 @@
   <NavigationButton *ngIf="isIOS()"></NavigationButton>
 </ActionBar>
 
-<Gradient tkMainContent direction="to bottom" colors="#004F7E, #0070b3">
-  <GridLayout>
-    <Carousel #carousel showIndicator="true" ios:indicatorOffset="0,-10" ios:finite="true" ios:bounce="false" height="100%"
-      indicatorColor="#66ccff" indicatorColorUnselected="#cceeff">
-      <CarouselItem *ngFor="let slide of slides">
-        <GridLayout rows="auto, *" cols="*">
-          <StackLayout class="topSlide" row="0" height="45%" width="100%" orientation="horizontal" horizontalAlignment="center">
-            // only shows when the slide.Image is a gif
-            <Gif *ngIf="isGif(slide.Image)" [src]="slide.Image" height="100%" android:width="100%" ios:width="300"></Gif>
-            // show only when not a gif
-            <Image *ngIf="!isGif(slide.Image)" [src]="slide.Image" stretch="aspectFit"></Image>
+<GridLayout>
+  <Carousel
+    #carousel
+    showIndicator="true"
+    ios:indicatorOffset="0,-10"
+    ios:finite="true"
+    ios:bounce="false"
+    height="100%"
+    indicatorColor="#66ccff"
+    indicatorColorUnselected="#cceeff"
+  >
+    <CarouselItem *ngFor="let slide of slides">
+      <GridLayout rows="auto, *" cols="*">
+        <StackLayout
+          class="topSlide"
+          row="0"
+          height="45%"
+          width="100%"
+          orientation="horizontal"
+          horizontalAlignment="center"
+        >
+          // only shows when the slide.Image is a gif
+          <Gif
+            *ngIf="isGif(slide.Image)"
+            [src]="slide.Image"
+            height="100%"
+            android:width="100%"
+            ios:width="300"
+          ></Gif>
+          // show only when not a gif
+          <image
+            *ngIf="!isGif(slide.Image)"
+            [src]="slide.Image"
+            stretch="aspectFit"
+          ></image>
+        </StackLayout>
+        <ScrollView row="1" height="55%">
+          <StackLayout
+            orientation="vertical"
+            horizontalAlignment="center"
+            width="100%"
+          >
+            <label
+              [text]="slide.Label"
+              class="slideLowerLabel"
+              textWrap="true"
+            ></label>
+            <label
+              *ngFor="let bullet of slide.Bullets"
+              [text]="bullet"
+              class="bullet"
+              textWrap="true"
+            ></label>
+            <button
+              *ngIf="
+                slides.indexOf(slide) == slides.length - 1 &&
+                previousUrl == '/eval-entry'
+              "
+              class="next-button"
+              [text]="'buttons.next' | translate"
+              (tap)="onNext()"
+            ></button>
           </StackLayout>
-          <ScrollView row="1" height="55%">
-            <StackLayout orientation="vertical" horizontalAlignment="center" width="100%">
-              <Label [text]="slide.Label" class="slideLowerLabel" textWrap="true"></Label>
-              <Label *ngFor="let bullet of slide.Bullets" [text]="bullet" class="bullet" textWrap="true"></Label>
-              <Button *ngIf="slides.indexOf(slide) == (slides.length-1) && previousUrl == '/eval-entry'" class="next-button"
-                [text]="'buttons.next' | translate" (tap)="onNext()"></Button>
-            </StackLayout>
-          </ScrollView>
-        </GridLayout>
-      </CarouselItem>
-    </Carousel>
-  </GridLayout>
-
-</Gradient>
+        </ScrollView>
+      </GridLayout>
+    </CarouselItem>
+  </Carousel>
+</GridLayout>

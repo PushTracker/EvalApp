@@ -15,17 +15,24 @@ import { BarcodeScanner } from 'nativescript-barcodescanner';
 import * as camera from 'nativescript-camera';
 import { Feedback } from 'nativescript-feedback';
 import * as geolocation from 'nativescript-geolocation';
-import { ImageCropper, Result as ImageCropperResult } from 'nativescript-imagecropper';
+import {
+  ImageCropper,
+  Result as ImageCropperResult
+} from 'nativescript-imagecropper';
 import * as LS from 'nativescript-localstorage';
 import { Mapbox } from 'nativescript-mapbox';
 import { Toasty } from 'nativescript-toasty';
 import { switchMap } from 'rxjs/operators';
 import { ImageAsset } from 'tns-core-modules/image-asset/image-asset';
-import { fromBase64, ImageSource } from 'tns-core-modules/image-source/image-source';
+import {
+  fromBase64,
+  ImageSource
+} from 'tns-core-modules/image-source/image-source';
 import { isIOS } from 'tns-core-modules/platform';
 import { setTimeout } from 'tns-core-modules/timer';
 import { View } from 'tns-core-modules/ui/core/view';
 import * as dialogs from 'tns-core-modules/ui/dialogs';
+import { Page } from 'tns-core-modules/ui/page';
 
 @Component({
   selector: 'Demo',
@@ -36,9 +43,15 @@ import * as dialogs from 'tns-core-modules/ui/dialogs';
 export class DemoDetailComponent {
   demo = new Demo();
   // translation strings in UI
-  mcu_version_label: string = ` - SmartDrive MCU ${this._translateService.instant('general.version')}`;
-  ble_version_label: string = ` - SmartDrive BLE ${this._translateService.instant('general.version')}`;
-  pt_version_label: string = ` - PushTracker ${this._translateService.instant('general.version')}`;
+  mcu_version_label: string = ` - SmartDrive MCU ${this._translateService.instant(
+    'general.version'
+  )}`;
+  ble_version_label: string = ` - SmartDrive BLE ${this._translateService.instant(
+    'general.version'
+  )}`;
+  pt_version_label: string = ` - PushTracker ${this._translateService.instant(
+    'general.version'
+  )}`;
 
   private _imageCropper: ImageCropper;
   private _feedback = new Feedback();
@@ -46,6 +59,7 @@ export class DemoDetailComponent {
   private _datastore = Kinvey.DataStore.collection<any>('SmartDrives');
 
   constructor(
+    private _page: Page,
     private _pageRoute: PageRoute,
     private _zone: NgZone,
     private _barcodeScanner: BarcodeScanner,
@@ -56,42 +70,49 @@ export class DemoDetailComponent {
     private _translateService: TranslateService,
     private _loggingService: LoggingService
   ) {
+    this._page.className = 'blue-gradient-down';
     this._imageCropper = new ImageCropper();
-    this._pageRoute.activatedRoute.pipe(switchMap(activatedRoute => activatedRoute.queryParams)).forEach(params => {
-      console.log('route params', params);
-      if (params.index !== undefined && params.index > -1) {
-        this._index = params.index;
-        const demo = DemoService.Demos.getItem(this._index);
-        // BRAD - fix the image before binding to UI - https://github.com/PushTracker/EvalApp/issues/144
-        if (demo.pt_image && demo.pt_image_base64) {
-          demo.pt_image = fromBase64(demo.pt_image_base64);
+    this._pageRoute.activatedRoute
+      .pipe(switchMap(activatedRoute => activatedRoute.queryParams))
+      .forEach(params => {
+        console.log('route params', params);
+        if (params.index !== undefined && params.index > -1) {
+          this._index = params.index;
+          const demo = DemoService.Demos.getItem(this._index);
+          // BRAD - fix the image before binding to UI - https://github.com/PushTracker/EvalApp/issues/144
+          if (demo.pt_image && demo.pt_image_base64) {
+            demo.pt_image = fromBase64(demo.pt_image_base64);
+          }
+          if (demo.sd_image && demo.sd_image_base64) {
+            demo.sd_image = fromBase64(demo.sd_image_base64);
+          }
+          this.demo = demo;
+        } else {
+          this.demo = new Demo();
         }
-        if (demo.sd_image && demo.sd_image_base64) {
-          demo.sd_image = fromBase64(demo.sd_image_base64);
-        }
-        this.demo = demo;
-      } else {
-        this.demo = new Demo();
-      }
-    });
+      });
   }
 
   get sd_serial_label(): string {
     return (
-      (this.demo.smartdrive_serial_number.length && this.demo.smartdrive_serial_number) ||
+      (this.demo.smartdrive_serial_number.length &&
+        this.demo.smartdrive_serial_number) ||
       this._translateService.instant('demo-detail.scan-sd')
     );
   }
 
   get pt_serial_label(): string {
     return (
-      (this.demo.pushtracker_serial_number.length && this.demo.pushtracker_serial_number) ||
+      (this.demo.pushtracker_serial_number.length &&
+        this.demo.pushtracker_serial_number) ||
       this._translateService.instant('demo-detail.scan-pt')
     );
   }
 
   get title(): string {
-    return `${this.demo.model} ${this._translateService.instant('general.demo')} ${this.demo.smartdrive_serial_number}`;
+    return `${this.demo.model} ${this._translateService.instant(
+      'general.demo'
+    )} ${this.demo.smartdrive_serial_number}`;
   }
 
   get currentVersion(): string {
@@ -134,7 +155,9 @@ export class DemoDetailComponent {
         }
       } else {
         console.log('No result returned from the image cropper.');
-        this._loggingService.logBreadCrumb('No result returned from the image cropper.');
+        this._loggingService.logBreadCrumb(
+          'No result returned from the image cropper.'
+        );
       }
     } catch (error) {
       this._loggingService.logException(error);
@@ -166,7 +189,9 @@ export class DemoDetailComponent {
         console.log('index is greater than -1');
       } else {
         this._index = DemoService.Demos.indexOf(
-          this._demoService.getDemoBySmartDriveSerialNumber(this.demo.smartdrive_serial_number)
+          this._demoService.getDemoBySmartDriveSerialNumber(
+            this.demo.smartdrive_serial_number
+          )
         );
       }
 
@@ -210,7 +235,10 @@ export class DemoDetailComponent {
         openSettingsIfPermissionWasPreviouslyDenied: true
       })
       .then(result => {
-        const validDevices = deviceName === 'pushtracker' ? ['pushtracker', 'wristband'] : ['smartdrive'];
+        const validDevices =
+          deviceName === 'pushtracker'
+            ? ['pushtracker', 'wristband']
+            : ['smartdrive'];
         this._handleSerial(result.text, validDevices);
       })
       .catch(err => {
@@ -250,14 +278,18 @@ export class DemoDetailComponent {
           this._handleSerial(r.text, ['pushtracker', 'wristband']);
         } catch (err) {
           this._loggingService.logException(err);
-          dialogs.alert(`${r.text} is not a valid PushTracker or Wristband serial number!`);
+          dialogs.alert(
+            `${r.text} is not a valid PushTracker or Wristband serial number!`
+          );
         }
       });
   }
 
   onVersionTap() {
     this._zone.run(() => {
-      const connectedPTs = BluetoothService.PushTrackers.filter(pt => pt.connected);
+      const connectedPTs = BluetoothService.PushTrackers.filter(
+        pt => pt.connected
+      );
       if (connectedPTs.length > 1) {
         const pts = connectedPTs.map(pt => pt.address);
         dialogs
@@ -276,8 +308,12 @@ export class DemoDetailComponent {
 
             const pt = connectedPTs.filter(pt => pt.address === r)[0];
             this.demo.pt_version = PushTracker.versionByteToString(pt.version);
-            this.demo.mcu_version = PushTracker.versionByteToString(pt.mcu_version);
-            this.demo.ble_version = PushTracker.versionByteToString(pt.ble_version);
+            this.demo.mcu_version = PushTracker.versionByteToString(
+              pt.mcu_version
+            );
+            this.demo.ble_version = PushTracker.versionByteToString(
+              pt.ble_version
+            );
             this.demo.pt_mac_addr = pt.address;
           });
       } else if (connectedPTs.length === 1) {
@@ -308,7 +344,9 @@ export class DemoDetailComponent {
       if (isEnabled) {
         // if more than 750ms pass then show a toasty that location is being calculated...
         processTimeout = setTimeout(() => {
-          new Toasty(this._translateService.instant('demos.location-calculating')).show();
+          new Toasty(
+            this._translateService.instant('demos.location-calculating')
+          ).show();
         }, 750);
       }
 
@@ -320,7 +358,9 @@ export class DemoDetailComponent {
 
       // confirm with user if they want to update the demo location
       const result = await dialogs.confirm({
-        message: `${this._translateService.instant('demos.location-confirm-message')} ${loc.place_name}?`,
+        message: `${this._translateService.instant(
+          'demos.location-confirm-message'
+        )} ${loc.place_name}?`,
         okButtonText: this._translateService.instant('dialogs.yes'),
         neutralButtonText: this._translateService.instant('dialogs.no')
       });
@@ -423,7 +463,11 @@ export class DemoDetailComponent {
     }
 
     // check the type
-    if (forDevices && forDevices.length && forDevices.indexOf(deviceType) === -1) {
+    if (
+      forDevices &&
+      forDevices.length &&
+      forDevices.indexOf(deviceType) === -1
+    ) {
       const error = new Error('Wrong device scanned!');
       this._loggingService.logException(error);
       return;

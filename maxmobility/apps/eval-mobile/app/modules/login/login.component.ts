@@ -34,6 +34,7 @@ export class LoginComponent implements OnInit {
     private _translateService: TranslateService,
     private _zone: NgZone
   ) {
+    this._page.className = 'blue-gradient-down';
     preventKeyboardFromShowing();
   }
 

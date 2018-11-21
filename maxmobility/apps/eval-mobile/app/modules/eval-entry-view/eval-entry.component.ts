@@ -6,6 +6,7 @@ import { RouterExtensions } from 'nativescript-angular/router';
 import { DropDown } from 'nativescript-drop-down';
 import { isAndroid, isIOS } from 'tns-core-modules/platform';
 import { confirm } from 'tns-core-modules/ui/dialogs';
+import { Page } from 'tns-core-modules/ui/page';
 
 @Component({
   selector: 'EvalEntry',
@@ -30,11 +31,13 @@ export class EvalEntryComponent {
   evaluation: Evaluation;
 
   constructor(
+    private _page: Page,
     private routerExtensions: RouterExtensions,
     private _evaluationService: EvaluationService,
     private _translateService: TranslateService
   ) {
     console.log('Eval-Entry.component Constructor ***');
+    this._page.className = 'blue-gradient-down';
     // set the eval to the eval on the service
     this.evaluation = this._evaluationService.evaluation;
     console.log('this.evaluation', this.evaluation);
@@ -45,7 +48,9 @@ export class EvalEntryComponent {
       setTimeout(() => {
         console.log('the evaluation is not complete');
         confirm({
-          message: this._translateService.instant('evals.incomplete-dialog.message'),
+          message: this._translateService.instant(
+            'evals.incomplete-dialog.message'
+          ),
           okButtonText: this._translateService.instant('dialogs.yes'),
           cancelButtonText: this._translateService.instant('dialogs.no')
         }).then(result => {
@@ -53,30 +58,42 @@ export class EvalEntryComponent {
           if (result === true) {
             console.log('need to load the last data set on the evaluation...');
             console.log(this.evaluation);
-            console.log('evalService.evaluation', this._evaluationService.evaluation);
+            console.log(
+              'evalService.evaluation',
+              this._evaluationService.evaluation
+            );
             this.evaluation = this._evaluationService.evaluation;
             // we have the data on the `evaluation` on the service so just let it load
             // we have to check the toggles bc we have props here that set them false when the component loads ^^^
-            this.hasPushingFatigue = this.evaluation.pushing_fatigue ? true : false;
+            this.hasPushingFatigue = this.evaluation.pushing_fatigue
+              ? true
+              : false;
             this.hasPushingPain = this.evaluation.pushing_pain ? true : false;
-            this.impactsIndependence = this.evaluation.impact_on_independence ? true : false;
+            this.impactsIndependence = this.evaluation.impact_on_independence
+              ? true
+              : false;
 
             // map the years string value to the dropdown UI Index value using indexOf
             const yearIndex = this.years.indexOf(this.evaluation.years);
             if (yearIndex !== -1) {
-              (this.yearDropdown.nativeElement as DropDown).selectedIndex = yearIndex;
+              (this.yearDropdown
+                .nativeElement as DropDown).selectedIndex = yearIndex;
             }
 
             // map the chair string value to the dropdown UI Index value using indexOf
             const chairIndex = this.chair.indexOf(this.evaluation.chair);
             if (chairIndex !== -1) {
-              (this.chairDropdown.nativeElement as DropDown).selectedIndex = chairIndex;
+              (this.chairDropdown
+                .nativeElement as DropDown).selectedIndex = chairIndex;
             }
 
             // map the chair type string value to the dropdown UI Index value using indexOf
-            const chairTypeIndex = this.chairType.indexOf(this.evaluation.chairType);
+            const chairTypeIndex = this.chairType.indexOf(
+              this.evaluation.chairType
+            );
             if (chairTypeIndex !== -1) {
-              (this.chairTypeDropdown.nativeElement as DropDown).selectedIndex = chairTypeIndex;
+              (this.chairTypeDropdown
+                .nativeElement as DropDown).selectedIndex = chairTypeIndex;
             }
           } else {
             console.log('creating new Evaluation object');
