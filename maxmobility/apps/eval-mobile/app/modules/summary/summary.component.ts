@@ -196,6 +196,13 @@ export class SummaryComponent {
         }
         return str;
       },
+      round: function() {
+        let str = this.toFixed(0);
+        if (!str.length) {
+          str = '0';
+        }
+        return str;
+      },
       toTimeString: function() {
         return Trial.timeToString(this * 60);
       },

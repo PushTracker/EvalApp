@@ -303,6 +303,13 @@ export class EvalsComponent implements OnInit {
         }
         return str;
       },
+      round: function() {
+        let str = this.toFixed(0);
+        if (!str.length) {
+          str = '0';
+        }
+        return str;
+      },
       // tslint:disable-next-line:object-literal-shorthand
       toTimeString: function() {
         return Trial.timeToString(this * 60);
