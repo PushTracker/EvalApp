@@ -486,7 +486,7 @@ export class DemoDetailComponent {
     }
   }
 
-  private async takePictureAndCrop() {
+  private takePictureAndCrop() {
     try {
       // check if device has camera
       if (!camera.isAvailable()) {
@@ -495,40 +495,43 @@ export class DemoDetailComponent {
       }
 
       // request camera permissions
-      console.log('checking permissions');
-      await camera.requestPermissions().catch(error => {
-        console.log('Permission denied for camera.');
-        let msg: string;
-        if (isIOS) {
-          msg = `Smart Evaluation app does not have permission to open your camera.
+      console.log('Checking permissions for camera access');
+      camera
+        .requestPermissions()
+        .then(async () => {
+          const imageAsset = (await camera.takePicture({
+            width: 256,
+            height: 256,
+            keepAspectRatio: true,
+            cameraFacing: 'rear'
+          })) as ImageAsset;
+
+          const source = new ImageSource();
+          console.log(`Creating ImageSource from the imageAsset ${imageAsset}`);
+          const iSrc = await source.fromAsset(imageAsset);
+
+          console.log('Showing ImageCropper.');
+          const result = (await this._imageCropper.show(iSrc, {
+            width: 256,
+            height: 256,
+            lockSquare: true
+          })) as ImageCropperResult;
+
+          return result;
+        })
+        .catch(error => {
+          console.log('Permission denied for camera.');
+          let msg: string;
+          if (isIOS) {
+            msg = `Smart Evaluation app does not have permission to open your camera.
           Please go to settings and enable the camera permission.`;
-        } else {
-          msg = `Smart Evaluation app needs the Camera permission to open the camera.`;
-        }
+          } else {
+            msg = `Smart Evaluation app needs the Camera permission to open the camera.`;
+          }
 
-        dialogs.alert({ message: msg, okButtonText: 'Okay' });
-        return null;
-      });
-
-      const imageAsset = (await camera.takePicture({
-        width: 256,
-        height: 256,
-        keepAspectRatio: true,
-        cameraFacing: 'rear'
-      })) as ImageAsset;
-
-      const source = new ImageSource();
-      console.log(`Creating ImageSource from the imageAsset ${imageAsset}`);
-      const iSrc = await source.fromAsset(imageAsset);
-
-      console.log('Showing ImageCropper.');
-      const result = (await this._imageCropper.show(iSrc, {
-        width: 256,
-        height: 256,
-        lockSquare: true
-      })) as ImageCropperResult;
-
-      return result;
+          dialogs.alert({ message: msg, okButtonText: 'Okay' });
+          return null;
+        });
     } catch (error) {
       console.log('error in takePictureAndCrop', error);
       this._loggingService.logException(error);
