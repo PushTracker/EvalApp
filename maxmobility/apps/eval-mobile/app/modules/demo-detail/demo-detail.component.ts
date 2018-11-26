@@ -33,6 +33,7 @@ import { setTimeout } from 'tns-core-modules/timer';
 import { View } from 'tns-core-modules/ui/core/view';
 import * as dialogs from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
+import * as utils from 'tns-core-modules/utils/utils';
 
 @Component({
   selector: 'Demo',
@@ -521,15 +522,41 @@ export class DemoDetailComponent {
         })
         .catch(error => {
           console.log('Permission denied for camera.');
-          let msg: string;
           if (isIOS) {
-            msg = `Smart Evaluation app does not have permission to open your camera.
-          Please go to settings and enable the camera permission.`;
+            dialogs
+              .confirm({
+                title: this._translateService.instant(
+                  'general.camera-permission'
+                ),
+                message: this._translateService.instant(
+                  'general.no-camera-permission-ios-confirm'
+                ),
+                okButtonText: this._translateService.instant('dialogs.yes'),
+                cancelButtonText: this._translateService.instant(
+                  'dialogs.cancel'
+                )
+              })
+              .then(result => {
+                if (result) {
+                  utils.ios
+                    .getter(UIApplication, UIApplication.sharedApplication)
+                    .openURL(
+                      NSURL.URLWithString(UIApplicationOpenSettingsURLString)
+                    );
+                }
+              });
           } else {
-            msg = `Smart Evaluation app needs the Camera permission to open the camera.`;
+            dialogs.alert({
+              title: this._translateService.instant(
+                'general.camera-permission'
+              ),
+              message: this._translateService.instant(
+                'general.no-camera-permission-android'
+              ),
+              okButtonText: this._translateService.instant('dialogs.ok')
+            });
           }
 
-          dialogs.alert({ message: msg, okButtonText: 'Okay' });
           return null;
         });
     } catch (error) {
