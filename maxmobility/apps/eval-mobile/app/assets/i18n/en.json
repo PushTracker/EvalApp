@@ -265,7 +265,7 @@
   "general": {
     "title": "Smart Evaluation",
     "demo": "Demo",
-    "no-connection": "You might have lost your internet connection. Smart Evaluation works best when connected to the internet to ensure latest data is in sync with the servers.", 
+    "no-connection": "You might have lost your internet connection. Smart Evaluation works best when connected to the internet to ensure latest data is in sync with the servers.",
     "version": "Version",
     "submit": "Submit",
     "tip": "Tip",
@@ -284,7 +284,9 @@
     "save": "Save",
     "update": "Update",
     "profile": "Profile",
-    "heading": "Sketch key points for the following:"
+    "camera-permission": "Camera Permission",
+    "no-camera-permission-ios-confirm": "Smart Evaluation does not have permission to open your camera. Do you want to open the app settings to enable the camera?",
+    "no-camera-permission-android": "Smart Evaluation does not have permission to open your camera. You can enable camera permission under the application in Settings on your device."
   },
   "demos": {
     "demos-title": "Demos",
