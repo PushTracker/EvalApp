@@ -53,6 +53,8 @@
 		<string>This application needs to access your calendar events.</string>
 		<key>NSCameraUsageDescription</key>
 		<string>Smart Evaluation uses your camera to take pictures of SmartDrives, PushTrackers, etc.</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>Smart Evaluation uses your photo library so you can select pictures to upload for SmartDrives, PushTrackers, etc.</string>
 		<key>NSAppTransportSecurity</key>
 		<dict>
 			<key>NSAllowsArbitraryLoads</key>
