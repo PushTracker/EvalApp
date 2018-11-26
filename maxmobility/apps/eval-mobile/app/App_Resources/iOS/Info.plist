@@ -51,6 +51,8 @@
 		<false/>
 		<key>NSCalendarsUsageDescription</key>
 		<string>This application needs to access your calendar events.</string>
+		<key>NSCameraUsageDescription</key>
+		<string>Smart Evaluation uses your camera to take pictures of SmartDrives, PushTrackers, etc.</string>
 		<key>NSAppTransportSecurity</key>
 		<dict>
 			<key>NSAllowsArbitraryLoads</key>
