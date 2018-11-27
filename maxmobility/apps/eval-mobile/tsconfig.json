@@ -14,7 +14,8 @@
             "es2017",
             "dom",
             "webworker",
-            "es6"
+            "es6",
+            "es2015.iterable"
         ],
         "baseUrl": ".",
         "paths": {
