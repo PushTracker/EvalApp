@@ -18,6 +18,7 @@ android {
   }
   project.ext {
     googlePlayServicesVersion = "15.0.+"
-    firebaseMessagingVersion = "11.6.+"
+    firebaseMessagingVersion = "15.0.+"
+    supportVersion = "28.+"
   }
 } 
