@@ -4,7 +4,7 @@
   </ActionItem>
 </ActionBar>
 
-<StackLayout tkMainContent>
+<StackLayout>
   <ScrollView class="main-scroll-view">
     <GridLayout rows="auto, auto, auto, auto, auto, auto" columns="*">
       //Connectivity
@@ -376,6 +376,8 @@
           text="&#xf450;"
           class="mdi refresh-btn"
           ios:borderRadius="4"
+          android:height="34"
+          android:width="34"
           *ngIf="demoUnitsLoaded"
           (tap)="loadDemoUnits()"
         ></button>

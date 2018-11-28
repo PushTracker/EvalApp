@@ -2,7 +2,7 @@
   <NavigationButton *ngIf="isIOS()"></NavigationButton>
 </ActionBar>
 
-<GridLayout tkMainContent>
+<GridLayout iosOverflowSafeArea="true">
   <Carousel
     #carousel
     ios:indicatorOffset="0,-10"
