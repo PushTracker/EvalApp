@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  AfterViewInit,
+  NgZone,
+  ChangeDetectorRef
+} from '@angular/core';
 import { Demo, User } from '@maxmobility/core';
 import {
   DemoService,
@@ -26,7 +32,7 @@ import { Page } from 'tns-core-modules/ui/page';
   templateUrl: './demos.component.html',
   styleUrls: ['./demos.component.css']
 })
-export class DemosComponent implements OnInit {
+export class DemosComponent implements OnInit, AfterViewInit {
   get Demos(): ObservableArray<Demo> {
     return DemoService.Demos;
   }
@@ -49,7 +55,8 @@ export class DemosComponent implements OnInit {
     private _firmwareService: FirmwareService,
     private _logService: LoggingService,
     private _translateService: TranslateService,
-    private _userService: UserService
+    private _userService: UserService,
+    private _cd: ChangeDetectorRef
   ) {
     this._page.className = 'blue-gradient-down';
   }
@@ -64,8 +71,12 @@ export class DemosComponent implements OnInit {
     this.userType = (activeUser.data as User).type as number;
     this.currentUserId = activeUser._id;
     console.log('userType', this.userType);
+  }
 
-    this.loadDemoUnits();
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.loadDemoUnits();
+    }, 400);
   }
 
   isIOS(): boolean {
