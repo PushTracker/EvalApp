@@ -1,5 +1,6 @@
 // Add your native dependencies here:
 dependencies {
+  compile "com.google.android.gms:play-services-location:12.0.1"
 }
 
 repositories {
@@ -17,8 +18,8 @@ android {
     additionalParameters "--no-version-vectors"  
   }
   project.ext {
-    googlePlayServicesVersion = "15.0.+"
-    firebaseMessagingVersion = "15.0.+"
+    googlePlayServicesVersion = "12.0.1"
+    firebaseMessagingVersion = "12.0.1"
     supportVersion = "28.+"
   }
 } 
