@@ -57,7 +57,7 @@
     "email-validator": "~2.0.4",
     "kinvey-nativescript-sdk": "~3.12.3",
     "mustache": "~2.3.0",
-    "nativescript-angular": "~7.0.1",
+    "nativescript-angular": "~7.0.2",
     "nativescript-barcodescanner": "~2.7.9",
     "nativescript-bluetooth": "file:../../nativescript-bluetooth",
     "nativescript-camera": "~4.0.3",
@@ -87,7 +87,7 @@
     "nativescript-youtubeplayer": "~3.0.1",
     "reflect-metadata": "^0.1.12",
     "rxjs": "^6.2.2",
-    "tns-core-modules": "^5.0.3",
+    "tns-core-modules": "^5.0.5",
     "underscore": "^1.9.1",
     "zone.js": "^0.8.26"
   },
