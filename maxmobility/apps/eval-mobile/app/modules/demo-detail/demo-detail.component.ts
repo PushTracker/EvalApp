@@ -31,7 +31,7 @@ import {
 import { isIOS } from 'tns-core-modules/platform';
 import { setTimeout } from 'tns-core-modules/timer';
 import { View } from 'tns-core-modules/ui/core/view';
-import * as dialogs from 'tns-core-modules/ui/dialogs';
+import { alert, confirm, prompt } from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
 import * as utils from 'tns-core-modules/utils/utils';
 
@@ -171,7 +171,7 @@ export class DemoDetailComponent {
   async onSave() {
     try {
       if (!this.haveSerial()) {
-        dialogs.alert('You must enter a SmartDrive serial number!');
+        alert('You must enter a SmartDrive serial number!');
         return;
       }
 
@@ -246,41 +246,37 @@ export class DemoDetailComponent {
   }
 
   onEditSD() {
-    dialogs
-      .prompt({
-        title: 'Enter Serial Number',
-        message: 'Please enter SmartDrive Serial Number',
-        okButtonText: 'Save',
-        cancelButtonText: 'Cancel'
-      })
-      .then(r => {
-        try {
-          this._handleSerial(r.text, ['smartdrive']);
-        } catch (err) {
-          this._loggingService.logException(err);
-          dialogs.alert(`${r.text} is not a valid SmartDrive serial number!`);
-        }
-      });
+    prompt({
+      title: 'Enter Serial Number',
+      message: 'Please enter SmartDrive Serial Number',
+      okButtonText: 'Save',
+      cancelButtonText: 'Cancel'
+    }).then(r => {
+      try {
+        this._handleSerial(r.text, ['smartdrive']);
+      } catch (err) {
+        this._loggingService.logException(err);
+        alert(`${r.text} is not a valid SmartDrive serial number!`);
+      }
+    });
   }
 
   onEditPT() {
-    dialogs
-      .prompt({
-        title: 'Enter Serial Number',
-        message: 'Please enter PushTracker or Wristband Serial Number',
-        okButtonText: 'Save',
-        cancelButtonText: 'Cancel'
-      })
-      .then(r => {
-        try {
-          this._handleSerial(r.text, ['pushtracker', 'wristband']);
-        } catch (err) {
-          this._loggingService.logException(err);
-          dialogs.alert(
-            `${r.text} is not a valid PushTracker or Wristband serial number!`
-          );
-        }
-      });
+    prompt({
+      title: 'Enter Serial Number',
+      message: 'Please enter PushTracker or Wristband Serial Number',
+      okButtonText: 'Save',
+      cancelButtonText: 'Cancel'
+    }).then(r => {
+      try {
+        this._handleSerial(r.text, ['pushtracker', 'wristband']);
+      } catch (err) {
+        this._loggingService.logException(err);
+        alert(
+          `${r.text} is not a valid PushTracker or Wristband serial number!`
+        );
+      }
+    });
   }
 
   onVersionTap() {
@@ -290,30 +286,28 @@ export class DemoDetailComponent {
       );
       if (connectedPTs.length > 1) {
         const pts = connectedPTs.map(pt => pt.address);
-        dialogs
-          .action({
-            message:
-              'Select PushTracker' + this.demo.pushtracker_serial_number.length
-                ? ` ${this.demo.pushtracker_serial_number}`
-                : '',
-            cancelButtonText: 'Cancel',
-            actions: pts
-          })
-          .then(r => {
-            if (r.indexOf('Cancel') > -1) {
-              return;
-            }
+        action({
+          message:
+            'Select PushTracker' + this.demo.pushtracker_serial_number.length
+              ? ` ${this.demo.pushtracker_serial_number}`
+              : '',
+          cancelButtonText: 'Cancel',
+          actions: pts
+        }).then(r => {
+          if (r.indexOf('Cancel') > -1) {
+            return;
+          }
 
-            const pt = connectedPTs.filter(pt => pt.address === r)[0];
-            this.demo.pt_version = PushTracker.versionByteToString(pt.version);
-            this.demo.mcu_version = PushTracker.versionByteToString(
-              pt.mcu_version
-            );
-            this.demo.ble_version = PushTracker.versionByteToString(
-              pt.ble_version
-            );
-            this.demo.pt_mac_addr = pt.address;
-          });
+          const pt = connectedPTs.filter(pt => pt.address === r)[0];
+          this.demo.pt_version = PushTracker.versionByteToString(pt.version);
+          this.demo.mcu_version = PushTracker.versionByteToString(
+            pt.mcu_version
+          );
+          this.demo.ble_version = PushTracker.versionByteToString(
+            pt.ble_version
+          );
+          this.demo.pt_mac_addr = pt.address;
+        });
       } else if (connectedPTs.length === 1) {
         const pt = connectedPTs[0];
         this.demo.pt_version = PushTracker.versionByteToString(pt.version);
@@ -355,7 +349,7 @@ export class DemoDetailComponent {
       console.log('current location', loc);
 
       // confirm with user if they want to update the demo location
-      const result = await dialogs.confirm({
+      const result = await confirm({
         message: `${this._translateService.instant(
           'demos.location-confirm-message'
         )} ${loc.place_name}?`,
@@ -378,17 +372,15 @@ export class DemoDetailComponent {
   }
 
   onSDRowTapped() {
-    dialogs
-      .confirm({
-        title: 'Transfer ' + this.demo.smartdrive_serial_number,
-        message: 'Would you like to transfer to ' + this.demo.location,
-        okButtonText: 'Transfer',
-        cancelButtonText: 'Cancel'
-      })
-      .then(result => {
-        // result argument is boolean
-        console.log('Dialog result: ' + result);
-      });
+    confirm({
+      title: 'Transfer ' + this.demo.smartdrive_serial_number,
+      message: 'Would you like to transfer to ' + this.demo.location,
+      okButtonText: 'Transfer',
+      cancelButtonText: 'Cancel'
+    }).then(result => {
+      // result argument is boolean
+      console.log('Dialog result: ' + result);
+    });
   }
 
   /**
@@ -523,30 +515,28 @@ export class DemoDetailComponent {
           async error => {
             console.log('Permission denied for camera.', error);
             if (isIOS) {
-              dialogs
-                .confirm({
-                  title: this._translateService.instant(
-                    'general.camera-permission'
-                  ),
-                  message: this._translateService.instant(
-                    'general.no-camera-permission-ios-confirm'
-                  ),
-                  okButtonText: this._translateService.instant('dialogs.yes'),
-                  cancelButtonText: this._translateService.instant(
-                    'dialogs.cancel'
-                  )
-                })
-                .then(result => {
-                  if (result) {
-                    utils.ios
-                      .getter(UIApplication, UIApplication.sharedApplication)
-                      .openURL(
-                        NSURL.URLWithString(UIApplicationOpenSettingsURLString)
-                      );
-                  }
-                });
+              confirm({
+                title: this._translateService.instant(
+                  'general.camera-permission'
+                ),
+                message: this._translateService.instant(
+                  'general.no-camera-permission-ios-confirm'
+                ),
+                okButtonText: this._translateService.instant('dialogs.yes'),
+                cancelButtonText: this._translateService.instant(
+                  'dialogs.cancel'
+                )
+              }).then(result => {
+                if (result) {
+                  utils.ios
+                    .getter(UIApplication, UIApplication.sharedApplication)
+                    .openURL(
+                      NSURL.URLWithString(UIApplicationOpenSettingsURLString)
+                    );
+                }
+              });
             } else {
-              dialogs.alert({
+              alert({
                 title: this._translateService.instant(
                   'general.camera-permission'
                 ),

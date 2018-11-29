@@ -11,16 +11,23 @@ import {
   SelectedIndexChangedEventData
 } from 'nativescript-drop-down';
 import * as email from 'nativescript-email';
-import { ImageCropper } from 'nativescript-imagecropper';
+import {
+  ImageCropper,
+  Result as ImageCropperResult
+} from 'nativescript-imagecropper';
 import * as LS from 'nativescript-localstorage';
 import { ToastDuration, ToastPosition, Toasty } from 'nativescript-toasty';
 import { Subscription } from 'rxjs';
 import * as http from 'tns-core-modules/http';
-import * as imageSource from 'tns-core-modules/image-source';
+import {
+  fromBase64,
+  ImageSource
+} from 'tns-core-modules/image-source/image-source';
 import { isIOS } from 'tns-core-modules/platform';
 import { alert, confirm, prompt } from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
 import { KinveyKeys } from '~/kinvey-keys';
+import * as utils from 'tns-core-modules/utils/utils';
 
 @Component({
   selector: 'Account',
@@ -132,7 +139,7 @@ export class AccountComponent implements OnInit {
     (this.user.data as User).type = type;
   }
 
-  saveProfilePicture(source: imageSource.ImageSource) {
+  saveProfilePicture(source: ImageSource) {
     try {
       const b64 = source.toBase64String('png');
       LS.setItem(this.profileImageKey, b64);
@@ -147,7 +154,7 @@ export class AccountComponent implements OnInit {
     try {
       const pic = LS.getItem(this.profileImageKey);
       if (pic) {
-        const source = imageSource.fromBase64(pic);
+        const source = fromBase64(pic);
         (this.user.data as any).profile_picture = source;
       } else {
         (this.user.data as any).profile_picture = undefined;
@@ -159,47 +166,100 @@ export class AccountComponent implements OnInit {
 
   async onUpdateProfilePictureTap() {
     try {
-      if (!camera.isAvailable()) {
-        console.log('Camera not available on device.');
-        return;
-      }
-
-      await camera.requestPermissions().catch(error => {
-        console.log('Permission denied for camera.');
-        let msg: string;
-        if (isIOS) {
-          msg = `Smart Evaluation app does not have permission to open your camera.
-          Please go to settings and enable the camera permission.`;
-        } else {
-          msg = `Smart Evaluation app needs the Camera permission to open the camera.`;
-        }
-
-        alert({ message: msg, okButtonText: 'Okay' });
-        return null;
-      });
-
-      console.log('Updating profile picture!');
-
-      const imageAsset = await camera.takePicture({
-        width: 500,
-        height: 500,
-        keepAspectRatio: true,
-        cameraFacing: 'front'
-      });
-
-      const iSrc = await imageSource.fromAsset(imageAsset);
-
-      const result = await this.imageCropper.show(iSrc, {
-        height: 256,
-        width: 256,
-        lockSquare: true
-      });
-
+      const result = await this.takePictureAndCrop();
       if (result && result.image !== null) {
+        console.log('ImageCropper return cropped image.');
         this.saveProfilePicture(result.image);
+      } else {
+        console.log('No result returned from the image cropper.');
       }
     } catch (error) {
       this._loggingService.logException(error);
+    }
+  }
+
+  private takePictureAndCrop() {
+    try {
+      // check if device has camera
+      if (!camera.isAvailable()) {
+        console.log('No camera available on device.');
+        return null;
+      }
+
+      // request camera permissions
+      console.log('Checking permissions for camera access');
+      return camera
+        .requestPermissions()
+        .then(
+          async () => {
+            const imageAsset = (await camera.takePicture({
+              width: 500,
+              height: 500,
+              keepAspectRatio: true,
+              cameraFacing: 'front'
+            })) as ImageAsset;
+
+            const source = new ImageSource();
+            console.log(
+              `Creating ImageSource from the imageAsset ${imageAsset}`
+            );
+            const iSrc = await source.fromAsset(imageAsset);
+
+            console.log('Showing ImageCropper.');
+            const result = (await this.imageCropper.show(iSrc, {
+              width: 256,
+              height: 256,
+              lockSquare: true
+            })) as ImageCropperResult;
+
+            return result;
+          },
+          async error => {
+            console.log('Permission denied for camera.', error);
+            if (isIOS) {
+              confirm({
+                title: this._translateService.instant(
+                  'general.camera-permission'
+                ),
+                message: this._translateService.instant(
+                  'general.no-camera-permission-ios-confirm'
+                ),
+                okButtonText: this._translateService.instant('dialogs.yes'),
+                cancelButtonText: this._translateService.instant(
+                  'dialogs.cancel'
+                )
+              }).then(result => {
+                if (result) {
+                  utils.ios
+                    .getter(UIApplication, UIApplication.sharedApplication)
+                    .openURL(
+                      NSURL.URLWithString(UIApplicationOpenSettingsURLString)
+                    );
+                }
+              });
+            } else {
+              alert({
+                title: this._translateService.instant(
+                  'general.camera-permission'
+                ),
+                message: this._translateService.instant(
+                  'general.no-camera-permission-android'
+                ),
+                okButtonText: this._translateService.instant('dialogs.ok')
+              });
+            }
+
+            return null;
+          }
+        )
+        .catch(error => {
+          // this should only happen if the user cancels the image capture
+          return null;
+        });
+    } catch (error) {
+      console.log('error in takePictureAndCrop', error);
+      this._loggingService.logException(error);
+      return null;
     }
   }
 
