@@ -156,9 +156,6 @@ export class DemoDetailComponent {
         }
       } else {
         console.log('No result returned from the image cropper.');
-        this._loggingService.logBreadCrumb(
-          'No result returned from the image cropper.'
-        );
       }
     } catch (error) {
       this._loggingService.logException(error);
@@ -499,64 +496,72 @@ export class DemoDetailComponent {
       console.log('Checking permissions for camera access');
       return camera
         .requestPermissions()
-        .then(async () => {
-          const imageAsset = (await camera.takePicture({
-            width: 256,
-            height: 256,
-            keepAspectRatio: true,
-            cameraFacing: 'rear'
-          })) as ImageAsset;
+        .then(
+          async () => {
+            const imageAsset = (await camera.takePicture({
+              width: 256,
+              height: 256,
+              keepAspectRatio: true,
+              cameraFacing: 'rear'
+            })) as ImageAsset;
 
-          const source = new ImageSource();
-          console.log(`Creating ImageSource from the imageAsset ${imageAsset}`);
-          const iSrc = await source.fromAsset(imageAsset);
+            const source = new ImageSource();
+            console.log(
+              `Creating ImageSource from the imageAsset ${imageAsset}`
+            );
+            const iSrc = await source.fromAsset(imageAsset);
 
-          console.log('Showing ImageCropper.');
-          const result = (await this._imageCropper.show(iSrc, {
-            width: 256,
-            height: 256,
-            lockSquare: true
-          })) as ImageCropperResult;
+            console.log('Showing ImageCropper.');
+            const result = (await this._imageCropper.show(iSrc, {
+              width: 256,
+              height: 256,
+              lockSquare: true
+            })) as ImageCropperResult;
 
-          return result;
-        })
-        .catch(error => {
-          console.log('Permission denied for camera.');
-          if (isIOS) {
-            dialogs
-              .confirm({
+            return result;
+          },
+          async error => {
+            console.log('Permission denied for camera.', error);
+            if (isIOS) {
+              dialogs
+                .confirm({
+                  title: this._translateService.instant(
+                    'general.camera-permission'
+                  ),
+                  message: this._translateService.instant(
+                    'general.no-camera-permission-ios-confirm'
+                  ),
+                  okButtonText: this._translateService.instant('dialogs.yes'),
+                  cancelButtonText: this._translateService.instant(
+                    'dialogs.cancel'
+                  )
+                })
+                .then(result => {
+                  if (result) {
+                    utils.ios
+                      .getter(UIApplication, UIApplication.sharedApplication)
+                      .openURL(
+                        NSURL.URLWithString(UIApplicationOpenSettingsURLString)
+                      );
+                  }
+                });
+            } else {
+              dialogs.alert({
                 title: this._translateService.instant(
                   'general.camera-permission'
                 ),
                 message: this._translateService.instant(
-                  'general.no-camera-permission-ios-confirm'
+                  'general.no-camera-permission-android'
                 ),
-                okButtonText: this._translateService.instant('dialogs.yes'),
-                cancelButtonText: this._translateService.instant(
-                  'dialogs.cancel'
-                )
-              })
-              .then(result => {
-                if (result) {
-                  utils.ios
-                    .getter(UIApplication, UIApplication.sharedApplication)
-                    .openURL(
-                      NSURL.URLWithString(UIApplicationOpenSettingsURLString)
-                    );
-                }
+                okButtonText: this._translateService.instant('dialogs.ok')
               });
-          } else {
-            dialogs.alert({
-              title: this._translateService.instant(
-                'general.camera-permission'
-              ),
-              message: this._translateService.instant(
-                'general.no-camera-permission-android'
-              ),
-              okButtonText: this._translateService.instant('dialogs.ok')
-            });
-          }
+            }
 
+            return null;
+          }
+        )
+        .catch(error => {
+          // this should only happen if the user cancels the image capture
           return null;
         });
     } catch (error) {
