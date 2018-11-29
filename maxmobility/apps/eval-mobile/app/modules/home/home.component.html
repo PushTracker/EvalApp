@@ -1,11 +1,8 @@
-<ActionBar class="action-bar" flat="true" [title]="'menu.home' | translate">
+<MaxActionBar [title]="'menu.home' | translate" allowNav="false">
   <ActionItem ios.position="right" (tap)="onDrawerButtonTap()">
     <label text="&#xf2be;" class="account-icon fa"></label>
   </ActionItem>
-  <ActionItem ios.position="right" (tap)="onPTConnTap()">
-    <Image class="pt-status" src="~/assets/images/pt-conn-red.png"></Image>
-  </ActionItem>
-</ActionBar>
+</MaxActionBar>
 
 <StackLayout>
   <ScrollView class="main-scroll-view">

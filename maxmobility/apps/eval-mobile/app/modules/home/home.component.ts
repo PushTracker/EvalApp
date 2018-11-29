@@ -142,8 +142,6 @@ export class HomeComponent {
     return DemoService.Demos;
   }
 
-  onPTConnTap(): void {}
-
   onDrawerButtonTap(): void {
     this._routerExtensions.navigate(['/account'], {
       transition: {

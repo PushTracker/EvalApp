@@ -17,6 +17,7 @@ import { CoreModule } from './modules/core/core.module';
 import { SharedModule } from './modules/shared/shared.module';
 import { PrivacyPolicyComponent } from './privacy-policy';
 import { TNSTranslateLoader } from './utils';
+import { ActionbarComponent } from './components/actionbar/actionbar.component';
 
 // https://github.com/danielgek/nativescript-sentry/issues/7
 import * as Raven from 'raven-js';
@@ -30,6 +31,7 @@ export function createTranslateLoader() {
 @NgModule({
   bootstrap: [AppComponent],
   entryComponents: [PrivacyPolicyComponent],
+  exports: [ActionbarComponent],
   imports: [
     NativeScriptCommonModule,
     NativeScriptModule,
@@ -43,7 +45,8 @@ export function createTranslateLoader() {
     DropDownModule,
     YoutubePlayerModule,
     SentryModule.forRoot({
-      dsn: 'https://aaa25eb556fa476a92e0edea6dd57af6:65c984b9260e47f0bb128def7eddd5f4@sentry.io/306438'
+      dsn:
+        'https://aaa25eb556fa476a92e0edea6dd57af6:65c984b9260e47f0bb128def7eddd5f4@sentry.io/306438'
     }),
     TranslateModule.forRoot({
       loader: {
@@ -52,7 +55,7 @@ export function createTranslateLoader() {
       }
     })
   ],
-  declarations: [AppComponent, PrivacyPolicyComponent],
+  declarations: [AppComponent, ActionbarComponent, PrivacyPolicyComponent],
   providers: [...CORE_PROVIDERS, ModalDialogService],
   schemas: [NO_ERRORS_SCHEMA]
 })

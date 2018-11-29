@@ -1,0 +1,7 @@
+<ActionBar class="action-bar" flat="true" [title]="title">
+  <NavigationButton *ngIf="allowNav" android:visibility="collapse"></NavigationButton>
+  <ng-content></ng-content>
+  <ActionItem ios.position="right" (tap)="onPTConnTap()">
+    <Image class="pt-status" src="~/assets/images/pt-conn-red.png"></Image>
+  </ActionItem>
+</ActionBar>
