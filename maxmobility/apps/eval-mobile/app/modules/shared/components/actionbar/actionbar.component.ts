@@ -1,14 +1,10 @@
 import { Component, Input, NgZone } from '@angular/core';
 
-import { ActionBar, ActionItem } from 'ui/action-bar';
+import { ActionBar } from 'ui/action-bar';
 
 import { BluetoothService } from '@maxmobility/mobile';
 
-import { NavigationStart, NavigationEnd, Router } from '@angular/router';
-import { Page } from 'tns-core-modules/ui/page';
-import { Subscription } from 'rxjs';
-
-import { Observable, fromObject } from 'tns-core-modules/data/observable';
+import { Observable } from 'tns-core-modules/data/observable';
 
 @Component({
   selector: 'MaxActionBar',
@@ -22,13 +18,7 @@ export class ActionbarComponent extends ActionBar {
 
   status = BluetoothService.pushTrackerStatus;
 
-  private routeSub: Subscription; // subscription to route observer
-
-  constructor(
-    private _page: Page,
-    private _router: Router,
-    private _zone: NgZone
-  ) {
+  constructor(private _zone: NgZone) {
     super();
     this.onPushTrackerStateChange(null);
     this.register();
