@@ -17,7 +17,6 @@ import { CoreModule } from './modules/core/core.module';
 import { SharedModule } from './modules/shared/shared.module';
 import { PrivacyPolicyComponent } from './privacy-policy';
 import { TNSTranslateLoader } from './utils';
-import { ActionbarComponent } from './components/actionbar/actionbar.component';
 
 // https://github.com/danielgek/nativescript-sentry/issues/7
 import * as Raven from 'raven-js';
@@ -31,7 +30,6 @@ export function createTranslateLoader() {
 @NgModule({
   bootstrap: [AppComponent],
   entryComponents: [PrivacyPolicyComponent],
-  exports: [ActionbarComponent],
   imports: [
     NativeScriptCommonModule,
     NativeScriptModule,
@@ -55,7 +53,7 @@ export function createTranslateLoader() {
       }
     })
   ],
-  declarations: [AppComponent, ActionbarComponent, PrivacyPolicyComponent],
+  declarations: [AppComponent, PrivacyPolicyComponent],
   providers: [...CORE_PROVIDERS, ModalDialogService],
   schemas: [NO_ERRORS_SCHEMA]
 })

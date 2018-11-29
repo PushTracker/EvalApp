@@ -2,7 +2,11 @@
   <NavigationButton *ngIf="allowNav" android:visibility="collapse"></NavigationButton>
   <ng-content></ng-content>
   <ActionItem ios.position="right" (tap)="onPTConnTap()">
-    <Image class="pt-status" src="~/assets/images/pt-conn-red.png"></Image>
+    <Image [visibility]="status==0 ? 'visible':'collapse'" class="pt-status" src="~/assets/images/pt-conn-red.png"></Image>
+    <Image [visibility]="status==1 ? 'visible':'collapse'" class="pt-status" src="~/assets/images/pt-conn-grey.png"></Image>
+    <Image [visibility]="status==2 ? 'visible':'collapse'" class="pt-status" src="~/assets/images/pt-conn-grey.png"></Image>
+    <Image [visibility]="status==3 ? 'visible':'collapse'" class="pt-status" src="~/assets/images/pt-conn-yellow.png"></Image>
+    <Image [visibility]="status==4 ? 'visible':'collapse'" class="pt-status" src="~/assets/images/pt-conn-green.png"></Image>
   </ActionItem>
   <ActionItem ios.position="right">
 	<label text="" padding="5"></label>

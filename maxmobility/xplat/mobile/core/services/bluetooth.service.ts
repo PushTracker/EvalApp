@@ -1,13 +1,27 @@
 import { Injectable } from '@angular/core';
 import { Packet, PushTracker, SmartDrive } from '@maxmobility/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Bluetooth, BondState, Central, ConnectionState } from 'nativescript-bluetooth';
+import {
+  Bluetooth,
+  BondState,
+  Central,
+  ConnectionState
+} from 'nativescript-bluetooth';
 import { Feedback } from 'nativescript-feedback';
 import { SnackBar } from 'nativescript-snackbar';
+import { Observable, fromObject } from 'tns-core-modules/data/observable';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
 import { isAndroid, isIOS } from 'tns-core-modules/platform';
 import { alert } from 'tns-core-modules/ui/dialogs';
 import { LoggingService } from './logging.service';
+
+export enum PushTrackerState {
+  unknown,
+  paired,
+  disconnected,
+  connected,
+  ready
+}
 
 @Injectable()
 export class BluetoothService {
@@ -15,6 +29,10 @@ export class BluetoothService {
   public static AppServiceUUID = '9358ac8f-6343-4a31-b4e0-4b13a2b45d86';
   public static PushTrackers = new ObservableArray<PushTracker>();
   public static SmartDrives = new ObservableArray<SmartDrive>();
+
+  public static pushTrackerStatus: Observable = fromObject({
+    state: PushTrackerState.unknown
+  });
 
   // public members
   public enabled = false;
@@ -27,7 +45,10 @@ export class BluetoothService {
   private snackbar = new SnackBar();
   private feedback = new Feedback();
 
-  constructor(private _translateService: TranslateService, private _loggingService: LoggingService) {
+  constructor(
+    private _translateService: TranslateService,
+    private _loggingService: LoggingService
+  ) {
     // enabling `debug` will output console.logs from the bluetooth source code
     this._bluetooth.debug = false;
 
@@ -54,7 +75,9 @@ export class BluetoothService {
           });
         } else {
           alert({
-            message: this._translateService.instant('bluetooth.enable-bluetooth'),
+            message: this._translateService.instant(
+              'bluetooth.enable-bluetooth'
+            ),
             okButtonText: this._translateService.instant('dialogs.ok')
           });
         }
@@ -67,13 +90,41 @@ export class BluetoothService {
   public setEventListeners() {
     this.clearEventListeners();
     // setup event listeners
-    this._bluetooth.on(Bluetooth.bond_status_change_event, this.onBondStatusChange, this);
-    this._bluetooth.on(Bluetooth.peripheral_connected_event, this.onPeripheralConnected, this);
-    this._bluetooth.on(Bluetooth.peripheral_disconnected_event, this.onPeripheralDisconnected, this);
-    this._bluetooth.on(Bluetooth.device_discovered_event, this.onDeviceDiscovered, this);
-    this._bluetooth.on(Bluetooth.device_name_change_event, this.onDeviceNameChange, this);
-    this._bluetooth.on(Bluetooth.device_uuid_change_event, this.onDeviceUuidChange, this);
-    this._bluetooth.on(Bluetooth.device_acl_disconnected_event, this.onDeviceAclDisconnected, this);
+    this._bluetooth.on(
+      Bluetooth.bond_status_change_event,
+      this.onBondStatusChange,
+      this
+    );
+    this._bluetooth.on(
+      Bluetooth.peripheral_connected_event,
+      this.onPeripheralConnected,
+      this
+    );
+    this._bluetooth.on(
+      Bluetooth.peripheral_disconnected_event,
+      this.onPeripheralDisconnected,
+      this
+    );
+    this._bluetooth.on(
+      Bluetooth.device_discovered_event,
+      this.onDeviceDiscovered,
+      this
+    );
+    this._bluetooth.on(
+      Bluetooth.device_name_change_event,
+      this.onDeviceNameChange,
+      this
+    );
+    this._bluetooth.on(
+      Bluetooth.device_uuid_change_event,
+      this.onDeviceUuidChange,
+      this
+    );
+    this._bluetooth.on(
+      Bluetooth.device_acl_disconnected_event,
+      this.onDeviceAclDisconnected,
+      this
+    );
 
     /*
     this._bluetooth.on(Bluetooth.centralmanager_updated_state_event, args => {
@@ -81,11 +132,31 @@ export class BluetoothService {
     });
       */
 
-    this._bluetooth.on(Bluetooth.server_connection_state_changed_event, this.onServerConnectionStateChanged, this);
-    this._bluetooth.on(Bluetooth.characteristic_write_request_event, this.onCharacteristicWriteRequest, this);
-    this._bluetooth.on(Bluetooth.characteristic_read_request_event, this.onCharacteristicReadRequest, this);
-    this._bluetooth.on(Bluetooth.bluetooth_advertise_failure_event, this.onAdvertiseFailure, this);
-    this._bluetooth.on(Bluetooth.bluetooth_advertise_success_event, this.onAdvertiseSuccess, this);
+    this._bluetooth.on(
+      Bluetooth.server_connection_state_changed_event,
+      this.onServerConnectionStateChanged,
+      this
+    );
+    this._bluetooth.on(
+      Bluetooth.characteristic_write_request_event,
+      this.onCharacteristicWriteRequest,
+      this
+    );
+    this._bluetooth.on(
+      Bluetooth.characteristic_read_request_event,
+      this.onCharacteristicReadRequest,
+      this
+    );
+    this._bluetooth.on(
+      Bluetooth.bluetooth_advertise_failure_event,
+      this.onAdvertiseFailure,
+      this
+    );
+    this._bluetooth.on(
+      Bluetooth.bluetooth_advertise_success_event,
+      this.onAdvertiseSuccess,
+      this
+    );
   }
 
   public clearEventListeners() {
@@ -105,12 +176,21 @@ export class BluetoothService {
   }
 
   public clearSmartDrives() {
-    let connectedSDs = BluetoothService.SmartDrives.slice().filter(sd => sd.connected);
-    BluetoothService.SmartDrives.splice(0, BluetoothService.SmartDrives.length, ...connectedSDs);
+    let connectedSDs = BluetoothService.SmartDrives.slice().filter(
+      sd => sd.connected
+    );
+    BluetoothService.SmartDrives.splice(
+      0,
+      BluetoothService.SmartDrives.length,
+      ...connectedSDs
+    );
   }
 
   public clearPushTrackers() {
-    BluetoothService.PushTrackers.splice(0, BluetoothService.PushTrackers.length);
+    BluetoothService.PushTrackers.splice(
+      0,
+      BluetoothService.PushTrackers.length
+    );
   }
 
   /**
@@ -139,9 +219,11 @@ export class BluetoothService {
     this.clearEventListeners();
     this.setEventListeners();
 
-    const x = await this._bluetooth.requestCoarseLocationPermission().catch(error => {
-      console.log('requestCoarseLocationPermission error', error);
-    });
+    const x = await this._bluetooth
+      .requestCoarseLocationPermission()
+      .catch(error => {
+        console.log('requestCoarseLocationPermission error', error);
+      });
     this.enabled = true;
 
     this._bluetooth.startGattServer();
@@ -336,6 +418,7 @@ export class BluetoothService {
         }
         const pt = this.getOrMakePushTracker(dev);
         pt.handlePaired();
+        this.updatePushTrackerState(pt);
         this.feedback.success({
           title: 'Successfully Paired',
           message: `PushTracker ${pt.address} now paired`
@@ -406,6 +489,7 @@ export class BluetoothService {
     } else if (this.isPushTracker(device)) {
       const pt = this.getOrMakePushTracker(device);
       pt.handleDisconnect();
+      this.updatePushTrackerState(pt);
     }
     //console.log('finished acl disconnect');
   }
@@ -415,7 +499,9 @@ export class BluetoothService {
     const argdata = args.data;
     const connection_state = argdata.connection_state;
     const device = argdata.device;
-    console.log(`state change - ${device.name}::${device.address} - ${connection_state}`);
+    console.log(
+      `state change - ${device.name}::${device.address} - ${connection_state}`
+    );
     switch (connection_state) {
       case ConnectionState.connected:
         // NOTE : need to figure out the iOS piece for this
@@ -438,7 +524,10 @@ export class BluetoothService {
         if (this.isPushTracker(device)) {
           const pt = this.getOrMakePushTracker(device);
           pt.handleConnect();
-          this.notify(`${device.name || 'PushTracker'}::${device.address} connected`);
+          this.updatePushTrackerState(pt);
+          this.notify(
+            `${device.name || 'PushTracker'}::${device.address} connected`
+          );
         } else if (this.isSmartDrive(device)) {
           const sd = this.getOrMakeSmartDrive(device);
           sd.handleConnect();
@@ -448,7 +537,10 @@ export class BluetoothService {
         if (this.isPushTracker(device)) {
           const pt = this.getOrMakePushTracker(device);
           pt.handleDisconnect();
-          this.notify(`${device.name || 'PushTracker'}::${device.address} disconnected`);
+          this.updatePushTrackerState(pt);
+          this.notify(
+            `${device.name || 'PushTracker'}::${device.address} disconnected`
+          );
         } else if (this.isSmartDrive(device)) {
           const sd = this.getOrMakeSmartDrive(device);
           sd.handleDisconnect();
@@ -515,6 +607,7 @@ export class BluetoothService {
     if (this.isPushTracker(device)) {
       const pt = this.getOrMakePushTracker(device);
       pt.handlePacket(p);
+      this.updatePushTrackerState(pt);
     }
     console.log(`${p.Type()}::${p.SubType()} ${p.toString()}`);
     p.destroy();
@@ -532,7 +625,9 @@ export class BluetoothService {
   private addServices(): void {
     try {
       if (this._bluetooth.offersService(BluetoothService.AppServiceUUID)) {
-        console.log(`Bluetooth already offers ${BluetoothService.AppServiceUUID}`);
+        console.log(
+          `Bluetooth already offers ${BluetoothService.AppServiceUUID}`
+        );
         return;
       }
       console.log('making service');
@@ -574,8 +669,15 @@ export class BluetoothService {
         }
 
         if (isAndroid) {
-          c.setValue(0, (android.bluetooth as any).BluetoothGattCharacteristic.FORMAT_UINT8, 0);
-          c.setWriteType((android.bluetooth as any).BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT);
+          c.setValue(
+            0,
+            (android.bluetooth as any).BluetoothGattCharacteristic.FORMAT_UINT8,
+            0
+          );
+          c.setWriteType(
+            (android.bluetooth as any).BluetoothGattCharacteristic
+              .WRITE_TYPE_DEFAULT
+          );
         } else {
           // TODO: don't need ios impl apparrently?
         }
@@ -598,8 +700,28 @@ export class BluetoothService {
     }
   }
 
+  private updatePushTrackerState(pt: PushTracker): void {
+    if (pt.version !== 0xff) {
+      BluetoothService.pushTrackerStatus.set('state', PushTrackerState.ready);
+    } else if (pt.connected) {
+      BluetoothService.pushTrackerStatus.set(
+        'state',
+        PushTrackerState.connected
+      );
+    } else if (pt.paired) {
+      BluetoothService.pushTrackerStatus.set(
+        'state',
+        PushTrackerState.disconnected
+      );
+    } else {
+      BluetoothService.pushTrackerStatus.set('state', PushTrackerState.unknown);
+    }
+  }
+
   private getOrMakePushTracker(device: any): PushTracker {
-    let pt = BluetoothService.PushTrackers.filter(p => p.address === device.address)[0];
+    let pt = BluetoothService.PushTrackers.filter(
+      p => p.address === device.address
+    )[0];
     //console.log(`Found PT: ${pt}`);
     if (pt === null || pt === undefined) {
       pt = new PushTracker(this, { address: device.address });
@@ -613,7 +735,9 @@ export class BluetoothService {
   }
 
   private getOrMakeSmartDrive(device: any): SmartDrive {
-    let sd = BluetoothService.SmartDrives.filter((x: SmartDrive) => x.address === device.address)[0];
+    let sd = BluetoothService.SmartDrives.filter(
+      (x: SmartDrive) => x.address === device.address
+    )[0];
     //console.log(`Found SD: ${sd}`);
     if (sd === null || sd === undefined) {
       sd = new SmartDrive(this, { address: device.address });
@@ -648,7 +772,11 @@ export class BluetoothService {
       }
       d = arr;
     }
-    return this._bluetooth.notifyCentrals(d, PushTracker.DataCharacteristic, devices);
+    return this._bluetooth.notifyCentrals(
+      d,
+      PushTracker.DataCharacteristic,
+      devices
+    );
   }
 
   public getPushTracker(address: string) {
@@ -662,7 +790,8 @@ export class BluetoothService {
   private isSmartDrive(dev: any): boolean {
     const name = dev && dev.name;
     const uuid = dev && dev.UUID;
-    const hasUUID = uuid && uuid.toUpperCase() === SmartDrive.ServiceUUID.toUpperCase();
+    const hasUUID =
+      uuid && uuid.toUpperCase() === SmartDrive.ServiceUUID.toUpperCase();
     const isSD = (name && name.includes('Smart Drive DU')) || hasUUID;
     //console.log(`isSD: ${isSD}`);
     return isSD;
@@ -673,8 +802,14 @@ export class BluetoothService {
     const UUIDs = (dev && dev.UUIDs) || [];
     const name = dev && dev.name;
     // console.log(`isPushTracker - uuids: ${UUIDs}, name: ${name}`);
-    const hasUUID = UUIDs.reduce((a, e) => a || e.toUpperCase() === PushTracker.ServiceUUID.toUpperCase(), false);
-    const isPT = (name && name.includes('PushTracker')) || (name && name.includes('Bluegiga')) || hasUUID;
+    const hasUUID = UUIDs.reduce(
+      (a, e) => a || e.toUpperCase() === PushTracker.ServiceUUID.toUpperCase(),
+      false
+    );
+    const isPT =
+      (name && name.includes('PushTracker')) ||
+      (name && name.includes('Bluegiga')) ||
+      hasUUID;
     // console.log(`isPT: ${isPT}`);
     return isPT;
   }
