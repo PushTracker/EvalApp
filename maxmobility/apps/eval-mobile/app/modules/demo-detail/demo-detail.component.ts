@@ -497,7 +497,7 @@ export class DemoDetailComponent {
 
       // request camera permissions
       console.log('Checking permissions for camera access');
-      camera
+      return camera
         .requestPermissions()
         .then(async () => {
           const imageAsset = (await camera.takePicture({
