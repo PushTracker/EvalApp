@@ -701,21 +701,26 @@ export class BluetoothService {
   }
 
   private updatePushTrackerState(pt: PushTracker): void {
-    if (pt.version !== 0xff) {
-      BluetoothService.pushTrackerStatus.set('state', PushTrackerState.ready);
-    } else if (pt.connected) {
-      BluetoothService.pushTrackerStatus.set(
-        'state',
-        PushTrackerState.connected
-      );
-    } else if (pt.paired) {
+    if (pt && pt.connected) {
+      if (pt.version !== 0xff) {
+        BluetoothService.pushTrackerStatus.set('state', PushTrackerState.ready);
+      } else {
+        BluetoothService.pushTrackerStatus.set(
+          'state',
+          PushTrackerState.connected
+        );
+      }
+    } else if (pt && pt.paired) {
       BluetoothService.pushTrackerStatus.set(
         'state',
         PushTrackerState.disconnected
       );
+    } else if (pt) {
+      BluetoothService.pushTrackerStatus.set('state', PushTrackerState.unknown);
     } else {
       BluetoothService.pushTrackerStatus.set('state', PushTrackerState.unknown);
     }
+    //console.log('update pt state!', BluetoothService.pushTrackerStatus.get('state'));
   }
 
   private getOrMakePushTracker(device: any): PushTracker {
