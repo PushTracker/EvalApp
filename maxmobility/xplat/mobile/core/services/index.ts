@@ -9,7 +9,6 @@ import { KeyboardService } from './keyboard.service';
 import { LocationService } from './location.service';
 import { PairingService } from './pairing.service';
 import { ProgressService } from './progress.service';
-import { StorageService } from './storage.service';
 import { UserService } from './user.service';
 
 export const PROVIDERS: any[] = [
@@ -21,7 +20,6 @@ export const PROVIDERS: any[] = [
   UserService,
   KeyboardService,
   AuthGuardService,
-  StorageService,
   ProgressService,
   BluetoothService,
   FirmwareService,
@@ -38,6 +36,5 @@ export * from './keyboard.service';
 export * from './location.service';
 export * from './pairing.service';
 export * from './progress.service';
-export * from './storage.service';
 export * from './user.service';
 export * from './logging.service';
