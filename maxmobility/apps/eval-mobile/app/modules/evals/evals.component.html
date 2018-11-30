@@ -1,20 +1,14 @@
-<ActionBar
-  class="action-bar"
-  flat="true"
+<MaxActionBar
   [title]="
     evals.length
       ? evals.length + ' ' + ('evals.title' | translate)
       : ('evals.title' | translate)
   "
 >
-  <NavigationButton
-    android:visibility="collapse"
-    tap="onNavBtnTap"
-  ></NavigationButton>
   <ActionItem (tap)="onSearchTap()" ios.position="right">
     <button class="" [text]="searchBtnText" class="action-item"></button>
   </ActionItem>
-</ActionBar>
+</MaxActionBar>
 
 <StackLayout margin-top="30">
   // Loading indicator - shown while data is being fetched

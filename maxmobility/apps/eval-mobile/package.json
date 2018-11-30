@@ -79,7 +79,7 @@
     "nativescript-orientation": "~2.2.1",
     "nativescript-permissions": "~1.2.3",
     "nativescript-push-notifications": "~1.1.6",
-    "nativescript-sentry": "^1.5.2",
+    "nativescript-sentry": "~1.5.2",
     "nativescript-snackbar": "~4.0.0",
     "nativescript-theme-core": "~1.0.4",
     "nativescript-toasty": "~1.2.0",

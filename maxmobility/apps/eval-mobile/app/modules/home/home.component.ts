@@ -12,7 +12,11 @@ import {
 import { TranslateService } from '@ngx-translate/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 import { RouterExtensions } from 'nativescript-angular/router';
-import { Feedback, FeedbackPosition, FeedbackType } from 'nativescript-feedback';
+import {
+  Feedback,
+  FeedbackPosition,
+  FeedbackType
+} from 'nativescript-feedback';
 import { Color } from 'tns-core-modules/color';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
 import { Page } from 'tns-core-modules/ui/page';

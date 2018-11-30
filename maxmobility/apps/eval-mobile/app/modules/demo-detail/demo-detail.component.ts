@@ -31,7 +31,7 @@ import {
 import { isIOS } from 'tns-core-modules/platform';
 import { setTimeout } from 'tns-core-modules/timer';
 import { View } from 'tns-core-modules/ui/core/view';
-import { alert, confirm, prompt } from 'tns-core-modules/ui/dialogs';
+import { alert, confirm, prompt, action } from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
 import * as utils from 'tns-core-modules/utils/utils';
 

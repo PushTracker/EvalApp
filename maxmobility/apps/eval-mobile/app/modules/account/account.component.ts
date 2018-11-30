@@ -23,6 +23,7 @@ import {
   fromBase64,
   ImageSource
 } from 'tns-core-modules/image-source/image-source';
+import { ImageAsset } from 'tns-core-modules/image-asset/image-asset';
 import { isIOS } from 'tns-core-modules/platform';
 import { alert, confirm, prompt } from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';

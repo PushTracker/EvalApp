@@ -1,0 +1,9 @@
+<ActionBar class="action-bar" flat="true" [title]="title">
+  <NavigationButton *ngIf="allowNav" android:visibility="collapse"></NavigationButton>
+  <ng-content></ng-content>
+  <ActionItem ios.position="right" (tap)="onPTConnTap()">
+    <StackLayout android:paddingRight="10">
+      <Image class="pt-status" [src]="imgSrc"></Image>
+    </StackLayout>
+  </ActionItem>
+</ActionBar>

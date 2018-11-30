@@ -1,6 +1,4 @@
-<ActionBar class="action-bar" flat="true" [title]="title">
-  <NavigationButton android:visibility="collapse"></NavigationButton>
-
+<MaxActionBar [title]="title">
   <ActionItem
     (tap)="onSave()"
     ios.systemIcon="3"
@@ -9,7 +7,7 @@
     color="white"
   >
   </ActionItem>
-</ActionBar>
+</MaxActionBar>
 
 <GridLayout padding="0" margin="0" rows="auto, *" cols="auto">
   <StackLayout

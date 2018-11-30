@@ -1,5 +1,4 @@
-<ActionBar class="action-bar" flat="true" [title]="'menu.demos' | translate">
-  <NavigationButton android:visibility="collapse"></NavigationButton>
+<MaxActionBar [title]="'menu.demos' | translate">
   // Add Demo Button
   <ActionItem
     (tap)="addDemo()"
@@ -18,7 +17,7 @@
     color="#fff"
   >
   </ActionItem>
-</ActionBar>
+</MaxActionBar>
 
 <GridLayout margin-top="30" rows="*, auto" iosOverflowSafeArea="false">
   // Loading View to show when loading demo units

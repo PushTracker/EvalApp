@@ -56,7 +56,29 @@
       "threshold": "Threshold",
       "time-window": "Time Window",
       "clear-counter": "Clear Counter"
-    }
+    },
+	  "state": {
+		  "paired": {
+			  "title": "Paired",
+			  "msg": "PushTrackers are paired but not connected. Please connect your PushTracker by pressing and releaseing the right button. If you are unable to successfully connect, you may need to re-pair your PushTracker to your phone by using the PushTracker's settings menu."
+		  },
+		  "disconnected": {
+			  "title": "Disconnected",
+			  "msg": "PushTrackers are paired but not connected. Please connect your PushTracker by pressing and releaseing the right button. If you are unable to successfully connect, you may need to re-pair your PushTracker to your phone by using the PushTracker's settings menu."
+		  },
+		  "connecting": {
+			  "title": "Connecting",
+			  "msg": "PushTrackers are connecting / connected, but no version information has been received. You may have to disconnect and reconnect your PushTracker to get the version information."
+		  },
+		  "connected": {
+			  "title": "Connected",
+			  "msg": "PushTrackers are successfully connected:"
+		  },
+		  "unknown": {
+			  "title": "No Known PushTrackers",
+			  "msg": "No PushTrackers have been paired or connected so far. Please pair your PushTracker by going into the PushTracker's settings menu."
+		  }
+	  }
   },
   "menu": {
     "home": "SmartDrive",

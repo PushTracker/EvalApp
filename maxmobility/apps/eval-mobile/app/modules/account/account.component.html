@@ -1,9 +1,8 @@
-<ActionBar class="action-bar" [title]="'user.account' | translate" flat="true">
-  <NavigationButton android:visibility="collapse"></NavigationButton>
+<MaxActionBar [title]="'user.account' | translate">
   <ActionItem ios.position="right" (tap)="onSaveAccountTap()">
     <button text="Save" (tap)="onSaveAccountTap()" class="action-item"></button>
   </ActionItem>
-</ActionBar>
+</MaxActionBar>
 
 <ScrollView iosOverflowSafeArea="true">
   <StackLayout class="account-layout" orientation="vertical">
