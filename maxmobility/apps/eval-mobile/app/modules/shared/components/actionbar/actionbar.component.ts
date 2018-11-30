@@ -28,6 +28,9 @@ export class ActionbarComponent extends ActionBar {
     private _translateService: TranslateService
   ) {
     super();
+
+    // Brad - prob should check the BluetoothService.hasPairedToPushtrackerPreviously value to see if previously connected and set the default icon here
+
     this._feedback = new Feedback();
     this.onPushTrackerStateChange(null);
     this.register();

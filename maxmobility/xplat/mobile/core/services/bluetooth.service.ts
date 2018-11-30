@@ -30,9 +30,18 @@ export class BluetoothService {
   public static PushTrackers = new ObservableArray<PushTracker>();
   public static SmartDrives = new ObservableArray<SmartDrive>();
 
+  /**
+   * Observable to monitor the push tracker connectivity status. The MaxActionBar uses this to display the correct icon.
+   */
   public static pushTrackerStatus: Observable = fromObject({
     state: PushTrackerState.unknown
   });
+
+  /**
+   * Once a PT has been paired successfully this will be true
+   * Then we can ensure the actionbar icon is updated that it at least knows the app has paired before to a PT.
+   */
+  public static hasPairedToPushtrackerPreviously = false; // BRAD NOTE: this might need to be outside the service and stored in data (file) so we can load on subsequent runs
 
   // public members
   public enabled = false;
@@ -736,6 +745,9 @@ export class BluetoothService {
           state,
           PushTrackerState.disconnected
         );
+
+        // setting true to know the APP has previously paired to PT
+        BluetoothService.hasPairedToPushtrackerPreviously = true;
       } else if (pt) {
         state = this._mergePushTrackerState(state, PushTrackerState.unknown);
       } else {
