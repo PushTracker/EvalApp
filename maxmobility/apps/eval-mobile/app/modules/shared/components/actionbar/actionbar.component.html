@@ -2,7 +2,7 @@
   <NavigationButton *ngIf="allowNav" android:visibility="collapse"></NavigationButton>
   <ng-content></ng-content>
   <ActionItem ios.position="right" (tap)="onPTConnTap()">
-    <StackLayout>
+    <StackLayout android:paddingRight="10">
       <Image class="pt-status" [src]="imgSrc"></Image>
     </StackLayout>
   </ActionItem>
