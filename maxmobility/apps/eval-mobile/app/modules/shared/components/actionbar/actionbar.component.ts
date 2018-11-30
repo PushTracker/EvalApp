@@ -23,6 +23,7 @@ export class ActionbarComponent extends ActionBar {
 
   // keep track of the overall pushtracker state
   status = PushTrackerState.unknown;
+  imgSrc = '~/assets/images/pt_conn_red.png';
 
   // use feedback to tell the user about the current state / connected pushtrackers
   private _feedback: Feedback;
@@ -125,6 +126,20 @@ export class ActionbarComponent extends ActionBar {
   onPushTrackerStateChange(args: any) {
     this._zone.run(() => {
       this.status = BluetoothService.pushTrackerStatus.get('state');
+      if (this.status == PushTrackerState.unknown) {
+        this.imgSrc = '~/assets/images/pt_conn_red.png';
+      } else if (
+        this.status == PushTrackerState.paired ||
+        this.status == PushTrackerState.disconnected
+      ) {
+        this.imgSrc = '~/assets/images/pt_conn_grey.png';
+      } else if (this.status == PushTrackerState.connected) {
+        this.imgSrc = '~/assets/images/pt_conn_yellow.png';
+      } else if (this.status == PushTrackerState.ready) {
+        this.imgSrc = '~/assets/images/pt_conn_green.png';
+      } else {
+        this.imgSrc = '~/Assets/Images/pt_conn_red.png';
+      }
       console.log('status', this.status);
     });
   }
