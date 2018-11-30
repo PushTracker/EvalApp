@@ -296,13 +296,20 @@ export class TrialComponent implements OnInit {
 
       const distanceHandler = data => {
         // get the data
-        this.trial.distance = PushTracker.caseTicksToMiles(
+        this.trial.distance = PushTracker.caseTicksToMeters(
           data.data.coastDistance
         );
         // record that we've gotten it
-        haveDistance = true;
+        haveDistance = this.trial.distance > 0;
         if (haveDailyInfo && haveDistance) {
           trialStartedHandler();
+        } else if (!haveDistance) {
+          // we've gotten an invalid distance
+          trialStartWithFailed(
+            this._translateService.instant(
+              'trial.errors.pt-unknown-distance.message'
+            )
+          );
         }
       };
 
@@ -357,7 +364,9 @@ export class TrialComponent implements OnInit {
 
       // set timeout on trial starting
       startWithTimeoutID = setTimeout(() => {
-        trialStartWithFailed('Timeout!');
+        trialStartWithFailed(
+          this._translateService.instant('trial.errors.timeout')
+        );
       }, this._trialTimeout);
 
       // now actually try to send these data
@@ -483,13 +492,19 @@ export class TrialComponent implements OnInit {
       const distanceHandler = data => {
         // get the data
         this.trial.distance =
-          PushTracker.caseTicksToMiles(data.data.coastDistance) -
+          PushTracker.caseTicksToMeters(data.data.coastDistance) -
           this.trial.distance;
-        this.trial.distance = this.trial.distance * 1604; // convert to meters
+        console.log('trial distance', this.trial.distance);
         // record that we've gotten it
-        haveDistance = true;
+        haveDistance = this.trial.distance > 0;
         if (haveDailyInfo && haveDistance) {
           trialStoppedHandler();
+        } else if (!haveDistance) {
+          trialStopWithFailed(
+            this._translateService.instant(
+              'trial.errors.pt-same-distance.message'
+            )
+          );
         }
       };
 
@@ -604,7 +619,9 @@ export class TrialComponent implements OnInit {
 
       // set timeout on trial starting
       startWithoutTimeoutID = setTimeout(() => {
-        trialStartWithoutFailed('Timeout!');
+        trialStartWithoutFailed(
+          this._translateService.instant('trial.errors.timeout')
+        );
       }, this._trialTimeout);
       pushTracker.on(
         PushTracker.pushtracker_daily_info_event,
