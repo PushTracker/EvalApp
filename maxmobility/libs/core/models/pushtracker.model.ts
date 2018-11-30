@@ -202,6 +202,14 @@ export class PushTracker extends Observable {
     return (ticks * (2.0 * 3.14159265358 * 3.8)) / (36.0 * 63360.0);
   }
 
+  public static motorTicksToMeters(ticks: number): number {
+    return (ticks * (2.0 * 3.14159265358 * 0.09652)) / 265.714;
+  }
+
+  public static caseTicksToMeters(ticks: number): number {
+    return (ticks * (2.0 * 3.14159265358 * 0.09652)) / 36.0;
+  }
+
   public static versionStringToByte(version: string): number {
     if (version.includes('.')) {
       const [major, minor] = version.split('.');

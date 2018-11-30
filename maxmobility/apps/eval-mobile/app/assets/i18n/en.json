@@ -598,7 +598,8 @@
     "other": "Other",
     "description": "Course or Obstacle Description",
     "recommendation": "Note: trials are recommended to contain ramps, multiple surface types, and should last at least a few minutes or 100 yards / 100 meters.",
-    "evaluator-range": "Note: the PushTracker does not need to stay connected to the phone throughout this phase - it only needs to connect at the start and end.",
+      "evaluator-range": "Note: the PushTracker does not need to stay connected to the phone throughout this phase - it only needs to connect at the start and end.",
+	  "smartdrive-connection": "Note: before starting this trial, make sure you have the PushTracker and SmartDrive connected / 'SD On' to ensure that the PushTracker has the latest distance information.",
     "accelleration": "Acceleration",
     "max-speed": "Max Speed",
     "phase-1": "Phase 1",
@@ -619,10 +620,11 @@
     "push_accuracy_disclaimer": "The push tracker uses movement to detect pushes. This can cause a varying degree of accuracy depending on how the user wears and moves with the push tracker. A better metric for evaluation is the relative difference between the pushes with the SmartDrive and without the SmartDrive.",
     "summary": "Summary",
     "please-connect-pt": "Please connect your PushTracker",
-    "connect_pushtracker_more_info": "A pushtracker must be connected to the Smart Evaluation app in order to communicate. Please see the Connectivity section on the home screen.",
+    "connect_pushtracker_more_info": "A pushtracker must be connected to the Smart Evaluation app in order to communicate. Please see the Connectivity section on the home screen or press the connectivity icon in the upper right.",
     "starting-trial": "Starting Trial - may take up to 10 seconds.",
     "stopping-trial": "Stopping Trial - may take up to 10 seconds.",
-    "errors": {
+      "errors": {
+		  "timeout": "Timeout",
       "too-many-pts": "Too many PushTrackers connected - please only connect one!",
       "failed-start": {
         "title": "Couldn't Start Trial",
@@ -639,7 +641,15 @@
       "pt-reconnect": {
         "title": "Unknown PushTracker Version",
         "message": "Your PushTracker has not sent its version, please disconnect and reconnect the PushTracker to re-send the version information to the Smart Evaluation app."
-      }
+      },
+		"pt-unknown-distance": {
+			"title": "Unknown Distance",
+			"message": "Your PushTracker has not gotten distance information from the SmartDrive - please make sure they are connected / 'SD On' without the motor driving before starting the trial."
+		},
+		"pt-same-distance": {
+			"title": "Invalid Distance",
+			"message": "Your PushTracker has not received updated distance information from your SmartDrive - please make sure they are connected / 'SD On' without the motor driving before stopping the trial."
+		}
     }
   },
   "faqs": [
