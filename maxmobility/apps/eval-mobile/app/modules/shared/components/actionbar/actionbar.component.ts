@@ -1,13 +1,8 @@
 import { Component, Input, NgZone } from '@angular/core';
-
-import { ActionBar } from 'ui/action-bar';
-
+import { ActionBar } from 'tns-core-modules/ui/action-bar';
 import { BluetoothService, PushTrackerState } from '@maxmobility/mobile';
-
 import { TranslateService } from '@ngx-translate/core';
-
 import { Observable } from 'tns-core-modules/data/observable';
-
 import { Feedback } from 'nativescript-feedback';
 import { Color } from 'tns-core-modules/color';
 
@@ -39,7 +34,7 @@ export class ActionbarComponent extends ActionBar {
   }
 
   onPTConnTap(): void {
-    if (this.status == PushTrackerState.paired) {
+    if (this.status === PushTrackerState.paired) {
       this._feedback.info({
         backgroundColor: new Color('#004f7e'),
         icon: 'pt_conn_grey',
@@ -49,9 +44,11 @@ export class ActionbarComponent extends ActionBar {
         title: this._translateService.instant('pushtracker.state.paired.title'),
         message: this._translateService.instant('pushtracker.state.paired.msg'),
         duration: 5000,
-        onTap: () => {}
+        onTap: () => {
+          // feedback tapped, do nothing
+        }
       });
-    } else if (this.status == PushTrackerState.disconnected) {
+    } else if (this.status === PushTrackerState.disconnected) {
       this._feedback.info({
         backgroundColor: new Color('#004f7e'),
         icon: 'pt_conn_grey',
@@ -65,9 +62,11 @@ export class ActionbarComponent extends ActionBar {
           'pushtracker.state.disconnected.msg'
         ),
         duration: 5000,
-        onTap: () => {}
+        onTap: () => {
+          // feedback tapped, do nothing
+        }
       });
-    } else if (this.status == PushTrackerState.connected) {
+    } else if (this.status === PushTrackerState.connected) {
       this._feedback.info({
         backgroundColor: new Color('#004f7e'),
         icon: 'pt_conn_yellow',
@@ -81,9 +80,11 @@ export class ActionbarComponent extends ActionBar {
           'pushtracker.state.connecting.msg'
         ),
         duration: 5000,
-        onTap: () => {}
+        onTap: () => {
+          // feedback tapped, do nothing
+        }
       });
-    } else if (this.status == PushTrackerState.ready) {
+    } else if (this.status === PushTrackerState.ready) {
       let s = '\n';
       BluetoothService.PushTrackers.map(pt => {
         if (pt.connected) {
@@ -102,7 +103,9 @@ export class ActionbarComponent extends ActionBar {
         message:
           this._translateService.instant('pushtracker.state.connected.msg') + s, // add connected PTs info
         duration: 5000,
-        onTap: () => {}
+        onTap: () => {
+          // feedback tapped, do nothing
+        }
       });
     } else {
       this._feedback.info({
@@ -118,7 +121,9 @@ export class ActionbarComponent extends ActionBar {
           'pushtracker.state.unknown.msg'
         ),
         duration: 5000,
-        onTap: () => {}
+        onTap: () => {
+          // feedback tapped, do nothing
+        }
       });
     }
   }
@@ -126,16 +131,16 @@ export class ActionbarComponent extends ActionBar {
   onPushTrackerStateChange(args: any) {
     this._zone.run(() => {
       this.status = BluetoothService.pushTrackerStatus.get('state');
-      if (this.status == PushTrackerState.unknown) {
+      if (this.status === PushTrackerState.unknown) {
         this.imgSrc = '~/assets/images/pt_conn_red.png';
       } else if (
-        this.status == PushTrackerState.paired ||
-        this.status == PushTrackerState.disconnected
+        this.status === PushTrackerState.paired ||
+        this.status === PushTrackerState.disconnected
       ) {
         this.imgSrc = '~/assets/images/pt_conn_grey.png';
-      } else if (this.status == PushTrackerState.connected) {
+      } else if (this.status === PushTrackerState.connected) {
         this.imgSrc = '~/assets/images/pt_conn_yellow.png';
-      } else if (this.status == PushTrackerState.ready) {
+      } else if (this.status === PushTrackerState.ready) {
         this.imgSrc = '~/assets/images/pt_conn_green.png';
       } else {
         this.imgSrc = '~/Assets/Images/pt_conn_red.png';
@@ -152,7 +157,7 @@ export class ActionbarComponent extends ActionBar {
   }
 
   register(): void {
-    //this.unregister();
+    // this.unregister();
     BluetoothService.pushTrackerStatus.addEventListener(
       Observable.propertyChangeEvent,
       this.onPushTrackerStateChange,
