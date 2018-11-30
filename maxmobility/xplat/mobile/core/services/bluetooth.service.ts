@@ -418,7 +418,7 @@ export class BluetoothService {
         }
         const pt = this.getOrMakePushTracker(dev);
         pt.handlePaired();
-        this.updatePushTrackerState(pt);
+        this.updatePushTrackerState();
         this.feedback.success({
           title: 'Successfully Paired',
           message: `PushTracker ${pt.address} now paired`
@@ -489,7 +489,7 @@ export class BluetoothService {
     } else if (this.isPushTracker(device)) {
       const pt = this.getOrMakePushTracker(device);
       pt.handleDisconnect();
-      this.updatePushTrackerState(pt);
+      this.updatePushTrackerState();
     }
     //console.log('finished acl disconnect');
   }
@@ -524,7 +524,7 @@ export class BluetoothService {
         if (this.isPushTracker(device)) {
           const pt = this.getOrMakePushTracker(device);
           pt.handleConnect();
-          this.updatePushTrackerState(pt);
+          this.updatePushTrackerState();
           this.notify(
             `${device.name || 'PushTracker'}::${device.address} connected`
           );
@@ -537,7 +537,7 @@ export class BluetoothService {
         if (this.isPushTracker(device)) {
           const pt = this.getOrMakePushTracker(device);
           pt.handleDisconnect();
-          this.updatePushTrackerState(pt);
+          this.updatePushTrackerState();
           this.notify(
             `${device.name || 'PushTracker'}::${device.address} disconnected`
           );
@@ -607,7 +607,7 @@ export class BluetoothService {
     if (this.isPushTracker(device)) {
       const pt = this.getOrMakePushTracker(device);
       pt.handlePacket(p);
-      this.updatePushTrackerState(pt);
+      this.updatePushTrackerState();
     }
     console.log(`${p.Type()}::${p.SubType()} ${p.toString()}`);
     p.destroy();
@@ -700,27 +700,51 @@ export class BluetoothService {
     }
   }
 
-  private updatePushTrackerState(pt: PushTracker): void {
-    if (pt && pt.connected) {
-      if (pt.version !== 0xff) {
-        BluetoothService.pushTrackerStatus.set('state', PushTrackerState.ready);
-      } else {
-        BluetoothService.pushTrackerStatus.set(
-          'state',
-          PushTrackerState.connected
-        );
-      }
-    } else if (pt && pt.paired) {
-      BluetoothService.pushTrackerStatus.set(
-        'state',
-        PushTrackerState.disconnected
-      );
-    } else if (pt) {
-      BluetoothService.pushTrackerStatus.set('state', PushTrackerState.unknown);
+  private _mergePushTrackerState(s1, s2): PushTrackerState {
+    if (s1 == PushTrackerState.ready || s2 == PushTrackerState.ready) {
+      return PushTrackerState.ready;
+    } else if (
+      s1 == PushTrackerState.connected ||
+      s2 == PushTrackerState.connected
+    ) {
+      return PushTrackerState.connected;
+    } else if (
+      s1 == PushTrackerState.disconnected ||
+      s2 == PushTrackerState.disconnected
+    ) {
+      return PushTrackerState.disconnected;
+    } else if (s1 == PushTrackerState.paired || s2 == PushTrackerState.paired) {
+      return PushTrackerState.paired;
     } else {
-      BluetoothService.pushTrackerStatus.set('state', PushTrackerState.unknown);
+      return PushTrackerState.unknown;
     }
-    //console.log('update pt state!', BluetoothService.pushTrackerStatus.get('state'));
+  }
+
+  private updatePushTrackerState(): void {
+    let state = BluetoothService.PushTrackers.reduce((state, pt) => {
+      if (pt && pt.connected) {
+        if (pt.version !== 0xff) {
+          state = this._mergePushTrackerState(state, PushTrackerState.ready);
+        } else {
+          state = this._mergePushTrackerState(
+            state,
+            PushTrackerState.connected
+          );
+        }
+      } else if (pt && pt.paired) {
+        state = this._mergePushTrackerState(
+          state,
+          PushTrackerState.disconnected
+        );
+      } else if (pt) {
+        state = this._mergePushTrackerState(state, PushTrackerState.unknown);
+      } else {
+        state = this._mergePushTrackerState(state, PushTrackerState.unknown);
+      }
+      return state;
+    }, PushTrackerState.unknown);
+
+    BluetoothService.pushTrackerStatus.set('state', state);
   }
 
   private getOrMakePushTracker(device: any): PushTracker {

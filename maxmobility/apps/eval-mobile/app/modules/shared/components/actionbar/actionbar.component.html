@@ -2,11 +2,11 @@
   <NavigationButton *ngIf="allowNav" android:visibility="collapse"></NavigationButton>
   <ng-content></ng-content>
   <ActionItem ios.position="right" (tap)="onPTConnTap()">
-    <Image *ngIf="status==0" class="pt-status" src="~/assets/images/pt-conn-red.png"></Image>
-    <Image *ngIf="status==1" class="pt-status" src="~/assets/images/pt-conn-grey.png"></Image>
-    <Image *ngIf="status==2" class="pt-status" src="~/assets/images/pt-conn-grey.png"></Image>
-    <Image *ngIf="status==3" class="pt-status" src="~/assets/images/pt-conn-yellow.png"></Image>
-    <Image *ngIf="status==4" class="pt-status" src="~/assets/images/pt-conn-green.png"></Image>
+    <Image *ngIf="status==0" class="pt-status" src="~/assets/images/pt_conn_red.png"></Image>
+    <Image *ngIf="status==1" class="pt-status" src="~/assets/images/pt_conn_grey.png"></Image>
+    <Image *ngIf="status==2" class="pt-status" src="~/assets/images/pt_conn_grey.png"></Image>
+    <Image *ngIf="status==3" class="pt-status" src="~/assets/images/pt_conn_yellow.png"></Image>
+    <Image *ngIf="status==4" class="pt-status" src="~/assets/images/pt_conn_green.png"></Image>
   </ActionItem>
   <ActionItem ios.position="right">
 	<label text="" padding="5"></label>
