@@ -742,6 +742,13 @@ export class BluetoothService {
   }
 
   private updatePushTrackerState(): void {
+    let hasPaired = appSettings.getBoolean(
+      STORAGE_KEYS.HAS_PAIRED_TO_PUSHTRACKER,
+      false
+    );
+    let defaultState = hasPaired
+      ? PushTrackerState.disconnected
+      : PushTrackerState.unknown;
     let state = BluetoothService.PushTrackers.reduce((state, pt) => {
       if (pt && pt.connected) {
         if (pt.version !== 0xff) {
@@ -752,6 +759,8 @@ export class BluetoothService {
             PushTrackerState.connected
           );
         }
+        // setting true so we know the user has connected to a PT previously
+        appSettings.setBoolean(STORAGE_KEYS.HAS_PAIRED_TO_PUSHTRACKER, true);
       } else if (pt && pt.paired) {
         state = this._mergePushTrackerState(
           state,
@@ -766,7 +775,7 @@ export class BluetoothService {
         state = this._mergePushTrackerState(state, PushTrackerState.unknown);
       }
       return state;
-    }, PushTrackerState.unknown);
+    }, defaultState);
 
     BluetoothService.pushTrackerStatus.set('state', state);
   }
