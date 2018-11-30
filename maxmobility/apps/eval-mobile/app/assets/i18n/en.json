@@ -161,7 +161,11 @@
       "Image": "~/assets/images/gifs/SD-POWER.gif",
       "Label": "Powering SmartDrive",
       "Bullets": [
-        "Press back on the rocker switch to power on the SmartDrive, and forward to power off."
+          "Press back on the rocker switch to power on the SmartDrive, and forward to power off.",
+		  "The SmartDrive attaches to the chair by aligning the flats in the clamp with the receiving slots on the SmartDrive",
+		  "After aligning the SmartDrive and the flats, lower the SmartDrive over the clamp rods and rotate the SmartDrive downward to pivotally attach the SmartDrive to the clamp and thus the wheelchair.",
+		  "In this position, the SmartDrive's weight rests on the ground.",
+		  "To detach the SmartDrive from the chair, lift with the handle to disengage the SmartDrive from the clamp - the reverse of the attachment procedure."
       ]
     },
     {
@@ -187,8 +191,19 @@
       "Label": "Starting & Setting Speed",
       "Bullets": [
         "Double-tap to initiate the SmartDrive. It will then begin to accelerate.",
-        "Then, single-tap to set your desired speed.",
-        "To increase speed, give a faster push and then single tap to set your desired speed."
+          "Then, single-tap to set your desired speed.",
+          "To increase speed, give a faster push and then single tap to set your desired speed.",
+		  "If you do not tap, the SmartDrive will accelerate to the maximum speed controlled by the PushTracker's Max Speed setting."
+      ]
+    },
+    {
+      "Image": "~/assets/images/Stop2.png",
+      "Label": "Stopping",
+      "Bullets": [
+        "Double-tap to disengage the SmartDrive.",
+        "Then coast and brake with your hands.",
+          "Tip: To stop quickly, perform a single-tap followed by a quick combined tap and grab.",
+		  "Note: Disengaging the SmartDrive only stops the SmartDrive motor, you will still need to brake with your hands to bring your chair to a stop."
       ]
     },
     {
@@ -197,7 +212,7 @@
       "Bullets": [
         "To steer, gently grip the push-rim of the direction you want to go.",
         "Light grip will allow you to veer.",
-        "Allow the push-rim to slide through your hands."
+          "Allow the push-rim to slide through your hands."
       ]
     },
     {
@@ -207,16 +222,8 @@
         "To turn, firmly grip the push-rim of the direction you want to go.",
         "Firm grip will allow you to turn.",
         "The tighter you grip, the sharper you will turn.",
-        "Tip: An optimal center of gravity position of the rear wheels will reduce the grip needed to make sharp turns."
-      ]
-    },
-    {
-      "Image": "~/assets/images/Stop2.png",
-      "Label": "Stopping",
-      "Bullets": [
-        "Double-tap to disengage the SmartDrive.",
-        "Then coast and brake with your hands.",
-        "Tip: To stop quickly, perform a single-tap followed by a quick combined tap and grab."
+          "Tip: An optimal center of gravity position of the rear wheels will reduce the grip needed to make sharp turns.",
+		  "Note: You may need to disengage the SmartDrive when you wish to make very sharp turns."
       ]
     }
   ],
