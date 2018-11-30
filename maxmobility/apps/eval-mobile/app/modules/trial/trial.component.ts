@@ -403,6 +403,7 @@ export class TrialComponent implements OnInit {
       let haveDailyInfo = false;
       let haveDistance = false;
       let stopWithTimeoutID = null;
+      let meters = 0;
 
       // set up handlers
       const trialStoppedHandler = () => {
@@ -429,7 +430,8 @@ export class TrialComponent implements OnInit {
           this._progressService.hide();
           this._hideview(<View>this.stopWithView.nativeElement);
           this._hideview(this.cannotCompleteWithView.nativeElement);
-          const meters = this.trial.distance;
+          // STORE
+          this.trial.distance = meters;
           const ft = (meters * 5280.0) / 1609.0;
           if (this.settings.units === PushTracker.Settings.Units.English) {
             this.distanceDisplay = `${ft.toFixed(2)} ft`;
@@ -491,13 +493,13 @@ export class TrialComponent implements OnInit {
 
       const distanceHandler = data => {
         // get the data
-        this.trial.distance =
-          PushTracker.caseTicksToMeters(data.data.coastDistance) -
-          this.trial.distance;
-        console.log('trial distance', this.trial.distance);
+        let current = PushTracker.caseTicksToMeters(data.data.coastDistance);
+        meters = current - this.trial.distance;
         // record that we've gotten it
-        haveDistance = this.trial.distance > 0;
+        haveDistance = meters > 0;
         if (haveDailyInfo && haveDistance) {
+          // save the distance
+          this.trial.distance = meters;
           trialStoppedHandler();
         } else if (!haveDistance) {
           trialStopWithFailed(
