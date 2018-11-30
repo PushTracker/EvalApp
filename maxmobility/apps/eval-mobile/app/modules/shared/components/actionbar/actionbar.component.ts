@@ -98,9 +98,8 @@ export class ActionbarComponent extends ActionBar {
         title: this._translateService.instant(
           'pushtracker.state.connected.title'
         ),
-        message: this._translateService.instant(
-          'pushtracker.state.connected.msg'
-        ),
+        message:
+          this._translateService.instant('pushtracker.state.connected.msg') + s, // add connected PTs info
         duration: 5000,
         onTap: () => {}
       });
