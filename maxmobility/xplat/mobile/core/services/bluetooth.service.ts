@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Packet, PushTracker, SmartDrive } from '@maxmobility/core';
+import {
+  Packet,
+  PushTracker,
+  SmartDrive,
+  STORAGE_KEYS
+} from '@maxmobility/core';
 import { TranslateService } from '@ngx-translate/core';
 import {
   Bluetooth,
@@ -13,6 +18,7 @@ import { Observable, fromObject } from 'tns-core-modules/data/observable';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
 import { isAndroid, isIOS } from 'tns-core-modules/platform';
 import { alert } from 'tns-core-modules/ui/dialogs';
+import * as appSettings from 'tns-core-modules/application-settings';
 import { LoggingService } from './logging.service';
 
 export enum PushTrackerState {
@@ -37,12 +43,6 @@ export class BluetoothService {
     state: PushTrackerState.unknown
   });
 
-  /**
-   * Once a PT has been paired successfully this will be true
-   * Then we can ensure the actionbar icon is updated that it at least knows the app has paired before to a PT.
-   */
-  public static hasPairedToPushtrackerPreviously = false; // BRAD NOTE: this might need to be outside the service and stored in data (file) so we can load on subsequent runs
-
   // public members
   public enabled = false;
   public initialized = false;
@@ -58,6 +58,18 @@ export class BluetoothService {
     private _translateService: TranslateService,
     private _loggingService: LoggingService
   ) {
+    // Checking app-settings to see if the user has paired a PT before
+    const hasPairedToPT = appSettings.getBoolean(
+      STORAGE_KEYS.HAS_PAIRED_TO_PUSHTRACKER,
+      false
+    );
+    let state =
+      hasPairedToPT === true
+        ? PushTrackerState.paired
+        : PushTrackerState.unknown;
+
+    BluetoothService.pushTrackerStatus.set('state', state);
+
     // enabling `debug` will output console.logs from the bluetooth source code
     this._bluetooth.debug = false;
 
@@ -746,8 +758,8 @@ export class BluetoothService {
           PushTrackerState.disconnected
         );
 
-        // setting true to know the APP has previously paired to PT
-        BluetoothService.hasPairedToPushtrackerPreviously = true;
+        // setting true so we know the user has connected to a PT previously
+        appSettings.setBoolean(STORAGE_KEYS.HAS_PAIRED_TO_PUSHTRACKER, true);
       } else if (pt) {
         state = this._mergePushTrackerState(state, PushTrackerState.unknown);
       } else {
