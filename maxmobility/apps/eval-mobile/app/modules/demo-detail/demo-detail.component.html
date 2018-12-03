@@ -11,7 +11,7 @@
 
 <GridLayout padding="0" margin="0" rows="auto, *" cols="auto">
   <StackLayout
-    backgroundImage="~/assets/images/background_1.jpg"
+	 class="topSlide"
     row="0"
     height="30%"
     width="100%"
@@ -30,7 +30,7 @@
       <image
         *ngIf="!demo.sd_image"
         class="demo-image"
-        src="~/assets/images/sd_side.png"
+        src="~/assets/images/sd-stock.png"
         stretch="aspectFit"
         (tap)="onUpdateSDImageTap()"
       ></image>
@@ -54,7 +54,7 @@
       <image
         *ngIf="!demo.pt_image"
         class="demo-image"
-        src="~/assets/images/pushTrackerFull.png"
+        src="~/assets/images/pt-stock.png"
         stretch="aspectFit"
         (tap)="onUpdatePTImageTap()"
       ></image>
