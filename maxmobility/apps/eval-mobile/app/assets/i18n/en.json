@@ -731,7 +731,7 @@
     "check_new_firmware": "Check For New Firmware",
     "check_new_firmware_message": "Do you want to check and download new firmware?",
     "check_firmware_error": "An error occurred downloading the latest firmware. Try again, if the issue continues please report feedback.",
-    "refresh": "Refresh Device List",
+    "refresh": "Search for SmartDrives",
     "begin": "Begin Updates",
     "cancel": "Cancel All Firmware Updates",
     "downloading": "Fetching latest firmware data from the server",
@@ -767,8 +767,8 @@
       "We were unable to find the description for the latest firmware!"
     ],
     "1.6": [
-      "Added Push Settings Control.",
-      "Show App connectivity when connecting to the app.",
+      "Adjusted default push detection settings and added ability to control push detection settings.",
+      "Show checkmark on the PushTracker if it successfully connects or is already connected to the phone when the user initiates the connection.",
       "Improved speed filtering for smoother ride.",
       "Improved MCU to BLE Communication",
       "Only send status to MCU when not sending PT data."
