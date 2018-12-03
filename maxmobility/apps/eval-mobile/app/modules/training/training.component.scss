@@ -24,6 +24,18 @@
   }
 }
 
+
+.lowerSlide {
+  // background-color: $permobil-hero;
+  horizontal-align: center;
+
+  StackLayout {
+    horizontal-align: center;
+    width: 100%;
+    padding: 0, 0, 30, 0;
+  }
+}
+
 .next-button {
   width: 150;
   height: 40;
