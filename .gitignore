@@ -123,3 +123,4 @@ maxmobility/nativescript-bluetooth/**/*.js
 *.keystore
 *.apk
 *.ipa
+*.cer
