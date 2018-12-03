@@ -11,7 +11,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { Carousel, CarouselItem } from 'nativescript-carousel';
 import { Subscription } from 'rxjs';
 import { Color } from 'tns-core-modules/color';
-import { ObservableArray } from 'tns-core-modules/data/observable-array';
+import {
+  ChangedData,
+  ObservableArray
+} from 'tns-core-modules/data/observable-array';
 import { isAndroid } from 'tns-core-modules/platform';
 import { EventData } from 'tns-core-modules/ui/core/view';
 import { alert, confirm } from 'tns-core-modules/ui/dialogs';
@@ -51,12 +54,19 @@ export class OTAComponent implements OnInit {
     private _loggingService: LoggingService
   ) {
     this._page.className = 'blue-gradient-down';
+
+    // add current pushtrackers to ota candidates
+    BluetoothService.PushTrackers.map(pt => {
+      this.pushTrackerOTAs.push(pt);
+    });
+    this.register();
   }
 
   ngOnInit() {
     // see https://github.com/NativeScript/nativescript-angular/issues/1049
     this.routeSub = this._router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
+        this.unregister();
         this.cancelOTAs(true);
         if (this.slideIntervalID) {
           clearInterval(this.slideIntervalID);
@@ -75,32 +85,38 @@ export class OTAComponent implements OnInit {
     }
   }
 
+  register(): void {
+    this.unregister();
+
+    // handle pushtracker pairing events for existing pushtrackers
+    console.log('ota: registering for events!');
+    // listen for completely new pusthrackers (that we haven't seen before)
+    BluetoothService.PushTrackers.on(
+      ObservableArray.changeEvent,
+      (args: ChangedData<number>) => {
+        if (args.action === 'add') {
+          const pt = BluetoothService.PushTrackers.getItem(
+            BluetoothService.PushTrackers.length - 1
+          );
+          if (pt) {
+            this.pushTrackerOTAs.push(pt);
+          }
+        }
+      }
+    );
+  }
+
+  unregister(): void {
+    console.log('ota: unregistering for events!');
+    BluetoothService.PushTrackers.off(ObservableArray.changeEvent);
+  }
+
   get currentVersion(): string {
     return this._firmwareService.currentVersion;
   }
 
   get ready(): boolean {
     return this._firmwareService.haveFirmwares;
-  }
-
-  get otaDescription(): string[] {
-    let otaDesc = [this._translateService.instant('ota.downloading')];
-    if (this.ready) {
-      let tmp = this._translateService.instant(
-        'firmware.' + this.currentVersion
-      );
-      if (typeof tmp !== 'string' && tmp.length) {
-        otaDesc = tmp;
-      } else {
-        tmp = this._translateService.instant('firmware.not-found');
-        if (typeof tmp !== 'string' && tmp.length) {
-          otaDesc = tmp;
-        } else {
-          otaDesc = [this._translateService.instant('general.error')];
-        }
-      }
-    }
-    return otaDesc;
   }
 
   async checkForNewFirmwareTap() {
@@ -237,7 +253,6 @@ export class OTAComponent implements OnInit {
     }
     if (!this.updating && !this.searching) {
       this.smartDriveOTAs.splice(0, this.smartDriveOTAs.length);
-      this.pushTrackerOTAs.splice(0, this.pushTrackerOTAs.length);
       this.searching = true;
       return this._bluetoothService
         .available()
@@ -262,12 +277,8 @@ export class OTAComponent implements OnInit {
         })
         .then(() => {
           this.smartDriveOTAs.splice(0, this.smartDriveOTAs.length);
-          this.pushTrackerOTAs.splice(0, this.pushTrackerOTAs.length);
           BluetoothService.SmartDrives.map(sd => {
             this.smartDriveOTAs.push(sd);
-          });
-          BluetoothService.PushTrackers.map(pt => {
-            this.pushTrackerOTAs.push(pt);
           });
           this.searching = false;
         });

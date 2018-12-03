@@ -60,11 +60,11 @@
 	  "state": {
 		  "paired": {
 			  "title": "Paired",
-			  "msg": "PushTrackers are paired but not connected. Please connect your PushTracker by pressing and releaseing the right button. If you are unable to successfully connect, you may need to re-pair your PushTracker to your phone by using the PushTracker's settings menu."
+			  "msg": "PushTrackers are paired but not connected. Please connect your PushTracker by pressing and releasing the right button. If you are unable to successfully connect, you may need to re-pair your PushTracker to your phone by using the PushTracker's settings menu."
 		  },
 		  "disconnected": {
 			  "title": "Disconnected",
-			  "msg": "PushTrackers are paired but not connected. Please connect your PushTracker by pressing and releaseing the right button. If you are unable to successfully connect, you may need to re-pair your PushTracker to your phone by using the PushTracker's settings menu."
+			  "msg": "PushTrackers are paired but not connected. Please connect your PushTracker by pressing and releasing the right button. If you are unable to successfully connect, you may need to re-pair your PushTracker to your phone by using the PushTracker's settings menu."
 		  },
 		  "connecting": {
 			  "title": "Connecting",
@@ -115,8 +115,8 @@
     "select-date": "Select Eval Date",
     "with-smartdrive": "With SmartDrive: ",
     "without-smartdrive": "Without SmartDrive: ",
-    "confirm-lmn-email-title": "Email LMN",
-    "confirm-lmn-email-message": "Do you want to email this evaluation for LMN?",
+    "confirm-lmn-email-title": "Email",
+    "confirm-lmn-email-message": "Do you want to email this evaluation?",
     "search-btn": "Search",
     "reset-btn": "Reset",
     "incomplete-dialog": {
@@ -574,7 +574,7 @@
     "complete": "Complete Evaluation?",
     "add-trial": "Add Trial",
     "confirm": "Are you sure you're done with the evaluation?",
-    "email-subject": "Smart Evaluation LMN",
+    "email-subject": "Smart Evaluation Summary",
     "fewer": "fewer",
     "more": "more",
     "higher": "higher",
@@ -620,7 +620,7 @@
     "push_accuracy_disclaimer": "The push tracker uses movement to detect pushes. This can cause a varying degree of accuracy depending on how the user wears and moves with the push tracker. A better metric for evaluation is the relative difference between the pushes with the SmartDrive and without the SmartDrive.",
     "summary": "Summary",
     "please-connect-pt": "Please connect your PushTracker",
-    "connect_pushtracker_more_info": "A pushtracker must be connected to the Smart Evaluation app in order to communicate. Please see the Connectivity section on the home screen or press the connectivity icon in the upper right.",
+    "connect_pushtracker_more_info": "A PushTracker must be connected to the Smart Evaluation app in order to communicate. Please see the Connectivity section on the home screen or press the connectivity icon in the upper right.",
     "starting-trial": "Starting Trial - may take up to 10 seconds.",
     "stopping-trial": "Stopping Trial - may take up to 10 seconds.",
       "errors": {
@@ -667,7 +667,7 @@
     },
     {
       "question": "Why won't my PushTracker connect to my phone?",
-      "answer": "If you are using Android then it might be because the phone has saved the pairing information - which will prevent the PushTracker from establishing a solid connection.  To fix this, simply open your phone's bluetooth settings menu and click 'Forget' on the PushTracker that shows up in that menu.  Once you have done that, restart the Smart Evaluation app and the PushTracker should be able to reliably connect - without needing to re-pair to the phone!"
+      "answer": "If you are using Android then it might be because the phone has saved the pairing information - which will prevent the PushTracker from establishing a solid connection.  To fix this, simply open your phone's Bluetooth settings menu and click 'Forget' on the PushTracker that shows up in that menu.  Once you have done that, restart the Smart Evaluation app and the PushTracker should be able to reliably connect - without needing to re-pair to the phone!"
     },
     {
       "question": "How can I make the SmartDrive safe for children?",
@@ -731,7 +731,7 @@
     "check_new_firmware": "Check For New Firmware",
     "check_new_firmware_message": "Do you want to check and download new firmware?",
     "check_firmware_error": "An error occurred downloading the latest firmware. Try again, if the issue continues please report feedback.",
-    "refresh": "Refresh Device List",
+    "refresh": "Search for SmartDrives",
     "begin": "Begin Updates",
     "cancel": "Cancel All Firmware Updates",
     "downloading": "Fetching latest firmware data from the server",
@@ -752,7 +752,7 @@
     "searching": "Searching for Devices",
     "sd_app_conn_instructions": "For the Smart Evaluation app to be able to see and connect to a SmartDrive, you must have the SmartDrive ON and power assist OFF / 'SD Off'.  If you have trouble, turn the SmartDrive OFF and then ON.",
     "pt_app_conn_instructions": "To connect the PushTracker to the Smart Evaluation app, you must have the app open on your phone, then press and release the right button on the PushTracker. This will either connect your PushTracker to your app or take you into the pairing settings of the PushTracker. After pairing, you will need to leave the settings menu and then press the right button to connect to the app. If you have trouble, put the PushTracker to SLEEP and then turn it ON.",
-    "waiting": "Waiting for bluetooth to initialize",
+    "waiting": "Waiting for Bluetooth to initialize",
     "errors": {
       "unavailable": {
         "title": "Bluetooth Unavailable",
@@ -760,15 +760,15 @@
       }
     },
     "service-failure": "Bluetooth Service Failure",
-    "enable-bluetooth": "Smart Evaluation has detected that Bluetooth is not enabled on your device. Please enable bluetooth to perform OTAs and perform evaluations."
+    "enable-bluetooth": "Smart Evaluation has detected that Bluetooth is not enabled on your device. Please enable Bluetooth to perform OTAs and perform evaluations."
   },
   "firmware": {
     "not-found": [
       "We were unable to find the description for the latest firmware!"
     ],
     "1.6": [
-      "Added Push Settings Control.",
-      "Show App connectivity when connecting to the app.",
+      "Adjusted default push detection settings and added ability to control push detection settings.",
+      "Show checkmark on the PushTracker if it successfully connects or is already connected to the phone when the user initiates the connection.",
       "Improved speed filtering for smoother ride.",
       "Improved MCU to BLE Communication",
       "Only send status to MCU when not sending PT data."
