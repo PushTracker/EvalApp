@@ -35,11 +35,26 @@ When starting the Smart Evaluation app for the first time, sign up as a `Clinici
   * Connect a PushTracker to the Smart Eval App - explains the process for how to connect a PushTracker to the user's Smart Eval app once the two are paired to each other
   * Pair a PushTracker to a SmartDrive - explains the process for how to pair a PushTracker to a SmartDrive
   * PushTracker Settings - allows the user to view and control the PushTracker's settings
-  * Update a PushTracker and a SmartDrive - allows the user to check for new firmware updates, OTA those updates to their PushTracker / SmartDrive, and view the improvements those 
-* Videos
-* Clinical Tools
-* Demos
-* FAQs
+  * Update a PushTracker and a SmartDrive - allows the user to check for new firmware updates, OTA those updates to their PushTracker / SmartDrive, and view the improvements those updates provide
+* Videos - provides a collection of youtube videos detailing the different aspects of the SmartDrive MX2+ PushTracker
+* Clinical Tools - this section contains
+  * Begin SmartDrive Evaluation - the entry point for performing a SmartDrive Evaluation. The evaluation process consists of (in order):
+    * User focused questionnaire (no personal or personally identifiable data collected)
+	* SmartDrive training
+	* One or more trial(s) with and without the SmartDrive
+	* Summary + Report Generation
+  * View Past Evaluations - allows you to view a summary of all the evaluations you have performed and to optionally re-generate and re-send the summary report for a past evaluation
+  * Begin a SmartDrive Trial - allows you to add a Trial to an evaluation that has been paused or left before completion
+* Demos - this section shows a summary of all the demos for which your account is in possession
+* FAQs - this section provides a selection of frequently asked questions that when tapped will provide you with the answer to those questions.
+
+#### Action Bar Buttons
+
+On the home page, you will be able to see two buttons in the action bar at the top of the page:
+1. The user account button:
+  This button is only on this page and will take you to your account management page where you can update your information within the app.
+2. The PushTracker connectivity button:
+  This button is on every page's action bar and will show you the current connection status to one or more PushTrackers. When tapping on this button you will get information about the current state and what you may need to do next to properly connect your PushTracker to your Smart Eval app.
 
 ## Dealers / Reps:
 ### Overview
@@ -56,6 +71,35 @@ When starting the Smart Evaluation app for the first time, sign up as a `Clinici
 
 ### Guide
 
+When starting the Smart Evaluation app for the first time, sign up as a `Representative`. Upon successfully registering and logging into the app, you will be presented with the main page of the app, which will have the following sections:
+
+* Device Overview - this section contains
+  * SmartDrive training - A walkthrough of the basics of turning on the SmartDrive / PushTracker, Tapping, steering, stopping, and turning
+  * Pair a PushTracker to the Smart Eval App - explains the process for how to pair a PushTracker to the user's Smart Eval app on their phone
+  * Connect a PushTracker to the Smart Eval App - explains the process for how to connect a PushTracker to the user's Smart Eval app once the two are paired to each other
+  * Pair a PushTracker to a SmartDrive - explains the process for how to pair a PushTracker to a SmartDrive
+  * PushTracker Settings - allows the user to view and control the PushTracker's settings
+  * Update a PushTracker and a SmartDrive - allows the user to check for new firmware updates, OTA those updates to their PushTracker / SmartDrive, and view the improvements those updates provide
+* Videos - provides a collection of youtube videos detailing the different aspects of the SmartDrive MX2+ PushTracker
+* Clinical Tools - this section contains
+  * Begin SmartDrive Evaluation - the entry point for performing a SmartDrive Evaluation. The evaluation process consists of (in order):
+    * User focused questionnaire (no personal or personally identifiable data collected)
+	* SmartDrive training
+	* One or more trial(s) with and without the SmartDrive
+	* Summary + Report Generation
+  * View Past Evaluations - allows you to view a summary of all the evaluations you have performed and to optionally re-generate and re-send the summary report for a past evaluation
+  * Begin a SmartDrive Trial - allows you to add a Trial to an evaluation that has been paused or left before completion
+* Demos - this section shows a summary of each demo unit that you have registered to your account
+* FAQs - this section provides a selection of frequently asked questions that when tapped will provide you with the answer to those questions.
+
+#### Action Bar Buttons
+
+On the home page, you will be able to see two buttons in the action bar at the top of the page:
+1. The user account button:
+  This button is only on this page and will take you to your account management page where you can update your information within the app.
+2. The PushTracker connectivity button:
+  This button is on every page's action bar and will show you the current connection status to one or more PushTrackers. When tapping on this button you will get information about the current state and what you may need to do next to properly connect your PushTracker to your Smart Eval app.
+
 ## End Users:
 ### Overview
 * Informative and standardized training and education on the operation of the SmartDrive MX2+ PushTracker
@@ -65,5 +109,25 @@ When starting the Smart Evaluation app for the first time, sign up as a `Clinici
 * A selection of frequently asked questions (FAQs) related to the SmartDrive MX2+ PushTracker with their answers
 
 ### Guide
+
+When starting the Smart Evaluation app for the first time, sign up as an `End User`. Upon successfully registering and logging into the app, you will be presented with the main page of the app, which will have the following sections:
+
+* Device Overview - this section contains
+  * SmartDrive training - A walkthrough of the basics of turning on the SmartDrive / PushTracker, Tapping, steering, stopping, and turning
+  * Pair a PushTracker to the Smart Eval App - explains the process for how to pair a PushTracker to the user's Smart Eval app on their phone
+  * Connect a PushTracker to the Smart Eval App - explains the process for how to connect a PushTracker to the user's Smart Eval app once the two are paired to each other
+  * Pair a PushTracker to a SmartDrive - explains the process for how to pair a PushTracker to a SmartDrive
+  * PushTracker Settings - allows the user to view and control the PushTracker's settings
+  * Update a PushTracker and a SmartDrive - allows the user to check for new firmware updates, OTA those updates to their PushTracker / SmartDrive, and view the improvements those updates provide
+* Videos - provides a collection of youtube videos detailing the different aspects of the SmartDrive MX2+ PushTracker
+* FAQs - this section provides a selection of frequently asked questions that when tapped will provide you with the answer to those questions.
+
+#### Action Bar Buttons
+
+On the home page, you will be able to see two buttons in the action bar at the top of the page:
+1. The user account button:
+  This button is only on this page and will take you to your account management page where you can update your information within the app.
+2. The PushTracker connectivity button:
+  This button is on every page's action bar and will show you the current connection status to one or more PushTrackers. When tapping on this button you will get information about the current state and what you may need to do next to properly connect your PushTracker to your Smart Eval app.
 
 
