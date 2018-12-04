@@ -221,6 +221,7 @@ export class OTAComponent implements OnInit {
     }
 
     if (!this.updating) {
+      // TODO: show 'starting' warning
       console.log('start performing OTAs...');
       // start updating
       this.performOTAs()
