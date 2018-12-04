@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
-import { BluetoothService, FirmwareService, LoggingService, ProgressService } from '@maxmobility/mobile';
+import {
+  BluetoothService,
+  FirmwareService,
+  LoggingService,
+  ProgressService
+} from '@maxmobility/mobile';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 import * as fs from 'tns-core-modules/file-system';
 import { isAndroid, isIOS } from 'tns-core-modules/platform';
@@ -34,11 +39,11 @@ export class SettingsComponent {
     return this.loadFile('/assets/ota/PushTracker.16.ota')
       .then(otaData => {
         ptFW = otaData;
-        return this.loadFile('/assets/ota/SmartDriveBluetooth.16.ota');
+        return this.loadFile('/assets/ota/SmartDriveBLE.16.ota');
       })
       .then(otaData => {
         bleFW = otaData;
-        return this.loadFile('/assets/ota/MX2+.16.ota');
+        return this.loadFile('/assets/ota/SmartDriveMCU.16.ota');
       })
       .then(otaData => {
         mcuFW = otaData;
@@ -73,7 +78,7 @@ export class SettingsComponent {
             console.log(`Uploaded to kinvey: ${files}`);
           })
           .catch(error => {
-            this._loggingService.logException(error);
+            //this._loggingService.logException(error);
             console.log(`Couldn't upload to kinvey: ${error}`);
           });
       });
@@ -91,7 +96,7 @@ export class SettingsComponent {
       .stop()
       .then(stopProgress)
       .catch(err => {
-        this._loggingService.logException(err);
+        //this._loggingService.logException(err);
         console.log(`Couldn't stop BT: ${err}`);
         stopProgress(err);
       });
@@ -109,7 +114,7 @@ export class SettingsComponent {
       .advertise()
       .then(stopProgress)
       .catch(err => {
-        this._loggingService.logException(err);
+        //this._loggingService.logException(err);
         console.log(`Couldn't restart BT: ${err}`);
         stopProgress(err);
       });
@@ -130,11 +135,14 @@ export class SettingsComponent {
   private loadFile(fileName: string): Promise<any> {
     return new Promise((resolve, reject) => {
       try {
-        const filePath = fs.path.join(fs.knownFolders.currentApp().path, fileName);
+        const filePath = fs.path.join(
+          fs.knownFolders.currentApp().path,
+          fileName
+        );
         const f = fs.File.fromPath(filePath);
         resolve(f);
       } catch (error) {
-        this._loggingService.logException(error);
+        //this._loggingService.logException(error);
         reject(error);
       }
     });

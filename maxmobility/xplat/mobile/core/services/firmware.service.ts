@@ -48,9 +48,10 @@ export class FirmwareService {
   public async initFirmwareService() {
     try {
       await this.loadFromFS();
-      this.downloadFirmwares();
+      await this.downloadFirmwares();
     } catch (error) {
-      this._logService.logException(error);
+      console.log('initFirmwareService error', error);
+      //this._logService.logException(`${error}`);
     }
   }
 
@@ -76,7 +77,11 @@ export class FirmwareService {
   }
 
   get currentVersion(): string {
-    const maxVersion = Math.max(this.firmwares.PT.version, this.firmwares.BLE.version, this.firmwares.MCU.version);
+    const maxVersion = Math.max(
+      this.firmwares.PT.version,
+      this.firmwares.BLE.version,
+      this.firmwares.MCU.version
+    );
     return FirmwareService.versionByteToString(maxVersion);
   }
 
@@ -99,7 +104,10 @@ export class FirmwareService {
             version: this.firmwares[k].version
           };
         });
-        LS.setItem(FirmwareService.fsKeyPrefix + FirmwareService.fsKeyMetadata, md);
+        LS.setItem(
+          FirmwareService.fsKeyPrefix + FirmwareService.fsKeyMetadata,
+          md
+        );
         resolve();
       } catch (error) {
         reject(error);
@@ -111,7 +119,9 @@ export class FirmwareService {
     try {
       console.log(`loadMetadata start - ${performance.now()}`);
 
-      const md = LS.getItem(FirmwareService.fsKeyPrefix + FirmwareService.fsKeyMetadata);
+      const md = LS.getItem(
+        FirmwareService.fsKeyPrefix + FirmwareService.fsKeyMetadata
+      );
       if (md) {
         // now update our firmwares data
         this.last_check = md.last_check ? new Date(md.last_check) : null;
@@ -134,7 +144,9 @@ export class FirmwareService {
 
   private deleteMetadata() {
     try {
-      LS.removeItem(FirmwareService.fsKeyPrefix + FirmwareService.fsKeyMetadata);
+      LS.removeItem(
+        FirmwareService.fsKeyPrefix + FirmwareService.fsKeyMetadata
+      );
       return Promise.resolve();
     } catch (err) {
       return Promise.reject(err);
@@ -161,7 +173,10 @@ export class FirmwareService {
 
   // FOR LOADING A FW FILE FROM SERVER
   getData(url, filename) {
-    const filePath = path.join(knownFolders.currentApp().path, FirmwareService.firmwarePathPrefix + filename);
+    const filePath = path.join(
+      knownFolders.currentApp().path,
+      FirmwareService.firmwarePathPrefix + filename
+    );
     return httpModule.getFile(url, filePath);
   }
 
@@ -200,7 +215,9 @@ export class FirmwareService {
   }
 
   private updateFirmware(fwKey, file) {
-    this.firmwares[fwKey].version = this.versionStringToByte('' + file._version);
+    this.firmwares[fwKey].version = this.versionStringToByte(
+      '' + file._version
+    );
     this.firmwares[fwKey].id = file._id;
     this.firmwares[fwKey].length = file.size;
     console.log(`${fwKey}: ${file._version} : ${file.size}`);
@@ -214,9 +231,10 @@ export class FirmwareService {
         this.haveFirmwares = false;
         // determine whether or not to download the beta firmware files
         const currentUser = Kinvey.User.getActiveUser();
-        const downloadBetaFirmware = (currentUser.data as User).beta_firmware_tester;
+        const downloadBetaFirmware = (currentUser.data as User)
+          .beta_firmware_tester;
 
-        const tasks = await Object.keys(this.firmwares).map(async fwKey => {
+        const tasks = Object.keys(this.firmwares).map(async fwKey => {
           const query = new Kinvey.Query();
           let fileName = this.firmwares[fwKey].filename;
           if (downloadBetaFirmware) {
@@ -235,13 +253,24 @@ export class FirmwareService {
             const file = files[0];
             this.updateFirmware(fwKey, file);
             // download the firmware data and save it to temporary storage
-            const fileData = await this.getData(file._downloadURL, file._filename);
+            const fileData = await this.getData(
+              file._downloadURL,
+              file._filename
+            );
             // marshal the firmware data
-            await this.unpackFirmwareData(fwKey, fileData.readSync());
+            try {
+              await this.unpackFirmwareData(fwKey, fileData.readSync());
+            } catch (err) {
+              console.log("Couldn't unpack firmware data:", err);
+              throw new Error(`Couldn't unpack OTA for ${fwKey}!`);
+            }
 
             // save the firmware data to persistent storage
             try {
-              LS.setItem(this.firmwares[fwKey].filename, this.firmwares[fwKey].data);
+              LS.setItem(
+                this.firmwares[fwKey].filename,
+                this.firmwares[fwKey].data
+              );
             } catch (err) {
               console.log(`Couldn't save firmware data: ${err}`);
             }
@@ -257,17 +286,23 @@ export class FirmwareService {
             this.haveFirmwares = true;
             this.last_check = new Date();
             this.saveMetadata();
-            console.log(`downloadFirmwares promise.all resolve ${performance.now()}`);
+            console.log(
+              `downloadFirmwares promise.all resolve ${performance.now()}`
+            );
             resolve();
           })
           .catch(err => {
             console.log(`Couldn't get firmware data: ${err}`);
-            console.log(`downloadFirmwares promise.all error ${performance.now()}`);
+            console.log(
+              `downloadFirmwares promise.all error ${performance.now()}`
+            );
             this.haveFirmwares = false;
             reject(err);
           });
       } catch (error) {
-        this._logService.logException(error);
+        console.log('downloadFirmwares error', error);
+        //this._logService.logException(`${error}`);
+        reject(error);
       }
     });
   }
