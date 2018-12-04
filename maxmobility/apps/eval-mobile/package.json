@@ -56,7 +56,7 @@
     "buffer": "file:../../node_modules/buffer",
     "email-validator": "~2.0.4",
     "kinvey-nativescript-sdk": "~3.12.3",
-    "smart-eval-kinvey-keys": "git+https://github.com/autochair/SmartEvalKinvey.git#master",
+    "smart-eval-kinvey": "git+https://github.com/autochair/SmartEvalKinvey.git#master",
     "mustache": "~2.3.0",
     "nativescript-angular": "~7.0.2",
     "nativescript-barcodescanner": "~2.7.9",
