@@ -1,7 +1,7 @@
 # Smart Evaluation User Guide
----------------------------------
 
 The Smart Evaluation App is a smart-phone app for iOS and Android which targets these types of users:
+
 1. Clinicians / ATPs,
 2. Dealers / Reps,
 3. End Users
