@@ -734,7 +734,17 @@
     "refresh": "Search for SmartDrives",
     "begin": "Begin Updates",
     "cancel": "Cancel All Firmware Updates",
-    "downloading": "Fetching latest firmware data from the server",
+      "downloading": "Fetching latest firmware data from the server",
+	  "warnings": {
+		  "starting": {
+			  "title": "Starting OTA",
+			  "message": "Warning: you should not leave this page while you are performing OTA firmware updates of the SmartDrive or PushTracker. If you leave this page or kill the app, the OTAs will be cancelled or may fail."
+		  },
+		  "leaving": {
+			  "title": "Warning",
+			  "message": "Warning: you are leaving the OTA page during an OTA - this will cancel all ongoing OTAs! Are you sure you want to leave?"
+		  }
+	  },
     "errors": {
       "sd_connection": {
         "title": "SmartDrive connection error!",
