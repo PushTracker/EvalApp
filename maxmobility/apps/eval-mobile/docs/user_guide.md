@@ -51,6 +51,7 @@ When starting the Smart Evaluation app for the first time, sign up as a `Clinici
 #### Action Bar Buttons
 
 On the home page, you will be able to see two buttons in the action bar at the top of the page:
+
 1. The user account button:
   This button is only on this page and will take you to your account management page where you can update your information within the app.
 2. The PushTracker connectivity button:
@@ -95,6 +96,7 @@ When starting the Smart Evaluation app for the first time, sign up as a `Represe
 #### Action Bar Buttons
 
 On the home page, you will be able to see two buttons in the action bar at the top of the page:
+
 1. The user account button:
   This button is only on this page and will take you to your account management page where you can update your information within the app.
 2. The PushTracker connectivity button:
@@ -125,6 +127,7 @@ When starting the Smart Evaluation app for the first time, sign up as an `End Us
 #### Action Bar Buttons
 
 On the home page, you will be able to see two buttons in the action bar at the top of the page:
+
 1. The user account button:
   This button is only on this page and will take you to your account management page where you can update your information within the app.
 2. The PushTracker connectivity button:
