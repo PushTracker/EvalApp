@@ -211,9 +211,13 @@ export class OTAComponent implements OnInit {
     if (!isAvailable) {
       // bluetooth is not available
       alert({
-        title: 'Bluetooth Unavailable',
-        message: 'Bluetooth service unavailable - reinitializing!',
-        okButtonText: 'OK'
+        title: this._translateService.instant(
+          'bluetooth.errors.unavailable.title'
+        ),
+        message: this._translateService.instant(
+          'bluetooth.errors.unavailable.message'
+        ),
+        okButtonText: this._translateService.instant('dialogs.ok')
       }).then(() => {
         this._bluetoothService.advertise();
       });
@@ -221,10 +225,19 @@ export class OTAComponent implements OnInit {
     }
 
     if (!this.updating) {
-      // TODO: show 'starting' warning
-      console.log('start performing OTAs...');
-      // start updating
-      this.performOTAs()
+      alert({
+        title: this._translateService.instant('ota.warnings.starting.title'),
+        message: this._translateService.instant(
+          'ota.warnings.starting.message'
+        ),
+        okButtonText: this._translateService.instant('dialogs.ok')
+      })
+        .then(() => {
+          // TODO: disable back nav
+          console.log('start performing OTAs...');
+          // start updating
+          return this.performOTAs();
+        })
         .then(otaStatuses => {
           console.log(`completed all otas with statuses: ${otaStatuses}`);
           this.cancelOTAs(false);
@@ -324,6 +337,7 @@ export class OTAComponent implements OnInit {
   }
 
   private cancelOTAs(doCancel: boolean) {
+    // TODO: re-enable back nav
     this.updating = false;
     this.updatingButtonText = this._translateService.instant('ota.begin');
     if (doCancel) {
