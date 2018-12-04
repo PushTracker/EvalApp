@@ -27,7 +27,7 @@ import { ImageAsset } from 'tns-core-modules/image-asset/image-asset';
 import { isIOS } from 'tns-core-modules/platform';
 import { alert, confirm, prompt } from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
-import { KinveyKeys } from '~/kinvey-keys';
+import { APP_KEY, HOST_URL } from '~/kinvey-keys';
 import * as utils from 'tns-core-modules/utils/utils';
 
 @Component({
@@ -176,91 +176,6 @@ export class AccountComponent implements OnInit {
       }
     } catch (error) {
       this._loggingService.logException(error);
-    }
-  }
-
-  private takePictureAndCrop() {
-    try {
-      // check if device has camera
-      if (!camera.isAvailable()) {
-        console.log('No camera available on device.');
-        return null;
-      }
-
-      // request camera permissions
-      console.log('Checking permissions for camera access');
-      return camera
-        .requestPermissions()
-        .then(
-          async () => {
-            const imageAsset = (await camera.takePicture({
-              width: 500,
-              height: 500,
-              keepAspectRatio: true,
-              cameraFacing: 'front'
-            })) as ImageAsset;
-
-            const source = new ImageSource();
-            console.log(
-              `Creating ImageSource from the imageAsset ${imageAsset}`
-            );
-            const iSrc = await source.fromAsset(imageAsset);
-
-            console.log('Showing ImageCropper.');
-            const result = (await this.imageCropper.show(iSrc, {
-              width: 256,
-              height: 256,
-              lockSquare: true
-            })) as ImageCropperResult;
-
-            return result;
-          },
-          async error => {
-            console.log('Permission denied for camera.', error);
-            if (isIOS) {
-              confirm({
-                title: this._translateService.instant(
-                  'general.camera-permission'
-                ),
-                message: this._translateService.instant(
-                  'general.no-camera-permission-ios-confirm'
-                ),
-                okButtonText: this._translateService.instant('dialogs.yes'),
-                cancelButtonText: this._translateService.instant(
-                  'dialogs.cancel'
-                )
-              }).then(result => {
-                if (result) {
-                  utils.ios
-                    .getter(UIApplication, UIApplication.sharedApplication)
-                    .openURL(
-                      NSURL.URLWithString(UIApplicationOpenSettingsURLString)
-                    );
-                }
-              });
-            } else {
-              alert({
-                title: this._translateService.instant(
-                  'general.camera-permission'
-                ),
-                message: this._translateService.instant(
-                  'general.no-camera-permission-android'
-                ),
-                okButtonText: this._translateService.instant('dialogs.ok')
-              });
-            }
-
-            return null;
-          }
-        )
-        .catch(error => {
-          // this should only happen if the user cancels the image capture
-          return null;
-        });
-    } catch (error) {
-      console.log('error in takePictureAndCrop', error);
-      this._loggingService.logException(error);
-      return null;
     }
   }
 
@@ -452,9 +367,7 @@ export class AccountComponent implements OnInit {
       const token = (this._userService.user._kmd as any).authtoken;
       const response = await http.request({
         method: 'POST',
-        url: `${KinveyKeys.HOST_URL}/rpc/${
-          KinveyKeys.APP_KEY
-        }/custom/didyouknow`,
+        url: `${HOST_URL}/rpc/${APP_KEY}/custom/didyouknow`,
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Kinvey ${token}`
@@ -489,6 +402,91 @@ export class AccountComponent implements OnInit {
     } catch (error) {
       this._loggingService.logException(error);
       alert(error);
+    }
+  }
+
+  private takePictureAndCrop() {
+    try {
+      // check if device has camera
+      if (!camera.isAvailable()) {
+        console.log('No camera available on device.');
+        return null;
+      }
+
+      // request camera permissions
+      console.log('Checking permissions for camera access');
+      return camera
+        .requestPermissions()
+        .then(
+          async () => {
+            const imageAsset = (await camera.takePicture({
+              width: 500,
+              height: 500,
+              keepAspectRatio: true,
+              cameraFacing: 'front'
+            })) as ImageAsset;
+
+            const source = new ImageSource();
+            console.log(
+              `Creating ImageSource from the imageAsset ${imageAsset}`
+            );
+            const iSrc = await source.fromAsset(imageAsset);
+
+            console.log('Showing ImageCropper.');
+            const result = (await this.imageCropper.show(iSrc, {
+              width: 256,
+              height: 256,
+              lockSquare: true
+            })) as ImageCropperResult;
+
+            return result;
+          },
+          async error => {
+            console.log('Permission denied for camera.', error);
+            if (isIOS) {
+              confirm({
+                title: this._translateService.instant(
+                  'general.camera-permission'
+                ),
+                message: this._translateService.instant(
+                  'general.no-camera-permission-ios-confirm'
+                ),
+                okButtonText: this._translateService.instant('dialogs.yes'),
+                cancelButtonText: this._translateService.instant(
+                  'dialogs.cancel'
+                )
+              }).then(result => {
+                if (result) {
+                  utils.ios
+                    .getter(UIApplication, UIApplication.sharedApplication)
+                    .openURL(
+                      NSURL.URLWithString(UIApplicationOpenSettingsURLString)
+                    );
+                }
+              });
+            } else {
+              alert({
+                title: this._translateService.instant(
+                  'general.camera-permission'
+                ),
+                message: this._translateService.instant(
+                  'general.no-camera-permission-android'
+                ),
+                okButtonText: this._translateService.instant('dialogs.ok')
+              });
+            }
+
+            return null;
+          }
+        )
+        .catch(error => {
+          // this should only happen if the user cancels the image capture
+          return null;
+        });
+    } catch (error) {
+      console.log('error in takePictureAndCrop', error);
+      this._loggingService.logException(error);
+      return null;
     }
   }
 

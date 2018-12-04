@@ -23,7 +23,7 @@ import * as http from 'tns-core-modules/http';
 import { isAndroid, isIOS } from 'tns-core-modules/platform';
 import { clearTimeout, setTimeout } from 'tns-core-modules/timer/timer';
 import { action, confirm, prompt } from 'tns-core-modules/ui/dialogs';
-import { KinveyKeys } from '~/kinvey-keys';
+import { APP_KEY, HOST_URL } from '../../kinvey-keys';
 import { Page } from 'tns-core-modules/ui/page';
 
 @Component({
@@ -231,9 +231,7 @@ export class DemosComponent implements OnInit, AfterViewInit {
     console.log('request demo from rep');
     const response = await http.request({
       method: 'POST',
-      url: `${KinveyKeys.HOST_URL}/rpc/${
-        KinveyKeys.APP_KEY
-      }/custom/request-demo-unit`,
+      url: `${HOST_URL}/rpc/${APP_KEY}/custom/request-demo-unit`,
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Kinvey ${token}`
@@ -333,9 +331,7 @@ export class DemosComponent implements OnInit, AfterViewInit {
 
         response = await http.request({
           method: 'POST',
-          url: `${KinveyKeys.HOST_URL}/rpc/${
-            KinveyKeys.APP_KEY
-          }/custom/demo-unit-actions`,
+          url: `${HOST_URL}/rpc/${APP_KEY}/custom/demo-unit-actions`,
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Kinvey ${token}`
@@ -353,9 +349,7 @@ export class DemosComponent implements OnInit, AfterViewInit {
         console.log('retrieve from clinician');
         response = await http.request({
           method: 'POST',
-          url: `${KinveyKeys.HOST_URL}/rpc/${
-            KinveyKeys.APP_KEY
-          }/custom/demo-unit-actions`,
+          url: `${HOST_URL}/rpc/${APP_KEY}/custom/demo-unit-actions`,
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Kinvey ${token}`

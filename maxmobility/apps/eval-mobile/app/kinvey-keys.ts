@@ -1,5 +1,12 @@
-export enum KinveyKeys {
-  'APP_KEY' = 'kid_SyIIDJjdM',
-  'APP_SECRET' = '3cfe36e6ac8f4d80b04014cc980a4d47',
-  'HOST_URL' = 'https://baas.kinvey.com'
-}
+import { SmartEvalKeys } from 'smart-eval-kinvey';
+
+// use these for dev environment
+// export const APP_KEY = SmartEvalKeys.DEV_KEY;
+// export const APP_SECRET = SmartEvalKeys.DEV_SECRET;
+
+// use these for production environment
+export const APP_KEY = SmartEvalKeys.PROD_KEY;
+export const APP_SECRET = SmartEvalKeys.PROD_SECRET;
+
+export const HOST_URL = SmartEvalKeys.HOST_URL;
+export const MAPBOX_TOKEN = SmartEvalKeys.MAPBOX_TOKEN;

@@ -17,7 +17,7 @@ import {
 } from 'tns-core-modules/connectivity';
 import { device } from 'tns-core-modules/platform';
 import { alert } from 'tns-core-modules/ui/dialogs/dialogs';
-import { KinveyKeys } from './kinvey-keys';
+import { APP_KEY, APP_SECRET } from './kinvey-keys';
 
 // Register Custom Elements for Angular
 registerElement('Carousel', () => <any>Carousel);
@@ -116,10 +116,7 @@ export class AppComponent {
       }
     );
 
-    Kinvey.init({
-      appKey: `${KinveyKeys.APP_KEY}`,
-      appSecret: `${KinveyKeys.APP_SECRET}`
-    });
+    Kinvey.init({ appKey: `${APP_KEY}`, appSecret: `${APP_SECRET}` });
     Kinvey.ping()
       .then(res => {
         CLog(`Kinvey ping successful, SDK is active 💯`);
