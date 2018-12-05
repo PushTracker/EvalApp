@@ -247,7 +247,7 @@ export class OTAComponent implements OnInit {
                 // cancel the back nav for now then confirm with user to leave
                 args.cancel = true;
 
-                console.log('back button pressed', args);
+                console.log('back button pressed');
                 confirm({
                   title: this._translateService.instant(
                     'ota.warnings.leaving.title'
