@@ -1,24 +1,27 @@
-<MaxActionBar [allowNav]="!updating" [title]="'ota.title' | translate">
+<MaxActionBar [allowNav]="false" [title]="'ota.title' | translate">
+  // using an action item to simulate the iOS back navigation button so we can confirm with user before navigating back
+  <ActionItem android:visibility="false" ios.position="left" (tap)="confirmUserBackNav()">
+    <image src="res://ios_back_nav/ios_back_nav.png"></image>
+  </ActionItem>
 </MaxActionBar>
 
 <StackLayout>
   <ScrollView height="70%">
     <StackLayout class="ota-gradient">
-        <button
+      <button
         [text]="'ota.check_new_firmware' | translate"
         class="orange-btn"
         (tap)="checkForNewFirmwareTap()"
       ></button>
-  
+
       <label
         class="title"
         [text]="('ota.version' | translate) + ' ' + (currentVersion || '??')"
         textWrap="true"
       ></label>
-  
+
       <GridLayout *ngIf="ready" columns="*, *" rows="*">
         <button
-          b
           android:class="permobil-ocean-btn ota"
           ios:class="ota"
           col="0"
@@ -43,7 +46,7 @@
         textWrap="true"
         [text]="'ota.downloading' | translate"
       ></label>
-  
+
       // StackLayout in contains progress views for updates
       <StackLayout #otaProgressView padding="5, 0, 5, 0" orientation="vertical">
         // PushTracker Instructions //SmartDrive OTAs
@@ -116,7 +119,7 @@
             </WrapLayout>
           </GridLayout>
         </StackLayout>
-  
+
         //PushTracker OTAs
         <StackLayout class="ota" *ngFor="let pt of pushTrackerOTAs._array">
           <GridLayout class="otaInfo" rows="auto" columns="auto, *">
@@ -180,7 +183,7 @@
             </WrapLayout>
           </GridLayout>
         </StackLayout>
-  
+
         // SmartDrive Instructions
         <StackLayout class="ota" *ngIf="!smartDriveOTAs.length">
           <label
@@ -198,7 +201,6 @@
         </StackLayout>
       </StackLayout>
     </StackLayout>
-  
   </ScrollView>
 
   <GridLayout height="30%">

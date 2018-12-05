@@ -1,6 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
-import { RouterExtensions } from 'nativescript-angular/router';
 import { PushTracker, SmartDrive } from '@maxmobility/core';
 import {
   BluetoothService,
@@ -9,6 +8,7 @@ import {
   ProgressService
 } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
+import { RouterExtensions } from 'nativescript-angular/router';
 import { Carousel, CarouselItem } from 'nativescript-carousel';
 import { Subscription } from 'rxjs';
 import * as app from 'tns-core-modules/application';
@@ -208,6 +208,37 @@ export class OTAComponent implements OnInit {
       });
   }
 
+  confirmUserBackNav() {
+    // if we are not updating devices then just navigate back as normal
+    // else confirm with user to navigate which will cancel any active OTAs
+    if (this.updating === false) {
+      // remove the android back pressed event
+      if (isAndroid) {
+        app.android.off(app.AndroidApplication.activityBackPressedEvent);
+      }
+      // now actually navigate back
+      this._routerExtensions.back();
+    } else {
+      confirm({
+        title: this._translateService.instant('ota.warnings.leaving.title'),
+        message: this._translateService.instant('ota.warnings.leaving.message'),
+        okButtonText: this._translateService.instant('dialogs.yes'),
+        cancelable: true,
+        cancelButtonText: this._translateService.instant('dialogs.cancel')
+      }).then((result: boolean) => {
+        if (result === true) {
+          // remove the android back pressed event
+          if (isAndroid) {
+            app.android.off(app.AndroidApplication.activityBackPressedEvent);
+          }
+
+          // now actually navigate back
+          this._routerExtensions.back();
+        }
+      });
+    }
+  }
+
   async onStartOtaUpdate() {
     const isAvailable = await this._bluetoothService.available();
 
@@ -248,28 +279,7 @@ export class OTAComponent implements OnInit {
                 args.cancel = true;
 
                 console.log('back button pressed');
-                confirm({
-                  title: this._translateService.instant(
-                    'ota.warnings.leaving.title'
-                  ),
-                  message: this._translateService.instant(
-                    'ota.warnings.leaving.message'
-                  ),
-                  okButtonText: this._translateService.instant('dialogs.yes'),
-                  cancelable: true,
-                  cancelButtonText: this._translateService.instant(
-                    'dialogs.cancel'
-                  )
-                }).then((result: boolean) => {
-                  if (result === true) {
-                    // user wants to leave so remove the back pressed event
-                    app.android.off(
-                      app.AndroidApplication.activityBackPressedEvent
-                    );
-                    // now actually navigate back
-                    this._routerExtensions.back();
-                  }
-                });
+                this.confirmUserBackNav();
               }
             );
           }
