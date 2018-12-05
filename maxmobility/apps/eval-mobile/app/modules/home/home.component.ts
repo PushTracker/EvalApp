@@ -1,16 +1,14 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Demo, User, RouterExtService } from '@maxmobility/core';
+import { Demo, RouterExtService, User } from '@maxmobility/core';
 import {
   BluetoothService,
   DemoService,
   FileService,
   FirmwareService,
-  LocationService,
   LoggingService,
   UserService
 } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
-import { Kinvey } from 'kinvey-nativescript-sdk';
 import { RouterExtensions } from 'nativescript-angular/router';
 import {
   Feedback,
