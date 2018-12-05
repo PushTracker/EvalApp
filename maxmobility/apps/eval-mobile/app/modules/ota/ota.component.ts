@@ -377,11 +377,10 @@ export class OTAComponent implements OnInit {
     if (isIOS) {
       this._page.enableSwipeBackNavigation = true;
     } else if (isAndroid) {
-      app.android.off(app.AndroidApplication.activityBackPressedEvent, () => {
-        console.log(
-          'turning off the back pressed event for android hardware button'
-        );
-      });
+      console.log(
+        'turning off the back pressed event for android hardware button'
+      );
+      app.android.off(app.AndroidApplication.activityBackPressedEvent);
     }
 
     this.updating = false;
