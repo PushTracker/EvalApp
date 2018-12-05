@@ -268,21 +268,7 @@ export class OTAComponent implements OnInit {
       })
         .then(() => {
           // disable back nav for iOS - add event listener for android hardware back button
-          if (isIOS) {
-            this._page.enableSwipeBackNavigation = false;
-          } else if (isAndroid) {
-            // setting the event listener for the android back pressed event
-            app.android.on(
-              app.AndroidApplication.activityBackPressedEvent,
-              (args: app.AndroidActivityBackPressedEventData) => {
-                // cancel the back nav for now then confirm with user to leave
-                args.cancel = true;
-
-                console.log('back button pressed');
-                this.confirmUserBackNav();
-              }
-            );
-          }
+          this.setBackNav(false);
 
           console.log('start performing OTAs...');
           // start updating
@@ -386,17 +372,59 @@ export class OTAComponent implements OnInit {
     });
   }
 
+  private setBackNav(allowed: boolean) {
+    if (isIOS) {
+      if (
+        this._page.ios.navigationController &&
+        this._page.ios.navigationController.interactivePopGestureRecognizer
+      ) {
+        this._page.ios.navigationController.interactivePopGestureRecognizer.enabled = allowed;
+      }
+      this._page.enableSwipeBackNavigation = allowed;
+    } else if (isAndroid) {
+      if (allowed) {
+        // setting the event listener for the android back pressed event
+        app.android.on(
+          app.AndroidApplication.activityBackPressedEvent,
+          (args: app.AndroidActivityBackPressedEventData) => {
+            // cancel the back nav for now then confirm with user to leave
+            args.cancel = true;
+
+            console.log('back button pressed');
+            confirm({
+              title: this._translateService.instant(
+                'ota.warnings.leaving.title'
+              ),
+              message: this._translateService.instant(
+                'ota.warnings.leaving.message'
+              ),
+              okButtonText: this._translateService.instant('dialogs.yes'),
+              cancelable: true,
+              cancelButtonText: this._translateService.instant('dialogs.cancel')
+            }).then((result: boolean) => {
+              if (result === true) {
+                // user wants to leave so remove the back pressed event
+                app.android.off(
+                  app.AndroidApplication.activityBackPressedEvent
+                );
+                // now actually navigate back
+                this._routerExtensions.back();
+              }
+            });
+          }
+        );
+      } else {
+        console.log(
+          'turning off the back pressed event for android hardware button'
+        );
+        app.android.off(app.AndroidApplication.activityBackPressedEvent);
+      }
+    }
+  }
+
   private cancelOTAs(doCancel: boolean) {
     // re-enable back nav and remove the back pressed event listener for android
-    if (isIOS) {
-      this._page.enableSwipeBackNavigation = true;
-    } else if (isAndroid) {
-      console.log(
-        'turning off the back pressed event for android hardware button'
-      );
-      app.android.off(app.AndroidApplication.activityBackPressedEvent);
-    }
-
+    this.setBackNav(true);
     this.updating = false;
     this.updatingButtonText = this._translateService.instant('ota.begin');
     if (doCancel) {
