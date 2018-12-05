@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
+import { RouterExtensions } from 'nativescript-angular/router';
 import { PushTracker, SmartDrive } from '@maxmobility/core';
 import {
   BluetoothService,
@@ -48,6 +49,7 @@ export class OTAComponent implements OnInit {
   constructor(
     private _page: Page,
     private _router: Router,
+    private _routerExtensions: RouterExtensions,
     private _translateService: TranslateService,
     private _progressService: ProgressService,
     private _bluetoothService: BluetoothService,
@@ -264,6 +266,8 @@ export class OTAComponent implements OnInit {
                     app.android.off(
                       app.AndroidApplication.activityBackPressedEvent
                     );
+                    // now actually navigate back
+                    this._routerExtensions.back();
                   }
                 });
               }
