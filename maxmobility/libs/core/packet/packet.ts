@@ -3,7 +3,12 @@ const Buffer = require('buffer').Buffer;
 
 export function bindingTypeToString(bindingType, bindingValue) {
   let valueName = null;
-  if (bindingType === null || bindingType === undefined || bindingValue === null || bindingValue === undefined) {
+  if (
+    bindingType === null ||
+    bindingType === undefined ||
+    bindingValue === null ||
+    bindingValue === undefined
+  ) {
     return valueName;
   }
   const names = Object.keys(PacketBinding[bindingType]).filter(key => {
@@ -83,7 +88,7 @@ export class Packet {
         this.instance[key] = data;
       }
     } catch (err) {
-      console.log(`Couldn't make packet: ${_type}::${subType}::${key} - ${err}`);
+      // console.log(`Couldn't make packet: ${_type}::${subType}::${key} - ${err}`);
     }
   }
 
@@ -151,7 +156,7 @@ export class Packet {
           return this.instance[key];
         }
       } catch (err) {
-        console.log(`Couldn't get/set data: ${key} - ${err}`);
+        // console.log(`Couldn't get/set data: ${key} - ${err}`);
       }
     }
 

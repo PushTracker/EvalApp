@@ -7,8 +7,8 @@ import { Kinvey } from 'kinvey-nativescript-sdk';
 import { RouterExtensions } from 'nativescript-angular/router';
 import * as camera from 'nativescript-camera';
 import {
-  ValueList,
-  SelectedIndexChangedEventData
+  SelectedIndexChangedEventData,
+  ValueList
 } from 'nativescript-drop-down';
 import * as email from 'nativescript-email';
 import {
@@ -19,16 +19,16 @@ import * as LS from 'nativescript-localstorage';
 import { ToastDuration, ToastPosition, Toasty } from 'nativescript-toasty';
 import { Subscription } from 'rxjs';
 import * as http from 'tns-core-modules/http';
+import { ImageAsset } from 'tns-core-modules/image-asset/image-asset';
 import {
   fromBase64,
   ImageSource
 } from 'tns-core-modules/image-source/image-source';
-import { ImageAsset } from 'tns-core-modules/image-asset/image-asset';
 import { isIOS } from 'tns-core-modules/platform';
 import { alert, confirm, prompt } from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
-import { APP_KEY, HOST_URL } from '~/kinvey-keys';
 import * as utils from 'tns-core-modules/utils/utils';
+import { APP_KEY, HOST_URL } from '~/kinvey-keys';
 
 @Component({
   selector: 'Account',
@@ -169,10 +169,12 @@ export class AccountComponent implements OnInit {
     try {
       const result = await this.takePictureAndCrop();
       if (result && result.image !== null) {
-        console.log('ImageCropper return cropped image.');
+        this._loggingService.logBreadCrumb('ImageCropper returned image.');
         this.saveProfilePicture(result.image);
       } else {
-        console.log('No result returned from the image cropper.');
+        this._loggingService.logBreadCrumb(
+          'No result returned from the image cropper.'
+        );
       }
     } catch (error) {
       this._loggingService.logException(error);
@@ -257,7 +259,6 @@ export class AccountComponent implements OnInit {
         okButtonText: this.yes,
         cancelButtonText: this.no
       });
-      CLog('signout confirm result', result);
       if (result) {
         this._zone.run(async () => {
           // go ahead and nav to login to keep UI moving without waiting
@@ -266,7 +267,6 @@ export class AccountComponent implements OnInit {
           });
 
           const logoutResult = await this._userService.logout();
-          console.log('logoutResult', logoutResult);
         });
       }
     } catch (error) {
@@ -295,9 +295,6 @@ export class AccountComponent implements OnInit {
 
     if (confirmResult === false) {
       // user denied the confirmation
-      console.log(
-        'User denied the confirmation to open email to send feedback.'
-      );
       return;
     }
 
@@ -308,7 +305,6 @@ export class AccountComponent implements OnInit {
 
     if (!canEmail) {
       // email is available on device
-      console.log('Email is not available on the device.');
       return;
     }
 
@@ -321,9 +317,7 @@ export class AccountComponent implements OnInit {
       })
       .then(result => {
         if (result) {
-          console.log('email compose result', result);
-        } else {
-          console.log('the email may NOT have been sent!');
+          // do nothing
         }
       })
       .catch(e => {
@@ -340,7 +334,6 @@ export class AccountComponent implements OnInit {
    * which sends out a push notification to users.
    */
   async submitDidYouKnow() {
-    console.log('submitDidYouKnow tapped');
     // prompt for the private key to make sure before sending
     const result = await prompt({
       message: 'Enter the private key?',
@@ -355,13 +348,11 @@ export class AccountComponent implements OnInit {
     }
 
     try {
-      console.log('saving DidYouKnow to Kinvey...');
       await Kinvey.DataStore.collection('DidYouKnow').save({
         all_users: this.didyouknow.all_users,
         creator_id: this._userService.user._id,
         text: this.didyouknow.text
       });
-      console.log('DidYouKnow saved to Kinvey data collection');
 
       // use the authtoken that is returned during a login for the endpoint auth
       const token = (this._userService.user._kmd as any).authtoken;
@@ -378,8 +369,6 @@ export class AccountComponent implements OnInit {
           all_users: this.didyouknow.all_users
         })
       });
-
-      console.log('response', response);
 
       // if error show alert with error from Kinvey endpoint
       if (response.statusCode !== 200) {
@@ -409,12 +398,10 @@ export class AccountComponent implements OnInit {
     try {
       // check if device has camera
       if (!camera.isAvailable()) {
-        console.log('No camera available on device.');
         return null;
       }
 
       // request camera permissions
-      console.log('Checking permissions for camera access');
       return camera
         .requestPermissions()
         .then(
@@ -427,12 +414,9 @@ export class AccountComponent implements OnInit {
             })) as ImageAsset;
 
             const source = new ImageSource();
-            console.log(
-              `Creating ImageSource from the imageAsset ${imageAsset}`
-            );
+
             const iSrc = await source.fromAsset(imageAsset);
 
-            console.log('Showing ImageCropper.');
             const result = (await this.imageCropper.show(iSrc, {
               width: 256,
               height: 256,
@@ -442,7 +426,9 @@ export class AccountComponent implements OnInit {
             return result;
           },
           async error => {
-            console.log('Permission denied for camera.', error);
+            this._loggingService.logMessage(
+              `Permission denied for camera ${error}`
+            );
             if (isIOS) {
               confirm({
                 title: this._translateService.instant(
@@ -484,7 +470,6 @@ export class AccountComponent implements OnInit {
           return null;
         });
     } catch (error) {
-      console.log('error in takePictureAndCrop', error);
       this._loggingService.logException(error);
       return null;
     }

@@ -49,9 +49,6 @@ export class SettingsComponent {
         mcuFW = otaData;
       })
       .then(() => {
-        console.log(`size: ${ptFW.readSync().length}`);
-        console.log(`size: ${mcuFW.readSync().length}`);
-        console.log(`size: ${bleFW.readSync().length}`);
         const ptMD = {
           filename: 'PushTracker.ota.beta',
           size: ptFW.readSync().length,
@@ -75,11 +72,10 @@ export class SettingsComponent {
         const blePromise = Kinvey.Files.upload(bleFW, bleMD);
         return Promise.all([ptPromise, mcuPromise, blePromise])
           .then(files => {
-            console.log(`Uploaded to kinvey: ${files}`);
+            this._loggingService.logBreadCrumb(`Uploaded to Kinvey ${files}`);
           })
           .catch(error => {
-            //this._loggingService.logException(error);
-            console.log(`Couldn't upload to kinvey: ${error}`);
+            // this._loggingService.logException(error);
           });
       });
   }
@@ -87,7 +83,6 @@ export class SettingsComponent {
   onStopBT(): void {
     this._progressService.show('Stopping Bluetooth service');
     const stopProgress = result => {
-      console.log(`RESULT: ${result}`);
       setTimeout(() => {
         this._progressService.hide();
       }, 1000);
@@ -96,8 +91,7 @@ export class SettingsComponent {
       .stop()
       .then(stopProgress)
       .catch(err => {
-        //this._loggingService.logException(err);
-        console.log(`Couldn't stop BT: ${err}`);
+        // this._loggingService.logException(err);
         stopProgress(err);
       });
   }
@@ -105,7 +99,6 @@ export class SettingsComponent {
   onRestartBT(): void {
     this._progressService.show('Restarting Bluetooth service');
     const stopProgress = result => {
-      console.log(`RESULT: ${result}`);
       setTimeout(() => {
         this._progressService.hide();
       }, 1000);
@@ -114,8 +107,7 @@ export class SettingsComponent {
       .advertise()
       .then(stopProgress)
       .catch(err => {
-        //this._loggingService.logException(err);
-        console.log(`Couldn't restart BT: ${err}`);
+        // this._loggingService.logException(err);
         stopProgress(err);
       });
   }
@@ -142,7 +134,7 @@ export class SettingsComponent {
         const f = fs.File.fromPath(filePath);
         resolve(f);
       } catch (error) {
-        //this._loggingService.logException(error);
+        // this._loggingService.logException(error);
         reject(error);
       }
     });

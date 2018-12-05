@@ -31,7 +31,7 @@ import {
 import { isIOS } from 'tns-core-modules/platform';
 import { setTimeout } from 'tns-core-modules/timer';
 import { View } from 'tns-core-modules/ui/core/view';
-import { alert, confirm, prompt, action } from 'tns-core-modules/ui/dialogs';
+import { action, alert, confirm, prompt } from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
 import * as utils from 'tns-core-modules/utils/utils';
 
@@ -76,7 +76,6 @@ export class DemoDetailComponent {
     this._pageRoute.activatedRoute
       .pipe(switchMap(activatedRoute => activatedRoute.queryParams))
       .forEach(params => {
-        console.log('route params', params);
         if (params.index !== undefined && params.index > -1) {
           this._index = params.index;
           const demo = DemoService.Demos.getItem(this._index);
@@ -124,7 +123,6 @@ export class DemoDetailComponent {
     try {
       const result = await this.takePictureAndCrop();
       if (result && result.image) {
-        console.log('ImageCropper returned cropped image.');
         this.demo.sd_image = result.image;
         if (this._index && this.demo.sd_image) {
           // auto-save if this demo already exists
@@ -134,7 +132,9 @@ export class DemoDetailComponent {
           this.demo.sd_image_base64 = b64;
         }
       } else {
-        console.log('No result returned from the image cropper.');
+        this._loggingService.logBreadCrumb(
+          'No result returned from the image cropper.'
+        );
       }
     } catch (error) {
       this._loggingService.logException(error);
@@ -145,7 +145,6 @@ export class DemoDetailComponent {
     try {
       const result = await this.takePictureAndCrop();
       if (result && result.image !== null) {
-        console.log('ImageCropper return cropped image.');
         this.demo.pt_image = result.image;
         if (this._index && this.demo.pt_image) {
           // auto-save if this demo already exists
@@ -155,7 +154,9 @@ export class DemoDetailComponent {
           this.demo.pt_image_base64 = b64;
         }
       } else {
-        console.log('No result returned from the image cropper.');
+        this._loggingService.logBreadCrumb(
+          'No result returned from the image cropper.'
+        );
       }
     } catch (error) {
       this._loggingService.logException(error);
@@ -184,7 +185,9 @@ export class DemoDetailComponent {
       // the demo service calls load() at the end ofa create
       // now re-load our data from the service
       if (this._index > -1) {
-        console.log('index is greater than -1');
+        this._loggingService.logBreadCrumb(
+          'index is greater than -1 trying to save demo-detail'
+        );
       } else {
         this._index = DemoService.Demos.indexOf(
           this._demoService.getDemoBySmartDriveSerialNumber(
@@ -193,9 +196,8 @@ export class DemoDetailComponent {
         );
       }
 
-      console.log('this._index', this._index);
       const demo = DemoService.Demos.getItem(this._index);
-      console.log('demo', demo);
+      this._loggingService.logBreadCrumb(`Found demo: ${demo}`);
 
       // BRAD - https://github.com/PushTracker/EvalApp/issues/144
       if (demo.sd_image_base64 && demo.sd_image) {
@@ -227,8 +229,8 @@ export class DemoDetailComponent {
         beepOnScan: true,
         torchOn: false,
         closeCallback: () => {
-          console.log('Scanner closed');
-        }, // invoked when the scanner was closed (success or abort)
+          // scanner closed, not doing anything for now
+        },
         resultDisplayDuration: 500, // Android only
         openSettingsIfPermissionWasPreviouslyDenied: true
       })
@@ -241,7 +243,6 @@ export class DemoDetailComponent {
       })
       .catch(err => {
         this._loggingService.logException(err);
-        console.log('No scan. ' + err);
       });
   }
 
@@ -330,8 +331,6 @@ export class DemoDetailComponent {
     let processTimeout = 0;
 
     try {
-      console.log(demo);
-
       const isEnabled = await geolocation.isEnabled();
       if (isEnabled) {
         // if more than 750ms pass then show a toasty that location is being calculated...
@@ -346,7 +345,7 @@ export class DemoDetailComponent {
       // clear the timeout when done
       clearTimeout(processTimeout);
 
-      console.log('current location', loc);
+      this._loggingService.logBreadCrumb(`Current location: ${loc}`);
 
       // confirm with user if they want to update the demo location
       const result = await confirm({
@@ -359,7 +358,6 @@ export class DemoDetailComponent {
 
       if (result === true) {
         // update the demo units location 👍
-        console.log('need to update demo now');
         demo.location = loc.place_name;
         demo.geo = [loc.longitude, loc.latitude];
         this._datastore.save(demo);
@@ -379,7 +377,6 @@ export class DemoDetailComponent {
       cancelButtonText: 'Cancel'
     }).then(result => {
       // result argument is boolean
-      console.log('Dialog result: ' + result);
     });
   }
 
@@ -392,14 +389,12 @@ export class DemoDetailComponent {
 
     // make sure we have demo unit with lat/lng
     if (!this.demo.geo || !this.demo.geo[0] || !this.demo.geo[1]) {
-      console.log('no geo for demo', this.demo);
       const nsMapView = args.object as View;
       nsMapView.visibility = 'collapse';
       nsMapView.height = 0;
       return;
     }
 
-    console.log('map ready', args.map);
     // set center of the map to the unit's coords
     map.setCenter({
       lat: this.demo.geo[1],
@@ -439,8 +434,8 @@ export class DemoDetailComponent {
         serialNumber = `${parseInt(text, 10)}`;
       }
     } catch (err) {
-      // do nothing
-      console.log(err);
+      // do nothing but log to sentry
+      this._loggingService.logException(err);
     }
     if (isPushTracker) {
       deviceType = 'pushtracker';
@@ -480,12 +475,10 @@ export class DemoDetailComponent {
     try {
       // check if device has camera
       if (!camera.isAvailable()) {
-        console.log('No camera available on device.');
         return null;
       }
 
       // request camera permissions
-      console.log('Checking permissions for camera access');
       return camera
         .requestPermissions()
         .then(
@@ -498,12 +491,8 @@ export class DemoDetailComponent {
             })) as ImageAsset;
 
             const source = new ImageSource();
-            console.log(
-              `Creating ImageSource from the imageAsset ${imageAsset}`
-            );
             const iSrc = await source.fromAsset(imageAsset);
 
-            console.log('Showing ImageCropper.');
             const result = (await this._imageCropper.show(iSrc, {
               width: 256,
               height: 256,
@@ -513,7 +502,6 @@ export class DemoDetailComponent {
             return result;
           },
           async error => {
-            console.log('Permission denied for camera.', error);
             if (isIOS) {
               confirm({
                 title: this._translateService.instant(
@@ -555,7 +543,6 @@ export class DemoDetailComponent {
           return null;
         });
     } catch (error) {
-      console.log('error in takePictureAndCrop', error);
       this._loggingService.logException(error);
       return null;
     }

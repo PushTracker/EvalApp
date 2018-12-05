@@ -34,7 +34,6 @@ export class EvaluationService {
 
       const stream = this.datastore.find(query);
       const data = await stream.toPromise();
-      console.log(data);
       return data;
     } catch (error) {
       this._logService.logException(error);
@@ -50,6 +49,6 @@ export class EvaluationService {
   }
 
   private handleErrors(error: Response) {
-    console.log(error);
+    // console.log(error);
   }
 }

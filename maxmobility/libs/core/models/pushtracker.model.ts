@@ -329,7 +329,6 @@ export class PushTracker extends Observable {
   }
 
   public onOTAActionTap(action: string) {
-    console.log(`OTA Action: ${action}`);
     switch (action) {
       case 'ota.action.start':
         this.sendEvent(PushTracker.pushtracker_ota_start_event);
@@ -373,10 +372,8 @@ export class PushTracker extends Observable {
     return new Promise((resolve, reject) => {
       if (!fw || !fwVersion) {
         const msg = `Bad version (${fwVersion}), or firmware (${fw})!`;
-        console.log(msg);
         reject(msg);
       } else {
-        console.log(`Beginning OTA for PushTracker: ${this.address}`);
         // set up variables to keep track of the ota
         let cancelOTA = false;
         let startedOTA = false;
@@ -508,7 +505,6 @@ export class PushTracker extends Observable {
           characteristic: any,
           nextState: any
         ) => {
-          //console.log('writing firmware to pt');
           if (index < 0) index = 0;
           const fileSize = fw.length;
           if (cancelOTA) {
@@ -519,7 +515,6 @@ export class PushTracker extends Observable {
             }, 100);
           } else if (index < fileSize) {
             if (this.connected && this.ableToSend) {
-              //console.log(`Writing ${index} / ${fileSize} of ota to pt`);
               const p = new Packet();
               p.makeOTAPacket('PushTracker', index, fw);
               const data = p.writableBuffer();
@@ -537,8 +532,6 @@ export class PushTracker extends Observable {
                   }
                 })
                 .catch(err => {
-                  console.log(`couldn't notify: ${err}`);
-                  console.log('retrying');
                   setTimeout(() => {
                     writeFirmwareSector(fw, characteristic, nextState);
                   }, 100);
@@ -575,7 +568,6 @@ export class PushTracker extends Observable {
 
           unregister();
           // TODO: do we disconnect?
-          //console.log(`Disconnecting from ${this.address}`);
           // TODO: How do we disconnect from the PT?
           if (success) {
             resolve(reason);
@@ -676,7 +668,6 @@ export class PushTracker extends Observable {
                 msg = `PushTracker OTA FAILED! ${this.version.toString(16)}`;
                 this.otaState = PushTracker.OTAState.failed;
               }
-              console.log(msg);
               break;
             case PushTracker.OTAState.complete:
               stopOTA('OTA Complete', true, false);
@@ -735,7 +726,7 @@ export class PushTracker extends Observable {
     dataType?: string,
     data?: any
   ): Promise<any> {
-    console.log(`Sending ${Type}::${SubType}::${data} to ${this.address}`);
+    // console.log(`Sending ${Type}::${SubType}::${data} to ${this.address}`);
     const p = new Packet();
     p.Type(Type);
     p.SubType(SubType);
@@ -749,7 +740,6 @@ export class PushTracker extends Observable {
     }
     const transmitData = p.writableBuffer();
     p.destroy();
-    //console.log(`sending ${transmitData}`);
     return this._bluetoothService.sendToPushTrackers(transmitData, [
       this.device
     ]);
@@ -960,8 +950,8 @@ export class PushTracker extends Observable {
            uint64_t   caseDistance;   /** Cumulative Case distance in ticks.
            }            distanceInfo;
         */
-    console.log(`Got distance info: ${motorTicks}, ${caseTicks}`);
-    console.log(`                 : ${motorMiles}, ${caseMiles}`);
+    // console.log(`Got distance info: ${motorTicks}, ${caseTicks}`);
+    // console.log(`                 : ${motorMiles}, ${caseMiles}`);
     this.sendEvent(PushTracker.pushtracker_distance_event, {
       driveDistance: motorTicks,
       coastDistance: caseTicks

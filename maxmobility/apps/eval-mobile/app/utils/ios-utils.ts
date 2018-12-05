@@ -7,12 +7,7 @@ import { Page } from 'tns-core-modules/ui/page';
  * @param page [Page] - The page instance.
  */
 export function setMarginForIosSafeArea(page: Page) {
-  console.log(
-    `TODO: newer iOS devices might change the layout and NS versions abstractions
-    could change. So the values could be different.`
-  );
   if (isIOS && page.actionBarHidden) {
-    console.log('not adding margin for the page');
     const safeAreaInsets = getSafeAreaInsets() as UIEdgeInsets;
     if (safeAreaInsets) {
       page.marginBottom = -1 * safeAreaInsets.bottom;

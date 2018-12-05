@@ -108,7 +108,6 @@ export class HomeComponent {
     private _bluetoothService: BluetoothService,
     private translateService: TranslateService
   ) {
-    console.log(`Home.Component start constructor ${performance.now()}`);
     this._page.enableSwipeBackNavigation = false;
 
     this._fileService.downloadTranslationFiles();
@@ -128,8 +127,6 @@ export class HomeComponent {
     } else {
       this.demoUnitsLoaded = true;
     }
-
-    console.log(`Home.Component end constructor ${performance.now()}`);
   }
 
   get currentVersion(): string {
@@ -151,7 +148,6 @@ export class HomeComponent {
   }
 
   loadDemoUnits() {
-    console.log('refresh demo list');
     try {
       this.demoUnitsLoaded = false; // toggle the display of the loading indicator
       DemoService.Demos.splice(0, DemoService.Demos.length); // empty the current items
@@ -166,7 +162,7 @@ export class HomeComponent {
           this.demoUnitsLoaded = true;
         });
     } catch (error) {
-      console.log(error);
+      this._logService.logException(error);
     }
   }
 
@@ -242,7 +238,7 @@ export class HomeComponent {
       type: FeedbackType.Info,
       backgroundColor: blueColor,
       onTap: () => {
-        console.log('feedback tapped');
+        // do nothing
       }
     });
   }

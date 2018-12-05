@@ -90,9 +90,7 @@ export class OTAComponent implements OnInit {
 
   register(): void {
     this.unregister();
-
     // handle pushtracker pairing events for existing pushtrackers
-    console.log('ota: registering for events!');
     // listen for completely new pusthrackers (that we haven't seen before)
     BluetoothService.PushTrackers.on(
       ObservableArray.changeEvent,
@@ -110,7 +108,6 @@ export class OTAComponent implements OnInit {
   }
 
   unregister(): void {
-    console.log('ota: unregistering for events!');
     BluetoothService.PushTrackers.off(ObservableArray.changeEvent);
   }
 
@@ -139,14 +136,12 @@ export class OTAComponent implements OnInit {
       );
 
       const carousel = this.carousel.nativeElement as Carousel;
-      console.log('carousel', carousel);
 
       this._firmwareService
         .downloadFirmwares()
         .then(() => {
-          console.log('firmwares updated');
+          this._loggingService.logBreadCrumb(`Firmares updated on device.`);
           this._progressService.hide();
-
           // remove old items and add new from the translation file firmware string array
           this._loadFirmwareDescriptionItems(carousel);
         })
@@ -174,7 +169,7 @@ export class OTAComponent implements OnInit {
     try {
       rssi = parseInt(_rssi, 10);
     } catch (err) {
-      console.log(`Couldn't parse RSSI(${_rssi}): ${err}`);
+      this._loggingService.logException(err);
     }
     if (rssi === null) {
       return 'red';
@@ -269,18 +264,21 @@ export class OTAComponent implements OnInit {
         .then(() => {
           // disable back nav for iOS - add event listener for android hardware back button
           this.setBackNav(false);
-
-          console.log('start performing OTAs...');
+          this._loggingService.logBreadCrumb(`Start performing OTAs...`);
           // start updating
           return this.performOTAs();
         })
         .then(otaStatuses => {
-          console.log(`completed all otas with statuses: ${otaStatuses}`);
+          this._loggingService.logBreadCrumb(
+            `Completed all OTAs with statues: ${otaStatuses}`
+          );
           this.cancelOTAs(false);
         })
         .catch(err => {
           this._loggingService.logException(err);
-          console.log(`Couldn't finish updating: ${err}`);
+          this._loggingService.logBreadCrumb(
+            `Couldn't finish updating: ${err}`
+          );
           this.cancelOTAs(true);
         });
     } else {
@@ -294,7 +292,7 @@ export class OTAComponent implements OnInit {
 
     const isEnabled = await this._bluetoothService.radioEnabled();
     if (!this._bluetoothService.enabled || !isEnabled) {
-      console.log('bluetooth service is not enabled');
+      this._loggingService.logBreadCrumb(`Bluetooth service is not enabled.`);
       alert({
         message: this._translateService.instant('bluetooth.enable-bluetooth'),
         okButtonText: this._translateService.instant('dialogs.ok')
@@ -383,9 +381,6 @@ export class OTAComponent implements OnInit {
       this._page.enableSwipeBackNavigation = allowed;
     } else if (isAndroid) {
       if (allowed) {
-        console.log(
-          'turning off the back pressed event for android hardware button'
-        );
         app.android.off(app.AndroidApplication.activityBackPressedEvent);
       } else {
         // setting the event listener for the android back pressed event
@@ -394,8 +389,6 @@ export class OTAComponent implements OnInit {
           (args: app.AndroidActivityBackPressedEventData) => {
             // cancel the back nav for now then confirm with user to leave
             args.cancel = true;
-
-            console.log('back button pressed');
             confirm({
               title: this._translateService.instant(
                 'ota.warnings.leaving.title'
@@ -428,7 +421,7 @@ export class OTAComponent implements OnInit {
     this.updating = false;
     this.updatingButtonText = this._translateService.instant('ota.begin');
     if (doCancel) {
-      console.log('Cancelling all otas!');
+      this._loggingService.logBreadCrumb(`Cancelling all OTAs`);
       this.smartDriveOTAs.map(sd => sd.cancelOTA());
       this.pushTrackerOTAs.map(pt => pt.cancelOTA());
     }
@@ -445,7 +438,9 @@ export class OTAComponent implements OnInit {
     const firmwareDescriptionItems = this._translateService.instant(
       'firmware.' + this._firmwareService.currentVersion
     );
-    console.log('current firmware description items', firmwareDescriptionItems);
+    this._loggingService.logBreadCrumb(
+      `Current firmware description items: ${firmwareDescriptionItems}`
+    );
 
     const whiteColor = new Color('#fff');
 
@@ -453,7 +448,6 @@ export class OTAComponent implements OnInit {
       // create a new scrollview for the carousel item
       const sv = new ScrollView();
 
-      // console.log('description', item);
       // create a new label for the carousel item
       const label = new Label();
       label.text = item;
@@ -479,9 +473,9 @@ export class OTAComponent implements OnInit {
         const adapter = carousel.android.getAdapter() as android.support.v4.view.PagerAdapter;
         if (adapter) {
           adapter.notifyDataSetChanged();
-          console.log(
-            'BRAD - FIX THIS WHEN 4.1.0 is published, PR is pending to correct the types and simplify this.'
-          );
+          // console.log(
+          //   'BRAD - FIX THIS WHEN 4.1.0 is published, PR is pending to correct the types and simplify this.'
+          // );
           carousel._pageIndicatorView.setCount(firmwareDescriptionItems.length);
         }
         // carousel.pageIndicatorCount = firmwareDescriptionItems.length;
