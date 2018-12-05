@@ -27,8 +27,8 @@ import { Feedback } from 'nativescript-feedback';
 import { SnackBar } from 'nativescript-snackbar';
 import { isIOS } from 'tns-core-modules/platform';
 import { View } from 'tns-core-modules/ui/core/view';
-import { Page } from 'tns-core-modules/ui/page';
 import { alert } from 'tns-core-modules/ui/dialogs';
+import { Page } from 'tns-core-modules/ui/page';
 import { Slider } from 'tns-core-modules/ui/slider';
 import { Switch } from 'tns-core-modules/ui/switch/switch';
 import { TextField } from 'tns-core-modules/ui/text-field/text-field';
@@ -275,7 +275,7 @@ export class TrialComponent implements OnInit {
             dailyInfoHandler
           );
           this._animateViewIn(this.startWithView.nativeElement as View);
-          this._loggingService.logBreadCrumb(`Couldn't start trial: ${err}`);
+          // this._loggingService.logBreadCrumb(`Couldn't start trial: ${err}`);
           alert({
             title: this.failed_start_title,
             message: this.failed_start_message + err,
@@ -319,9 +319,9 @@ export class TrialComponent implements OnInit {
           if (maxRetries <= 0) {
             throw err;
           } else {
-            this._loggingService.logBreadCrumb(
-              `Retrying: ${err}, ${maxRetries}`
-            );
+            // this._loggingService.logBreadCrumb(
+            //   `Retrying: ${err}, ${maxRetries}`
+            // );
             return new Promise((resolve, reject) => {
               setTimeout(() => {
                 retry(maxRetries - 1, fn)
@@ -471,7 +471,7 @@ export class TrialComponent implements OnInit {
             PushTracker.pushtracker_daily_info_event,
             dailyInfoHandler
           );
-          this._loggingService.logBreadCrumb(`Couldn't stop trial: ${err}`);
+          // this._loggingService.logBreadCrumb(`Couldn't stop trial: ${err}`);
           alert({
             title: this.failed_stop_title,
             message: this.failed_stop_message + err,
@@ -495,7 +495,7 @@ export class TrialComponent implements OnInit {
 
       const distanceHandler = data => {
         // get the data
-        let current = PushTracker.caseTicksToMeters(data.data.coastDistance);
+        const current = PushTracker.caseTicksToMeters(data.data.coastDistance);
         meters = current - this.trial.distance;
         // record that we've gotten it
         haveDistance = meters > 0;
@@ -518,9 +518,9 @@ export class TrialComponent implements OnInit {
           if (maxRetries <= 0) {
             throw err;
           } else {
-            this._loggingService.logBreadCrumb(
-              `Retrying: ${err}, ${maxRetries}`
-            );
+            // this._loggingService.logBreadCrumb(
+            //   `Retrying: ${err}, ${maxRetries}`
+            // );
             return new Promise((resolve, reject) => {
               setTimeout(() => {
                 retry(maxRetries - 1, fn)

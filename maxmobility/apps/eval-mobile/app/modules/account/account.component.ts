@@ -169,12 +169,12 @@ export class AccountComponent implements OnInit {
     try {
       const result = await this.takePictureAndCrop();
       if (result && result.image !== null) {
-        this._loggingService.logBreadCrumb('ImageCropper returned image.');
+        // this._loggingService.logBreadCrumb('ImageCropper returned image.');
         this.saveProfilePicture(result.image);
       } else {
-        this._loggingService.logBreadCrumb(
-          'No result returned from the image cropper.'
-        );
+        // this._loggingService.logBreadCrumb(
+        //   'No result returned from the image cropper.'
+        // );
       }
     } catch (error) {
       this._loggingService.logException(error);

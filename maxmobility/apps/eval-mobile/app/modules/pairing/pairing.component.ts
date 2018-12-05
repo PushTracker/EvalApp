@@ -285,7 +285,7 @@ export class PairingComponent implements OnInit {
     const settingsFailed = err => {
       this._zone.run(() => {
         this._progressService.hide();
-        this._loggingService.logBreadCrumb(`Couldn't save settings: ${err}`);
+        // this._loggingService.logBreadCrumb(`Couldn't save settings: ${err}`);
         alert({
           title: this._translateService.instant(
             'pushtracker.settings.save-dialogs.failed.title'
@@ -303,7 +303,7 @@ export class PairingComponent implements OnInit {
         if (maxRetries <= 0) {
           throw err;
         } else {
-          this._loggingService.logBreadCrumb(`Retrying: ${err}, ${maxRetries}`);
+          // this._loggingService.logBreadCrumb(`Retrying: ${err}, ${maxRetries}`);
           return new Promise((resolve, reject) => {
             setTimeout(() => {
               retry(maxRetries - 1, fn)

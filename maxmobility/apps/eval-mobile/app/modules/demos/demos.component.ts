@@ -142,7 +142,7 @@ export class DemosComponent implements OnInit, AfterViewInit {
       // clear the timeout when done
       clearTimeout(processTimeout);
 
-      this._logService.logBreadCrumb(`Current location: ${loc}`);
+      // this._logService.logBreadCrumb(`Current location: ${loc}`);
 
       // confirm with user if they want to update the demo location
       const result = await confirm({

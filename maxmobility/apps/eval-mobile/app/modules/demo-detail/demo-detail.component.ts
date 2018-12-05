@@ -132,9 +132,9 @@ export class DemoDetailComponent {
           this.demo.sd_image_base64 = b64;
         }
       } else {
-        this._loggingService.logBreadCrumb(
-          'No result returned from the image cropper.'
-        );
+        // this._loggingService.logBreadCrumb(
+        //   'No result returned from the image cropper.'
+        // );
       }
     } catch (error) {
       this._loggingService.logException(error);
@@ -154,9 +154,9 @@ export class DemoDetailComponent {
           this.demo.pt_image_base64 = b64;
         }
       } else {
-        this._loggingService.logBreadCrumb(
-          'No result returned from the image cropper.'
-        );
+        // this._loggingService.logBreadCrumb(
+        //   'No result returned from the image cropper.'
+        // );
       }
     } catch (error) {
       this._loggingService.logException(error);
@@ -185,9 +185,9 @@ export class DemoDetailComponent {
       // the demo service calls load() at the end ofa create
       // now re-load our data from the service
       if (this._index > -1) {
-        this._loggingService.logBreadCrumb(
-          'index is greater than -1 trying to save demo-detail'
-        );
+        // this._loggingService.logBreadCrumb(
+        //   'index is greater than -1 trying to save demo-detail'
+        // );
       } else {
         this._index = DemoService.Demos.indexOf(
           this._demoService.getDemoBySmartDriveSerialNumber(
@@ -197,7 +197,7 @@ export class DemoDetailComponent {
       }
 
       const demo = DemoService.Demos.getItem(this._index);
-      this._loggingService.logBreadCrumb(`Found demo: ${demo}`);
+      // this._loggingService.logBreadCrumb(`Found demo: ${demo}`);
 
       // BRAD - https://github.com/PushTracker/EvalApp/issues/144
       if (demo.sd_image_base64 && demo.sd_image) {
@@ -345,7 +345,7 @@ export class DemoDetailComponent {
       // clear the timeout when done
       clearTimeout(processTimeout);
 
-      this._loggingService.logBreadCrumb(`Current location: ${loc}`);
+      // this._loggingService.logBreadCrumb(`Current location: ${loc}`);
 
       // confirm with user if they want to update the demo location
       const result = await confirm({
