@@ -77,10 +77,7 @@ export class LoginComponent implements OnInit {
       CLog('login result', res);
       this._progressService.hide();
 
-      const deviceToken = await this._userService._registerForPushNotifications();
-      console.log(
-        `Registered for push notifications device token: ${deviceToken}`
-      );
+      await this._userService._registerForPushNotifications();
 
       this._zone.run(() => {
         this._routerExtensions.navigate(['/home'], {

@@ -9,7 +9,8 @@ import { Bluetooth, deviceToCentral, deviceToPeripheral } from './ios_main';
  * The protocol’s optional methods are used by the delegate to verify publishing and advertising, and to monitor read, write, and subscription requests from remote central devices.
  * The protocol’s required method, which indicates whether the peripheral manager is available, is called when the peripheral manager’s state is updated.
  */
-export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPeripheralManagerDelegate {
+export class CBPeripheralManagerDelegateImpl extends NSObject
+  implements CBPeripheralManagerDelegate {
   public static ObjCProtocols = [CBPeripheralManagerDelegate];
   private _owner: WeakRef<Bluetooth>;
   private _central?: CBCentral;
@@ -26,15 +27,30 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
     return <CBPeripheralManagerDelegateImpl>super.new();
   }
 
-  public initWithOwner(owner: WeakRef<Bluetooth>): CBPeripheralManagerDelegateImpl {
+  public initWithOwner(
+    owner: WeakRef<Bluetooth>
+  ): CBPeripheralManagerDelegateImpl {
     this._owner = owner;
-    CLog(CLogTypes.info, `CBPeripheralManagerDelegateImpl.initWithCallback ---- this._owner: ${this._owner}`);
+    CLog(
+      CLogTypes.info,
+      `CBPeripheralManagerDelegateImpl.initWithCallback ---- this._owner: ${
+        this._owner
+      }`
+    );
     return this;
   }
 
-  public initWithCallback(owner: WeakRef<Bluetooth>, callback: (result?) => void): CBPeripheralManagerDelegateImpl {
+  public initWithCallback(
+    owner: WeakRef<Bluetooth>,
+    callback: (result?) => void
+  ): CBPeripheralManagerDelegateImpl {
     this._owner = owner;
-    CLog(CLogTypes.info, `CBPeripheralManagerDelegateImpl.initWithCallback ---- this._owner: ${this._owner}`);
+    CLog(
+      CLogTypes.info,
+      `CBPeripheralManagerDelegateImpl.initWithCallback ---- this._owner: ${
+        this._owner
+      }`
+    );
     return this;
   }
 
@@ -55,7 +71,10 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
     const state = owner._getManagerStateString(mgr.state);
     CLog(CLogTypes.info, `current peripheral manager state = ${state}`);
 
-    owner.sendEvent(Bluetooth.peripheralmanager_update_state_event, { manager: mgr, state });
+    owner.sendEvent(Bluetooth.peripheralmanager_update_state_event, {
+      manager: mgr,
+      state
+    });
   }
 
   /**
@@ -64,14 +83,24 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
    * @param dict [NSDictionary<string, any>] - A dictionary containing information about the peripheral manager that was preserved by the system at the time the app was terminated. For the available keys to this dictionary.
    * @link - Peripheral Manager State Restoration Options @ https://developer.apple.com/documentation/corebluetooth/cbperipheralmanagerdelegate/peripheral_manager_state_restoration_options.
    */
-  public peripheralManagerWillRestoreState(peripheral: CBPeripheralManager, dict?: NSDictionary<string, any>) {
-    CLog(CLogTypes.info, 'CBPeripheralManagerDelegateImpl.peripheralManagerWillRestoreState ---- ', dict);
+  public peripheralManagerWillRestoreState(
+    peripheral: CBPeripheralManager,
+    dict?: NSDictionary<string, any>
+  ) {
+    CLog(
+      CLogTypes.info,
+      'CBPeripheralManagerDelegateImpl.peripheralManagerWillRestoreState ---- ',
+      dict
+    );
 
     const owner = this._owner.get();
     if (!owner) {
       return;
     }
-    owner.sendEvent(Bluetooth.peripheralmanager_restore_state_event, { manager: peripheral, dict: dict });
+    owner.sendEvent(Bluetooth.peripheralmanager_restore_state_event, {
+      manager: peripheral,
+      dict: dict
+    });
   }
 
   /**
@@ -83,8 +112,16 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
    * @param service [CBService] - The service that was added to the local GATT database.
    * @param error? [NSError] - If an error occurred, the cause of the failure.
    */
-  public peripheralManagerDidAddError(peripheral: CBPeripheralManager, service: CBService, error?: NSError) {
-    CLog(CLogTypes.info, 'CBPeripheralManagerDelegateImpl.peripheralManagerDidAddError ---- ', error);
+  public peripheralManagerDidAddError(
+    peripheral: CBPeripheralManager,
+    service: CBService,
+    error?: NSError
+  ) {
+    CLog(
+      CLogTypes.info,
+      'CBPeripheralManagerDelegateImpl.peripheralManagerDidAddError ---- ',
+      error
+    );
 
     alert('Peripheral Manager Did Add Error');
 
@@ -104,16 +141,30 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
    * @param peripheralMgr [CBPeripheralManager] - The peripheral manager providing this information.
    * @param error? [NSError] - If an error occurred, the cause of the failure.
    */
-  public peripheralManagerDidStartAdvertisingError(peripheralMgr: CBPeripheralManager, error?: NSError) {
-    CLog(CLogTypes.info, 'CBPeripheralManagerDelegateImpl.peripheralManagerDidStartAdvertisingError ----', error);
+  public peripheralManagerDidStartAdvertisingError(
+    peripheralMgr: CBPeripheralManager,
+    error?: NSError
+  ) {
+    CLog(
+      CLogTypes.info,
+      'CBPeripheralManagerDelegateImpl.peripheralManagerDidStartAdvertisingError ----',
+      error
+    );
     const owner = this._owner.get();
     if (!owner) {
       return;
     }
 
     if (error) {
-      CLog(CLogTypes.warning, 'TODO: we may need to parse out the error value here for parity with Android.');
-      this._owner.get().sendEvent(Bluetooth.bluetooth_advertise_failure_event, { error: error });
+      CLog(
+        CLogTypes.warning,
+        'TODO: we may need to parse out the error value here for parity with Android.'
+      );
+      this._owner
+        .get()
+        .sendEvent(Bluetooth.bluetooth_advertise_failure_event, {
+          error: error
+        });
       return;
     }
 
@@ -144,15 +195,13 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
 
     const oldCentral = this._central;
     if (!oldCentral || !oldCentral.identifier) {
-      //console.log('oldCentral is null');
+      // nothing
     }
 
     if (oldCentral && oldCentral.identifier && oldCentral === this._central) {
-      //console.log(`oldCentral.identifier = ${oldCentral.identifier}`, 'central.identifier', central.identifier);
       if (oldCentral.identifier !== central.identifier) {
         isNewCentral = true;
       } else if (oldCentral !== central) {
-        //console.log(`New central but same identifier. Clearing characteristic subscriptions.`);
         isNewCentral = true;
       }
     } else {
@@ -165,8 +214,10 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
     }
 
     // set low connection latency
-    //console.log('Setting desired connection latency to low!');
-    peripheral.setDesiredConnectionLatencyForCentral(CBPeripheralManagerConnectionLatency.Low, central);
+    peripheral.setDesiredConnectionLatencyForCentral(
+      CBPeripheralManagerConnectionLatency.Low,
+      central
+    );
 
     this._isConnected = true;
     this._subscribedCharacteristics.add(characteristic.UUID);
@@ -250,7 +301,11 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
    * @param service - The service that was added to the local GATT database.
    * @param error - If an error occurred, the cause of the failure.
    */
-  public peripheralManagerDidAddServiceError(peripheral: CBPeripheralManager, service: CBService, error: NSError) {
+  public peripheralManagerDidAddServiceError(
+    peripheral: CBPeripheralManager,
+    service: CBService,
+    error: NSError
+  ) {
     CLog(
       CLogTypes.info,
       'CBPeripheralManagerDelegateImpl.peripheralManagerDidAddServiceError ----',
@@ -266,7 +321,9 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
    * You can then implement this delegate method to resend the value.
    * @param peripheral [CBPeripheralManager] - The peripheral manager providing this information.
    */
-  public peripheralManagerIsReadyToUpdateSubscribers(peripheral: CBPeripheralManager) {
+  public peripheralManagerIsReadyToUpdateSubscribers(
+    peripheral: CBPeripheralManager
+  ) {
     CLog(
       CLogTypes.info,
       'CBPeripheralManagerDelegateImpl.peripheralManagerIsReadyToUpdateSubscribers ----',
@@ -277,9 +334,12 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
     if (!owner) {
       return;
     }
-    owner.sendEvent(Bluetooth.peripheralmanager_ready_update_subscribers_event, {
-      manager: peripheral
-    });
+    owner.sendEvent(
+      Bluetooth.peripheralmanager_ready_update_subscribers_event,
+      {
+        manager: peripheral
+      }
+    );
   }
 
   /**
@@ -288,7 +348,10 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
    * @param peripheral [CBPeripheralManager] - The peripheral manager providing this information.
    * @param request [CBATTRequest] - A CBATTRequest object that represents a request to read a characteristic’s value.
    */
-  public peripheralManagerDidReceiveReadRequest(peripheral: CBPeripheralManager, request: CBATTRequest) {
+  public peripheralManagerDidReceiveReadRequest(
+    peripheral: CBPeripheralManager,
+    request: CBATTRequest
+  ) {
     CLog(
       CLogTypes.info,
       'CBPeripheralManagerDelegateImpl.peripheralManagerDidReceiveReadRequest ----',
@@ -297,8 +360,10 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
     );
 
     // set low connection latency
-    //console.log('Setting desired connection latency to low!');
-    peripheral.setDesiredConnectionLatencyForCentral(CBPeripheralManagerConnectionLatency.Low, request.central);
+    peripheral.setDesiredConnectionLatencyForCentral(
+      CBPeripheralManagerConnectionLatency.Low,
+      request.central
+    );
 
     peripheral.respondToRequestWithResult(request, CBATTError.Success);
 
@@ -324,7 +389,10 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
    * @param peripheral [CBPeripheralManager] - The peripheral manager providing this information.
    * @param requests CBATTRequest[] - A list of one or more CBATTRequest objects, each representing a request to write the value of a characteristic.
    */
-  public peripheralManagerDidReceiveWriteRequests(peripheral: CBPeripheralManager, requests) {
+  public peripheralManagerDidReceiveWriteRequests(
+    peripheral: CBPeripheralManager,
+    requests
+  ) {
     CLog(
       CLogTypes.info,
       'CBPeripheralManagerDelegateImpl.peripheralManagerDidReceiveWriteRequests ----',
@@ -359,13 +427,15 @@ export class CBPeripheralManagerDelegateImpl extends NSObject implements CBPerip
 		method. To respond properly, pass in the first request of the
 		requests array.
 	   */
-    peripheral.respondToRequestWithResult(requests.objectAtIndex(0), CBATTError.Success);
+    peripheral.respondToRequestWithResult(
+      requests.objectAtIndex(0),
+      CBATTError.Success
+    );
 
     for (let i = 0; i < requests.count; i++) {
       const r = requests.objectAtIndex(i);
 
       // set low connection latency
-      //console.log('Setting desired connection latency to low!');
       //peripheral.setDesiredConnectionLatencyForCentral(CBPeripheralManagerConnectionLatency.Low, r.central);
 
       const dev = deviceToCentral(r.central);

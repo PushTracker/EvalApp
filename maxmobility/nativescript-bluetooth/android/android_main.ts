@@ -982,7 +982,6 @@ export class Bluetooth extends BluetoothCommon {
             const status = argdata.status;
             if (device.address == dev) {
               clearTimeout(timeoutID);
-              //console.log(`notificationSent: ${device} : ${status}`);
               this.off(Bluetooth.notification_sent_event, notificationSent);
               if (status) {
                 // GATT_SUCCESS is 0x00
@@ -994,7 +993,6 @@ export class Bluetooth extends BluetoothCommon {
           };
           // register for when notification is sent
           this.on(Bluetooth.notification_sent_event, notificationSent);
-          //console.log(`notifying ${addr}!`);
           // tell it to send the notification
           if (dev && characteristic) {
             this.gattServer.notifyCharacteristicChanged(

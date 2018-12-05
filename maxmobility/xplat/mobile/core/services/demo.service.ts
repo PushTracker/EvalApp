@@ -59,20 +59,20 @@ export class DemoService {
   }
 
   create(demoModel: Demo): Promise<any> {
-    console.log('**** DEMO MODEL ****', demoModel);
-
-    const foundSD = this.getDemoBySmartDriveSerialNumber(demoModel.smartdrive_serial_number);
-    const foundPT = this.getDemoByPushTrackerSerialNumber(demoModel.pushtracker_serial_number);
+    const foundSD = this.getDemoBySmartDriveSerialNumber(
+      demoModel.smartdrive_serial_number
+    );
+    const foundPT = this.getDemoByPushTrackerSerialNumber(
+      demoModel.pushtracker_serial_number
+    );
     if (foundSD) {
-      console.log('Found SD', foundSD);
       foundSD.update(demoModel);
       demoModel = foundSD;
     } else if (foundPT) {
-      console.log('Found PT');
       foundPT.update(demoModel);
       demoModel = foundPT;
     } else {
-      console.log('New PT and SD S/N');
+      // nothing
     }
     return this.update(demoModel).then(() => {
       return this.load();

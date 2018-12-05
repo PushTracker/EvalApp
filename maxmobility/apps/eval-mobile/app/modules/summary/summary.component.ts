@@ -229,14 +229,12 @@ export class SummaryComponent {
     });
 
     if (!confirmResult) {
-      console.log('confirmation was denied');
       return;
     }
 
     // send email to user
     const isAvailable = await email.available();
     if (!isAvailable) {
-      console.log('Email is not available on device.');
       return;
     }
 
@@ -250,9 +248,7 @@ export class SummaryComponent {
       })
       .then(result => {
         if (result) {
-          console.log('email compose result', result);
-        } else {
-          console.log('the email may NOT have been sent!');
+          // do nothing
         }
       })
       .catch(error => {

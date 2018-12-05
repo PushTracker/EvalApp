@@ -36,17 +36,13 @@ export class EvalEntryComponent {
     private _evaluationService: EvaluationService,
     private _translateService: TranslateService
   ) {
-    console.log('Eval-Entry.component Constructor ***');
     this._page.className = 'blue-gradient-down';
     // set the eval to the eval on the service
     this.evaluation = this._evaluationService.evaluation;
-    console.log('this.evaluation', this.evaluation);
 
     // if the evaluation from the service is not null then ask the user if they want to continue or start new eval
     if (this.evaluation !== null) {
-      console.log('the eval is not null', this.evaluation);
       setTimeout(() => {
-        console.log('the evaluation is not complete');
         confirm({
           message: this._translateService.instant(
             'evals.incomplete-dialog.message'
@@ -54,14 +50,7 @@ export class EvalEntryComponent {
           okButtonText: this._translateService.instant('dialogs.yes'),
           cancelButtonText: this._translateService.instant('dialogs.no')
         }).then(result => {
-          console.log('confirm result', result);
           if (result === true) {
-            console.log('need to load the last data set on the evaluation...');
-            console.log(this.evaluation);
-            console.log(
-              'evalService.evaluation',
-              this._evaluationService.evaluation
-            );
             this.evaluation = this._evaluationService.evaluation;
             // we have the data on the `evaluation` on the service so just let it load
             // we have to check the toggles bc we have props here that set them false when the component loads ^^^
@@ -96,7 +85,6 @@ export class EvalEntryComponent {
                 .nativeElement as DropDown).selectedIndex = chairTypeIndex;
             }
           } else {
-            console.log('creating new Evaluation object');
             // brad - for the record I don't like this approach 🤮
             this._evaluationService.evaluation = new Evaluation();
             this.evaluation = this._evaluationService.evaluation;
@@ -104,7 +92,6 @@ export class EvalEntryComponent {
         });
       }, 300);
     } else {
-      console.log('the eval is null so making new one');
       this._evaluationService.evaluation = new Evaluation();
       // have to assign the new eval on the service to the eval member of this component
       this.evaluation = this._evaluationService.evaluation;

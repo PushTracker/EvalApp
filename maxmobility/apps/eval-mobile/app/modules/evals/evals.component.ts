@@ -79,8 +79,6 @@ export class EvalsComponent implements OnInit {
   }
 
   async ngOnInit() {
-    console.log('EvalsComponent onInit');
-
     // load the evaluations for this user
     try {
       const fetchedEvals = await this._evalService.loadEvaluations();
@@ -90,7 +88,7 @@ export class EvalsComponent implements OnInit {
       this.evalsLoaded = true;
     } catch (error) {
       this.evalsLoaded = true;
-      console.log('ERROR ', error);
+      this._loggingService.logException(error);
       alert({
         message: this._translateService.instant('evals.evals-loading-error'),
         okButtonText: this._translateService.instant('dialogs.ok')
@@ -102,7 +100,6 @@ export class EvalsComponent implements OnInit {
     try {
       // check if we are resetting and exit after resetting the listview
       if (this.isSearchData === true) {
-        console.log('reset listview');
         this.evals = this._initialEvals;
         this.searchBtnText = this._translateService.instant('evals.search-btn');
         this.evalsLoaded = true; // make sure the UI reflects the data
@@ -150,7 +147,7 @@ export class EvalsComponent implements OnInit {
         this.searchBtnText = this._translateService.instant('evals.reset-btn');
       }
     } catch (error) {
-      console.log(error);
+      this._loggingService.logException(error);
     }
   }
 
@@ -165,14 +162,12 @@ export class EvalsComponent implements OnInit {
     });
 
     if (!confirmResult) {
-      console.log('confirmation was denied');
       return;
     }
 
     // send email to user
     const isAvailable = await email.available();
     if (!isAvailable) {
-      console.log('Email is not available on device.');
       return;
     }
 
@@ -181,7 +176,6 @@ export class EvalsComponent implements OnInit {
     this._updateEvalForLmnReport(evaluation);
 
     const lmnBody = this._generateLMN(evaluation);
-    console.log('lmnBody', lmnBody);
     email
       .compose({
         to: [],
@@ -191,9 +185,7 @@ export class EvalsComponent implements OnInit {
       })
       .then(result => {
         if (result) {
-          console.log('email compose result', result);
-        } else {
-          console.log('the email may NOT have been sent!');
+          // do nothing
         }
       })
       .catch(error => {
@@ -214,7 +206,7 @@ export class EvalsComponent implements OnInit {
   }
 
   onEvalItemTap(event) {
-    console.log(`Eval item tapped`);
+    // do nothing yet
   }
 
   timeString(time: any) {
@@ -297,13 +289,12 @@ export class EvalsComponent implements OnInit {
       // tslint:disable-next-line:object-literal-shorthand
       toFixed: function() {
         let str = this.toFixed(2);
-        console.log(str);
         if (!str.length) {
           str = '0';
         }
         return str;
       },
-      round: function() {
+      round() {
         let str = this.toFixed(0);
         if (!str.length) {
           str = '0';
@@ -330,7 +321,6 @@ export class EvalsComponent implements OnInit {
   private _modifyEvalsData(evalsArray: Evaluation[]) {
     // need to modify the number values to be truncated, after the loop we will bind the listview items
     evalsArray.forEach((e: Evaluation) => {
-      // console.log('eval', e);
       e.trials.forEach((t: Trial) => {
         // truncate the number data here
         t.distance = this._truncateNumber(t.distance);

@@ -17,7 +17,6 @@ export function loadingIndicatorFactory() {
 }
 
 export function platformLangFactory() {
-  console.log('platformLangFactory:', device.language);
   return device.language;
 }
 

@@ -39,12 +39,7 @@ export class UserService {
     return new Promise(async (resolve, reject) => {
       try {
         // only call if registered
-        console.log(
-          'user.service logout() UserService.hasRegistered = ' +
-            UserService.hasRegistered
-        );
         if (UserService.hasRegistered === true) {
-          console.log('unregistering user from push notifications');
           // kinvey docs might be out of date on `unregister` method
           await (Push as any)
             .unregister({
@@ -53,14 +48,13 @@ export class UserService {
               }
             })
             .catch(error => {
-              console.log('unregister in kinvey push error', error);
+              // do nothing
             });
         }
         UserService.hasRegistered = false;
         await Kinvey.User.logout();
         resolve(true);
       } catch (error) {
-        console.log(error);
         resolve(false);
       }
     });
@@ -108,35 +102,21 @@ export class UserService {
     return 'image/' + extension.replace(/\./g, '');
   }
 
-  // unregisterForPushNotifications() {
-  //   console.log('Unregistering for push notifications');
-  //   UserService.hasRegistered = false;
-  //   return Push.unregister();
-  // }
-
   _registerForPushNotifications() {
     return new Promise(async (resolve, reject) => {
       try {
-        console.log(
-          '*** user.service _registerForPushNotifications *** UserService.hasRegistered = ' +
-            UserService.hasRegistered
-        );
         let register = null;
         if (!UserService.hasRegistered) {
           register = await Push.register({
             android: {
               senderID: '1053576736707',
               notificationCallbackAndroid: (data, notification) => {
-                console.log(data);
-                console.log(notification);
-
                 this._feedback.info({
                   title: 'New Message from Smart Evaluation',
                   message: notification.getBody(),
                   duration: 10000,
-                  // type: FeedbackType.Success, // no need to specify when using 'success' instead of 'show'
                   onTap: () => {
-                    console.log('feedback warning tapped');
+                    // do nothing now
                   }
                 });
               }
@@ -147,15 +127,13 @@ export class UserService {
               sound: true,
               interactiveSettings: null,
               notificationCallbackIOS: message => {
-                console.log(message);
-                console.log('message.alert', message.alert);
                 this._feedback.info({
                   title: 'New Message from Smart Evaluation',
                   message: message.alert,
                   duration: 60000, // show for one minute without interaction, touch will close it
                   // type: FeedbackType.Success, // no need to specify when using 'success' instead of 'show'
                   onTap: () => {
-                    console.log('feedback warning tapped');
+                    // do nothing for now
                   }
                 });
               }

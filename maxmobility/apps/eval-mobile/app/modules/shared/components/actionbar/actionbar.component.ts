@@ -146,7 +146,6 @@ export class ActionbarComponent extends ActionBar {
       } else {
         this.imgSrc = '~/Assets/Images/pt_conn_red.png';
       }
-      console.log('status', this.status);
     });
   }
 

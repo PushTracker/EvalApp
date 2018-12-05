@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CLog, LoggingService, UserService } from '@maxmobility/mobile';
+import { LoggingService, UserService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 import { registerElement } from 'nativescript-angular/element-registry';
@@ -15,7 +15,6 @@ import {
   startMonitoring,
   stopMonitoring
 } from 'tns-core-modules/connectivity';
-import { device } from 'tns-core-modules/platform';
 import { alert } from 'tns-core-modules/ui/dialogs/dialogs';
 import { APP_KEY, APP_SECRET } from './kinvey-keys';
 
@@ -49,17 +48,10 @@ export class AppComponent {
     });
 
     // REGISTER FOR PUSH NOTIFICATIONS
-    console.log('*** app.component constructor ***');
-    console.log(
-      'UserService.hasRegistered for push notifications',
-      UserService.hasRegistered
-    );
-
     if (UserService.hasRegistered === false) {
       this._userService
         ._registerForPushNotifications()
         .then((deviceToken: string) => {
-          console.log(`registered push notifications: ${deviceToken}`);
           UserService.hasRegistered = true;
         })
         .catch(err => {
@@ -77,38 +69,30 @@ export class AppComponent {
     try {
       this._translateService.setDefaultLang('en');
       this._translateService.addLangs(['en', 'es', 'de', 'fr', 'nl']);
-      // this._translateService.use(device.language);
-      console.log(`device language: ${device.language}`);
     } catch (error) {
-      CLog(
-        'Error trying to set the TranslateService.use() default to device.language.'
-      );
-      console.log(JSON.stringify(error));
+      this._logService.logException(error);
     }
 
     // application level events
     application.on(
       application.uncaughtErrorEvent,
       (args: application.UnhandledErrorEventData) => {
-        console.log('**** App Uncaught Error Event ****', args.error);
+        this._logService.logException(args.error);
         this._stopNetworkMonitoring();
       }
     );
 
     application.on(application.suspendEvent, () => {
-      console.log('**** App Suspended Event ****');
       this._stopNetworkMonitoring();
     });
 
     application.on(application.exitEvent, () => {
-      console.log('**** App Exit Event ****');
       this._stopNetworkMonitoring();
     });
 
     application.on(
       application.resumeEvent,
       (args: application.ApplicationEventData) => {
-        console.log('**** App Resume Event ****');
         this._startNetworkMonitor();
         // set the orientation to be portrait and don't allow orientation changes
         orientation.setOrientation('portrait');
@@ -118,8 +102,8 @@ export class AppComponent {
 
     Kinvey.init({ appKey: `${APP_KEY}`, appSecret: `${APP_SECRET}` });
     Kinvey.ping()
-      .then(res => {
-        CLog(`Kinvey ping successful, SDK is active 💯`);
+      .then(() => {
+        // nothing useful here - Kinvey SDK is working
       })
       .catch(err => {
         this._logService.logException(err);
@@ -136,7 +120,6 @@ export class AppComponent {
   private _startNetworkMonitor() {
     // start network monitoring
     startMonitoring(newConnectionType => {
-      console.log('network type', newConnectionType);
       switch (newConnectionType) {
         case connectionType.none:
           alert({

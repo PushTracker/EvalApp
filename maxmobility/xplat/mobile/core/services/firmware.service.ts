@@ -50,7 +50,6 @@ export class FirmwareService {
       await this.loadFromFS();
       await this.downloadFirmwares();
     } catch (error) {
-      console.log('initFirmwareService error', error);
       //this._logService.logException(`${error}`);
     }
   }
@@ -66,14 +65,10 @@ export class FirmwareService {
   public async loadFromFS() {
     await this.loadMetadata();
     const tasks = await Object.keys(this.firmwares).map(k => {
-      return this.loadFirmwareFile(this.firmwares[k].filename).catch(err => {
-        console.log(`Couldn't find firmware: ${err}`);
-      });
+      return this.loadFirmwareFile(this.firmwares[k].filename);
     });
-    console.log('tasks', tasks);
 
     const result = await Promise.all(tasks);
-    console.log('loadFromFS', result);
   }
 
   get currentVersion(): string {
@@ -117,8 +112,6 @@ export class FirmwareService {
 
   private loadMetadata() {
     try {
-      console.log(`loadMetadata start - ${performance.now()}`);
-
       const md = LS.getItem(
         FirmwareService.fsKeyPrefix + FirmwareService.fsKeyMetadata
       );
@@ -130,11 +123,8 @@ export class FirmwareService {
           this.firmwares[k].length = (md[k] && md[k].length) || 0;
           this.firmwares[k].version = (md[k] && md[k].version) || null;
         });
-        console.log(`loadMetadata end - ${performance.now()}`);
         return Promise.resolve();
       } else {
-        console.log('No metadata file found!');
-        console.log(`loadMetadata end - ${performance.now()}`);
         return Promise.resolve();
       }
     } catch (err) {
@@ -183,11 +173,9 @@ export class FirmwareService {
   onError(error: Response | any) {
     const body = error.json() || '';
     const err = body.error || JSON.stringify(body);
-    console.log('onGetDataError: ' + err);
   }
 
   private unpackFirmwareData(fwKey, data) {
-    console.log(`unpackFirmwareData start ${performance.now()}`);
     const length = this.firmwares[fwKey].length;
     let bytes = null;
     if (isIOS) {
@@ -205,11 +193,8 @@ export class FirmwareService {
     const actualLength = this.firmwares[fwKey].data.length;
     if (actualLength !== validLength) {
       const msg = `${fwKey} data length (${actualLength}) not the expected (${validLength})!`;
-      console.log(`unpackFirmwareData end ${performance.now()}`);
       return Promise.reject(msg);
     } else {
-      console.log(`Downloaded ${fwKey} ota successfully!`);
-      console.log(`unpackFirmwareData end ${performance.now()}`);
       return Promise.resolve();
     }
   }
@@ -220,14 +205,11 @@ export class FirmwareService {
     );
     this.firmwares[fwKey].id = file._id;
     this.firmwares[fwKey].length = file.size;
-    console.log(`${fwKey}: ${file._version} : ${file.size}`);
   }
 
   public async downloadFirmwares() {
     return new Promise(async (resolve, reject) => {
       try {
-        console.log(`downloadFirmwares start ${performance.now()}`);
-
         this.haveFirmwares = false;
         // determine whether or not to download the beta firmware files
         const currentUser = Kinvey.User.getActiveUser();
@@ -240,12 +222,10 @@ export class FirmwareService {
           if (downloadBetaFirmware) {
             fileName += '.beta';
           }
-          console.log('Querying fw file:', fileName);
           query.equalTo('_filename', fileName);
           const files = await Kinvey.Files.find(query);
 
           if (files.length > 1) {
-            console.log(JSON.stringify(files, null, 2));
             throw new Error(`Found more than one OTA for ${fwKey}!`);
           }
 
@@ -261,7 +241,6 @@ export class FirmwareService {
             try {
               await this.unpackFirmwareData(fwKey, fileData.readSync());
             } catch (err) {
-              console.log("Couldn't unpack firmware data:", err);
               throw new Error(`Couldn't unpack OTA for ${fwKey}!`);
             }
 
@@ -272,35 +251,25 @@ export class FirmwareService {
                 this.firmwares[fwKey].data
               );
             } catch (err) {
-              console.log(`Couldn't save firmware data: ${err}`);
+              // console.log(`Couldn't save firmware data: ${err}`);
             }
           } else {
             throw new Error(`Couldn't find OTA for ${fwKey}!`);
           }
         });
 
-        console.log('*** ALL THE DAMN TASKS ***', tasks);
-
         Promise.all(tasks)
           .then(() => {
             this.haveFirmwares = true;
             this.last_check = new Date();
             this.saveMetadata();
-            console.log(
-              `downloadFirmwares promise.all resolve ${performance.now()}`
-            );
             resolve();
           })
           .catch(err => {
-            console.log(`Couldn't get firmware data: ${err}`);
-            console.log(
-              `downloadFirmwares promise.all error ${performance.now()}`
-            );
             this.haveFirmwares = false;
             reject(err);
           });
       } catch (error) {
-        console.log('downloadFirmwares error', error);
         //this._logService.logException(`${error}`);
         reject(error);
       }

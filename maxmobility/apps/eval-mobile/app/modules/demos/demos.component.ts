@@ -1,9 +1,8 @@
 import {
-  Component,
-  OnInit,
   AfterViewInit,
-  NgZone,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  Component,
+  OnInit
 } from '@angular/core';
 import { Demo, User } from '@maxmobility/core';
 import {
@@ -23,8 +22,8 @@ import * as http from 'tns-core-modules/http';
 import { isAndroid, isIOS } from 'tns-core-modules/platform';
 import { clearTimeout, setTimeout } from 'tns-core-modules/timer/timer';
 import { action, confirm, prompt } from 'tns-core-modules/ui/dialogs';
-import { APP_KEY, HOST_URL } from '../../kinvey-keys';
 import { Page } from 'tns-core-modules/ui/page';
+import { APP_KEY, HOST_URL } from '../../kinvey-keys';
 
 @Component({
   selector: 'Demos',
@@ -62,7 +61,6 @@ export class DemosComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    console.log('Demos.Component OnInit');
     new Toasty(
       this._translateService.instant('demos.owner-color-explanation'),
       ToastDuration.LONG
@@ -70,7 +68,6 @@ export class DemosComponent implements OnInit, AfterViewInit {
     const activeUser = Kinvey.User.getActiveUser();
     this.userType = (activeUser.data as User).type as number;
     this.currentUserId = activeUser._id;
-    console.log('userType', this.userType);
   }
 
   ngAfterViewInit() {
@@ -100,7 +97,6 @@ export class DemosComponent implements OnInit, AfterViewInit {
   }
 
   loadDemoUnits() {
-    console.log('refresh demo list');
     try {
       this.demoUnitsLoaded = false; // toggle the display of the loading indicator
       DemoService.Demos.splice(0, DemoService.Demos.length); // empty the current items
@@ -115,13 +111,12 @@ export class DemosComponent implements OnInit, AfterViewInit {
           this.demoUnitsLoaded = true;
         });
     } catch (error) {
-      console.log(error);
+      this._logService.logException(error);
     }
   }
 
   addDemo() {
     // add a new demo
-    console.log('add a new demo');
     this._routerExtensions.navigate(['/demo-detail'], {});
   }
 
@@ -133,8 +128,6 @@ export class DemosComponent implements OnInit, AfterViewInit {
     let processTimeout = 0;
 
     try {
-      console.log(demo);
-
       const isEnabled = await geolocation.isEnabled();
       if (isEnabled) {
         // if more than 750ms pass then show a toasty that location is being calculated...
@@ -149,7 +142,7 @@ export class DemosComponent implements OnInit, AfterViewInit {
       // clear the timeout when done
       clearTimeout(processTimeout);
 
-      console.log('current location', loc);
+      // this._logService.logBreadCrumb(`Current location: ${loc}`);
 
       // confirm with user if they want to update the demo location
       const result = await confirm({
@@ -162,7 +155,6 @@ export class DemosComponent implements OnInit, AfterViewInit {
 
       if (result === true) {
         // update the demo units location 👍
-        console.log('need to update demo now');
         demo.location = loc.place_name;
         demo.geo = [loc.longitude, loc.latitude];
         this._datastore.save(demo);
@@ -186,11 +178,8 @@ export class DemosComponent implements OnInit, AfterViewInit {
     });
 
     if (actionResult.toLowerCase() === 'cancel') {
-      console.log('Demo request cancelled.');
       return;
     }
-
-    console.log('action result', actionResult);
 
     let maxDistance = 25;
     if (actionResult === '25') {
@@ -211,7 +200,6 @@ export class DemosComponent implements OnInit, AfterViewInit {
 
     // also need to get user location - it is required or we won't do demo requests per William
     const userLoc = await LocationService.getCoordinates().catch(error => {
-      console.log(error);
       alert({
         message: this._translateService.instant(
           'demos.demo-request-location-is-required'
@@ -220,7 +208,6 @@ export class DemosComponent implements OnInit, AfterViewInit {
       });
       return;
     });
-    console.log('user location', userLoc);
 
     // make sure we have location to send to kinvey request
     if (!userLoc) {
@@ -228,7 +215,6 @@ export class DemosComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    console.log('request demo from rep');
     const response = await http.request({
       method: 'POST',
       url: `${HOST_URL}/rpc/${APP_KEY}/custom/request-demo-unit`,
@@ -242,7 +228,6 @@ export class DemosComponent implements OnInit, AfterViewInit {
         maxDistance
       })
     });
-    console.log('response code', response.statusCode);
 
     if (response.statusCode === 200) {
       new Toasty(
@@ -251,7 +236,6 @@ export class DemosComponent implements OnInit, AfterViewInit {
         ToastPosition.CENTER
       ).show();
     } else {
-      console.log(JSON.stringify(response.content.toJSON()));
       this._logService.logException(
         new Error(
           `request-demo-unit error code: ${
@@ -300,8 +284,6 @@ export class DemosComponent implements OnInit, AfterViewInit {
 
     switch (result) {
       case toClinicianAction:
-        console.log('handing to clinician');
-
         const promptResult = await prompt({
           message: `Clinician's email?`,
           okButtonText: 'Enter',
@@ -309,16 +291,13 @@ export class DemosComponent implements OnInit, AfterViewInit {
         });
 
         if (!promptResult.text) {
-          console.log('no email entered into prompt for clinician');
           return;
         }
 
         const clinicianEmail = promptResult.text;
-        console.log('clinicianEmail', clinicianEmail);
 
         // also need to get user location - it is required or we won't do demo requests per William
         const userLoc = await LocationService.getCoordinates().catch(error => {
-          console.log(error);
           alert({
             message: this._translateService.instant(
               'demos.demo-change-owner-location-required'
@@ -327,7 +306,6 @@ export class DemosComponent implements OnInit, AfterViewInit {
           });
           return;
         });
-        console.log('user location', userLoc);
 
         response = await http.request({
           method: 'POST',
@@ -343,10 +321,8 @@ export class DemosComponent implements OnInit, AfterViewInit {
             newLocation: [userLoc.longitude, userLoc.latitude]
           })
         });
-        console.log('response', response.statusCode);
         break;
       case fromClinicianAction:
-        console.log('retrieve from clinician');
         response = await http.request({
           method: 'POST',
           url: `${HOST_URL}/rpc/${APP_KEY}/custom/demo-unit-actions`,
@@ -360,7 +336,6 @@ export class DemosComponent implements OnInit, AfterViewInit {
             newLocation: [userLoc.longitude, userLoc.latitude]
           })
         });
-        console.log('response', response.statusCode);
         break;
     }
   }

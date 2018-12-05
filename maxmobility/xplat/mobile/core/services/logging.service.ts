@@ -8,7 +8,7 @@ export class LoggingUtil {
 
 export const CLog = (...args) => {
   if (LoggingUtil.debug) {
-    console.log(args);
+    // console.log(args);
   }
 };
 
@@ -16,12 +16,12 @@ export const CLog = (...args) => {
 export class LoggingService {
   constructor(private _userService: UserService) {}
   /**
-   * Will console.log() the error argument. If devmode is false then we capture
+   * Will log the error argument. If devmode is false then we capture
    * the exception with Sentry logging.
    * @param err
    */
   public logException(exception: Error) {
-    console.log(exception);
+    // console.log(exception);
 
     // Sentry.setContextUser({
     //   email: this._userService.user.email,
@@ -46,11 +46,14 @@ export class LoggingService {
   }
 
   public logMessage(message: string, options: SentryOptions = {}) {
-    console.log(message);
     Sentry.captureMessage(message, options);
   }
 
-  public logBreadCrumb(message, category: LoggingCategory = LoggingCategory.Info, data = {}) {
+  public logBreadCrumb(
+    message,
+    category: LoggingCategory = LoggingCategory.Info,
+    data = {}
+  ) {
     const breadcrumb: SentryBreadcrumb = {
       message,
       category,

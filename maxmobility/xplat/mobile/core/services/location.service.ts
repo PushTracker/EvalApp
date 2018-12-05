@@ -4,7 +4,8 @@ import * as geolocation from 'nativescript-geolocation';
 import * as httpModule from 'tns-core-modules/http';
 import { Accuracy } from 'tns-core-modules/ui/enums'; // used to describe at what accuracy the location should be get
 
-const api_key = 'pk.eyJ1IjoiZmluZ2VyNTYzIiwiYSI6ImNqYXZmYTZ0bDVtYmcyd28yZ2ZwandxYWcifQ.ROCLEdkuzALMsVQedcIeAQ';
+const api_key =
+  'pk.eyJ1IjoiZmluZ2VyNTYzIiwiYSI6ImNqYXZmYTZ0bDVtYmcyd28yZ2ZwandxYWcifQ.ROCLEdkuzALMsVQedcIeAQ';
 
 // see https://www.mapbox.com/api-documentation/?language=cURL#retrieve-places-near-a-location
 
@@ -44,18 +45,22 @@ export class LocationService {
       const userData = ((user && user.data) || {}) as any;
       const lang = userData.language ? '&language=' + userData.language : '';
       const query =
-        'https://api.mapbox.com/geocoding/v5/mapbox.places/' + userLoc + '.json?access_token=' + api_key + lang;
+        'https://api.mapbox.com/geocoding/v5/mapbox.places/' +
+        userLoc +
+        '.json?access_token=' +
+        api_key +
+        lang;
 
       // TODO: might also add '&types=postcode' to the query to only get postcode
       httpModule.getJSON(query).then(
         r => {
           // const location = (r as any).features.filter(f => f.place_type.indexOf('postcode') > -1)[0].place_name;
-          console.log('mapbox result', r);
-
           // BRAD - using POI to get street address
           // postcode on the place_type filter only returns city, state, zip
 
-          const location = (r as any).features.filter(f => f.place_type.indexOf('address') > -1)[0].place_name;
+          const location = (r as any).features.filter(
+            f => f.place_type.indexOf('address') > -1
+          )[0].place_name;
           resolve(location);
         },
         e => {

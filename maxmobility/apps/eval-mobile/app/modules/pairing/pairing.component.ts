@@ -86,7 +86,6 @@ export class PairingComponent implements OnInit {
       .forEach(params => {
         if (params.index) {
           this.selectedPage = params.index;
-          console.log(this.selectedPage);
         }
       });
 
@@ -94,7 +93,6 @@ export class PairingComponent implements OnInit {
 
     this.unregister();
     // handle pushtracker pairing events for existing pushtrackers
-    console.log('pairing: registering for events!');
     BluetoothService.PushTrackers.map(pt => {
       pt.on(PushTracker.pushtracker_paired_event, args => {
         this.pushTrackerPairingSuccess();
@@ -144,7 +142,6 @@ export class PairingComponent implements OnInit {
   }
 
   unregister(): void {
-    console.log('pairing: unregistering for events!');
     BluetoothService.PushTrackers.off(ObservableArray.changeEvent);
     BluetoothService.PushTrackers.map(pt => {
       pt.off(PushTracker.pushtracker_paired_event);
@@ -270,7 +267,7 @@ export class PairingComponent implements OnInit {
               duration: 6000,
               // type: FeedbackType.Success, // no need to specify when using 'success' instead of 'show'
               onTap: () => {
-                console.log('feedback warning tapped');
+                // do nothing
               }
             });
           }
@@ -288,7 +285,7 @@ export class PairingComponent implements OnInit {
     const settingsFailed = err => {
       this._zone.run(() => {
         this._progressService.hide();
-        console.log(`Couldn't save settings: ${err}`);
+        // this._loggingService.logBreadCrumb(`Couldn't save settings: ${err}`);
         alert({
           title: this._translateService.instant(
             'pushtracker.settings.save-dialogs.failed.title'
@@ -306,7 +303,7 @@ export class PairingComponent implements OnInit {
         if (maxRetries <= 0) {
           throw err;
         } else {
-          console.log(`RETRYING: ${err}, ${maxRetries}`);
+          // this._loggingService.logBreadCrumb(`Retrying: ${err}, ${maxRetries}`);
           return new Promise((resolve, reject) => {
             setTimeout(() => {
               retry(maxRetries - 1, fn)
@@ -354,7 +351,7 @@ export class PairingComponent implements OnInit {
       duration: 4500,
       // type: FeedbackType.Success, // no need to specify when using 'success' instead of 'show'
       onTap: () => {
-        console.log('showSuccess tapped');
+        // do nothing
       }
     });
   }
@@ -366,7 +363,7 @@ export class PairingComponent implements OnInit {
       duration: 4500,
       // type: FeedbackType.Success, // no need to specify when using 'success' instead of 'show'
       onTap: () => {
-        console.log('showSuccess tapped');
+        // do nothing
       }
     });
   }
@@ -384,7 +381,6 @@ export class PairingComponent implements OnInit {
     setTimeout(() => {
       this.carousel.nativeElement.selectedPage = this.selectedPage;
       this.carousel.nativeElement.refresh();
-      console.log('Carousel loaded to ' + this.selectedPage);
     }, 100);
   }
 
@@ -414,7 +410,7 @@ export class PairingComponent implements OnInit {
               duration: 6000,
               // type: FeedbackType.Success, // no need to specify when using 'success' instead of 'show'
               onTap: () => {
-                console.log('feedback warning tapped');
+                // do nothing
               }
             });
           }

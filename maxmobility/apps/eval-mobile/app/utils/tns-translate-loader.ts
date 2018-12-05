@@ -6,7 +6,6 @@ export class TNSTranslateLoader {
 
   getTranslation(lang: string) {
     const filePath = `${this._path || '/assets/i18n/'}${lang}.json`;
-    // console.log('TNSTranslateLoader getTranslation:', filePath);
     return this.requestLocalFile(filePath);
   }
 
@@ -24,7 +23,6 @@ export class TNSTranslateLoader {
               observer.next(json);
               observer.complete();
             } catch (error) {
-              console.log('parse error:', error);
               // Even though the response status was 2xx, this is still an error.
               // The parse error contains the text of the body that failed to parse.
               const errorResult = {
@@ -35,7 +33,6 @@ export class TNSTranslateLoader {
             }
           },
           (error: object) => {
-            console.log('i18n error:', error);
             const errorResult = { error };
             observer.error(errorResult);
           }
