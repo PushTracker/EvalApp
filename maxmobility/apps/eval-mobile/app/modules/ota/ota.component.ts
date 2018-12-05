@@ -10,12 +10,13 @@ import {
 import { TranslateService } from '@ngx-translate/core';
 import { Carousel, CarouselItem } from 'nativescript-carousel';
 import { Subscription } from 'rxjs';
+import * as app from 'tns-core-modules/application';
 import { Color } from 'tns-core-modules/color';
 import {
   ChangedData,
   ObservableArray
 } from 'tns-core-modules/data/observable-array';
-import { isAndroid } from 'tns-core-modules/platform';
+import { isAndroid, isIOS } from 'tns-core-modules/platform';
 import { EventData } from 'tns-core-modules/ui/core/view';
 import { alert, confirm } from 'tns-core-modules/ui/dialogs';
 import { Label } from 'tns-core-modules/ui/label';
@@ -233,7 +234,42 @@ export class OTAComponent implements OnInit {
         okButtonText: this._translateService.instant('dialogs.ok')
       })
         .then(() => {
-          // TODO: disable back nav
+          // disable back nav for iOS - add event listener for android hardware back button
+          if (isIOS) {
+            this._page.enableSwipeBackNavigation = false;
+          } else if (isAndroid) {
+            // setting the event listener for the android back pressed event
+            app.android.on(
+              app.AndroidApplication.activityBackPressedEvent,
+              (args: app.AndroidActivityBackPressedEventData) => {
+                // cancel the back nav for now then confirm with user to leave
+                args.cancel = true;
+
+                console.log('back button pressed', args);
+                confirm({
+                  title: this._translateService.instant(
+                    'ota.warnings.leaving.title'
+                  ),
+                  message: this._translateService.instant(
+                    'ota.warnings.leaving.message'
+                  ),
+                  okButtonText: this._translateService.instant('dialogs.yes'),
+                  cancelable: true,
+                  cancelButtonText: this._translateService.instant(
+                    'dialogs.cancel'
+                  )
+                }).then((result: boolean) => {
+                  if (result === true) {
+                    // user wants to leave so remove the back pressed event
+                    app.android.off(
+                      app.AndroidApplication.activityBackPressedEvent
+                    );
+                  }
+                });
+              }
+            );
+          }
+
           console.log('start performing OTAs...');
           // start updating
           return this.performOTAs();
@@ -337,7 +373,17 @@ export class OTAComponent implements OnInit {
   }
 
   private cancelOTAs(doCancel: boolean) {
-    // TODO: re-enable back nav
+    // re-enable back nav and remove the back pressed event listener for android
+    if (isIOS) {
+      this._page.enableSwipeBackNavigation = true;
+    } else if (isAndroid) {
+      app.android.off(app.AndroidApplication.activityBackPressedEvent, () => {
+        console.log(
+          'turning off the back pressed event for android hardware button'
+        );
+      });
+    }
+
     this.updating = false;
     this.updatingButtonText = this._translateService.instant('ota.begin');
     if (doCancel) {
