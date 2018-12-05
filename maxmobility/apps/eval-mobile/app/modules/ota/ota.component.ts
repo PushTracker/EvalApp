@@ -383,6 +383,11 @@ export class OTAComponent implements OnInit {
       this._page.enableSwipeBackNavigation = allowed;
     } else if (isAndroid) {
       if (allowed) {
+        console.log(
+          'turning off the back pressed event for android hardware button'
+        );
+        app.android.off(app.AndroidApplication.activityBackPressedEvent);
+      } else {
         // setting the event listener for the android back pressed event
         app.android.on(
           app.AndroidApplication.activityBackPressedEvent,
@@ -413,11 +418,6 @@ export class OTAComponent implements OnInit {
             });
           }
         );
-      } else {
-        console.log(
-          'turning off the back pressed event for android hardware button'
-        );
-        app.android.off(app.AndroidApplication.activityBackPressedEvent);
       }
     }
   }
