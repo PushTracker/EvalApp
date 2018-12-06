@@ -101,14 +101,12 @@ export class SignUpComponent implements OnInit {
     const type = this.usertypes.getValue(args.newIndex) || 0;
     this.user.type = type;
 
-    // make sure it's only permobil emails as reps
-    // only if they've entered an email and then changing the dropdown
-    if (type === UserTypes.Representative && this.user.email) {
-      this._isRepEmailValid();
+    if (this.user.email) {
+      this._isEmailValid(this.user.email);
     }
   }
 
-  async showModal(): Promise<boolean> {
+  async showModal(): Promise<any> {
     const options = {
       context: {
         user: this.user
@@ -117,6 +115,7 @@ export class SignUpComponent implements OnInit {
       viewContainerRef: this.vcRef
     };
     return this.modal.showModal(PrivacyPolicyComponent, options).then(res => {
+      let hasCanceled = !res;
       if (res) {
         this.user.has_read_privacy_policy = res.has_read_privacy_policy;
         this.user.has_agreed_to_user_agreement =
@@ -128,7 +127,7 @@ export class SignUpComponent implements OnInit {
       const hasAgreed =
         this.user.has_read_privacy_policy &&
         this.user.has_agreed_to_user_agreement;
-      return hasAgreed;
+      return { hasAgreed, hasCanceled };
     });
   }
 
@@ -150,21 +149,16 @@ export class SignUpComponent implements OnInit {
       return;
     }
 
-    // check if the user is a Rep and make sure the email is valid
-    if (this.user.type === UserTypes.Representative) {
-      const isValid = this._isRepEmailValid();
-      if (!isValid) {
-        return;
-      }
-    }
-
     const isPasswordValid = this._isPasswordValid(this.user.password);
     if (!isPasswordValid) {
       return;
     }
 
-    const agreed = await this.showModal();
-    if (!agreed) {
+    const result = await this.showModal();
+    if (result.hasCanceled) {
+      return;
+    }
+    if (!result.hasAgreed) {
       return alert({
         title: this._translateService.instant('user.accept.accept-error.title'),
         message: this._translateService.instant(
@@ -253,10 +247,17 @@ export class SignUpComponent implements OnInit {
 
     // check if it's a permobil email and set the flag indicating so
     const emailRegEx = /@permobil.com/i;
-    const isPermobilEmail = emailRegEx.test(this.user.email);
+    const isPermobilEmail = emailRegEx.test(email);
     if (isPermobilEmail) {
       // if we have permobil email set true for checking during other events
       this._isPermobilEmailSigningUp = true;
+    } else {
+      if (this.user.type === UserTypes.Representative) {
+        this.emailError = this._translateService.instant(
+          'sign-up.not-permobil-email-error'
+        );
+        return false;
+      }
     }
 
     this.emailError = '';
@@ -297,21 +298,5 @@ export class SignUpComponent implements OnInit {
     }
     this.lastNameError = '';
     return true;
-  }
-
-  private _isRepEmailValid(): boolean {
-    // only true if the last email validation passed regex
-    if (!this._isPermobilEmailSigningUp) {
-      alert({
-        title: this._translateService.instant('user.error'),
-        message: this._translateService.instant(
-          'sign-up.not-permobil-email-error'
-        ),
-        okButtonText: this._translateService.instant('dialogs.ok')
-      });
-      return false;
-    } else {
-      return true;
-    }
   }
 }
