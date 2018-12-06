@@ -437,6 +437,7 @@
     "sign-out": "Sign Out",
     "sign-out-confirm": "Are you sure you want to sign out?",
     "sign-up-success": "Your user-name is:",
+    "sign-up-error": "Could not sign up: ",
     "sign-in": "Sign In",
     "signing-in": "Signing in...",
     "submitting": "Submitting...",

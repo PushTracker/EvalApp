@@ -182,7 +182,7 @@ export class SignUpComponent implements OnInit {
       .isUsernameTaken(this.user.username)
       .then(result => {
         // now create the account
-        this._userService
+        return this._userService
           .register(this.user)
           .then(user => {
             this._progressService.hide();
@@ -197,8 +197,15 @@ export class SignUpComponent implements OnInit {
             });
           })
           .catch(err => {
+            console.log('ERR', err);
             this._progressService.hide();
             this._logService.logException(err);
+            alert({
+              title: this._translateService.instant('user.error'),
+              message:
+                this._translateService.instant('user.sign-up-error') + err,
+              okButtonText: this.ok
+            });
           });
       })
       .catch(err => {
@@ -206,7 +213,7 @@ export class SignUpComponent implements OnInit {
         this._logService.logException(err);
         alert({
           title: this._translateService.instant('user.error'),
-          message: this._translateService.instant('user.sign-up-error'),
+          message: this._translateService.instant('user.sign-up-error') + err,
           okButtonText: this.ok
         });
       });
