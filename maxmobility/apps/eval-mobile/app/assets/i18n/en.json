@@ -802,7 +802,7 @@
     ]
   },
   "sign-up": {
-    "user-type-clinician": "Clinician",
+    "user-type-clinician": "Clinician / ATP",
     "user-type-rep": "Representative",
     "user-type-end-user": "End User"
   }
