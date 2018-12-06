@@ -49,7 +49,7 @@
     verticalAlignment="center"
     *ngIf="!Demos.length && demoUnitsLoaded"
     horizontalAlignment="center"
-    text="'demos.no-demos' | translate"
+    [text]="'demos.no-demos' | translate"
     class="text-white"
   ></label>
 
