@@ -320,7 +320,7 @@
         "Presione el botón levantado a la izquierda para iniciar el emparejamiento.",
         "Nota: en algunos dispositivos Android, mientras se empareja, es posible que reciba un mensaje sobre un 'Pin o clave de acceso incorrectos'. Siempre que el PushTracker muestre que está conectado, puede ignorarlo."
       ],
-      "Image": "~/asset/images/gifs/PT-APP-CONNECT2.gif",
+      "Image": "~/assets/images/gifs/PT-APP-CONNECT2.gif",
       "Label": "Emparejando su aplicación PushTracker a la evaluación inteligente"
     },
     {
@@ -329,7 +329,7 @@
         "Verá una notificación de 'Éxito' en la aplicación Smart Evaluation.",
         "Nota: si no ve una notificación de \"éxito\" en la aplicación de evaluación inteligente, entonces es posible que deba volver a emparejar su PushTracker"
       ],
-      "Image": "~/asset/images/gifs/PT-APP-CONNECTION1.gif",
+      "Image": "~/assets/images/gifs/PT-APP-CONNECTION1.gif",
       "Label": "Conectando su PushTracker a la aplicación de evaluación inteligente"
     },
     {
@@ -342,7 +342,7 @@
         "Presione el botón derecho para desplazarse al icono PT-SD.",
         "Presione el botón levantado a la izquierda para iniciar el emparejamiento de su PushTracker con su SmartDrive."
       ],
-      "Image": "~/asset/images/gifs/PT-SD-CONNECT2.gif",
+      "Image": "~/assets/images/gifs/PT-SD-CONNECT2.gif",
       "Label": "Emparejando su PushTracker a su SmartDrive"
     }
   ],
@@ -560,7 +560,7 @@
         "En esta posición, el peso del SmartDrive descansa en el suelo.",
         "Para desmontar el SmartDrive de la silla, levante con la manija para desenganchar el SmartDrive de la abrazadera, al revés del procedimiento de conexión."
       ],
-      "Image": "~/asset/images/gifs/SD-POWER.gif",
+      "Image": "~/assets/images/gifs/SD-POWER.gif",
       "Label": "Alimentando SmartDrive"
     },
     {
@@ -568,7 +568,7 @@
         "Presione cualquiera de los botones en el PushTracker para encenderlo.",
         "Mantenga presionado el botón elevado izquierdo durante 3 segundos para ingresar al modo de suspensión 'zzz' y apague el PushTracker."
       ],
-      "Image": "~/asset/images/gifs/PT-POWER.gif",
+      "Image": "~/assets/images/gifs/PT-POWER.gif",
       "Label": "Encendiendo PushTracker"
     },
     {
@@ -578,7 +578,7 @@
         "Consejo: No es necesario que se ponga en contacto con la banda PushTracker.",
         "Consejo: Evite mover la mano en un movimiento similar a una 'cola de pez'. Esto conducirá a un reconocimiento de toque inconsistente."
       ],
-      "Image": "~/asset/images/Stop.png",
+      "Image": "~/assets/images/Stop.png",
       "Label": "Toque gesto"
     },
     {
@@ -588,7 +588,7 @@
         "2": "Para aumentar la velocidad, oprima más rápido y luego toque para establecer la velocidad deseada.",
         "3": "Si no toca, el SmartDrive acelerará a la velocidad máxima controlada por el ajuste de velocidad máxima del PushTracker."
       },
-      "Image": "~/asset/images/start-coast.png",
+      "Image": "~/assets/images/start-coast.png",
       "Label": "Velocidad de arranque y ajuste"
     },
     {
@@ -598,7 +598,7 @@
         "Consejo: para detenerse rápidamente, realice un solo toque seguido de un rápido toque y agarre combinados.",
         "Nota: Desactivar el SmartDrive solo detiene el motor del SmartDrive, aún así deberá frenar con las manos para detener la silla."
       ],
-      "Image": "~/asset/images/Stop2.png",
+      "Image": "~/assets/images/Stop2.png",
       "Label": "Parada"
     },
     {
@@ -607,7 +607,7 @@
         "El agarre ligero te permitirá virar.",
         "Permita que el borde de empuje se deslice a través de sus manos."
       ],
-      "Image": "~/asset/images/Steer.png",
+      "Image": "~/assets/images/Steer.png",
       "Label": "Gobierno"
     },
     {
@@ -618,7 +618,7 @@
         "Consejo: Una posición óptima del centro de gravedad de las ruedas traseras reducirá el agarre necesario para hacer giros bruscos.",
         "Nota: Es posible que deba desactivar el SmartDrive cuando desee realizar giros muy nítidos."
       ],
-      "Image": "~/asset/images/turn.png",
+      "Image": "~/assets/images/turn.png",
       "Label": "Torneado"
     }
   ],
@@ -773,36 +773,36 @@
   "videos": [
     {
       "Description": "Este video es una descripción general de SmartDrive utilizado por personas de diferentes edades y circunstancias en una variedad de entornos.",
-      "Route": "/vídeo",
-      "Thumb": "~/asset/images/overview-thumb.jpg",
+      "Route": "/video",
+      "Thumb": "~/assets/images/overview-thumb.jpg",
       "Title": "Introducción a SmartDrive",
       "Url": "8fn26J59WJ4"
     },
     {
       "Description": "Este video cubre el funcionamiento básico y la funcionalidad de SmartDrive y PushTracker.",
-      "Route": "/vídeo",
-      "Thumb": "~/asset/images/sd-basic-op-thumb.jpg",
+      "Route": "/video",
+      "Thumb": "~/assets/images/sd-basic-op-thumb.jpg",
       "Title": "Operación básica SmartDrive MX2",
       "Url": "uhA3-svjQFg"
     },
     {
       "Description": "Este video cubre el funcionamiento básico y la funcionalidad del PushTracker.",
-      "Route": "/vídeo",
-      "Thumb": "~/asset/images/pt-basic-op-thumb.jpg",
+      "Route": "/video",
+      "Thumb": "~/assets/images/pt-basic-op-thumb.jpg",
       "Title": "Operación básica de PushTracker",
       "Url": "6_M1J8HZXIk"
     },
     {
       "Description": "Este video cubre los pasos a seguir cuando se realiza una evaluación o capacitación de SmartDrive.",
-      "Route": "/vídeo",
-      "Thumb": "~/asset/images/eval-thumb.jpg",
+      "Route": "/video",
+      "Thumb": "~/assets/images/eval-thumb.jpg",
       "Title": "SmartDrive Evaluación y Capacitación",
       "Url": "45Kj7zJpDcM"
     },
     {
       "Description": "En este video, Chels y Steph son entrevistados acerca de los muchos aspectos de sus vidas, y cómo han sido impactados por SmartDrive.",
-      "Route": "/vídeo",
-      "Thumb": "~/asset/images/entrevista-thumb.jpg",
+      "Route": "/video",
+      "Thumb": "~/assets/images/entrevista-thumb.jpg",
       "Title": "Entrevista con Chels y Steph",
       "Url": "hFid9ks551A"
     }
