@@ -57,28 +57,28 @@
       "time-window": "Time Window",
       "clear-counter": "Clear Counter"
     },
-	  "state": {
-		  "paired": {
-			  "title": "Paired",
-			  "msg": "PushTrackers are paired but not connected. Please connect your PushTracker by pressing and releasing the right button. If you are unable to successfully connect, you may need to re-pair your PushTracker to your phone by using the PushTracker's settings menu."
-		  },
-		  "disconnected": {
-			  "title": "Disconnected",
-			  "msg": "PushTrackers are paired but not connected. Please connect your PushTracker by pressing and releasing the right button. If you are unable to successfully connect, you may need to re-pair your PushTracker to your phone by using the PushTracker's settings menu."
-		  },
-		  "connecting": {
-			  "title": "Connecting",
-			  "msg": "PushTrackers are connecting / connected, but no version information has been received. You may have to disconnect and reconnect your PushTracker to get the version information."
-		  },
-		  "connected": {
-			  "title": "Connected",
-			  "msg": "PushTrackers are successfully connected:"
-		  },
-		  "unknown": {
-			  "title": "No Known PushTrackers",
-			  "msg": "No PushTrackers have been paired or connected so far. Please pair your PushTracker by going into the PushTracker's settings menu."
-		  }
-	  }
+    "state": {
+      "paired": {
+        "title": "Paired",
+        "msg": "PushTrackers are paired but not connected. Please connect your PushTracker by pressing and releasing the right button. If you are unable to successfully connect, you may need to re-pair your PushTracker to your phone by using the PushTracker's settings menu."
+      },
+      "disconnected": {
+        "title": "Disconnected",
+        "msg": "PushTrackers are paired but not connected. Please connect your PushTracker by pressing and releasing the right button. If you are unable to successfully connect, you may need to re-pair your PushTracker to your phone by using the PushTracker's settings menu."
+      },
+      "connecting": {
+        "title": "Connecting",
+        "msg": "PushTrackers are connecting / connected, but no version information has been received. You may have to disconnect and reconnect your PushTracker to get the version information."
+      },
+      "connected": {
+        "title": "Connected",
+        "msg": "PushTrackers are successfully connected:"
+      },
+      "unknown": {
+        "title": "No Known PushTrackers",
+        "msg": "No PushTrackers have been paired or connected so far. Please pair your PushTracker by going into the PushTracker's settings menu."
+      }
+    }
   },
   "menu": {
     "home": "SmartDrive",
@@ -161,11 +161,11 @@
       "Image": "~/assets/images/gifs/SD-POWER.gif",
       "Label": "Powering SmartDrive",
       "Bullets": [
-          "Press back on the rocker switch to power on the SmartDrive, and forward to power off.",
-		  "The SmartDrive attaches to the chair by aligning the flats in the clamp with the receiving slots on the SmartDrive",
-		  "After aligning the SmartDrive and the flats, lower the SmartDrive over the clamp rods and rotate the SmartDrive downward to pivotally attach the SmartDrive to the clamp and thus the wheelchair.",
-		  "In this position, the SmartDrive's weight rests on the ground.",
-		  "To detach the SmartDrive from the chair, lift with the handle to disengage the SmartDrive from the clamp - the reverse of the attachment procedure."
+        "Press back on the rocker switch to power on the SmartDrive, and forward to power off.",
+        "The SmartDrive attaches to the chair by aligning the flats in the clamp with the receiving slots on the SmartDrive",
+        "After aligning the SmartDrive and the flats, lower the SmartDrive over the clamp rods and rotate the SmartDrive downward to pivotally attach the SmartDrive to the clamp and thus the wheelchair.",
+        "In this position, the SmartDrive's weight rests on the ground.",
+        "To detach the SmartDrive from the chair, lift with the handle to disengage the SmartDrive from the clamp - the reverse of the attachment procedure."
       ]
     },
     {
@@ -191,9 +191,9 @@
       "Label": "Starting & Setting Speed",
       "Bullets": [
         "Double-tap to initiate the SmartDrive. It will then begin to accelerate.",
-          "Then, single-tap to set your desired speed.",
-          "To increase speed, give a faster push and then single tap to set your desired speed.",
-		  "If you do not tap, the SmartDrive will accelerate to the maximum speed controlled by the PushTracker's Max Speed setting."
+        "Then, single-tap to set your desired speed.",
+        "To increase speed, give a faster push and then single tap to set your desired speed.",
+        "If you do not tap, the SmartDrive will accelerate to the maximum speed controlled by the PushTracker's Max Speed setting."
       ]
     },
     {
@@ -202,8 +202,8 @@
       "Bullets": [
         "Double-tap to disengage the SmartDrive.",
         "Then coast and brake with your hands.",
-          "Tip: To stop quickly, perform a single-tap followed by a quick combined tap and grab.",
-		  "Note: Disengaging the SmartDrive only stops the SmartDrive motor, you will still need to brake with your hands to bring your chair to a stop."
+        "Tip: To stop quickly, perform a single-tap followed by a quick combined tap and grab.",
+        "Note: Disengaging the SmartDrive only stops the SmartDrive motor, you will still need to brake with your hands to bring your chair to a stop."
       ]
     },
     {
@@ -212,7 +212,7 @@
       "Bullets": [
         "To steer, gently grip the push-rim of the direction you want to go.",
         "Light grip will allow you to veer.",
-          "Allow the push-rim to slide through your hands."
+        "Allow the push-rim to slide through your hands."
       ]
     },
     {
@@ -222,8 +222,8 @@
         "To turn, firmly grip the push-rim of the direction you want to go.",
         "Firm grip will allow you to turn.",
         "The tighter you grip, the sharper you will turn.",
-          "Tip: An optimal center of gravity position of the rear wheels will reduce the grip needed to make sharp turns.",
-		  "Note: You may need to disengage the SmartDrive when you wish to make very sharp turns."
+        "Tip: An optimal center of gravity position of the rear wheels will reduce the grip needed to make sharp turns.",
+        "Note: You may need to disengage the SmartDrive when you wish to make very sharp turns."
       ]
     }
   ],
@@ -598,8 +598,8 @@
     "other": "Other",
     "description": "Course or Obstacle Description",
     "recommendation": "Note: trials are recommended to contain ramps, multiple surface types, and should last at least a few minutes or 100 yards / 100 meters.",
-      "evaluator-range": "Note: the PushTracker does not need to stay connected to the phone throughout this phase - it only needs to connect at the start and end.",
-	  "smartdrive-connection": "Note: before starting this trial, make sure you have the PushTracker and SmartDrive connected / 'SD On' to ensure that the PushTracker has the latest distance information.",
+    "evaluator-range": "Note: the PushTracker does not need to stay connected to the phone throughout this phase - it only needs to connect at the start and end.",
+    "smartdrive-connection": "Note: before starting this trial, make sure you have the PushTracker and SmartDrive connected / 'SD On' to ensure that the PushTracker has the latest distance information.",
     "accelleration": "Acceleration",
     "max-speed": "Max Speed",
     "phase-1": "Phase 1",
@@ -623,8 +623,8 @@
     "connect_pushtracker_more_info": "A PushTracker must be connected to the Smart Evaluation app in order to communicate. Please see the Connectivity section on the home screen or press the connectivity icon in the upper right.",
     "starting-trial": "Starting Trial - may take up to 10 seconds.",
     "stopping-trial": "Stopping Trial - may take up to 10 seconds.",
-      "errors": {
-		  "timeout": "Timeout",
+    "errors": {
+      "timeout": "Timeout",
       "too-many-pts": "Too many PushTrackers connected - please only connect one!",
       "failed-start": {
         "title": "Couldn't Start Trial",
@@ -642,14 +642,14 @@
         "title": "Unknown PushTracker Version",
         "message": "Your PushTracker has not sent its version, please disconnect and reconnect the PushTracker to re-send the version information to the Smart Evaluation app."
       },
-		"pt-unknown-distance": {
-			"title": "Unknown Distance",
-			"message": "Your PushTracker has not gotten distance information from the SmartDrive - please make sure they are connected / 'SD On' without the motor driving before starting the trial."
-		},
-		"pt-same-distance": {
-			"title": "Invalid Distance",
-			"message": "Your PushTracker has not received updated distance information from your SmartDrive - please make sure they are connected / 'SD On' without the motor driving before stopping the trial."
-		}
+      "pt-unknown-distance": {
+        "title": "Unknown Distance",
+        "message": "Your PushTracker has not gotten distance information from the SmartDrive - please make sure they are connected / 'SD On' without the motor driving before starting the trial."
+      },
+      "pt-same-distance": {
+        "title": "Invalid Distance",
+        "message": "Your PushTracker has not received updated distance information from your SmartDrive - please make sure they are connected / 'SD On' without the motor driving before stopping the trial."
+      }
     }
   },
   "faqs": [
@@ -734,17 +734,17 @@
     "refresh": "Search for SmartDrives",
     "begin": "Begin Updates",
     "cancel": "Cancel All Firmware Updates",
-      "downloading": "Fetching latest firmware data from the server",
-	  "warnings": {
-		  "starting": {
-			  "title": "Starting OTA",
-			  "message": "Warning: you should not leave this page while you are performing OTA firmware updates of the SmartDrive or PushTracker. If you leave this page or kill the app, the OTAs will be cancelled or may fail."
-		  },
-		  "leaving": {
-			  "title": "Warning",
-			  "message": "Warning: you are leaving the OTA page during an OTA - this will cancel all ongoing OTAs! Are you sure you want to leave?"
-		  }
-	  },
+    "downloading": "Fetching latest firmware data from the server",
+    "warnings": {
+      "starting": {
+        "title": "Starting OTA",
+        "message": "Warning: you should not leave this page while you are performing OTA firmware updates of the SmartDrive or PushTracker. If you leave this page or kill the app, the OTAs will be cancelled or may fail."
+      },
+      "leaving": {
+        "title": "Warning",
+        "message": "Warning: you are leaving the OTA page during an OTA - this will cancel all ongoing OTAs! Are you sure you want to leave?"
+      }
+    },
     "errors": {
       "sd_connection": {
         "title": "SmartDrive connection error!",
@@ -804,6 +804,7 @@
   "sign-up": {
     "user-type-clinician": "Clinician / ATP",
     "user-type-rep": "Representative",
-    "user-type-end-user": "End User"
+    "user-type-end-user": "End User",
+    "not-permobil-email-error": "The current email cannot sign up as a Representative."
   }
 }

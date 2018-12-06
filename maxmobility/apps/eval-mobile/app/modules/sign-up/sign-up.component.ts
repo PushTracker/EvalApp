@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
-import { CLog, User, UserTypes } from '@maxmobility/core';
+import { User, UserTypes } from '@maxmobility/core';
 import {
   LoggingService,
   preventKeyboardFromShowing,
@@ -62,6 +62,8 @@ export class SignUpComponent implements OnInit {
 
   ok: string = this._translateService.instant('dialogs.ok');
 
+  _isPermobilEmailSigningUp: boolean = false;
+
   constructor(
     private _userService: UserService,
     private _logService: LoggingService,
@@ -77,7 +79,6 @@ export class SignUpComponent implements OnInit {
   }
 
   ngOnInit() {
-    CLog('SignUpComponent OnInit');
     this._page.actionBarHidden = true;
     this._page.backgroundSpanUnderStatusBar = true;
     setMarginForIosSafeArea(this._page);
@@ -99,6 +100,12 @@ export class SignUpComponent implements OnInit {
   onUserTypeChanged(args: SelectedIndexChangedEventData) {
     const type = this.usertypes.getValue(args.newIndex) || 0;
     this.user.type = type;
+
+    // make sure it's only permobil emails as reps
+    // only if they've entered an email and then changing the dropdown
+    if (type === UserTypes.Representative && this.user.email) {
+      this._isRepEmailValid();
+    }
   }
 
   async showModal(): Promise<boolean> {
@@ -143,6 +150,14 @@ export class SignUpComponent implements OnInit {
       return;
     }
 
+    // check if the user is a Rep and make sure the email is valid
+    if (this.user.type === UserTypes.Representative) {
+      const isValid = this._isRepEmailValid();
+      if (!isValid) {
+        return;
+      }
+    }
+
     const isPasswordValid = this._isPasswordValid(this.user.password);
     if (!isPasswordValid) {
       return;
@@ -176,7 +191,6 @@ export class SignUpComponent implements OnInit {
         this._userService
           .register(this.user)
           .then(user => {
-            CLog(JSON.stringify(user));
             this._progressService.hide();
             alert({
               title: this._translateService.instant('user.success'),
@@ -205,7 +219,7 @@ export class SignUpComponent implements OnInit {
   }
 
   onReturnPress(args) {
-    CLog('return press object', args.object.id);
+    // nothing
   }
 
   onEmailTextChange(args) {
@@ -223,8 +237,6 @@ export class SignUpComponent implements OnInit {
 
   private _isEmailValid(text: string): boolean {
     // validate the email
-    CLog('isEmailValid', text);
-
     if (!text) {
       this.emailError = this._translateService.instant('user.email-required');
       return false;
@@ -237,6 +249,14 @@ export class SignUpComponent implements OnInit {
         'user.email-error'
       )}`;
       return false;
+    }
+
+    // check if it's a permobil email and set the flag indicating so
+    const emailRegEx = /@permobil.com/i;
+    const isPermobilEmail = emailRegEx.test(this.user.email);
+    if (isPermobilEmail) {
+      // if we have permobil email set true for checking during other events
+      this._isPermobilEmailSigningUp = true;
     }
 
     this.emailError = '';
@@ -277,5 +297,21 @@ export class SignUpComponent implements OnInit {
     }
     this.lastNameError = '';
     return true;
+  }
+
+  private _isRepEmailValid(): boolean {
+    // only true if the last email validation passed regex
+    if (!this._isPermobilEmailSigningUp) {
+      alert({
+        title: this._translateService.instant('user.error'),
+        message: this._translateService.instant(
+          'sign-up.not-permobil-email-error'
+        ),
+        okButtonText: this._translateService.instant('dialogs.ok')
+      });
+      return false;
+    } else {
+      return true;
+    }
   }
 }
