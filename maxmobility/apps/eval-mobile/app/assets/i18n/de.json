@@ -10,7 +10,7 @@
     },
     "pairing-success": "Erfolgreich mit PushTracker gekoppelt!",
     "pt_app_conn_instructions": "Um den PushTracker mit der Smart Evaluation-App zu verbinden, müssen Sie die App auf Ihrem Telefon öffnen und dann die rechte Taste auf dem PushTracker drücken und loslassen. Dies verbindet entweder Ihren PushTracker mit Ihrer App oder bringt Sie in die Paarungseinstellungen des PushTracker. Nach dem Koppeln müssen Sie das Einstellungsmenü verlassen und dann die rechte Taste drücken, um eine Verbindung zur App herzustellen. Wenn Sie Probleme haben, setzen Sie den PushTracker auf SLEEP und schalten Sie ihn ein.",
-    "sd_app_conn_instructions": "Damit die Smart Evaluation-App ein SmartDrive sehen und eine Verbindung zu diesem herstellen kann, müssen Sie SmartDrive ON und die Hilfskraftunterstützung OFF / 'SD Off' haben. Wenn Sie Probleme haben, schalten Sie das SmartDrive aus und wieder ein.",
+    "sd_app_conn_instructions": "Damit die Smart Evaluation-App ein SmartDrive sehen und eine Verbindung zu diesem herstellen kann, müssen Sie SmartDrive ON und die Hilfskraftunterstützung OFF/'SD Off' haben. Wenn Sie Probleme haben, schalten Sie das SmartDrive aus und wieder ein.",
     "searching": "Geräte suchen",
     "service-failure": "Bluetooth-Dienstfehler",
     "waiting": "Warten auf die Initialisierung von Bluetooth"
@@ -64,12 +64,12 @@
     "chair-label": "Stuhl machen",
     "chair-options": [
       "Farben",
-      "Invacare / Küschall",
+      "Invacare/Küschall",
       "Karman",
       "Ki",
       "Bewegungszusammensetzungen",
       "Panthera",
-      "Quickie / Sopur / RGK",
+      "Quickie/Sopur/RGK",
       "TiLite",
       "Das obere Ende",
       "andere"
@@ -316,11 +316,11 @@
     {
       "Bullets": [
         "Halten Sie die rechte Wohnungstaste an Ihrem PushTracker drei Sekunden lang gedrückt, um das Einstellungsmenü aufzurufen",
-        "Drücken Sie die rechte Taste, um zum Symbol Telefon / PT zu blättern.",
+        "Drücken Sie die rechte Taste, um zum Symbol Telefon/PT zu blättern.",
         "Drücken Sie die linke hochgezogene Taste, um das Pairing zu starten.",
         "Hinweis: Auf einigen Android-Geräten erhalten Sie beim Koppeln möglicherweise eine Meldung über eine falsche PIN oder einen falschen Schlüssel. Solange der PushTracker zeigt, dass er verbunden ist, können Sie dies ignorieren."
       ],
-      "Image": "~ / assets / images / gifs / PT-APP-CONNECT2.gif",
+      "Image": "~/assets/images/gifs/PT-APP-CONNECT2.gif",
       "Label": "Koppeln Sie Ihren PushTracker mit der Smart Evaluation App"
     },
     {
@@ -329,7 +329,7 @@
         "In der Smart-Evaluierungs-App wird eine Benachrichtigung über den Erfolg angezeigt.",
         "Hinweis: Wenn in der Smart Evaluation-App keine Benachrichtigung über den Erfolg angezeigt wird, müssen Sie Ihren PushTracker möglicherweise erneut koppeln"
       ],
-      "Image": "~ / assets / images / gifs / PT-APP-CONNECTION1.gif",
+      "Image": "~/assets/images/gifs/PT-APP-CONNECTION1.gif",
       "Label": "Verbinden Sie Ihren PushTracker mit der Smart Evaluation App"
     },
     {
@@ -342,7 +342,7 @@
         "Drücken Sie die rechte Taste, um zum Symbol PT-SD zu blättern.",
         "Drücken Sie die linke erhöhte Taste, um die Verbindung Ihres PushTrackers mit Ihrem SmartDrive zu initiieren."
       ],
-      "Image": "~ / assets / images / gifs / PT-SD-CONNECT2.gif",
+      "Image": "~/assets/images/gifs/PT-SD-CONNECT2.gif",
       "Label": "Koppeln Sie Ihren PushTracker mit Ihrem SmartDrive"
     }
   ],
@@ -394,7 +394,7 @@
         "title": "In Verbindung gebracht"
       },
       "connecting": {
-        "msg": "PushTrackers sind verbunden / verbunden, es wurden jedoch keine Versionsinformationen empfangen. Möglicherweise müssen Sie den PushTracker trennen und erneut verbinden, um die Versionsinformationen abzurufen.",
+        "msg": "PushTrackers sind verbunden/verbunden, es wurden jedoch keine Versionsinformationen empfangen. Möglicherweise müssen Sie den PushTracker trennen und erneut verbinden, um die Versionsinformationen abzurufen.",
         "title": "Anschließen"
       },
       "disconnected": {
@@ -413,7 +413,7 @@
   },
   "sign-up": {
     "not-permobil-email-error": "Die aktuelle E-Mail kann sich nicht als Vertreter registrieren.",
-    "user-type-clinician": "Kliniker / ATP",
+    "user-type-clinician": "Kliniker/ATP",
     "user-type-end-user": "Endbenutzer",
     "user-type-rep": "Vertreter"
   },
@@ -429,7 +429,7 @@
     "difficulty-incline": "Schwierigkeit bei Steigung?",
     "difficulty-other": "Schwierigkeit auf anderer Oberfläche?",
     "difficulty-ramp": "Schwierigkeit auf der Rampe?",
-    "difficulty-ramp-incline": "Schwierigkeit auf Rampe / Steigung?",
+    "difficulty-ramp-incline": "Schwierigkeit auf Rampe/Steigung?",
     "email-subject": "Intelligente Evaluierungszusammenfassung",
     "errors": {
       "save-failed": {
@@ -444,14 +444,14 @@
     "lmnTemplate": [
       "Diese E-Mail wurde von der Smart Evaluation App generiert und versendet.",
       "",
-      "Pushing Schmerz des Benutzers: {{# evaluation.pushing_pain}} {{round}} {{/ evaluation.pushing_pain}} {{^ evaluation.pushing_pain}} 0 {{/ evaluation.pushing_pain}} / 10",
-      "Ermüdung des Benutzers: {{# evaluation.pushing_fatigue}} {{round}} {{/ evaluation.pushing_fatigue}} {{^ evaluation.pushing_fatigue}} 0 {{/ evaluation.pushing_fatigue}} / 10",
-      "Auswirkungen auf die Unabhängigkeit des Benutzers: {{# evaluation.impact_on_independence}} {{round}} {{/ evaluation.impact_on_independence}} {{^ evaluation.impact_on_independence}} 0 {{/ evaluation.impact_on_independence}} / 10",
+      "Pushing Schmerz des Benutzers: {{# evaluation.pushing_pain}} {{round}} {{/ evaluation.pushing_pain}} {{^ evaluation.pushing_pain}} 0 {{/ evaluation.pushing_pain}}/10",
+      "Ermüdung des Benutzers: {{# evaluation.pushing_fatigue}} {{round}} {{/ evaluation.pushing_fatigue}} {{^ evaluation.pushing_fatigue}} 0 {{/ evaluation.pushing_fatigue}}/10",
+      "Auswirkungen auf die Unabhängigkeit des Benutzers: {{# evaluation.impact_on_independence}} {{round}} {{/ evaluation.impact_on_independence}} {{^ evaluation.impact_on_independence}} 0 {{/ evaluation.impact_on_independence}}/10",
       "",
       "{{# trials._array}}",
       "Testversion {{Name}}:",
       "  Hatte Flats: {{#flat}} Ja {{/ flat}} {{^ flat}} Nein {{/ flat}}",
-      "  Hatte Steigung / Steigung: {{#rampIncline}} Ja {{/ rampIncline}} {{^ rampIncline}} Nein {{/ rampIncline}}",
+      "  Hatte Steigung/Steigung: {{#rampIncline}} Ja {{/ rampIncline}} {{^ rampIncline}} Nein {{/ rampIncline}}",
       "{{#other}} hatte andere: '{{other_description}}' {{/ other}}",
       "  Distanz: {{#distance}} {{toFixed}} {{/ Abstand}} {{^ Abstand}} 0,00 {{/ Abstand}} m",
       "{{#fertig mit}}",
@@ -483,7 +483,7 @@
       "{{#Versuche}}",
       "Testversion {{Name}}:",
       "  Hatte Flats: {{#flat}} Ja {{/ flat}} {{^ flat}} Nein {{/ flat}}",
-      "  Hatte Steigung / Steigung: {{#rampIncline}} Ja {{/ rampIncline}} {{^ rampIncline}} Nein {{/ rampIncline}}",
+      "  Hatte Steigung/Steigung: {{#rampIncline}} Ja {{/ rampIncline}} {{^ rampIncline}} Nein {{/ rampIncline}}",
       "{{#other}} hatte andere: '{{other_description}}' {{/ other}}",
       "  Distanz: {{#distance}} {{toFixed}} {{/ Abstand}} {{^ Abstand}} 0,00 {{/ Abstand}} m",
       "{{#fertig mit}}",
@@ -514,19 +514,19 @@
       "{{/trials._array}}",
       "",
       "{{# evaluation.flat_difficulty}}",
-      "Schwierigkeit des Benutzers bei Wohnungen: {{round}} / 10",
+      "Schwierigkeit des Benutzers bei Wohnungen: {{round}}/10",
       "{{# evaluation.unableToCompleteFlat}}",
       "  - Hinweis: Der Benutzer konnte den flachen Teil der Auswertung nicht abschließen.",
       "{{/evaluation.unableToCompleteFlat}}",
       "{{/evaluation.flat_difficulty}}",
       "{{# evaluation.ramp_incline_difficulty}}",
-      "Schwierigkeit des Benutzers bei Rampen / Steigungen: {{round}} / 10",
+      "Schwierigkeit des Benutzers bei Rampen/Steigungen: {{round}}/10",
       "{{# evaluation.unableToCompleteRampIncline}}",
-      "  - Hinweis: Der Benutzer konnte den Rampen- / Neigungsteil der Auswertung nicht abschließen.",
+      "  - Hinweis: Der Benutzer konnte den Rampen-/Neigungsteil der Auswertung nicht abschließen.",
       "{{/evaluation.unableToCompleteRampIncline}}",
       "{{/evaluation.ramp_incline_difficulty}}",
       "{{# evaluation.other_difficulty}}",
-      "Schwierigkeit des Benutzers mit anderen: {{round}} / 10",
+      "Schwierigkeit des Benutzers mit anderen: {{round}}/10",
       "{{# evaluation.unableToCompleteOther}}",
       "  - Hinweis: Der Benutzer konnte den anderen Teil der Bewertung nicht abschließen.",
       "{{/evaluation.unableToCompleteOther}}",
@@ -544,10 +544,10 @@
     "other-surface-difficulty": "Andere Oberflächenschwierigkeit",
     "pushes": " drückt mit SmartDrive.",
     "ramp-difficulty": "Schwierigkeitsgrad der Rampe",
-    "ramp-incline-difficulty": "Rampe / Steigung Schwierigkeit",
+    "ramp-incline-difficulty": "Rampe/Steigung Schwierigkeit",
     "unable-flat": "Flat kann nicht abgeschlossen werden",
     "unable-other": "Andere Oberfläche kann nicht abgeschlossen werden?",
-    "unable-ramp-incline": "Rampe / Steigung kann nicht abgeschlossen werden?",
+    "unable-ramp-incline": "Rampe/Steigung kann nicht abgeschlossen werden?",
     "user-performed": "Benutzer ausgeführt",
     "with-sd": " mit SmartDrive."
   },
@@ -560,7 +560,7 @@
         "In dieser Position liegt das Gewicht des SmartDrive auf dem Boden.",
         "Um den SmartDrive vom Stuhl zu lösen, heben Sie ihn mit dem Griff an, um den SmartDrive von der Klemme zu lösen. Dies ist der umgekehrte Vorgang des Befestigungsvorgangs."
       ],
-      "Image": "~ / assets / images / gifs / SD-POWER.gif",
+      "Image": "~/assets/images/gifs/SD-POWER.gif",
       "Label": "Einschalten des SmartDrive"
     },
     {
@@ -568,7 +568,7 @@
         "Drücken Sie eine der beiden Tasten am PushTracker, um das Gerät einzuschalten.",
         "Halten Sie die linke erhöhte Taste 3 Sekunden lang gedrückt, um den Schlafmodus 'zzz' zu aktivieren und den PushTracker auszuschalten."
       ],
-      "Image": "~ / assets / images / gifs / PT-POWER.gif",
+      "Image": "~/assets/images/gifs/PT-POWER.gif",
       "Label": "PushTracker einschalten"
     },
     {
@@ -578,7 +578,7 @@
         "Tipp: Sie müssen sich nicht mit dem PushTracker-Band in Verbindung setzen.",
         "Tipp: Bewegen Sie Ihre Hand nicht wie ein Fischschwanz. Dies führt zu einer inkonsistenten Stufenerkennung."
       ],
-      "Image": "~ / assets / images / Stop.png",
+      "Image": "~/assets/images/Stop.png",
       "Label": "Tippen Sie auf Geste"
     },
     {
@@ -588,7 +588,7 @@
         "Um die Geschwindigkeit zu erhöhen, drücken Sie einen schnelleren Druck und dann einmal, um die gewünschte Geschwindigkeit einzustellen.",
         "Wenn Sie nicht tippen, beschleunigt das SmartDrive auf die Höchstgeschwindigkeit, die durch die Einstellung der maximalen Geschwindigkeit des PushTrackers gesteuert wird."
       ],
-      "Image": "~ / assets / images / start-coast.png",
+      "Image": "~/assets/images/start-coast.png",
       "Label": "Geschwindigkeit starten und einstellen"
     },
     {
@@ -598,7 +598,7 @@
         "Tipp: Um schnell zu stoppen, führen Sie ein einfaches Tippen und anschließend ein kurzes kombiniertes Tippen und Greifen aus.",
         "Hinweis: Wenn Sie den SmartDrive auskuppeln, wird nur der SmartDrive-Motor angehalten. Sie müssen trotzdem mit den Händen bremsen, um Ihren Stuhl anzuhalten."
       ],
-      "Image": "~ / assets / images / Stop2.png",
+      "Image": "~/assets/images/Stop2.png",
       "Label": "Stoppen"
     },
     {
@@ -607,7 +607,7 @@
         "Leichter Griff ermöglicht es Ihnen, sich zu drehen.",
         "Lassen Sie den Schiebering durch Ihre Hände gleiten."
       ],
-      "Image": "~ / assets / images / Steer.png",
+      "Image": "~/assets/images/Steer.png",
       "Label": "Lenkung"
     },
     {
@@ -618,7 +618,7 @@
         "Tipp: Eine optimale Schwerpunktlage der Hinterräder verringert den Griff, der für scharfe Kurven erforderlich ist.",
         "Hinweis: Möglicherweise müssen Sie das SmartDrive ausschalten, wenn Sie sehr scharfe Kurven machen möchten."
       ],
-      "Image": "~ / assets / images / turn.png",
+      "Image": "~/assets/images/turn.png",
       "Label": "Drehen"
     }
   ],
@@ -675,7 +675,7 @@
     "push_accuracy_disclaimer": "Der Push-Tracker erkennt Bewegungen, um Stöße zu erkennen. Dies kann einen unterschiedlichen Grad an Genauigkeit verursachen, abhängig davon, wie der Benutzer den Push-Tracker trägt und sich mit ihm bewegt. Eine bessere Messgröße für die Bewertung ist der relative Unterschied zwischen den Pushs mit dem SmartDrive und ohne SmartDrive.",
     "pushes": "Drückt:",
     "ramp": "Rampe",
-    "ramp-incline": "Rampen / Steigungen",
+    "ramp-incline": "Rampen/Steigungen",
     "recommendation": "Hinweis: Versuche sollten Rampen und mehrere Oberflächentypen enthalten und sollten mindestens einige Minuten oder 100 Meter betragen.",
     "select-options": "Wählen Sie Optionen und Einstellungen für die SmartDrive-Testversion aus.",
     "set-up": "Testaufbau",
@@ -709,7 +709,7 @@
     "account-creating": "Account erstellen...",
     "account-error": "Beim Abrufen Ihrer Kontoinformationen ist ein Fehler aufgetreten. Versuchen Sie es später noch einmal.",
     "account-reset": "Konto zurücksetzen",
-    "account-reset-confirm": "Möchten Sie Ihr Konto wirklich zurücksetzen (alle Daten / Einstellungen entfernen)?",
+    "account-reset-confirm": "Möchten Sie Ihr Konto wirklich zurücksetzen (alle Daten/Einstellungen entfernen)?",
     "account-update": "Benutzerkonto aktualisieren",
     "account-update-complete": "Ihr Profil wurde aktualisiert.",
     "account-update-confirm": "Diese Einstellungen an den Server senden?",
@@ -757,7 +757,7 @@
     "reset-pass-desc": "Um Ihr Passwort zurückzusetzen, geben Sie die E-Mail-Adresse Ihres Kontos ein. Sie erhalten eine E-Mail mit Anweisungen zum Zurücksetzen Ihres Passworts.",
     "sign-in": "Einloggen",
     "sign-in-error-1": "Bei der Anmeldung ist ein Fehler aufgetreten. Überprüfen Sie Ihre E-Mail-Adresse und Ihr Kennwort.",
-    "sign-in-error-2": "Ungültige Email und / oder Passwort. Bitte versuche es erneut.",
+    "sign-in-error-2": "Ungültige Email und/oder Passwort. Bitte versuche es erneut.",
     "sign-out": "Ausloggen",
     "sign-out-confirm": "Möchten Sie sich wirklich abmelden?",
     "sign-up": "Anmelden",
@@ -773,36 +773,36 @@
   "videos": [
     {
       "Description": "Dieses Video ist eine Übersicht über SmartDrive, das von Menschen unterschiedlichen Alters und unter verschiedenen Umständen in verschiedenen Umgebungen verwendet wird.",
-      "Route": "/Video",
-      "Thumb": "~ / assets / images / overview-thumb.jpg",
+      "Route": "/video",
+      "Thumb": "~/assets/images/overview-thumb.jpg",
       "Title": "SmartDrive Einführung",
       "Url": "8fn26J59WJ4"
     },
     {
       "Description": "Dieses Video behandelt die grundlegenden Funktionen und Funktionen von SmartDrive und PushTracker.",
-      "Route": "/Video",
-      "Thumb": "~ / assets / images / sd-basic-op-thumb.jpg",
+      "Route": "/video",
+      "Thumb": "~/assets/images/sd-basic-op-thumb.jpg",
       "Title": "SmartDrive MX2 Grundbedienung",
       "Url": "uhA3-svjQFg"
     },
     {
       "Description": "Dieses Video behandelt die grundlegenden Funktionen und Funktionen des PushTrackers.",
-      "Route": "/Video",
-      "Thumb": "~ / assets / images / pt-basic-op-thumb.jpg",
+      "Route": "/video",
+      "Thumb": "~/assets/images/pt-basic-op-thumb.jpg",
       "Title": "PushTracker-Grundbedienung",
       "Url": "6_M1J8HZXIk"
     },
     {
       "Description": "In diesem Video werden die Schritte beschrieben, die bei einer SmartDrive-Bewertung oder -Schulung durchzuführen sind.",
-      "Route": "/Video",
-      "Thumb": "~ / assets / images / eval-thumb.jpg",
+      "Route": "/video",
+      "Thumb": "~/assets/images/eval-thumb.jpg",
       "Title": "SmartDrive Evaluation und Training",
       "Url": "45Kj7zJpDcM"
     },
     {
       "Description": "In diesem Video werden Chels und Steph zu den vielen Aspekten ihres Lebens befragt und wie sie von SmartDrive beeinflusst wurden.",
-      "Route": "/Video",
-      "Thumb": "~ / assets / images / interview-thumb.jpg",
+      "Route": "/video",
+      "Thumb": "~/assets/images/interview-thumb.jpg",
       "Title": "Interview mit Chels und Steph",
       "Url": "hFid9ks551A"
     }
