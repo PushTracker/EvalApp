@@ -435,16 +435,25 @@ export class OTAComponent implements OnInit {
     // remove all children from the carousel (carousel extends GridLayout)
     carousel.removeChildren();
 
-    const firmwareDescriptionItems = this._translateService.instant(
+    let firmwareDescriptionItems = this._translateService.instant(
       'firmware.' + this._firmwareService.currentVersion
     );
     // this._loggingService.logBreadCrumb(
     //   `Current firmware description items: ${firmwareDescriptionItems}`
     // );
 
+    if (
+      !this._firmwareService.currentVersion ||
+      this._firmwareService.currentVersion === 'unknown'
+    ) {
+      firmwareDescriptionItems = this._translateService.instant(
+        'firmware.not-found'
+      );
+    }
+
     const whiteColor = new Color('#fff');
 
-    firmwareDescriptionItems.forEach((item: string) => {
+    firmwareDescriptionItems.map((item: string) => {
       // create a new scrollview for the carousel item
       const sv = new ScrollView();
 
