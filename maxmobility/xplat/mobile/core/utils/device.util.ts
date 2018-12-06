@@ -1,6 +1,5 @@
 import * as application from 'tns-core-modules/application';
 import { isIOS } from 'tns-core-modules/platform';
-import { CLog } from '@maxmobility/core';
 
 /**
  * Adds margin-bottom to the page. Is not super elegant but works for now.
@@ -9,7 +8,6 @@ import { CLog } from '@maxmobility/core';
  */
 export function addBottomSafeAreaForIOS(): void {
   if (isIOS && application.ios.window.safeAreaInsets) {
-    CLog('*** remove this when upgraded to NS 4.0 ***');
     const bottomSafeArea: number = application.ios.window.safeAreaInsets.bottom;
     if (bottomSafeArea > 0) {
       application.addCss(`

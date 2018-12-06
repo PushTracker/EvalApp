@@ -1,6 +1,6 @@
 import { Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { CLog, DidYouKnow, User, UserTypes } from '@maxmobility/core';
+import { DidYouKnow, User, UserTypes } from '@maxmobility/core';
 import { FileService, LoggingService, UserService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
@@ -211,7 +211,6 @@ export class AccountComponent implements OnInit {
       if (result) {
         this._saveUserToKinvey()
           .then(resp => {
-            CLog('update response', JSON.stringify(resp));
             new Toasty(
               this._translateService.instant('user.account-update-complete'),
               ToastDuration.SHORT,

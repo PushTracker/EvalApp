@@ -1,5 +1,4 @@
 import { Component, NgZone, OnInit } from '@angular/core';
-import { CLog } from '@maxmobility/core';
 import {
   LoggingService,
   preventKeyboardFromShowing,
@@ -39,16 +38,10 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    CLog('LoginComponent OnInit');
     this._page.actionBarHidden = true;
     this._page.backgroundSpanUnderStatusBar = true;
     setMarginForIosSafeArea(this._page);
-
     // if we get to the login page, no user should be logged in
-    CLog(
-      'LoginComponent ngOnInit',
-      'Logging out any active user. Login screen should only be used when no user is authenticated.'
-    );
     Kinvey.User.logout();
   }
 
@@ -70,11 +63,7 @@ export class LoginComponent implements OnInit {
       );
 
       // now try logging in with Kinvey user account
-      const res = await this._userService.login(
-        this.user.email,
-        this.user.password
-      );
-      CLog('login result', res);
+      await this._userService.login(this.user.email, this.user.password);
       this._progressService.hide();
 
       await this._userService._registerForPushNotifications();
@@ -85,7 +74,6 @@ export class LoginComponent implements OnInit {
         });
       });
     } catch (error) {
-      CLog('login error', error);
       this._progressService.hide();
       // parse the exceptions from kinvey sign up
       let errorMessage = this._translateService.instant('user.sign-in-error-1');

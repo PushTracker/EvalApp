@@ -2,12 +2,6 @@ export class LoggingUtil {
   public static debug = true;
 }
 
-export const CLog = (...args) => {
-  if (LoggingUtil.debug) {
-    console.log(args);
-  }
-};
-
 // tslint:disable-next-line:max-classes-per-file
 export class LoggingService {
   /**

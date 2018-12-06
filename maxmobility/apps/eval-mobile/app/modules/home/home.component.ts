@@ -123,7 +123,7 @@ export class HomeComponent {
     if (DemoService.Demos.length <= 0) {
       setTimeout(() => {
         this.loadDemoUnits();
-      }, 2000);
+      }, 1500);
     } else {
       this.demoUnitsLoaded = true;
     }

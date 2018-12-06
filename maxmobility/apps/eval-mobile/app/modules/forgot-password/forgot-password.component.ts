@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CLog, LoggingService } from '@maxmobility/core';
+import { LoggingService } from '@maxmobility/core';
 import {
   preventKeyboardFromShowing,
   ProgressService,
@@ -48,7 +48,6 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    CLog('ForgotPasswordComponent OnInit');
     this._page.actionBarHidden = true;
     this._page.backgroundSpanUnderStatusBar = true;
     setMarginForIosSafeArea(this._page);
@@ -86,7 +85,6 @@ export class ForgotPasswordComponent implements OnInit {
     this._userService
       .resetPassword(this.email)
       .then(resp => {
-        CLog('resp', resp);
         this._progressService.hide();
         alert({
           title: this.email_sent,
@@ -112,7 +110,6 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   onEmailTextChange(args: PropertyChangeData) {
-    CLog('args', args.value);
     // make sure it's a valid email
     const em = this.email.trim();
     this.emailError = !validate(em) ? `"${em}" ` + this.email_error : '';

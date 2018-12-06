@@ -6,12 +6,6 @@ export class LoggingUtil {
   public static debug = true;
 }
 
-export const CLog = (...args) => {
-  if (LoggingUtil.debug) {
-    // console.log(args);
-  }
-};
-
 @Injectable()
 export class LoggingService {
   constructor(private _userService: UserService) {}
