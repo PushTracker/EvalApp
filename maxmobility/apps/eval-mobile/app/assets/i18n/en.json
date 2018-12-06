@@ -778,11 +778,10 @@
       "We were unable to find the description for the latest firmware!"
     ],
     "1.6": [
-      "Adjusted default push detection settings and added ability to control push detection settings.",
-      "Show checkmark on the PushTracker if it successfully connects or is already connected to the phone when the user initiates the connection.",
-      "Improved speed filtering for smoother ride.",
-      "Improved MCU to BLE Communication",
-      "Only send status to MCU when not sending PT data."
+		"PushTracker can now receive push detection settings from the smartphone app.",
+		"PushTracker now sends current push detection settings on app connection initialization.",
+		"Adjusted default push detection settings on the PushTracker.",
+		"PushTracker now shows a checkmark during phone connection indication if it successfully connects or is already connected to the phone when the user initiates the connection."
     ],
     "1.5": [
       "Updated company logo branding when booting PushTracker from sleep.",
