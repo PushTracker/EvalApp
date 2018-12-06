@@ -10,7 +10,7 @@
     },
     "pairing-success": "¡Emparejado con éxito con PushTracker!",
     "pt_app_conn_instructions": "Para conectar el PushTracker a la aplicación Smart Evaluation, debe tener la aplicación abierta en su teléfono, luego presionar y soltar el botón derecho en el PushTracker. Esto conectará su PushTracker a su aplicación o lo llevará a la configuración de emparejamiento del PushTracker. Después de la vinculación, deberá abandonar el menú de configuración y luego presionar el botón derecho para conectarse a la aplicación. Si tiene problemas, ponga el PushTracker en SLEEP y luego enciéndalo.",
-    "sd_app_conn_instructions": "Para que la aplicación Smart Evaluation pueda ver y conectarse a un SmartDrive, debe tener el SmartDrive encendido y la asistencia de encendido apagada / 'SD apagada'. Si tiene problemas, apague el SmartDrive y luego enciéndalo.",
+    "sd_app_conn_instructions": "Para que la aplicación Smart Evaluation pueda ver y conectarse a un SmartDrive, debe tener el SmartDrive encendido y la asistencia de encendido apagada/'SD apagada'. Si tiene problemas, apague el SmartDrive y luego enciéndalo.",
     "searching": "Buscando dispositivos",
     "service-failure": "Falla de servicio de Bluetooth",
     "waiting": "Esperando a que Bluetooth se inicie"
@@ -64,12 +64,12 @@
     "chair-label": "Hacer silla",
     "chair-options": [
       "Colores",
-      "Invacare / Küschall",
+      "Invacare/Küschall",
       "Karman",
       "Ki",
       "Composites de movimiento",
       "Pantera",
-      "Quickie / Sopur / RGK",
+      "Quickie/Sopur/RGK",
       "TiLite",
       "Extremo superior",
       "otro"
@@ -145,10 +145,10 @@
       "Se agregó \"Acerca de\" al menú de configuración de PushTracker, que muestra las versiones de firmware del PushTracker, SmartDrive Bluetooth (BLE) y el microcontrolador SmartDrive (MCU). También muestra el código de error más reciente y la información."
     ],
     "1.3": [
-      "Además del modo 'EZ-ON' para PushTracker, ahora puede activar y desactivar la asistencia eléctrica / 'SD On' y 'SD Off' tocando!"
+      "Además del modo 'EZ-ON' para PushTracker, ahora puede activar y desactivar la asistencia eléctrica/'SD On' y 'SD Off' tocando!"
     ],
     "1.4": [
-      "Además del modo 'EZ-ON' para PushTracker, ahora puede activar y desactivar la asistencia eléctrica / 'SD On' y 'SD Off' tocando!"
+      "Además del modo 'EZ-ON' para PushTracker, ahora puede activar y desactivar la asistencia eléctrica/'SD On' y 'SD Off' tocando!"
     ],
     "1.5": [
       "Se actualizó la marca del logotipo de la empresa al arrancar PushTracker desde el modo de suspensión.",
@@ -316,11 +316,11 @@
     {
       "Bullets": [
         "Mantenga presionado el botón plano derecho de su PushTracker durante tres segundos para ingresar al menú de configuración",
-        "Presione el botón derecho para desplazarse hasta el icono de teléfono / PT.",
+        "Presione el botón derecho para desplazarse hasta el icono de teléfono/PT.",
         "Presione el botón levantado a la izquierda para iniciar el emparejamiento.",
         "Nota: en algunos dispositivos Android, mientras se empareja, es posible que reciba un mensaje sobre un 'Pin o clave de acceso incorrectos'. Siempre que el PushTracker muestre que está conectado, puede ignorarlo."
       ],
-      "Image": "~ / asset / images / gifs / PT-APP-CONNECT2.gif",
+      "Image": "~/asset/images/gifs/PT-APP-CONNECT2.gif",
       "Label": "Emparejando su aplicación PushTracker a la evaluación inteligente"
     },
     {
@@ -329,7 +329,7 @@
         "Verá una notificación de 'Éxito' en la aplicación Smart Evaluation.",
         "Nota: si no ve una notificación de \"éxito\" en la aplicación de evaluación inteligente, entonces es posible que deba volver a emparejar su PushTracker"
       ],
-      "Image": "~ / asset / images / gifs / PT-APP-CONNECTION1.gif",
+      "Image": "~/asset/images/gifs/PT-APP-CONNECTION1.gif",
       "Label": "Conectando su PushTracker a la aplicación de evaluación inteligente"
     },
     {
@@ -342,7 +342,7 @@
         "Presione el botón derecho para desplazarse al icono PT-SD.",
         "Presione el botón levantado a la izquierda para iniciar el emparejamiento de su PushTracker con su SmartDrive."
       ],
-      "Image": "~ / asset / images / gifs / PT-SD-CONNECT2.gif",
+      "Image": "~/asset/images/gifs/PT-SD-CONNECT2.gif",
       "Label": "Emparejando su PushTracker a su SmartDrive"
     }
   ],
@@ -394,7 +394,7 @@
         "title": "Conectado"
       },
       "connecting": {
-        "msg": "Los PushTrackers se conectan / conectan, pero no se ha recibido información de la versión. Es posible que tenga que desconectar y volver a conectar su PushTracker para obtener la información de la versión.",
+        "msg": "Los PushTrackers se conectan/conectan, pero no se ha recibido información de la versión. Es posible que tenga que desconectar y volver a conectar su PushTracker para obtener la información de la versión.",
         "title": "Conectando"
       },
       "disconnected": {
@@ -413,7 +413,7 @@
   },
   "sign-up": {
     "not-permobil-email-error": "El correo electrónico actual no puede registrarse como Representante.",
-    "user-type-clinician": "Clinico / ATP",
+    "user-type-clinician": "Clinico/ATP",
     "user-type-end-user": "Usuario final",
     "user-type-rep": "Representante"
   },
@@ -429,7 +429,7 @@
     "difficulty-incline": "¿Dificultad en la inclinación?",
     "difficulty-other": "¿Dificultad en otra superficie?",
     "difficulty-ramp": "Dificultad en la rampa?",
-    "difficulty-ramp-incline": "Dificultad en la rampa / inclinación?",
+    "difficulty-ramp-incline": "Dificultad en la rampa/inclinación?",
     "email-subject": "Resumen de evaluación inteligente",
     "errors": {
       "save-failed": {
@@ -444,14 +444,14 @@
     "lmnTemplate": [
       "Este correo electrónico fue generado y enviado por la aplicación de evaluación inteligente.",
       "",
-      "Dolor de empuje del usuario: {{# evaluacion.pulencia_pain}} {{redondo}} {{/ evaluacion.pulgar_pain}} {{^ evaluacion.pushing_pain}} 0 {{/ evaluacion.pushing_pain}} / 10",
-      "Fatiga de empuje del usuario: {{# Evaluation.pushing_fatigue}} {{round}} {{/ Evaluation.pushing_fatigue}} {{^ Evaluation.pushing_fatigue}} 0 {{/ Evaluation.pushing_fatigue}} / 10",
-      "Impacto en la independencia del usuario: {{# Evaluation.impact_on_independence}} {{round}} {{/ Evaluation.impact_on_independence}} {{^ Evaluation.impact_on_independence}} 0 {{/ Evaluation.impact_on_independence}} / 10",
+      "Dolor de empuje del usuario: {{# evaluacion.pulencia_pain}} {{redondo}} {{/ evaluacion.pulgar_pain}} {{^ evaluacion.pushing_pain}} 0 {{/ evaluacion.pushing_pain}}/10",
+      "Fatiga de empuje del usuario: {{# Evaluation.pushing_fatigue}} {{round}} {{/ Evaluation.pushing_fatigue}} {{^ Evaluation.pushing_fatigue}} 0 {{/ Evaluation.pushing_fatigue}}/10",
+      "Impacto en la independencia del usuario: {{# Evaluation.impact_on_independence}} {{round}} {{/ Evaluation.impact_on_independence}} {{^ Evaluation.impact_on_independence}} 0 {{/ Evaluation.impact_on_independence}}/10",
       "",
       "{{# trials._array}}",
       "Prueba '{{nombre}}':",
       "  Tenía pisos: {{#flat}} Sí {{/ flat}} {{^ flat}} No {{/ flat}}",
-      "  Tenía rampa / inclinación: {{#rampIncline}} Sí {{/ rampIncline}} {{^ rampIncline}} No {{/ rampIncline}}",
+      "  Tenía rampa/inclinación: {{#rampIncline}} Sí {{/ rampIncline}} {{^ rampIncline}} No {{/ rampIncline}}",
       "{{#other}} tenía otro: '{{other_description}}' {{/ other}}",
       "  Distancia: {{# distancia}} {{toFixed}} {{/ distance}} {{^ distance}} 0.00 {{/ distance}} m",
       "{{#acabado con}}",
@@ -483,7 +483,7 @@
       "{{# ensayos}}",
       "Prueba '{{nombre}}':",
       "  Tenía pisos: {{#flat}} Sí {{/ flat}} {{^ flat}} No {{/ flat}}",
-      "  Tenía rampa / inclinación: {{#rampIncline}} Sí {{/ rampIncline}} {{^ rampIncline}} No {{/ rampIncline}}",
+      "  Tenía rampa/inclinación: {{#rampIncline}} Sí {{/ rampIncline}} {{^ rampIncline}} No {{/ rampIncline}}",
       "{{#other}} tenía otro: '{{other_description}}' {{/ other}}",
       "  Distancia: {{# distancia}} {{toFixed}} {{/ distance}} {{^ distance}} 0.00 {{/ distance}} m",
       "{{#acabado con}}",
@@ -514,19 +514,19 @@
       "{{/trials._array}}",
       "",
       "{{# Evaluation.flat_difficulty}}",
-      "Dificultad del usuario con pisos: {{round}} / 10",
+      "Dificultad del usuario con pisos: {{round}}/10",
       "{{# Evaluation.unableToCompleteFlat}}",
       "  - Nota: el usuario no pudo completar la parte plana de la evaluación.",
       "{{/evaluation.unableToCompleteFlat}}",
       "{{/evaluation.flat_difficulty}}",
       "{{# Evaluation.ramp_incline_difficulty}}",
-      "Dificultad del usuario con rampas / pendientes: {{round}} / 10",
+      "Dificultad del usuario con rampas/pendientes: {{round}}/10",
       "{{# Evaluation.unableToCompleteRampIncline}}",
-      "  - nota: el usuario no pudo completar la parte de rampa / inclinación de la evaluación.",
+      "  - nota: el usuario no pudo completar la parte de rampa/inclinación de la evaluación.",
       "{{/evaluation.unableToCompleteRampIncline}}",
       "{{/evaluation.ramp_incline_difficulty}}",
       "{{# Evaluation.other_difficulty}}",
-      "Dificultad del usuario con otro: {{round}} / 10",
+      "Dificultad del usuario con otro: {{round}}/10",
       "{{# Evaluation.unableToCompleteOther}}",
       "  - Nota: el usuario no pudo completar la otra parte de la evaluación.",
       "{{/evaluation.unableToCompleteOther}}",
@@ -544,10 +544,10 @@
     "other-surface-difficulty": "Otra dificultad superficial",
     "pushes": " Empuja con SmartDrive.",
     "ramp-difficulty": "Dificultad de rampa",
-    "ramp-incline-difficulty": "Dificultad de rampa / inclinación",
+    "ramp-incline-difficulty": "Dificultad de rampa/inclinación",
     "unable-flat": "¿No se puede completar Flat?",
     "unable-other": "¿No se puede completar Otra superficie?",
-    "unable-ramp-incline": "¿No se puede completar la rampa / inclinación?",
+    "unable-ramp-incline": "¿No se puede completar la rampa/inclinación?",
     "user-performed": "Usuario realizado",
     "with-sd": " con SmartDrive."
   },
@@ -560,7 +560,7 @@
         "En esta posición, el peso del SmartDrive descansa en el suelo.",
         "Para desmontar el SmartDrive de la silla, levante con la manija para desenganchar el SmartDrive de la abrazadera, al revés del procedimiento de conexión."
       ],
-      "Image": "~ / asset / images / gifs / SD-POWER.gif",
+      "Image": "~/asset/images/gifs/SD-POWER.gif",
       "Label": "Alimentando SmartDrive"
     },
     {
@@ -568,7 +568,7 @@
         "Presione cualquiera de los botones en el PushTracker para encenderlo.",
         "Mantenga presionado el botón elevado izquierdo durante 3 segundos para ingresar al modo de suspensión 'zzz' y apague el PushTracker."
       ],
-      "Image": "~ / asset / images / gifs / PT-POWER.gif",
+      "Image": "~/asset/images/gifs/PT-POWER.gif",
       "Label": "Encendiendo PushTracker"
     },
     {
@@ -578,7 +578,7 @@
         "Consejo: No es necesario que se ponga en contacto con la banda PushTracker.",
         "Consejo: Evite mover la mano en un movimiento similar a una 'cola de pez'. Esto conducirá a un reconocimiento de toque inconsistente."
       ],
-      "Image": "~ / asset / images / Stop.png",
+      "Image": "~/asset/images/Stop.png",
       "Label": "Toque gesto"
     },
     {
@@ -588,7 +588,7 @@
         "2": "Para aumentar la velocidad, oprima más rápido y luego toque para establecer la velocidad deseada.",
         "3": "Si no toca, el SmartDrive acelerará a la velocidad máxima controlada por el ajuste de velocidad máxima del PushTracker."
       },
-      "Image": "~ / asset / images / start-coast.png",
+      "Image": "~/asset/images/start-coast.png",
       "Label": "Velocidad de arranque y ajuste"
     },
     {
@@ -598,7 +598,7 @@
         "Consejo: para detenerse rápidamente, realice un solo toque seguido de un rápido toque y agarre combinados.",
         "Nota: Desactivar el SmartDrive solo detiene el motor del SmartDrive, aún así deberá frenar con las manos para detener la silla."
       ],
-      "Image": "~ / asset / images / Stop2.png",
+      "Image": "~/asset/images/Stop2.png",
       "Label": "Parada"
     },
     {
@@ -607,7 +607,7 @@
         "El agarre ligero te permitirá virar.",
         "Permita que el borde de empuje se deslice a través de sus manos."
       ],
-      "Image": "~ / asset / images / Steer.png",
+      "Image": "~/asset/images/Steer.png",
       "Label": "Gobierno"
     },
     {
@@ -618,7 +618,7 @@
         "Consejo: Una posición óptima del centro de gravedad de las ruedas traseras reducirá el agarre necesario para hacer giros bruscos.",
         "Nota: Es posible que deba desactivar el SmartDrive cuando desee realizar giros muy nítidos."
       ],
-      "Image": "~ / asset / images / turn.png",
+      "Image": "~/asset/images/turn.png",
       "Label": "Torneado"
     }
   ],
@@ -647,11 +647,11 @@
         "title": "Versión desconocida de PushTracker"
       },
       "pt-same-distance": {
-        "message": "Su PushTracker no ha recibido información actualizada de la distancia de su SmartDrive. Asegúrese de que estén conectados / 'SD On' sin que el motor esté en marcha antes de detener la prueba.",
+        "message": "Su PushTracker no ha recibido información actualizada de la distancia de su SmartDrive. Asegúrese de que estén conectados/'SD On' sin que el motor esté en marcha antes de detener la prueba.",
         "title": "Distancia inválida"
       },
       "pt-unknown-distance": {
-        "message": "Su PushTracker no ha obtenido información de distancia del SmartDrive. Asegúrese de que estén conectados / 'SD On' sin que el motor esté en marcha antes de iniciar la prueba.",
+        "message": "Su PushTracker no ha obtenido información de distancia del SmartDrive. Asegúrese de que estén conectados/'SD On' sin que el motor esté en marcha antes de iniciar la prueba.",
         "title": "Distancia desconocida"
       },
       "pt-version": {
@@ -675,11 +675,11 @@
     "push_accuracy_disclaimer": "El seguidor de empuje utiliza el movimiento para detectar empujes. Esto puede causar un grado de precisión variable según la forma en que el usuario se viste y se mueve con el rastreador de empuje. Una mejor métrica para la evaluación es la diferencia relativa entre los empujes con el SmartDrive y sin el SmartDrive.",
     "pushes": "Empuja:",
     "ramp": "Rampa",
-    "ramp-incline": "Rampas / Inclinaciones",
-    "recommendation": "Nota: se recomienda realizar pruebas para contener rampas, múltiples tipos de superficie, y debe durar al menos unos minutos o 100 yardas / 100 metros.",
+    "ramp-incline": "Rampas/Inclinaciones",
+    "recommendation": "Nota: se recomienda realizar pruebas para contener rampas, múltiples tipos de superficie, y debe durar al menos unos minutos o 100 yardas/100 metros.",
     "select-options": "Seleccione las opciones y configuraciones para la prueba SmartDrive.",
     "set-up": "Configuración de prueba",
-    "smartdrive-connection": "Nota: antes de comenzar esta prueba, asegúrese de tener el PushTracker y SmartDrive conectados / 'SD On' para asegurarse de que el PushTracker tenga la información más reciente sobre la distancia.",
+    "smartdrive-connection": "Nota: antes de comenzar esta prueba, asegúrese de tener el PushTracker y SmartDrive conectados/'SD On' para asegurarse de que el PushTracker tenga la información más reciente sobre la distancia.",
     "start": "comienzo",
     "starting-trial": "Inicio de prueba: puede tardar hasta 10 segundos.",
     "stop": "Detener",
@@ -709,7 +709,7 @@
     "account-creating": "Creando cuenta...",
     "account-error": "Se produjo un error al intentar recuperar la información de su cuenta. Inténtalo de nuevo más tarde.",
     "account-reset": "¿Restablecer cuenta?",
-    "account-reset-confirm": "¿Está seguro de que desea restablecer su cuenta (eliminar todos sus datos / configuraciones)?",
+    "account-reset-confirm": "¿Está seguro de que desea restablecer su cuenta (eliminar todos sus datos/configuraciones)?",
     "account-update": "Actualizar cuenta de usuario?",
     "account-update-complete": "Tu perfil ha sido actualizado.",
     "account-update-confirm": "¿Enviar estas configuraciones al servidor?",
@@ -757,7 +757,7 @@
     "reset-pass-desc": "Para restablecer su contraseña, ingrese el correo electrónico de su cuenta. Recibirá un correo electrónico con instrucciones para restablecer su contraseña.",
     "sign-in": "Registrarse",
     "sign-in-error-1": "Se produjo un error durante el inicio de sesión. Revise su correo electrónico y contraseña.",
-    "sign-in-error-2": "Correo electrónico inválido y / o contraseña. Inténtalo de nuevo.",
+    "sign-in-error-2": "Correo electrónico inválido y/o contraseña. Inténtalo de nuevo.",
     "sign-out": "desconectar",
     "sign-out-confirm": "¿Estás seguro de que quieres cerrar sesión?",
     "sign-up": "Regístrate",
@@ -774,35 +774,35 @@
     {
       "Description": "Este video es una descripción general de SmartDrive utilizado por personas de diferentes edades y circunstancias en una variedad de entornos.",
       "Route": "/vídeo",
-      "Thumb": "~ / asset / images / overview-thumb.jpg",
+      "Thumb": "~/asset/images/overview-thumb.jpg",
       "Title": "Introducción a SmartDrive",
       "Url": "8fn26J59WJ4"
     },
     {
       "Description": "Este video cubre el funcionamiento básico y la funcionalidad de SmartDrive y PushTracker.",
       "Route": "/vídeo",
-      "Thumb": "~ / asset / images / sd-basic-op-thumb.jpg",
+      "Thumb": "~/asset/images/sd-basic-op-thumb.jpg",
       "Title": "Operación básica SmartDrive MX2",
       "Url": "uhA3-svjQFg"
     },
     {
       "Description": "Este video cubre el funcionamiento básico y la funcionalidad del PushTracker.",
       "Route": "/vídeo",
-      "Thumb": "~ / asset / images / pt-basic-op-thumb.jpg",
+      "Thumb": "~/asset/images/pt-basic-op-thumb.jpg",
       "Title": "Operación básica de PushTracker",
       "Url": "6_M1J8HZXIk"
     },
     {
       "Description": "Este video cubre los pasos a seguir cuando se realiza una evaluación o capacitación de SmartDrive.",
       "Route": "/vídeo",
-      "Thumb": "~ / asset / images / eval-thumb.jpg",
+      "Thumb": "~/asset/images/eval-thumb.jpg",
       "Title": "SmartDrive Evaluación y Capacitación",
       "Url": "45Kj7zJpDcM"
     },
     {
       "Description": "En este video, Chels y Steph son entrevistados acerca de los muchos aspectos de sus vidas, y cómo han sido impactados por SmartDrive.",
       "Route": "/vídeo",
-      "Thumb": "~ / asset / images / entrevista-thumb.jpg",
+      "Thumb": "~/asset/images/entrevista-thumb.jpg",
       "Title": "Entrevista con Chels y Steph",
       "Url": "hFid9ks551A"
     }
