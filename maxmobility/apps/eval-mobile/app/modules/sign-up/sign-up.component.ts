@@ -246,7 +246,7 @@ export class SignUpComponent implements OnInit {
     }
 
     // check if it's a permobil email and set the flag indicating so
-    const emailRegEx = /@permobil.com/i;
+    const emailRegEx = /@permobil.com$/i;
     const isPermobilEmail = emailRegEx.test(email);
     if (isPermobilEmail) {
       // if we have permobil email set true for checking during other events
