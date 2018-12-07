@@ -172,7 +172,7 @@
       "Image": "~/assets/images/gifs/PT-POWER.gif",
       "Label": "Powering PushTracker",
       "Bullets": [
-        "Press the either button on the PushTracker to power on.",
+        "Press either button on the PushTracker to power on.",
         "Press and hold the left raised button for 3 seconds to enter sleep mode 'zzz' and power off the PushTracker."
       ]
     },
