@@ -50,19 +50,19 @@ export class SettingsComponent {
       })
       .then(() => {
         const ptMD = {
-          filename: 'PushTracker.ota.beta',
+          filename: 'PushTracker.ota',
           size: ptFW.readSync().length,
           version: '1.6',
           public: true
         };
         const mcuMD = {
-          filename: 'SmartDriveMCU.ota.beta',
+          filename: 'SmartDriveMCU.ota',
           size: mcuFW.readSync().length,
           version: '1.6',
           public: true
         };
         const bleMD = {
-          filename: 'SmartDriveBLE.ota.beta',
+          filename: 'SmartDriveBLE.ota',
           size: bleFW.readSync().length,
           version: '1.6',
           public: true

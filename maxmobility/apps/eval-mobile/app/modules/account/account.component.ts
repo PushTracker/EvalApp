@@ -1,7 +1,12 @@
 import { Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DidYouKnow, User, UserTypes } from '@maxmobility/core';
-import { FileService, LoggingService, UserService } from '@maxmobility/mobile';
+import {
+  DemoService,
+  FileService,
+  LoggingService,
+  UserService
+} from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 import { RouterExtensions } from 'nativescript-angular/router';
@@ -260,6 +265,7 @@ export class AccountComponent implements OnInit {
       });
       if (result) {
         this._zone.run(async () => {
+          DemoService.Demos.splice(0, DemoService.Demos.length); // empty the current items
           // go ahead and nav to login to keep UI moving without waiting
           this._routerExtensions.navigate(['/login'], {
             clearHistory: true
