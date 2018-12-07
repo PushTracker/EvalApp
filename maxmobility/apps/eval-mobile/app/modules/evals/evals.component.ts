@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { Evaluation, Trial } from '@maxmobility/core';
 import { EvaluationService, LoggingService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
@@ -71,6 +71,7 @@ export class EvalsComponent implements OnInit {
 
   constructor(
     private _page: Page,
+    private _zone: NgZone,
     private _evalService: EvaluationService,
     private _translateService: TranslateService,
     private _loggingService: LoggingService
@@ -84,8 +85,10 @@ export class EvalsComponent implements OnInit {
       const fetchedEvals = await this._evalService.loadEvaluations();
       const modifiedEvals = this._modifyEvalsData(fetchedEvals);
       this._initialEvals = modifiedEvals; // setting the initial evals so during searches we can default back to full list data
-      this.evals = modifiedEvals;
-      this.evalsLoaded = true;
+      this._zone.run(() => {
+        this.evals = modifiedEvals;
+        this.evalsLoaded = true;
+      });
     } catch (error) {
       this.evalsLoaded = true;
       this._loggingService.logException(error);
@@ -100,10 +103,14 @@ export class EvalsComponent implements OnInit {
     try {
       // check if we are resetting and exit after resetting the listview
       if (this.isSearchData === true) {
-        this.evals = this._initialEvals;
-        this.searchBtnText = this._translateService.instant('evals.search-btn');
-        this.evalsLoaded = true; // make sure the UI reflects the data
-        this.isSearchData = false; // reset so the UI reflects that its the original list data and not search data
+        this._zone.run(() => {
+          this.evals = this._initialEvals;
+          this.searchBtnText = this._translateService.instant(
+            'evals.search-btn'
+          );
+          this.evalsLoaded = true; // make sure the UI reflects the data
+          this.isSearchData = false; // reset so the UI reflects that its the original list data and not search data
+        });
         return;
       }
 
@@ -135,16 +142,22 @@ export class EvalsComponent implements OnInit {
             dateResult.month
           }/${dateResult.day}/${dateResult.year}`
         ).show();
-        this.evals = this._initialEvals;
+        this._zone.run(() => {
+          this.evals = this._initialEvals;
+        });
         return;
       }
 
       if (data && data.length >= 1) {
         const modifiedEvals = this._modifyEvalsData(data);
         // assign the evals to bind to listview items
-        this.evals = modifiedEvals;
-        this.isSearchData = true;
-        this.searchBtnText = this._translateService.instant('evals.reset-btn');
+        this._zone.run(() => {
+          this.evals = modifiedEvals;
+          this.isSearchData = true;
+          this.searchBtnText = this._translateService.instant(
+            'evals.reset-btn'
+          );
+        });
       }
     } catch (error) {
       this._loggingService.logException(error);
