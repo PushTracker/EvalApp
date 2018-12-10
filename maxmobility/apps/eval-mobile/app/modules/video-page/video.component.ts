@@ -30,7 +30,9 @@ export class VideoComponent implements OnInit {
     // see https://github.com/NativeScript/nativescript-angular/issues/1049
     this.routeSub = this.router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
-        orientation.setOrientation('portrait');
+        if (orientation.getOrientation() !== 'portrait') {
+          orientation.setOrientation('portrait');
+        }
         orientation.disableRotation();
       }
     });

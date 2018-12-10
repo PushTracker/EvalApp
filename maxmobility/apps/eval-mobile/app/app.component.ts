@@ -60,7 +60,10 @@ export class AppComponent {
     }
 
     // set the orientation to be portrait and don't allow orientation changes
-    orientation.setOrientation('portrait');
+    if (orientation.getOrientation() !== 'portrait') {
+      // set the orientation to be portrait and don't allow orientation changes
+      orientation.setOrientation('portrait');
+    }
     orientation.disableRotation(); // may not need to call this - docs say 'set' calls this
 
     // Brad - sets the default language for ngx-translate
@@ -94,8 +97,10 @@ export class AppComponent {
       application.resumeEvent,
       (args: application.ApplicationEventData) => {
         this._startNetworkMonitor();
-        // set the orientation to be portrait and don't allow orientation changes
-        orientation.setOrientation('portrait');
+        if (orientation.getOrientation() !== 'portrait') {
+          // set the orientation to be portrait and don't allow orientation changes
+          orientation.setOrientation('portrait');
+        }
         orientation.disableRotation(); // may not need to call this - docs say 'set' calls this
       }
     );
