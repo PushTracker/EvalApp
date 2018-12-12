@@ -68,7 +68,8 @@
     "@nrwl/nx": "~7.1.0",
     "buffer": "^5.1.0",
     "colors": "^1.2.1",
-    "core-js": "^2.5.4"
+    "core-js": "^2.5.4",
+    "smart-eval-kinvey": "git+https://github.com/autochair/SmartEvalKinvey.git#master"
   },
   "lint-staged": {
     "*.{ts, js, json, css, scss, md}": [
