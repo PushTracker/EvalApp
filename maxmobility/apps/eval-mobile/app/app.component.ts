@@ -10,6 +10,7 @@ import { MapboxView } from 'nativescript-mapbox';
 import * as orientation from 'nativescript-orientation';
 import { Sentry } from 'nativescript-sentry';
 import * as application from 'tns-core-modules/application';
+import { SmartEvalKeys } from 'smart-eval-kinvey';
 import {
   connectionType,
   startMonitoring,
@@ -39,13 +40,8 @@ export class AppComponent {
     private _userService: UserService,
     private _router: RouterExtensions
   ) {
-    // init sentry
-    const sentryDsn =
-      'https://aaa25eb556fa476a92e0edea6dd57af6:65c984b9260e47f0bb128def7eddd5f4@sentry.io/306438';
-    Sentry.init(sentryDsn, {
-      environment: 'mobile',
-      release: '0.1.0'
-    });
+    // init sentry - DNS key is in the SmartEvalKinvey package
+    Sentry.init(SmartEvalKeys.SENTRY_DSN);
 
     // REGISTER FOR PUSH NOTIFICATIONS
     if (UserService.hasRegistered === false) {

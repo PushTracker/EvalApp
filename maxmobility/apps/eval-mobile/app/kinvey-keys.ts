@@ -9,4 +9,3 @@ export const APP_KEY = SmartEvalKeys.PROD_KEY;
 export const APP_SECRET = SmartEvalKeys.PROD_SECRET;
 
 export const HOST_URL = SmartEvalKeys.HOST_URL;
-export const MAPBOX_TOKEN = SmartEvalKeys.MAPBOX_TOKEN;

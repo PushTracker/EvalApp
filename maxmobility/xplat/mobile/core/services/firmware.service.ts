@@ -5,7 +5,7 @@ import * as LS from 'nativescript-localstorage';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
 import { knownFolders, path } from 'tns-core-modules/file-system';
 import * as httpModule from 'tns-core-modules/http';
-import { isIOS } from 'tns-core-modules/platform';
+import { isIOS, isAndroid } from 'tns-core-modules/platform';
 import { LoggingService } from './logging.service';
 
 @Injectable()
@@ -163,10 +163,19 @@ export class FirmwareService {
 
   // FOR LOADING A FW FILE FROM SERVER
   getData(url, filename) {
-    const filePath = path.join(
-      knownFolders.documents().path,
-      FirmwareService.firmwarePathPrefix + filename
-    );
+    let filePath;
+    // on Android this is working, iOS needs to use `documents` for permission to write during a release build. currentApp is readonly for iOS.
+    if (isAndroid) {
+      filePath = path.join(
+        knownFolders.currentApp().path,
+        FirmwareService.firmwarePathPrefix + filename
+      );
+    } else if (isIOS) {
+      filePath = path.join(
+        knownFolders.documents().path,
+        FirmwareService.firmwarePathPrefix + filename
+      );
+    }
     return httpModule.getFile(url, filePath);
   }
 

@@ -72,7 +72,7 @@ export class SettingsComponent {
         const blePromise = Kinvey.Files.upload(bleFW, bleMD);
         return Promise.all([ptPromise, mcuPromise, blePromise])
           .then(files => {
-            // this._loggingService.logBreadCrumb(`Uploaded to Kinvey ${files}`);
+            this._loggingService.logBreadCrumb(`Uploaded to Kinvey ${files}`);
           })
           .catch(error => {
             // this._loggingService.logException(error);

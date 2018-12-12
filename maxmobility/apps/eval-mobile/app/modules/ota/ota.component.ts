@@ -140,7 +140,7 @@ export class OTAComponent implements OnInit {
       this._firmwareService
         .downloadFirmwares()
         .then(() => {
-          // this._loggingService.logBreadCrumb(`Firmares updated on device.`);
+          this._loggingService.logBreadCrumb(`Firmares updated on device.`);
           this._progressService.hide();
           // remove old items and add new from the translation file firmware string array
           this._loadFirmwareDescriptionItems(carousel);
@@ -264,21 +264,21 @@ export class OTAComponent implements OnInit {
         .then(() => {
           // disable back nav for iOS - add event listener for android hardware back button
           this.setBackNav(false);
-          // this._loggingService.logBreadCrumb(`Start performing OTAs...`);
+          this._loggingService.logBreadCrumb(`Start performing OTAs...`);
           // start updating
           return this.performOTAs();
         })
         .then(otaStatuses => {
-          // this._loggingService.logBreadCrumb(
-          //   `Completed all OTAs with statues: ${otaStatuses}`
-          // );
+          this._loggingService.logBreadCrumb(
+            `Completed all OTAs with statues: ${otaStatuses}`
+          );
           this.cancelOTAs(false);
         })
         .catch(err => {
           this._loggingService.logException(err);
-          // this._loggingService.logBreadCrumb(
-          //   `Couldn't finish updating: ${err}`
-          // );
+          this._loggingService.logBreadCrumb(
+            `Couldn't finish updating: ${err}`
+          );
           this.cancelOTAs(true);
         });
     } else {
@@ -292,7 +292,7 @@ export class OTAComponent implements OnInit {
 
     const isEnabled = await this._bluetoothService.radioEnabled();
     if (!this._bluetoothService.enabled || !isEnabled) {
-      // this._loggingService.logBreadCrumb(`Bluetooth service is not enabled.`);
+      this._loggingService.logBreadCrumb(`Bluetooth service is not enabled.`);
       alert({
         message: this._translateService.instant('bluetooth.enable-bluetooth'),
         okButtonText: this._translateService.instant('dialogs.ok')
@@ -421,7 +421,7 @@ export class OTAComponent implements OnInit {
     this.updating = false;
     this.updatingButtonText = this._translateService.instant('ota.begin');
     if (doCancel) {
-      // this._loggingService.logBreadCrumb(`Cancelling all OTAs`);
+      this._loggingService.logBreadCrumb(`Cancelling all OTAs`);
       this.smartDriveOTAs.map(sd => sd.cancelOTA());
       this.pushTrackerOTAs.map(pt => pt.cancelOTA());
     }
@@ -438,9 +438,9 @@ export class OTAComponent implements OnInit {
     let firmwareDescriptionItems = this._translateService.instant(
       'firmware.' + this._firmwareService.currentVersion
     );
-    // this._loggingService.logBreadCrumb(
-    //   `Current firmware description items: ${firmwareDescriptionItems}`
-    // );
+    this._loggingService.logBreadCrumb(
+      `Current firmware description items: ${firmwareDescriptionItems}`
+    );
 
     if (
       !this._firmwareService.currentVersion ||
