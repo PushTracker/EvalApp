@@ -21,6 +21,7 @@ import {
 } from 'nativescript-imagecropper';
 import * as LS from 'nativescript-localstorage';
 import { Mapbox } from 'nativescript-mapbox';
+import { SmartEvalKeys } from 'smart-eval-kinvey';
 import { Toasty } from 'nativescript-toasty';
 import { switchMap } from 'rxjs/operators';
 import { ImageAsset } from 'tns-core-modules/image-asset/image-asset';
@@ -42,6 +43,7 @@ import * as utils from 'tns-core-modules/utils/utils';
   styleUrls: ['./demo-detail.component.css']
 })
 export class DemoDetailComponent {
+  mapboxToken = SmartEvalKeys.MAPBOX_TOKEN;
   demo = new Demo();
   // translation strings in UI
   mcu_version_label: string = ` - SmartDrive MCU ${this._translateService.instant(
@@ -132,9 +134,9 @@ export class DemoDetailComponent {
           this.demo.sd_image_base64 = b64;
         }
       } else {
-        // this._loggingService.logBreadCrumb(
-        //   'No result returned from the image cropper.'
-        // );
+        this._loggingService.logBreadCrumb(
+          'No result returned from the image cropper.'
+        );
       }
     } catch (error) {
       this._loggingService.logException(error);
@@ -154,9 +156,9 @@ export class DemoDetailComponent {
           this.demo.pt_image_base64 = b64;
         }
       } else {
-        // this._loggingService.logBreadCrumb(
-        //   'No result returned from the image cropper.'
-        // );
+        this._loggingService.logBreadCrumb(
+          'No result returned from the image cropper.'
+        );
       }
     } catch (error) {
       this._loggingService.logException(error);
@@ -185,9 +187,9 @@ export class DemoDetailComponent {
       // the demo service calls load() at the end ofa create
       // now re-load our data from the service
       if (this._index > -1) {
-        // this._loggingService.logBreadCrumb(
-        //   'index is greater than -1 trying to save demo-detail'
-        // );
+        this._loggingService.logBreadCrumb(
+          'index is greater than -1 trying to save demo-detail'
+        );
       } else {
         this._index = DemoService.Demos.indexOf(
           this._demoService.getDemoBySmartDriveSerialNumber(
@@ -197,7 +199,7 @@ export class DemoDetailComponent {
       }
 
       const demo = DemoService.Demos.getItem(this._index);
-      // this._loggingService.logBreadCrumb(`Found demo: ${demo}`);
+      this._loggingService.logBreadCrumb(`Found demo: ${JSON.stringify(demo)}`);
 
       // BRAD - https://github.com/PushTracker/EvalApp/issues/144
       if (demo.sd_image_base64 && demo.sd_image) {
@@ -344,8 +346,6 @@ export class DemoDetailComponent {
       const loc = await LocationService.getLocationData();
       // clear the timeout when done
       clearTimeout(processTimeout);
-
-      // this._loggingService.logBreadCrumb(`Current location: ${loc}`);
 
       // confirm with user if they want to update the demo location
       const result = await confirm({

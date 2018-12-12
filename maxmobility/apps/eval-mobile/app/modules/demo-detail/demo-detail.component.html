@@ -11,7 +11,7 @@
 
 <GridLayout padding="0" margin="0" rows="auto, *" cols="auto">
   <StackLayout
-	 class="topSlide"
+    class="topSlide"
     row="0"
     height="30%"
     width="100%"
@@ -142,8 +142,23 @@
         <ContentView row="1" col="1" height="200" width="100%">
           // we set the lat and lng of the map in the `mapReady` event to ensure
           we have coords and the map won't throw errors
+          <!--
+            <Mapbox
+              accessToken="pk.eyJ1IjoiZmluZ2VyNTYzIiwiYSI6ImNqYXZmYTZ0bDVtYmcyd28yZ2ZwandxYWcifQ.ROCLEdkuzALMsVQedcIeAQ"
+              mapStyle="satellite_streets"
+              zoomLevel="14"
+              disableZoom="false"
+              disableRotation="true"
+              disableScroll="true"
+              disableTilt="true"
+              showUserLocation="false"
+              (mapReady)="onMapReady($event)"
+            >
+            </Mapbox>
+          -->
+
           <Mapbox
-            accessToken="pk.eyJ1IjoiZmluZ2VyNTYzIiwiYSI6ImNqYXZmYTZ0bDVtYmcyd28yZ2ZwandxYWcifQ.ROCLEdkuzALMsVQedcIeAQ"
+            [accessToken]="mapboxToken"
             mapStyle="satellite_streets"
             zoomLevel="14"
             disableZoom="false"
