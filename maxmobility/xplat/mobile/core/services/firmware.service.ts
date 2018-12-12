@@ -164,7 +164,7 @@ export class FirmwareService {
   // FOR LOADING A FW FILE FROM SERVER
   getData(url, filename) {
     const filePath = path.join(
-      knownFolders.currentApp().path,
+      knownFolders.documents().path,
       FirmwareService.firmwarePathPrefix + filename
     );
     return httpModule.getFile(url, filePath);
@@ -188,6 +188,7 @@ export class FirmwareService {
 
     // actually save the firmware
     this.firmwares[fwKey].data = bytes;
+
     // check to make sure they're valid
     const validLength = this.firmwares[fwKey].length;
     const actualLength = this.firmwares[fwKey].data.length;
@@ -237,6 +238,7 @@ export class FirmwareService {
               file._downloadURL,
               file._filename
             );
+
             // marshal the firmware data
             try {
               await this.unpackFirmwareData(fwKey, fileData.readSync());
