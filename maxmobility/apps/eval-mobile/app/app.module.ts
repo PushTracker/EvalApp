@@ -8,7 +8,6 @@ import { NativeScriptHttpModule } from 'nativescript-angular/http';
 import { ModalDialogService } from 'nativescript-angular/modal-dialog';
 import { NativeScriptModule } from 'nativescript-angular/nativescript.module';
 import { DropDownModule } from 'nativescript-drop-down/angular';
-import { SentryModule } from 'nativescript-sentry/angular';
 import { NativeScriptUIListViewModule } from 'nativescript-ui-listview/angular';
 import { YoutubePlayerModule } from 'nativescript-youtubeplayer/angular';
 import { AppRoutingModule } from './app-routing.module';
@@ -17,10 +16,6 @@ import { CoreModule } from './modules/core/core.module';
 import { SharedModule } from './modules/shared/shared.module';
 import { PrivacyPolicyComponent } from './privacy-policy';
 import { TNSTranslateLoader } from './utils';
-
-// https://github.com/danielgek/nativescript-sentry/issues/7
-//import * as Raven from 'raven-js';
-//(<any>Raven)._hasDocument = false;
 
 // factories
 export function createTranslateLoader() {
@@ -42,10 +37,6 @@ export function createTranslateLoader() {
     HttpClientModule,
     DropDownModule,
     YoutubePlayerModule,
-    SentryModule.forRoot({
-      dsn:
-        'https://aaa25eb556fa476a92e0edea6dd57af6:65c984b9260e47f0bb128def7eddd5f4@sentry.io/306438'
-    }),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
