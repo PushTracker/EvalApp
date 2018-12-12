@@ -275,7 +275,7 @@ export class TrialComponent implements OnInit {
             dailyInfoHandler
           );
           this._animateViewIn(this.startWithView.nativeElement as View);
-          // this._loggingService.logBreadCrumb(`Couldn't start trial: ${err}`);
+          this._loggingService.logBreadCrumb(`Couldn't start trial: ${err}`);
           alert({
             title: this.failed_start_title,
             message: this.failed_start_message + err,
@@ -319,9 +319,9 @@ export class TrialComponent implements OnInit {
           if (maxRetries <= 0) {
             throw err;
           } else {
-            // this._loggingService.logBreadCrumb(
-            //   `Retrying: ${err}, ${maxRetries}`
-            // );
+            this._loggingService.logBreadCrumb(
+              `Retrying: ${err}, ${maxRetries}`
+            );
             return new Promise((resolve, reject) => {
               setTimeout(() => {
                 retry(maxRetries - 1, fn)
@@ -471,7 +471,7 @@ export class TrialComponent implements OnInit {
             PushTracker.pushtracker_daily_info_event,
             dailyInfoHandler
           );
-          // this._loggingService.logBreadCrumb(`Couldn't stop trial: ${err}`);
+          this._loggingService.logBreadCrumb(`Couldn't stop trial: ${err}`);
           alert({
             title: this.failed_stop_title,
             message: this.failed_stop_message + err,
@@ -518,9 +518,9 @@ export class TrialComponent implements OnInit {
           if (maxRetries <= 0) {
             throw err;
           } else {
-            // this._loggingService.logBreadCrumb(
-            //   `Retrying: ${err}, ${maxRetries}`
-            // );
+            this._loggingService.logBreadCrumb(
+              `Retrying: ${err}, ${maxRetries}`
+            );
             return new Promise((resolve, reject) => {
               setTimeout(() => {
                 retry(maxRetries - 1, fn)
