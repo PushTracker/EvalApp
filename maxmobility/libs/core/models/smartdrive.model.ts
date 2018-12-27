@@ -214,7 +214,12 @@ export class SmartDrive extends Observable {
 
   get otaProgress(): number {
     if (this.doBLEUpdate && this.doMCUUpdate) {
-      return (this.mcuOTAProgress + this.bleOTAProgress) / 2;
+      const result = (this.mcuOTAProgress + this.bleOTAProgress) / 2;
+      if (result === 99.9) {
+        return 100;
+      } else {
+        return (this.mcuOTAProgress + this.bleOTAProgress) / 2;
+      }
     } else if (this.doBLEUpdate) {
       return this.bleOTAProgress;
     } else if (this.doMCUUpdate) {
