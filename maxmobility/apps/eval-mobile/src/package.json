@@ -1,0 +1,9 @@
+{
+  "android": {
+    "v8Flags": "--expose_gc",
+    "markingMode": "none"
+  },
+  "main": "main.js",
+  "name": "smart-evaluation",
+  "version": "3.4.3"
+}

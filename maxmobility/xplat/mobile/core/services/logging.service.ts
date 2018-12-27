@@ -1,5 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Sentry, SentryBreadcrumb, SentryOptions } from 'nativescript-sentry';
+import {
+  Sentry,
+  BreadCrumb,
+  ExceptionOptions,
+  Level,
+  MessageOptions
+} from 'nativescript-sentry';
 import { UserService } from './user.service';
 
 export class LoggingUtil {
@@ -39,19 +45,15 @@ export class LoggingService {
     }
   }
 
-  public logMessage(message: string, options: SentryOptions = {}) {
+  public logMessage(message: string, options: MessageOptions = {}) {
     Sentry.captureMessage(message, options);
   }
 
-  public logBreadCrumb(
-    message,
-    category: LoggingCategory = LoggingCategory.Info,
-    data = {}
-  ) {
-    const breadcrumb: SentryBreadcrumb = {
+  public logBreadCrumb(message, level?: Level, category?: string) {
+    const breadcrumb: BreadCrumb = {
       message,
-      category,
-      data
+      category: category ? category : 'Brad Test',
+      level: level ? level : Level.Info
     };
     Sentry.captureBreadcrumb(breadcrumb);
   }

@@ -6,11 +6,11 @@
   "repository": "<fill-your-repository-here>",
   "nativescript": {
     "id": "com.permobil.smarteval",
-    "tns-android": {
-      "version": "5.0.0"
-    },
     "tns-ios": {
-      "version": "5.0.0"
+      "version": "5.1.0"
+    },
+    "tns-android": {
+      "version": "5.1.0"
     }
   },
   "scripts": {
@@ -36,15 +36,15 @@
   },
   "dependencies": {
     "@_/nativescript-swift-fix": "file:./plugins/swift-fix",
-    "@angular/animations": "~7.0.0",
-    "@angular/common": "~7.0.0",
-    "@angular/compiler": "~7.0.0",
-    "@angular/core": "~7.0.0",
-    "@angular/forms": "~7.0.0",
-    "@angular/http": "~7.0.0",
-    "@angular/platform-browser": "~7.0.0",
-    "@angular/platform-browser-dynamic": "~7.0.0",
-    "@angular/router": "~7.0.0",
+    "@angular/animations": "~7.1.0",
+    "@angular/common": "~7.1.0",
+    "@angular/compiler": "~7.1.0",
+    "@angular/core": "~7.1.0",
+    "@angular/forms": "~7.1.0",
+    "@angular/http": "~7.1.0",
+    "@angular/platform-browser": "~7.1.0",
+    "@angular/platform-browser-dynamic": "~7.1.0",
+    "@angular/router": "~7.1.0",
     "@maxmobility/core": "file:../../libs/core",
     "@maxmobility/helpers": "file:../../libs/helpers",
     "@maxmobility/mobile": "file:../../xplat/mobile",
@@ -58,7 +58,7 @@
     "kinvey-nativescript-sdk": "~3.12.3",
     "smart-eval-kinvey": "git+https://github.com/autochair/SmartEvalKinvey.git#master",
     "mustache": "~2.3.0",
-    "nativescript-angular": "~7.0.2",
+    "nativescript-angular": "~7.1.0",
     "nativescript-barcodescanner": "~2.7.9",
     "nativescript-bluetooth": "file:../../nativescript-bluetooth",
     "nativescript-camera": "~4.0.3",
@@ -75,7 +75,7 @@
     "nativescript-localstorage": "~2.0.0",
     "nativescript-mapbox": "file:./plugins/nativescript-mapbox-4.3.1.tgz",
     "nativescript-master-technology": "^1.1.1",
-    "nativescript-modal-datetimepicker": "~1.1.10",
+    "nativescript-modal-datetimepicker": "~1.1.12",
     "nativescript-ngx-fonticon": "~4.2.0",
     "nativescript-orientation": "~2.2.1",
     "nativescript-permissions": "~1.2.3",
@@ -84,18 +84,19 @@
     "nativescript-snackbar": "~4.0.0",
     "nativescript-theme-core": "~1.0.4",
     "nativescript-toasty": "~1.2.0",
-    "nativescript-ui-listview": "~3.8.0",
+    "nativescript-ui-listview": "~5.0.1",
     "nativescript-youtubeplayer": "~3.0.1",
-    "reflect-metadata": "^0.1.12",
-    "rxjs": "^6.2.2",
-    "tns-core-modules": "^5.0.5",
+    "reflect-metadata": "^0.1.8",
+    "rxjs": "~6.3.0",
+    "tns-core-modules": "^5.1.1",
     "underscore": "^1.9.1",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
-    "@angular/compiler-cli": "file:../../node_modules/@angular/compiler-cli",
-    "@angular/language-service": "file:../../node_modules/@angular/language-service",
-    "@ngtools/webpack": "6.1.2",
+    "@angular/compiler-cli": "~7.1.0",
+    "@angular/language-service": "~7.1.0",
+    "@nativescript/schematics": "~0.4.0",
+    "@ngtools/webpack": "~7.1.0",
     "babel-traverse": "6.26.0",
     "babel-types": "6.26.0",
     "babylon": "6.18.0",
@@ -106,13 +107,13 @@
     "extract-text-webpack-plugin": "~3.0.2",
     "lazy": "1.0.11",
     "nativescript-dev-sass": "^1.6.0",
-    "nativescript-dev-typescript": "~0.7.6",
-    "nativescript-dev-webpack": "~0.18.0",
+    "nativescript-dev-typescript": "~0.7.8",
+    "nativescript-dev-webpack": "~0.18.5",
     "raw-loader": "~0.5.1",
     "resolve-url-loader": "~2.3.0",
     "sass-loader": "^7.0.2",
-    "tslint": "~5.11.0",
-    "tns-platform-declarations": "^5.0.3",
-    "typescript": "^3.1.6"
+    "tslint": "~5.12.0",
+    "tns-platform-declarations": "^5.1.1",
+    "typescript": "~3.2.0"
   }
 }

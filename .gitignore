@@ -113,6 +113,7 @@ maxmobility/nativescript-bluetooth/**/*.js
 
 !maxmobility/tools/**/*.js
 !maxmobility/apps/eval-mobile/tools/**/*.js
+!maxmobility/apps/eval-mobile/webpack-config.js
 !maxmobility/libs/core/packet_bindings.js
 
 !maxmobility/apps/eval-mobile/plugins/swift-fix/**
