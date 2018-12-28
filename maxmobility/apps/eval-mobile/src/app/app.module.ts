@@ -1,5 +1,9 @@
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
+import {
+  NgModule,
+  NO_ERRORS_SCHEMA,
+  NgModuleFactoryLoader
+} from '@angular/core';
 import { CORE_PROVIDERS } from '@maxmobility/core';
 import { MobileCoreModule } from '@maxmobility/mobile';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -16,6 +20,7 @@ import { CoreModule } from './modules/core/core.module';
 import { SharedModule } from './modules/shared/shared.module';
 import { PrivacyPolicyComponent } from '../app/modules/privacy-policy/privacy-policy.component';
 import { TNSTranslateLoader } from './utils';
+import { NSModuleFactoryLoader } from 'nativescript-angular/router';
 
 // factories
 export function createTranslateLoader() {
@@ -47,7 +52,11 @@ export function createTranslateLoader() {
   ],
   // declarations: [AppComponent, PrivacyPolicyComponent],
   declarations: [AppComponent],
-  providers: [...CORE_PROVIDERS, ModalDialogService],
+  providers: [
+    ...CORE_PROVIDERS,
+    ModalDialogService,
+    { provide: NgModuleFactoryLoader, useClass: NSModuleFactoryLoader }
+  ],
   schemas: [NO_ERRORS_SCHEMA]
 })
 export class AppModule {}
