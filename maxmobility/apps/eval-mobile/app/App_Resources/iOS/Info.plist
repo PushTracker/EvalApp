@@ -63,6 +63,7 @@
 		<key>UIBackgroundModes</key>
 		<array>
 			<string>remote-notification</string>
+			<string>bluetooth-central</string>
 		</array>
 	</dict>
 </plist>
