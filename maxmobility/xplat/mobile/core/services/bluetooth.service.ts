@@ -529,6 +529,9 @@ export class BluetoothService {
           this.notify(
             `${device.name || 'PushTracker'}::${device.address} disconnected`
           );
+
+          console.log('brad stopping background execution...');
+          BluetoothService.stopOtaBackgroundExecution();
         } else if (this.isSmartDrive(device)) {
           const sd = this.getOrMakeSmartDrive(device);
           sd.handleDisconnect();
@@ -821,6 +824,36 @@ export class BluetoothService {
       this.snackbar.simple(text);
     } catch (ex) {
       // nothing
+    }
+  }
+
+  public static _backgroundOtaTask: number = UIBackgroundTaskInvalid;
+
+  public static requestOtaBackgroundExecution() {
+    if (isIOS) {
+      if (this._backgroundOtaTask !== UIBackgroundTaskInvalid) {
+        return;
+      }
+
+      this._backgroundOtaTask = UIApplication.sharedApplication.beginBackgroundTaskWithExpirationHandler(
+        BluetoothService.stopOtaBackgroundExecution
+      );
+      console.log('this._backgroundOtaTask', this._backgroundOtaTask);
+      return this._backgroundOtaTask;
+    }
+  }
+
+  public static stopOtaBackgroundExecution() {
+    if (isIOS) {
+      if (this._backgroundOtaTask == UIBackgroundTaskInvalid) {
+        return;
+      }
+
+      console.log('Ending background task for OTA');
+      UIApplication.sharedApplication.endBackgroundTask(
+        this._backgroundOtaTask
+      );
+      this._backgroundOtaTask = UIBackgroundTaskInvalid;
     }
   }
 }
