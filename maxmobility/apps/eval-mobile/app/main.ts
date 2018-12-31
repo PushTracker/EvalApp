@@ -10,7 +10,8 @@ import { AppModule } from './app.module';
 import './async-await';
 import { BluetoothService } from '@maxmobility/mobile';
 
-// Overriding the app delegate background enter to create a background task so that if we are performing OTAs it will continue for the duration of iOS allows
+// Overriding the app delegate background enter to create a background task so that if we are performing OTAs
+// it will continue for the duration of iOS allows
 // and hopefully this will allow the OTA to complete.
 if (app.ios) {
   const Del = (UIResponder as any).extend(
@@ -18,6 +19,11 @@ if (app.ios) {
       applicationDidEnterBackground(application: UIApplication): void {
         console.log('applicationDidEnterBackground', application);
         BluetoothService.requestOtaBackgroundExecution();
+      },
+
+      applicationDidBecomeActive(application: UIApplication): void {
+        console.log('applicationDidBecomeActive', application);
+        BluetoothService.stopOtaBackgroundExecution();
       }
     },
     {
