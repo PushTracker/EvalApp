@@ -55,6 +55,8 @@
 		<string>Smart Evaluation uses your camera to take pictures of SmartDrives, PushTrackers, etc.</string>
 		<key>NSPhotoLibraryUsageDescription</key>
 		<string>Smart Evaluation uses your photo library so you can select pictures to upload for SmartDrives, PushTrackers, etc.</string>
+		<key>NSBluetoothPeripheralUsageDescription</key>
+		<string>Smart Evaluation uses background bluetooth modes when performing OTA of PushTrackers and your app has been suspended.</string>
 		<key>NSAppTransportSecurity</key>
 		<dict>
 			<key>NSAllowsArbitraryLoads</key>
@@ -64,6 +66,7 @@
 		<array>
 			<string>remote-notification</string>
 			<string>bluetooth-central</string>
+			<string>bluetooth-peripheral</string>
 		</array>
 	</dict>
 </plist>
