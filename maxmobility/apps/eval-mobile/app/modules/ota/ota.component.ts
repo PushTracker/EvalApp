@@ -10,6 +10,7 @@ import {
 import { TranslateService } from '@ngx-translate/core';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { Carousel, CarouselItem } from 'nativescript-carousel';
+import { keepAwake, allowSleepAgain } from 'nativescript-insomnia';
 import { Subscription } from 'rxjs';
 import * as app from 'tns-core-modules/application';
 import { Color } from 'tns-core-modules/color';
@@ -264,6 +265,11 @@ export class OTAComponent implements OnInit {
         .then(() => {
           // disable back nav for iOS - add event listener for android hardware back button
           this.setBackNav(false);
+          // keep screen on with insomnia - related: https://github.com/PushTracker/EvalApp/issues/154
+          keepAwake().then(() => {
+            console.log('Insomnia is active');
+          });
+
           this._loggingService.logBreadCrumb(`Start performing OTAs...`);
           // start updating
           return this.performOTAs();
@@ -418,6 +424,12 @@ export class OTAComponent implements OnInit {
   private cancelOTAs(doCancel: boolean) {
     // re-enable back nav and remove the back pressed event listener for android
     this.setBackNav(true);
+
+    // disable the insomnia so screen can sleep now - related: https://github.com/PushTracker/EvalApp/issues/154
+    allowSleepAgain().then(() => {
+      console.log('Insomnia is inactive, good night!');
+    });
+
     this.updating = false;
     this.updatingButtonText = this._translateService.instant('ota.begin');
     if (doCancel) {
