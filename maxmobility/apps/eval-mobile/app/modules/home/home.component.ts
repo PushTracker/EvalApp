@@ -15,7 +15,9 @@ import {
   FeedbackPosition,
   FeedbackType
 } from 'nativescript-feedback';
+import { Fab } from 'nativescript-floatingactionbutton';
 import { Color } from 'tns-core-modules/color';
+import { EventData } from 'tns-core-modules/data/observable';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
 import { Page } from 'tns-core-modules/ui/page';
 
@@ -137,7 +139,7 @@ export class HomeComponent {
     return DemoService.Demos;
   }
 
-  onDrawerButtonTap(): void {
+  onAccountButtonTap(): void {
     this._routerExtensions.navigate(['/account'], {
       transition: {
         name: 'slideTop',
@@ -241,5 +243,10 @@ export class HomeComponent {
         // do nothing
       }
     });
+  }
+
+  fabTap(args: EventData) {
+    const fab = args.object as Fab;
+    console.log('fabTap', fab);
   }
 }
