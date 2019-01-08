@@ -104,3 +104,12 @@
     border-radius: 3;
   }
 }
+
+.fab {
+  height: 60;
+  width: 60; /// this is required on iOS - Android does not require width so you might need to adjust styles
+  margin: 15;
+  background-color: #ff4081;
+  horizontal-align: right;
+  vertical-align: bottom;
+}

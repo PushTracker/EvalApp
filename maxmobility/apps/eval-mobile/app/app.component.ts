@@ -5,12 +5,13 @@ import { Kinvey } from 'kinvey-nativescript-sdk';
 import { registerElement } from 'nativescript-angular/element-registry';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { Carousel, CarouselItem } from 'nativescript-carousel';
+import { Fab } from 'nativescript-floatingactionbutton';
 import { Gif } from 'nativescript-gif';
 import { MapboxView } from 'nativescript-mapbox';
 import * as orientation from 'nativescript-orientation';
 import { Sentry } from 'nativescript-sentry';
-import * as application from 'tns-core-modules/application';
 import { SmartEvalKeys } from 'smart-eval-kinvey';
+import * as application from 'tns-core-modules/application';
 import {
   connectionType,
   startMonitoring,
@@ -28,6 +29,7 @@ registerElement(
 );
 registerElement('Gif', () => Gif);
 registerElement('Mapbox', () => MapboxView);
+registerElement('Fab', () => Fab);
 
 @Component({
   selector: 'ns-app',
