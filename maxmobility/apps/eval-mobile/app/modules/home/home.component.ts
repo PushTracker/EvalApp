@@ -15,6 +15,7 @@ import {
   FeedbackPosition,
   FeedbackType
 } from 'nativescript-feedback';
+import { Fab } from 'nativescript-floatingactionbutton';
 import { Color } from 'tns-core-modules/color';
 import { EventData } from 'tns-core-modules/data/observable';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
@@ -246,6 +247,13 @@ export class HomeComponent {
   }
 
   fabTap(args: EventData) {
+    const fab = args.object as Fab;
+    // simple animation on fab for interaction
+    fab.animate({
+      rotate: 90,
+      duration: 300
+    });
+
     // based on the current user type set the actions options they will be presented with
     let actions;
     switch (this.userType) {
@@ -289,9 +297,19 @@ export class HomeComponent {
       })
       .then((result: string) => {
         this._handleActionResult(result);
+        // reset the fab
+        fab.animate({
+          rotate: 0,
+          duration: 300
+        });
       })
       .catch(error => {
         this._logService.logException(error);
+        // reset the fab
+        fab.animate({
+          rotate: 0,
+          duration: 300
+        });
       });
   }
 
