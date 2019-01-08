@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Demo, RouterExtService, User } from '@maxmobility/core';
+import { Demo, RouterExtService, User, UserTypes } from '@maxmobility/core';
 import {
   BluetoothService,
   DemoService,
@@ -15,10 +15,10 @@ import {
   FeedbackPosition,
   FeedbackType
 } from 'nativescript-feedback';
-import { Fab } from 'nativescript-floatingactionbutton';
 import { Color } from 'tns-core-modules/color';
 import { EventData } from 'tns-core-modules/data/observable';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
+import * as dialogs from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
 
 @Component({
@@ -85,8 +85,8 @@ export class HomeComponent {
     }
   ];
 
-  faqItems = this.translateService.instant('faqs');
-  videoItems = this.translateService.instant('videos');
+  faqItems = this._translateService.instant('faqs');
+  videoItems = this._translateService.instant('videos');
 
   /**
    * Boolean to track when the demo unit loading has finished to hide the loading indicator and show the list data
@@ -108,7 +108,7 @@ export class HomeComponent {
     private _fileService: FileService,
     private _userService: UserService,
     private _bluetoothService: BluetoothService,
-    private translateService: TranslateService
+    private _translateService: TranslateService
   ) {
     this._page.enableSwipeBackNavigation = false;
 
@@ -246,7 +246,84 @@ export class HomeComponent {
   }
 
   fabTap(args: EventData) {
-    const fab = args.object as Fab;
-    console.log('fabTap', fab);
+    // based on the current user type set the actions options they will be presented with
+    let actions;
+    switch (this.userType) {
+      case UserTypes.Clinician:
+        actions = [
+          this._translateService.instant('home.quick-actions.start-eval'),
+          this._translateService.instant('home.quick-actions.update'),
+          this._translateService.instant('home.quick-actions.request-demo')
+        ];
+        break;
+      case UserTypes.Representative:
+        actions = [
+          this._translateService.instant('home.quick-actions.start-eval'),
+          this._translateService.instant('home.quick-actions.update'),
+          this._translateService.instant('home.quick-actions.register-demo')
+        ];
+        break;
+      case UserTypes.EndUser:
+        actions = [
+          this._translateService.instant('home.quick-actions.update'),
+          this._translateService.instant('home.quick-actions.learn')
+        ];
+        break;
+      case UserTypes.Admin:
+        actions = [
+          this._translateService.instant('home.quick-actions.start-eval'),
+          this._translateService.instant('home.quick-actions.update'),
+          this._translateService.instant('home.quick-actions.request-demo'),
+          this._translateService.instant('home.quick-actions.register-demo'),
+          this._translateService.instant('home.quick-actions.learn')
+        ];
+        break;
+    }
+
+    // show the action dialog with the actions based on user type
+    dialogs
+      .action({
+        message: '',
+        cancelButtonText: this._translateService.instant('dialogs.cancel'),
+        actions
+      })
+      .then((result: string) => {
+        this._handleActionResult(result);
+      })
+      .catch(error => {
+        this._logService.logException(error);
+      });
+  }
+
+  private _handleActionResult(value: string) {
+    // log breadcrumb for sentry
+    this._logService.logBreadCrumb(
+      `User has tapped the home FAB button and selected action ${value}`
+    );
+
+    // route user to the screen based on the action selected
+    if (
+      value === this._translateService.instant('home.quick-actions.start-eval')
+    ) {
+      this._routerExtensions.navigate(['/eval-entry']);
+    } else if (
+      value === this._translateService.instant('home.quick-actions.update')
+    ) {
+      this._routerExtensions.navigate(['/ota']);
+    } else if (
+      value ===
+      this._translateService.instant('home.quick-actions.request-demo')
+    ) {
+      this._routerExtensions.navigate(['/demos']);
+    } else if (
+      value ===
+      this._translateService.instant('home.quick-actions.register-demo')
+    ) {
+      this._routerExtensions.navigate(['/demos']);
+    } else if (
+      value === this._translateService.instant('home.quick-actions.learn')
+    ) {
+      this._routerExtensions.navigate(['/videos']);
+    }
   }
 }

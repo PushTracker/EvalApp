@@ -238,6 +238,15 @@
     "videos-description": "Schulungs- und Nutzungsvideos für SmartDrive und PushTracker",
     "videos-title": "Videos"
   },
+  "home": {
+    "quick-actions": {
+      "learn": "Erfahren Sie, wie Sie SmartDrive / PushTracker verwenden",
+      "register-demo": "Demo registrieren",
+      "request-demo": "Demo anfordern",
+      "start-eval": "Auswertung starten",
+      "update": "Aktualisieren Sie SmartDrive / PushTracker"
+    }
+  },
   "ota": {
     "action": {
       "cancel": "Stornieren",

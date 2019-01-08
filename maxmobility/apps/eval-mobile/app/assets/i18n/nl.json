@@ -238,6 +238,15 @@
     "videos-description": "Trainings- en gebruiksvideo's voor SmartDrive en PushTracker",
     "videos-title": "videos"
   },
+  "home": {
+    "quick-actions": {
+      "learn": "Leer hoe u SmartDrive / PushTracker kunt gebruiken",
+      "register-demo": "Registreer demo",
+      "request-demo": "Demo aanvragen",
+      "start-eval": "Start de evaluatie",
+      "update": "Update SmartDrive / PushTracker"
+    }
+  },
   "ota": {
     "action": {
       "cancel": "annuleren",
