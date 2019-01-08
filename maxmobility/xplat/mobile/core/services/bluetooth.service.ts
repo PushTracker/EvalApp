@@ -14,11 +14,11 @@ import {
 } from 'nativescript-bluetooth';
 import { Feedback } from 'nativescript-feedback';
 import { SnackBar } from 'nativescript-snackbar';
-import { Observable, fromObject } from 'tns-core-modules/data/observable';
+import * as appSettings from 'tns-core-modules/application-settings';
+import { fromObject, Observable } from 'tns-core-modules/data/observable';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
 import { isAndroid, isIOS } from 'tns-core-modules/platform';
 import { alert } from 'tns-core-modules/ui/dialogs';
-import * as appSettings from 'tns-core-modules/application-settings';
 import { LoggingService } from './logging.service';
 
 export enum PushTrackerState {
@@ -827,7 +827,9 @@ export class BluetoothService {
     }
   }
 
-  public static _backgroundOtaTask: number = UIBackgroundTaskInvalid;
+  public static _backgroundOtaTask: number = isIOS
+    ? UIBackgroundTaskInvalid
+    : null;
 
   public static requestOtaBackgroundExecution() {
     if (isIOS) {
