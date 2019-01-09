@@ -457,14 +457,11 @@ export class DemoDetailComponent {
     const isPushTracker = text[0] === 'B';
     const isWristband = text[0] === 'A';
     let isSmartDrive = false;
-    let serialNumber = text;
+    const serialNumber = text;
     try {
       const value = parseInt(text, 10);
       const valid = isFinite(value);
       isSmartDrive = !isPushTracker && !isWristband && valid && value > 0;
-      if (isSmartDrive) {
-        serialNumber = `${parseInt(text, 10)}`;
-      }
     } catch (err) {
       // do nothing but log to sentry
       this._loggingService.logException(err);
