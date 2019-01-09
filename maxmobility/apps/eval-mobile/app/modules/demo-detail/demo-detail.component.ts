@@ -21,9 +21,9 @@ import {
 } from 'nativescript-imagecropper';
 import * as LS from 'nativescript-localstorage';
 import { Mapbox } from 'nativescript-mapbox';
-import { SmartEvalKeys } from 'smart-eval-kinvey';
 import { Toasty } from 'nativescript-toasty';
 import { switchMap } from 'rxjs/operators';
+import { SmartEvalKeys } from 'smart-eval-kinvey';
 import { ImageAsset } from 'tns-core-modules/image-asset/image-asset';
 import {
   fromBase64,
@@ -334,6 +334,38 @@ export class DemoDetailComponent {
 
     try {
       const isEnabled = await geolocation.isEnabled();
+      // location might not be enabled or permission not granted
+      // show alert informing user and return since we can't do anything with location for the device
+      if (!isEnabled) {
+        console.log('location is not enabled or granted');
+        this._loggingService.logBreadCrumb(
+          `geolocation isEnabled = ${isEnabled}`
+        );
+
+        // show the confirmation asking if they want to open the settings app on iOS only for now
+        // haven't looked into handling android with similar flow just yet
+        if (isIOS) {
+          confirm({
+            title: '',
+            message: this._translateService.instant(
+              'demo-detail.geolocation-disabled'
+            ),
+            okButtonText: this._translateService.instant('dialogs.ok'),
+            cancelButtonText: this._translateService.instant('dialogs.cancel')
+          }).then(confirmResult => {
+            if (confirmResult === true) {
+              utils.ios
+                .getter(UIApplication, UIApplication.sharedApplication)
+                .openURL(
+                  NSURL.URLWithString(UIApplicationOpenSettingsURLString)
+                );
+            }
+          });
+        }
+
+        return;
+      }
+
       if (isEnabled) {
         // if more than 750ms pass then show a toasty that location is being calculated...
         processTimeout = setTimeout(() => {

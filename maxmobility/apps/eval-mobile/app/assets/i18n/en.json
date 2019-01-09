@@ -347,7 +347,8 @@
   "demo-detail": {
     "scan-sd": "SD: Press scan or edit button",
     "scan-pt": "PT: Press scan or edit button",
-    "connect-pt": "Please connect a PushTracker."
+    "connect-pt": "Please connect a PushTracker.",
+    "geolocation-disabled": "Location might be disabled, would you like to open the Settings on your device to enable location for the Smart Evaluation app?"
   },
   "pairing": [
     {

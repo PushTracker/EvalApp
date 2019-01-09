@@ -23,7 +23,8 @@
   "demo-detail": {
     "connect-pt": "Por favor, conecte un PushTracker.",
     "scan-pt": "PT: Pulse el botón escanear o editar",
-    "scan-sd": "SD: pulse el botón escanear o editar"
+    "scan-sd": "SD: pulse el botón escanear o editar",
+    "geolocation-disabled": "La ubicación podría estar deshabilitada. ¿Desea abrir la Configuración en su dispositivo para habilitar la ubicación de la aplicación Evaluación inteligente?"
   },
   "demos": {
     "demo-change-owner-location-required": "Se requiere su ubicación para transferir la propiedad de la unidad de demostración. Esto permite a Smart Eval rastrear la última ubicación conocida de las unidades de demostración para el inventario.",
@@ -239,14 +240,14 @@
     "videos-title": "Videos"
   },
   "home": {
-		"quick-actions": {
-			"learn": "Aprende a usar SmartDrive / PushTracker",
-			"register-demo": "Registrar demo",
-			"request-demo": "Solicitar demo",
-			"start-eval": "Iniciar evaluación",
-			"update": "Actualizar SmartDrive / PushTracker"
-		}
-	},
+    "quick-actions": {
+      "learn": "Aprende a usar SmartDrive / PushTracker",
+      "register-demo": "Registrar demo",
+      "request-demo": "Solicitar demo",
+      "start-eval": "Iniciar evaluación",
+      "update": "Actualizar SmartDrive / PushTracker"
+    }
+  },
   "ota": {
     "action": {
       "cancel": "Cancelar",
