@@ -334,37 +334,6 @@ export class DemoDetailComponent {
 
     try {
       const isEnabled = await geolocation.isEnabled();
-      // location might not be enabled or permission not granted
-      // show alert informing user and return since we can't do anything with location for the device
-      if (!isEnabled) {
-        console.log('location is not enabled or granted');
-        this._loggingService.logBreadCrumb(
-          `geolocation isEnabled = ${isEnabled}`
-        );
-
-        // show the confirmation asking if they want to open the settings app on iOS only for now
-        // haven't looked into handling android with similar flow just yet
-        if (isIOS) {
-          confirm({
-            title: '',
-            message: this._translateService.instant(
-              'demo-detail.geolocation-disabled'
-            ),
-            okButtonText: this._translateService.instant('dialogs.ok'),
-            cancelButtonText: this._translateService.instant('dialogs.cancel')
-          }).then(confirmResult => {
-            if (confirmResult === true) {
-              utils.ios
-                .getter(UIApplication, UIApplication.sharedApplication)
-                .openURL(
-                  NSURL.URLWithString(UIApplicationOpenSettingsURLString)
-                );
-            }
-          });
-        }
-
-        return;
-      }
 
       if (isEnabled) {
         // if more than 750ms pass then show a toasty that location is being calculated...
@@ -373,6 +342,46 @@ export class DemoDetailComponent {
             this._translateService.instant('demos.location-calculating')
           ).show();
         }, 750);
+      } else {
+        // location might not be enabled or permission not granted
+        // show alert informing user and return since we can't do anything with location for the device
+        this._loggingService.logBreadCrumb(
+          `geolocation isEnabled = ${isEnabled}`
+        );
+
+        // show the confirmation asking if they want to open the settings app on iOS only for now
+        // haven't looked into handling android with similar flow just yet
+        if (isIOS) {
+          const status = CLLocationManager.authorizationStatus();
+          this._loggingService.logBreadCrumb(
+            `Location Manager status = ${status}`
+          );
+          // check if the user has previously denied permission and then show the confirmation
+          // if the user has not denied Location prior to attempting to access the device location
+          // then the location permission will not be in the app settings on iOS so
+          // then users can't enable/disable it at that point
+          if (status === CLAuthorizationStatus.kCLAuthorizationStatusDenied) {
+            confirm({
+              title: '',
+              message: this._translateService.instant(
+                'demo-detail.geolocation-disabled'
+              ),
+              okButtonText: this._translateService.instant('dialogs.ok'),
+              cancelButtonText: this._translateService.instant('dialogs.cancel')
+            }).then(confirmResult => {
+              if (confirmResult === true) {
+                utils.ios
+                  .getter(UIApplication, UIApplication.sharedApplication)
+                  .openURL(
+                    NSURL.URLWithString(UIApplicationOpenSettingsURLString)
+                  );
+              }
+            });
+
+            // Only returning here if we are opening the confirmation to open the settings on iOS
+            return;
+          }
+        }
       }
 
       const loc = await LocationService.getLocationData();
