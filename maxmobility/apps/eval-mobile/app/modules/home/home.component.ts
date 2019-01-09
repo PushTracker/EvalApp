@@ -21,6 +21,7 @@ import { EventData } from 'tns-core-modules/data/observable';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
 import * as dialogs from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
+import { AnimationCurve } from 'tns-core-modules/ui/enums/enums';
 
 @Component({
   selector: 'Home',
@@ -251,7 +252,8 @@ export class HomeComponent {
     // simple animation on fab for interaction
     fab.animate({
       rotate: 90,
-      duration: 300
+      curve: AnimationCurve.easeIn,
+      duration: 200
     });
 
     // based on the current user type set the actions options they will be presented with
@@ -300,7 +302,8 @@ export class HomeComponent {
         // reset the fab
         fab.animate({
           rotate: 0,
-          duration: 300
+          curve: AnimationCurve.easeOut,
+          duration: 200
         });
       })
       .catch(error => {
@@ -308,7 +311,8 @@ export class HomeComponent {
         // reset the fab
         fab.animate({
           rotate: 0,
-          duration: 300
+          curve: AnimationCurve.easeOut,
+          duration: 200
         });
       });
   }
