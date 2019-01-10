@@ -264,6 +264,7 @@ export class PairingComponent implements OnInit {
               message: this._translateService.instant(
                 'pushtracker.push-settings.out-of-date-dialog.message'
               ),
+              icon: 'warning',
               duration: 6000,
               // type: FeedbackType.Success, // no need to specify when using 'success' instead of 'show'
               onTap: () => {
