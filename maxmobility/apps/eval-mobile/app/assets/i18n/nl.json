@@ -25,7 +25,6 @@
     "scan-pt": "PT: druk op de scan- of bewerkingsknop",
     "scan-sd": "SD: druk op de scan- of bewerkingsknop",
     "geolocation-disabled": "Locatie kan worden uitgeschakeld, wilt u de instellingen op uw apparaat openen om de locatie in te schakelen voor de Smart Evaluation-app?"
-
   },
   "demos": {
     "demo-change-owner-location-required": "Uw locatie is vereist om het eigendom van de demo-eenheid over te dragen. Hierdoor kan Smart Eval de laatst bekende locatie van demo-eenheden voor inventaris volgen.",
@@ -248,6 +247,11 @@
       "start-eval": "Start de evaluatie",
       "update": "Update SmartDrive / PushTracker"
     }
+  },
+  "account": {
+    "version": "Versie",
+    "build": "Bouwen",
+    "database": "Database"
   },
   "ota": {
     "action": {

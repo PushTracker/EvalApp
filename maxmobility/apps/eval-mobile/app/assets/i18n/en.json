@@ -115,6 +115,11 @@
       "learn": "Learn to use SmartDrive/PushTracker"
     }
   },
+  "account": {
+    "version": "Version",
+    "build": "Build",
+    "database": "Database"
+  },
   "evals": {
     "title": "Evaluations",
     "loading": "Loading Evals...",

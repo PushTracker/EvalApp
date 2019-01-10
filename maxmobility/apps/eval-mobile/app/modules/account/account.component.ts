@@ -33,6 +33,7 @@ import { isIOS } from 'tns-core-modules/platform';
 import { alert, confirm, prompt } from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
 import * as utils from 'tns-core-modules/utils/utils';
+import * as appversion from 'nativescript-appversion';
 import { APP_KEY, HOST_URL } from '~/kinvey-keys';
 
 @Component({
@@ -45,6 +46,11 @@ export class AccountComponent implements OnInit {
   fsKeyPrefix = 'AccountComponent.';
   fsKeyProfilePicture = 'ProfilePicture';
   user: Kinvey.User;
+
+  /**
+   * String to render the current version name and version code (builds).
+   */
+  appVersionData: string;
 
   didyouknow = new DidYouKnow();
 
@@ -118,6 +124,14 @@ export class AccountComponent implements OnInit {
     // addresses
     const emailRegEx = /[^@]+@(permobil.com|max\-mobility.com)/i;
     this.canBetaTest = emailRegEx.test((this.user.data as User).email);
+
+    this.appVersionData = `${this._translateService.instant(
+      'account.version'
+    )}: ${appversion.getVersionNameSync()} ${this._translateService.instant(
+      'account.build'
+    )}: ${appversion.getVersionCodeSync()} \n${this._translateService.instant(
+      'account.database'
+    )}: ${APP_KEY}`;
   }
 
   ngOnInit() {

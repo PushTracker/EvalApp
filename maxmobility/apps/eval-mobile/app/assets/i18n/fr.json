@@ -246,6 +246,11 @@
       "update": "Mettre à jour SmartDrive / Pushtracker"
     }
   },
+  "account": {
+    "version": "Version",
+    "build": "Construire",
+    "database": "Base de données"
+  },
   "ota": {
     "action": {
       "cancel": "annuler",
