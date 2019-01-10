@@ -1,6 +1,11 @@
 <MaxActionBar [allowNav]="false" [title]="'ota.title' | translate">
-  // using an action item to simulate the iOS back navigation button so we can confirm with user before navigating back
-  <ActionItem android:visibility="false" ios.position="left" (tap)="confirmUserBackNav()">
+  // using an action item to simulate the iOS back navigation button so we can
+  confirm with user before navigating back
+  <ActionItem
+    android:visibility="false"
+    ios.position="left"
+    (tap)="confirmUserBackNav()"
+  >
     <image src="res://ios_back_nav/ios_back_nav.png"></image>
   </ActionItem>
 </MaxActionBar>
@@ -8,12 +13,14 @@
 <StackLayout>
   <ScrollView height="70%">
     <StackLayout class="ota-gradient">
+      // Check for new firmware button
       <button
         [text]="'ota.check_new_firmware' | translate"
         class="orange-btn"
         (tap)="checkForNewFirmwareTap()"
       ></button>
 
+      // current firmare for OTAs
       <label
         class="title"
         [text]="('ota.version' | translate) + ' ' + (currentVersion || '??')"
@@ -122,6 +129,12 @@
 
         //PushTracker OTAs
         <StackLayout class="ota" *ngFor="let pt of pushTrackerOTAs._array">
+          <!-- scrollview in the ngFor so that on iOS you can scroll this section
+          and see all the pushtrackers without them overlapping the UI
+           https://github.com/PushTracker/EvalApp/issues/334
+          BRAD - even weired is just having this commented scrollview is 
+          enough to trigger the scroll working as it should -->
+          <!-- <ScrollView> -->
           <GridLayout class="otaInfo" rows="auto" columns="auto, *">
             <label col="0" class="otaLabel" textWrap="true">
               <FormattedString>
@@ -182,6 +195,7 @@
               ></button>
             </WrapLayout>
           </GridLayout>
+          <!-- </ScrollView> -->
         </StackLayout>
 
         // SmartDrive Instructions
