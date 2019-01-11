@@ -10,11 +10,12 @@ import {
 } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
-import { PageRoute } from 'nativescript-angular/router';
+import { PageRoute, RouterExtensions } from 'nativescript-angular/router';
 import { BarcodeScanner } from 'nativescript-barcodescanner';
 import * as camera from 'nativescript-camera';
 import { Feedback } from 'nativescript-feedback';
 import * as geolocation from 'nativescript-geolocation';
+import * as app from 'tns-core-modules/application';
 import {
   ImageCropper,
   Result as ImageCropperResult
@@ -29,7 +30,7 @@ import {
   fromBase64,
   ImageSource
 } from 'tns-core-modules/image-source/image-source';
-import { isIOS } from 'tns-core-modules/platform';
+import { isIOS, isAndroid } from 'tns-core-modules/platform';
 import { setTimeout } from 'tns-core-modules/timer';
 import { View } from 'tns-core-modules/ui/core/view';
 import { action, alert, confirm, prompt } from 'tns-core-modules/ui/dialogs';
@@ -61,8 +62,15 @@ export class DemoDetailComponent {
   private _index = -1; // index into DemoService.Demos
   private _datastore = Kinvey.DataStore.collection<any>('SmartDrives');
 
+  /**
+   * Boolean to track if the unit is new or modifying existing demo unit.
+   * If new, show a prompt to the user when they are leaving the page.
+   */
+  private _isNewDemoUnit = false;
+
   constructor(
     private _page: Page,
+    private _routerExtensions: RouterExtensions,
     private _pageRoute: PageRoute,
     private _zone: NgZone,
     private _barcodeScanner: BarcodeScanner,
@@ -89,8 +97,11 @@ export class DemoDetailComponent {
             demo.sd_image = fromBase64(demo.sd_image_base64);
           }
           this.demo = demo;
+          this._setBackNav(true);
         } else {
           this.demo = new Demo();
+          this._isNewDemoUnit = true;
+          this._setBackNav(false);
         }
       });
   }
@@ -459,6 +470,38 @@ export class DemoDetailComponent {
       });
   }
 
+  confirmUserBackNav() {
+    // if we are not updating devices then just navigate back as normal
+    // else confirm with user to navigate which will cancel any active OTAs
+    if (this._isNewDemoUnit === false) {
+      // remove the android back pressed event
+      if (isAndroid) {
+        app.android.off(app.AndroidApplication.activityBackPressedEvent);
+      }
+      // now actually navigate back
+      this._routerExtensions.back();
+    } else {
+      // we have a new demo unit
+      confirm({
+        title: this._translateService.instant('dialogs.warning'),
+        message: this._translateService.instant('demo-detail.leaving-new-demo'),
+        okButtonText: this._translateService.instant('dialogs.yes'),
+        cancelable: true,
+        cancelButtonText: this._translateService.instant('dialogs.cancel')
+      }).then((result: boolean) => {
+        if (result === true) {
+          // remove the android back pressed event
+          if (isAndroid) {
+            app.android.off(app.AndroidApplication.activityBackPressedEvent);
+          }
+
+          // now actually navigate back
+          this._routerExtensions.back();
+        }
+      });
+    }
+  }
+
   private _handleSerial(text: string, forDevices?: string[]) {
     text = text || '';
     text = text.trim().toUpperCase();
@@ -583,6 +626,49 @@ export class DemoDetailComponent {
     } catch (error) {
       this._loggingService.logException(error);
       return null;
+    }
+  }
+
+  private _setBackNav(allowed: boolean) {
+    if (isIOS) {
+      if (
+        this._page.ios.navigationController &&
+        this._page.ios.navigationController.interactivePopGestureRecognizer
+      ) {
+        this._page.ios.navigationController.interactivePopGestureRecognizer.enabled = allowed;
+      }
+      this._page.enableSwipeBackNavigation = allowed;
+    } else if (isAndroid) {
+      if (allowed) {
+        app.android.off(app.AndroidApplication.activityBackPressedEvent);
+      } else {
+        // setting the event listener for the android back pressed event
+        app.android.on(
+          app.AndroidApplication.activityBackPressedEvent,
+          (args: app.AndroidActivityBackPressedEventData) => {
+            // cancel the back nav for now then confirm with user to leave
+            args.cancel = true;
+            confirm({
+              title: this._translateService.instant('dialogs.warning'),
+              message: this._translateService.instant(
+                'demo-detail.leaving-new-demo'
+              ),
+              okButtonText: this._translateService.instant('dialogs.yes'),
+              cancelable: true,
+              cancelButtonText: this._translateService.instant('dialogs.cancel')
+            }).then((result: boolean) => {
+              if (result === true) {
+                // user wants to leave so remove the back pressed event
+                app.android.off(
+                  app.AndroidApplication.activityBackPressedEvent
+                );
+                // now actually navigate back
+                this._routerExtensions.back();
+              }
+            });
+          }
+        );
+      }
     }
   }
 }

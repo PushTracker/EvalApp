@@ -1,4 +1,14 @@
-<MaxActionBar [title]="title">
+<MaxActionBar [allowNav]="false" [title]="title">
+  // using an action item to simulate the iOS back navigation button so we can
+  confirm with user before navigating back
+  <ActionItem
+    android:visibility="false"
+    ios.position="left"
+    (tap)="confirmUserBackNav()"
+  >
+    <image src="res://ios_back_nav/ios_back_nav.png"></image>
+  </ActionItem>
+
   <ActionItem
     (tap)="onSave()"
     ios.systemIcon="3"
