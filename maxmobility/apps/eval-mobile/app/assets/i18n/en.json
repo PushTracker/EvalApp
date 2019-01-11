@@ -295,6 +295,7 @@
     "camera": "Camera",
     "confirm-photo-delete": "Are you sure you want to remove this photo?",
     "close": "Close",
+    "warning": "Warning",
     "sms": "Text message",
     "success": "Success!"
   },
@@ -353,7 +354,8 @@
     "scan-sd": "SD: Press scan or edit button",
     "scan-pt": "PT: Press scan or edit button",
     "connect-pt": "Please connect a PushTracker.",
-    "geolocation-disabled": "Location might be disabled, would you like to open the Settings on your device to enable location for the Smart Evaluation app?"
+    "geolocation-disabled": "Location might be disabled, would you like to open the Settings on your device to enable location for the Smart Evaluation app?",
+    "leaving-new-demo": "Warning: you have an unsaved demo unit. Are you sure you want to exit without saving?"
   },
   "pairing": [
     {

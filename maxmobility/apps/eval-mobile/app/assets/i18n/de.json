@@ -24,7 +24,8 @@
     "connect-pt": "Bitte verbinden Sie einen PushTracker.",
     "scan-pt": "PT: Drücken Sie die Scan- oder Bearbeitungstaste",
     "scan-sd": "SD: Drücken Sie die Scan- oder Bearbeitungstaste",
-    "geolocation-disabled": "Möglicherweise ist der Standort deaktiviert. Möchten Sie die Einstellungen auf Ihrem Gerät öffnen, um den Standort für die Smart Evaluation App zu aktivieren?"
+    "geolocation-disabled": "Möglicherweise ist der Standort deaktiviert. Möchten Sie die Einstellungen auf Ihrem Gerät öffnen, um den Standort für die Smart Evaluation App zu aktivieren?",
+    "leaving-new-demo": "Achtung: Sie haben ein nicht gespeichertes Demo-Gerät. Möchten Sie den Vorgang wirklich ohne Speichern abbrechen?"
   },
   "demos": {
     "demo-change-owner-location-required": "Ihr Standort ist erforderlich, um den Besitz des Demo-Geräts zu übertragen. Dadurch kann Smart Eval den letzten bekannten Standort von Demo-Einheiten für das Inventar ermitteln.",
@@ -54,6 +55,7 @@
     "ok": "OK",
     "sms": "Textnachricht",
     "success": "Erfolg!",
+    "warning": "Warnung",
     "yes": "Ja",
     "yes-delete": "Ja, löschen",
     "yes-login": "Ja, bitte einloggen!"

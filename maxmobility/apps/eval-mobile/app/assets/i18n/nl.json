@@ -24,7 +24,8 @@
     "connect-pt": "Sluit een PushTracker aan.",
     "scan-pt": "PT: druk op de scan- of bewerkingsknop",
     "scan-sd": "SD: druk op de scan- of bewerkingsknop",
-    "geolocation-disabled": "Locatie kan worden uitgeschakeld, wilt u de instellingen op uw apparaat openen om de locatie in te schakelen voor de Smart Evaluation-app?"
+    "geolocation-disabled": "Locatie kan worden uitgeschakeld, wilt u de instellingen op uw apparaat openen om de locatie in te schakelen voor de Smart Evaluation-app?",
+    "leaving-new-demo": "Waarschuwing: je hebt een niet-opgeslagen demo-eenheid. Weet je zeker dat je wilt afsluiten zonder op te slaan?"
   },
   "demos": {
     "demo-change-owner-location-required": "Uw locatie is vereist om het eigendom van de demo-eenheid over te dragen. Hierdoor kan Smart Eval de laatst bekende locatie van demo-eenheden voor inventaris volgen.",
@@ -54,6 +55,7 @@
     "ok": "OK",
     "sms": "Tekst bericht",
     "success": "Succes!",
+    "warning": "Waarschuwing",
     "yes": "Ja",
     "yes-delete": "Ja, verwijderen",
     "yes-login": "Ja, inloggen!"

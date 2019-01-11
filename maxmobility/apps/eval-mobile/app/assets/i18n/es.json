@@ -24,7 +24,8 @@
     "connect-pt": "Por favor, conecte un PushTracker.",
     "scan-pt": "PT: Pulse el botón escanear o editar",
     "scan-sd": "SD: pulse el botón escanear o editar",
-    "geolocation-disabled": "La ubicación podría estar deshabilitada. ¿Desea abrir la Configuración en su dispositivo para habilitar la ubicación de la aplicación Evaluación inteligente?"
+    "geolocation-disabled": "La ubicación podría estar deshabilitada. ¿Desea abrir la Configuración en su dispositivo para habilitar la ubicación de la aplicación Evaluación inteligente?",
+    "leaving-new-demo": "Advertencia: tienes una unidad de demostración no guardada. ¿Seguro que quieres salir sin guardar?"
   },
   "demos": {
     "demo-change-owner-location-required": "Se requiere su ubicación para transferir la propiedad de la unidad de demostración. Esto permite a Smart Eval rastrear la última ubicación conocida de las unidades de demostración para el inventario.",
@@ -54,6 +55,7 @@
     "ok": "De acuerdo",
     "sms": "Mensaje de texto",
     "success": "¡Éxito!",
+    "warning": "Advertencia",
     "yes": "Sí",
     "yes-delete": "Si borrar",
     "yes-login": "Sí, inicie sesión!"
