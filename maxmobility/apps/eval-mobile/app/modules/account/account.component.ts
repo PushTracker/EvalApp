@@ -203,6 +203,11 @@ export class AccountComponent implements OnInit {
     const newLanguage = this.languages.getValue(args.newIndex) || 'en';
     (this.user.data as any).language = newLanguage;
     this._translateService.use(newLanguage);
+    // saving language to server because, it makes it look like a bug because the language switches
+    // but we don't save the user selected language on backend, so when you come back in, it's using the server value
+    // also on the current user object and not what they previously selected.
+    // see -https://github.com/PushTracker/EvalApp/issues/324
+    this._saveUserToKinvey();
   }
 
   onDrawerButtonTap() {

@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Demo, RouterExtService, User, UserTypes } from '@maxmobility/core';
+import { ChangeDetectionStrategy, Component, NgZone } from '@angular/core';
+import { Demo, User, UserTypes } from '@maxmobility/core';
 import {
   BluetoothService,
   DemoService,
@@ -22,6 +22,7 @@ import { ObservableArray } from 'tns-core-modules/data/observable-array';
 import * as dialogs from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
 import { AnimationCurve } from 'tns-core-modules/ui/enums/enums';
+import { Kinvey } from 'kinvey-nativescript-sdk';
 
 @Component({
   selector: 'Home',
@@ -87,8 +88,8 @@ export class HomeComponent {
     }
   ];
 
-  faqItems = this._translateService.instant('faqs');
-  videoItems = this._translateService.instant('videos');
+  faqItems; // list of items for faqs (not doing initial load here so that translation is considered)
+  videoItems; // list of items for videos
 
   /**
    * Boolean to track when the demo unit loading has finished to hide the loading indicator and show the list data
@@ -101,7 +102,7 @@ export class HomeComponent {
 
   constructor(
     private _page: Page,
-    private _routerExtService: RouterExtService,
+    private _zone: NgZone,
     private _routerExtensions: RouterExtensions,
     private _logService: LoggingService,
     private _demoService: DemoService,
@@ -131,6 +132,17 @@ export class HomeComponent {
     } else {
       this.demoUnitsLoaded = true;
     }
+
+    // rebind the label values bc translations have changed and the template does not handle the translate with a pipe
+    // see - https://github.com/PushTracker/EvalApp/issues/324
+    this._page.on(Page.loadedEvent, () => {
+      this._zone.run(() => {
+        setTimeout(() => {
+          this.faqItems = this._translateService.instant('faqs');
+          this.videoItems = this._translateService.instant('videos');
+        }, 500);
+      });
+    });
   }
 
   get currentVersion(): string {

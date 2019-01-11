@@ -19,6 +19,7 @@ import {
 } from 'tns-core-modules/connectivity';
 import { alert } from 'tns-core-modules/ui/dialogs/dialogs';
 import { APP_KEY, APP_SECRET } from './kinvey-keys';
+import { User } from '@maxmobility/core';
 
 // Register Custom Elements for Angular
 registerElement('Carousel', () => <any>Carousel);
@@ -95,6 +96,17 @@ export class AppComponent {
       application.resumeEvent,
       (args: application.ApplicationEventData) => {
         this._startNetworkMonitor();
+
+        // check if we have a current user logged in and set their language for translation
+        // without this, the language would always load the default 'en' and not check the user's preference
+        // see - https://github.com/PushTracker/EvalApp/issues/324
+        const u = Kinvey.User.getActiveUser();
+        if (u && (u.data as User).language) {
+          this._translateService.setDefaultLang((u.data as User).language);
+        } else {
+          this._translateService.setDefaultLang('en');
+        }
+
         if (orientation.getOrientation() !== 'portrait') {
           // set the orientation to be portrait and don't allow orientation changes
           orientation.setOrientation('portrait');
