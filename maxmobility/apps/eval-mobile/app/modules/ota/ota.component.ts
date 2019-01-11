@@ -267,7 +267,7 @@ export class OTAComponent implements OnInit {
           this.setBackNav(false);
           // keep screen on with insomnia - related: https://github.com/PushTracker/EvalApp/issues/154
           keepAwake().then(() => {
-            console.log('Insomnia is active');
+            // console.log('Insomnia is active');
           });
 
           this._loggingService.logBreadCrumb(`Start performing OTAs...`);
@@ -427,7 +427,7 @@ export class OTAComponent implements OnInit {
 
     // disable the insomnia so screen can sleep now - related: https://github.com/PushTracker/EvalApp/issues/154
     allowSleepAgain().then(() => {
-      console.log('Insomnia is inactive, good night!');
+      // console.log('Insomnia is inactive, good night!');
     });
 
     this.updating = false;
