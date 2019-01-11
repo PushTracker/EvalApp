@@ -1,6 +1,7 @@
 // Add your native dependencies here:
 dependencies {
   compile "com.google.android.gms:play-services-location:12.0.1"
+  compile 'org.slf4j:slf4j-nop:1.7.25'
 }
 
 repositories {
