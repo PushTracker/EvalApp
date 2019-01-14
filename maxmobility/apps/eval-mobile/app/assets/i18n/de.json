@@ -45,6 +45,10 @@
     "retrieve-from-clinician-action": "Demo vom Kliniker abrufen",
     "submit-btn": "einreichen"
   },
+  "demo-requests": {
+    "no-demo-requests": "Keine aktiven Demoanfragen gefunden.",
+    "loading": "Demoanfragen werden geladen ..."
+  },
   "dialogs": {
     "camera": "Kamera",
     "cancel": "Stornieren",
@@ -188,7 +192,7 @@
     "photo-album-tle": "Fotoalbum",
     "picture": "Bild",
     "profile": "Profil",
-    "save": "sparen",
+    "save": "Sparen",
     "submit": "einreichen",
     "tip": "Spitze",
     "title": "Intelligente Bewertung",
@@ -224,6 +228,7 @@
     "demo-refresh": "Aktualisieren Sie Demos",
     "demos": "Demos",
     "demos-desc": "Demo-Standort und -Management",
+    "demo-requests": "Demo-Anfragen",
     "eval": "Beginnen Sie mit der SmartDrive-Bewertung",
     "eval-history": "Frühere Bewertungen anzeigen",
     "eval-title": "Beginnen Sie mit der SmartDrive-Bewertung",

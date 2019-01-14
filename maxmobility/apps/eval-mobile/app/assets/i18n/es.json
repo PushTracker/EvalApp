@@ -45,6 +45,10 @@
     "retrieve-from-clinician-action": "Recuperar demo de clínico",
     "submit-btn": "Enviar"
   },
+  "demo-requests": {
+    "no-demo-requests": "No se han encontrado solicitudes de demostración activas.",
+    "loading": "Cargando solicitudes de demostración ..."
+  },
   "dialogs": {
     "camera": "Cámara",
     "cancel": "Cancelar",
@@ -224,6 +228,7 @@
     "demo-refresh": "Actualizar Demos",
     "demos": "Población",
     "demos-desc": "Localización y gestión de demos.",
+    "demo-requests": "Solicitudes de demostración",
     "eval": "Comenzar la evaluación de SmartDrive",
     "eval-history": "Ver evaluaciones pasadas",
     "eval-title": "Comenzar la evaluación de SmartDrive",

@@ -103,6 +103,7 @@
     "new-demo": "You have no demos registered to your account. Tap the image above to register a new demo unit to your account.",
     "demos-desc": "Demo location and management",
     "demo-refresh": "Refresh Demos",
+    "demo-requests": "Demo Requests",
     "faq": "FAQs",
     "faq-desc": "Some frequently asked questions"
   },
@@ -356,6 +357,10 @@
     "connect-pt": "Please connect a PushTracker.",
     "geolocation-disabled": "Location might be disabled, would you like to open the Settings on your device to enable location for the Smart Evaluation app?",
     "leaving-new-demo": "Warning: you have an unsaved demo unit. Are you sure you want to exit without saving?"
+  },
+  "demo-requests": {
+    "no-demo-requests": "No active demo requests found.",
+    "loading": "Loading Demo Requests..."
   },
   "pairing": [
     {

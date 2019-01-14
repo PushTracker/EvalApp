@@ -45,6 +45,10 @@
     "retrieve-from-clinician-action": "Haal de demo op bij de clinicus",
     "submit-btn": "voorleggen"
   },
+  "demo-requests": {
+    "no-demo-requests": "Geen actieve demo-aanvragen gevonden.",
+    "loading": "Demo-aanvragen laden ..."
+  },
   "dialogs": {
     "camera": "Camera",
     "cancel": "annuleren",
@@ -224,6 +228,7 @@
     "demo-refresh": "Demo's vernieuwen",
     "demos": "demos",
     "demos-desc": "Demo locatie en beheer",
+    "demo-requests": "Demo-aanvragen",
     "eval": "Begin de SmartDrive-evaluatie",
     "eval-history": "Eerdere evaluaties bekijken",
     "eval-title": "Begin de SmartDrive-evaluatie",

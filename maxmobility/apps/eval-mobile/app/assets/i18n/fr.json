@@ -45,6 +45,10 @@
     "retrieve-from-clinician-action": "Récupérer la démo du clinicien",
     "submit-btn": "Soumettre"
   },
+  "demo-requests": {
+    "no-demo-requests": "Aucune demande de démonstration active trouvée.",
+    "loading": "Chargement des demandes de démonstration ..."
+  },
   "dialogs": {
     "camera": "Caméra",
     "cancel": "annuler",
@@ -186,7 +190,7 @@
     "photo-album-tle": "Album photo",
     "picture": "Image",
     "profile": "Profil",
-    "save": "sauvegarder",
+    "save": "Sauvegarder",
     "submit": "Soumettre",
     "tip": "Pointe",
     "title": "Évaluation intelligente",
@@ -220,6 +224,7 @@
     "connect-app": "Connecter un Pushtracker à l'application Smart Eval",
     "connectivity": "Vue d'ensemble de l'appareil",
     "demo-refresh": "Actualiser les démos",
+    "demo-requests": "Demandes de démonstration",
     "demos": "Démos",
     "demos-desc": "Emplacement et gestion de la démonstration",
     "eval": "Commencer l'évaluation SmartDrive",
