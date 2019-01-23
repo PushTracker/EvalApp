@@ -41,11 +41,12 @@
     "no-demos": "Geen demo's gevonden voor uw huidige gebruiker.",
     "owner-color-explanation": "Artikelen met een oranje serienummer zijn in uw bezit. Artikelen zonder het oranje serienummer moeten in het bezit van een clinicus zijn.",
     "request-demo-action": "Demo aanvragen bij Rep.",
-    "request-demo-distance": "Kies de max. Afstand, in mijlen, vanaf uw locatie waar u een demo wilt aanvragen bij een vertegenwoordiger.?",
+    "request-demo-distance": "Stel de maximale afstand in mijlen in vanaf uw locatie waar u een demo van een vertegenwoordiger wilt aanvragen.",
     "retrieve-from-clinician-action": "Haal de demo op bij de clinicus",
     "submit-btn": "voorleggen",
+    "new-demo-request": "New Demo Request",
     "request": {
-      "contact_info": "Contactgegevens",
+      "contact_info": "Nieuw Demo-verzoek",
       "distance": "Afstand (mijlen)"
     }
   },

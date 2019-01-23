@@ -41,9 +41,10 @@
     "no-demos": "No se han encontrado demostraciones para su usuario actual.",
     "owner-color-explanation": "Los artículos con un número de serie naranja están en su poder. Los artículos sin el número de serie naranja deben estar en posesión de un clínico.",
     "request-demo-action": "Solicitar Demo de Rep.",
-    "request-demo-distance": "Elija la distancia máxima, en millas, desde su ubicación donde desea solicitar una demostración de un representante.",
+    "request-demo-distance": "Establezca la distancia máxima, en millas, desde su ubicación donde desea solicitar una demostración de un representante.",
     "retrieve-from-clinician-action": "Recuperar demo de clínico",
     "submit-btn": "Enviar",
+    "new-demo-request": "Nueva solicitud de demostración",
     "request": {
       "contact_info": "Información del contacto",
       "distance": "Distancia (millas)"

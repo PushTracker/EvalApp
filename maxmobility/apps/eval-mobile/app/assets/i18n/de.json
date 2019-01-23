@@ -41,9 +41,10 @@
     "no-demos": "Keine Demos für Ihren aktuellen Benutzer gefunden.",
     "owner-color-explanation": "Artikel mit einer orangefarbenen Seriennummer befinden sich in Ihrem Besitz. Artikel ohne die orange Seriennummer sollten im Besitz eines Arztes sein.",
     "request-demo-action": "Demo von Rep anfordern",
-    "request-demo-distance": "Wählen Sie die maximale Entfernung in Meilen von Ihrem Standort aus, an der Sie eine Demo von einer Vertretung anfordern möchten.",
+    "request-demo-distance": "Legen Sie die maximale Entfernung in Meilen von Ihrem Standort fest, an der Sie eine Demo von einem Vertreter anfordern möchten.",
     "retrieve-from-clinician-action": "Demo vom Kliniker abrufen",
     "submit-btn": "einreichen",
+    "new-demo-request": "Neue Demoanforderung",
     "request": {
       "contact_info": "Kontaktinformation",
       "distance": "Entfernung (meilen)"

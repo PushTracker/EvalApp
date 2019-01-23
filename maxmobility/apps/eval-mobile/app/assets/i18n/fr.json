@@ -41,9 +41,10 @@
     "no-demos": "Aucune démo trouvée pour votre utilisateur actuel.",
     "owner-color-explanation": "Les articles avec un numéro de série orange sont en votre possession. Les articles sans numéro de série orange doivent être en la possession du clinicien.",
     "request-demo-action": "Demander une démo du représentant",
-    "request-demo-distance": "Choisissez la distance maximale, en miles, de votre position géographique pour laquelle vous souhaitez demander une démonstration à un représentant.?",
+    "request-demo-distance": "Définissez la distance maximale, en miles, depuis votre position géographique pour demander une démonstration à un représentant.",
     "retrieve-from-clinician-action": "Récupérer la démo du clinicien",
     "submit-btn": "Soumettre",
+    "new-demo-request": "Nouvelle demande de démonstration",
     "request": {
       "contact_info": "Informations de contact",
       "distance": "Distance (milles)"
