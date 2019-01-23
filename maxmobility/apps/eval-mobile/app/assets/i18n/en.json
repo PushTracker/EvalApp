@@ -113,7 +113,8 @@
       "update": "Update SmartDrive/PushTracker",
       "request-demo": "Request Demo",
       "register-demo": "Register Demo",
-      "learn": "Learn to use SmartDrive/PushTracker"
+      "learn": "Learn to use SmartDrive/PushTracker",
+      "demo-requests": "Demo Requests"
     }
   },
   "account": {

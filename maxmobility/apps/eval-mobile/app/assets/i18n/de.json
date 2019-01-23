@@ -254,7 +254,8 @@
       "register-demo": "Demo registrieren",
       "request-demo": "Demo anfordern",
       "start-eval": "Auswertung starten",
-      "update": "Aktualisieren Sie SmartDrive / PushTracker"
+      "update": "Aktualisieren Sie SmartDrive / PushTracker",
+      "demo-requests": "Demo-Anfragen"
     }
   },
   "account": {

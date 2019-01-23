@@ -20,9 +20,8 @@ import { Color } from 'tns-core-modules/color';
 import { EventData } from 'tns-core-modules/data/observable';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
 import * as dialogs from 'tns-core-modules/ui/dialogs';
-import { Page } from 'tns-core-modules/ui/page';
 import { AnimationCurve } from 'tns-core-modules/ui/enums/enums';
-import { Kinvey } from 'kinvey-nativescript-sdk';
+import { Page } from 'tns-core-modules/ui/page';
 
 @Component({
   selector: 'Home',
@@ -282,7 +281,8 @@ export class HomeComponent {
         actions = [
           this._translateService.instant('home.quick-actions.start-eval'),
           this._translateService.instant('home.quick-actions.update'),
-          this._translateService.instant('home.quick-actions.register-demo')
+          this._translateService.instant('home.quick-actions.register-demo'),
+          this._translateService.instant('home.quick-actions.demo-requests')
         ];
         break;
       case UserTypes.EndUser:
@@ -297,7 +297,8 @@ export class HomeComponent {
           this._translateService.instant('home.quick-actions.update'),
           this._translateService.instant('home.quick-actions.request-demo'),
           this._translateService.instant('home.quick-actions.register-demo'),
-          this._translateService.instant('home.quick-actions.learn')
+          this._translateService.instant('home.quick-actions.learn'),
+          this._translateService.instant('home.quick-actions.demo-requests')
         ];
         break;
     }
@@ -358,6 +359,11 @@ export class HomeComponent {
       value === this._translateService.instant('home.quick-actions.learn')
     ) {
       this._routerExtensions.navigate(['/videos']);
+    } else if (
+      value ===
+      this._translateService.instant('home.quick-actions.demo-requests')
+    ) {
+      this._routerExtensions.navigate(['/demo-requests']);
     }
   }
 }
