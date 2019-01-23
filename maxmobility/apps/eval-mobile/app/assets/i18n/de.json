@@ -43,7 +43,11 @@
     "request-demo-action": "Demo von Rep anfordern",
     "request-demo-distance": "Wählen Sie die maximale Entfernung in Meilen von Ihrem Standort aus, an der Sie eine Demo von einer Vertretung anfordern möchten.",
     "retrieve-from-clinician-action": "Demo vom Kliniker abrufen",
-    "submit-btn": "einreichen"
+    "submit-btn": "einreichen",
+    "request": {
+      "contact_info": "Kontaktinformation",
+      "distance": "Entfernung (meilen)"
+    }
   },
   "demo-requests": {
     "no-demo-requests": "Keine aktiven Demoanfragen gefunden.",

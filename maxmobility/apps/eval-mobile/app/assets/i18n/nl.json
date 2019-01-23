@@ -43,7 +43,11 @@
     "request-demo-action": "Demo aanvragen bij Rep.",
     "request-demo-distance": "Kies de max. Afstand, in mijlen, vanaf uw locatie waar u een demo wilt aanvragen bij een vertegenwoordiger.?",
     "retrieve-from-clinician-action": "Haal de demo op bij de clinicus",
-    "submit-btn": "voorleggen"
+    "submit-btn": "voorleggen",
+    "request": {
+      "contact_info": "Contactgegevens",
+      "distance": "Afstand (mijlen)"
+    }
   },
   "demo-requests": {
     "no-demo-requests": "Geen actieve demo-aanvragen gevonden.",

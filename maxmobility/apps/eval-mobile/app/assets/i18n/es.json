@@ -43,7 +43,11 @@
     "request-demo-action": "Solicitar Demo de Rep.",
     "request-demo-distance": "Elija la distancia máxima, en millas, desde su ubicación donde desea solicitar una demostración de un representante.",
     "retrieve-from-clinician-action": "Recuperar demo de clínico",
-    "submit-btn": "Enviar"
+    "submit-btn": "Enviar",
+    "request": {
+      "contact_info": "Información del contacto",
+      "distance": "Distancia (millas)"
+    }
   },
   "demo-requests": {
     "no-demo-requests": "No se han encontrado solicitudes de demostración activas.",
