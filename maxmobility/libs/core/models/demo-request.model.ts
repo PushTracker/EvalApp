@@ -1,8 +1,5 @@
 export class DemoRequest {
   _id: string;
-  _acl: { creator: string };
-  _kmd: { ect: string; lmt: string };
-
   /**
    * When creating a request, the user can input contact information which helps the user providing the demo unit know who to contact.
    */
