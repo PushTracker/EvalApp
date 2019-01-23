@@ -40,7 +40,7 @@
     #listview
     row="0"
     backgroundColor="transparent"
-    separatorColor="transparent"
+    separatorColor="white"
     [items]="items"
     *ngIf="items.length && itemsLoaded"
     (loadMoreItems)="loadMoreItems($event)"
@@ -49,7 +49,6 @@
       <GridLayout
         rows="auto, auto, auto, *"
         columns="auto, *, auto"
-        (tap)="onRequestTap(index)"
         padding="10"
       >
         // Requesting User Email
@@ -77,6 +76,7 @@
           [text]="item.contact_info"
           class="contact-info"
           textWrap="true"
+          [visibility]="item.contact_info ? 'visible' : 'collapsed'"
         ></Label>
 
         // Action Buttons
@@ -87,7 +87,11 @@
           (tap)="onClaimDemoRequestTap(index)"
           class="orange-btn"
           horizontalAlignment="right"
-          [visibility]="claimed_user || complete ? 'collapsed' : 'visible'"
+          [visibility]="
+            item.claimed_user == '' || item.claimed_user == null
+              ? 'visible'
+              : 'collapsed'
+          "
         ></Button>
       </GridLayout>
     </ng-template>

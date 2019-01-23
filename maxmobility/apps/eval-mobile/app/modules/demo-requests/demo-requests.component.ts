@@ -38,6 +38,7 @@ export class DemoRequestsComponent implements OnInit, AfterViewInit {
     const activeUser = Kinvey.User.getActiveUser();
     this.userType = (activeUser.data as User).type as number;
     this.currentUserId = activeUser._id;
+    this._datastore.clearSync();
   }
 
   ngAfterViewInit() {
@@ -94,34 +95,41 @@ export class DemoRequestsComponent implements OnInit, AfterViewInit {
     });
   }
 
-  onRequestTap(index) {
-    console.log(this.items[index]);
-  }
-
+  /**
+   * Button tap event for "claiming" Demo Requests. Will confirm with the user if they wish to claim the demo.
+   * If confirmed, set the `claimed_user` value to the claiming user (current user id) and save to Kinvey.
+   * This user will then be able to flag Demo Requests as `complete`.
+   * @param index [number] - Index in the items array for DemoRequest entities.
+   */
   async onClaimDemoRequestTap(index: number) {
     const dr = this.items[index];
-    console.log('DemoRequest', { dr });
     const confirmResult = await confirm({
       title: this._translateService.instant('demo-requests.claim'),
       message: this._translateService.instant('demo-requests.claim_confirm'),
       okButtonText: this._translateService.instant('dialogs.yes'),
-      cancelButtonText: this._translateService.instant('dialogs.cancel')
+      cancelButtonText: this._translateService.instant('dialogs.no')
     });
 
     if (confirmResult === true) {
-      // need to claim the entity on database and then send push notification from a trigger
+      // set the claimed_user to the current user since they confirmed to claim this demo
       dr.claimed_user = this.currentUserId;
 
       console.log('Modified DemoRequest', { dr });
 
-      this._datastore.save(dr).then(entity => {
-        console.log('updated entity', { entity });
-        new Toasty(
-          'Demo Request Claimed.',
-          ToastDuration.LONG,
-          ToastPosition.CENTER
-        ).show();
-      });
+      this._datastore
+        .save(dr)
+        .then(entity => {
+          console.log('updated entity', { entity });
+          new Toasty(
+            'Demo Request Claimed.',
+            ToastDuration.LONG,
+            ToastPosition.CENTER
+          ).show();
+        })
+        .catch(error => {
+          this._logService.logException(error);
+          console.log('error saving modified demo request', { dr }, error);
+        });
     }
   }
 
