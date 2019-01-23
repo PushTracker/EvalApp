@@ -1,23 +1,4 @@
-<MaxActionBar [title]="'menu.demo-requests' | translate">
-  // Add Demo Button
-  <!-- <ActionItem
-    (tap)="addDemo()"
-    ios.systemIcon="4"
-    ios.position="right"
-    text="Add"
-    color="#fff"
-  >
-  </ActionItem>
-
-  <ActionItem
-    (tap)="loadDemoUnits()"
-    ios.systemIcon="13"
-    ios.position="right"
-    text="Refresh"
-    color="#fff"
-  >
-  </ActionItem> -->
-</MaxActionBar>
+<MaxActionBar [title]="'menu.demo-requests' | translate"> </MaxActionBar>
 
 <GridLayout margin-top="30" rows="*, auto" iosOverflowSafeArea="false">
   // Loading View to show when loading demo units
@@ -53,7 +34,7 @@
     class="text-white"
   ></label>
 
-  <ListView
+  <!-- <ListView
   #listview
     row="0"
     backgroundColor="transparent"
@@ -61,6 +42,14 @@
     [items]="items"
     *ngIf="items.length && itemsLoaded"
     (loadMoreItems)="loadMoreItems($event)"
+  > -->
+  <ListView
+    #listview
+    row="0"
+    backgroundColor="transparent"
+    separatorColor="transparent"
+    [items]="items"
+    *ngIf="items.length && itemsLoaded"
   >
     <ng-template let-item="item" let-index="index">
       <GridLayout
@@ -86,11 +75,11 @@
       </GridLayout>
     </ng-template>
   </ListView>
-  <ActivityIndicator
+  <!-- <ActivityIndicator
     width="50"
     height="50"
     horizontalAlignment="center"
     [busy]="isFetchingData && items.length >= 1"
     class="activity-indicator"
-  ></ActivityIndicator>
+  ></ActivityIndicator> -->
 </GridLayout>
