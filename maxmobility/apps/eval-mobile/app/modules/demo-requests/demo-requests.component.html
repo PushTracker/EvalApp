@@ -1,7 +1,7 @@
 <MaxActionBar [title]="'menu.demo-requests' | translate"> </MaxActionBar>
 
 <GridLayout margin-top="30" rows="*, auto" iosOverflowSafeArea="false">
-  // Loading View to show when loading demo units
+  // Loading View to show when initially querying for DemoRequests
   <StackLayout
     orientation="horizontal"
     marginLeft="10"
@@ -24,7 +24,8 @@
     ></ActivityIndicator>
   </StackLayout>
 
-  // Label when no demos are found
+  // Label when no demos are found shows message that no demo requests were
+  found
   <label
     row="0"
     verticalAlignment="center"
@@ -34,15 +35,7 @@
     class="text-white"
   ></label>
 
-  <!-- <ListView
-  #listview
-    row="0"
-    backgroundColor="transparent"
-    separatorColor="transparent"
-    [items]="items"
-    *ngIf="items.length && itemsLoaded"
-    (loadMoreItems)="loadMoreItems($event)"
-  > -->
+  // listview for demo requests
   <ListView
     #listview
     row="0"
@@ -50,14 +43,16 @@
     separatorColor="transparent"
     [items]="items"
     *ngIf="items.length && itemsLoaded"
+    (loadMoreItems)="loadMoreItems($event)"
   >
     <ng-template let-item="item" let-index="index">
       <GridLayout
-        rows="auto, auto"
-        columns="auto, *, *"
+        rows="auto, auto, auto, *"
+        columns="auto, *, auto"
         (tap)="onRequestTap(index)"
         padding="10"
       >
+        // Requesting User Email
         <Label
           [text]="item.user"
           row="0"
@@ -65,6 +60,8 @@
           class="user"
           textWrap="true"
         ></Label>
+
+        // Entity Created
         <Label
           [text]="item._kmd?.ect | date: 'medium'"
           row="1"
@@ -72,14 +69,34 @@
           class="date"
           textWrap="true"
         ></Label>
+
+        // Contact_Info
+        <Label
+          row="2"
+          colSpan="3"
+          [text]="item.contact_info"
+          class="contact-info"
+          textWrap="true"
+        ></Label>
+
+        // Action Buttons
+        <Button
+          row="3"
+          col="2"
+          text="CLAIM"
+          (tap)="onClaimDemoRequestTap(index)"
+          class="orange-btn"
+          horizontalAlignment="right"
+          [visibility]="claimed_user || complete ? 'collapsed' : 'visible'"
+        ></Button>
       </GridLayout>
     </ng-template>
   </ListView>
-  <!-- <ActivityIndicator
+  <ActivityIndicator
     width="50"
     height="50"
     horizontalAlignment="center"
     [busy]="isFetchingData && items.length >= 1"
     class="activity-indicator"
-  ></ActivityIndicator> -->
+  ></ActivityIndicator>
 </GridLayout>
