@@ -1,24 +1,12 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  NgZone,
-  OnInit,
-  ViewChild
-} from '@angular/core';
-import { User } from '@maxmobility/core';
-import {
-  BluetoothService,
-  DemoService,
-  FirmwareService,
-  LoggingService,
-  ProgressService
-} from '@maxmobility/mobile';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { DemoRequest, User } from '@maxmobility/core';
+import { LoggingService, ProgressService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
-import { PageRoute, RouterExtensions } from 'nativescript-angular/router';
-import { SmartEvalKeys } from 'smart-eval-kinvey';
+import { RouterExtensions } from 'nativescript-angular/router';
+import { ToastDuration, ToastPosition, Toasty } from 'nativescript-toasty';
 import { setTimeout } from 'tns-core-modules/timer';
+import { confirm } from 'tns-core-modules/ui/dialogs/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
 
 @Component({
@@ -28,26 +16,18 @@ import { Page } from 'tns-core-modules/ui/page';
   styleUrls: ['./demo-requests.component.css']
 })
 export class DemoRequestsComponent implements OnInit, AfterViewInit {
-  @ViewChild('listview')
-  listview: ElementRef;
-  mapboxToken = SmartEvalKeys.MAPBOX_TOKEN;
-  items: any[] = [];
+  items: DemoRequest[] = [];
   itemsLoaded = false;
   isFetchingData = false;
-  userType;
-  currentUserId;
+  userType: number;
+  currentUserId: string;
 
-  private _datastore = Kinvey.DataStore.collection<any>('DemoRequests');
+  private _datastore = Kinvey.DataStore.collection<DemoRequest>('DemoRequests');
 
   constructor(
     private _page: Page,
     private _routerExtensions: RouterExtensions,
-    private _pageRoute: PageRoute,
-    private _zone: NgZone,
     private _progressService: ProgressService,
-    private _demoService: DemoService,
-    private _bluetoothService: BluetoothService,
-    private _firmwareService: FirmwareService,
     private _translateService: TranslateService,
     private _logService: LoggingService
   ) {
@@ -64,51 +44,53 @@ export class DemoRequestsComponent implements OnInit, AfterViewInit {
     setTimeout(async () => {
       await this._datastore.sync();
       this.itemsLoaded = false; // show the loading indicator message
-      this.loadDemoRequests().then(() => {
-        // (this.listview.nativeElement as ListView).refresh();
-        this.itemsLoaded = true; // hide the loading indicator message
-      });
+      this.loadDemoRequests()
+        .then(() => {
+          // (this.listview.nativeElement as ListView).refresh();
+          this.itemsLoaded = true; // hide the loading indicator message
+          console.log(
+            'demo request done',
+            'this.items.length',
+            this.items.length
+          );
+        })
+        .catch(error => {
+          this._logService.logException(error);
+        });
     }, 200);
   }
 
-  async loadDemoRequests() {
+  loadDemoRequests() {
     return new Promise(async (resolve, reject) => {
-      try {
-        this.isFetchingData = true;
-        // current array length
-        const cachedData = this.items;
-        console.log('this.items.length', this.items.length);
-        console.log('cache length', cachedData.length);
+      this.isFetchingData = true;
+      // current array length
+      const cachedData = this.items;
+      console.log('this.items.length', this.items.length);
 
-        // await this._datastore.sync();
-        const query = new Kinvey.Query();
-        query.descending('_kmd.ect');
-        query.limit = 15; // only query for 15 at a time
-        // need to determine offset for the query based on current data
-        query.skip = cachedData.length ? cachedData.length : -1;
+      // build the Kinvey Query for DemoRequests
+      const query = new Kinvey.Query().descending('_kmd.ect');
+      query.limit = 20; // only query for 15 at a time
+      // need to determine offset for the query based on current data
+      query.skip = cachedData.length ? cachedData.length : 0;
+      console.log({ query });
 
-        console.log(query);
-
-        const stream = this._datastore.find().toPromise();
-
-        stream
-          .then(result => {
-            console.log('result length', result.length);
-            this.isFetchingData = false;
-            // const newData = [...cachedData, ...result];
-            // this.items = newData;
-            this.items.unshift(result);
-            resolve();
-          })
-          .catch(error => {
-            this.isFetchingData = false;
-            this._logService.logException(error);
-            reject(error);
-          });
-      } catch (error) {
-        this._logService.logException(error);
-        reject(error);
-      }
+      this._datastore.find(query).subscribe(
+        (entities: DemoRequest[]) => {
+          this.isFetchingData = false;
+          for (const i of entities) {
+            this.items.push(i);
+          }
+        },
+        error => {
+          console.log(error.message);
+          this.isFetchingData = false;
+          this._logService.logException(error);
+          reject(error);
+        },
+        () => {
+          resolve();
+        }
+      );
     });
   }
 
@@ -116,8 +98,37 @@ export class DemoRequestsComponent implements OnInit, AfterViewInit {
     console.log(this.items[index]);
   }
 
+  async onClaimDemoRequestTap(index: number) {
+    const dr = this.items[index];
+    console.log('DemoRequest', { dr });
+    const confirmResult = await confirm({
+      title: this._translateService.instant('demo-requests.claim'),
+      message: this._translateService.instant('demo-requests.claim_confirm'),
+      okButtonText: this._translateService.instant('dialogs.yes'),
+      cancelButtonText: this._translateService.instant('dialogs.cancel')
+    });
+
+    if (confirmResult === true) {
+      // need to claim the entity on database and then send push notification from a trigger
+      dr.claimed_user = this.currentUserId;
+
+      console.log('Modified DemoRequest', { dr });
+
+      this._datastore.save(dr).then(entity => {
+        console.log('updated entity', { entity });
+        new Toasty(
+          'Demo Request Claimed.',
+          ToastDuration.LONG,
+          ToastPosition.CENTER
+        ).show();
+      });
+    }
+  }
+
   loadMoreItems(args) {
     console.log('load more items');
-    this.loadDemoRequests();
+    this.loadDemoRequests().then(() => {
+      console.log('loadMoreItems done', 'this.items.length', this.items.length);
+    });
   }
 }
