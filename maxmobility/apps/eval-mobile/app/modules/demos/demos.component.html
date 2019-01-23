@@ -2,6 +2,7 @@
   // Add Demo Button
   <ActionItem
     (tap)="addDemo()"
+    [visibility]="userType == 1 ? 'visible' : 'collapsed'"
     ios.systemIcon="4"
     ios.position="right"
     text="Add"
