@@ -47,7 +47,9 @@
   },
   "demo-requests": {
     "no-demo-requests": "No se han encontrado solicitudes de demostración activas.",
-    "loading": "Cargando solicitudes de demostración ..."
+    "loading": "Cargando solicitudes de demostración ...",
+    "claim": "Reclamación",
+    "claim_confirm": "¿Quieres reclamar esta Demo Request?"
   },
   "dialogs": {
     "camera": "Cámara",

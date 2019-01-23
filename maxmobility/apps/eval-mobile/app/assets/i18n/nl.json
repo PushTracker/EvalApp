@@ -47,7 +47,9 @@
   },
   "demo-requests": {
     "no-demo-requests": "Geen actieve demo-aanvragen gevonden.",
-    "loading": "Demo-aanvragen laden ..."
+    "loading": "Demo-aanvragen laden ...",
+    "claim": "Vordering",
+    "claim_confirm": "Wil je dit Demo-verzoek claimen?"
   },
   "dialogs": {
     "camera": "Camera",

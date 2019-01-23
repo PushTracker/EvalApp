@@ -360,7 +360,9 @@
   },
   "demo-requests": {
     "no-demo-requests": "No active demo requests found.",
-    "loading": "Loading Demo Requests..."
+    "loading": "Loading Demo Requests...",
+    "claim": "Claim",
+    "claim_confirm": "Do you want to claim this Demo Request?"
   },
   "pairing": [
     {
