@@ -2,9 +2,11 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
-  OnInit
+  ElementRef,
+  OnInit,
+  ViewChild
 } from '@angular/core';
-import { Demo, User } from '@maxmobility/core';
+import { Demo, DemoRequest, User } from '@maxmobility/core';
 import {
   DemoService,
   FirmwareService,
@@ -15,15 +17,18 @@ import {
 import { TranslateService } from '@ngx-translate/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 import { RouterExtensions } from 'nativescript-angular/router';
-import * as utils from 'tns-core-modules/utils/utils';
 import * as geolocation from 'nativescript-geolocation';
 import { ToastDuration, ToastPosition, Toasty } from 'nativescript-toasty';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
 import * as http from 'tns-core-modules/http';
 import { isAndroid, isIOS } from 'tns-core-modules/platform';
 import { clearTimeout, setTimeout } from 'tns-core-modules/timer/timer';
+import { Animation } from 'tns-core-modules/ui/animation';
 import { action, confirm, prompt } from 'tns-core-modules/ui/dialogs';
+import { StackLayout } from 'tns-core-modules/ui/layouts/stack-layout/stack-layout';
+import { ListView } from 'tns-core-modules/ui/list-view';
 import { Page } from 'tns-core-modules/ui/page';
+import * as utils from 'tns-core-modules/utils/utils';
 import { APP_KEY, HOST_URL } from '../../kinvey-keys';
 
 @Component({
@@ -33,6 +38,15 @@ import { APP_KEY, HOST_URL } from '../../kinvey-keys';
   styleUrls: ['./demos.component.css']
 })
 export class DemosComponent implements OnInit, AfterViewInit {
+  @ViewChild('demoRequestForm')
+  demoRequestForm: ElementRef;
+
+  @ViewChild('requestDemoBtn')
+  requestDemoBtn: ElementRef;
+
+  @ViewChild('demoListView')
+  demoListView: ElementRef;
+
   get Demos(): ObservableArray<Demo> {
     return DemoService.Demos;
   }
@@ -45,6 +59,7 @@ export class DemosComponent implements OnInit, AfterViewInit {
    * Boolean to track when the demo unit loading has finished to hide the loading indicator and show the list data
    */
   demoUnitsLoaded = false;
+  demorequest = new DemoRequest();
 
   private _datastore = Kinvey.DataStore.collection<any>('SmartDrives');
 
@@ -69,12 +84,15 @@ export class DemosComponent implements OnInit, AfterViewInit {
     const activeUser = Kinvey.User.getActiveUser();
     this.userType = (activeUser.data as User).type as number;
     this.currentUserId = activeUser._id;
+    // init the request demo values needed
+    this.demorequest.maxDistance = 25;
+    this.demorequest.contact_info = '';
   }
 
   ngAfterViewInit() {
     setTimeout(() => {
       this.loadDemoUnits();
-    }, 400);
+    }, 100);
   }
 
   isIOS(): boolean {
@@ -118,6 +136,9 @@ export class DemosComponent implements OnInit, AfterViewInit {
 
   addDemo() {
     // add a new demo
+    this._logService.logBreadCrumb(
+      'Navigating to demo-detail to add a new demo.'
+    );
     this._routerExtensions.navigate(['/demo-detail'], {});
   }
 
@@ -202,35 +223,70 @@ export class DemosComponent implements OnInit, AfterViewInit {
   }
 
   /**
-   * Gives user action dialog with max distance options for requesting demo.
+   * Show the hidden new demo request form and hide the request demo button from view.
+   * Also collapse the listview behind the form so that interaction is not possibe while form is open.
    */
-  async requestDemo() {
-    const actionResult = await action({
-      message: this._translateService.instant('demos.request-demo-distance'),
-      cancelable: true,
-      cancelButtonText: this._translateService.instant('dialogs.cancel'),
-      actions: ['25', '50', '100', '150', '200', '250+']
-    });
+  onShowNewDemoForm() {
+    this._logService.logBreadCrumb('Opening the request demo form.');
+    new Animation([
+      {
+        target: this.demoRequestForm.nativeElement as StackLayout,
+        opacity: 1,
+        translate: {
+          x: 0,
+          y: 0
+        },
+        duration: 400
+      },
+      {
+        target: this.requestDemoBtn.nativeElement,
+        opacity: 0,
+        translate: { x: 0, y: 400 },
+        duration: 400
+      }
+    ])
+      .play()
+      .then(() => {
+        // collapse the listview since it's not visible behind the form
+        // this is mainly to prevent interaction with the listview
+        (this.demoListView.nativeElement as ListView).visibility = 'collapse';
+      })
+      .catch(e => {
+        console.log(e.message);
+      });
+  }
 
-    if (actionResult.toLowerCase() === 'cancel') {
-      return;
-    }
+  onCloseDemoRequestForm() {
+    this._logService.logBreadCrumb('Closing the request demo form.');
+    // make sure listview is visible for interaction
+    (this.demoListView.nativeElement as ListView).visibility = 'visible';
+    new Animation([
+      {
+        target: this.demoRequestForm.nativeElement as StackLayout,
+        opacity: 0,
+        translate: {
+          x: 0,
+          y: 1250
+        },
+        duration: 400
+      },
+      {
+        target: this.requestDemoBtn.nativeElement,
+        opacity: 1,
+        translate: { x: 0, y: 0 },
+        duration: 400
+      }
+    ])
+      .play()
+      .then(() => {
+        //
+      })
+      .catch(e => {
+        console.log(e.message);
+      });
+  }
 
-    let maxDistance = 25;
-    if (actionResult === '25') {
-      maxDistance = 25;
-    } else if (actionResult === '50') {
-      maxDistance = 50;
-    } else if (actionResult === '100') {
-      maxDistance = 100;
-    } else if (actionResult === '150') {
-      maxDistance = 150;
-    } else if (actionResult === '200') {
-      maxDistance = 200;
-    } else if (actionResult === '250+') {
-      maxDistance = 250;
-    }
-
+  async onSubmitDemoRequestTap() {
     const token = (this._userService.user._kmd as any).authtoken;
 
     // also need to get user location - it is required or we won't do demo requests per William
@@ -250,6 +306,8 @@ export class DemosComponent implements OnInit, AfterViewInit {
       return;
     }
 
+    console.log('this.demorequest.contact_info', this.demorequest.contact_info);
+
     const response = await http.request({
       method: 'POST',
       url: `${HOST_URL}/rpc/${APP_KEY}/custom/request-demo-unit`,
@@ -260,7 +318,8 @@ export class DemosComponent implements OnInit, AfterViewInit {
       content: JSON.stringify({
         lng: userLoc.longitude,
         lat: userLoc.latitude,
-        maxDistance
+        maxDistance: this.demorequest.maxDistance,
+        contact_info: this.demorequest.contact_info
       })
     });
 
@@ -283,6 +342,94 @@ export class DemosComponent implements OnInit, AfterViewInit {
         okButtonText: this._translateService.instant('dialogs.ok')
       });
     }
+  }
+
+  /**
+   * Gives user action dialog with max distance options for requesting demo.
+   */
+  // async requestDemo() {
+  //   const actionResult = await action({
+  //     message: this._translateService.instant('demos.request-demo-distance'),
+  //     cancelable: true,
+  //     cancelButtonText: this._translateService.instant('dialogs.cancel'),
+  //     actions: ['25', '50', '100', '150', '200', '250+']
+  //   });
+
+  //   if (actionResult.toLowerCase() === 'cancel') {
+  //     return;
+  //   }
+
+  //   let maxDistance = 25;
+  //   if (actionResult === '25') {
+  //     maxDistance = 25;
+  //   } else if (actionResult === '50') {
+  //     maxDistance = 50;
+  //   } else if (actionResult === '100') {
+  //     maxDistance = 100;
+  //   } else if (actionResult === '150') {
+  //     maxDistance = 150;
+  //   } else if (actionResult === '200') {
+  //     maxDistance = 200;
+  //   } else if (actionResult === '250+') {
+  //     maxDistance = 250;
+  //   }
+
+  //   const token = (this._userService.user._kmd as any).authtoken;
+
+  //   // also need to get user location - it is required or we won't do demo requests per William
+  //   const userLoc = await LocationService.getCoordinates().catch(error => {
+  //     alert({
+  //       message: this._translateService.instant(
+  //         'demos.demo-request-location-is-required'
+  //       ),
+  //       okButtonText: this._translateService.instant('dialogs.ok')
+  //     });
+  //     return;
+  //   });
+
+  //   // make sure we have location to send to kinvey request
+  //   if (!userLoc) {
+  //     this._logService.logMessage('No user location for the demo request.');
+  //     return;
+  //   }
+
+  //   const response = await http.request({
+  //     method: 'POST',
+  //     url: `${HOST_URL}/rpc/${APP_KEY}/custom/request-demo-unit`,
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Authorization: `Kinvey ${token}`
+  //     },
+  //     content: JSON.stringify({
+  //       lng: userLoc.longitude,
+  //       lat: userLoc.latitude,
+  //       maxDistance
+  //     })
+  //   });
+
+  //   if (response.statusCode === 200) {
+  //     new Toasty(
+  //       this._translateService.instant('demos.demo-request-success'),
+  //       ToastDuration.LONG,
+  //       ToastPosition.CENTER
+  //     ).show();
+  //   } else {
+  //     this._logService.logException(
+  //       new Error(
+  //         `request-demo-unit error code: ${
+  //           response.statusCode
+  //         } - message: ${response.content.toJSON()}`
+  //       )
+  //     );
+  //     alert({
+  //       message: this._translateService.instant('demos.demo-request-error'),
+  //       okButtonText: this._translateService.instant('dialogs.ok')
+  //     });
+  //   }
+  // }
+
+  onMaxDistanceSliderChange(args) {
+    this.demorequest.maxDistance = args.object.value;
   }
 
   /**
@@ -313,6 +460,8 @@ export class DemosComponent implements OnInit, AfterViewInit {
     if (!result) {
       return;
     }
+
+    this._logService.logBreadCrumb(`RepDemo Action Selected: ${result}`);
 
     const token = (this._userService.user._kmd as any).authtoken;
     let response;

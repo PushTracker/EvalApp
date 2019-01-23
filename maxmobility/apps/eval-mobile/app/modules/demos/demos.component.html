@@ -55,6 +55,7 @@
   ></label>
 
   <ListView
+    #demoListView
     row="0"
     backgroundColor="transparent"
     [items]="Demos"
@@ -154,9 +155,103 @@
     <Button text="Request Demo Unit" class="requestDemoBtn" (tap)="requestDemo()" [visibility]="userType == 0 ? 'visible' : 'collapsed'"></Button>
   -->
   <button
+    #requestDemoBtn
     row="1"
     [text]="'demos.request-demo-action' | translate"
     class="requestDemoBtn"
-    (tap)="requestDemo()"
+    (tap)="onShowNewDemoForm()"
   ></button>
+
+  // Hidden Layout containing the Demo Request Form
+  <StackLayout
+    #demoRequestForm
+    class="demoRequestForm"
+    rowSpan="2"
+    opacity="0"
+    translationY="1200"
+  >
+    <GridLayout
+      rows="*"
+      columns="auto, *, auto"
+      orientation="horizontal"
+      width="100%"
+      height="28"
+    >
+      <Label
+        col="0"
+        [text]="'demos.new-demo-request' | translate"
+        class="h3 bold"
+        textWrap="true"
+      ></Label>
+      <Label
+        col="2"
+        text="&#xf156;"
+        class="mdi close-icon"
+        (tap)="onCloseDemoRequestForm()"
+      ></Label>
+    </GridLayout>
+
+    <Label text="" class="hr-light" marginBottom="10" textWrap="true"></Label>
+
+    // Contact Info
+    <Label
+      class="label"
+      [text]="'demos.request.contact_information' | translate"
+      textWrap="true"
+    ></Label>
+    <TextField
+      class="input"
+      editable="true"
+      [hint]="'demos.request.contact_information' | translate"
+      [text]="demorequest.contact_info"
+    ></TextField>
+
+    // Distance
+    <Label
+      class="label"
+      [text]="'demos.request-demo-distance' | translate"
+      textWrap="true"
+    ></Label>
+    <GridLayout rows="auto, auto" columns="auto, *, auto">
+      <Label
+        verticalAlignment="middle"
+        row="0"
+        col="0"
+        text="25"
+        textWrap="true"
+      ></Label>
+      <Slider
+        row="0"
+        col="1"
+        class="input"
+        minValue="25"
+        maxValue="250"
+        [value]="demorequest.maxDistance"
+        (valueChange)="onMaxDistanceSliderChange($event)"
+      ></Slider>
+      <Label
+        verticalAlignment="middle"
+        row="0"
+        col="2"
+        text="250+"
+        textWrap="true"
+      ></Label>
+      // actual slider value
+      <Label
+        horizontalAlignment="center"
+        row="1"
+        col="1"
+        [text]="demorequest.maxDistance"
+        textWrap="true"
+      ></Label>
+    </GridLayout>
+
+    <Button
+      class="permobil-primary-btn"
+      verticalAlignment="bottom"
+      [text]="'general.submit' | translate"
+      (tap)="onSubmitDemoRequestTap()"
+    ></Button>
+  </StackLayout>
+  // end hidden layout
 </GridLayout>
