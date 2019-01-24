@@ -213,14 +213,14 @@
 
       <GridLayout
         rows="auto, 40, auto, *, auto"
-        columns="100, auto, *"
+        columns="100, auto, auto, *"
         class="list-grid-layout"
         row="4"
         [visibility]="userType != 3 ? 'visible' : 'collapsed'"
       >
         <label
           row="0"
-          colSpan="3"
+          colSpan="4"
           class="hr-light m-10"
           backgroundColor="#FF671F"
           width="92.5%"
@@ -244,9 +244,19 @@
           (tap)="loadDemoUnits()"
         ></button>
 
-        <label
+        // demo requests button
+        <button
           row="1"
           col="2"
+          text="&#xf5c7;"
+          class="mdi btn-transparent refresh-btn"
+          *ngIf="demoUnitsLoaded"
+          (tap)="chevronButtonTapped('/demo-requests')"
+        ></button>
+
+        <label
+          row="1"
+          col="3"
           horizontalAlignment="right"
           text="&#xf142;"
           class="mdi chev"
@@ -255,7 +265,7 @@
 
         <label
           row="2"
-          colSpan="3"
+          colSpan="4"
           [text]="'menu.demos-desc' | translate"
           class="list-description"
           textWrap="true"
@@ -266,7 +276,7 @@
           orientation="horizontal"
           marginLeft="10"
           row="3"
-          colSpan="3"
+          colSpan="4"
           *ngIf="!demoUnitsLoaded"
         >
           <label
@@ -287,7 +297,7 @@
           rows="140, *"
           marginLeft="10"
           row="3"
-          colSpan="3"
+          colSpan="4"
           class="list-item-layout"
           *ngIf="!Demos.length && demoUnitsLoaded"
           horizontalAlignment="left"
@@ -313,7 +323,7 @@
         // Demo unit listview
         <RadListView
           row="3"
-          colSpan="3"
+          colSpan="4"
           [items]="Demos"
           *ngIf="Demos.length && demoUnitsLoaded"
           ios:height="312"
