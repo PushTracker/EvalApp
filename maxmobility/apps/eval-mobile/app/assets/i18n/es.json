@@ -45,6 +45,7 @@
     "retrieve-from-clinician-action": "Recuperar demo de clínico",
     "submit-btn": "Enviar",
     "new-demo-request": "Nueva solicitud de demostración",
+    "saving-request": "Guardando solicitud de demostración ...",
     "request": {
       "contact_info": "Información del contacto",
       "distance": "Distancia (millas)"

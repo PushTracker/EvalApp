@@ -45,6 +45,7 @@
     "retrieve-from-clinician-action": "Haal de demo op bij de clinicus",
     "submit-btn": "voorleggen",
     "new-demo-request": "New Demo Request",
+    "saving-request": "Demo-aanvraag opslaan ...",
     "request": {
       "contact_info": "Nieuw Demo-verzoek",
       "distance": "Afstand (mijlen)"

@@ -352,6 +352,7 @@
     "demo-request-success": "Demo unit request successful.",
     "demo-request-error": "An error occurred requesting a demo. Please try again and report feedback with the issue if it continues.",
     "new-demo-request": "New Demo Request",
+    "saving-request": "Saving demo request...",
     "request": {
       "contact_info": "Contact Information",
       "distance": "Distance (miles)"

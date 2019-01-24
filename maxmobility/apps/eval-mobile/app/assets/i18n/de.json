@@ -45,6 +45,7 @@
     "retrieve-from-clinician-action": "Demo vom Kliniker abrufen",
     "submit-btn": "einreichen",
     "new-demo-request": "Neue Demoanforderung",
+    "saving-request": "Demo-Anfrage wird gespeichert ...",
     "request": {
       "contact_info": "Kontaktinformation",
       "distance": "Entfernung (meilen)"
