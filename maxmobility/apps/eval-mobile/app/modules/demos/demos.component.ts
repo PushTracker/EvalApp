@@ -302,10 +302,6 @@ export class DemosComponent implements OnInit, AfterViewInit {
     // close the hidden form
     this.onCloseDemoRequestForm();
 
-    this._progressService.show(
-      this._translateService.instant('demos.saving-request')
-    );
-
     const token = (this._userService.user._kmd as any).authtoken;
 
     // also need to get user location - it is required or we won't do demo requests per William
@@ -324,6 +320,10 @@ export class DemosComponent implements OnInit, AfterViewInit {
       this._logService.logMessage('No user location for the demo request.');
       return;
     }
+
+    this._progressService.show(
+      this._translateService.instant('demos.saving-request')
+    );
 
     const response = await http.request({
       method: 'POST',
