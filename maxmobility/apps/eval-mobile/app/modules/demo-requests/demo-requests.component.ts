@@ -1,9 +1,8 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DemoRequest, User } from '@maxmobility/core';
-import { LoggingService, ProgressService } from '@maxmobility/mobile';
+import { LoggingService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
-import { RouterExtensions } from 'nativescript-angular/router';
 import { ToastDuration, ToastPosition, Toasty } from 'nativescript-toasty';
 import { setTimeout } from 'tns-core-modules/timer';
 import { confirm } from 'tns-core-modules/ui/dialogs/dialogs';
@@ -15,7 +14,7 @@ import { Page } from 'tns-core-modules/ui/page';
   templateUrl: './demo-requests.component.html',
   styleUrls: ['./demo-requests.component.css']
 })
-export class DemoRequestsComponent implements OnInit, AfterViewInit {
+export class DemoRequestsComponent implements OnInit {
   items: DemoRequest[] = [];
   itemsLoaded = false;
   isFetchingData = false;
@@ -26,8 +25,6 @@ export class DemoRequestsComponent implements OnInit, AfterViewInit {
 
   constructor(
     private _page: Page,
-    private _routerExtensions: RouterExtensions,
-    private _progressService: ProgressService,
     private _translateService: TranslateService,
     private _logService: LoggingService
   ) {
@@ -39,60 +36,52 @@ export class DemoRequestsComponent implements OnInit, AfterViewInit {
     this.userType = (activeUser.data as User).type as number;
     this.currentUserId = activeUser._id;
     this._datastore.clearSync();
-  }
 
-  ngAfterViewInit() {
-    setTimeout(async () => {
-      await this._datastore.sync();
-      this.itemsLoaded = false; // show the loading indicator message
-      this.loadDemoRequests()
-        .then(() => {
-          // (this.listview.nativeElement as ListView).refresh();
-          this.itemsLoaded = true; // hide the loading indicator message
-          console.log(
-            'demo request done',
-            'this.items.length',
-            this.items.length
-          );
-        })
-        .catch(error => {
-          this._logService.logException(error);
-        });
-    }, 200);
+    this.loadDemoRequests()
+      .then(() => {
+        this.itemsLoaded = true;
+      })
+      .catch(error => {
+        this._logService.logException(error);
+        this.itemsLoaded = false;
+      });
   }
 
   loadDemoRequests() {
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
       this.isFetchingData = true;
-      // current array length
-      const cachedData = this.items;
-      console.log('this.items.length', this.items.length);
-
       // build the Kinvey Query for DemoRequests
-      const query = new Kinvey.Query().descending('_kmd.ect');
-      query.limit = 20; // only query for 15 at a time
+      const query = new Kinvey.Query();
+      query.descending('_kmd.ect');
+      // only query for 20 at a time for paging
+      query.limit = 20;
       // need to determine offset for the query based on current data
-      query.skip = cachedData.length ? cachedData.length : 0;
+      query.skip = this.items.length;
       console.log({ query });
 
-      this._datastore.find(query).subscribe(
-        (entities: DemoRequest[]) => {
+      this._datastore
+        .find(query)
+        .toPromise()
+        .then((entities: DemoRequest[]) => {
+          this.itemsLoaded = true;
           this.isFetchingData = false;
           for (const i of entities) {
             this.items.push(i);
           }
-        },
-        error => {
-          console.log(error.message);
-          this.isFetchingData = false;
-          this._logService.logException(error);
-          reject(error);
-        },
-        () => {
           resolve();
-        }
-      );
+        })
+        .catch(error => {
+          reject(error);
+        });
     });
+  }
+
+  /**
+   * Load more when listview nears the bottom to page data into the items array.
+   * @param args
+   */
+  loadMoreItems(args) {
+    this.loadDemoRequests();
   }
 
   /**
@@ -131,12 +120,5 @@ export class DemoRequestsComponent implements OnInit, AfterViewInit {
           console.log('error saving modified demo request', { dr }, error);
         });
     }
-  }
-
-  loadMoreItems(args) {
-    console.log('load more items');
-    this.loadDemoRequests().then(() => {
-      console.log('loadMoreItems done', 'this.items.length', this.items.length);
-    });
   }
 }

@@ -39,6 +39,7 @@
   <ListView
     #listview
     row="0"
+    height="100%"
     backgroundColor="transparent"
     separatorColor="white"
     [items]="items"
@@ -96,11 +97,12 @@
       </GridLayout>
     </ng-template>
   </ListView>
-  <ActivityIndicator
+  <!-- <ActivityIndicator
+    row="1"
     width="50"
     height="50"
     horizontalAlignment="center"
     [busy]="isFetchingData && items.length >= 1"
     class="activity-indicator"
-  ></ActivityIndicator>
+  ></ActivityIndicator> -->
 </GridLayout>
