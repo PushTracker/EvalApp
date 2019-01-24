@@ -252,7 +252,9 @@
           class="mdi btn-transparent refresh-btn"
           *ngIf="demoUnitsLoaded"
           (tap)="chevronButtonTapped('/demo-requests')"
-          [visibility]="userType == 1 ? 'visible' : 'collapsed'"
+          [visibility]="
+            userType == 1 || userType == 2 ? 'visible' : 'collapsed'
+          "
         ></button>
 
         <label
