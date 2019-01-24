@@ -1,12 +1,15 @@
 <MaxActionBar [title]="'user.account' | translate">
   <ActionItem ios.position="right" (tap)="onSaveAccountTap()">
-    <button [text]="'general.save' | translate" (tap)="onSaveAccountTap()" class="action-item"></button>
+    <button
+      [text]="'general.save' | translate"
+      (tap)="onSaveAccountTap()"
+      class="action-item"
+    ></button>
   </ActionItem>
 </MaxActionBar>
 
 <ScrollView iosOverflowSafeArea="true">
   <StackLayout class="account-layout" orientation="vertical">
-    <Label [text]="appVersionData" class="label" textWrap="true"></Label>
     <image
       #accountImage
       class="account-picture"
@@ -115,6 +118,9 @@
       [text]="'user.provide-feedback-btn' | translate"
       (tap)="onFeedbackTap()"
     ></button>
+
+    <Label [text]="appVersionData" class="label" textWrap="true"></Label>
+
     <!--
       <Button class="acct-btn"
          text="Debug Menu"
