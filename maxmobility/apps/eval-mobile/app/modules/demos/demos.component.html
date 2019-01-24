@@ -175,12 +175,12 @@
       columns="auto, *, auto"
       orientation="horizontal"
       width="100%"
-      height="28"
+      height="32"
     >
       <Label
         col="0"
         [text]="'demos.new-demo-request' | translate"
-        class="h3 bold"
+        class="title"
         textWrap="true"
       ></Label>
       <Label
@@ -194,17 +194,13 @@
     <Label text="" class="hr-light" marginBottom="10" textWrap="true"></Label>
 
     // Contact Info
-    <Label
-      class="label"
-      [text]="'demos.request.contact_information' | translate"
-      textWrap="true"
-    ></Label>
-    <TextField
+    <TextView
       class="input"
+      ios:class="ios-input"
       editable="true"
       [hint]="'demos.request.contact_information' | translate"
-      [text]="demorequest.contact_info"
-    ></TextField>
+      [(ngModel)]="demorequest.contact_info"
+    ></TextView>
 
     // Distance
     <Label

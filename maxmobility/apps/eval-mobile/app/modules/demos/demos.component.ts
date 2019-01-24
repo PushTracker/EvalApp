@@ -11,6 +11,7 @@ import {
   DemoService,
   FirmwareService,
   LocationService,
+  ProgressService,
   LoggingService,
   UserService
 } from '@maxmobility/mobile';
@@ -30,6 +31,7 @@ import { ListView } from 'tns-core-modules/ui/list-view';
 import { Page } from 'tns-core-modules/ui/page';
 import * as utils from 'tns-core-modules/utils/utils';
 import { APP_KEY, HOST_URL } from '../../kinvey-keys';
+import { Slider } from 'tns-core-modules/ui/slider/slider';
 
 @Component({
   selector: 'Demos',
@@ -71,7 +73,8 @@ export class DemosComponent implements OnInit, AfterViewInit {
     private _logService: LoggingService,
     private _translateService: TranslateService,
     private _userService: UserService,
-    private _cd: ChangeDetectorRef
+    private _cd: ChangeDetectorRef,
+    private _progressService: ProgressService
   ) {
     this._page.className = 'blue-gradient-down';
   }
@@ -286,7 +289,18 @@ export class DemosComponent implements OnInit, AfterViewInit {
       });
   }
 
+  /**
+   * Close the hidden demo request form.
+   * POST the form data to the request-demo-unit on Kinvey instance.
+   */
   async onSubmitDemoRequestTap() {
+    // close the hidden form
+    this.onCloseDemoRequestForm();
+
+    this._progressService.show(
+      this._translateService.instant('demos.saving-request')
+    );
+
     const token = (this._userService.user._kmd as any).authtoken;
 
     // also need to get user location - it is required or we won't do demo requests per William
@@ -306,8 +320,6 @@ export class DemosComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    console.log('this.demorequest.contact_info', this.demorequest.contact_info);
-
     const response = await http.request({
       method: 'POST',
       url: `${HOST_URL}/rpc/${APP_KEY}/custom/request-demo-unit`,
@@ -322,6 +334,9 @@ export class DemosComponent implements OnInit, AfterViewInit {
         contact_info: this.demorequest.contact_info
       })
     });
+
+    // hide the loading indicator
+    this._progressService.hide();
 
     if (response.statusCode === 200) {
       new Toasty(
@@ -344,92 +359,9 @@ export class DemosComponent implements OnInit, AfterViewInit {
     }
   }
 
-  /**
-   * Gives user action dialog with max distance options for requesting demo.
-   */
-  // async requestDemo() {
-  //   const actionResult = await action({
-  //     message: this._translateService.instant('demos.request-demo-distance'),
-  //     cancelable: true,
-  //     cancelButtonText: this._translateService.instant('dialogs.cancel'),
-  //     actions: ['25', '50', '100', '150', '200', '250+']
-  //   });
-
-  //   if (actionResult.toLowerCase() === 'cancel') {
-  //     return;
-  //   }
-
-  //   let maxDistance = 25;
-  //   if (actionResult === '25') {
-  //     maxDistance = 25;
-  //   } else if (actionResult === '50') {
-  //     maxDistance = 50;
-  //   } else if (actionResult === '100') {
-  //     maxDistance = 100;
-  //   } else if (actionResult === '150') {
-  //     maxDistance = 150;
-  //   } else if (actionResult === '200') {
-  //     maxDistance = 200;
-  //   } else if (actionResult === '250+') {
-  //     maxDistance = 250;
-  //   }
-
-  //   const token = (this._userService.user._kmd as any).authtoken;
-
-  //   // also need to get user location - it is required or we won't do demo requests per William
-  //   const userLoc = await LocationService.getCoordinates().catch(error => {
-  //     alert({
-  //       message: this._translateService.instant(
-  //         'demos.demo-request-location-is-required'
-  //       ),
-  //       okButtonText: this._translateService.instant('dialogs.ok')
-  //     });
-  //     return;
-  //   });
-
-  //   // make sure we have location to send to kinvey request
-  //   if (!userLoc) {
-  //     this._logService.logMessage('No user location for the demo request.');
-  //     return;
-  //   }
-
-  //   const response = await http.request({
-  //     method: 'POST',
-  //     url: `${HOST_URL}/rpc/${APP_KEY}/custom/request-demo-unit`,
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       Authorization: `Kinvey ${token}`
-  //     },
-  //     content: JSON.stringify({
-  //       lng: userLoc.longitude,
-  //       lat: userLoc.latitude,
-  //       maxDistance
-  //     })
-  //   });
-
-  //   if (response.statusCode === 200) {
-  //     new Toasty(
-  //       this._translateService.instant('demos.demo-request-success'),
-  //       ToastDuration.LONG,
-  //       ToastPosition.CENTER
-  //     ).show();
-  //   } else {
-  //     this._logService.logException(
-  //       new Error(
-  //         `request-demo-unit error code: ${
-  //           response.statusCode
-  //         } - message: ${response.content.toJSON()}`
-  //       )
-  //     );
-  //     alert({
-  //       message: this._translateService.instant('demos.demo-request-error'),
-  //       okButtonText: this._translateService.instant('dialogs.ok')
-  //     });
-  //   }
-  // }
-
   onMaxDistanceSliderChange(args) {
-    this.demorequest.maxDistance = args.object.value;
+    // iOS will return decimals so round to whole
+    this.demorequest.maxDistance = Math.round((args.object as Slider).value);
   }
 
   /**
@@ -438,7 +370,6 @@ export class DemosComponent implements OnInit, AfterViewInit {
    * 2. retrieving a demo unit from a clinician
    * 3. requesting a demo unit from nearby reps
    */
-
   async onRepDemoActionButtonTap(demo: Demo) {
     // create the Rep user type actions for demos
     const toClinicianAction = this._translateService.instant(
