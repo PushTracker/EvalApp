@@ -252,7 +252,10 @@ export class DemosComponent implements OnInit, AfterViewInit {
       .then(() => {
         // collapse the listview since it's not visible behind the form
         // this is mainly to prevent interaction with the listview
-        (this.demoListView.nativeElement as ListView).visibility = 'collapse';
+        // be sure the listview has loaded - related: https://github.com/PushTracker/EvalApp/issues/348
+        if (this.demoListView && this.demoListView.nativeElement) {
+          (this.demoListView.nativeElement as ListView).visibility = 'collapse';
+        }
       })
       .catch(e => {
         console.log(e.message);
@@ -262,7 +265,9 @@ export class DemosComponent implements OnInit, AfterViewInit {
   onCloseDemoRequestForm() {
     this._logService.logBreadCrumb('Closing the request demo form.');
     // make sure listview is visible for interaction
-    (this.demoListView.nativeElement as ListView).visibility = 'visible';
+    if (this.demoListView && this.demoListView.nativeElement) {
+      (this.demoListView.nativeElement as ListView).visibility = 'visible';
+    }
     new Animation([
       {
         target: this.demoRequestForm.nativeElement as StackLayout,
