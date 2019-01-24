@@ -74,6 +74,7 @@ export class LoginComponent implements OnInit {
         });
       });
     } catch (error) {
+      this._logService.logBreadCrumb(`Error attempting to sign in: ${error}`);
       this._progressService.hide();
       // parse the exceptions from kinvey sign up
       let errorMessage = this._translateService.instant('user.sign-in-error-1');
