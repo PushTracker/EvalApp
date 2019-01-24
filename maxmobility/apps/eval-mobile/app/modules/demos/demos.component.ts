@@ -29,6 +29,7 @@ import { action, confirm, prompt } from 'tns-core-modules/ui/dialogs';
 import { StackLayout } from 'tns-core-modules/ui/layouts/stack-layout/stack-layout';
 import { ListView } from 'tns-core-modules/ui/list-view';
 import { Page } from 'tns-core-modules/ui/page';
+import { EventData } from 'tns-core-modules/data/observable';
 import * as utils from 'tns-core-modules/utils/utils';
 import { APP_KEY, HOST_URL } from '../../kinvey-keys';
 import { Slider } from 'tns-core-modules/ui/slider/slider';
@@ -39,7 +40,7 @@ import { Slider } from 'tns-core-modules/ui/slider/slider';
   templateUrl: './demos.component.html',
   styleUrls: ['./demos.component.css']
 })
-export class DemosComponent implements OnInit, AfterViewInit {
+export class DemosComponent implements OnInit {
   @ViewChild('demoRequestForm')
   demoRequestForm: ElementRef;
 
@@ -61,6 +62,10 @@ export class DemosComponent implements OnInit, AfterViewInit {
    * Boolean to track when the demo unit loading has finished to hide the loading indicator and show the list data
    */
   demoUnitsLoaded = false;
+
+  /**
+   * DemoRequest entity when user is requesting a demo - binded to the hidden DemoRequest form.
+   */
   demorequest = new DemoRequest();
 
   private _datastore = Kinvey.DataStore.collection<any>('SmartDrives');
@@ -73,7 +78,6 @@ export class DemosComponent implements OnInit, AfterViewInit {
     private _logService: LoggingService,
     private _translateService: TranslateService,
     private _userService: UserService,
-    private _cd: ChangeDetectorRef,
     private _progressService: ProgressService
   ) {
     this._page.className = 'blue-gradient-down';
@@ -90,9 +94,7 @@ export class DemosComponent implements OnInit, AfterViewInit {
     // init the request demo values needed
     this.demorequest.maxDistance = 25;
     this.demorequest.contact_info = '';
-  }
 
-  ngAfterViewInit() {
     setTimeout(() => {
       this.loadDemoUnits();
     }, 100);
@@ -119,22 +121,18 @@ export class DemosComponent implements OnInit, AfterViewInit {
   }
 
   loadDemoUnits() {
-    try {
-      this.demoUnitsLoaded = false; // toggle the display of the loading indicator
-      DemoService.Demos.splice(0, DemoService.Demos.length); // empty the current items
+    this.demoUnitsLoaded = false; // toggle the display of the loading indicator
+    DemoService.Demos.splice(0, DemoService.Demos.length); // empty the current items
 
-      this._demoService
-        .load()
-        .then(() => {
-          this.demoUnitsLoaded = true;
-        })
-        .catch(err => {
-          this._logService.logException(err);
-          this.demoUnitsLoaded = true;
-        });
-    } catch (error) {
-      this._logService.logException(error);
-    }
+    this._demoService
+      .load()
+      .then(() => {
+        this.demoUnitsLoaded = true;
+      })
+      .catch(err => {
+        this._logService.logException(err);
+        this.demoUnitsLoaded = true;
+      });
   }
 
   addDemo() {
@@ -284,14 +282,7 @@ export class DemosComponent implements OnInit, AfterViewInit {
         translate: { x: 0, y: 0 },
         duration: 400
       }
-    ])
-      .play()
-      .then(() => {
-        //
-      })
-      .catch(e => {
-        console.log(e.message);
-      });
+    ]).play();
   }
 
   /**
@@ -364,7 +355,11 @@ export class DemosComponent implements OnInit, AfterViewInit {
     }
   }
 
-  onMaxDistanceSliderChange(args) {
+  /**
+   * Change event for the Max Distance slider.
+   * @param args
+   */
+  onMaxDistanceSliderChange(args: EventData) {
     // iOS will return decimals so round to whole
     this.demorequest.maxDistance = Math.round((args.object as Slider).value);
   }
