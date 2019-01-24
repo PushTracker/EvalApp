@@ -151,15 +151,13 @@
   </ListView>
 
   // Clinician Request Unit Button
-  <!--
-    <Button text="Request Demo Unit" class="requestDemoBtn" (tap)="requestDemo()" [visibility]="userType == 0 ? 'visible' : 'collapsed'"></Button>
-  -->
   <button
     #requestDemoBtn
     row="1"
     [text]="'demos.request-demo-action' | translate"
     class="requestDemoBtn"
     (tap)="onShowNewDemoForm()"
+    [visibility]="userType == 0 || userType == 2 ? 'visible' : 'collapsed'"
   ></button>
 
   // Hidden Layout containing the Demo Request Form
