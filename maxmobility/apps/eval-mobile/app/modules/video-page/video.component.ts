@@ -4,6 +4,7 @@ import * as orientation from 'nativescript-orientation';
 import { YoutubePlayer } from 'nativescript-youtubeplayer';
 import { Subscription } from 'rxjs';
 import { Page } from 'tns-core-modules/ui/page';
+import { LoggingService } from '@maxmobility/mobile';
 
 @Component({
   selector: 'Video',
@@ -12,6 +13,7 @@ import { Page } from 'tns-core-modules/ui/page';
   styleUrls: ['./video.component.css']
 })
 export class VideoComponent implements OnInit {
+  private static LOG_TAG = 'video.component ';
   title = String();
   desc = String();
   options = { rel: 1 };
@@ -21,12 +23,15 @@ export class VideoComponent implements OnInit {
   constructor(
     private _page: Page,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private _logService: LoggingService
   ) {
     this._page.className = 'blue-gradient-down';
   }
 
   ngOnInit() {
+    this._logService.logBreadCrumb(VideoComponent.LOG_TAG + `ngOnInit`);
+
     // see https://github.com/NativeScript/nativescript-angular/issues/1049
     this.routeSub = this.router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
@@ -54,5 +59,9 @@ export class VideoComponent implements OnInit {
 
     // Set the player src for the video
     player.src = `${query.url}`;
+
+    this._logService.logBreadCrumb(
+      VideoComponent.LOG_TAG + `playerLoaded() -- player.src: ${player.src}`
+    );
   }
 }

@@ -31,6 +31,8 @@ import { Page } from 'tns-core-modules/ui/page';
   changeDetection: ChangeDetectionStrategy.Default
 })
 export class HomeComponent {
+  private static LOG_TAG = 'home.component ';
+
   connectivityItems = [
     {
       Image: '~/assets/images/training-transparent.png',
@@ -106,12 +108,13 @@ export class HomeComponent {
     private _logService: LoggingService,
     private _demoService: DemoService,
     private _firmwareService: FirmwareService,
-    private _loggingService: LoggingService,
     private _fileService: FileService,
     private _userService: UserService,
     private _bluetoothService: BluetoothService,
     private _translateService: TranslateService
   ) {
+    this._logService.logBreadCrumb(HomeComponent.LOG_TAG + `constructor.`);
+
     this._page.enableSwipeBackNavigation = false;
 
     this._fileService.downloadTranslationFiles();
@@ -173,7 +176,7 @@ export class HomeComponent {
           this.demoUnitsLoaded = true;
         })
         .catch(err => {
-          this._loggingService.logException(err);
+          this._logService.logException(err);
           this.demoUnitsLoaded = true;
         });
     } catch (error) {
@@ -198,6 +201,10 @@ export class HomeComponent {
   }
 
   videoThumbTapped(item: any) {
+    this._logService.logBreadCrumb(
+      HomeComponent.LOG_TAG + `videoThumbTapped item: ${item}`
+    );
+
     this._routerExtensions.navigate([item.Route], {
       transition: {
         name: ''
@@ -211,6 +218,10 @@ export class HomeComponent {
   }
 
   evalThumbTapped(item: any) {
+    this._logService.logBreadCrumb(
+      HomeComponent.LOG_TAG + `evalThumbTapped item: ${item}`
+    );
+
     this._routerExtensions.navigate([item.Route], {
       transition: {
         name: ''
@@ -219,6 +230,10 @@ export class HomeComponent {
   }
 
   demoThumbTapped(item: any) {
+    this._logService.logBreadCrumb(
+      HomeComponent.LOG_TAG + `demoThumbTapped item: ${item}`
+    );
+
     let index = -1;
     if (item) {
       index = DemoService.Demos.indexOf(item);
@@ -231,6 +246,10 @@ export class HomeComponent {
   }
 
   chevronButtonTapped(route: string) {
+    this._logService.logBreadCrumb(
+      HomeComponent.LOG_TAG + `chevronButtonTapped route: ${route}`
+    );
+
     this._routerExtensions.navigate([route], {
       transition: {
         name: ''
@@ -239,6 +258,10 @@ export class HomeComponent {
   }
 
   faqThumbTapped(item: any) {
+    this._logService.logBreadCrumb(
+      HomeComponent.LOG_TAG + `faqThumbTapped item: ${item}`
+    );
+
     const answer = item.answer;
     const question = item.question;
     const whiteColor = new Color('#fff');
@@ -333,7 +356,8 @@ export class HomeComponent {
   private _handleActionResult(value: string) {
     // log breadcrumb for sentry
     this._logService.logBreadCrumb(
-      `User has tapped the home FAB button and selected action ${value}`
+      HomeComponent.LOG_TAG +
+        `User has tapped the home FAB button and selected action ${value}`
     );
 
     // route user to the screen based on the action selected

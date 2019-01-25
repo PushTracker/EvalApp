@@ -26,6 +26,7 @@ import { PrivacyPolicyComponent } from '../../privacy-policy';
   styleUrls: ['./sign-up.component.css']
 })
 export class SignUpComponent implements OnInit {
+  private static LOG_TAG = 'sign-up.component ';
   user = new User();
   passwordError = '';
   emailError = '';
@@ -79,6 +80,7 @@ export class SignUpComponent implements OnInit {
   }
 
   ngOnInit() {
+    this._logService.logBreadCrumb(SignUpComponent.LOG_TAG + `ngOnInit`);
     this._page.actionBarHidden = true;
     this._page.backgroundSpanUnderStatusBar = true;
     setMarginForIosSafeArea(this._page);
@@ -91,6 +93,9 @@ export class SignUpComponent implements OnInit {
     const newLanguage = this.languages.getValue(args.newIndex) || 'en';
     this.user.language = newLanguage;
     this._translateService.use(newLanguage);
+    this._logService.logBreadCrumb(
+      SignUpComponent.LOG_TAG + `onLanguageChanged newLanguage: ${newLanguage}`
+    );
   }
 
   /**
@@ -115,7 +120,7 @@ export class SignUpComponent implements OnInit {
       viewContainerRef: this.vcRef
     };
     return this.modal.showModal(PrivacyPolicyComponent, options).then(res => {
-      let hasCanceled = !res;
+      const hasCanceled = !res;
       if (res) {
         this.user.has_read_privacy_policy = res.has_read_privacy_policy;
         this.user.has_agreed_to_user_agreement =
@@ -177,10 +182,20 @@ export class SignUpComponent implements OnInit {
     this._progressService.show(
       this._translateService.instant('user.account-creating')
     );
+
+    this._logService.logBreadCrumb(
+      SignUpComponent.LOG_TAG +
+        `onSubmitTap() creating new account: ${this.user}`
+    );
+
     // need to make sure the username is not already taken
     this._userService
       .isUsernameTaken(this.user.username)
-      .then(result => {
+      .then(res => {
+        this._logService.logBreadCrumb(
+          SignUpComponent.LOG_TAG + `isUsernameTaken() res: ${res}`
+        );
+
         // now create the account
         return this._userService
           .register(this.user)

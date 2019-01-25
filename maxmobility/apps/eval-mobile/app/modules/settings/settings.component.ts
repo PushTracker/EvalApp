@@ -16,12 +16,18 @@ import { isAndroid, isIOS } from 'tns-core-modules/platform';
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent {
+  private static LOG_TAG = 'settings.component ';
+
   constructor(
     private _bluetoothService: BluetoothService,
     private _firmwareService: FirmwareService,
     private _progressService: ProgressService,
     private _loggingService: LoggingService
-  ) {}
+  ) {
+    this._loggingService.logBreadCrumb(
+      SettingsComponent.LOG_TAG + `constructor.`
+    );
+  }
 
   onReload() {
     this._firmwareService.loadFromFS();
@@ -81,6 +87,10 @@ export class SettingsComponent {
   }
 
   onStopBT(): void {
+    this._loggingService.logBreadCrumb(
+      SettingsComponent.LOG_TAG + `onStopBT()`
+    );
+
     this._progressService.show('Stopping Bluetooth service');
     const stopProgress = result => {
       setTimeout(() => {
@@ -97,6 +107,10 @@ export class SettingsComponent {
   }
 
   onRestartBT(): void {
+    this._loggingService.logBreadCrumb(
+      SettingsComponent.LOG_TAG + `onRestartBT()`
+    );
+
     this._progressService.show('Restarting Bluetooth service');
     const stopProgress = result => {
       setTimeout(() => {

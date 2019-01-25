@@ -18,6 +18,7 @@ import { Kinvey } from 'kinvey-nativescript-sdk';
   styleUrls: ['./summary.component.css']
 })
 export class SummaryComponent {
+  private static LOG_TAG = 'summary.component ';
   evaluation: any = null;
 
   trialName = '';
@@ -84,6 +85,10 @@ export class SummaryComponent {
     private _translateService: TranslateService,
     private _loggingService: LoggingService
   ) {
+    this._loggingService.logBreadCrumb(
+      SummaryComponent.LOG_TAG + `constructor.`
+    );
+
     this._page.className = 'blue-gradient-down';
 
     this.evaluation = this._evaluationService.evaluation;
@@ -239,6 +244,10 @@ export class SummaryComponent {
     }
 
     const lmnBody = this.generateLMN();
+    this._loggingService.logBreadCrumb(
+      SummaryComponent.LOG_TAG + `onComplete() -- lmnBody: ${lmnBody}`
+    );
+
     email
       .compose({
         to: [],

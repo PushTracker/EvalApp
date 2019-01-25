@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { LoggingService } from '@maxmobility/core';
 import {
   preventKeyboardFromShowing,
   ProgressService,
-  UserService
+  UserService,
+  LoggingService
 } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { validate } from 'email-validator';
@@ -20,6 +20,7 @@ import { setMarginForIosSafeArea } from '~/utils';
   styleUrls: ['./forgot-password.component.css']
 })
 export class ForgotPasswordComponent implements OnInit {
+  private static LOG_TAG = 'forgot-password.component ';
   email = '';
   emailError = '';
 
@@ -48,6 +49,9 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this._logService.logBreadCrumb(
+      ForgotPasswordComponent.LOG_TAG + `ngOnInit`
+    );
     this._page.actionBarHidden = true;
     this._page.backgroundSpanUnderStatusBar = true;
     setMarginForIosSafeArea(this._page);

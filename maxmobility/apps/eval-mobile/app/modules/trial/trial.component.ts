@@ -40,6 +40,8 @@ import { TextField } from 'tns-core-modules/ui/text-field/text-field';
   styleUrls: ['./trial.component.css']
 })
 export class TrialComponent implements OnInit {
+  private static LOG_TAG = 'trial.component ';
+
   @ViewChild('startWith')
   startWithView: ElementRef;
   @ViewChild('stopWith')
@@ -123,6 +125,13 @@ export class TrialComponent implements OnInit {
     this.settings = this._settingsService.settings;
     this.pushSettings = this._settingsService.pushSettings;
     this.trial.setSettings(this.settings);
+
+    this._loggingService.logBreadCrumb(
+      TrialComponent.LOG_TAG +
+        `constructor -- this.settings: ${this.settings}, this.pushSettings: ${
+          this.pushSettings
+        }`
+    );
   }
 
   isIOS(): boolean {
@@ -220,6 +229,11 @@ export class TrialComponent implements OnInit {
     if (pushTracker === null) {
       return;
     }
+
+    this._loggingService.logBreadCrumb(
+      TrialComponent.LOG_TAG +
+        `onStartWithTrial() -- pushTracker: ${pushTracker}`
+    );
 
     // if pushtracker is not up to date don't start trial
     const x = this._checkPushTrackerVersion(pushTracker);
@@ -397,6 +411,11 @@ export class TrialComponent implements OnInit {
       return;
     }
 
+    this._loggingService.logBreadCrumb(
+      TrialComponent.LOG_TAG +
+        `onStopWithTrial() -- pushTracker: ${pushTracker}`
+    );
+
     if (!this.trial.finishedWith && pushTracker) {
       // let user know we're doing something
       this._progressService.show(this.stopping_trial);
@@ -562,6 +581,11 @@ export class TrialComponent implements OnInit {
       return;
     }
 
+    this._loggingService.logBreadCrumb(
+      TrialComponent.LOG_TAG +
+        `onStartWithoutTrial() -- pushTracker: ${pushTracker}`
+    );
+
     // if pushtracker is not up to date don't start trial
     const x = this._checkPushTrackerVersion(pushTracker);
     if (x === false) {
@@ -648,6 +672,11 @@ export class TrialComponent implements OnInit {
     if (pushTracker === null) {
       return;
     }
+
+    this._loggingService.logBreadCrumb(
+      TrialComponent.LOG_TAG +
+        `onStopWithoutTrial() -- pushTracker: ${pushTracker}`
+    );
 
     if (!this.trial.finishedWithout && pushTracker) {
       // let user know we're doing something
@@ -772,6 +801,11 @@ export class TrialComponent implements OnInit {
           hideDelay: 4000
         })
         .then(result => {
+          this._loggingService.logBreadCrumb(
+            TrialComponent.LOG_TAG +
+              `_getOneConnectedPushTracker() -- action result: ${result}`
+          );
+
           if (result.command === 'Action') {
             this._feedback.info({
               title: '',

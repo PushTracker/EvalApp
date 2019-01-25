@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs';
 import { isAndroid, isIOS } from 'tns-core-modules/platform';
 import { Page } from 'tns-core-modules/ui/page';
 import { RouterExtService } from '@maxmobility/core';
+import { LoggingService } from '@maxmobility/mobile';
 
 @Component({
   selector: 'Training',
@@ -21,6 +22,8 @@ import { RouterExtService } from '@maxmobility/core';
   styleUrls: ['./training.component.css']
 })
 export class TrainingComponent implements AfterViewInit, OnInit {
+  private static LOG_TAG = 'training.component ';
+
   @ViewChild('carousel')
   carousel: ElementRef;
   slides = this.translateService.instant('training');
@@ -35,8 +38,11 @@ export class TrainingComponent implements AfterViewInit, OnInit {
     private _routerExt: RouterExtService,
     private _router: Router,
     private routerExtensions: RouterExtensions,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private _logService: LoggingService
   ) {
+    this._logService.logBreadCrumb(TrainingComponent.LOG_TAG + `constructor.`);
+
     this._page.className = 'blue-gradient-down';
     // re-update slides every time it's created
     this.slides = this.translateService.instant('training');

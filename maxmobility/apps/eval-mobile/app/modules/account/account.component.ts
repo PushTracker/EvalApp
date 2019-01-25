@@ -43,6 +43,7 @@ import { APP_KEY, HOST_URL } from '~/kinvey-keys';
   styleUrls: ['./account.component.css']
 })
 export class AccountComponent implements OnInit {
+  private static LOG_TAG = 'account.component ';
   fsKeyPrefix = 'AccountComponent.';
   fsKeyProfilePicture = 'ProfilePicture';
   user: Kinvey.User;
@@ -135,6 +136,8 @@ export class AccountComponent implements OnInit {
   }
 
   ngOnInit() {
+    this._loggingService.logBreadCrumb(AccountComponent.LOG_TAG + 'ngOnInit');
+
     // load profile picture
     this.loadProfilePicture();
 
@@ -234,6 +237,9 @@ export class AccountComponent implements OnInit {
       if (result) {
         this._saveUserToKinvey()
           .then(resp => {
+            this._loggingService.logBreadCrumb(
+              AccountComponent.LOG_TAG + `successfully updated profile.`
+            );
             new Toasty(
               this._translateService.instant('user.account-update-complete'),
               ToastDuration.SHORT,
@@ -241,6 +247,7 @@ export class AccountComponent implements OnInit {
             ).show();
           })
           .catch(error => {
+            this._loggingService.logException(error);
             alert({
               message: this._translateService.instant(
                 'user.account-update-error'
@@ -282,6 +289,9 @@ export class AccountComponent implements OnInit {
         cancelButtonText: this.no
       });
       if (result) {
+        this._loggingService.logBreadCrumb(
+          AccountComponent.LOG_TAG + `successfully signed out.`
+        );
         this._zone.run(async () => {
           DemoService.Demos.splice(0, DemoService.Demos.length); // empty the current items
           // go ahead and nav to login to keep UI moving without waiting

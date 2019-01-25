@@ -21,6 +21,8 @@ import { Page } from 'tns-core-modules/ui/page';
   styleUrls: ['./evals.component.css']
 })
 export class EvalsComponent implements OnInit {
+  private static LOG_TAG = 'evals.component ';
+
   /**
    * Evals array binded to the listview.
    */
@@ -80,6 +82,8 @@ export class EvalsComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this._loggingService.logBreadCrumb(EvalsComponent.LOG_TAG + `ngOnInit`);
+
     // load the evaluations for this user
     try {
       const fetchedEvals = await this._evalService.loadEvaluations();
@@ -132,6 +136,9 @@ export class EvalsComponent implements OnInit {
       query.equalTo('creator_id', Kinvey.User.getActiveUser()._id);
       query.lessThanOrEqualTo('_kmd.ect', jsdate.toISOString());
       query.descending('_kmd.ect');
+      this._loggingService.logBreadCrumb(
+        EvalsComponent.LOG_TAG + `onSearchTap() -- query: ${query}`
+      );
 
       const stream = this._datastore.find(query);
       const data = await stream.toPromise();
@@ -189,6 +196,10 @@ export class EvalsComponent implements OnInit {
     this._updateEvalForLmnReport(evaluation);
 
     const lmnBody = this._generateLMN(evaluation);
+    this._loggingService.logBreadCrumb(
+      EvalsComponent.LOG_TAG + `onEmailBtnTap() -- lmnBody: ${lmnBody}`
+    );
+
     email
       .compose({
         to: [],
@@ -291,6 +302,10 @@ export class EvalsComponent implements OnInit {
   }
 
   private _generateLMN(evaluation: Evaluation): string {
+    this._loggingService.logBreadCrumb(
+      EvalsComponent.LOG_TAG + `_generateLMN().`
+    );
+
     // const that = this;
     return mustache.render(this.lmnTemplate, {
       evaluation,

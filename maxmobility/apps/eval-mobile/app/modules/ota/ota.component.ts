@@ -32,6 +32,8 @@ import { ScrollView } from 'tns-core-modules/ui/scroll-view';
   styleUrls: ['./ota.component.css']
 })
 export class OTAComponent implements OnInit {
+  private static LOG_TAG = 'ota.component ';
+
   @ViewChild('carousel')
   carousel: ElementRef;
   selectedPage = 0;
@@ -67,6 +69,7 @@ export class OTAComponent implements OnInit {
   }
 
   ngOnInit() {
+    this._loggingService.logBreadCrumb(OTAComponent.LOG_TAG + 'ngOnInit');
     // see https://github.com/NativeScript/nativescript-angular/issues/1049
     this.routeSub = this._router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
@@ -90,6 +93,7 @@ export class OTAComponent implements OnInit {
   }
 
   register(): void {
+    this._loggingService.logBreadCrumb(OTAComponent.LOG_TAG + 'register()');
     this.unregister();
     // handle pushtracker pairing events for existing pushtrackers
     // listen for completely new pusthrackers (that we haven't seen before)
@@ -109,6 +113,7 @@ export class OTAComponent implements OnInit {
   }
 
   unregister(): void {
+    this._loggingService.logBreadCrumb(OTAComponent.LOG_TAG + 'unregister()');
     BluetoothService.PushTrackers.off(ObservableArray.changeEvent);
   }
 
@@ -121,6 +126,9 @@ export class OTAComponent implements OnInit {
   }
 
   async checkForNewFirmwareTap() {
+    this._loggingService.logBreadCrumb(
+      OTAComponent.LOG_TAG + 'checkForNewFirmwareTap()'
+    );
     const x = this._firmwareService.currentVersion;
 
     const result = await confirm({
@@ -141,7 +149,9 @@ export class OTAComponent implements OnInit {
       this._firmwareService
         .downloadFirmwares()
         .then(() => {
-          this._loggingService.logBreadCrumb(`Firmares updated on device.`);
+          this._loggingService.logBreadCrumb(
+            OTAComponent.LOG_TAG + `Firmares updated on device.`
+          );
           this._progressService.hide();
           // remove old items and add new from the translation file firmware string array
           this._loadFirmwareDescriptionItems(carousel);
@@ -270,20 +280,23 @@ export class OTAComponent implements OnInit {
             // console.log('Insomnia is active');
           });
 
-          this._loggingService.logBreadCrumb(`Start performing OTAs...`);
+          this._loggingService.logBreadCrumb(
+            OTAComponent.LOG_TAG + `Start performing OTAs...`
+          );
           // start updating
           return this.performOTAs();
         })
         .then(otaStatuses => {
           this._loggingService.logBreadCrumb(
-            `Completed all OTAs with statues: ${otaStatuses}`
+            OTAComponent.LOG_TAG +
+              `Completed all OTAs with statues: ${otaStatuses}`
           );
           this.cancelOTAs(false);
         })
         .catch(err => {
           this._loggingService.logException(err);
           this._loggingService.logBreadCrumb(
-            `Couldn't finish updating: ${err}`
+            OTAComponent.LOG_TAG + `Couldn't finish updating: ${err}`
           );
           this.cancelOTAs(true);
         });
@@ -298,7 +311,9 @@ export class OTAComponent implements OnInit {
 
     const isEnabled = await this._bluetoothService.radioEnabled();
     if (!this._bluetoothService.enabled || !isEnabled) {
-      this._loggingService.logBreadCrumb(`Bluetooth service is not enabled.`);
+      this._loggingService.logBreadCrumb(
+        OTAComponent.LOG_TAG + `Bluetooth service is not enabled.`
+      );
       alert({
         message: this._translateService.instant('bluetooth.enable-bluetooth'),
         okButtonText: this._translateService.instant('dialogs.ok')
@@ -433,7 +448,9 @@ export class OTAComponent implements OnInit {
     this.updating = false;
     this.updatingButtonText = this._translateService.instant('ota.begin');
     if (doCancel) {
-      this._loggingService.logBreadCrumb(`Cancelling all OTAs`);
+      this._loggingService.logBreadCrumb(
+        OTAComponent.LOG_TAG + `Cancelling all OTAs`
+      );
       this.smartDriveOTAs.map(sd => sd.cancelOTA());
       this.pushTrackerOTAs.map(pt => pt.cancelOTA());
     }
@@ -451,7 +468,8 @@ export class OTAComponent implements OnInit {
       'firmware.' + this._firmwareService.currentVersion
     );
     this._loggingService.logBreadCrumb(
-      `Current firmware description items: ${firmwareDescriptionItems}`
+      OTAComponent.LOG_TAG +
+        `Current firmware description items: ${firmwareDescriptionItems}`
     );
 
     if (

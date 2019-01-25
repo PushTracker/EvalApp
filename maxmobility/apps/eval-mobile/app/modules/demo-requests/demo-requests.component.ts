@@ -15,6 +15,7 @@ import { Page } from 'tns-core-modules/ui/page';
   styleUrls: ['./demo-requests.component.css']
 })
 export class DemoRequestsComponent implements OnInit {
+  private static LOG_TAG = 'demo-requests.component ';
   items: DemoRequest[] = [];
   itemsLoaded = false;
   isFetchingData = false;
@@ -32,6 +33,8 @@ export class DemoRequestsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this._logService.logBreadCrumb(DemoRequestsComponent.LOG_TAG + `ngOnInit`);
+
     const activeUser = Kinvey.User.getActiveUser();
     this.userType = (activeUser.data as User).type as number;
     this.currentUserId = activeUser._id;
@@ -58,6 +61,9 @@ export class DemoRequestsComponent implements OnInit {
       // need to determine offset for the query based on current data
       query.skip = this.items.length;
       console.log({ query });
+      this._logService.logBreadCrumb(
+        DemoRequestsComponent.LOG_TAG + `query: ${query}`
+      );
 
       this._datastore
         .find(query)
@@ -100,6 +106,11 @@ export class DemoRequestsComponent implements OnInit {
     });
 
     if (confirmResult === true) {
+      this._logService.logBreadCrumb(
+        DemoRequestsComponent.LOG_TAG +
+          `onClaimDemoRequestTap() confirmed claim demo index: ${index}`
+      );
+
       // set the claimed_user to the current user since they confirmed to claim this demo
       dr.claimed_user = this.currentUserId;
 

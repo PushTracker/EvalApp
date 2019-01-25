@@ -20,6 +20,7 @@ import { setMarginForIosSafeArea } from '~/utils';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  private static LOG_TAG = 'login.component ';
   user = { email: '', password: '' };
   passwordError = '';
   emailError = '';
@@ -63,6 +64,10 @@ export class LoginComponent implements OnInit {
       );
 
       // now try logging in with Kinvey user account
+      this._logService.logBreadCrumb(
+        LoginComponent.LOG_TAG +
+          `Signing in ${this.user.email} - ${this.user.password}`
+      );
       await this._userService.login(this.user.email, this.user.password);
       this._progressService.hide();
 
@@ -74,7 +79,9 @@ export class LoginComponent implements OnInit {
         });
       });
     } catch (error) {
-      this._logService.logBreadCrumb(`Error attempting to sign in: ${error}`);
+      this._logService.logBreadCrumb(
+        LoginComponent.LOG_TAG + `Error attempting to sign in: ${error}`
+      );
       this._progressService.hide();
 
       // handle the situation when an active user is still detected by Kinvey
@@ -84,7 +91,8 @@ export class LoginComponent implements OnInit {
         Kinvey.User.logout();
         this.onSubmitTap();
         this._logService.logBreadCrumb(
-          'Logged out the active user and restarted the login submit function.'
+          LoginComponent.LOG_TAG +
+            `Logged out the active user and restarted the login submit function.`
         );
         return;
       }

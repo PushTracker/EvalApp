@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Evaluation } from '@maxmobility/core';
-import { EvaluationService } from '@maxmobility/mobile';
+import { EvaluationService, LoggingService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { DropDown } from 'nativescript-drop-down';
@@ -15,6 +15,8 @@ import { Page } from 'tns-core-modules/ui/page';
   styleUrls: ['./eval-entry.component.css']
 })
 export class EvalEntryComponent {
+  private static LOG_TAG = 'eval-entry.component ';
+
   @ViewChild('yearDropdown')
   yearDropdown: ElementRef;
   @ViewChild('chairDropdown')
@@ -34,11 +36,17 @@ export class EvalEntryComponent {
     private _page: Page,
     private routerExtensions: RouterExtensions,
     private _evaluationService: EvaluationService,
-    private _translateService: TranslateService
+    private _translateService: TranslateService,
+    private _logService: LoggingService
   ) {
+    this._logService.logBreadCrumb(EvalEntryComponent.LOG_TAG + `constructor.`);
+
     this._page.className = 'blue-gradient-down';
     // set the eval to the eval on the service
     this.evaluation = this._evaluationService.evaluation;
+    this._logService.logBreadCrumb(
+      EvalEntryComponent.LOG_TAG + `this.evaluation: ${this.evaluation}`
+    );
 
     // if the evaluation from the service is not null then ask the user if they want to continue or start new eval
     if (this.evaluation !== null) {
@@ -51,6 +59,11 @@ export class EvalEntryComponent {
           cancelButtonText: this._translateService.instant('dialogs.no')
         }).then(result => {
           if (result === true) {
+            this._logService.logBreadCrumb(
+              EvalEntryComponent.LOG_TAG +
+                `continuing evaluation ${this.evaluation}`
+            );
+
             this.evaluation = this._evaluationService.evaluation;
             // we have the data on the `evaluation` on the service so just let it load
             // we have to check the toggles bc we have props here that set them false when the component loads ^^^
@@ -85,6 +98,10 @@ export class EvalEntryComponent {
                 .nativeElement as DropDown).selectedIndex = chairTypeIndex;
             }
           } else {
+            this._logService.logBreadCrumb(
+              EvalEntryComponent.LOG_TAG +
+                `user declined to continue the incomplete evaluation, creating new evaluation.`
+            );
             // brad - for the record I don't like this approach 🤮
             this._evaluationService.evaluation = new Evaluation();
             this.evaluation = this._evaluationService.evaluation;

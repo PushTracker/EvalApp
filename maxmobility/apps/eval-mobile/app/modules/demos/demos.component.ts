@@ -41,6 +41,8 @@ import { Slider } from 'tns-core-modules/ui/slider/slider';
   styleUrls: ['./demos.component.css']
 })
 export class DemosComponent implements OnInit {
+  private static LOG_TAG = 'demos.component ';
+
   @ViewChild('demoRequestForm')
   demoRequestForm: ElementRef;
 
@@ -84,6 +86,8 @@ export class DemosComponent implements OnInit {
   }
 
   ngOnInit() {
+    this._logService.logBreadCrumb(DemosComponent.LOG_TAG + 'ngOnInit');
+
     new Toasty(
       this._translateService.instant('demos.owner-color-explanation'),
       ToastDuration.LONG
@@ -138,7 +142,7 @@ export class DemosComponent implements OnInit {
   addDemo() {
     // add a new demo
     this._logService.logBreadCrumb(
-      'Navigating to demo-detail to add a new demo.'
+      DemosComponent.LOG_TAG + 'Navigating to demo-detail to add a new demo.'
     );
     this._routerExtensions.navigate(['/demo-detail'], {});
   }
@@ -162,13 +166,17 @@ export class DemosComponent implements OnInit {
       } else {
         // location might not be enabled or permission not granted
         // show alert informing user and return since we can't do anything with location for the device
-        this._logService.logBreadCrumb(`geolocation isEnabled = ${isEnabled}`);
+        this._logService.logBreadCrumb(
+          DemosComponent.LOG_TAG + `geolocation isEnabled = ${isEnabled}`
+        );
 
         // show the confirmation asking if they want to open the settings app on iOS only for now
         // haven't looked into handling android with similar flow just yet
         if (isIOS) {
           const status = CLLocationManager.authorizationStatus();
-          this._logService.logBreadCrumb(`Location Manager status = ${status}`);
+          this._logService.logBreadCrumb(
+            DemosComponent.LOG_TAG + `Location Manager status = ${status}`
+          );
           // check if the user has previously denied permission and then show the confirmation
           // if the user has not denied Location prior to attempting to access the device location
           // then the location permission will not be in the app settings on iOS so
@@ -228,7 +236,9 @@ export class DemosComponent implements OnInit {
    * Also collapse the listview behind the form so that interaction is not possibe while form is open.
    */
   onShowNewDemoForm() {
-    this._logService.logBreadCrumb('Opening the request demo form.');
+    this._logService.logBreadCrumb(
+      DemosComponent.LOG_TAG + 'Opening the request demo form.'
+    );
     new Animation([
       {
         target: this.demoRequestForm.nativeElement as StackLayout,
@@ -261,7 +271,10 @@ export class DemosComponent implements OnInit {
   }
 
   onCloseDemoRequestForm() {
-    this._logService.logBreadCrumb('Closing the request demo form.');
+    this._logService.logBreadCrumb(
+      DemosComponent.LOG_TAG + 'Closing the request demo form.'
+    );
+
     // make sure listview is visible for interaction
     if (this.demoListView && this.demoListView.nativeElement) {
       (this.demoListView.nativeElement as ListView).visibility = 'visible';
@@ -392,7 +405,9 @@ export class DemosComponent implements OnInit {
       return;
     }
 
-    this._logService.logBreadCrumb(`RepDemo Action Selected: ${result}`);
+    this._logService.logBreadCrumb(
+      DemosComponent.LOG_TAG + `RepDemo Action Selected: ${result}`
+    );
 
     const token = (this._userService.user._kmd as any).authtoken;
     let response;

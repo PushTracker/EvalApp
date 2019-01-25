@@ -44,6 +44,7 @@ import * as utils from 'tns-core-modules/utils/utils';
   styleUrls: ['./demo-detail.component.css']
 })
 export class DemoDetailComponent {
+  private static LOG_TAG = 'demo-detail.component ';
   mapboxToken = SmartEvalKeys.MAPBOX_TOKEN;
   demo = new Demo();
   // translation strings in UI
@@ -81,6 +82,9 @@ export class DemoDetailComponent {
     private _translateService: TranslateService,
     private _loggingService: LoggingService
   ) {
+    this._loggingService.logBreadCrumb(
+      DemoDetailComponent.LOG_TAG + `constructor.`
+    );
     this._page.className = 'blue-gradient-down';
     this._imageCropper = new ImageCropper();
     this._pageRoute.activatedRoute
@@ -143,10 +147,14 @@ export class DemoDetailComponent {
           const b64 = this.demo.sd_image.toBase64String('png');
           LS.setItem(picKey, b64);
           this.demo.sd_image_base64 = b64;
+          this._loggingService.logBreadCrumb(
+            DemoDetailComponent.LOG_TAG + `updated SD Image.`
+          );
         }
       } else {
         this._loggingService.logBreadCrumb(
-          'No result returned from the image cropper.'
+          DemoDetailComponent.LOG_TAG +
+            'No result returned from the image cropper.'
         );
       }
     } catch (error) {
@@ -165,10 +173,14 @@ export class DemoDetailComponent {
           const b64 = this.demo.pt_image.toBase64String('png');
           LS.setItem(picKey, b64);
           this.demo.pt_image_base64 = b64;
+          this._loggingService.logBreadCrumb(
+            DemoDetailComponent.LOG_TAG + `updated PT Image.`
+          );
         }
       } else {
         this._loggingService.logBreadCrumb(
-          'No result returned from the image cropper.'
+          DemoDetailComponent.LOG_TAG +
+            'No result returned from the image cropper.'
         );
       }
     } catch (error) {
@@ -185,6 +197,9 @@ export class DemoDetailComponent {
   async onSave() {
     try {
       if (!this.haveSerial()) {
+        this._loggingService.logBreadCrumb(
+          DemoDetailComponent.LOG_TAG + `no serial number entered.`
+        );
         alert('You must enter a SmartDrive serial number!');
         return;
       }
@@ -199,7 +214,8 @@ export class DemoDetailComponent {
       // now re-load our data from the service
       if (this._index > -1) {
         this._loggingService.logBreadCrumb(
-          'index is greater than -1 trying to save demo-detail'
+          DemoDetailComponent.LOG_TAG +
+            'index is greater than -1 trying to save demo-detail'
         );
       } else {
         this._index = DemoService.Demos.indexOf(
@@ -210,7 +226,9 @@ export class DemoDetailComponent {
       }
 
       const demo = DemoService.Demos.getItem(this._index);
-      this._loggingService.logBreadCrumb(`Found demo: ${JSON.stringify(demo)}`);
+      this._loggingService.logBreadCrumb(
+        DemoDetailComponent.LOG_TAG + `Found demo: ${JSON.stringify(demo)}`
+      );
 
       // BRAD - https://github.com/PushTracker/EvalApp/issues/144
       if (demo.sd_image_base64 && demo.sd_image) {
@@ -357,7 +375,7 @@ export class DemoDetailComponent {
         // location might not be enabled or permission not granted
         // show alert informing user and return since we can't do anything with location for the device
         this._loggingService.logBreadCrumb(
-          `geolocation isEnabled = ${isEnabled}`
+          DemoDetailComponent.LOG_TAG + `geolocation isEnabled = ${isEnabled}`
         );
 
         // show the confirmation asking if they want to open the settings app on iOS only for now
@@ -365,7 +383,7 @@ export class DemoDetailComponent {
         if (isIOS) {
           const status = CLLocationManager.authorizationStatus();
           this._loggingService.logBreadCrumb(
-            `Location Manager status = ${status}`
+            DemoDetailComponent.LOG_TAG + `Location Manager status = ${status}`
           );
           // check if the user has previously denied permission and then show the confirmation
           // if the user has not denied Location prior to attempting to access the device location
@@ -503,6 +521,10 @@ export class DemoDetailComponent {
   }
 
   private _handleSerial(text: string, forDevices?: string[]) {
+    this._loggingService.logBreadCrumb(
+      DemoDetailComponent.LOG_TAG + `_handleSerial ${text}, ${forDevices}`
+    );
+
     text = text || '';
     text = text.trim().toUpperCase();
     let deviceType = null;
@@ -510,6 +532,7 @@ export class DemoDetailComponent {
     const isWristband = text[0] === 'A';
     let isSmartDrive = false;
     const serialNumber = text;
+
     try {
       const value = parseInt(text, 10);
       const valid = isFinite(value);
@@ -518,6 +541,7 @@ export class DemoDetailComponent {
       // do nothing but log to sentry
       this._loggingService.logException(err);
     }
+
     if (isPushTracker) {
       deviceType = 'pushtracker';
     } else if (isWristband) {
@@ -527,6 +551,10 @@ export class DemoDetailComponent {
     } else {
       return;
     }
+    this._loggingService.logBreadCrumb(
+      DemoDetailComponent.LOG_TAG +
+        `_handleSerial isPushTracker = ${isPushTracker}`
+    );
 
     // check the type
     if (
@@ -538,12 +566,14 @@ export class DemoDetailComponent {
       this._loggingService.logException(error);
       return;
     }
+
     // set the model
     if (isPushTracker) {
       this.demo.model = 'MX2+';
     } else if (isWristband) {
       this.demo.model = 'MX2';
     }
+
     // now set the serial number
     if (deviceType === 'pushtracker' || deviceType === 'wristband') {
       this.demo.pushtracker_serial_number = serialNumber;

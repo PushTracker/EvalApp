@@ -34,6 +34,7 @@ import { Page } from 'tns-core-modules/ui/page';
   styleUrls: ['./pairing.component.css']
 })
 export class PairingComponent implements OnInit {
+  private static LOG_TAG = 'pairing.component ';
   @ViewChild('controlModeDropDown')
   controlModeDropDown: ElementRef;
   @ViewChild('unitsDropDown')
@@ -141,17 +142,9 @@ export class PairingComponent implements OnInit {
     );
   }
 
-  unregister(): void {
-    BluetoothService.PushTrackers.off(ObservableArray.changeEvent);
-    BluetoothService.PushTrackers.map(pt => {
-      pt.off(PushTracker.pushtracker_paired_event);
-      pt.off(PushTracker.pushtracker_connect_event);
-      pt.off(PushTracker.pushtracker_settings_event);
-      // pt.off(PushTracker.pushtracker_push_settings_event);
-    });
-  }
-
   ngOnInit(): void {
+    this._loggingService.logBreadCrumb(PairingComponent.LOG_TAG + `ngOnInit`);
+
     // see https://github.com/NativeScript/nativescript-angular/issues/1049
     this.routeSub = this._router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
@@ -174,8 +167,26 @@ export class PairingComponent implements OnInit {
     );
   }
 
+  unregister(): void {
+    this._loggingService.logBreadCrumb(
+      PairingComponent.LOG_TAG + `unregister().`
+    );
+
+    BluetoothService.PushTrackers.off(ObservableArray.changeEvent);
+    BluetoothService.PushTrackers.map(pt => {
+      pt.off(PushTracker.pushtracker_paired_event);
+      pt.off(PushTracker.pushtracker_connect_event);
+      pt.off(PushTracker.pushtracker_settings_event);
+      // pt.off(PushTracker.pushtracker_push_settings_event);
+    });
+  }
+
   // settings controls
   async onPushTrackerSettings(args: any) {
+    this._loggingService.logBreadCrumb(
+      PairingComponent.LOG_TAG + `onPushTrackerSettings().`
+    );
+
     this._zone.run(() => {
       if (this.settings.diff(args.data.settings)) {
         // ask to copy the settings
@@ -186,6 +197,11 @@ export class PairingComponent implements OnInit {
           okButtonText: this._translateService.instant('dialogs.ok'),
           cancelButtonText: this._translateService.instant('dialogs.no')
         }).then(result => {
+          this._loggingService.logBreadCrumb(
+            PairingComponent.LOG_TAG +
+              `onPushTrackerSettings() confirm result: ${result}`
+          );
+
           if (result === true) {
             this.settings.copy(args.data.settings);
             // update drop downs
@@ -205,6 +221,10 @@ export class PairingComponent implements OnInit {
     });
   }
   async onPushTrackerPushSettings(args: any) {
+    this._loggingService.logBreadCrumb(
+      PairingComponent.LOG_TAG + `onPushTrackerPushSettings().`
+    );
+
     this._zone.run(() => {
       if (this.pushSettings.diff(args.data.pushSettings)) {
         // ask to copy the settings
@@ -215,6 +235,11 @@ export class PairingComponent implements OnInit {
           okButtonText: this._translateService.instant('dialogs.ok'),
           cancelButtonText: this._translateService.instant('dialogs.no')
         }).then(result => {
+          this._loggingService.logBreadCrumb(
+            PairingComponent.LOG_TAG +
+              `onPushTrackerPushSettings() confirm result: ${result}`
+          );
+
           if (result === true) {
             this.pushSettings.copy(args.data.pushSettings);
           }
@@ -246,6 +271,10 @@ export class PairingComponent implements OnInit {
 
   onSaveSettings(args: any) {
     const pushTracker = this._getOneConnectedPushTracker();
+    this._loggingService.logBreadCrumb(
+      PairingComponent.LOG_TAG + `onSaveSettings() pushTracker: ${pushTracker}`
+    );
+
     if (pushTracker === null) {
       return;
     } else if (pushTracker.version < 0x16) {
@@ -258,6 +287,10 @@ export class PairingComponent implements OnInit {
           hideDelay: 4000
         })
         .then(result => {
+          this._loggingService.logBreadCrumb(
+            PairingComponent.LOG_TAG + `onSaveSettings() result: ${result}`
+          );
+
           if (result.command === 'Action') {
             this._feedback.warning({
               title: '',
@@ -346,6 +379,10 @@ export class PairingComponent implements OnInit {
 
   // Connectivity Events
   pushTrackerPairingSuccess() {
+    this._loggingService.logBreadCrumb(
+      PairingComponent.LOG_TAG + `pushTrackerPairingSuccess()`
+    );
+
     this._feedback.success({
       title: this._translateService.instant('dialogs.success'),
       message: this._translateService.instant('bluetooth.pairing-success'),
@@ -358,6 +395,10 @@ export class PairingComponent implements OnInit {
   }
 
   pushTrackerConnectionSuccess() {
+    this._loggingService.logBreadCrumb(
+      PairingComponent.LOG_TAG + `pushTrackerConnectionSuccess()`
+    );
+
     this._feedback.success({
       title: this._translateService.instant('dialogs.success'),
       message: this._translateService.instant('bluetooth.connection-success'),
@@ -391,6 +432,11 @@ export class PairingComponent implements OnInit {
   private _getOneConnectedPushTracker() {
     const connectedPTs = BluetoothService.PushTrackers.filter(
       pt => pt.connected
+    );
+
+    this._loggingService.logBreadCrumb(
+      PairingComponent.LOG_TAG +
+        `_getOneConnectedPushTracker() connectedPTs: ${connectedPTs}`
     );
 
     // no pushtrackers are connected - will show snackbar alert
