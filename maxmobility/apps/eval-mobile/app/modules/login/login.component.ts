@@ -76,6 +76,19 @@ export class LoginComponent implements OnInit {
     } catch (error) {
       this._logService.logBreadCrumb(`Error attempting to sign in: ${error}`);
       this._progressService.hide();
+
+      // handle the situation when an active user is still detected by Kinvey
+      // call Kinvey logout to remove the active user, then call the login function again
+      // see: https://sentry.io/share/issue/aa1a10751f2c4c3d8be076f481546ad8/
+      if (error.toString().includes('ActiveUserError')) {
+        Kinvey.User.logout();
+        this.onSubmitTap();
+        this._logService.logBreadCrumb(
+          'Logged out the active user and restarted the login submit function.'
+        );
+        return;
+      }
+
       // parse the exceptions from kinvey sign up
       let errorMessage = this._translateService.instant('user.sign-in-error-1');
       if (error.toString().includes('InvalidCredentialsError')) {
