@@ -216,7 +216,7 @@
         columns="100, auto, auto, *"
         class="list-grid-layout"
         row="4"
-        [visibility]="userType != 3 ? 'visible' : 'collapsed'"
+        [visibility]="userType == 1 || userType == 2 ? 'visible' : 'collapsed'"
       >
         <label
           row="0"
