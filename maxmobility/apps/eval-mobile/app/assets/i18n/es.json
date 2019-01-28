@@ -340,6 +340,10 @@
       "starting": {
         "message": "Advertencia: no debe abandonar esta página mientras realiza las actualizaciones de firmware OTA de SmartDrive o PushTracker. Si abandonas esta página o matas la aplicación, las OTA se cancelarán o pueden fallar.",
         "title": "A partir de OTA"
+      },
+      "multiple-devices": {
+        "title": "Dispositivos múltiples",
+        "message": "Advertencia: se recomienda realizar una OTA en un dispositivo a la vez. Permita que un dispositivo complete la actualización antes de iniciar cualquier OTA adicional."
       }
     }
   },

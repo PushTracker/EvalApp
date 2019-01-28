@@ -340,6 +340,10 @@
       "starting": {
         "message": "Waarschuwing: je moet deze pagina niet verlaten tijdens het uitvoeren van OTA firmware-updates van de SmartDrive of PushTracker. Als u deze pagina verlaat of de app doodt, worden de OTA's geannuleerd of mogelijk mislukt.",
         "title": "OTA starten"
+      },
+      "multiple-devices": {
+        "title": "Meerdere apparaten",
+        "message": "Waarschuwing: het wordt aanbevolen om een ​​OTA op één apparaat tegelijk uit te voeren. Sta een apparaat toe om het bijwerken te voltooien voordat u aanvullende OTA's start."
       }
     }
   },

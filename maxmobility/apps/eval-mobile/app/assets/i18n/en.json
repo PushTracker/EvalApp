@@ -775,6 +775,10 @@
       "leaving": {
         "title": "Warning",
         "message": "Warning: you are leaving the OTA page during an OTA - this will cancel all ongoing OTAs! Are you sure you want to leave?"
+      },
+      "multiple-devices": {
+        "title": "Multiple Devices",
+        "message": "Warning: It is recommended to perform an OTA on one device at a time. Please allow a device to complete updating before starting any additional OTAs."
       }
     },
     "errors": {

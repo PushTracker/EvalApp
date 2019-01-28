@@ -338,6 +338,10 @@
       "starting": {
         "message": "Avertissement: vous ne devez pas quitter cette page lorsque vous effectuez des mises à jour du micrologiciel OTA du SmartDrive ou du PushTracker. Si vous quittez cette page ou si vous supprimez l'application, les OTA seront annulés ou risquent d'échouer.",
         "title": "Démarrer OTA"
+      },
+      "multiple-devices": {
+        "title": "Plusieurs appareils",
+        "message": "Avertissement: Il est recommandé d’effectuer un OTA sur un périphérique à la fois. Veuillez permettre à un appareil de terminer la mise à jour avant de démarrer des OTA supplémentaires."
       }
     }
   },

@@ -48,6 +48,7 @@ export class OTAComponent implements OnInit {
   private routeSub: Subscription; // subscription to route observer
   private slideInterval = 5000;
   private slideIntervalID: any;
+  private _hasSeenOtaMultipleDeviceAlert = false;
 
   constructor(
     private _page: Page,
@@ -354,8 +355,24 @@ export class OTAComponent implements OnInit {
     }
   }
 
-  private performOTAs(): Promise<any> {
+  private async performOTAs(): Promise<any> {
     this.updatingButtonText = this._translateService.instant('ota.cancel');
+
+    // if this is the first OTA update to start, show an alert mentioning
+    if (this._hasSeenOtaMultipleDeviceAlert === false) {
+      // show the alert -- awaiting before proceeding to make sure alert is clear
+      await alert({
+        title: this._translateService.instant(
+          'ota.warnings.multiple-devices.title'
+        ),
+        message: this._translateService.instant(
+          'ota.warnings.multiple-devices.message'
+        ),
+        okButtonText: this._translateService.instant('dialogs.ok')
+      });
+      this._hasSeenOtaMultipleDeviceAlert = true; // set true so it's not shown on subsequent OTAs
+    }
+
     return Promise.resolve().then(() => {
       // OTA the selected smart drive(s)
       const smartDriveOTATasks = this.smartDriveOTAs.map(sd => {

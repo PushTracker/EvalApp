@@ -340,6 +340,10 @@
       "starting": {
         "message": "Warnung: Sie sollten diese Seite nicht verlassen, während Sie OTA-Firmware-Updates des SmartDrive oder PushTracker durchführen. Wenn Sie diese Seite verlassen oder die App beenden, werden die OTAs abgebrochen oder können fehlschlagen.",
         "title": "OTA starten"
+      },
+      "multiple-devices": {
+        "title": "Mehrere Geräte",
+        "message": "Warnung: Es wird empfohlen, jeweils einen OTA auf einem Gerät durchzuführen. Bitte erlauben Sie einem Gerät, die Aktualisierung abzuschließen, bevor Sie weitere OTAs starten."
       }
     }
   },
