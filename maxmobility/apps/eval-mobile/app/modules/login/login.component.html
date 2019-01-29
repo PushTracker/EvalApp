@@ -10,6 +10,7 @@
     <TextField
       [text]="user.email"
       class="text-field"
+      (loaded)="onEmailTextFieldLoaded($event)"
       (textChange)="onEmailTextChange($event)"
       [hint]="'hints.email' | translate"
       keyboardType="email"
@@ -27,6 +28,7 @@
       class="text-field"
       [hint]="'hints.password' | translate"
       secure="true"
+      (loaded)="onPasswordTextFieldLoaded($event)"
     ></TextField>
     <label
       [text]="passwordError"
@@ -37,6 +39,7 @@
     <button
       [text]="'user.login' | translate"
       class="permobil-ocean-btn login-btn"
+      (loaded)="onSubmitButtonLoaded($event)"
       (tap)="onSubmitTap()"
     ></button>
     <DockLayout stretchLastChild="false">

@@ -10,8 +10,11 @@ import { validate } from 'email-validator';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { alert } from 'tns-core-modules/ui/dialogs';
-import { Page } from 'tns-core-modules/ui/page';
+import { isAndroid, isIOS } from 'tns-core-modules/platform';
+import { Page, EventData } from 'tns-core-modules/ui/page';
+import { Button } from 'tns-core-modules/ui/button';
 import { setMarginForIosSafeArea } from '~/utils';
+import { TextField } from 'tns-core-modules/ui/text-field/text-field';
 
 @Component({
   selector: 'Login',
@@ -21,6 +24,7 @@ import { setMarginForIosSafeArea } from '~/utils';
 })
 export class LoginComponent implements OnInit {
   private static LOG_TAG = 'login.component ';
+
   user = { email: '', password: '' };
   passwordError = '';
   emailError = '';
@@ -130,6 +134,36 @@ export class LoginComponent implements OnInit {
         name: 'slideLeft'
       }
     });
+  }
+
+  onEmailTextFieldLoaded(args: EventData) {
+    if (isAndroid) {
+      const tf = (args.object as TextField).android as android.widget.EditText;
+      tf.setId((android.R.id as any).login_email_textfield);
+    } else if (isIOS) {
+      const btn = (args.object as Button).ios as UIButton;
+      btn.tag = 542561567;
+    }
+  }
+
+  onPasswordTextFieldLoaded(args: EventData) {
+    if (isAndroid) {
+      const tf = (args.object as TextField).android as android.widget.EditText;
+      tf.setId((android.R.id as any).login_password_textfield);
+    } else if (isIOS) {
+      const btn = (args.object as Button).ios as UIButton;
+      btn.tag = 542561573;
+    }
+  }
+
+  onSubmitButtonLoaded(args: EventData) {
+    if (isAndroid) {
+      const btn = (args.object as Button).android as android.widget.Button;
+      btn.setId((android.R.id as any).login_submit_button);
+    } else if (isIOS) {
+      const btn = (args.object as Button).ios as UIButton;
+      btn.tag = 542561588;
+    }
   }
 
   private _isEmailValid(text: string): boolean {
