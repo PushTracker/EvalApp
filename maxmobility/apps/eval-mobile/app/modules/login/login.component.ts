@@ -15,6 +15,7 @@ import { Page, EventData } from 'tns-core-modules/ui/page';
 import { Button } from 'tns-core-modules/ui/button';
 import { setMarginForIosSafeArea } from '~/utils';
 import { TextField } from 'tns-core-modules/ui/text-field/text-field';
+import { Toasty, ToastDuration, ToastPosition } from 'nativescript-toasty';
 
 @Component({
   selector: 'Login',
@@ -105,13 +106,22 @@ export class LoginComponent implements OnInit {
       let errorMessage = this._translateService.instant('user.sign-in-error-1');
       if (error.toString().includes('InvalidCredentialsError')) {
         errorMessage = this._translateService.instant('user.sign-in-error-2');
+        // we don't need to send this exception to Kinvey, just extra noise
+        // Brad - changing this to show a Toast to not block user and not logging the exception
+        // see: https://sentry.io/share/issue/d48735572d9641678348f451a9d00e78/
+        new Toasty(
+          errorMessage,
+          ToastDuration.SHORT,
+          ToastPosition.CENTER
+        ).show();
+      } else {
+        alert({
+          title: this._translateService.instant('user.error'),
+          message: errorMessage,
+          okButtonText: this._translateService.instant('dialogs.ok')
+        });
+        this._logService.logException(error);
       }
-      alert({
-        title: this._translateService.instant('user.error'),
-        message: errorMessage,
-        okButtonText: this._translateService.instant('dialogs.ok')
-      });
-      this._logService.logException(error);
     }
   }
 
