@@ -1,6 +1,6 @@
 import { Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { DidYouKnow, User, UserTypes } from '@maxmobility/core';
+import { DidYouKnow, User, UserTypes, Demo } from '@maxmobility/core';
 import {
   DemoService,
   FileService,
@@ -35,6 +35,7 @@ import { Page } from 'tns-core-modules/ui/page';
 import * as utils from 'tns-core-modules/utils/utils';
 import * as appversion from 'nativescript-appversion';
 import { APP_KEY, HOST_URL } from '~/kinvey-keys';
+import { ObservableArray } from 'tns-core-modules/data/observable-array';
 
 @Component({
   selector: 'Account',
@@ -292,8 +293,10 @@ export class AccountComponent implements OnInit {
         this._loggingService.logBreadCrumb(
           AccountComponent.LOG_TAG + `successfully signed out.`
         );
+
+        DemoService.Demos = new ObservableArray<Demo>([]); // empty the current items
+
         this._zone.run(async () => {
-          DemoService.Demos.splice(0, DemoService.Demos.length); // empty the current items
           // go ahead and nav to login to keep UI moving without waiting
           this._routerExtensions.navigate(['/login'], {
             clearHistory: true
