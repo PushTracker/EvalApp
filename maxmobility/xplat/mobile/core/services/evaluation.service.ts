@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Response } from '@angular/http';
 import { Evaluation } from '@maxmobility/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 import { LoggingService } from './logging.service';

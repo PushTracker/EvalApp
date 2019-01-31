@@ -1,5 +1,4 @@
 import { Injectable, Inject } from '@angular/core';
-import { Response } from '@angular/http';
 import { Demo } from '@maxmobility/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
