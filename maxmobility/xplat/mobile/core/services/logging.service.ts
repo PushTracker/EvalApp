@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Sentry, SentryBreadcrumb, SentryOptions } from 'nativescript-sentry';
+import { Sentry, BreadCrumb, Level, MessageOptions } from 'nativescript-sentry';
 import { UserService } from './user.service';
 
 export class LoggingUtil {
@@ -15,21 +15,12 @@ export class LoggingService {
    * @param err
    */
   public logException(exception: Error) {
-    // console.log(exception);
-
-    // Sentry.setContextUser({
-    //   email: this._userService.user.email,
-    //   id: this._userService.user._id
-    // });
-
-    // const extras: SentryOptions = {
-    //   extra: {
-    //     user: {
-    //       email: this._userService.user.email,
-    //       id: this._userService.user._id
-    //     }
-    //   }
-    // };
+    if (this._userService && this._userService.user) {
+      Sentry.setContextUser({
+        email: this._userService.user.email,
+        id: this._userService.user._id
+      });
+    }
 
     // if error type
     if (exception instanceof Error) {
@@ -39,19 +30,25 @@ export class LoggingService {
     }
   }
 
-  public logMessage(message: string, options: SentryOptions = {}) {
+  public logMessage(message: string, options: MessageOptions = {}) {
+    if (this._userService && this._userService.user) {
+      Sentry.setContextUser({
+        email: this._userService.user.email,
+        id: this._userService.user._id
+      });
+    }
     Sentry.captureMessage(message, options);
   }
 
   public logBreadCrumb(
     message,
     category: LoggingCategory = LoggingCategory.Info,
-    data = {}
+    level: Level = Level.Info
   ) {
-    const breadcrumb: SentryBreadcrumb = {
+    const breadcrumb: BreadCrumb = {
       message,
       category,
-      data
+      level
     };
     Sentry.captureBreadcrumb(breadcrumb);
   }
