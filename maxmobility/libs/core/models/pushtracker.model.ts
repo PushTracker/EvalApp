@@ -2,7 +2,7 @@ import { bindingTypeToString, Packet } from '@maxmobility/core';
 import { BluetoothService } from '@maxmobility/mobile';
 import { Observable } from 'tns-core-modules/data/observable';
 import { isIOS } from 'tns-core-modules/platform';
-import { Color } from 'color';
+import { Color } from 'tns-core-modules/color';
 import * as timer from 'tns-core-modules/timer';
 
 enum OTAState {
