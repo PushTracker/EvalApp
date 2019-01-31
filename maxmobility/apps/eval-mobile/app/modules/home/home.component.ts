@@ -296,8 +296,8 @@ export class HomeComponent {
       case UserTypes.Clinician:
         actions = [
           this._translateService.instant('home.quick-actions.start-eval'),
-          this._translateService.instant('home.quick-actions.update'),
-          this._translateService.instant('home.quick-actions.request-demo')
+          this._translateService.instant('home.quick-actions.update')
+          // this._translateService.instant('home.quick-actions.request-demo')
         ];
         break;
       case UserTypes.Representative:
