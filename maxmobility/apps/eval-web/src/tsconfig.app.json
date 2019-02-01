@@ -1,9 +1,0 @@
-{
-	"extends": "../../../tsconfig.json",
-	"compilerOptions": {
-		"outDir": "../../../dist/out-tsc/apps/web-sp-viewer",
-		"module": "es2015"
-	},
-	"include": ["**/*.ts"],
-	"exclude": ["**/*.spec.ts"]
-}
