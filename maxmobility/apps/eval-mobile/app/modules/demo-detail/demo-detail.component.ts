@@ -15,7 +15,6 @@ import { BarcodeScanner } from 'nativescript-barcodescanner';
 import * as camera from 'nativescript-camera';
 import { Feedback } from 'nativescript-feedback';
 import * as geolocation from 'nativescript-geolocation';
-import * as app from 'tns-core-modules/application';
 import {
   ImageCropper,
   Result as ImageCropperResult
@@ -25,12 +24,13 @@ import { Mapbox } from 'nativescript-mapbox';
 import { Toasty } from 'nativescript-toasty';
 import { switchMap } from 'rxjs/operators';
 import { SmartEvalKeys } from 'smart-eval-kinvey';
+import * as app from 'tns-core-modules/application';
 import { ImageAsset } from 'tns-core-modules/image-asset/image-asset';
 import {
   fromBase64,
   ImageSource
 } from 'tns-core-modules/image-source/image-source';
-import { isIOS, isAndroid } from 'tns-core-modules/platform';
+import { isAndroid, isIOS } from 'tns-core-modules/platform';
 import { setTimeout } from 'tns-core-modules/timer';
 import { View } from 'tns-core-modules/ui/core/view';
 import { action, alert, confirm, prompt } from 'tns-core-modules/ui/dialogs';
@@ -200,11 +200,19 @@ export class DemoDetailComponent {
         this._loggingService.logBreadCrumb(
           DemoDetailComponent.LOG_TAG + `no serial number entered.`
         );
-        alert('You must enter a SmartDrive serial number!');
+        alert({
+          title: '',
+          message: this._translateService.instant(
+            'demo-detail.sd-serial-required'
+          ),
+          okButtonText: this._translateService.instant('dialogs.ok')
+        });
         return;
       }
 
-      this._progressService.show('Saving');
+      this._progressService.show(
+        this._translateService.instant('demo-detail.saving-demo')
+      );
 
       await this.demo.use();
 
@@ -251,9 +259,12 @@ export class DemoDetailComponent {
     this._barcodeScanner
       .scan({
         formats: 'QR_CODE, EAN_13',
-        cancelLabel: 'Cancel Scan', // iOS only
+        cancelLabel: this._translateService.instant('demo-detail.cancel-scan'), // iOS only
         cancelLabelBackgroundColor: '#333333', // iOS only
-        message: 'Scan a ' + (deviceName || 'SmartDrive or PushTracker'), // Android only
+        message: `${this._translateService.instant(
+          'demo-detail.scan-msg'
+        )} ${deviceName ||
+          this._translateService.instant('demo-detail.sd-or-pt')}`, // Android only
         showFlipCameraButton: true,
         preferFrontCamera: false,
         showTorchButton: true,
@@ -279,34 +290,44 @@ export class DemoDetailComponent {
 
   onEditSD() {
     prompt({
-      title: 'Enter Serial Number',
-      message: 'Please enter SmartDrive Serial Number',
-      okButtonText: 'Save',
-      cancelButtonText: 'Cancel'
+      title: this._translateService.instant('demo-detail.enter-serial-title'),
+      message: this._translateService.instant(
+        'demo-detail.enter-serial-message'
+      ),
+      okButtonText: this._translateService.instant('general.save'),
+      cancelButtonText: this._translateService.instant('dialogs.cancel')
     }).then(r => {
       try {
         this._handleSerial(r.text, ['smartdrive']);
       } catch (err) {
         this._loggingService.logException(err);
-        alert(`${r.text} is not a valid SmartDrive serial number!`);
+        alert({
+          title: '',
+          message: `${r.text} ${this._translateService.instant(
+            'demo-detail.invalid-sd-serial'
+          )}`,
+          okButtonText: this._translateService.instant('dialogs.ok')
+        });
       }
     });
   }
 
   onEditPT() {
     prompt({
-      title: 'Enter Serial Number',
-      message: 'Please enter PushTracker or Wristband Serial Number',
-      okButtonText: 'Save',
-      cancelButtonText: 'Cancel'
+      title: this._translateService.instant('demo-detail.enter-serial-title'),
+      message: this._translateService.instant('demo-detail.enter-pt-serial'),
+      okButtonText: this._translateService.instant('general.save'),
+      cancelButtonText: this._translateService.instant('dialogs.cancel')
     }).then(r => {
       try {
         this._handleSerial(r.text, ['pushtracker', 'wristband']);
       } catch (err) {
         this._loggingService.logException(err);
-        alert(
-          `${r.text} is not a valid PushTracker or Wristband serial number!`
-        );
+        alert({
+          title: '',
+          message: '',
+          okButtonText: this._translateService.instant('dialogs.ok')
+        });
       }
     });
   }
