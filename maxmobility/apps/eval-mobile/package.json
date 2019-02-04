@@ -100,6 +100,7 @@
     "@ngtools/webpack": "~7.2.0",
     "codelyzer": "file:../../node_modules/codelyzer",
     "nativescript-dev-webpack": "~0.19.1",
+    "nativescript-dev-typescript": "~0.7.9",
     "terser-webpack-plugin": "file:../../node_modules/terser-webpack-plugin",
     "tns-platform-declarations": "file:../../node_modules/tns-platform-declarations",
     "typescript": "file:../../node_modules/typescript"
