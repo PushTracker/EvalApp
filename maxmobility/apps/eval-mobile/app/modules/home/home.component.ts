@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, NgZone } from '@angular/core';
-import { Demo, User, UserTypes } from '@maxmobility/core';
+import { Demo, RouterExtService, User, UserTypes } from '@maxmobility/core';
 import {
   BluetoothService,
   DemoService,
@@ -105,12 +105,13 @@ export class HomeComponent {
     private _page: Page,
     private _zone: NgZone,
     private _routerExtensions: RouterExtensions,
+    private _routerExtService: RouterExtService, // importing so the service will be initialized
     private _logService: LoggingService,
     private _demoService: DemoService,
     private _firmwareService: FirmwareService,
     private _fileService: FileService,
     private _userService: UserService,
-    private _bluetoothService: BluetoothService,
+    private _bluetoothService: BluetoothService, // importing so the service will be initialized
     private _translateService: TranslateService
   ) {
     this._logService.logBreadCrumb(HomeComponent.LOG_TAG + `constructor.`);

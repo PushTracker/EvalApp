@@ -6,14 +6,14 @@ import {
   ViewChild
 } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
+import { RouterExtService } from '@maxmobility/core';
+import { LoggingService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { ToastDuration, Toasty } from 'nativescript-toasty';
 import { Subscription } from 'rxjs';
 import { isAndroid, isIOS } from 'tns-core-modules/platform';
 import { Page } from 'tns-core-modules/ui/page';
-import { RouterExtService } from '@maxmobility/core';
-import { LoggingService } from '@maxmobility/mobile';
 
 @Component({
   selector: 'Training',
@@ -35,7 +35,7 @@ export class TrainingComponent implements AfterViewInit, OnInit {
 
   constructor(
     private _page: Page,
-    private _routerExt: RouterExtService,
+    private _routerExtService: RouterExtService,
     private _router: Router,
     private routerExtensions: RouterExtensions,
     private translateService: TranslateService,
@@ -74,7 +74,7 @@ export class TrainingComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit() {
-    this.previousUrl = this._routerExt.getPreviousUrl();
+    this.previousUrl = this._routerExtService.getPreviousUrl();
   }
 
   ngAfterViewInit() {
