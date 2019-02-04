@@ -1,7 +1,5 @@
 @import '../../scss/variables';
 
-
-
 .topSlide {
   background-image: url('~/assets/images/background_1.jpg');
   background-repeat: no-repeat;
@@ -20,6 +18,12 @@
   background-color: $permobil-hero;
   border-color: transparent;
   border-width: 1;
+}
+
+.serial-number-label {
+  font-size: 13;
+  color: $white;
+  padding: 2 4;
 }
 
 .demo-btn {

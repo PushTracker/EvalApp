@@ -330,6 +330,7 @@
     "save": "Save",
     "update": "Update",
     "profile": "Profile",
+    "serial": "Serial",
     "camera-permission": "Camera Permission",
     "no-camera-permission-ios-confirm": "Smart Evaluation does not have permission to open your camera. Do you want to open the app settings to enable the camera?",
     "no-camera-permission-android": "Smart Evaluation does not have permission to open your camera. You can enable camera permission under the application in Settings on your device."

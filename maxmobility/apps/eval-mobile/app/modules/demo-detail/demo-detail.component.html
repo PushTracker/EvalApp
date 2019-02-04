@@ -82,11 +82,11 @@
     <StackLayout orientation="vertical" width="100%">
       // SmartDrive Serial
       <DockLayout stretchLastChild="true" margin="15, 10, 5, 0">
-        <label dock="left" text="&#xf072;" class="mdi demo-btn"></label>
+        <label dock="top" [text]="'general.serial' | translate" class="serial-number-label"></label>
         <button
           dock="left"
           (tap)="onScan('smartdrive')"
-          text="&#xf100;"
+          text="&#xf072;"
           class="mdi demo-btn orange-text"
         ></button>
         <button
@@ -110,11 +110,11 @@
         </StackLayout>
       -->
       <DockLayout stretchLastChild="true" margin="5, 10, 5, 0">
-        <label dock="left" text="&#xf072;" class="mdi demo-btn"></label>
+        <label dock="top" [text]="'general.serial' | translate" class="serial-number-label"></label>
         <button
           dock="left"
           (tap)="onScan('pushtracker')"
-          text="&#xf100;"
+          text="&#xf072;"
           class="mdi demo-btn orange-text"
         ></button>
         <button
