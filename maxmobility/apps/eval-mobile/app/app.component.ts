@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { User } from '@maxmobility/core';
 import { LoggingService, UserService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
@@ -10,6 +11,7 @@ import { Gif } from 'nativescript-gif';
 import { MapboxView } from 'nativescript-mapbox';
 import * as orientation from 'nativescript-orientation';
 import { Sentry } from 'nativescript-sentry';
+import { ToastDuration, ToastPosition, Toasty } from 'nativescript-toasty';
 import { SmartEvalKeys } from 'smart-eval-kinvey';
 import * as application from 'tns-core-modules/application';
 import {
@@ -17,9 +19,7 @@ import {
   startMonitoring,
   stopMonitoring
 } from 'tns-core-modules/connectivity';
-import { alert } from 'tns-core-modules/ui/dialogs/dialogs';
 import { APP_KEY, APP_SECRET } from './kinvey-keys';
-import { User } from '@maxmobility/core';
 
 // Register Custom Elements for Angular
 registerElement('Carousel', () => <any>Carousel);
@@ -95,6 +95,7 @@ export class AppComponent {
     application.on(
       application.resumeEvent,
       (args: application.ApplicationEventData) => {
+        // when app resumes we need to start the network monitor
         this._startNetworkMonitor();
 
         // check if we have a current user logged in and set their language for translation
@@ -137,10 +138,12 @@ export class AppComponent {
     startMonitoring(newConnectionType => {
       switch (newConnectionType) {
         case connectionType.none:
-          alert({
-            message: this._translateService.instant('general.no-connection'),
-            okButtonText: 'Okay'
-          });
+          // show a toast with network info
+          new Toasty(
+            this._translateService.instant('general.no-connection'),
+            ToastDuration.LONG,
+            ToastPosition.CENTER
+          ).show();
           break;
         case connectionType.wifi:
           return;
