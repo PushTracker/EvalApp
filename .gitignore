@@ -116,6 +116,7 @@ maxmobility/nativescript-bluetooth/**/*.js
 !maxmobility/libs/core/packet_bindings.js
 
 !maxmobility/apps/eval-mobile/plugins/swift-fix/**
+!maxmobility/apps/eval-mobile/webpack.config.js
 
 
 # keystore, certs, executables
