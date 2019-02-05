@@ -1,30 +1,47 @@
 {
-  "compilerOptions": {
-    "module": "commonjs",
-    "target": "es2015",
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "noEmitHelpers": true,
-    "noEmitOnError": true,
-    "removeComments": true,
-    "skipLibCheck": true,
-    "noImplicitUseStrict": true,
-    "declaration": false,
-    "lib": ["es2017", "dom", "webworker", "es6", "es2015.iterable"],
-    "baseUrl": ".",
-    "paths": {
-      "~/*": ["app/*"],
-      "@maxmobility/*": ["../../libs/*"],
-      "@maxmobility/mobile": ["../../xplat/mobile/index.ts"],
-      "@maxmobility/mobile/*": ["../../xplat/mobile/*"],
-      "*": ["./node_modules/tns-core-modules/*", "./node_modules/*"]
-    }
-  },
-  "include": [
-    "references.d.ts",
-    "app/app.module.ngfactory.d.ts",
-    "app/main.ts",
-    "app/**/*.module.ts"
-  ],
-  "compileOnSave": false
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es2015",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "noEmitHelpers": true,
+        "noEmitOnError": false,
+        "removeComments": true,
+        "skipLibCheck": true,
+        "noImplicitUseStrict": true,
+        "declaration": false,
+        "lib": [
+            "es2017",
+            "dom",
+            "webworker",
+            "es6",
+            "es2015.iterable"
+        ],
+        "baseUrl": ".",
+        "paths": {
+            "~/*": [
+                "app/*"
+            ],
+            "@maxmobility/*": [
+                "../../libs/*"
+            ],
+            "@maxmobility/mobile": [
+                "../../xplat/mobile/index.ts"
+            ],
+            "@maxmobility/mobile/*": [
+                "../../xplat/mobile/*"
+            ],
+            "*": [
+                "./node_modules/tns-core-modules/*",
+                "./node_modules/*"
+            ]
+        }
+    },
+    "include": [
+        "references.d.ts",
+        "app/app.module.ngfactory.d.ts",
+        "app/main.ts",
+        "app/**/*.module.ts"
+    ],
+    "compileOnSave": false
 }
