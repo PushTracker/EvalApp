@@ -8,6 +8,9 @@
     "id": "com.permobil.smarteval",
     "tns-android": {
       "version": "5.1.0"
+    },
+    "tns-ios": {
+      "version": "5.1.1"
     }
   },
   "scripts": {
@@ -91,7 +94,6 @@
     "rxjs-compat": "file:../../node_modules/rxjs-compat",
     "smart-eval-kinvey": "git+https://github.com/autochair/SmartEvalKinvey.git#master",
     "tns-core-modules": "file:../../node_modules/tns-core-modules",
-    "tns-core-modules-widgets": "file:../../node_modules/tns-core-modules-widgets",
     "zone.js": "file:../../node_modules/zone.js"
   },
   "devDependencies": {
