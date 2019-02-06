@@ -3,8 +3,8 @@
 @import '../../scss/common';
 
 .account-layout {
-    horizontal-align: center;
-    width: 100%;
+  horizontal-align: center;
+  width: 100%;
 }
 
 .action-item {
@@ -47,16 +47,6 @@
   margin: 15;
 }
 
-.acct-btn {
-  height: auto;
-  width: auto;
-  background-color: $permobil-ocean;
-  margin: 5 15 5 15;
-  color: $white;
-  font-size: 15;
-  font-weight: 300;
-}
-
 .error {
   font-size: 15;
   font-weight: 300;
@@ -65,33 +55,33 @@
 }
 
 .account-dock {
-    margin: 10, 20;
+  margin: 10, 20;
 }
 
 .consent {
-    color: $white;
-    font-size: 15;
-    width: 70%;
-    vertical-align: center;
-    text-align: left;
+  color: $white;
+  font-size: 15;
+  width: 70%;
+  vertical-align: center;
+  text-align: left;
 }
 
 .label {
-    color: $white;
-    padding: 5;
-    margin: 10 20;
-    font-size: 18;
-    vertical-align: center;
-    text-align: left;
+  color: $white;
+  padding: 5;
+  margin: 10 20;
+  font-size: 18;
+  vertical-align: center;
+  text-align: left;
 }
 
 .dropdown {
-    background-color: $permobil-hero;
-    placeholder-color: rgba(250, 250, 250, 0.5);
-    color: $white;
-    border-radius: 2;
-    padding: 5;
-    margin: 10 20;
-    vertical-align: center;
-    text-align: right;
+  background-color: $permobil-hero;
+  placeholder-color: rgba(250, 250, 250, 0.5);
+  color: $white;
+  border-radius: 2;
+  padding: 5;
+  margin: 10 20;
+  vertical-align: center;
+  text-align: right;
 }

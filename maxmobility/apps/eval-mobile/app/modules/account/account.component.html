@@ -99,22 +99,22 @@
       <Switch dock="right" [(ngModel)]="user.data.consent_to_research"></Switch>
     </DockLayout>
     <button
-      class="acct-btn "
+      class="permobil-ocean-btn"
       [text]="'user.change-pass' | translate"
       (tap)="onChangePasswordTap()"
     ></button>
     <button
-      class="acct-btn"
+      class="permobil-ocean-btn"
       [text]="'user.reset-acct' | translate"
       (tap)="onResetAccountTap()"
     ></button>
     <button
-      class="acct-btn"
+      class="permobil-ocean-btn"
       [text]="'user.sign-out' | translate"
       (tap)="onSignOutTap()"
     ></button>
     <button
-      class="acct-btn"
+      class="permobil-ocean-btn"
       [text]="'user.provide-feedback-btn' | translate"
       (tap)="onFeedbackTap()"
     ></button>
@@ -122,7 +122,7 @@
     <Label [text]="appVersionData" class="label" textWrap="true"></Label>
 
     <!--
-      <Button class="acct-btn"
+      <Button class="permobil-ocean-btn"
          text="Debug Menu"
          (tap)="onDebugMenuTap()"></Button>
     -->
@@ -155,7 +155,11 @@
           (selectedIndexChanged)="onUserTypeChanged($event)"
         ></DropDown>
       </GridLayout>
-      <button class="acct-btn" text="Debug" (tap)="onDebugMenuTap()"></button>
+      <button
+        class="permobil-ocean-btn"
+        text="Debug"
+        (tap)="onDebugMenuTap()"
+      ></button>
       <GridLayout rows="auto" columns="auto, *">
         <label
           col="0"
