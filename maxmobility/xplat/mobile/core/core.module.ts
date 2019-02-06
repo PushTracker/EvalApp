@@ -6,7 +6,6 @@ import { NativeScriptCommonModule } from 'nativescript-angular/common';
 import { NativeScriptFormsModule } from 'nativescript-angular/forms';
 import { NativeScriptRouterModule } from 'nativescript-angular/router';
 import { LoadingIndicator } from 'nativescript-loading-indicator';
-// import { TNSFontIconModule } from 'nativescript-ngx-fonticon';
 import { NativeScriptUIListViewModule } from 'nativescript-ui-listview/angular';
 import { device } from 'tns-core-modules/platform';
 import { PROVIDERS } from './services';
@@ -30,7 +29,6 @@ const MODULES = [
   NativeScriptRouterModule,
   NativeScriptUIListViewModule,
   TranslateModule
-  // TNSFontIconModule
 ];
 
 @NgModule({
