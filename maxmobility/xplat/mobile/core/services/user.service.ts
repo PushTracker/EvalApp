@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { User } from '@maxmobility/core';
 import * as Kinvey from 'kinvey-nativescript-sdk';
 import { Push } from 'kinvey-nativescript-sdk/push';
 import { Feedback } from 'nativescript-feedback';
@@ -17,14 +16,6 @@ export class UserService {
    */
   get user() {
     return Kinvey.User.getActiveUser();
-  }
-
-  register(user: User) {
-    return Kinvey.User.signup(user);
-  }
-
-  isUsernameTaken(username: string) {
-    return Kinvey.User.exists(username);
   }
 
   /**
@@ -54,10 +45,6 @@ export class UserService {
         resolve(false);
       }
     });
-  }
-
-  resetPassword(email: string) {
-    return Kinvey.User.resetPassword(email);
   }
 
   uploadImage(remoteFullPath: string, localFullPath: string): Promise<any> {

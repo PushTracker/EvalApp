@@ -48,7 +48,7 @@
     <label
       [text]="firstNameError"
       class="text-white error"
-	   *ngIf="firstNameError"
+      *ngIf="firstNameError"
       textWrap="true"
     ></label>
     <TextField
@@ -62,23 +62,23 @@
     ></TextField>
     <label
       [text]="lastNameError"
-       class="text-white error"
-	   *ngIf="lastNameError"
+      class="text-white error"
+      *ngIf="lastNameError"
       textWrap="true"
     ></label>
     <TextField
-	   [text]="user.email"
+      [text]="user.email"
       class="text-field"
       [hint]="'user.email' | translate"
       keyboardType="email"
       autocorrect="false"
-       autocapitalizationType="none"
-	   (textChange)="onEmailTextChange($event)"
+      autocapitalizationType="none"
+      (textChange)="onEmailTextChange($event)"
     ></TextField>
     <label
       [text]="emailError"
-       class="text-white error"
-	   *ngIf="emailError"
+      class="text-white error"
+      *ngIf="emailError"
       textWrap="true"
     ></label>
     <TextField
@@ -93,7 +93,7 @@
     <label
       [text]="passwordError"
       class="text-white error"
-	   *ngIf="passwordError"
+      *ngIf="passwordError"
       textWrap="true"
     ></label>
     <button

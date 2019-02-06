@@ -8,6 +8,7 @@ import {
 } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { validate } from 'email-validator';
+import { User as KinveyUser } from 'kinvey-nativescript-sdk';
 import { ModalDialogService } from 'nativescript-angular/directives/dialogs';
 import { RouterExtensions } from 'nativescript-angular/router';
 import {
@@ -173,6 +174,12 @@ export class SignUpComponent implements OnInit {
       });
     }
 
+    // trim all the strings on user object
+    this.user.first_name = this.user.first_name.trim();
+    this.user.last_name = this.user.last_name.trim();
+    this.user.email = this.user.email.trim();
+    this.user.password = this.user.password.trim();
+    this.user.phone_number = this.user.phone_number.trim();
     this.user.username = this.user.email.toLowerCase().trim();
 
     // TODO: need to show privacy / user agreement forms here - the
@@ -189,39 +196,35 @@ export class SignUpComponent implements OnInit {
     );
 
     // need to make sure the username is not already taken
-    this._userService
-      .isUsernameTaken(this.user.username)
-      .then(res => {
+    KinveyUser.exists(this.user.username)
+      .then(async res => {
         this._logService.logBreadCrumb(
-          SignUpComponent.LOG_TAG + `isUsernameTaken() res: ${res}`
+          SignUpComponent.LOG_TAG + `KinveyUser.exists() res: ${res}`
         );
 
         // now create the account
-        return this._userService
-          .register(this.user)
-          .then(user => {
-            this._progressService.hide();
-            alert({
-              title: this._translateService.instant('user.success'),
-              message:
-                this._translateService.instant('user.sign-up-success') +
-                ` ${user.email}`,
-              okButtonText: this.ok
-            }).then(() => {
-              this._router.navigate(['/home'], { clearHistory: true });
-            });
-          })
-          .catch(err => {
-            console.log('ERR', err);
-            this._progressService.hide();
-            this._logService.logException(err);
-            alert({
-              title: this._translateService.instant('user.error'),
-              message:
-                this._translateService.instant('user.sign-up-error') + err,
-              okButtonText: this.ok
-            });
+        try {
+          const user = await KinveyUser.signup(this.user);
+          this._progressService.hide();
+          alert({
+            title: this._translateService.instant('user.success'),
+            message:
+              this._translateService.instant('user.sign-up-success') +
+              ` ${user.email}`,
+            okButtonText: this.ok
+          }).then(() => {
+            this._router.navigate(['/home'], { clearHistory: true });
           });
+        } catch (err) {
+          console.log('ERR', err);
+          this._progressService.hide();
+          this._logService.logException(err);
+          alert({
+            title: this._translateService.instant('user.error'),
+            message: this._translateService.instant('user.sign-up-error') + err,
+            okButtonText: this.ok
+          });
+        }
       })
       .catch(err => {
         this._progressService.hide();

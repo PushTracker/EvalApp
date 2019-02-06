@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import {
+  LoggingService,
   preventKeyboardFromShowing,
   ProgressService,
-  UserService,
-  LoggingService
+  UserService
 } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { validate } from 'email-validator';
+import { User as KinveyUser } from 'kinvey-nativescript-sdk';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { PropertyChangeData } from 'tns-core-modules/data/observable';
 import { alert } from 'tns-core-modules/ui/dialogs';
@@ -23,18 +24,6 @@ export class ForgotPasswordComponent implements OnInit {
   private static LOG_TAG = 'forgot-password.component ';
   email = '';
   emailError = '';
-
-  error: string = this._translateService.instant('user.error');
-  ok: string = this._translateService.instant('dialogs.ok');
-  submitting: string = this._translateService.instant('user.submitting');
-  success: string = this._translateService.instant('user.success');
-  account_error: string = this._translateService.instant('user.account-error');
-  email_error: string = this._translateService.instant('user.email-error');
-  check_email: string = this._translateService.instant('user.check-email');
-  email_required: string = this._translateService.instant(
-    'user.email-required'
-  );
-  email_sent: string = this._translateService.instant('user.email-sent');
 
   constructor(
     private _routerExtensions: RouterExtensions,
@@ -72,28 +61,30 @@ export class ForgotPasswordComponent implements OnInit {
   onSubmitTap() {
     // validate the email
     if (!this.email) {
-      this.emailError = this.email_required;
+      this.emailError = this._translateService.instant('user.email-required');
       return;
     }
     // make sure it's a valid email
     const em = this.email.trim();
     if (!validate(em)) {
-      this.emailError = `"${em} "` + this.email_error;
+      this.emailError =
+        `"${em} "` + this._translateService.instant('user.email-error');
       return;
     }
 
     this.emailError = '';
 
-    this._progressService.show(this.submitting);
+    this._progressService.show(
+      this._translateService.instant('user.submitting')
+    );
 
-    this._userService
-      .resetPassword(this.email)
+    KinveyUser.resetPassword(this.email)
       .then(resp => {
         this._progressService.hide();
         alert({
-          title: this.email_sent,
-          message: this.check_email,
-          okButtonText: this.ok
+          title: this._translateService.instant('user.email-sent'),
+          message: this._translateService.instant('user.check-email'),
+          okButtonText: this._translateService.instant('dialogs.ok')
         }).then(() => {
           this._routerExtensions.navigate(['/login'], {
             transition: {
@@ -106,9 +97,9 @@ export class ForgotPasswordComponent implements OnInit {
         this._logService.logException(err);
         this._progressService.hide();
         alert({
-          title: this.error,
-          message: this.account_error,
-          okButtonText: this.ok
+          title: this._translateService.instant('user.error'),
+          message: this._translateService.instant('user.account-error'),
+          okButtonText: this._translateService.instant('dialogs.ok')
         });
       });
   }
@@ -116,7 +107,9 @@ export class ForgotPasswordComponent implements OnInit {
   onEmailTextChange(args: PropertyChangeData) {
     // make sure it's a valid email
     const em = this.email.trim();
-    this.emailError = !validate(em) ? `"${em}" ` + this.email_error : '';
+    this.emailError = !validate(em)
+      ? `"${em}" ` + this._translateService.instant('user.email-error')
+      : '';
   }
 
   navToLogin() {
