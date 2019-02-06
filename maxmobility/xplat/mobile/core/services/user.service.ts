@@ -27,10 +27,6 @@ export class UserService {
     return Kinvey.User.exists(username);
   }
 
-  login(username: string, pw: string) {
-    return Kinvey.User.login(username.trim(), pw.trim());
-  }
-
   /**
    * Unregister for push notifications so the device doesn't receive any after signing out.
    * Then logout the Kinvey User.
