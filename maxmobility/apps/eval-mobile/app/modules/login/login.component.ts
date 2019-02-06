@@ -15,7 +15,7 @@ import { Button } from 'tns-core-modules/ui/button';
 import { alert } from 'tns-core-modules/ui/dialogs';
 import { EventData, Page } from 'tns-core-modules/ui/page';
 import { TextField } from 'tns-core-modules/ui/text-field/text-field';
-import { setMarginForIosSafeArea } from '~/utils';
+import { isIosSimulator, setMarginForIosSafeArea } from '~/utils';
 
 @Component({
   selector: 'Login',
@@ -68,15 +68,25 @@ export class LoginComponent implements OnInit {
         this._translateService.instant('user.signing-in')
       );
 
-      // now try logging in with Kinvey user account
       this._logService.logBreadCrumb(
         LoginComponent.LOG_TAG +
           `Signing in ${this.user.email} - ${this.user.password}`
       );
-      await this._userService.login(this.user.email, this.user.password);
+
+      // login with Kinvey
+      await Kinvey.User.login(
+        this.user.email.trim(),
+        this.user.password.trim()
+      );
       this._progressService.hide();
 
-      await this._userService._registerForPushNotifications();
+      // should have active user at this point and ask to register push notifications
+      if (Kinvey.User.getActiveUser()) {
+        // if on android or not on iOS Simulator register the device for push
+        if (isAndroid || (isIOS && !isIosSimulator())) {
+          await this._userService._registerForPushNotifications();
+        }
+      }
 
       this._zone.run(() => {
         this._routerExtensions.navigate(['/home'], {
