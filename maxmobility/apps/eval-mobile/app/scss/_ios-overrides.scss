@@ -22,3 +22,12 @@ Switch[checked='false'] {
   color: #fff;
   background-color: $permobil-hero;
 }
+
+button {
+  border-radius: 4;
+  min-height: 36;
+  min-width: 64;
+  padding: 10 10 10 10;
+  font-size: 18;
+  margin: 8 16 8 16;
+}
