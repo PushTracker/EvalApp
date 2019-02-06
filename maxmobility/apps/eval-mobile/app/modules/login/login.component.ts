@@ -9,13 +9,13 @@ import { TranslateService } from '@ngx-translate/core';
 import { validate } from 'email-validator';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 import { RouterExtensions } from 'nativescript-angular/router';
-import { alert } from 'tns-core-modules/ui/dialogs';
+import { ToastDuration, ToastPosition, Toasty } from 'nativescript-toasty';
 import { isAndroid, isIOS } from 'tns-core-modules/platform';
-import { Page, EventData } from 'tns-core-modules/ui/page';
 import { Button } from 'tns-core-modules/ui/button';
-import { setMarginForIosSafeArea } from '~/utils';
+import { alert } from 'tns-core-modules/ui/dialogs';
+import { EventData, Page } from 'tns-core-modules/ui/page';
 import { TextField } from 'tns-core-modules/ui/text-field/text-field';
-import { Toasty, ToastDuration, ToastPosition } from 'nativescript-toasty';
+import { setMarginForIosSafeArea } from '~/utils';
 
 @Component({
   selector: 'Login',
