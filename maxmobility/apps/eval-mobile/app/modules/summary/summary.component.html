@@ -1,5 +1,4 @@
-<MaxActionBar [title]="'menu.summary' | translate">
-</MaxActionBar>
+<MaxActionBar [title]="'menu.summary' | translate"> </MaxActionBar>
 
 <GridLayout rows="auto, *, auto" cols="*">
   <StackLayout class="topSlide" height="20%" width="100%">
@@ -136,12 +135,14 @@
       <StackLayout orientation="horizontal" horizontalAlignment="center">
         <button
           [text]="'summary.add-trial' | translate"
-          class="back-button"
+          class="permobil-hero-btn"
+          width="45%"
           (tap)="onBack()"
         ></button>
         <button
           [text]="'general.complete' | translate"
-          class="start-button"
+          class="permobil-ocean-btn"
+          width="45%"
           (tap)="onComplete()"
         ></button>
       </StackLayout>
