@@ -1,5 +1,4 @@
-<MaxActionBar [title]="'trial.title' | translate">
-</MaxActionBar>
+<MaxActionBar [title]="'trial.title' | translate"> </MaxActionBar>
 
 <GridLayout iosOverflowSafeArea="true">
   <Carousel
@@ -262,7 +261,7 @@
             -->
             <button
               [text]="'buttons.next' | translate"
-              class="start-button"
+              class="permobil-ocean-btn"
               (tap)="goToNextSlide($event)"
             ></button>
           </StackLayout>
@@ -320,25 +319,25 @@
             <button
               #startWith
               [text]="'trial.start' | translate"
-              class="start-button"
+              class="permobil-ocean-btn"
               (tap)="onStartWithTrial($event)"
             ></button>
             <button
               #stopWith
               [text]="'trial.stop' | translate"
-              class="start-button"
+              class="permobil-ocean-btn"
               (tap)="onStopWithTrial($event)"
             ></button>
             <button
               #cannotCompleteWith
               [text]="'trial.unable' | translate"
-              class="start-button"
+              class="permobil-ocean-btn"
               (tap)="onCannotCompleteWith($event)"
             ></button>
             <button
               #nextWith
               [text]="'buttons.next' | translate"
-              class="start-button"
+              class="permobil-ocean-btn"
               (tap)="goToNextSlide($event)"
             ></button>
 
@@ -458,27 +457,27 @@
               #startWithout
               row="2"
               [text]="'trial.start' | translate"
-              class="start-button"
+              class="permobil-ocean-btn"
               (tap)="onStartWithoutTrial($event)"
             ></button>
             <button
               #stopWithout
               row="2"
               [text]="'trial.stop' | translate"
-              class="start-button"
+              class="permobil-ocean-btn"
               (tap)="onStopWithoutTrial($event)"
             ></button>
             <button
               #cannotCompleteWithout
               [text]="'trial.unable' | translate"
-              class="start-button"
+              class="permobil-ocean-btn"
               (tap)="onCannotCompleteWithout($event)"
             ></button>
             <button
               #nextWithout
               row="2"
               [text]="'buttons.next' | translate"
-              class="start-button"
+              class="permobil-ocean-btn"
               (tap)="goToNextSlide($event)"
             ></button>
 
@@ -727,7 +726,7 @@
               <button
                 row="2"
                 [text]="'trial.summary' | translate"
-                class="start-button"
+                class="permobil-ocean-btn"
                 (tap)="onSummaryTap()"
               ></button>
             </StackLayout>
