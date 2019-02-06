@@ -1,5 +1,4 @@
-<MaxActionBar [title]="'menu.training' | translate">
-</MaxActionBar>
+<MaxActionBar [title]="'menu.training' | translate"> </MaxActionBar>
 
 <GridLayout iosOverflowSafeArea="true">
   <Carousel
@@ -55,7 +54,8 @@
                 slides.indexOf(slide) == slides.length - 1 &&
                 previousUrl == '/eval-entry'
               "
-              class="next-button"
+              class="permobil-ocean-btn"
+              width="45%"
               [text]="'buttons.next' | translate"
               (tap)="onNext()"
             ></button>
