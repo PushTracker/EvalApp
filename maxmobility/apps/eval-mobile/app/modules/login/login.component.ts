@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
     preventKeyboardFromShowing();
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this._page.actionBarHidden = true;
     this._page.backgroundSpanUnderStatusBar = true;
     setMarginForIosSafeArea(this._page);
@@ -159,7 +159,7 @@ export class LoginComponent implements OnInit {
   onEmailTextFieldLoaded(args: EventData) {
     if (isAndroid) {
       const tf = (args.object as TextField).android as android.widget.EditText;
-      tf.setId((android.R.id as any).login_email_textfield);
+      tf.setId((com as any).permobil.smarteval.R.id.login_email_textfield);
     } else if (isIOS) {
       const btn = (args.object as Button).ios as UIButton;
       btn.tag = 542561567;
@@ -169,7 +169,7 @@ export class LoginComponent implements OnInit {
   onPasswordTextFieldLoaded(args: EventData) {
     if (isAndroid) {
       const tf = (args.object as TextField).android as android.widget.EditText;
-      tf.setId((android.R.id as any).login_password_textfield);
+      tf.setId((com as any).permobil.smarteval.R.id.login_password_textfield);
     } else if (isIOS) {
       const btn = (args.object as Button).ios as UIButton;
       btn.tag = 542561573;
@@ -179,7 +179,7 @@ export class LoginComponent implements OnInit {
   onSubmitButtonLoaded(args: EventData) {
     if (isAndroid) {
       const btn = (args.object as Button).android as android.widget.Button;
-      btn.setId((android.R.id as any).login_submit_button);
+      btn.setId((com as any).permobil.smarteval.R.id.login_submit_button);
     } else if (isIOS) {
       const btn = (args.object as Button).ios as UIButton;
       btn.tag = 542561588;
