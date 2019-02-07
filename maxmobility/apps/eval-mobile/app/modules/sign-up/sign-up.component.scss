@@ -1,11 +1,5 @@
 @import '../../scss/variables';
 
-// Custom common variables
-.submit {
-  height: 40;
-  margin: 20;
-}
-
 .label {
   color: $white;
   padding: 5;
@@ -29,6 +23,6 @@
 .error {
   font-size: 15;
   font-weight: 300;
-  color: $permobil-orange;
+  color: $white;
   margin: 5, 20, 5, 35;
 }

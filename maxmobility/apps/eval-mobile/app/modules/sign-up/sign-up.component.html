@@ -47,7 +47,7 @@
     ></TextField>
     <label
       [text]="firstNameError"
-      class="text-white error"
+      class="error"
       *ngIf="firstNameError"
       textWrap="true"
     ></label>
@@ -62,7 +62,7 @@
     ></TextField>
     <label
       [text]="lastNameError"
-      class="text-white error"
+      class="error"
       *ngIf="lastNameError"
       textWrap="true"
     ></label>
@@ -77,7 +77,7 @@
     ></TextField>
     <label
       [text]="emailError"
-      class="text-white error"
+      class="error"
       *ngIf="emailError"
       textWrap="true"
     ></label>
@@ -92,13 +92,14 @@
     ></TextField>
     <label
       [text]="passwordError"
-      class="text-white error"
+      class="error"
       *ngIf="passwordError"
       textWrap="true"
     ></label>
     <button
       [text]="'user.sign-up' | translate"
-      class="permobil-ocean-btn submit"
+      class="permobil-ocean-btn"
+      marginTop="15"
       (tap)="onSubmitTap()"
     ></button>
     <button
