@@ -1,6 +1,6 @@
 import { Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { DidYouKnow, User, UserTypes, Demo } from '@maxmobility/core';
+import { Demo, DidYouKnow, User, UserTypes } from '@maxmobility/core';
 import {
   DemoService,
   FileService,
@@ -10,6 +10,7 @@ import {
 import { TranslateService } from '@ngx-translate/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 import { RouterExtensions } from 'nativescript-angular/router';
+import * as appversion from 'nativescript-appversion';
 import * as camera from 'nativescript-camera';
 import {
   SelectedIndexChangedEventData,
@@ -23,6 +24,7 @@ import {
 import * as LS from 'nativescript-localstorage';
 import { ToastDuration, ToastPosition, Toasty } from 'nativescript-toasty';
 import { Subscription } from 'rxjs';
+import { ObservableArray } from 'tns-core-modules/data/observable-array';
 import * as http from 'tns-core-modules/http';
 import { ImageAsset } from 'tns-core-modules/image-asset/image-asset';
 import {
@@ -33,9 +35,7 @@ import { isIOS } from 'tns-core-modules/platform';
 import { alert, confirm, prompt } from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
 import * as utils from 'tns-core-modules/utils/utils';
-import * as appversion from 'nativescript-appversion';
-import { APP_KEY, HOST_URL } from '~/kinvey-keys';
-import { ObservableArray } from 'tns-core-modules/data/observable-array';
+import { APP_KEY, HOST_URL } from '../../kinvey-keys';
 
 @Component({
   selector: 'Account',
