@@ -8,7 +8,11 @@ import { AccountComponent } from './account.component';
 const routes: Routes = [{ path: '', component: AccountComponent }];
 
 @NgModule({
-  imports: [NativeScriptRouterModule.forChild(routes), SharedModule, TranslateModule],
+  imports: [
+    NativeScriptRouterModule.forChild(routes),
+    SharedModule,
+    TranslateModule
+  ],
   declarations: [AccountComponent],
   schemas: [NO_ERRORS_SCHEMA]
 })
