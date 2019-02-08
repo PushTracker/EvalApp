@@ -144,7 +144,7 @@ export class ActionbarComponent extends ActionBar {
       } else if (this.status === PushTrackerState.ready) {
         this.imgSrc = '~/assets/images/pt_conn_green.png';
       } else {
-        this.imgSrc = '~/Assets/Images/pt_conn_red.png';
+        this.imgSrc = '~/assets/Images/pt_conn_red.png';
       }
     });
   }
