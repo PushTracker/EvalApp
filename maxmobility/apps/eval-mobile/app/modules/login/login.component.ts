@@ -19,6 +19,7 @@ import { isIosSimulator, setMarginForIosSafeArea } from '../../utils';
 
 @Component({
   selector: 'Login',
+  moduleId: module.id,
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
