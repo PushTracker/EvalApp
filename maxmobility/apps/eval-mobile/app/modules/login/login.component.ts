@@ -15,11 +15,10 @@ import { Button } from 'tns-core-modules/ui/button';
 import { alert } from 'tns-core-modules/ui/dialogs';
 import { EventData, Page } from 'tns-core-modules/ui/page';
 import { TextField } from 'tns-core-modules/ui/text-field/text-field';
-import { isIosSimulator, setMarginForIosSafeArea } from '~/utils';
+import { isIosSimulator, setMarginForIosSafeArea } from '../../utils';
 
 @Component({
   selector: 'Login',
-  moduleId: module.id,
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
