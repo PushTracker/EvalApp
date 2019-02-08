@@ -673,7 +673,10 @@ export class BluetoothService {
     }
   }
 
-  private _mergePushTrackerState(s1, s2): PushTrackerState {
+  private _mergePushTrackerState(
+    s1: PushTrackerState,
+    s2: PushTrackerState
+  ): PushTrackerState {
     if (s1 == PushTrackerState.ready || s2 == PushTrackerState.ready) {
       return PushTrackerState.ready;
     } else if (
@@ -698,33 +701,39 @@ export class BluetoothService {
       STORAGE_KEYS.HAS_PAIRED_TO_PUSHTRACKER,
       false
     );
+
     let defaultState = hasPaired
       ? PushTrackerState.disconnected
       : PushTrackerState.unknown;
+
     let state = BluetoothService.PushTrackers.reduce((state, pt) => {
       if (pt && pt.connected) {
         if (pt.version !== 0xff) {
-          state = this._mergePushTrackerState(state, PushTrackerState.ready);
+          state = <any>(
+            this._mergePushTrackerState(state, PushTrackerState.ready)
+          );
         } else {
-          state = this._mergePushTrackerState(
-            state,
-            PushTrackerState.connected
+          state = <any>(
+            this._mergePushTrackerState(state, PushTrackerState.connected)
           );
         }
         // setting true so we know the user has connected to a PT previously
         appSettings.setBoolean(STORAGE_KEYS.HAS_PAIRED_TO_PUSHTRACKER, true);
       } else if (pt && pt.paired) {
-        state = this._mergePushTrackerState(
-          state,
-          PushTrackerState.disconnected
+        state = <any>(
+          this._mergePushTrackerState(state, PushTrackerState.disconnected)
         );
 
         // setting true so we know the user has connected to a PT previously
         appSettings.setBoolean(STORAGE_KEYS.HAS_PAIRED_TO_PUSHTRACKER, true);
       } else if (pt) {
-        state = this._mergePushTrackerState(state, PushTrackerState.unknown);
+        state = <any>(
+          this._mergePushTrackerState(state, PushTrackerState.unknown)
+        );
       } else {
-        state = this._mergePushTrackerState(state, PushTrackerState.unknown);
+        state = <any>(
+          this._mergePushTrackerState(state, PushTrackerState.unknown)
+        );
       }
       return state;
     }, defaultState);
