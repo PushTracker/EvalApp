@@ -8,7 +8,7 @@ import { Page } from 'tns-core-modules/ui/page';
   selector: 'Videos',
   moduleId: module.id,
   templateUrl: './videos.component.html',
-  styleUrls: ['./videos.component.css']
+  styleUrls: ['./videos.component.scss']
 })
 export class VideosComponent {
   videos = this._translateService.instant('videos');

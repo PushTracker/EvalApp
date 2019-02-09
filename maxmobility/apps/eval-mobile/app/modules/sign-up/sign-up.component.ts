@@ -24,7 +24,7 @@ import { PrivacyPolicyComponent } from '../../privacy-policy';
   selector: 'eval-login',
   moduleId: module.id,
   templateUrl: './sign-up.component.html',
-  styleUrls: ['./sign-up.component.css']
+  styleUrls: ['./sign-up.component.scss']
 })
 export class SignUpComponent implements OnInit {
   private static LOG_TAG = 'sign-up.component ';

@@ -18,7 +18,7 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const {
   NativeScriptWorkerPlugin
 } = require('nativescript-worker-loader/NativeScriptWorkerPlugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const { AngularCompilerPlugin } = require('@ngtools/webpack');
 
 module.exports = env => {
@@ -46,8 +46,8 @@ module.exports = env => {
     // The 'appPath' and 'appResourcesPath' values are fetched from
     // the nsconfig.json configuration file
     // when bundling with `tns run android|ios --bundle`.
-    appPath = 'src',
-    appResourcesPath = 'App_Resources',
+    appPath = 'app',
+    appResourcesPath = 'app/App_Resources',
 
     // You can provide the following flags when running 'tns run android|ios'
     aot, // --env.aot
@@ -98,7 +98,7 @@ module.exports = env => {
       t(() => ngCompilerPlugin)
     ),
     mainPath: resolve(appPath, entryModule),
-    tsConfigPath: join(__dirname, 'tsconfig.tns.json'),
+    tsConfigPath: join(__dirname, 'tsconfig.json'),
     skipCodeGeneration: !aot,
     sourceMap: !!sourceMap,
     additionalLazyModuleResources: additionalLazyModuleResources
@@ -173,10 +173,10 @@ module.exports = env => {
       },
       minimize: !!uglify,
       minimizer: [
-        new UglifyJsPlugin({
+        new TerserPlugin({
           parallel: true,
           cache: true,
-          uglifyOptions: {
+          terserOptions: {
             output: {
               comments: false
             },
@@ -184,8 +184,17 @@ module.exports = env => {
               // The Android SBG has problems parsing the output
               // when these options are enabled
               collapse_vars: platform !== 'android',
-              sequences: platform !== 'android'
-            }
+              sequences: platform !== 'android',
+              // custom
+              drop_console: true,
+              drop_debugger: true,
+              ecma: 6,
+              keep_infinity: platform === 'android', // for Chrome/V8
+              reduce_funcs: platform !== 'android', // for Chrome/V8
+            },
+            // custom
+            ecma: 6,
+            safari10: platform !== 'android',
           }
         })
       ]

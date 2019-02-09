@@ -18,7 +18,7 @@ import { setMarginForIosSafeArea } from '~/utils';
   selector: 'forgot-password',
   moduleId: module.id,
   templateUrl: './forgot-password.component.html',
-  styleUrls: ['./forgot-password.component.css']
+  styleUrls: ['./forgot-password.component.scss']
 })
 export class ForgotPasswordComponent implements OnInit {
   private static LOG_TAG = 'forgot-password.component ';

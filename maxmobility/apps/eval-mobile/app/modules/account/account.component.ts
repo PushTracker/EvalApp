@@ -41,13 +41,13 @@ import { APP_KEY, HOST_URL } from '../../kinvey-keys';
   selector: 'Account',
   moduleId: module.id,
   templateUrl: './account.component.html',
-  styleUrls: ['./account.component.css']
+  styleUrls: ['./account.component.scss']
 })
 export class AccountComponent implements OnInit {
   private static LOG_TAG = 'account.component ';
   fsKeyPrefix = 'AccountComponent.';
   fsKeyProfilePicture = 'ProfilePicture';
-  user: Kinvey.User;
+  user: Kinvey.User & { data: User | any };
 
   /**
    * String to render the current version name and version code (builds).
@@ -117,15 +117,15 @@ export class AccountComponent implements OnInit {
 
     // configure if they are an admin account
     const adminRegEx = /(william|ben|ken|guo)@max\-mobility.com/i;
-    const isAdminEmail = adminRegEx.test((this.user.data as User).email);
+    const isAdminEmail = adminRegEx.test(this.user.data.email);
     this.isAdminAccount =
-      (this.user.data as User).type === UserTypes.Admin || isAdminEmail;
+      this.user.data.type === UserTypes.Admin || isAdminEmail;
 
     // configure if they can opt in for beta testing firmware - only
     // allowed for @permobil.com and @max-mobility.com email
     // addresses
     const emailRegEx = /[^@]+@(permobil.com|max\-mobility.com)/i;
-    this.canBetaTest = emailRegEx.test((this.user.data as User).email);
+    this.canBetaTest = emailRegEx.test(this.user.data.email);
 
     this.appVersionData = `${this._translateService.instant(
       'account.version'
@@ -160,14 +160,14 @@ export class AccountComponent implements OnInit {
    */
   onUserTypeChanged(args: SelectedIndexChangedEventData) {
     const type = this.usertypes.getValue(args.newIndex) || 0;
-    (this.user.data as User).type = type;
+    this.user.data.type = type;
   }
 
   saveProfilePicture(source: ImageSource) {
     try {
       const b64 = source.toBase64String('png');
       LS.setItem(this.profileImageKey, b64);
-      const data = this.user.data as User;
+      const data = this.user.data;
       data.profile_picture = source;
     } catch (err) {
       this._loggingService.logException(err);
@@ -513,7 +513,7 @@ export class AccountComponent implements OnInit {
 
   private _saveUserToKinvey() {
     if (this.user.data) {
-      const data = this.user.data as User;
+      const data = this.user.data;
       return this.user
         .update({
           email: data.email,

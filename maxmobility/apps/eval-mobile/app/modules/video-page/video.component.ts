@@ -10,7 +10,7 @@ import { LoggingService } from '@maxmobility/mobile';
   selector: 'Video',
   moduleId: module.id,
   templateUrl: './video.component.html',
-  styleUrls: ['./video.component.css']
+  styleUrls: ['./video.component.scss']
 })
 export class VideoComponent implements OnInit {
   private static LOG_TAG = 'video.component ';

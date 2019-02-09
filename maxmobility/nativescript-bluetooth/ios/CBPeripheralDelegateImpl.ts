@@ -1,5 +1,3 @@
-/// <reference path="../node_modules/tns-platform-declarations/ios.d.ts" />
-
 import { CLog, CLogTypes } from '../common';
 import { Bluetooth } from './ios_main';
 
@@ -9,7 +7,8 @@ import { Bluetooth } from './ios_main';
  * The delegate uses this protocol’s methods to monitor the discovery, exploration, and interaction of a remote peripheral’s services and properties.
  * There are no required methods in this protocol.
  */
-export class CBPeripheralDelegateImpl extends NSObject implements CBPeripheralDelegate {
+export class CBPeripheralDelegateImpl extends NSObject
+  implements CBPeripheralDelegate {
   public static ObjCProtocols = [CBPeripheralDelegate];
   public _onWritePromise;
   public _onWriteReject;
@@ -27,15 +26,27 @@ export class CBPeripheralDelegateImpl extends NSObject implements CBPeripheralDe
     return <CBPeripheralDelegateImpl>super.new();
   }
 
-  public initWithCallback(owner: WeakRef<Bluetooth>, callback: (result?) => void): CBPeripheralDelegateImpl {
+  public initWithCallback(
+    owner: WeakRef<Bluetooth>,
+    callback: (result?) => void
+  ): CBPeripheralDelegateImpl {
     this._owner = owner;
-    CLog(CLogTypes.info, `CBPeripheralDelegateImpl.initWithCallback ---- this._owner: ${this._owner}`);
+    CLog(
+      CLogTypes.info,
+      `CBPeripheralDelegateImpl.initWithCallback ---- this._owner: ${
+        this._owner
+      }`
+    );
     this._callback = callback;
     this._servicesWithCharacteristics = [];
     return this;
   }
 
-  public peripheralDidReadRSSIError(peripheral: CBPeripheral, RSSI: number, error: NSError) {
+  public peripheralDidReadRSSIError(
+    peripheral: CBPeripheral,
+    RSSI: number,
+    error: NSError
+  ) {
     CLog(
       CLogTypes.info,
       `CBPeripheralDelegateImpl.peripheralDidReadRSSIError ---- peripheral: ${peripheral}, rssi: ${RSSI}, error: ${error}`
@@ -51,7 +62,10 @@ export class CBPeripheralDelegateImpl extends NSObject implements CBPeripheralDe
    * @param peripheral [CBPeripheral] - The peripheral that the services belong to.
    * @param error [NSError] - If an error occurred, the cause of the failure.
    */
-  public peripheralDidDiscoverServices(peripheral: CBPeripheral, error?: NSError) {
+  public peripheralDidDiscoverServices(
+    peripheral: CBPeripheral,
+    error?: NSError
+  ) {
     CLog(
       CLogTypes.info,
       `CBPeripheralDelegateImpl.peripheralDidDiscoverServices ---- peripheral: ${peripheral}, ${error}`
@@ -113,7 +127,9 @@ export class CBPeripheralDelegateImpl extends NSObject implements CBPeripheralDe
         UUID: characteristic.UUID.UUIDString,
         name: characteristic.UUID,
         // see serviceAndCharacteristicInfo in CBPer+Ext of Cordova plugin
-        value: characteristic.value ? characteristic.value.base64EncodedStringWithOptions(0) : null,
+        value: characteristic.value
+          ? characteristic.value.base64EncodedStringWithOptions(0)
+          : null,
         properties: this._getProperties(characteristic),
         // descriptors: this._getDescriptors(characteristic), // TODO we're not currently discovering these
         isNotifying: characteristic.isNotifying
@@ -217,7 +233,10 @@ export class CBPeripheralDelegateImpl extends NSObject implements CBPeripheralDe
 
     if (error !== null) {
       // TODO handle.. pass in sep callback?
-      CLog(CLogTypes.error, `CBPeripheralDelegateImpl.peripheralDidUpdateValueForCharacteristicError ---- ${error}`);
+      CLog(
+        CLogTypes.error,
+        `CBPeripheralDelegateImpl.peripheralDidUpdateValueForCharacteristicError ---- ${error}`
+      );
       return;
     }
 
@@ -340,28 +359,43 @@ export class CBPeripheralDelegateImpl extends NSObject implements CBPeripheralDe
     return {
       // broadcast: (props & CBCharacteristicPropertyBroadcast) === CBCharacteristicPropertyBroadcast,
       broadcast:
-        (props & CBCharacteristicProperties.PropertyBroadcast) === CBCharacteristicProperties.PropertyBroadcast,
-      read: (props & CBCharacteristicProperties.PropertyRead) === CBCharacteristicProperties.PropertyRead,
+        (props & CBCharacteristicProperties.PropertyBroadcast) ===
+        CBCharacteristicProperties.PropertyBroadcast,
+      read:
+        (props & CBCharacteristicProperties.PropertyRead) ===
+        CBCharacteristicProperties.PropertyRead,
       broadcast2:
-        (props & CBCharacteristicProperties.PropertyBroadcast) === CBCharacteristicProperties.PropertyBroadcast,
-      read2: (props & CBCharacteristicProperties.PropertyRead) === CBCharacteristicProperties.PropertyRead,
-      write: (props & CBCharacteristicProperties.PropertyWrite) === CBCharacteristicProperties.PropertyWrite,
+        (props & CBCharacteristicProperties.PropertyBroadcast) ===
+        CBCharacteristicProperties.PropertyBroadcast,
+      read2:
+        (props & CBCharacteristicProperties.PropertyRead) ===
+        CBCharacteristicProperties.PropertyRead,
+      write:
+        (props & CBCharacteristicProperties.PropertyWrite) ===
+        CBCharacteristicProperties.PropertyWrite,
       writeWithoutResponse:
         (props & CBCharacteristicProperties.PropertyWriteWithoutResponse) ===
         CBCharacteristicProperties.PropertyWriteWithoutResponse,
-      notify: (props & CBCharacteristicProperties.PropertyNotify) === CBCharacteristicProperties.PropertyNotify,
-      indicate: (props & CBCharacteristicProperties.PropertyIndicate) === CBCharacteristicProperties.PropertyIndicate,
+      notify:
+        (props & CBCharacteristicProperties.PropertyNotify) ===
+        CBCharacteristicProperties.PropertyNotify,
+      indicate:
+        (props & CBCharacteristicProperties.PropertyIndicate) ===
+        CBCharacteristicProperties.PropertyIndicate,
       authenticatedSignedWrites:
-        (props & CBCharacteristicProperties.PropertyAuthenticatedSignedWrites) ===
+        (props &
+          CBCharacteristicProperties.PropertyAuthenticatedSignedWrites) ===
         CBCharacteristicProperties.PropertyAuthenticatedSignedWrites,
       extendedProperties:
         (props & CBCharacteristicProperties.PropertyExtendedProperties) ===
         CBCharacteristicProperties.PropertyExtendedProperties,
       notifyEncryptionRequired:
-        (props & CBCharacteristicProperties.PropertyNotifyEncryptionRequired) ===
+        (props &
+          CBCharacteristicProperties.PropertyNotifyEncryptionRequired) ===
         CBCharacteristicProperties.PropertyNotifyEncryptionRequired,
       indicateEncryptionRequired:
-        (props & CBCharacteristicProperties.PropertyIndicateEncryptionRequired) ===
+        (props &
+          CBCharacteristicProperties.PropertyIndicateEncryptionRequired) ===
         CBCharacteristicProperties.PropertyIndicateEncryptionRequired
     };
   }
@@ -371,7 +405,12 @@ export class CBPeripheralDelegateImpl extends NSObject implements CBPeripheralDe
     const descsJs = [];
     for (let i = 0; i < descs.count; i++) {
       const desc = descs.objectAtIndex(i);
-      CLog(CLogTypes.info, `CBPeripheralDelegateImpl._getDescriptors ---- descriptor value: ${desc.value}`);
+      CLog(
+        CLogTypes.info,
+        `CBPeripheralDelegateImpl._getDescriptors ---- descriptor value: ${
+          desc.value
+        }`
+      );
       descsJs.push({
         UUID: desc.UUID.UUIDString,
         value: desc.value

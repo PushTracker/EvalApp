@@ -12,7 +12,7 @@ import { Page } from 'tns-core-modules/ui/page';
   selector: 'DemoRequests',
   moduleId: module.id,
   templateUrl: './demo-requests.component.html',
-  styleUrls: ['./demo-requests.component.css']
+  styleUrls: ['./demo-requests.component.scss']
 })
 export class DemoRequestsComponent implements OnInit {
   private static LOG_TAG = 'demo-requests.component ';

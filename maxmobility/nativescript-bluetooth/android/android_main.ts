@@ -1,5 +1,3 @@
-/// <reference path="../node_modules/tns-platform-declarations/android-27.d.ts" />
-
 import * as utils from 'tns-core-modules/utils/utils';
 import * as application from 'tns-core-modules/application';
 import {
@@ -305,7 +303,7 @@ export class Bluetooth extends BluetoothCommon {
     });
   }
 
-  public isBluetoothEnabled() {
+  public isBluetoothEnabled(): Promise<boolean> {
     return new Promise((resolve, reject) => {
       try {
         resolve(this._isEnabled());

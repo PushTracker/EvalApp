@@ -19,7 +19,7 @@ import { Page } from 'tns-core-modules/ui/page';
   selector: 'Training',
   moduleId: module.id,
   templateUrl: './training.component.html',
-  styleUrls: ['./training.component.css']
+  styleUrls: ['./training.component.scss']
 })
 export class TrainingComponent implements AfterViewInit, OnInit {
   private static LOG_TAG = 'training.component ';

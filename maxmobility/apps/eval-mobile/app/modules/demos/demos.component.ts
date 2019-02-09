@@ -38,7 +38,7 @@ import { Slider } from 'tns-core-modules/ui/slider/slider';
   selector: 'Demos',
   moduleId: module.id,
   templateUrl: './demos.component.html',
-  styleUrls: ['./demos.component.css']
+  styleUrls: ['./demos.component.scss']
 })
 export class DemosComponent implements OnInit {
   private static LOG_TAG = 'demos.component ';

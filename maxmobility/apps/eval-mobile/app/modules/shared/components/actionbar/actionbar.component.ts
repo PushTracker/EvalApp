@@ -10,7 +10,7 @@ import { ActionBar } from 'tns-core-modules/ui/action-bar';
   selector: 'MaxActionBar',
   moduleId: module.id,
   templateUrl: './actionbar.component.html',
-  styleUrls: ['./actionbar.component.css']
+  styleUrls: ['./actionbar.component.scss']
 })
 export class ActionbarComponent extends ActionBar {
   @Input() title: string;

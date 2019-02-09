@@ -15,7 +15,7 @@ import { Kinvey } from 'kinvey-nativescript-sdk';
   selector: 'Summary',
   moduleId: module.id,
   templateUrl: './summary.component.html',
-  styleUrls: ['./summary.component.css']
+  styleUrls: ['./summary.component.scss']
 })
 export class SummaryComponent {
   private static LOG_TAG = 'summary.component ';

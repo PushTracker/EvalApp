@@ -29,7 +29,7 @@ import { ScrollView } from 'tns-core-modules/ui/scroll-view';
   selector: 'OTA',
   moduleId: module.id,
   templateUrl: './ota.component.html',
-  styleUrls: ['./ota.component.css']
+  styleUrls: ['./ota.component.scss']
 })
 export class OTAComponent implements OnInit {
   private static LOG_TAG = 'ota.component ';

@@ -57,7 +57,7 @@
       // StackLayout in contains progress views for updates
       <StackLayout #otaProgressView padding="5, 0, 5, 0" orientation="vertical">
         // PushTracker Instructions //SmartDrive OTAs
-        <StackLayout class="ota" *ngFor="let sd of smartDriveOTAs._array">
+        <StackLayout class="ota" *ngFor="let sd of smartDriveOTAs['_array']">
           <GridLayout class="otaInfo" rows="auto" columns="auto, *">
             <label col="0" class="otaLabel" textWrap="true">
               <FormattedString>
@@ -128,7 +128,7 @@
         </StackLayout>
 
         //PushTracker OTAs
-        <StackLayout class="ota" *ngFor="let pt of pushTrackerOTAs._array">
+        <StackLayout class="ota" *ngFor="let pt of pushTrackerOTAs['_array']">
           <!-- scrollview in the ngFor so that on iOS you can scroll this section
           and see all the pushtrackers without them overlapping the UI
            https://github.com/PushTracker/EvalApp/issues/334

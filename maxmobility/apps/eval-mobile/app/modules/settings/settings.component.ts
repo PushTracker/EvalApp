@@ -13,7 +13,7 @@ import { isAndroid, isIOS } from 'tns-core-modules/platform';
   selector: 'Settings',
   moduleId: module.id,
   templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.css']
+  styleUrls: ['./settings.component.scss']
 })
 export class SettingsComponent {
   private static LOG_TAG = 'settings.component ';

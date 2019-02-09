@@ -18,7 +18,7 @@ import { Page } from 'tns-core-modules/ui/page';
   selector: 'Evals',
   moduleId: module.id,
   templateUrl: './evals.component.html',
-  styleUrls: ['./evals.component.css']
+  styleUrls: ['./evals.component.scss']
 })
 export class EvalsComponent implements OnInit {
   private static LOG_TAG = 'evals.component ';

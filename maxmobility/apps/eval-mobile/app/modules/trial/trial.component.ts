@@ -37,7 +37,7 @@ import { TextField } from 'tns-core-modules/ui/text-field/text-field';
   selector: 'Trial',
   moduleId: module.id,
   templateUrl: './trial.component.html',
-  styleUrls: ['./trial.component.css']
+  styleUrls: ['./trial.component.scss']
 })
 export class TrialComponent implements OnInit {
   private static LOG_TAG = 'trial.component ';

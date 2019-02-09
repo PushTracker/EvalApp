@@ -8,7 +8,7 @@ import { LoggingService } from '@maxmobility/mobile';
   selector: 'FAQ',
   moduleId: module.id,
   templateUrl: './faq.component.html',
-  styleUrls: ['./faq.component.css']
+  styleUrls: ['./faq.component.scss']
 })
 export class FAQComponent {
   private static LOG_TAG = 'faq.component ';
