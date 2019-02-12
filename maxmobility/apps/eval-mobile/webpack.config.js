@@ -25,7 +25,31 @@ module.exports = env => {
   // Add your custom Activities, Services and other Android app components here.
   const appComponents = [
     'tns-core-modules/ui/frame',
-    'tns-core-modules/ui/frame/activity'
+    'tns-core-modules/ui/frame/activity',
+    resolve(
+      __dirname,
+      '../../nativescript-bluetooth/android/TNS_AdvertiseCallback.ts'
+    ),
+    resolve(
+      __dirname,
+      '../../nativescript-bluetooth/android/TNS_BluetoothGattCallback.ts'
+    ),
+    resolve(
+      __dirname,
+      '../../nativescript-bluetooth/android/TNS_BluetoothGattServerCallback.ts'
+    ),
+    resolve(
+      __dirname,
+      '../../nativescript-bluetooth/android/TNS_BroadcastReceiver.ts'
+    ),
+    resolve(
+      __dirname,
+      '../../nativescript-bluetooth/android/TNS_LeScanCallback.ts'
+    ),
+    resolve(
+      __dirname,
+      '../../nativescript-bluetooth/android/TNS_ScanCallback.ts'
+    )
   ];
 
   const platform = env && ((env.android && 'android') || (env.ios && 'ios'));
@@ -190,11 +214,11 @@ module.exports = env => {
               drop_debugger: true,
               ecma: 6,
               keep_infinity: platform === 'android', // for Chrome/V8
-              reduce_funcs: platform !== 'android', // for Chrome/V8
+              reduce_funcs: platform !== 'android' // for Chrome/V8
             },
             // custom
             ecma: 6,
-            safari10: platform !== 'android',
+            safari10: platform !== 'android'
           }
         })
       ]
