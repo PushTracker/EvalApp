@@ -308,8 +308,13 @@ export class Demo extends Observable {
       return aDate < bDate ? 1 : -1;
     });
 
+    // https://github.com/PushTracker/EvalApp/issues/361
+    const filtered = this.usage.filter(
+      v => v && typeof v.getTime === 'function'
+    );
+
     this.usage = Array.from(
-      new Set(this.usage.map(item => item.getTime().toISOString()))
+      new Set(filtered.map(item => item.getTime().toISOString()))
     ) as any;
   }
 
