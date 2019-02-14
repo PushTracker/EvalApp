@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Demo } from '@maxmobility/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
@@ -14,7 +14,8 @@ export class DemoService {
       _id: demo.id,
       _geoloc: demo.geo,
       owner_id: Kinvey.User.getActiveUser()._id,
-      usage: demo.usage.map(r => r.data())
+      // https://github.com/PushTracker/EvalApp/issues/362
+      usage: demo.usage.map(r => typeof r.data === 'function' && r.data())
     });
   }
 
