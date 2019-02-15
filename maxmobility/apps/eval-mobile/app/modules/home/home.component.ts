@@ -232,7 +232,7 @@ export class HomeComponent {
 
   demoThumbTapped(item: any) {
     this._logService.logBreadCrumb(
-      HomeComponent.LOG_TAG + `demoThumbTapped item: ${item}`
+      HomeComponent.LOG_TAG + `demoThumbTapped item: ${JSON.stringify(item)}`
     );
 
     let index = -1;
