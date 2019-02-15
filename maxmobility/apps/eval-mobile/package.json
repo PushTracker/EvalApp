@@ -5,13 +5,7 @@
   "readme": "NativeScript Application",
   "repository": "<fill-your-repository-here>",
   "nativescript": {
-    "id": "com.permobil.smarteval",
-    "tns-android": {
-      "version": "5.1.0"
-    },
-    "tns-ios": {
-      "version": "5.1.1"
-    }
+    "id": "com.permobil.smarteval"
   },
   "scripts": {
     "extract-translations": "ngx-translate-extract --input ./src --output ./src/assets/i18n/*.json --clean --sort --format namespaced-json --marker _",
