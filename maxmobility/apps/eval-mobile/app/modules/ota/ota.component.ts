@@ -10,7 +10,7 @@ import {
 import { TranslateService } from '@ngx-translate/core';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { Carousel, CarouselItem } from 'nativescript-carousel';
-import { keepAwake, allowSleepAgain } from 'nativescript-insomnia';
+import { allowSleepAgain, keepAwake } from 'nativescript-insomnia';
 import { Subscription } from 'rxjs';
 import * as app from 'tns-core-modules/application';
 import { Color } from 'tns-core-modules/color';
@@ -290,7 +290,7 @@ export class OTAComponent implements OnInit {
         .then(otaStatuses => {
           this._loggingService.logBreadCrumb(
             OTAComponent.LOG_TAG +
-              `Completed all OTAs with statues: ${otaStatuses}`
+              `Completed all OTAs with statues: ${JSON.stringify(otaStatuses)}`
           );
           this.cancelOTAs(false);
         })
