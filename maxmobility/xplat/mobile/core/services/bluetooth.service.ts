@@ -530,7 +530,6 @@ export class BluetoothService {
             `${device.name || 'PushTracker'}::${device.address} disconnected`
           );
 
-          console.log('brad stopping background execution...');
           BluetoothService.stopOtaBackgroundExecution();
         } else if (this.isSmartDrive(device)) {
           const sd = this.getOrMakeSmartDrive(device);
