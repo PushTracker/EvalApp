@@ -303,8 +303,11 @@ export class Demo extends Observable {
 
   sortUsage() {
     this.usage.sort((a, b) => {
-      const aDate = a.getTime();
-      const bDate = b.getTime();
+      // https://github.com/PushTracker/EvalApp/issues/363
+      // something has changed to data flow to cause items to be null in some scenarios
+      // need to overhaul the services and models and how data is being persisted in running app
+      const aDate = a.getTime() ? a.getTime() : null;
+      const bDate = b.getTime() ? b.getTime() : null;
       return aDate < bDate ? 1 : -1;
     });
 
