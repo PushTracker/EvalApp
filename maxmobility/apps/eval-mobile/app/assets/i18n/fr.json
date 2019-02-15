@@ -459,7 +459,8 @@
     "not-permobil-email-error": "L'e-mail actuel ne peut pas s'inscrire en tant que représentant.",
     "user-type-clinician": "Clinicien / ATP",
     "user-type-end-user": "Utilisateur final",
-    "user-type-rep": "Représentant"
+    "user-type-rep": "Représentant",
+    "user-exists": "Un compte existe déjà pour cet email."
   },
   "summary": {
     "add-trial": "Ajouter un essai",

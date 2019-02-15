@@ -25,7 +25,7 @@
     "scan-pt": "PT: Pulse el botón escanear o editar",
     "scan-sd": "SD: pulse el botón escanear o editar",
     "cancel-scan": "Cancelar escaneo",
-    "sd-serial-required": "Se requiere el número de serie de SmartDrive.",    
+    "sd-serial-required": "Se requiere el número de serie de SmartDrive.",
     "saving-demo": "Guardando demo ...",
     "scan-msg": "Escanear un",
     "sd-or-pt": "SmartDrive o PushTracker",
@@ -461,7 +461,8 @@
     "not-permobil-email-error": "El correo electrónico actual no puede registrarse como Representante.",
     "user-type-clinician": "Clinico/ATP",
     "user-type-end-user": "Usuario final",
-    "user-type-rep": "Representante"
+    "user-type-rep": "Representante",
+    "user-exists": "Ya existe una cuenta para este correo electrónico."
   },
   "summary": {
     "add-trial": "Añadir prueba",

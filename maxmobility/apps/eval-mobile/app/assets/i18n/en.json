@@ -851,6 +851,7 @@
     "user-type-clinician": "Clinician / ATP",
     "user-type-rep": "Representative",
     "user-type-end-user": "End User",
-    "not-permobil-email-error": "The current email cannot sign up as a Representative."
+    "not-permobil-email-error": "The current email cannot sign up as a Representative.",
+    "user-exists": "An account already exists for this email."
   }
 }
