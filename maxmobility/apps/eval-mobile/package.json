@@ -5,7 +5,13 @@
   "readme": "NativeScript Application",
   "repository": "<fill-your-repository-here>",
   "nativescript": {
-    "id": "com.permobil.smarteval"
+    "id": "com.permobil.smarteval",
+    "tns-ios": {
+      "version": "5.2.0"
+    },
+    "tns-android": {
+      "version": "5.2.0"
+    }
   },
   "scripts": {
     "extract-translations": "ngx-translate-extract --input ./src --output ./src/assets/i18n/*.json --clean --sort --format namespaced-json --marker _",
@@ -93,11 +99,10 @@
   "devDependencies": {
     "@angular/compiler-cli": "~7.2.0",
     "@angular/language-service": "file:../../node_modules/@angular/language-service",
-    "@ngtools/webpack": "~7.2.0",
-    "codelyzer": "file:../../node_modules/codelyzer",
+    "@ngtools/webpack": "file:../../node_modules/@ngtools/webpack",
     "nativescript-dev-sass": "~1.6.1",
-    "nativescript-dev-webpack": "~0.19.1",
-    "nativescript-dev-typescript": "~0.7.9",
+    "nativescript-dev-webpack": "~0.20.0",
+    "nativescript-dev-typescript": "~0.8.0",
     "terser-webpack-plugin": "file:../../node_modules/terser-webpack-plugin",
     "tns-platform-declarations": "file:../../node_modules/tns-platform-declarations",
     "typescript": "file:../../node_modules/typescript"
