@@ -87,7 +87,7 @@ export class Demo extends Observable {
    * Base64 string of the image saved for the PushTracker for the demo unit.
    */
   public pt_image_base64: string = '';
-  public usage: Array<Record> = [];
+  public usage: Record[] = [];
 
   get location_string(): string {
     if (this.location && this.location.length) {
@@ -312,13 +312,19 @@ export class Demo extends Observable {
     });
 
     // https://github.com/PushTracker/EvalApp/issues/361
-    const filtered = this.usage.filter(
-      v => v && typeof v.getTime === 'function'
-    );
+    const filtered = this.usage
+      .filter(v => {
+        if (v && v.getTime()) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .map(item => {
+        return item.getTime().toISOString();
+      });
 
-    this.usage = Array.from(
-      new Set(filtered.map(item => item.getTime().toISOString()))
-    ) as any;
+    this.usage = Array.from(new Set(filtered)) as any;
   }
 
   use(): Promise<any> {
