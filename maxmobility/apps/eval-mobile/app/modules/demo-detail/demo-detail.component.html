@@ -6,7 +6,7 @@
     ios.position="left"
     (tap)="confirmUserBackNav()"
   >
-    <image src="res://ios_back_nav/ios_back_nav.png"></image>
+    <image src="res://ios_back_nav/ios_back_nav"></image>
   </ActionItem>
 
   <ActionItem
@@ -82,7 +82,11 @@
     <StackLayout orientation="vertical" width="100%">
       // SmartDrive Serial
       <DockLayout stretchLastChild="true" margin="15, 10, 5, 0">
-        <label dock="top" [text]="'general.serial' | translate" class="serial-number-label"></label>
+        <label
+          dock="top"
+          [text]="'general.serial' | translate"
+          class="serial-number-label"
+        ></label>
         <button
           dock="left"
           (tap)="onScan('smartdrive')"
@@ -110,7 +114,11 @@
         </StackLayout>
       -->
       <DockLayout stretchLastChild="true" margin="5, 10, 5, 0">
-        <label dock="top" [text]="'general.serial' | translate" class="serial-number-label"></label>
+        <label
+          dock="top"
+          [text]="'general.serial' | translate"
+          class="serial-number-label"
+        ></label>
         <button
           dock="left"
           (tap)="onScan('pushtracker')"
