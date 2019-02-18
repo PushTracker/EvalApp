@@ -58,7 +58,7 @@ export class DemoService {
     return obj;
   }
 
-  create(demoModel: Demo): Promise<any> {
+  async create(demoModel: Demo): Promise<any> {
     const foundSD = this.getDemoBySmartDriveSerialNumber(
       demoModel.smartdrive_serial_number
     );
@@ -74,9 +74,8 @@ export class DemoService {
     } else {
       // nothing
     }
-    return this.update(demoModel).then(() => {
-      return this.load();
-    });
+    await this.update(demoModel);
+    return this.load();
   }
 
   save() {
@@ -86,23 +85,33 @@ export class DemoService {
         .then(data => {
           this.update(data);
         })
-        .catch(this.handleErrors);
+        .catch(error => {
+          console.log(error);
+        });
     });
     return Promise.all(tasks);
   }
 
   async load(): Promise<any> {
     try {
-      DemoService.Demos.splice(0, DemoService.Demos.length);
+      DemoService.Demos = new ObservableArray<Demo>();
 
-      await this.login();
+      if (!Kinvey.User.getActiveUser()) {
+        return Promise.reject('No active user!');
+      }
+
+      console.log('syncing data store...');
       await this.datastore.sync();
+      console.log('datastore synced...');
+
       const query = new Kinvey.Query();
       query.equalTo('owner_id', Kinvey.User.getActiveUser()._id);
       query.ascending('smartdrive_serial_number');
+      console.log({ query });
       const stream = this.datastore.find(query);
 
       const data = await stream.toPromise();
+      // console.log('data from query', { data });
 
       let demos = data.map((demoData: Demo) => {
         demoData.id = (demoData as any)._id;
@@ -120,8 +129,9 @@ export class DemoService {
         return new Demo(demoData);
       });
 
-      DemoService.Demos.splice(0, DemoService.Demos.length, ...demos);
+      DemoService.Demos.push(demos);
     } catch (error) {
+      console.log('demoservice load error', error);
       this._logService.logException(error);
     }
   }
@@ -130,28 +140,14 @@ export class DemoService {
     return new Promise(async (resolve, reject) => {
       try {
         const updateModel = DemoService.cloneUpdateModel(demoModel);
+        console.log('saving demo to data store', updateModel);
         await this.datastore.save(updateModel);
+        console.log('demo unit saved to datastore', updateModel);
         resolve();
       } catch (error) {
         this._logService.logException(error);
         reject(error);
       }
     });
-  }
-
-  private put(data: Object) {
-    return this.datastore.save(data).catch(this.handleErrors);
-  }
-
-  private login(): Promise<any> {
-    if (!!Kinvey.User.getActiveUser()) {
-      return Promise.resolve();
-    } else {
-      return Promise.reject('No active user!');
-    }
-  }
-
-  private handleErrors(error: Response) {
-    console.log(error);
   }
 }
