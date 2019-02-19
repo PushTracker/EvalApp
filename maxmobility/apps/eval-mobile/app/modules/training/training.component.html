@@ -14,20 +14,18 @@
     <CarouselItem *ngFor="let slide of slides">
       <GridLayout rows="auto, *" cols="*">
         <StackLayout
+          (loaded)="onTopSlideLoaded($event)"
           class="topSlide"
           row="0"
-          height="45%"
           width="100%"
           orientation="horizontal"
           horizontalAlignment="center"
         >
           // only shows when the slide.Image is a gif
           <Gif
+            (loaded)="onGifLoaded($event)"
             *ngIf="isGif(slide.Image)"
             [src]="slide.Image"
-            height="100%"
-            android:width="100%"
-            ios:width="300"
           ></Gif>
           // show only when not a gif
           <image
