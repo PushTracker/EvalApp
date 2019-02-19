@@ -71,7 +71,7 @@ export class AccountComponent implements OnInit {
     })
   );
   selectedLanguageIndex = 0;
-
+  selectedLanguageFlag = '';
   yes: string = this._translateService.instant('dialogs.yes');
   no: string = this._translateService.instant('dialogs.no');
 
@@ -93,9 +93,9 @@ export class AccountComponent implements OnInit {
 
   selectedUserTypeIndex = 0;
 
-  private imageCropper: ImageCropper;
+  private _imageCropper: ImageCropper;
   private _routeSub: Subscription; // subscription to route observer
-  private profileImageKey: string;
+  private _profileImageKey: string;
 
   constructor(
     private _userService: UserService,
@@ -110,9 +110,9 @@ export class AccountComponent implements OnInit {
     this._page.enableSwipeBackNavigation = false;
     this._page.className = 'blue-gradient-down';
 
-    this.imageCropper = new ImageCropper();
     this.user = Kinvey.User.getActiveUser();
-    this.profileImageKey =
+    this._imageCropper = new ImageCropper();
+    this._profileImageKey =
       this.fsKeyPrefix + this.user._id + '.' + this.fsKeyProfilePicture;
 
     // configure if they are an admin account
@@ -146,6 +146,11 @@ export class AccountComponent implements OnInit {
     this.selectedLanguageIndex =
       this.languages.getIndex((this.user.data as any).language) || 0;
 
+    // set language flag
+    this.selectedLanguageFlag = this._mapLanguageToFlagAsset(
+      this.languages.getValue(this.selectedLanguageIndex)
+    );
+
     // set account type data
     this.selectedUserTypeIndex =
       this.usertypes.getIndex((this.user.data as any).type) || 0;
@@ -166,7 +171,7 @@ export class AccountComponent implements OnInit {
   saveProfilePicture(source: ImageSource) {
     try {
       const b64 = source.toBase64String('png');
-      LS.setItem(this.profileImageKey, b64);
+      LS.setItem(this._profileImageKey, b64);
       const data = this.user.data as User;
       data.profile_picture = source;
     } catch (err) {
@@ -176,7 +181,7 @@ export class AccountComponent implements OnInit {
 
   loadProfilePicture() {
     try {
-      const pic = LS.getItem(this.profileImageKey);
+      const pic = LS.getItem(this._profileImageKey);
       if (pic) {
         const source = fromBase64(pic);
         (this.user.data as any).profile_picture = source;
@@ -207,6 +212,8 @@ export class AccountComponent implements OnInit {
     const newLanguage = this.languages.getValue(args.newIndex) || 'en';
     (this.user.data as any).language = newLanguage;
     this._translateService.use(newLanguage);
+    // set the image for the language flag
+    this.selectedLanguageFlag = this._mapLanguageToFlagAsset(newLanguage);
     // saving language to server because, it makes it look like a bug because the language switches
     // but we don't save the user selected language on backend, so when you come back in, it's using the server value
     // also on the current user object and not what they previously selected.
@@ -453,7 +460,7 @@ export class AccountComponent implements OnInit {
 
             const iSrc = await source.fromAsset(imageAsset);
 
-            const result = (await this.imageCropper.show(iSrc, {
+            const result = (await this._imageCropper.show(iSrc, {
               width: 256,
               height: 256,
               lockSquare: true
@@ -528,6 +535,21 @@ export class AccountComponent implements OnInit {
         });
     } else {
       return Promise.resolve();
+    }
+  }
+
+  private _mapLanguageToFlagAsset(language: string) {
+    switch (language) {
+      case 'en':
+        return '~/assets/images/flags/usa-flag.png';
+      case 'es':
+        return '~/assets/images/flags/spain-flag.png';
+      case 'de':
+        return '~/assets/images/flags/germany-flag.png';
+      case 'fr':
+        return '~/assets/images/flags/france-flag.png';
+      case 'nl':
+        return '~/assets/images/flags/netherlands-flag.png';
     }
   }
 }
