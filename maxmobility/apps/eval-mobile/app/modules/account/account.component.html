@@ -24,10 +24,17 @@
       class="account-icon fa"
       text="&#xf2be;"
     ></label>
-    <GridLayout rows="auto" columns="auto, *">
+    <GridLayout rows="auto" columns="auto, auto, *">
       <label col="0" class="label" [text]="'user.language' | translate"></label>
-      <DropDown
+      <Image
         col="1"
+        width="50"
+        height="50"
+        [src]="selectedLanguageFlag"
+        stretch="aspectFit"
+      ></Image>
+      <DropDown
+        col="2"
         class="dropdown"
         [hint]="'user.language' | translate"
         [selectedIndex]="selectedLanguageIndex"
