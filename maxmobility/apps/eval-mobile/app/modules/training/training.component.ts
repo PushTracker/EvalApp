@@ -12,7 +12,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { ToastDuration, Toasty } from 'nativescript-toasty';
 import { Subscription } from 'rxjs';
-import { isAndroid, isIOS } from 'tns-core-modules/platform';
+import { isAndroid, isIOS, screen } from 'tns-core-modules/platform';
 import { Page } from 'tns-core-modules/ui/page';
 
 @Component({
@@ -62,6 +62,25 @@ export class TrainingComponent implements AfterViewInit, OnInit {
     } else {
       return false;
     }
+  }
+
+  /**
+   * Loaded event for the stacklayout that is the top part of the carousel slide
+   * Setting the size based on the screen height to avoid stretching the gifs
+   * @param args
+   */
+  onTopSlideLoaded(args) {
+    args.object.height = screen.mainScreen.heightDIPs * 0.35;
+  }
+
+  /**
+   * Loaded event for the Gifs in the carousel items
+   * Setting the size based on the screen height to avoid stretching the gifs
+   * @param args
+   */
+  onGifLoaded(args) {
+    args.object.height = screen.mainScreen.heightDIPs * 0.35;
+    args.object.width = screen.mainScreen.heightDIPs * 0.35;
   }
 
   // button events
