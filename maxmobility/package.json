@@ -131,6 +131,10 @@
       "git add"
     ]
   },
+  "prettier": {
+    "semi": true,
+    "singleQuote": true
+  },
   "xplat": {
     "prefix": "maxmobility"
   }
