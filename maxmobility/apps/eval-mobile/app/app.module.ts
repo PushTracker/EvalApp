@@ -13,7 +13,6 @@ import { YoutubePlayerModule } from 'nativescript-youtubeplayer/angular';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './modules/core/core.module';
-import { ActionbarComponent } from './modules/shared/components/actionbar/actionbar.component';
 import { SharedModule } from './modules/shared/shared.module';
 import { PrivacyPolicyComponent } from './privacy-policy';
 import { TNSTranslateLoader } from './utils';
@@ -25,7 +24,7 @@ export function createTranslateLoader() {
 
 @NgModule({
   bootstrap: [AppComponent],
-  entryComponents: [PrivacyPolicyComponent, ActionbarComponent],
+  entryComponents: [PrivacyPolicyComponent],
   imports: [
     NativeScriptCommonModule,
     NativeScriptModule,
