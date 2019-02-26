@@ -10,6 +10,9 @@ const {
   nsReplaceLazyLoader
 } = require('nativescript-dev-webpack/transformers/ns-replace-lazy-loader');
 const {
+  nsSupportHmrNg
+} = require('nativescript-dev-webpack/transformers/ns-support-hmr-ng');
+const {
   getMainModulePath
 } = require('nativescript-dev-webpack/utils/ast-utils');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
@@ -18,7 +21,7 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const {
   NativeScriptWorkerPlugin
 } = require('nativescript-worker-loader/NativeScriptWorkerPlugin');
-const TerserPlugin = require('terser-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const { AngularCompilerPlugin } = require('@ngtools/webpack');
 
 module.exports = env => {
@@ -28,27 +31,27 @@ module.exports = env => {
     'tns-core-modules/ui/frame/activity',
     resolve(
       __dirname,
-      '../../nativescript-bluetooth/android/TNS_AdvertiseCallback.ts'
+      'node_modules/nativescript-bluetooth/android/TNS_AdvertiseCallback.js'
     ),
     resolve(
       __dirname,
-      '../../nativescript-bluetooth/android/TNS_BluetoothGattCallback.ts'
+      'node_modules/nativescript-bluetooth/android/TNS_BluetoothGattCallback.js'
     ),
     resolve(
       __dirname,
-      '../../nativescript-bluetooth/android/TNS_BluetoothGattServerCallback.ts'
+      'node_modules/nativescript-bluetooth/android/TNS_BluetoothGattServerCallback.js'
     ),
     resolve(
       __dirname,
-      '../../nativescript-bluetooth/android/TNS_BroadcastReceiver.ts'
+      'node_modules/nativescript-bluetooth/android/TNS_BroadcastReceiver.js'
     ),
     resolve(
       __dirname,
-      '../../nativescript-bluetooth/android/TNS_LeScanCallback.ts'
+      'node_modules/nativescript-bluetooth/android/TNS_LeScanCallback.js'
     ),
     resolve(
       __dirname,
-      '../../nativescript-bluetooth/android/TNS_ScanCallback.ts'
+      'node_modules/nativescript-bluetooth/android/TNS_ScanCallback.js'
     )
   ];
 
@@ -81,15 +84,11 @@ module.exports = env => {
     sourceMap, // --env.sourceMap
     hmr // --env.hmr,
   } = env;
-  env.externals = env.externals || [];
-  const externals = env.externals.map(e => {
-    // --env.externals
-    return new RegExp(e + '.*');
-  });
 
+  const externals = nsWebpack.getConvertedExternals(env.externals);
   const appFullPath = resolve(projectRoot, appPath);
   const appResourcesFullPath = resolve(projectRoot, appResourcesPath);
-
+  const tsConfigName = 'tsconfig.tns.json';
   const entryModule = `${nsWebpack.getEntryModule(appFullPath)}.ts`;
   const entryPath = `.${sep}${entryModule}`;
   const ngCompilerTransformers = [];
@@ -98,12 +97,17 @@ module.exports = env => {
     ngCompilerTransformers.push(nsReplaceBootstrap);
   }
 
+  if (hmr) {
+    ngCompilerTransformers.push(nsSupportHmrNg);
+  }
+
   // when "@angular/core" is external, it's not included in the bundles. In this way, it will be used
   // directly from node_modules and the Angular modules loader won't be able to resolve the lazy routes
   // fixes https://github.com/NativeScript/nativescript-cli/issues/4024
-  if (env.externals.indexOf('@angular/core') > -1) {
+  if (env.externals && env.externals.indexOf('@angular/core') > -1) {
     const appModuleRelativePath = getMainModulePath(
-      resolve(appFullPath, entryModule)
+      resolve(appFullPath, entryModule),
+      tsConfigName
     );
     if (appModuleRelativePath) {
       const appModuleFolderPath = dirname(
@@ -119,10 +123,10 @@ module.exports = env => {
   const ngCompilerPlugin = new AngularCompilerPlugin({
     hostReplacementPaths: nsWebpack.getResolver([platform, 'tns']),
     platformTransformers: ngCompilerTransformers.map(t =>
-      t(() => ngCompilerPlugin)
+      t(() => ngCompilerPlugin, resolve(appFullPath, entryModule))
     ),
     mainPath: resolve(appPath, entryModule),
-    tsConfigPath: join(__dirname, 'tsconfig.json'),
+    tsConfigPath: join(__dirname, tsConfigName),
     skipCodeGeneration: !aot,
     sourceMap: !!sourceMap,
     additionalLazyModuleResources: additionalLazyModuleResources
@@ -197,10 +201,10 @@ module.exports = env => {
       },
       minimize: !!uglify,
       minimizer: [
-        new TerserPlugin({
+        new UglifyJsPlugin({
           parallel: true,
           cache: true,
-          terserOptions: {
+          uglifyOptions: {
             output: {
               comments: false
             },
@@ -208,17 +212,8 @@ module.exports = env => {
               // The Android SBG has problems parsing the output
               // when these options are enabled
               collapse_vars: platform !== 'android',
-              sequences: platform !== 'android',
-              // custom
-              drop_console: true,
-              drop_debugger: true,
-              ecma: 6,
-              keep_infinity: platform === 'android', // for Chrome/V8
-              reduce_funcs: platform !== 'android' // for Chrome/V8
-            },
-            // custom
-            ecma: 6,
-            safari10: platform !== 'android'
+              sequences: platform !== 'android'
+            }
           }
         })
       ]
@@ -249,14 +244,15 @@ module.exports = env => {
         // tns-core-modules reads the app.css and its imports using css-loader
         {
           test: /[\/|\\]app\.css$/,
-          use: {
-            loader: 'css-loader',
-            options: { minimize: false, url: false }
-          }
+          use: [
+            'nativescript-dev-webpack/style-hot-loader',
+            { loader: 'css-loader', options: { minimize: false, url: false } }
+          ]
         },
         {
           test: /[\/|\\]app\.scss$/,
           use: [
+            'nativescript-dev-webpack/style-hot-loader',
             { loader: 'css-loader', options: { minimize: false, url: false } },
             'sass-loader'
           ]

@@ -1,12 +1,11 @@
-import { Bluetooth } from './android_main';
 import { CLog, CLogTypes } from '../common';
+import { Bluetooth } from './android_main';
 
 /**
  * Callback interface used to deliver LE scan results.
  * https://developer.android.com/reference/android/bluetooth/BluetoothAdapter.LeScanCallback.html
  */
 @JavaProxy('com.nativescript.TNS_LeScanCallback')
-// tslint:disable-next-line:class-name
 export class TNS_LeScanCallback extends android.bluetooth.BluetoothAdapter
   .LeScanCallback {
   private _owner: WeakRef<Bluetooth>;
