@@ -1,0 +1,9 @@
+{
+    "scripts": {
+        "test": "echo hello"
+    },
+    "prettier": {
+        "singleQuote": true,
+        "semi": true
+    }
+}

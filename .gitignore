@@ -106,18 +106,15 @@ e2e/*.map
 .DS_Store
 Thumbs.db
 
-
-maxmobility/nativescript-bluetooth/**/*.js
-!maxmobility/nativescript-bluetooth/base64.js
+nativescript-bluetooth/**/*.js
+!nativescript-bluetooth/base64.js
 !**/typings/*.d.ts
 
-!maxmobility/tools/**/*.js
-!maxmobility/apps/eval-mobile/tools/**/*.js
-!maxmobility/libs/core/packet_bindings.js
+!smart-eval-app/tools/**/*.js
+!smart-eval-app/app/packet/packet_bindings.js
 
-!maxmobility/apps/eval-mobile/plugins/swift-fix/**
-!maxmobility/apps/eval-mobile/webpack.config.js
-
+!smart-eval-app/plugins/swift-fix/**
+!smart-eval-app/webpack.config.js
 
 # keystore, certs, executables
 *.jks
