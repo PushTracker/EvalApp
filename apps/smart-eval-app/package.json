@@ -56,7 +56,7 @@
     "nativescript-angular": "file:../../node_modules/nativescript-angular",
     "nativescript-appversion": "file:../../node_modules/nativescript-appversion",
     "nativescript-barcodescanner": "file:../../node_modules/nativescript-barcodescanner",
-    "nativescript-bluetooth": "file:../../bluetooth",
+    "nativescript-bluetooth": "file:./plugins/bluetooth",
     "nativescript-camera": "file:../../node_modules/nativescript-camera",
     "nativescript-carousel": "file:../../node_modules/nativescript-carousel",
     "nativescript-drop-down": "file:../../node_modules/nativescript-drop-down",

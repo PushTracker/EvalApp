@@ -116,7 +116,6 @@ export class BluetoothService {
       this._backgroundOtaTask = UIApplication.sharedApplication.beginBackgroundTaskWithExpirationHandler(
         BluetoothService.stopOtaBackgroundExecution
       );
-      console.log('this._backgroundOtaTask', this._backgroundOtaTask);
       return this._backgroundOtaTask;
     }
   }
@@ -127,7 +126,6 @@ export class BluetoothService {
         return;
       }
 
-      console.log('Ending background task for OTA');
       UIApplication.sharedApplication.endBackgroundTask(
         this._backgroundOtaTask
       );

@@ -15,6 +15,7 @@
   "compileOnSave": false,
   "files": [
     "common.ts",
+    "index.ts",
     "index.ios.ts",
     "index.android.ts",
     "./ios/CBCentralManagerDelegateImpl.ts",

@@ -46,7 +46,7 @@ import * as utils from 'tns-core-modules/utils/utils';
 export class DemoDetailComponent {
   private static LOG_TAG = 'demo-detail.component ';
   mapboxToken = SmartEvalKeys.MAPBOX_TOKEN;
-  demo = new Demo();
+  demo: Demo;
   // translation strings in UI
   mcu_version_label = ` - SmartDrive MCU ${this._translateService.instant(
     'general.version'
@@ -59,7 +59,7 @@ export class DemoDetailComponent {
   )}`;
 
   private _imageCropper: ImageCropper;
-  private _feedback = new Feedback();
+  private _feedback: Feedback;
   private _index = -1; // index into DemoService.Demos
   private _datastore = Kinvey.DataStore.collection<any>('SmartDrives');
 
@@ -86,7 +86,9 @@ export class DemoDetailComponent {
       DemoDetailComponent.LOG_TAG + `constructor.`
     );
     this._page.className = 'blue-gradient-down';
+    this.demo = new Demo();
     this._imageCropper = new ImageCropper();
+    this._feedback = new Feedback();
     this._pageRoute.activatedRoute
       .pipe(switchMap(activatedRoute => activatedRoute.queryParams))
       .forEach(params => {

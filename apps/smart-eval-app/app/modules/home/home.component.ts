@@ -167,22 +167,18 @@ export class HomeComponent {
   }
 
   loadDemoUnits() {
-    try {
-      this.demoUnitsLoaded = false; // toggle the display of the loading indicator
-      DemoService.Demos.length = 0; // empty the current items
+    this.demoUnitsLoaded = false; // toggle the display of the loading indicator
+    DemoService.Demos.length = 0; // empty the current items
 
-      this._demoService
-        .load()
-        .then(() => {
-          this.demoUnitsLoaded = true;
-        })
-        .catch(err => {
-          this._logService.logException(err);
-          this.demoUnitsLoaded = true;
-        });
-    } catch (error) {
-      this._logService.logException(error);
-    }
+    this._demoService
+      .load()
+      .then(() => {
+        this.demoUnitsLoaded = true;
+      })
+      .catch(err => {
+        this._logService.logException(err);
+        this.demoUnitsLoaded = true;
+      });
   }
 
   connectivityThumbTapped(item: any) {
