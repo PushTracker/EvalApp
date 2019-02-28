@@ -1,3 +1,5 @@
+/// <reference path="../node_modules/tns-platform-declarations/ios.d.ts" />
+
 declare var NSMakeRange;
 
 import {

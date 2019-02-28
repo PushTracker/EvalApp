@@ -1,3 +1,5 @@
+/// <reference path="../node_modules/tns-platform-declarations/android-23.d.ts" />
+
 import * as application from 'tns-core-modules/application';
 import * as utils from 'tns-core-modules/utils/utils';
 import {
