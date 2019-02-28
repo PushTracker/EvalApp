@@ -244,7 +244,8 @@ export class SummaryComponent {
 
     const lmnBody = this.generateLMN();
     this._loggingService.logBreadCrumb(
-      SummaryComponent.LOG_TAG + `onComplete() -- lmnBody: ${lmnBody}`
+      SummaryComponent.LOG_TAG +
+        `onComplete() -- lmnBody: ${JSON.stringify(lmnBody)}`
     );
 
     email

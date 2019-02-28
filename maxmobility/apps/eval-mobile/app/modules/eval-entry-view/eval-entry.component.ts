@@ -45,7 +45,8 @@ export class EvalEntryComponent {
     // set the eval to the eval on the service
     this.evaluation = this._evaluationService.evaluation;
     this._logService.logBreadCrumb(
-      EvalEntryComponent.LOG_TAG + `this.evaluation: ${this.evaluation}`
+      EvalEntryComponent.LOG_TAG +
+        `this.evaluation: ${JSON.stringify(this.evaluation)}`
     );
 
     // if the evaluation from the service is not null then ask the user if they want to continue or start new eval
@@ -61,7 +62,7 @@ export class EvalEntryComponent {
           if (result === true) {
             this._logService.logBreadCrumb(
               EvalEntryComponent.LOG_TAG +
-                `continuing evaluation ${this.evaluation}`
+                `continuing evaluation ${JSON.stringify(this.evaluation)}`
             );
 
             this.evaluation = this._evaluationService.evaluation;
@@ -102,7 +103,7 @@ export class EvalEntryComponent {
               EvalEntryComponent.LOG_TAG +
                 `user declined to continue the incomplete evaluation, creating new evaluation.`
             );
-            // brad - for the record I don't like this approach 🤮
+            // brad - don't like this approach 🤮
             this._evaluationService.evaluation = new Evaluation();
             this.evaluation = this._evaluationService.evaluation;
           }

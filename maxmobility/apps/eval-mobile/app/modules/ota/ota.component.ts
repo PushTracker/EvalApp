@@ -290,7 +290,7 @@ export class OTAComponent implements OnInit {
         .then(otaStatuses => {
           this._loggingService.logBreadCrumb(
             OTAComponent.LOG_TAG +
-              `Completed all OTAs with statues: ${otaStatuses}`
+              `Completed all OTAs with statues: ${JSON.stringify(otaStatuses)}`
           );
           this.cancelOTAs(false);
         })

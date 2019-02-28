@@ -128,9 +128,9 @@ export class TrialComponent implements OnInit {
 
     this._loggingService.logBreadCrumb(
       TrialComponent.LOG_TAG +
-        `constructor -- this.settings: ${this.settings}, this.pushSettings: ${
-          this.pushSettings
-        }`
+        `constructor -- this.settings: ${JSON.stringify(
+          this.settings
+        )}, this.pushSettings: ${JSON.stringify(this.pushSettings)}`
     );
   }
 
@@ -232,7 +232,7 @@ export class TrialComponent implements OnInit {
 
     this._loggingService.logBreadCrumb(
       TrialComponent.LOG_TAG +
-        `onStartWithTrial() -- pushTracker: ${pushTracker}`
+        `onStartWithTrial() -- pushTracker: ${JSON.stringify(pushTracker)}`
     );
 
     // if pushtracker is not up to date don't start trial
@@ -289,7 +289,9 @@ export class TrialComponent implements OnInit {
             dailyInfoHandler
           );
           this._animateViewIn(this.startWithView.nativeElement as View);
-          this._loggingService.logBreadCrumb(`Couldn't start trial: ${err}`);
+          this._loggingService.logBreadCrumb(
+            TrialComponent.LOG_TAG + `Couldn't start trial: ${err}`
+          );
           alert({
             title: this.failed_start_title,
             message: this.failed_start_message + err,
@@ -334,7 +336,7 @@ export class TrialComponent implements OnInit {
             throw err;
           } else {
             this._loggingService.logBreadCrumb(
-              `Retrying: ${err}, ${maxRetries}`
+              TrialComponent.LOG_TAG + `Retrying: ${err}, ${maxRetries}`
             );
             return new Promise((resolve, reject) => {
               setTimeout(() => {
@@ -413,7 +415,7 @@ export class TrialComponent implements OnInit {
 
     this._loggingService.logBreadCrumb(
       TrialComponent.LOG_TAG +
-        `onStopWithTrial() -- pushTracker: ${pushTracker}`
+        `onStopWithTrial() -- pushTracker: ${JSON.stringify(pushTracker)}`
     );
 
     if (!this.trial.finishedWith && pushTracker) {
@@ -490,7 +492,9 @@ export class TrialComponent implements OnInit {
             PushTracker.pushtracker_daily_info_event,
             dailyInfoHandler
           );
-          this._loggingService.logBreadCrumb(`Couldn't stop trial: ${err}`);
+          this._loggingService.logBreadCrumb(
+            TrialComponent.LOG_TAG + `Couldn't stop trial: ${err}`
+          );
           alert({
             title: this.failed_stop_title,
             message: this.failed_stop_message + err,
@@ -538,7 +542,7 @@ export class TrialComponent implements OnInit {
             throw err;
           } else {
             this._loggingService.logBreadCrumb(
-              `Retrying: ${err}, ${maxRetries}`
+              TrialComponent.LOG_TAG + `Retrying: ${err}, ${maxRetries}`
             );
             return new Promise((resolve, reject) => {
               setTimeout(() => {

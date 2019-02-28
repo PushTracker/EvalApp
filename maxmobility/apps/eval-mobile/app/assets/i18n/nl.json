@@ -461,7 +461,8 @@
     "not-permobil-email-error": "De huidige e-mail kan zich niet als vertegenwoordiger aanmelden.",
     "user-type-clinician": "Clinician/ATP",
     "user-type-end-user": "Eindgebruiker",
-    "user-type-rep": "Vertegenwoordiger"
+    "user-type-rep": "Vertegenwoordiger",
+    "user-exists": "Er bestaat al een account voor deze e-mail."
   },
   "summary": {
     "add-trial": "Test toevoegen",

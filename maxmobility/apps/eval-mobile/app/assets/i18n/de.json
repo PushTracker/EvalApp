@@ -461,7 +461,8 @@
     "not-permobil-email-error": "Die aktuelle E-Mail kann sich nicht als Vertreter registrieren.",
     "user-type-clinician": "Kliniker/ATP",
     "user-type-end-user": "Endbenutzer",
-    "user-type-rep": "Vertreter"
+    "user-type-rep": "Vertreter",
+    "user-exists": "Für diese E-Mail existiert bereits ein Konto."
   },
   "summary": {
     "add-trial": "Test hinzufügen",

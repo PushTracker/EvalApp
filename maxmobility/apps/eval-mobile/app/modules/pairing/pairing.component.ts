@@ -272,7 +272,8 @@ export class PairingComponent implements OnInit {
   onSaveSettings(args: any) {
     const pushTracker = this._getOneConnectedPushTracker();
     this._loggingService.logBreadCrumb(
-      PairingComponent.LOG_TAG + `onSaveSettings() pushTracker: ${pushTracker}`
+      PairingComponent.LOG_TAG +
+        `onSaveSettings() pushTracker: ${JSON.stringify(pushTracker)}`
     );
 
     if (pushTracker === null) {
@@ -436,7 +437,9 @@ export class PairingComponent implements OnInit {
 
     this._loggingService.logBreadCrumb(
       PairingComponent.LOG_TAG +
-        `_getOneConnectedPushTracker() connectedPTs: ${connectedPTs}`
+        `_getOneConnectedPushTracker() connectedPTs: ${JSON.stringify(
+          connectedPTs
+        )}`
     );
 
     // no pushtrackers are connected - will show snackbar alert

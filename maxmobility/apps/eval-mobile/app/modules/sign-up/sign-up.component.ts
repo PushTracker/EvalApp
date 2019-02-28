@@ -15,6 +15,7 @@ import {
   SelectedIndexChangedEventData,
   ValueList
 } from 'nativescript-drop-down';
+import { ToastDuration, ToastPosition, Toasty } from 'nativescript-toasty';
 import { alert } from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
 import { PrivacyPolicyComponent } from '../../privacy-policy';
@@ -192,7 +193,7 @@ export class SignUpComponent implements OnInit {
 
     this._logService.logBreadCrumb(
       SignUpComponent.LOG_TAG +
-        `onSubmitTap() creating new account: ${this.user}`
+        `onSubmitTap() creating new account: ${JSON.stringify(this.user)}`
     );
 
     // need to make sure the username is not already taken
@@ -201,6 +202,17 @@ export class SignUpComponent implements OnInit {
         this._logService.logBreadCrumb(
           SignUpComponent.LOG_TAG + `KinveyUser.exists() res: ${res}`
         );
+
+        // if username is taken tell user and exit so they can correct
+        if (res === true) {
+          new Toasty(
+            this._translateService.instant('sign-up.user-exists'),
+            ToastDuration.SHORT,
+            ToastPosition.CENTER
+          ).show();
+          this._progressService.hide();
+          return;
+        }
 
         // now create the account
         try {

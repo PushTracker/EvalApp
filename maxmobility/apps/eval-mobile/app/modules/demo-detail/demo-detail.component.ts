@@ -218,7 +218,7 @@ export class DemoDetailComponent {
 
       await this._demoService.create(this.demo);
 
-      // the demo service calls load() at the end ofa create
+      // the demo service calls load() at the end of create
       // now re-load our data from the service
       if (this._index > -1) {
         this._loggingService.logBreadCrumb(
@@ -542,64 +542,63 @@ export class DemoDetailComponent {
   }
 
   private _handleSerial(text: string, forDevices?: string[]) {
-    this._loggingService.logBreadCrumb(
-      DemoDetailComponent.LOG_TAG + `_handleSerial ${text}, ${forDevices}`
-    );
-
-    text = text || '';
-    text = text.trim().toUpperCase();
-    let deviceType = null;
-    const isPushTracker = text[0] === 'B';
-    const isWristband = text[0] === 'A';
-    let isSmartDrive = false;
-    const serialNumber = text;
-
     try {
+      this._loggingService.logBreadCrumb(
+        DemoDetailComponent.LOG_TAG + `_handleSerial ${text}, ${forDevices}`
+      );
+
+      text = text || '';
+      text = text.trim().toUpperCase();
+      let deviceType = null;
+      const isPushTracker = text[0] === 'B';
+      const isWristband = text[0] === 'A';
+      let isSmartDrive = false;
+      const serialNumber = text;
+
       const value = parseInt(text, 10);
       const valid = isFinite(value);
       isSmartDrive = !isPushTracker && !isWristband && valid && value > 0;
-    } catch (err) {
-      // do nothing but log to sentry
-      this._loggingService.logException(err);
-    }
 
-    if (isPushTracker) {
-      deviceType = 'pushtracker';
-    } else if (isWristband) {
-      deviceType = 'wristband';
-    } else if (isSmartDrive) {
-      deviceType = 'smartdrive';
-    } else {
-      return;
-    }
-    this._loggingService.logBreadCrumb(
-      DemoDetailComponent.LOG_TAG +
-        `_handleSerial isPushTracker = ${isPushTracker}`
-    );
+      if (isPushTracker) {
+        deviceType = 'pushtracker';
+      } else if (isWristband) {
+        deviceType = 'wristband';
+      } else if (isSmartDrive) {
+        deviceType = 'smartdrive';
+      } else {
+        return;
+      }
+      this._loggingService.logBreadCrumb(
+        DemoDetailComponent.LOG_TAG + `_handleSerial deviceType = ${deviceType}`
+      );
 
-    // check the type
-    if (
-      forDevices &&
-      forDevices.length &&
-      forDevices.indexOf(deviceType) === -1
-    ) {
-      const error = new Error('Wrong device scanned!');
+      // check the type
+      if (
+        forDevices &&
+        forDevices.length &&
+        forDevices.indexOf(deviceType) === -1
+      ) {
+        this._loggingService.logMessage(
+          `Wrong device entered/scanned --- text: ${text}, forDevices: ${forDevices}`
+        );
+        return;
+      }
+
+      // set the model
+      if (isPushTracker) {
+        this.demo.model = 'MX2+';
+      } else if (isWristband) {
+        this.demo.model = 'MX2';
+      }
+
+      // now set the serial number
+      if (deviceType === 'pushtracker' || deviceType === 'wristband') {
+        this.demo.pushtracker_serial_number = serialNumber;
+      } else if (deviceType === 'smartdrive') {
+        this.demo.smartdrive_serial_number = serialNumber;
+      }
+    } catch (error) {
       this._loggingService.logException(error);
-      return;
-    }
-
-    // set the model
-    if (isPushTracker) {
-      this.demo.model = 'MX2+';
-    } else if (isWristband) {
-      this.demo.model = 'MX2';
-    }
-
-    // now set the serial number
-    if (deviceType === 'pushtracker' || deviceType === 'wristband') {
-      this.demo.pushtracker_serial_number = serialNumber;
-    } else if (deviceType === 'smartdrive') {
-      this.demo.smartdrive_serial_number = serialNumber;
     }
   }
 
