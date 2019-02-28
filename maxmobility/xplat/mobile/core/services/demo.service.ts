@@ -99,10 +99,6 @@ export class DemoService {
         return Promise.reject('No active user!');
       }
 
-      console.log('syncing data store...');
-      await this.datastore.sync();
-      console.log('datastore synced...');
-
       const query = new Kinvey.Query();
       query.equalTo('owner_id', Kinvey.User.getActiveUser()._id);
       query.ascending('smartdrive_serial_number');
