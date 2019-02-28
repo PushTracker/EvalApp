@@ -59,9 +59,9 @@
         }
       }
     },
-    "eval-mobile": {
-      "root": "apps/eval-mobile/",
-      "sourceRoot": "apps/eval-mobile/app",
+    "smart-eval-app": {
+      "root": "apps/smart-eval-app/",
+      "sourceRoot": "apps/smart-eval-app/app",
       "projectType": "application",
       "prefix": "maxmobility",
       "schematics": {

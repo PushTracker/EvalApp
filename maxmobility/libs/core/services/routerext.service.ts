@@ -17,7 +17,7 @@ export class RouterExtService {
     });
   }
 
-  public getPreviousUrl() {
+  getPreviousUrl() {
     return this.previousUrl;
   }
 }

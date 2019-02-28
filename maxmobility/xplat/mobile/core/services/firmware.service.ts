@@ -11,15 +11,15 @@ import { LoggingService } from './logging.service';
 @Injectable()
 export class FirmwareService {
   // static members
-  public static firmwarePathPrefix = '/assets/ota/';
+  static firmwarePathPrefix = '/assets/ota/';
   private static fsKeyPrefix = 'FirmwareService.';
   private static fsKeyMetadata = 'Metadata';
 
-  // public members
-  public haveFirmwares = false;
-  public last_check: Date;
-  public description = new ObservableArray<string>();
-  public firmwares: OtaFirmwares = {
+  //  members
+  haveFirmwares = false;
+  last_check: Date;
+  description = new ObservableArray<string>();
+  firmwares: OtaFirmwares = {
     MCU: {
       filename: 'SmartDriveMCU.ota',
       id: null,
@@ -45,7 +45,15 @@ export class FirmwareService {
 
   constructor(private _logService: LoggingService) {}
 
-  public async initFirmwareService() {
+  static versionByteToString(version: number): string {
+    if (version === 0xff || version === 0x00) {
+      return 'unknown';
+    } else {
+      return `${(version & 0xf0) >> 4}.${version & 0x0f}`;
+    }
+  }
+
+  async initFirmwareService() {
     try {
       await this.loadFromFS();
       await this.downloadFirmwares();
@@ -54,15 +62,7 @@ export class FirmwareService {
     }
   }
 
-  public static versionByteToString(version: number): string {
-    if (version === 0xff || version === 0x00) {
-      return 'unknown';
-    } else {
-      return `${(version & 0xf0) >> 4}.${version & 0x0f}`;
-    }
-  }
-
-  public async loadFromFS() {
+  async loadFromFS() {
     await this.loadMetadata();
     const tasks = await Object.keys(this.firmwares).map(k => {
       return this.loadFirmwareFile(this.firmwares[k].filename);
@@ -217,7 +217,7 @@ export class FirmwareService {
     this.firmwares[fwKey].length = file.size;
   }
 
-  public async downloadFirmwares() {
+  async downloadFirmwares() {
     return new Promise(async (resolve, reject) => {
       try {
         this.haveFirmwares = false;

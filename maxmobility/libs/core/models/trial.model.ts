@@ -1,57 +1,56 @@
 import { Observable } from 'tns-core-modules/data/observable';
 
 export class Trial extends Observable {
-  // STATIC:
-  public static timeToString(seconds: number): string {
-    let t = new Date(null);
-    t.setSeconds(seconds);
-    return t.toISOString().substr(11, 8);
-  }
-
-  // NON STATIC:
-  public _id = null;
-
-  public name: string = '';
-  // questionnaire
-  public flat: boolean = false;
-  public ramp: boolean = false;
-  public inclines: boolean = false;
-  public rampIncline: boolean = false;
-  public other: boolean = false;
-  public other_description: string = '';
-  // settings
-  public ez_on: boolean = false;
-  public control_mode: string = 'MX2+';
-  public max_speed: number = 0.7;
-  public acceleration: number = 0.3;
-  public tap_sensitivity: number = 1.0;
-  // state
-  public startedWith: boolean = false;
-  public startedWithout: boolean = false;
-  public finishedWith: boolean = false;
-  public finishedWithout: boolean = false;
-  public unableToCompleteWith: boolean = false;
-  public unableToCompleteWithout: boolean = false;
-  // metrics
-  public distance: number = 0;
-  // with SD
-  public with_pushes: number = 0;
-  public with_coast: number = 0;
-  public with_start: Date;
-  public with_end: Date;
-  public with_elapsed: number = 0;
-  // without SD
-  public without_pushes: number = 0;
-  public without_coast: number = 0;
-  public without_start: Date;
-  public without_end: Date;
-  public without_elapsed: number = 0;
-
   constructor(obj?: any) {
     super();
     if (obj !== null && obj !== undefined) {
       this.fromObject(obj);
     }
+  }
+
+  // NON STATIC:
+  _id = null;
+
+  name = '';
+  // questionnaire
+  flat = false;
+  ramp = false;
+  inclines = false;
+  rampIncline = false;
+  other = false;
+  other_description = '';
+  // settings
+  ez_on = false;
+  control_mode = 'MX2+';
+  max_speed = 0.7;
+  acceleration = 0.3;
+  tap_sensitivity = 1.0;
+  // state
+  startedWith = false;
+  startedWithout = false;
+  finishedWith = false;
+  finishedWithout = false;
+  unableToCompleteWith = false;
+  unableToCompleteWithout = false;
+  // metrics
+  distance = 0;
+  // with SD
+  with_pushes = 0;
+  with_coast = 0;
+  with_start: Date;
+  with_end: Date;
+  with_elapsed = 0;
+  // without SD
+  without_pushes = 0;
+  without_coast = 0;
+  without_start: Date;
+  without_end: Date;
+  without_elapsed = 0;
+  // STATIC:
+  static timeToString(seconds: number): string {
+    const t = new Date(null);
+    t.setSeconds(seconds);
+    return t.toISOString().substr(11, 8);
   }
 
   setSettings(s: any) {
@@ -74,9 +73,13 @@ export class Trial extends Observable {
   }
 
   data(): any {
-    var obj = {};
+    const obj = {};
     Object.keys(this).map(k => {
-      if (typeof this[k] === 'number' || typeof this[k] === 'string' || typeof this[k] === 'boolean') {
+      if (
+        typeof this[k] === 'number' ||
+        typeof this[k] === 'string' ||
+        typeof this[k] === 'boolean'
+      ) {
         obj[k] = this[k];
       }
     });

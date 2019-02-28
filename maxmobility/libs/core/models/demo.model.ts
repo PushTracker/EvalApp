@@ -7,7 +7,7 @@ import * as imageSource from 'tns-core-modules/image-source';
 
 export class Record extends Observable {
   time: Date;
-  geo: Array<number>;
+  geo: number[];
   location: string;
   user_id: string;
 
@@ -23,7 +23,7 @@ export class Record extends Observable {
   }
 
   data(): any {
-    var obj = {
+    const obj = {
       time: this.time,
       geo: this.geo,
       location: this.location,
@@ -39,14 +39,14 @@ export class Record extends Observable {
 
 export class Demo extends Observable {
   // STATIC:
-  public static fsKeyPrefix: string = 'Demo.';
-  public static fsKeySDImage: string = 'SDImage';
-  public static fsKeyPTImage: string = 'PTImage';
+  static fsKeyPrefix = 'Demo.';
+  static fsKeySDImage = 'SDImage';
+  static fsKeyPTImage = 'PTImage';
 
-  public static upToDateBadge: string = String.fromCharCode(0xf133);
-  public static outOfDateBadge: string = String.fromCharCode(0xf159);
+  static upToDateBadge: string = String.fromCharCode(0xf133);
+  static outOfDateBadge: string = String.fromCharCode(0xf159);
 
-  public static editableProperties = [
+  static editableProperties = [
     'model',
     'geo',
     'location',
@@ -64,30 +64,30 @@ export class Demo extends Observable {
   ];
 
   // NON STATIC:
-  public id = null;
-  public geo = [];
-  public owner_id: string = '';
-  public model: string = '';
-  public location: string = '';
-  public smartdrive_serial_number: string = '';
-  public pushtracker_serial_number: string = '';
-  public pt_version: string = '';
-  public ble_version: string = '';
-  public mcu_version: string = '';
-  public pt_mac_addr: string = '';
-  public sd_mac_addr: string = '';
-  public pt_image: any = null;
-  public sd_image: any = null;
+  id = null;
+  geo = [];
+  owner_id = '';
+  model = '';
+  location = '';
+  smartdrive_serial_number = '';
+  pushtracker_serial_number = '';
+  pt_version = '';
+  ble_version = '';
+  mcu_version = '';
+  pt_mac_addr = '';
+  sd_mac_addr = '';
+  pt_image: any = null;
+  sd_image: any = null;
 
   /**
    * Base64 string of the image saved for the Smart Drive unit.
    */
-  public sd_image_base64: string = '';
+  sd_image_base64 = '';
   /**
    * Base64 string of the image saved for the PushTracker for the demo unit.
    */
-  public pt_image_base64: string = '';
-  public usage: Record[] = [];
+  pt_image_base64 = '';
+  usage: Record[] = [];
 
   get location_string(): string {
     if (this.location && this.location.length) {
@@ -169,7 +169,7 @@ export class Demo extends Observable {
   }
 
   data(): any {
-    var obj = {
+    const obj = {
       geo: this.geo,
       usage: this.usage.map(r => {
         return r.data();
@@ -188,12 +188,12 @@ export class Demo extends Observable {
   }
 
   getSDImageFSKey(): string {
-    let key = Demo.fsKeyPrefix + this.id + '.' + Demo.fsKeySDImage;
+    const key = Demo.fsKeyPrefix + this.id + '.' + Demo.fsKeySDImage;
     return key;
   }
 
   getPTImageFSKey(): string {
-    let key = Demo.fsKeyPrefix + this.id + '.' + Demo.fsKeyPTImage;
+    const key = Demo.fsKeyPrefix + this.id + '.' + Demo.fsKeyPTImage;
     return key;
   }
 
@@ -264,7 +264,7 @@ export class Demo extends Observable {
       PushTracker.versionStringToByte(this.ble_version)
     ];
     return versions.reduce((a, e) => {
-      return a && e != 0xff && e >= v;
+      return a && e !== 0xff && e >= v;
     }, true);
   }
 
@@ -273,8 +273,8 @@ export class Demo extends Observable {
     if (v === 0xff || !dev.length) {
       return true;
     }
-    let e = PushTracker.versionStringToByte(this[dev + '_version']) || 0xff;
-    return e != 0xff && e >= v;
+    const e = PushTracker.versionStringToByte(this[dev + '_version']) || 0xff;
+    return e !== 0xff && e >= v;
   }
 
   versionsAreEqualTo(version: string): boolean {

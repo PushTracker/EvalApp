@@ -7,7 +7,12 @@ import { LoggingService } from './logging.service';
 
 @Injectable()
 export class DemoService {
-  public static Demos = new ObservableArray<Demo>([]);
+  constructor(@Inject(LoggingService) private _logService: LoggingService) {
+    //this.load();
+  }
+  static Demos = new ObservableArray<Demo>([]);
+
+  private datastore = Kinvey.DataStore.collection<any>('SmartDrives');
 
   private static cloneUpdateModel(demo: Demo): object {
     return Demo.editableProperties.reduce((a, e) => ((a[e] = demo[e]), a), {
@@ -19,20 +24,14 @@ export class DemoService {
     });
   }
 
-  private datastore = Kinvey.DataStore.collection<any>('SmartDrives');
-
-  constructor(@Inject(LoggingService) private _logService: LoggingService) {
-    //this.load();
-  }
-
   getDemoById(id: string): Demo {
     if (!id) {
       return;
     }
-    let o = DemoService.Demos.filter(demo => {
+    const o = DemoService.Demos.filter(demo => {
       return demo.id === id;
     });
-    let obj = o && o.length ? o[0] : null;
+    const obj = o && o.length ? o[0] : null;
     return obj;
   }
 
@@ -40,10 +39,10 @@ export class DemoService {
     if (!sn || !sn.length || !sn.trim().length) {
       return;
     }
-    let o = DemoService.Demos.filter(demo => {
+    const o = DemoService.Demos.filter(demo => {
       return demo.pushtracker_serial_number === sn;
     });
-    let obj = o && o.length ? o[0] : null;
+    const obj = o && o.length ? o[0] : null;
     return obj;
   }
 
@@ -51,10 +50,10 @@ export class DemoService {
     if (!sn || !sn.length || !sn.trim().length) {
       return;
     }
-    let o = DemoService.Demos.filter(demo => {
+    const o = DemoService.Demos.filter(demo => {
       return demo.smartdrive_serial_number === sn;
     });
-    let obj = o && o.length ? o[0] : null;
+    const obj = o && o.length ? o[0] : null;
     return obj;
   }
 
@@ -113,7 +112,7 @@ export class DemoService {
       const data = await stream.toPromise();
       // console.log('data from query', { data });
 
-      let demos = data.map((demoData: Demo) => {
+      const demos = data.map((demoData: Demo) => {
         demoData.id = (demoData as any)._id;
 
         // BRAD = attempt to fix https://github.com/PushTracker/EvalApp/issues/144 for loading the base64 images

@@ -6,7 +6,15 @@ export interface IAnalyticsProperties {
   label?: string;
   action?: string;
   // https://developers.google.com/analytics/devguides/collection/analyticsjs/field-reference#hitType
-  hitType?: 'pageview' | 'screenview' | 'event' | 'transaction' | 'item' | 'social' | 'exception' | 'timing';
+  hitType?:
+    | 'pageview'
+    | 'screenview'
+    | 'event'
+    | 'transaction'
+    | 'item'
+    | 'social'
+    | 'exception'
+    | 'timing';
   value?: number;
   page?: string;
 
@@ -59,6 +67,9 @@ export class Analytics {
    * Track actions, events, etc.
    **/
   track(action: string, properties: IAnalyticsProperties = {}): void {
-    this.analytics.track(action, Object.assign({}, properties, { category: this.category }));
+    this.analytics.track(
+      action,
+      Object.assign({}, properties, { category: this.category })
+    );
   }
 }

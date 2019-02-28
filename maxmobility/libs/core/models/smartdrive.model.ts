@@ -21,119 +21,13 @@ enum OTAState {
   timeout = 'ota.sd.state.timeout'
 }
 
-const timeToString = function(milliseconds: number): string {
-  let t = new Date(null);
+const timeToString = (milliseconds: number): string => {
+  const t = new Date(null);
   t.setSeconds(milliseconds / 1000.0);
   return t.toISOString().substr(11, 8);
 };
 
 export class SmartDrive extends Observable {
-  // STATIC:
-  static readonly OTAState = OTAState;
-  readonly OTAState = SmartDrive.OTAState;
-
-  // bluetooth info
-  public static ServiceUUID = '0cd51666-e7cb-469b-8e4d-2742f1ba7723';
-  public static Characteristics = [
-    'e7add780-b042-4876-aae1-112855353cc1',
-    'e8add780-b042-4876-aae1-112855353cc1',
-    'e9add780-b042-4876-aae1-112855353cc1',
-    //'eaadd780-b042-4876-aae1-112855353cc1',
-    'ebadd780-b042-4876-aae1-112855353cc1'
-  ];
-  public static DataCharacteristic = SmartDrive.Characteristics[1];
-  public static ControlCharacteristic = SmartDrive.Characteristics[2];
-  public static BLEOTADataCharacteristic = SmartDrive.Characteristics[0];
-  public static BLEOTAControlCharacteristic = SmartDrive.Characteristics[3];
-  //public static BLEOTADongleCharacteristic = SmartDrive.Characteristics[3];
-
-  // Event names
-  public static smartdrive_connect_event = 'smartdrive_connect_event';
-  public static smartdrive_disconnect_event = 'smartdrive_disconnect_event';
-
-  public static smartdrive_service_discovered_event =
-    'smartdrive_service_discovered_event';
-  public static smartdrive_characteristic_discovered_event =
-    'smartdrive_characteristic_discovered_event';
-
-  public static smartdrive_ble_version_event = 'smartdrive_ble_version_event';
-  public static smartdrive_mcu_version_event = 'smartdrive_mcu_version_event';
-
-  public static smartdrive_distance_event = 'smartdrive_distance_event';
-
-  public static smartdrive_ota_ready_event = 'smartdrive_ota_ready_event';
-  public static smartdrive_ota_ready_ble_event =
-    'smartdrive_ota_ready_ble_event';
-  public static smartdrive_ota_ready_mcu_event =
-    'smartdrive_ota_ready_mcu_event';
-
-  // user interaction events
-  public static smartdrive_ota_start_event = 'smartdrive_ota_start_event';
-  public static smartdrive_ota_pause_event = 'smartdrive_ota_pause_event';
-  public static smartdrive_ota_resume_event = 'smartdrive_ota_resume_event';
-  public static smartdrive_ota_cancel_event = 'smartdrive_ota_cancel_event';
-  public static smartdrive_ota_force_event = 'smartdrive_ota_force_event';
-  public static smartdrive_ota_retry_event = 'smartdrive_ota_retry_event';
-  public static smartdrive_ota_failed_event = 'smartdrive_ota_failed_event';
-  public static smartdrive_ota_timeout_event = 'smartdrive_ota_timeout_event';
-
-  // static methods:
-  public static motorTicksToMiles(ticks: number): number {
-    return (ticks * (2.0 * 3.14159265358 * 3.8)) / (265.714 * 63360.0);
-  }
-
-  public static caseTicksToMiles(ticks: number): number {
-    return (ticks * (2.0 * 3.14159265358 * 3.8)) / (36.0 * 63360.0);
-  }
-
-  public static versionStringToByte(version: string): number {
-    if (version.includes('.')) {
-      const [major, minor] = version.split('.');
-      return (parseInt(major) << 4) | parseInt(minor);
-    } else {
-      return 0xff;
-    }
-  }
-
-  public static versionByteToString(version: number): string {
-    if (version == 0xff || version == 0x00) {
-      return '??';
-    } else {
-      return `${(version & 0xf0) >> 4}.${version & 0x0f}`;
-    }
-  }
-
-  // NON STATIC:
-  public events: any /*ISmartDriveEvents*/;
-
-  // public members
-  public mcu_version: number = 0xff; // microcontroller firmware version number
-  public ble_version: number = 0xff; // bluetooth chip firmware version number
-  public battery: number = 0; // battery percent Stat of Charge (SoC)
-  public driveDistance: number = 0; // cumulative total distance the smartDrive has driven
-  public coastDistance: number = 0; // cumulative total distance the smartDrive has gone
-
-  public address: string = ''; // MAC Address
-  public connected: boolean = false;
-
-  // not serialized
-  public rssi: number = null; // the received signal strength indicator (how close is it?)
-  public device: any = null; // the actual device (ios:CBPeripheral, android:BluetoothDevice)
-  public otaState: OTAState = OTAState.not_started;
-  public bleOTAProgress: number = 0;
-  public mcuOTAProgress: number = 0;
-  public otaActions: string[] = [];
-  public notifying: boolean = false;
-  public ableToSend: boolean = false;
-  public otaStartTime: Date;
-  public otaCurrentTime: Date;
-  public otaEndTime: Date;
-
-  // private members
-  private _bluetoothService: BluetoothService;
-  private doBLEUpdate: boolean = false;
-  private doMCUUpdate: boolean = false;
-
   // functions
   constructor(btService: BluetoothService, obj?: any) {
     super();
@@ -141,32 +35,6 @@ export class SmartDrive extends Observable {
     if (obj !== null && obj !== undefined) {
       this.fromObject(obj);
     }
-  }
-
-  public toString(): string {
-    return `${this.data()}`;
-  }
-
-  public data(): any {
-    return {
-      mcu_version: this.mcu_version,
-      ble_version: this.ble_version,
-      battery: this.battery,
-      driveDistance: this.driveDistance,
-      coastDistance: this.coastDistance,
-      address: this.address,
-      connected: this.connected
-    };
-  }
-
-  public fromObject(obj: any): void {
-    this.mcu_version = (obj && obj.mcu_version) || 0xff;
-    this.ble_version = (obj && obj.ble_version) || 0xff;
-    this.battery = (obj && obj.battery) || 0;
-    this.driveDistance = (obj && obj.driveDistance) || 0;
-    this.coastDistance = (obj && obj.coastDistance) || 0;
-    this.address = (obj && obj.address) || '';
-    this.connected = (obj && obj.connected) || false;
   }
 
   // regular methods
@@ -177,39 +45,6 @@ export class SmartDrive extends Observable {
 
   get ble_version_string(): string {
     return SmartDrive.versionByteToString(this.ble_version);
-  }
-
-  public isMcuUpToDate(version: string): boolean {
-    const v = SmartDrive.versionStringToByte(version);
-    if (v === 0xff) {
-      return true;
-    }
-    const versions = [this.mcu_version];
-    return versions.reduce((a, e) => {
-      return a && e != 0xff && e >= v;
-    }, true);
-  }
-
-  public isBleUpToDate(version: string): boolean {
-    const v = SmartDrive.versionStringToByte(version);
-    if (v === 0xff) {
-      return true;
-    }
-    const versions = [this.ble_version];
-    return versions.reduce((a, e) => {
-      return a && e != 0xff && e >= v;
-    }, true);
-  }
-
-  public isUpToDate(version: string): boolean {
-    const v = SmartDrive.versionStringToByte(version);
-    if (v === 0xff) {
-      return true;
-    }
-    const versions = [this.mcu_version, this.ble_version];
-    return versions.reduce((a, e) => {
-      return a && e != 0xff && e >= v;
-    }, true);
   }
 
   get otaProgress(): number {
@@ -228,12 +63,180 @@ export class SmartDrive extends Observable {
       return 0;
     }
   }
+  // STATIC:
+  static readonly OTAState = OTAState;
 
-  public otaProgressToString(): string {
+  // bluetooth info
+  static ServiceUUID = '0cd51666-e7cb-469b-8e4d-2742f1ba7723';
+  static Characteristics = [
+    'e7add780-b042-4876-aae1-112855353cc1',
+    'e8add780-b042-4876-aae1-112855353cc1',
+    'e9add780-b042-4876-aae1-112855353cc1',
+    //'eaadd780-b042-4876-aae1-112855353cc1',
+    'ebadd780-b042-4876-aae1-112855353cc1'
+  ];
+  static DataCharacteristic = SmartDrive.Characteristics[1];
+  static ControlCharacteristic = SmartDrive.Characteristics[2];
+  static BLEOTADataCharacteristic = SmartDrive.Characteristics[0];
+  static BLEOTAControlCharacteristic = SmartDrive.Characteristics[3];
+  // static BLEOTADongleCharacteristic = SmartDrive.Characteristics[3];
+
+  // Event names
+  static smartdrive_connect_event = 'smartdrive_connect_event';
+  static smartdrive_disconnect_event = 'smartdrive_disconnect_event';
+
+  static smartdrive_service_discovered_event =
+    'smartdrive_service_discovered_event';
+  static smartdrive_characteristic_discovered_event =
+    'smartdrive_characteristic_discovered_event';
+
+  static smartdrive_ble_version_event = 'smartdrive_ble_version_event';
+  static smartdrive_mcu_version_event = 'smartdrive_mcu_version_event';
+
+  static smartdrive_distance_event = 'smartdrive_distance_event';
+
+  static smartdrive_ota_ready_event = 'smartdrive_ota_ready_event';
+  static smartdrive_ota_ready_ble_event = 'smartdrive_ota_ready_ble_event';
+  static smartdrive_ota_ready_mcu_event = 'smartdrive_ota_ready_mcu_event';
+
+  // user interaction events
+  static smartdrive_ota_start_event = 'smartdrive_ota_start_event';
+  static smartdrive_ota_pause_event = 'smartdrive_ota_pause_event';
+  static smartdrive_ota_resume_event = 'smartdrive_ota_resume_event';
+  static smartdrive_ota_cancel_event = 'smartdrive_ota_cancel_event';
+  static smartdrive_ota_force_event = 'smartdrive_ota_force_event';
+  static smartdrive_ota_retry_event = 'smartdrive_ota_retry_event';
+  static smartdrive_ota_failed_event = 'smartdrive_ota_failed_event';
+  static smartdrive_ota_timeout_event = 'smartdrive_ota_timeout_event';
+  readonly OTAState = SmartDrive.OTAState;
+
+  // NON STATIC:
+  events: any /*ISmartDriveEvents*/;
+
+  // members
+  mcu_version = 0xff; // microcontroller firmware version number
+  ble_version = 0xff; // bluetooth chip firmware version number
+  battery = 0; // battery percent Stat of Charge (SoC)
+  driveDistance = 0; // cumulative total distance the smartDrive has driven
+  coastDistance = 0; // cumulative total distance the smartDrive has gone
+
+  address = ''; // MAC Address
+  connected = false;
+
+  // not serialized
+  rssi: number = null; // the received signal strength indicator (how close is it?)
+  device: any = null; // the actual device (ios:CBPeripheral, android:BluetoothDevice)
+  otaState: OTAState = OTAState.not_started;
+  bleOTAProgress = 0;
+  mcuOTAProgress = 0;
+  otaActions: string[] = [];
+  notifying = false;
+  ableToSend = false;
+  otaStartTime: Date;
+  otaCurrentTime: Date;
+  otaEndTime: Date;
+
+  // private members
+  private _bluetoothService: BluetoothService;
+  private doBLEUpdate = false;
+  private doMCUUpdate = false;
+
+  // handlers
+
+  private stoppingNotify = false;
+
+  private startingNotify = false;
+
+  // static methods:
+  static motorTicksToMiles(ticks: number): number {
+    return (ticks * (2.0 * 3.14159265358 * 3.8)) / (265.714 * 63360.0);
+  }
+
+  static caseTicksToMiles(ticks: number): number {
+    return (ticks * (2.0 * 3.14159265358 * 3.8)) / (36.0 * 63360.0);
+  }
+
+  static versionStringToByte(version: string): number {
+    if (version.includes('.')) {
+      const [major, minor] = version.split('.');
+      return (parseInt(major) << 4) | parseInt(minor);
+    } else {
+      return 0xff;
+    }
+  }
+
+  static versionByteToString(version: number): string {
+    if (version === 0xff || version === 0x00) {
+      return '??';
+    } else {
+      return `${(version & 0xf0) >> 4}.${version & 0x0f}`;
+    }
+  }
+
+  toString(): string {
+    return `${this.data()}`;
+  }
+
+  data(): any {
+    return {
+      mcu_version: this.mcu_version,
+      ble_version: this.ble_version,
+      battery: this.battery,
+      driveDistance: this.driveDistance,
+      coastDistance: this.coastDistance,
+      address: this.address,
+      connected: this.connected
+    };
+  }
+
+  fromObject(obj: any): void {
+    this.mcu_version = (obj && obj.mcu_version) || 0xff;
+    this.ble_version = (obj && obj.ble_version) || 0xff;
+    this.battery = (obj && obj.battery) || 0;
+    this.driveDistance = (obj && obj.driveDistance) || 0;
+    this.coastDistance = (obj && obj.coastDistance) || 0;
+    this.address = (obj && obj.address) || '';
+    this.connected = (obj && obj.connected) || false;
+  }
+
+  isMcuUpToDate(version: string): boolean {
+    const v = SmartDrive.versionStringToByte(version);
+    if (v === 0xff) {
+      return true;
+    }
+    const versions = [this.mcu_version];
+    return versions.reduce((a, e) => {
+      return a && e !== 0xff && e >= v;
+    }, true);
+  }
+
+  isBleUpToDate(version: string): boolean {
+    const v = SmartDrive.versionStringToByte(version);
+    if (v === 0xff) {
+      return true;
+    }
+    const versions = [this.ble_version];
+    return versions.reduce((a, e) => {
+      return a && e !== 0xff && e >= v;
+    }, true);
+  }
+
+  isUpToDate(version: string): boolean {
+    const v = SmartDrive.versionStringToByte(version);
+    if (v === 0xff) {
+      return true;
+    }
+    const versions = [this.mcu_version, this.ble_version];
+    return versions.reduce((a, e) => {
+      return a && e !== 0xff && e >= v;
+    }, true);
+  }
+
+  otaProgressToString(): string {
     return `${this.otaProgress.toFixed(1)} %`;
   }
 
-  public otaStateToString(): string {
+  otaStateToString(): string {
     /*
           if (this.otaState == SmartDrive.OTAState.updating_mcu ||
           this.otaState == SmartDrive.OTAState.updating_ble) {
@@ -247,7 +250,7 @@ export class SmartDrive extends Observable {
     return this.otaState;
   }
 
-  public onOTAActionTap(action: string) {
+  onOTAActionTap(action: string) {
     switch (action) {
       case 'ota.action.start':
         this.sendEvent(SmartDrive.smartdrive_ota_start_event);
@@ -272,11 +275,11 @@ export class SmartDrive extends Observable {
     }
   }
 
-  public cancelOTA() {
+  cancelOTA() {
     this.sendEvent(SmartDrive.smartdrive_ota_cancel_event);
   }
 
-  public performOTA(
+  performOTA(
     bleFirmware: any,
     mcuFirmware: any,
     bleFWVersion: number,
@@ -550,7 +553,9 @@ export class SmartDrive extends Observable {
                 const length = Math.min(fw.length - index, 16);
                 data = Uint8Array.from(fw.subarray(index, index + length));
               } else {
-                throw `ERROR: ${device} should be either 'SmartDrive' or 'SmartDriveBluetooth'`;
+                throw new Error(
+                  `ERROR: ${device} should be either 'SmartDrive' or 'SmartDriveBluetooth'`
+                );
               }
               // TODO: add write timeout here in case of disconnect or other error
               this._bluetoothService
@@ -684,7 +689,7 @@ export class SmartDrive extends Observable {
               }
 
               // what state do we go to next?
-              let nextState = this.doBLEUpdate
+              const nextState = this.doBLEUpdate
                 ? SmartDrive.OTAState.awaiting_ble_ready
                 : this.doMCUUpdate
                 ? SmartDrive.OTAState.rebooting_mcu
@@ -833,7 +838,7 @@ export class SmartDrive extends Observable {
               // - probably add buttons so they can retry?
               this.otaEndTime = new Date();
               let msg = '';
-              if (mcuVersion == mcuFWVersion && bleVersion == bleFWVersion) {
+              if (mcuVersion === mcuFWVersion && bleVersion === bleFWVersion) {
                 msg = `SmartDrive OTA Succeeded! ${mcuVersion.toString(
                   16
                 )}, ${bleVersion.toString(16)}`;
@@ -896,7 +901,7 @@ export class SmartDrive extends Observable {
     });
   }
 
-  public sendPacket(
+  sendPacket(
     Type: string,
     SubType: string,
     dataKey?: string,
@@ -932,7 +937,7 @@ export class SmartDrive extends Observable {
   /**
    * Notify events by name and optionally pass data
    */
-  public sendEvent(eventName: string, data?: any, msg?: string) {
+  sendEvent(eventName: string, data?: any, msg?: string) {
     this.notify({
       eventName,
       object: this,
@@ -940,13 +945,7 @@ export class SmartDrive extends Observable {
       message: msg
     });
   }
-
-  // handlers
-
-  private stoppingNotify = false;
-  private stopNotifyCharacteristics(
-    characteristics: Array<string>
-  ): Promise<any> {
+  private stopNotifyCharacteristics(characteristics: string[]): Promise<any> {
     if (this.stoppingNotify)
       return Promise.resolve('Already stopping notifying!');
     else this.stoppingNotify = true;
@@ -990,11 +989,7 @@ export class SmartDrive extends Observable {
         this.stoppingNotify = false;
       });
   }
-
-  private startingNotify = false;
-  private startNotifyCharacteristics(
-    characteristics: Array<string>
-  ): Promise<any> {
+  private startNotifyCharacteristics(characteristics: string[]): Promise<any> {
     if (this.startingNotify)
       return Promise.reject('Already started notifying!');
     else this.startingNotify = true;
@@ -1044,7 +1039,7 @@ export class SmartDrive extends Observable {
       });
   }
 
-  public connect() {
+  connect() {
     // console.log(`Connecting to ${this.address}`);
     try {
       this._bluetoothService.connect(
@@ -1057,7 +1052,7 @@ export class SmartDrive extends Observable {
     }
   }
 
-  public handleConnect(data?: any) {
+  handleConnect(data?: any) {
     // update state
     this.connected = true;
     this.notifying = false;
@@ -1071,7 +1066,7 @@ export class SmartDrive extends Observable {
       .catch(err => {});
   }
 
-  public handleDisconnect() {
+  handleDisconnect() {
     // update state
     this.notifying = false;
     this.connected = false;
@@ -1083,7 +1078,7 @@ export class SmartDrive extends Observable {
     });
   }
 
-  public handleNotify(args: any) {
+  handleNotify(args: any) {
     // Notify is called when the SmartDrive sends us data, args.value is the data
     // now that we're receiving data we can definitly send data
     this.notifying = true;
@@ -1099,12 +1094,12 @@ export class SmartDrive extends Observable {
     p.destroy();
   }
 
-  public handlePacket(p: Packet) {
+  handlePacket(p: Packet) {
     const packetType = p.Type();
     const subType = p.SubType();
     if (!packetType || !subType) {
       return;
-    } else if (packetType == 'Data') {
+    } else if (packetType === 'Data') {
       switch (subType) {
         case 'DeviceInfo':
           this.handleDeviceInfo(p);
@@ -1118,7 +1113,7 @@ export class SmartDrive extends Observable {
         default:
           break;
       }
-    } else if (packetType == 'Command') {
+    } else if (packetType === 'Command') {
       switch (subType) {
         case 'OTAReady':
           this.handleOTAReady(p);

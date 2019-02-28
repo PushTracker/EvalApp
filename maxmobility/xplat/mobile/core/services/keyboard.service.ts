@@ -12,7 +12,9 @@ export class KeyboardService {
 
   constructor() {
     if (isIOS) {
-      throw new Error('Currently no implementation for iOS; should only be constructed for Android.');
+      throw new Error(
+        'Currently no implementation for iOS; should only be constructed for Android.'
+      );
     }
     this.activity = app.android.currentContext;
     this.events = fromObject({});
@@ -29,10 +31,14 @@ export class KeyboardService {
         rootView.getWindowVisibleDisplayFrame(rect);
         const screenHeight = rootView.getHeight();
         const keyboardHeight = screenHeight - (rect.bottom - rect.top);
-        const orientation = this.activity.getResources().getConfiguration().orientation;
+        const orientation = this.activity.getResources().getConfiguration()
+          .orientation;
         if (keyboardHeight > screenHeight / 3) {
           this.keyboardActive = true;
-          if (orientation === android.content.res.Configuration.ORIENTATION_PORTRAIT) {
+          if (
+            orientation ===
+            android.content.res.Configuration.ORIENTATION_PORTRAIT
+          ) {
             this.notifyKeyboardHeightChanged(keyboardHeight, orientation);
           } else {
             this.notifyKeyboardHeightChanged(keyboardHeight, orientation);
