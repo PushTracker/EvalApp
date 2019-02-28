@@ -1,8 +1,7 @@
 {
     "compilerOptions": {
-        "module": "es2015",
-        "moduleResolution": "node",
-        "target": "es2015",
+        "module": "commonjs",
+        "target": "es5",
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "noEmitHelpers": true,
@@ -12,10 +11,8 @@
         "noImplicitUseStrict": true,
         "declaration": false,
         "lib": [
-            "es2017",
-            "dom",
-            "webworker",
             "es6",
+            "dom",
             "es2015.iterable"
         ],
         "baseUrl": ".",
@@ -38,16 +35,9 @@
             ]
         }
     },
-    "include": [
-        "references.d.ts",
-        "./node_modules/tns-platform-declarations/android-28.d.ts",
-        "./node_modules/tns-platform-declarations/ios.d.ts",
-        // sources
-        "./app/main.ts",
-        "app/**/*.module.ts",
-        "../../nativescript-bluetooth/index.ts",
-        "../../nativescript-bluetooth/bluetooth.android.ts",
-        "../../nativescript-bluetooth/bluetooth.ios.ts"
-    ],
-    "compileOnSave": false
+    "exclude": [
+        "node_modules",
+        "platforms",
+        "nativescript-bluetooth"
+    ]
 }
