@@ -169,7 +169,7 @@ export class HomeComponent {
   loadDemoUnits() {
     try {
       this.demoUnitsLoaded = false; // toggle the display of the loading indicator
-      DemoService.Demos.splice(0, DemoService.Demos.length); // empty the current items
+      DemoService.Demos.length = 0; // empty the current items
 
       this._demoService
         .load()
