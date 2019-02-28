@@ -34,7 +34,7 @@
     "newline-before-return": false,
     "no-arg": true,
     "no-bitwise": false,
-    "no-console": [true, "debug", "info", "time", "timeEnd", "trace"],
+    "no-console": [true, "debug", "info", "trace"],
     "no-construct": true,
     "no-debugger": true,
     "no-duplicate-super": true,
