@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
+import { LoggingService } from '@maxmobility/mobile';
 import * as orientation from 'nativescript-orientation';
 import { YoutubePlayer } from 'nativescript-youtubeplayer';
 import { Subscription } from 'rxjs';
 import { Page } from 'tns-core-modules/ui/page';
-import { LoggingService } from '@maxmobility/mobile';
 
 @Component({
   selector: 'Video',
   moduleId: module.id,
-  templateUrl: './video.component.html',
-  styleUrls: ['./video.component.scss']
+  templateUrl: 'video.component.html',
+  styleUrls: ['video.component.scss']
 })
 export class VideoComponent implements OnInit {
   private static LOG_TAG = 'video.component ';

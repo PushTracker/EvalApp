@@ -4,15 +4,14 @@ import { LoggingService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 import { ToastDuration, ToastPosition, Toasty } from 'nativescript-toasty';
-import { setTimeout } from 'tns-core-modules/timer';
 import { confirm } from 'tns-core-modules/ui/dialogs/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
 
 @Component({
   selector: 'DemoRequests',
   moduleId: module.id,
-  templateUrl: './demo-requests.component.html',
-  styleUrls: ['./demo-requests.component.scss']
+  templateUrl: 'demo-requests.component.html',
+  styleUrls: ['demo-requests.component.scss']
 })
 export class DemoRequestsComponent implements OnInit {
   private static LOG_TAG = 'demo-requests.component ';

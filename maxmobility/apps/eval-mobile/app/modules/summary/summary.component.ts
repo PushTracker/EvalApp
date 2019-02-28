@@ -1,21 +1,20 @@
 import { Component } from '@angular/core';
-import { Trial, EvaluationStatus, Evaluation } from '@maxmobility/core';
+import { EvaluationStatus, Trial } from '@maxmobility/core';
 import { EvaluationService, LoggingService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
+import { Kinvey } from 'kinvey-nativescript-sdk';
 import * as mustache from 'mustache';
 import { RouterExtensions } from 'nativescript-angular/router';
 import * as email from 'nativescript-email';
 import { isAndroid, isIOS } from 'tns-core-modules/platform';
 import { alert, confirm } from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
-import { TextField } from 'tns-core-modules/ui/text-field';
-import { Kinvey } from 'kinvey-nativescript-sdk';
 
 @Component({
   selector: 'Summary',
   moduleId: module.id,
-  templateUrl: './summary.component.html',
-  styleUrls: ['./summary.component.scss']
+  templateUrl: 'summary.component.html',
+  styleUrls: ['summary.component.scss']
 })
 export class SummaryComponent {
   private static LOG_TAG = 'summary.component ';

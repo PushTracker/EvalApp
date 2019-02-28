@@ -40,8 +40,8 @@ import * as utils from 'tns-core-modules/utils/utils';
 @Component({
   selector: 'Demo',
   moduleId: module.id,
-  templateUrl: './demo-detail.component.html',
-  styleUrls: ['./demo-detail.component.scss']
+  templateUrl: 'demo-detail.component.html',
+  styleUrls: ['demo-detail.component.scss']
 })
 export class DemoDetailComponent {
   private static LOG_TAG = 'demo-detail.component ';

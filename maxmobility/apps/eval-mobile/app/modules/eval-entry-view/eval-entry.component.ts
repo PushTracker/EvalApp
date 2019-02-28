@@ -11,8 +11,8 @@ import { Page } from 'tns-core-modules/ui/page';
 @Component({
   selector: 'EvalEntry',
   moduleId: module.id,
-  templateUrl: './eval-entry.component.html',
-  styleUrls: ['./eval-entry.component.scss']
+  templateUrl: 'eval-entry.component.html',
+  styleUrls: ['eval-entry.component.scss']
 })
 export class EvalEntryComponent {
   private static LOG_TAG = 'eval-entry.component ';

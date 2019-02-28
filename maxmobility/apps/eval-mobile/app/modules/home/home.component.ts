@@ -26,8 +26,8 @@ import { Page } from 'tns-core-modules/ui/page';
 @Component({
   selector: 'Home',
   moduleId: module.id,
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
+  templateUrl: 'home.component.html',
+  styleUrls: ['home.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default
 })
 export class HomeComponent {

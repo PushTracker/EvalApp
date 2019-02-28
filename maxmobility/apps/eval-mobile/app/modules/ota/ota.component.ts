@@ -10,7 +10,7 @@ import {
 import { TranslateService } from '@ngx-translate/core';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { Carousel, CarouselItem } from 'nativescript-carousel';
-import { keepAwake, allowSleepAgain } from 'nativescript-insomnia';
+import { allowSleepAgain, keepAwake } from 'nativescript-insomnia';
 import { Subscription } from 'rxjs';
 import * as app from 'tns-core-modules/application';
 import { Color } from 'tns-core-modules/color';
@@ -28,8 +28,8 @@ import { ScrollView } from 'tns-core-modules/ui/scroll-view';
 @Component({
   selector: 'OTA',
   moduleId: module.id,
-  templateUrl: './ota.component.html',
-  styleUrls: ['./ota.component.scss']
+  templateUrl: 'ota.component.html',
+  styleUrls: ['ota.component.scss']
 })
 export class OTAComponent implements OnInit {
   private static LOG_TAG = 'ota.component ';

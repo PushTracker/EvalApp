@@ -7,8 +7,8 @@ import * as utilityModule from 'tns-core-modules/utils/utils';
 
 @Component({
   selector: 'privacy-policy',
-  templateUrl: './privacy-policy.html',
-  styleUrls: ['./privacy-policy.scss']
+  templateUrl: 'privacy-policy.html',
+  styleUrls: ['privacy-policy.scss']
 })
 export class PrivacyPolicyComponent {
   user = new User();

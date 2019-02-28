@@ -14,7 +14,7 @@ import { isAndroid, isIOS } from 'tns-core-modules/platform';
 import { Button } from 'tns-core-modules/ui/button';
 import { alert } from 'tns-core-modules/ui/dialogs';
 import { EventData, Page } from 'tns-core-modules/ui/page';
-import { TextField } from 'tns-core-modules/ui/text-field/text-field';
+import { TextField } from 'tns-core-modules/ui/text-field';
 import { isIosSimulator, setMarginForIosSafeArea } from '../../utils';
 
 declare const com;
@@ -22,8 +22,8 @@ declare const com;
 @Component({
   selector: 'Login',
   moduleId: module.id,
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  templateUrl: 'login.component.html',
+  styleUrls: ['login.component.scss']
 })
 export class LoginComponent implements OnInit {
   private static LOG_TAG = 'login.component ';

@@ -8,8 +8,8 @@ import { Observable } from 'tns-core-modules/data/observable';
 @Component({
   selector: 'MaxActionBar',
   moduleId: module.id,
-  templateUrl: './actionbar.component.html',
-  styleUrls: ['./actionbar.component.scss']
+  templateUrl: 'actionbar.component.html',
+  styleUrls: ['actionbar.component.scss']
 })
 export class ActionbarComponent {
   @Input() title: string;

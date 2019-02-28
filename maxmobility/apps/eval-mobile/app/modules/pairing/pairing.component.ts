@@ -30,8 +30,8 @@ import { Page } from 'tns-core-modules/ui/page';
 @Component({
   selector: 'Pairing',
   moduleId: module.id,
-  templateUrl: './pairing.component.html',
-  styleUrls: ['./pairing.component.scss']
+  templateUrl: 'pairing.component.html',
+  styleUrls: ['pairing.component.scss']
 })
 export class PairingComponent implements OnInit {
   private static LOG_TAG = 'pairing.component ';
