@@ -19,8 +19,8 @@ enum OTAState {
   timeout = 'ota.pt.state.timeout'
 }
 
-const timeToString = function(milliseconds: number): string {
-  let t = new Date(null);
+const timeToString = (milliseconds: number): string => {
+  const t = new Date(null);
   t.setSeconds(milliseconds / 1000.0);
   return t.toISOString().substr(11, 8);
 };
@@ -28,64 +28,63 @@ const timeToString = function(milliseconds: number): string {
 export class PushTracker extends Observable {
   // STATIC:
   static readonly OTAState = OTAState;
-  readonly OTAState = PushTracker.OTAState;
 
-  public static Settings = class extends Observable {
+  static Settings = class extends Observable {
     // settings classes
-    public static ControlMode = class {
-      public static Options: Array<string> = ['MX1', 'MX2', 'MX2+'];
+    static ControlMode = class {
+      static Options: string[] = ['MX1', 'MX2', 'MX2+'];
 
-      public static Off: string = 'Off';
+      static Off = 'Off';
 
-      public static Beginner: string = 'MX1';
-      public static Intermediate: string = 'MX2';
-      public static Advanced: string = 'MX2+';
+      static Beginner = 'MX1';
+      static Intermediate = 'MX2';
+      static Advanced = 'MX2+';
 
-      public static MX1: string = 'MX1';
-      public static MX2: string = 'MX2';
-      public static MX2plus: string = 'MX2+';
+      static MX1 = 'MX1';
+      static MX2 = 'MX2';
+      static MX2plus = 'MX2+';
 
-      public static fromSettings(s: any): string {
-        let o = bindingTypeToString('SmartDriveControlMode', s.ControlMode);
+      static fromSettings(s: any): string {
+        const o = bindingTypeToString('SmartDriveControlMode', s.ControlMode);
         return PushTracker.Settings.ControlMode[o];
       }
     };
 
-    public static Units = class {
-      public static Options: Array<string> = ['English', 'Metric'];
-      public static Translations: Array<string> = [
+    static Units = class {
+      static Options: string[] = ['English', 'Metric'];
+      static Translations: string[] = [
         'pushtracker.settings.units.english',
         'pushtracker.settings.units.metric'
       ];
 
-      public static English: string = 'English';
-      public static Metric: string = 'Metric';
+      static English = 'English';
+      static Metric = 'Metric';
 
-      public static fromSettings(s: any): string {
-        let o = bindingTypeToString('Units', s.Units);
+      static fromSettings(s: any): string {
+        const o = bindingTypeToString('Units', s.Units);
         return PushTracker.Settings.Units[o];
       }
     };
 
     // public members
-    public controlMode: string = PushTracker.Settings.ControlMode.MX2plus;
-    public ezOn: boolean = false;
-    public units: string = PushTracker.Settings.Units.English;
-    public acceleration: number = 30;
-    public maxSpeed: number = 70;
-    public tapSensitivity: number = 100;
+    controlMode: string = PushTracker.Settings.ControlMode.MX2plus;
+    ezOn = false;
+    units: string = PushTracker.Settings.Units.English;
+    acceleration = 30;
+    maxSpeed = 70;
+    tapSensitivity = 100;
 
-    public ledColor: Color = new Color('#3c8aba');
+    ledColor: Color = new Color('#3c8aba');
 
     constructor() {
       super();
     }
 
-    public static getBoolSetting(flags: number, settingBit: number): boolean {
+    static getBoolSetting(flags: number, settingBit: number): boolean {
       return ((flags >> settingBit) & 0x01) > 0;
     }
 
-    public fromSettings(s: any): void {
+    fromSettings(s: any): void {
       // from c++ settings bound array to c++ class
       this.controlMode = PushTracker.Settings.ControlMode.fromSettings(s);
       this.units = PushTracker.Settings.Units.fromSettings(s);
@@ -96,7 +95,7 @@ export class PushTracker extends Observable {
       this.tapSensitivity = Math.round(s.TapSensitivity * 100.0);
     }
 
-    public copy(s: any) {
+    copy(s: any) {
       // from a settings class exactly like this
       this.controlMode = s.controlMode;
       this.units = s.units;
@@ -106,7 +105,7 @@ export class PushTracker extends Observable {
       this.tapSensitivity = s.tapSensitivity;
     }
 
-    public diff(s: any): boolean {
+    diff(s: any): boolean {
       return (
         this.controlMode !== s.controlMode ||
         this.units !== s.units ||
@@ -118,33 +117,33 @@ export class PushTracker extends Observable {
     }
   };
 
-  public static PushSettings = class extends Observable {
+  static PushSettings = class extends Observable {
     // settings classes
 
     // public members
-    public threshold: number = 3;
-    public timeWindow: number = 15;
-    public clearCounter: boolean = false;
+    threshold = 3;
+    timeWindow = 15;
+    clearCounter = false;
 
     constructor() {
       super();
     }
 
-    public fromPushSettings(ps: any): void {
+    fromPushSettings(ps: any): void {
       // from c++ push settings bound array to c++ class
       this.threshold = ps.threshold;
       this.timeWindow = ps.timeWindow;
       this.clearCounter = ps.clearCounter > 0;
     }
 
-    public copy(ps: any) {
+    copy(ps: any) {
       // from a push settings class exactly like this
       this.threshold = ps.threshold;
       this.timeWindow = ps.timeWindow;
       this.clearCounter = ps.clearCounter;
     }
 
-    public diff(ps: any): boolean {
+    diff(ps: any): boolean {
       return (
         this.threshold !== ps.threshold ||
         this.timeWindow !== ps.timeWindow ||
@@ -154,63 +153,88 @@ export class PushTracker extends Observable {
   };
 
   // bluetooth info
-  public static ServiceUUID = '1d14d6ee-fd63-4fa1-bfa4-8f47b42119f0';
-  public static Characteristics = [
+  static ServiceUUID = '1d14d6ee-fd63-4fa1-bfa4-8f47b42119f0';
+  static Characteristics = [
     '58daaa15-f2b2-4cd9-b827-5807b267dae1',
     '68208ebf-f655-4a2d-98f4-20d7d860c471',
     '9272e309-cd33-4d83-a959-b54cc7a54d1f',
     '8489625f-6c73-4fc0-8bcc-735bb173a920',
     '5177fda8-1003-4254-aeb9-7f9edb3cc9cf'
   ];
-  public static DataCharacteristicUUID = PushTracker.Characteristics[1];
-  public static DataCharacteristic;
+  static DataCharacteristicUUID = PushTracker.Characteristics[1];
+  static DataCharacteristic;
 
   // Event names
-  public static pushtracker_paired_event = 'pushtracker_paired_event';
-
-  public static pushtracker_connect_event = 'pushtracker_connect_event';
-  public static pushtracker_disconnect_event = 'pushtracker_disconnect_event';
-
-  public static pushtracker_version_event = 'pushtracker_version_event';
-  public static pushtracker_error_event = 'pushtracker_error_event';
-  public static pushtracker_distance_event = 'pushtracker_distance_event';
-  public static pushtracker_settings_event = 'pushtracker_settings_event';
-  public static pushtracker_push_settings_event =
-    'pushtracker_push_settings_event';
-
-  public static pushtracker_daily_info_event = 'pushtracker_daily_info_event';
-  public static pushtracker_awake_event = 'pushtracker_awake_event';
-
-  public static pushtracker_ota_ready_event = 'pushtracker_ota_ready_event';
+  static pushtracker_paired_event = 'pushtracker_paired_event';
+  static pushtracker_connect_event = 'pushtracker_connect_event';
+  static pushtracker_disconnect_event = 'pushtracker_disconnect_event';
+  static pushtracker_version_event = 'pushtracker_version_event';
+  static pushtracker_error_event = 'pushtracker_error_event';
+  static pushtracker_distance_event = 'pushtracker_distance_event';
+  static pushtracker_settings_event = 'pushtracker_settings_event';
+  static pushtracker_push_settings_event = 'pushtracker_push_settings_event';
+  static pushtracker_daily_info_event = 'pushtracker_daily_info_event';
+  static pushtracker_awake_event = 'pushtracker_awake_event';
+  static pushtracker_ota_ready_event = 'pushtracker_ota_ready_event';
 
   // user interaction events
-  public static pushtracker_ota_start_event = 'pushtracker_ota_start_event';
-  public static pushtracker_ota_pause_event = 'pushtracker_ota_pause_event';
-  public static pushtracker_ota_resume_event = 'pushtracker_ota_resume_event';
-  public static pushtracker_ota_cancel_event = 'pushtracker_ota_cancel_event';
-  public static pushtracker_ota_force_event = 'pushtracker_ota_force_event';
-  public static pushtracker_ota_retry_event = 'pushtracker_ota_retry_event';
-  public static pushtracker_ota_failed_event = 'pushtracker_ota_failed_event';
-  public static pushtracker_ota_timeout_event = 'pushtracker_ota_timeout_event';
+  static pushtracker_ota_start_event = 'pushtracker_ota_start_event';
+  static pushtracker_ota_pause_event = 'pushtracker_ota_pause_event';
+  static pushtracker_ota_resume_event = 'pushtracker_ota_resume_event';
+  static pushtracker_ota_cancel_event = 'pushtracker_ota_cancel_event';
+  static pushtracker_ota_force_event = 'pushtracker_ota_force_event';
+  static pushtracker_ota_retry_event = 'pushtracker_ota_retry_event';
+  static pushtracker_ota_failed_event = 'pushtracker_ota_failed_event';
+  static pushtracker_ota_timeout_event = 'pushtracker_ota_timeout_event';
+  readonly OTAState = PushTracker.OTAState;
+
+  // private members
+  private _bluetoothService: BluetoothService;
+
+  // NON STATIC:
+  events: any /*IPushTrackerEvents*/;
+
+  //  members
+  version = 0xff; // firmware version number for the PT firmware
+  mcu_version = 0xff; // firmware version number for the SD MCU firmware
+  ble_version = 0xff; // firmware version number for the SD BLE firmware
+  battery = 0; // battery percent Stat of Charge (SoC)
+
+  address = ''; // MAC Address
+  paired = false; // Is this PushTracker paired?
+  connected = false; // Is this PushTracker connected?
+
+  settings = new PushTracker.Settings();
+  pushSettings = new PushTracker.PushSettings();
+
+  // not serialized
+  device: any = null; // the actual device (ios:CBCentral, android:BluetoothDevice)
+  otaState: OTAState = OTAState.not_started;
+  otaProgress = 0;
+  otaActions: string[] = [];
+  ableToSend = false;
+  otaStartTime: Date;
+  otaCurrentTime: Date;
+  otaEndTime: Date;
 
   // static methods:
-  public static motorTicksToMiles(ticks: number): number {
+  static motorTicksToMiles(ticks: number): number {
     return (ticks * (2.0 * 3.14159265358 * 3.8)) / (265.714 * 63360.0);
   }
 
-  public static caseTicksToMiles(ticks: number): number {
+  static caseTicksToMiles(ticks: number): number {
     return (ticks * (2.0 * 3.14159265358 * 3.8)) / (36.0 * 63360.0);
   }
 
-  public static motorTicksToMeters(ticks: number): number {
+  static motorTicksToMeters(ticks: number): number {
     return (ticks * (2.0 * 3.14159265358 * 0.09652)) / 265.714;
   }
 
-  public static caseTicksToMeters(ticks: number): number {
+  static caseTicksToMeters(ticks: number): number {
     return (ticks * (2.0 * 3.14159265358 * 0.09652)) / 36.0;
   }
 
-  public static versionStringToByte(version: string): number {
+  static versionStringToByte(version: string): number {
     if (version.includes('.')) {
       const [major, minor] = version.split('.');
       return (parseInt(major) << 4) | parseInt(minor);
@@ -219,42 +243,13 @@ export class PushTracker extends Observable {
     }
   }
 
-  public static versionByteToString(version: number): string {
-    if (version == 0xff || version == 0x00) {
+  static versionByteToString(version: number): string {
+    if (version === 0xff || version === 0x00) {
       return '??';
     } else {
       return `${(version & 0xf0) >> 4}.${version & 0x0f}`;
     }
   }
-
-  // NON STATIC:
-  public events: any /*IPushTrackerEvents*/;
-
-  // public members
-  public version: number = 0xff; // firmware version number for the PT firmware
-  public mcu_version: number = 0xff; // firmware version number for the SD MCU firmware
-  public ble_version: number = 0xff; // firmware version number for the SD BLE firmware
-  public battery: number = 0; // battery percent Stat of Charge (SoC)
-
-  public address: string = ''; // MAC Address
-  public paired: boolean = false; // Is this PushTracker paired?
-  public connected: boolean = false; // Is this PushTracker connected?
-
-  public settings = new PushTracker.Settings();
-  public pushSettings = new PushTracker.PushSettings();
-
-  // not serialized
-  public device: any = null; // the actual device (ios:CBCentral, android:BluetoothDevice)
-  public otaState: OTAState = OTAState.not_started;
-  public otaProgress: number = 0;
-  public otaActions: string[] = [];
-  public ableToSend: boolean = false;
-  public otaStartTime: Date;
-  public otaCurrentTime: Date;
-  public otaEndTime: Date;
-
-  // private members
-  private _bluetoothService: BluetoothService;
 
   // functions
   constructor(btService: BluetoothService, obj?: any) {
@@ -265,11 +260,11 @@ export class PushTracker extends Observable {
     }
   }
 
-  public toString(): string {
+  toString(): string {
     return `${this.data()}`;
   }
 
-  public status(): string {
+  status(): string {
     let s = '';
     s += this.address + '\n';
     s += 'PT: ' + PushTracker.versionByteToString(this.version) + ',  ';
@@ -278,7 +273,7 @@ export class PushTracker extends Observable {
     return s;
   }
 
-  public data(): any {
+  data(): any {
     return {
       version: this.version,
       mcu_version: this.mcu_version,
@@ -290,7 +285,7 @@ export class PushTracker extends Observable {
     };
   }
 
-  public fromObject(obj: any): void {
+  fromObject(obj: any): void {
     this.version = (obj && obj.version) || 0xff;
     this.mcu_version = (obj && obj.mcu_version) || 0xff;
     this.ble_version = (obj && obj.ble_version) || 0xff;
@@ -306,7 +301,7 @@ export class PushTracker extends Observable {
     return PushTracker.versionByteToString(this.version);
   }
 
-  public isUpToDate(version: string, checkAll?: boolean): boolean {
+  isUpToDate(version: string, checkAll?: boolean): boolean {
     const v = PushTracker.versionStringToByte(version);
     if (v === 0xff) {
       return true;
@@ -316,19 +311,19 @@ export class PushTracker extends Observable {
       versions.push(this.mcu_version, this.ble_version);
     }
     return versions.reduce((a, e) => {
-      return a && e != 0xff && e >= v;
+      return a && e !== 0xff && e >= v;
     }, true);
   }
 
-  public otaProgressToString(): string {
+  otaProgressToString(): string {
     return `${this.otaProgress.toFixed(1)} %`;
   }
 
-  public otaStateToString(): string {
+  otaStateToString(): string {
     return this.otaState;
   }
 
-  public onOTAActionTap(action: string) {
+  onOTAActionTap(action: string) {
     switch (action) {
       case 'ota.action.start':
         this.sendEvent(PushTracker.pushtracker_ota_start_event);
@@ -353,11 +348,11 @@ export class PushTracker extends Observable {
     }
   }
 
-  public cancelOTA() {
+  cancelOTA() {
     this.sendEvent(PushTracker.pushtracker_ota_cancel_event);
   }
 
-  public performOTA(fw: any, fwVersion: number, timeout: number): Promise<any> {
+  performOTA(fw: any, fwVersion: number, timeout: number): Promise<any> {
     // send start ota to PT
     //   - periodically sends start ota
     //   - stop sending once we get ota ready from PT
@@ -437,7 +432,7 @@ export class PushTracker extends Observable {
           this.otaState = PushTracker.OTAState.not_started;
           this.otaActions = [];
           if (this.connected) {
-            if (this.version != 0xff) {
+            if (this.version !== 0xff) {
               haveVersion = true;
             }
             this.otaActions = ['ota.action.start'];
@@ -501,22 +496,22 @@ export class PushTracker extends Observable {
           begin();
         };
         const writeFirmwareSector = (
-          fw: any,
+          fwSector: any,
           characteristic: any,
           nextState: any
         ) => {
           if (index < 0) index = 0;
-          const fileSize = fw.length;
+          const fileSize = fwSector.length;
           if (cancelOTA) {
             return;
           } else if (paused) {
             setTimeout(() => {
-              writeFirmwareSector(fw, characteristic, nextState);
+              writeFirmwareSector(fwSector, characteristic, nextState);
             }, 100);
           } else if (index < fileSize) {
             if (this.connected && this.ableToSend) {
               const p = new Packet();
-              p.makeOTAPacket('PushTracker', index, fw);
+              p.makeOTAPacket('PushTracker', index, fwSector);
               const data = p.writableBuffer();
               p.destroy();
               this._bluetoothService
@@ -525,20 +520,20 @@ export class PushTracker extends Observable {
                   index += payloadSize;
                   if (isIOS) {
                     setTimeout(() => {
-                      writeFirmwareSector(fw, characteristic, nextState);
+                      writeFirmwareSector(fwSector, characteristic, nextState);
                     }, 30);
                   } else {
-                    writeFirmwareSector(fw, characteristic, nextState);
+                    writeFirmwareSector(fwSector, characteristic, nextState);
                   }
                 })
                 .catch(err => {
                   setTimeout(() => {
-                    writeFirmwareSector(fw, characteristic, nextState);
+                    writeFirmwareSector(fwSector, characteristic, nextState);
                   }, 100);
                 });
             } else {
               setTimeout(() => {
-                writeFirmwareSector(fw, characteristic, nextState);
+                writeFirmwareSector(fwSector, characteristic, nextState);
               }, 500);
             }
           } else {
@@ -661,7 +656,7 @@ export class PushTracker extends Observable {
               //       and re-connect the PT to the App
               this.otaEndTime = new Date();
               let msg = '';
-              if (this.version == fwVersion) {
+              if (this.version === fwVersion) {
                 msg = `PushTracker OTA Succeeded! ${this.version.toString(16)}`;
                 this.otaState = PushTracker.OTAState.complete;
               } else {
@@ -719,7 +714,7 @@ export class PushTracker extends Observable {
     });
   }
 
-  public sendPacket(
+  sendPacket(
     Type: string,
     SubType: string,
     dataKey?: string,
@@ -745,7 +740,7 @@ export class PushTracker extends Observable {
     ]);
   }
 
-  public sendSettings(
+  sendSettings(
     mode: string,
     units: string,
     flags: number,
@@ -753,16 +748,16 @@ export class PushTracker extends Observable {
     acceleration: number,
     max_speed: number
   ): Promise<any> {
-    let p = new Packet();
-    let settings = p.data('settings');
+    const p = new Packet();
+    const settings = p.data('settings');
     // convert mode
-    if (mode == 'MX2+') mode = 'Advanced';
-    else if (mode == 'MX2') mode = 'Intermediate';
-    else if (mode == 'MX1') mode = 'Beginner';
-    else if (mode == 'Off') mode = 'Off';
+    if (mode === 'MX2+') mode = 'Advanced';
+    else if (mode === 'MX2') mode = 'Intermediate';
+    else if (mode === 'MX1') mode = 'Beginner';
+    else if (mode === 'Off') mode = 'Off';
     else mode = 'Advanced';
     // convert units
-    units = units == 'Metric' ? 'Metric' : 'English';
+    units = units === 'Metric' ? 'Metric' : 'English';
     // clamp numbers
     const clamp = n => {
       return Math.max(0, Math.min(n, 1.0));
@@ -787,13 +782,13 @@ export class PushTracker extends Observable {
     );
   }
 
-  public sendPushSettings(
+  sendPushSettings(
     threshold: number,
     timeWindow: number,
     clearCounter: boolean
   ): Promise<any> {
-    let p = new Packet();
-    let pushSettings = p.data('pushSettings');
+    const p = new Packet();
+    const pushSettings = p.data('pushSettings');
     // clamp numbers
     const clamp = n => {
       return Math.round(Math.max(0, Math.min(n, 255.0)));
@@ -817,7 +812,7 @@ export class PushTracker extends Observable {
   /**
    * Notify events by name and optionally pass data
    */
-  public sendEvent(eventName: string, data?: any, msg?: string) {
+  sendEvent(eventName: string, data?: any, msg?: string) {
     this.notify({
       eventName,
       object: this,
@@ -827,22 +822,22 @@ export class PushTracker extends Observable {
   }
 
   // handlers
-  public handlePaired() {
+  handlePaired() {
     this.paired = true;
     this.sendEvent(PushTracker.pushtracker_paired_event);
   }
 
-  public handleConnect() {
+  handleConnect() {
     this.connected = true;
     this.sendEvent(PushTracker.pushtracker_connect_event);
   }
 
-  public handleDisconnect() {
+  handleDisconnect() {
     this.connected = false;
     this.sendEvent(PushTracker.pushtracker_disconnect_event);
   }
 
-  public handlePacket(p: Packet) {
+  handlePacket(p: Packet) {
     // if we get a pakcet we must have been paired
     this.paired = true;
     // if we get data we must be connected properly
@@ -850,7 +845,7 @@ export class PushTracker extends Observable {
     // now actually determine packet type and call handlers
     const packetType = p.Type();
     const subType = p.SubType();
-    if (packetType && packetType == 'Data') {
+    if (packetType && packetType === 'Data') {
       switch (subType) {
         case 'VersionInfo':
           this.handleVersionInfo(p);
@@ -873,7 +868,7 @@ export class PushTracker extends Observable {
         default:
           break;
       }
-    } else if (packetType && packetType == 'Command') {
+    } else if (packetType && packetType === 'Command') {
       switch (subType) {
         case 'SetSettings':
           this.handleSettings(p);

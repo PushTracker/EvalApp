@@ -32,20 +32,21 @@ export enum PushTrackerState {
 @Injectable()
 export class BluetoothService {
   // static members
-  public static AppServiceUUID = '9358ac8f-6343-4a31-b4e0-4b13a2b45d86';
-  public static PushTrackers = new ObservableArray<PushTracker>();
-  public static SmartDrives = new ObservableArray<SmartDrive>();
+  static AppServiceUUID = '9358ac8f-6343-4a31-b4e0-4b13a2b45d86';
+  static PushTrackers = new ObservableArray<PushTracker>();
+  static SmartDrives = new ObservableArray<SmartDrive>();
 
   /**
    * Observable to monitor the push tracker connectivity status. The MaxActionBar uses this to display the correct icon.
    */
-  public static pushTrackerStatus: Observable = fromObject({
+  static pushTrackerStatus: Observable = fromObject({
     state: PushTrackerState.unknown
   });
+  static _backgroundOtaTask: number = isIOS ? UIBackgroundTaskInvalid : null;
 
-  // public members
-  public enabled = false;
-  public initialized = false;
+  // members
+  enabled = false;
+  initialized = false;
 
   // private members
   private _bluetooth = new Bluetooth();
@@ -63,7 +64,7 @@ export class BluetoothService {
       STORAGE_KEYS.HAS_PAIRED_TO_PUSHTRACKER,
       false
     );
-    let state =
+    const state =
       hasPairedToPT === true
         ? PushTrackerState.paired
         : PushTrackerState.unknown;
@@ -106,7 +107,35 @@ export class BluetoothService {
     this.setEventListeners();
   }
 
-  public setEventListeners() {
+  static requestOtaBackgroundExecution() {
+    if (isIOS) {
+      if (this._backgroundOtaTask !== UIBackgroundTaskInvalid) {
+        return;
+      }
+
+      this._backgroundOtaTask = UIApplication.sharedApplication.beginBackgroundTaskWithExpirationHandler(
+        BluetoothService.stopOtaBackgroundExecution
+      );
+      console.log('this._backgroundOtaTask', this._backgroundOtaTask);
+      return this._backgroundOtaTask;
+    }
+  }
+
+  static stopOtaBackgroundExecution() {
+    if (isIOS) {
+      if (this._backgroundOtaTask === UIBackgroundTaskInvalid) {
+        return;
+      }
+
+      console.log('Ending background task for OTA');
+      UIApplication.sharedApplication.endBackgroundTask(
+        this._backgroundOtaTask
+      );
+      this._backgroundOtaTask = UIBackgroundTaskInvalid;
+    }
+  }
+
+  setEventListeners() {
     this.clearEventListeners();
     // setup event listeners
     this._bluetooth.on(
@@ -172,7 +201,7 @@ export class BluetoothService {
     );
   }
 
-  public clearEventListeners() {
+  clearEventListeners() {
     // setup event listeners
     this._bluetooth.off(Bluetooth.bond_status_change_event);
     this._bluetooth.off(Bluetooth.peripheral_connected_event);
@@ -188,8 +217,8 @@ export class BluetoothService {
     this._bluetooth.off(Bluetooth.bluetooth_advertise_success_event);
   }
 
-  public clearSmartDrives() {
-    let connectedSDs = BluetoothService.SmartDrives.slice().filter(
+  clearSmartDrives() {
+    const connectedSDs = BluetoothService.SmartDrives.slice().filter(
       sd => sd.connected
     );
     BluetoothService.SmartDrives.splice(
@@ -199,7 +228,7 @@ export class BluetoothService {
     );
   }
 
-  public clearPushTrackers() {
+  clearPushTrackers() {
     BluetoothService.PushTrackers.splice(
       0,
       BluetoothService.PushTrackers.length
@@ -209,11 +238,11 @@ export class BluetoothService {
   /**
    * Check if bluetooth is enabled.
    */
-  public radioEnabled(): Promise<boolean> {
+  radioEnabled(): Promise<boolean> {
     return this._bluetooth.isBluetoothEnabled();
   }
 
-  public available(): Promise<boolean> {
+  available(): Promise<boolean> {
     return this.isActive();
 
     // return this._bluetooth.isBluetoothEnabled().then(enabled => {
@@ -221,11 +250,11 @@ export class BluetoothService {
     // });
   }
 
-  public isActive(): Promise<boolean> {
+  isActive(): Promise<boolean> {
     return Promise.resolve(this.enabled && this.initialized); // && this._bluetooth.offersService(BluetoothService.AppServiceUUID);
   }
 
-  public async initialize(): Promise<any> {
+  async initialize(): Promise<any> {
     this.enabled = false;
     this.initialized = false;
 
@@ -261,7 +290,7 @@ export class BluetoothService {
     //   });
   }
 
-  public async advertise(): Promise<any> {
+  async advertise(): Promise<any> {
     await this.initialize();
 
     await this._bluetooth.startAdvertising({
@@ -295,28 +324,28 @@ export class BluetoothService {
     //   });
   }
 
-  public scanForAny(timeout: number = 4): Promise<any> {
+  scanForAny(timeout: number = 4): Promise<any> {
     return this.scan([], timeout);
   }
 
-  public scanForSmartDrive(timeout: number = 4): Promise<any> {
+  scanForSmartDrive(timeout: number = 4): Promise<any> {
     this.clearSmartDrives();
     return this.scan([SmartDrive.ServiceUUID], timeout);
   }
 
   // returns a promise that resolves when scanning completes
-  public scan(uuids: string[], timeout: number = 4): Promise<any> {
+  scan(uuids: string[], timeout: number = 4): Promise<any> {
     return this._bluetooth.startScanning({
       serviceUUIDs: uuids,
       seconds: timeout
     });
   }
 
-  public stopScanning(): Promise<any> {
+  stopScanning(): Promise<any> {
     return this._bluetooth.stopScanning();
   }
 
-  public connect(address: string, onConnected?: any, onDisconnected?: any) {
+  connect(address: string, onConnected?: any, onDisconnected?: any) {
     this._bluetooth.connect({
       UUID: address,
       onConnected: onConnected,
@@ -324,7 +353,7 @@ export class BluetoothService {
     });
   }
 
-  public disconnectAll(): Promise<any> {
+  disconnectAll(): Promise<any> {
     // TODO: the android implementation of these functions don't
     //       work
 
@@ -348,27 +377,27 @@ export class BluetoothService {
         */
   }
 
-  public disconnect(args: any): Promise<any> {
+  disconnect(args: any): Promise<any> {
     return this._bluetooth.disconnect(args);
   }
 
-  public discoverServices(opts: any) {}
+  discoverServices(opts: any) {}
 
-  public discoverCharacteristics(opts: any) {}
+  discoverCharacteristics(opts: any) {}
 
-  public startNotifying(opts: any) {
+  startNotifying(opts: any) {
     return this._bluetooth.startNotifying(opts);
   }
 
-  public stopNotifying(opts: any) {
+  stopNotifying(opts: any) {
     return this._bluetooth.stopNotifying(opts);
   }
 
-  public write(opts: any) {
+  write(opts: any) {
     return this._bluetooth.write(opts);
   }
 
-  public async stop(): Promise<any> {
+  async stop(): Promise<any> {
     this.enabled = false;
     this.initialized = false;
     // remove the services
@@ -384,7 +413,7 @@ export class BluetoothService {
     return Promise.resolve();
   }
 
-  public restart(): Promise<any> {
+  restart(): Promise<any> {
     return this.stop()
       .then(() => {
         return this.advertise();
@@ -676,19 +705,22 @@ export class BluetoothService {
     s1: PushTrackerState,
     s2: PushTrackerState
   ): PushTrackerState {
-    if (s1 == PushTrackerState.ready || s2 == PushTrackerState.ready) {
+    if (s1 === PushTrackerState.ready || s2 === PushTrackerState.ready) {
       return PushTrackerState.ready;
     } else if (
-      s1 == PushTrackerState.connected ||
-      s2 == PushTrackerState.connected
+      s1 === PushTrackerState.connected ||
+      s2 === PushTrackerState.connected
     ) {
       return PushTrackerState.connected;
     } else if (
-      s1 == PushTrackerState.disconnected ||
-      s2 == PushTrackerState.disconnected
+      s1 === PushTrackerState.disconnected ||
+      s2 === PushTrackerState.disconnected
     ) {
       return PushTrackerState.disconnected;
-    } else if (s1 == PushTrackerState.paired || s2 == PushTrackerState.paired) {
+    } else if (
+      s1 === PushTrackerState.paired ||
+      s2 === PushTrackerState.paired
+    ) {
       return PushTrackerState.paired;
     } else {
       return PushTrackerState.unknown;
@@ -696,46 +728,49 @@ export class BluetoothService {
   }
 
   private updatePushTrackerState(): void {
-    let hasPaired = appSettings.getBoolean(
+    const hasPaired = appSettings.getBoolean(
       STORAGE_KEYS.HAS_PAIRED_TO_PUSHTRACKER,
       false
     );
 
-    let defaultState = hasPaired
+    const defaultState = hasPaired
       ? PushTrackerState.disconnected
       : PushTrackerState.unknown;
 
-    let state = BluetoothService.PushTrackers.reduce((state, pt) => {
-      if (pt && pt.connected) {
-        if (pt.version !== 0xff) {
+    let state: PushTrackerState = BluetoothService.PushTrackers.reduce(
+      (ptState, pt) => {
+        if (pt && pt.connected) {
+          if (pt.version !== 0xff) {
+            state = <any>(
+              this._mergePushTrackerState(ptState, PushTrackerState.ready)
+            );
+          } else {
+            state = <any>(
+              this._mergePushTrackerState(ptState, PushTrackerState.connected)
+            );
+          }
+          // setting true so we know the user has connected to a PT previously
+          appSettings.setBoolean(STORAGE_KEYS.HAS_PAIRED_TO_PUSHTRACKER, true);
+        } else if (pt && pt.paired) {
           state = <any>(
-            this._mergePushTrackerState(state, PushTrackerState.ready)
+            this._mergePushTrackerState(ptState, PushTrackerState.disconnected)
+          );
+
+          // setting true so we know the user has connected to a PT previously
+          appSettings.setBoolean(STORAGE_KEYS.HAS_PAIRED_TO_PUSHTRACKER, true);
+        } else if (pt) {
+          state = <any>(
+            this._mergePushTrackerState(ptState, PushTrackerState.unknown)
           );
         } else {
           state = <any>(
-            this._mergePushTrackerState(state, PushTrackerState.connected)
+            this._mergePushTrackerState(ptState, PushTrackerState.unknown)
           );
         }
-        // setting true so we know the user has connected to a PT previously
-        appSettings.setBoolean(STORAGE_KEYS.HAS_PAIRED_TO_PUSHTRACKER, true);
-      } else if (pt && pt.paired) {
-        state = <any>(
-          this._mergePushTrackerState(state, PushTrackerState.disconnected)
-        );
-
-        // setting true so we know the user has connected to a PT previously
-        appSettings.setBoolean(STORAGE_KEYS.HAS_PAIRED_TO_PUSHTRACKER, true);
-      } else if (pt) {
-        state = <any>(
-          this._mergePushTrackerState(state, PushTrackerState.unknown)
-        );
-      } else {
-        state = <any>(
-          this._mergePushTrackerState(state, PushTrackerState.unknown)
-        );
-      }
-      return state;
-    }, defaultState);
+        return state;
+      },
+      defaultState
+    );
 
     BluetoothService.pushTrackerStatus.set('state', state);
   }
@@ -771,13 +806,13 @@ export class BluetoothService {
     return sd;
   }
 
-  public disconnectPushTrackers(addresses: string[]) {
+  disconnectPushTrackers(addresses: string[]) {
     addresses.map(addr => {
       this._bluetooth.cancelServerConnection(addr);
     });
   }
 
-  public sendToPushTrackers(data: any, devices?: any): Promise<any> {
+  sendToPushTrackers(data: any, devices?: any): Promise<any> {
     let d = data;
     if (isIOS) {
       d = NSData.dataWithData(data);
@@ -796,11 +831,11 @@ export class BluetoothService {
     );
   }
 
-  public getPushTracker(address: string) {
+  getPushTracker(address: string) {
     return BluetoothService.PushTrackers.filter(p => p.address === address)[0];
   }
 
-  public getSmartDrive(address: string) {
+  getSmartDrive(address: string) {
     return BluetoothService.SmartDrives.filter(sd => sd.address === address)[0];
   }
 
@@ -832,38 +867,6 @@ export class BluetoothService {
       this.snackbar.simple(text);
     } catch (ex) {
       // nothing
-    }
-  }
-
-  public static _backgroundOtaTask: number = isIOS
-    ? UIBackgroundTaskInvalid
-    : null;
-
-  public static requestOtaBackgroundExecution() {
-    if (isIOS) {
-      if (this._backgroundOtaTask !== UIBackgroundTaskInvalid) {
-        return;
-      }
-
-      this._backgroundOtaTask = UIApplication.sharedApplication.beginBackgroundTaskWithExpirationHandler(
-        BluetoothService.stopOtaBackgroundExecution
-      );
-      console.log('this._backgroundOtaTask', this._backgroundOtaTask);
-      return this._backgroundOtaTask;
-    }
-  }
-
-  public static stopOtaBackgroundExecution() {
-    if (isIOS) {
-      if (this._backgroundOtaTask == UIBackgroundTaskInvalid) {
-        return;
-      }
-
-      console.log('Ending background task for OTA');
-      UIApplication.sharedApplication.endBackgroundTask(
-        this._backgroundOtaTask
-      );
-      this._backgroundOtaTask = UIBackgroundTaskInvalid;
     }
   }
 }

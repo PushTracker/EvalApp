@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import * as Kinvey from 'kinvey-nativescript-sdk';
 import { Push } from 'kinvey-nativescript-sdk/push';
 import { Feedback } from 'nativescript-feedback';
-import * as fs from 'tns-core-modules/file-system/file-system';
+import * as fs from 'tns-core-modules/file-system';
 
 @Injectable()
 export class UserService {
-  public static hasRegistered = false;
+  static hasRegistered = false;
   private _feedback = new Feedback();
 
   constructor() {}

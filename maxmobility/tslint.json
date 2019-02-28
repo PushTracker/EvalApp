@@ -1,5 +1,8 @@
 {
-  "rulesDirectory": ["node_modules/codelyzer", "node_modules/@nrwl/schematics/src/tslint"],
+  "rulesDirectory": [
+    "node_modules/codelyzer",
+    "node_modules/@nrwl/schematics/src/tslint"
+  ],
   "rules": {
     "array-type": [true, "array"],
     "arrow-return-shorthand": true,
@@ -11,13 +14,21 @@
     "deprecation": {
       "severity": "warn"
     },
+    "component-selector": false,
     "import-blacklist": [true, "rxjs", "rxjs/Rx"],
     "interface-over-type-literal": true,
-    "member-access": false,
+    "adjacent-overload-signatures": true,
+    "no-this-assignment": true,
+    "member-access": [true, "no-public"],
     "member-ordering": [
       true,
       {
-        "order": ["static-field", "instance-field", "static-method", "instance-method"]
+        "order": [
+          "static-field",
+          "instance-field",
+          "static-method",
+          "instance-method"
+        ]
       }
     ],
     "newline-before-return": false,
@@ -49,7 +60,6 @@
     "unified-signatures": true,
     "variable-name": false,
     "directive-selector": [true, "attribute", "app", "camelCase"],
-    "component-selector": [true, "element", "app", "kebab-case"],
     "no-output-on-prefix": true,
     "use-input-property-decorator": true,
     "use-output-property-decorator": true,

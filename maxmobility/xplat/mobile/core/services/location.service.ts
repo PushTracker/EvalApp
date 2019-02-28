@@ -9,7 +9,7 @@ import { Accuracy } from 'tns-core-modules/ui/enums'; // used to describe at wha
 
 @Injectable()
 export class LocationService {
-  public static getCoordinates(): Promise<any> {
+  static getCoordinates(): Promise<any> {
     // Get current location with high accuracy
     return geolocation.getCurrentLocation({
       desiredAccuracy: Accuracy.high,
@@ -18,13 +18,13 @@ export class LocationService {
     });
   }
 
-  public static getLocation(): Promise<string> {
+  static getLocation(): Promise<string> {
     return LocationService.getCoordinates().then(coords => {
       return LocationService.coordToLocation(coords);
     });
   }
 
-  public static getLocationData(): Promise<any> {
+  static getLocationData(): Promise<any> {
     let coords = {};
     return LocationService.getCoordinates()
       .then(_coords => {
@@ -36,7 +36,7 @@ export class LocationService {
       });
   }
 
-  public static coordToLocation(coord: any): Promise<string> {
+  static coordToLocation(coord: any): Promise<string> {
     return new Promise((resolve, reject) => {
       const userLoc = `${coord.longitude},${coord.latitude}`;
       const user = Kinvey.User.getActiveUser();

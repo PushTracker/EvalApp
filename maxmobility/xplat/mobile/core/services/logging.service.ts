@@ -3,7 +3,7 @@ import { Sentry, BreadCrumb, Level, MessageOptions } from 'nativescript-sentry';
 import { UserService } from './user.service';
 
 export class LoggingUtil {
-  public static debug = true;
+  static debug = true;
 }
 
 @Injectable()
@@ -14,7 +14,7 @@ export class LoggingService {
    * the exception with Sentry logging.
    * @param err
    */
-  public logException(exception: Error) {
+  logException(exception: Error) {
     if (this._userService && this._userService.user) {
       Sentry.setContextUser({
         email: this._userService.user.email,
@@ -30,7 +30,7 @@ export class LoggingService {
     }
   }
 
-  public logMessage(message: string, options: MessageOptions = {}) {
+  logMessage(message: string, options: MessageOptions = {}) {
     if (this._userService && this._userService.user) {
       Sentry.setContextUser({
         email: this._userService.user.email,
@@ -40,7 +40,7 @@ export class LoggingService {
     Sentry.captureMessage(message, options);
   }
 
-  public logBreadCrumb(
+  logBreadCrumb(
     message,
     category: LoggingCategory = LoggingCategory.Info,
     level: Level = Level.Info

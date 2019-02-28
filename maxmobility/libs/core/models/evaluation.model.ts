@@ -39,11 +39,15 @@ export class Evaluation extends Observable {
   }
 
   data(): any {
-    var obj = {
+    const obj = {
       trials: []
     };
     Object.keys(this).map(k => {
-      if (typeof this[k] === 'number' || typeof this[k] === 'string' || typeof this[k] === 'boolean') {
+      if (
+        typeof this[k] === 'number' ||
+        typeof this[k] === 'string' ||
+        typeof this[k] === 'boolean'
+      ) {
         obj[k] = this[k];
       }
     });

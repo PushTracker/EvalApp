@@ -1,4 +1,4 @@
 export class Pairing {
-	id: number;
-	name: string;
+  id: number;
+  name: string;
 }

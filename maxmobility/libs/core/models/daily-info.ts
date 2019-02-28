@@ -64,11 +64,17 @@ export class DailyInfo {
 
   public sameAsDate(date): boolean {
     const d = this.getDate();
-    return d.getFullYear() === date.getFullYear() && d.getMonth() === date.getMonth() && d.getDate() === date.getDate();
+    return (
+      d.getFullYear() === date.getFullYear() &&
+      d.getMonth() === date.getMonth() &&
+      d.getDate() === date.getDate()
+    );
   }
 
   public sameAsDailyInfo(di): boolean {
-    return this.year === di.year && this.month === di.month && this.day === di.day;
+    return (
+      this.year === di.year && this.month === di.month && this.day === di.day
+    );
   }
 
   public fromObject(obj: any): void {
