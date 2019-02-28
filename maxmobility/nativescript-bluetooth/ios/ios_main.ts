@@ -190,7 +190,7 @@ export class Bluetooth extends BluetoothCommon {
     }
   }
 
-  public isBluetoothEnabled() {
+  public isBluetoothEnabled(): Promise<boolean> {
     return new Promise((resolve, reject) => {
       try {
         const isEnabled = this._isEnabled();
@@ -592,7 +592,7 @@ export class Bluetooth extends BluetoothCommon {
     });
   }
 
-  public stopScanning(arg) {
+  public stopScanning(arg?) {
     return new Promise((resolve, reject) => {
       try {
         if (!this._isEnabled()) {

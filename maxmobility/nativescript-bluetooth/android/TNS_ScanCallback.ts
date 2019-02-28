@@ -1,14 +1,11 @@
-/// <reference path="../node_modules/tns-platform-declarations/android-27.d.ts" />
-
-import { Bluetooth } from './android_main';
 import { CLog, CLogTypes } from '../common';
+import { Bluetooth } from './android_main';
 
 /**
  * Bluetooth LE scan callbacks. Scan results are reported using these callbacks.
  * https://developer.android.com/reference/android/bluetooth/le/ScanCallback.html
  */
 @JavaProxy('com.nativescript.TNS_ScanCallback')
-// tslint:disable-next-line:class-name
 export class TNS_ScanCallback extends android.bluetooth.le.ScanCallback {
   private _owner: WeakRef<Bluetooth>;
   constructor() {
@@ -25,7 +22,10 @@ export class TNS_ScanCallback extends android.bluetooth.le.ScanCallback {
    * @param results [List<android.bluetooth.le.ScanResult>] - List of scan results that are previously scanned.
    */
   onBatchScanResults(results) {
-    CLog(CLogTypes.info, `----- TNS_ScanCallback.onBatchScanResults ----- results: ${results}`);
+    CLog(
+      CLogTypes.info,
+      `----- TNS_ScanCallback.onBatchScanResults ----- results: ${results}`
+    );
   }
 
   /**
@@ -33,20 +33,38 @@ export class TNS_ScanCallback extends android.bluetooth.le.ScanCallback {
    * @param errorCode [number] - Error code (one of SCAN_FAILED_*) for scan failure.
    */
   onScanFailed(errorCode: number) {
-    CLog(CLogTypes.info, `----- TNS_ScanCallback.onScanFailed ----- errorCode: ${errorCode}`);
+    CLog(
+      CLogTypes.info,
+      `----- TNS_ScanCallback.onScanFailed ----- errorCode: ${errorCode}`
+    );
     let errorMessage;
-    if (errorCode === android.bluetooth.le.ScanCallback.SCAN_FAILED_ALREADY_STARTED) {
+    if (
+      errorCode ===
+      android.bluetooth.le.ScanCallback.SCAN_FAILED_ALREADY_STARTED
+    ) {
       errorMessage = 'Scan already started';
-    } else if (errorCode === android.bluetooth.le.ScanCallback.SCAN_FAILED_APPLICATION_REGISTRATION_FAILED) {
+    } else if (
+      errorCode ===
+      android.bluetooth.le.ScanCallback
+        .SCAN_FAILED_APPLICATION_REGISTRATION_FAILED
+    ) {
       errorMessage = 'Application registration failed';
-    } else if (errorCode === android.bluetooth.le.ScanCallback.SCAN_FAILED_FEATURE_UNSUPPORTED) {
+    } else if (
+      errorCode ===
+      android.bluetooth.le.ScanCallback.SCAN_FAILED_FEATURE_UNSUPPORTED
+    ) {
       errorMessage = 'Feature unsupported';
-    } else if (errorCode === android.bluetooth.le.ScanCallback.SCAN_FAILED_INTERNAL_ERROR) {
+    } else if (
+      errorCode === android.bluetooth.le.ScanCallback.SCAN_FAILED_INTERNAL_ERROR
+    ) {
       errorMessage = 'Internal error';
     } else {
       errorMessage = 'Scan failed to start';
     }
-    CLog(CLogTypes.info, '----- TNS_ScanCallback.onScanFailed errorMessage: ' + errorMessage);
+    CLog(
+      CLogTypes.info,
+      '----- TNS_ScanCallback.onScanFailed errorMessage: ' + errorMessage
+    );
   }
 
   /**
@@ -55,8 +73,13 @@ export class TNS_ScanCallback extends android.bluetooth.le.ScanCallback {
    * @param result  [android.bluetooth.le.ScanResult] - A Bluetooth LE scan result.
    */
   onScanResult(callbackType: number, result: android.bluetooth.le.ScanResult) {
-    CLog(CLogTypes.info, `----- TNS_ScanCallback.onScanResult ----- callbackType: ${callbackType}, result: ${result}`);
-    const stateObject = this._owner.get().connections[result.getDevice().getAddress()];
+    CLog(
+      CLogTypes.info,
+      `----- TNS_ScanCallback.onScanResult ----- callbackType: ${callbackType}, result: ${result}`
+    );
+    const stateObject = this._owner.get().connections[
+      result.getDevice().getAddress()
+    ];
     if (!stateObject) {
       this._owner.get().connections[result.getDevice().getAddress()] = {
         state: 'disconnected'
@@ -73,19 +96,27 @@ export class TNS_ScanCallback extends android.bluetooth.le.ScanCallback {
           .getScanRecord()
           .getManufacturerSpecificData()
           .keyAt(0);
-        CLog(CLogTypes.info, `---- TNS_ScanCallback.onScanResult ---- manufacturerId: ${manufacturerId}`);
+        CLog(
+          CLogTypes.info,
+          `---- TNS_ScanCallback.onScanResult ---- manufacturerId: ${manufacturerId}`
+        );
         manufacturerData = this._owner.get().decodeValue(
           result
             .getScanRecord()
             .getManufacturerSpecificData()
             .valueAt(0)
         );
-        CLog(CLogTypes.info, `---- TNS_ScanCallback.onScanResult ---- manufacturerData: ${manufacturerData}`);
+        CLog(
+          CLogTypes.info,
+          `---- TNS_ScanCallback.onScanResult ---- manufacturerData: ${manufacturerData}`
+        );
       }
 
       CLog(
         CLogTypes.info,
-        `---- Lollipop+ scanCallback result: ${result.getDevice().getName()}::${result.getDevice().getAddress()}`
+        `---- Lollipop+ scanCallback result: ${result
+          .getDevice()
+          .getName()}::${result.getDevice().getAddress()}`
       );
       this._owner.get().sendEvent(Bluetooth.device_discovered_event, {
         type: 'scanResult', // TODO or use different callback functions?

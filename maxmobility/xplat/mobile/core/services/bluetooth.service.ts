@@ -630,24 +630,24 @@ export class BluetoothService {
               UUID: duuid
             });
 
-            d.setValue(new Array([0x00, 0x00]));
+            d.setValue(new Array(<any>[0x00, 0x00]));
             return d;
           });
 
           descriptors.map(d => {
-            c.addDescriptor(d);
+            (<any>c).addDescriptor(d);
           });
         } else {
           // TODO: don't need ios impl apparrently?
         }
 
         if (isAndroid) {
-          c.setValue(
+          (<any>c).setValue(
             0,
             (android.bluetooth as any).BluetoothGattCharacteristic.FORMAT_UINT8,
             0
           );
-          c.setWriteType(
+          (<any>c).setWriteType(
             (android.bluetooth as any).BluetoothGattCharacteristic
               .WRITE_TYPE_DEFAULT
           );

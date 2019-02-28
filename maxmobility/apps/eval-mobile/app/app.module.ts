@@ -4,7 +4,6 @@ import { CORE_PROVIDERS } from '@maxmobility/core';
 import { MobileCoreModule } from '@maxmobility/mobile';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { NativeScriptCommonModule } from 'nativescript-angular/common';
-// import { NativeScriptHttpModule } from 'nativescript-angular/http';
 import { NativeScriptHttpClientModule } from 'nativescript-angular/http-client';
 import { ModalDialogService } from 'nativescript-angular/modal-dialog';
 import { NativeScriptModule } from 'nativescript-angular/nativescript.module';
@@ -29,7 +28,6 @@ export function createTranslateLoader() {
   imports: [
     NativeScriptCommonModule,
     NativeScriptModule,
-    // NativeScriptHttpModule,
     NativeScriptHttpClientModule,
     NativeScriptUIListViewModule,
     SharedModule,

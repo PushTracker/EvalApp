@@ -4,15 +4,14 @@ import { TranslateService } from '@ngx-translate/core';
 import { Feedback } from 'nativescript-feedback';
 import { Color } from 'tns-core-modules/color';
 import { Observable } from 'tns-core-modules/data/observable';
-import { ActionBar } from 'tns-core-modules/ui/action-bar';
 
 @Component({
   selector: 'MaxActionBar',
   moduleId: module.id,
-  templateUrl: './actionbar.component.html',
-  styleUrls: ['./actionbar.component.css']
+  templateUrl: 'actionbar.component.html',
+  styleUrls: ['actionbar.component.scss']
 })
-export class ActionbarComponent extends ActionBar {
+export class ActionbarComponent {
   @Input() title: string;
   @Input() allowNav: boolean = true;
 
@@ -27,7 +26,7 @@ export class ActionbarComponent extends ActionBar {
     private _zone: NgZone,
     private _translateService: TranslateService
   ) {
-    super();
+    // super();
 
     this._feedback = new Feedback();
     this.onPushTrackerStateChange(null);

@@ -15,7 +15,6 @@ const SHARED_MODULES = [
 @NgModule({
   imports: [...SHARED_MODULES],
   declarations: [...SHARED_COMPONENTS],
-  //   entryComponents: [...SHARED_ENTRY_COMPONENTS],
   exports: [...SHARED_MODULES, ...SHARED_COMPONENTS],
   schemas: [NO_ERRORS_SCHEMA]
 })

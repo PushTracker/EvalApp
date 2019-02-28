@@ -1,18 +1,11 @@
-import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild
-} from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Demo, DemoRequest, User } from '@maxmobility/core';
 import {
   DemoService,
   FirmwareService,
   LocationService,
-  ProgressService,
   LoggingService,
+  ProgressService,
   UserService
 } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
@@ -20,6 +13,7 @@ import { Kinvey } from 'kinvey-nativescript-sdk';
 import { RouterExtensions } from 'nativescript-angular/router';
 import * as geolocation from 'nativescript-geolocation';
 import { ToastDuration, ToastPosition, Toasty } from 'nativescript-toasty';
+import { EventData } from 'tns-core-modules/data/observable';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
 import * as http from 'tns-core-modules/http';
 import { isAndroid, isIOS } from 'tns-core-modules/platform';
@@ -29,16 +23,15 @@ import { action, confirm, prompt } from 'tns-core-modules/ui/dialogs';
 import { StackLayout } from 'tns-core-modules/ui/layouts/stack-layout/stack-layout';
 import { ListView } from 'tns-core-modules/ui/list-view';
 import { Page } from 'tns-core-modules/ui/page';
-import { EventData } from 'tns-core-modules/data/observable';
+import { Slider } from 'tns-core-modules/ui/slider';
 import * as utils from 'tns-core-modules/utils/utils';
 import { APP_KEY, HOST_URL } from '../../kinvey-keys';
-import { Slider } from 'tns-core-modules/ui/slider/slider';
 
 @Component({
   selector: 'Demos',
   moduleId: module.id,
-  templateUrl: './demos.component.html',
-  styleUrls: ['./demos.component.css']
+  templateUrl: 'demos.component.html',
+  styleUrls: ['demos.component.scss']
 })
 export class DemosComponent implements OnInit {
   private static LOG_TAG = 'demos.component ';

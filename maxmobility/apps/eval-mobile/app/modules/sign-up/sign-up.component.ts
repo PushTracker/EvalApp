@@ -18,14 +18,14 @@ import {
 import { ToastDuration, ToastPosition, Toasty } from 'nativescript-toasty';
 import { alert } from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
-import { setMarginForIosSafeArea } from '~/utils';
 import { PrivacyPolicyComponent } from '../../privacy-policy';
+import { setMarginForIosSafeArea } from '../../utils';
 
 @Component({
   selector: 'eval-login',
   moduleId: module.id,
-  templateUrl: './sign-up.component.html',
-  styleUrls: ['./sign-up.component.css']
+  templateUrl: 'sign-up.component.html',
+  styleUrls: ['sign-up.component.scss']
 })
 export class SignUpComponent implements OnInit {
   private static LOG_TAG = 'sign-up.component ';

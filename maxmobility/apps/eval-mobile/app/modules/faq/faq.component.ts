@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
-import { isAndroid, isIOS } from 'tns-core-modules/platform';
-import { TranslateService } from '@ngx-translate/core';
-import { Page } from 'tns-core-modules/ui/page';
 import { LoggingService } from '@maxmobility/mobile';
+import { TranslateService } from '@ngx-translate/core';
+import { isAndroid, isIOS } from 'tns-core-modules/platform';
+import { Page } from 'tns-core-modules/ui/page';
 
 @Component({
   selector: 'FAQ',
   moduleId: module.id,
-  templateUrl: './faq.component.html',
-  styleUrls: ['./faq.component.css']
+  templateUrl: 'faq.component.html',
+  styleUrls: ['faq.component.scss']
 })
 export class FAQComponent {
   private static LOG_TAG = 'faq.component ';

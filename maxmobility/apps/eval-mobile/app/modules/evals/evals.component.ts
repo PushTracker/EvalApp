@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { Evaluation, Trial } from '@maxmobility/core';
 import { EvaluationService, LoggingService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
@@ -17,8 +17,8 @@ import { Page } from 'tns-core-modules/ui/page';
 @Component({
   selector: 'Evals',
   moduleId: module.id,
-  templateUrl: './evals.component.html',
-  styleUrls: ['./evals.component.css']
+  templateUrl: 'evals.component.html',
+  styleUrls: ['evals.component.scss']
 })
 export class EvalsComponent implements OnInit {
   private static LOG_TAG = 'evals.component ';

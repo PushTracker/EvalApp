@@ -1,5 +1,3 @@
-/// <reference path="../node_modules/tns-platform-declarations/ios.d.ts" />
-
 import { CLog, CLogTypes, ConnectionState } from '../common';
 import { Bluetooth, deviceToCentral, deviceToPeripheral } from './ios_main';
 
@@ -160,11 +158,9 @@ export class CBPeripheralManagerDelegateImpl extends NSObject
         CLogTypes.warning,
         'TODO: we may need to parse out the error value here for parity with Android.'
       );
-      this._owner
-        .get()
-        .sendEvent(Bluetooth.bluetooth_advertise_failure_event, {
-          error: error
-        });
+      this._owner.get().sendEvent(Bluetooth.bluetooth_advertise_failure_event, {
+        error: error
+      });
       return;
     }
 

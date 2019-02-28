@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "module": "commonjs",
-        "target": "es2015",
+        "target": "es5",
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "noEmitHelpers": true,
@@ -11,10 +11,8 @@
         "noImplicitUseStrict": true,
         "declaration": false,
         "lib": [
-            "es2017",
-            "dom",
-            "webworker",
             "es6",
+            "dom",
             "es2015.iterable"
         ],
         "baseUrl": ".",
@@ -37,11 +35,9 @@
             ]
         }
     },
-    "include": [
-        "references.d.ts",
-        "app/app.module.ngfactory.d.ts",
-        "app/main.ts",
-        "app/**/*.module.ts"
-    ],
-    "compileOnSave": false
+    "exclude": [
+        "node_modules",
+        "platforms",
+        "nativescript-bluetooth"
+    ]
 }

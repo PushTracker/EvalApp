@@ -14,14 +14,16 @@ import { isAndroid, isIOS } from 'tns-core-modules/platform';
 import { Button } from 'tns-core-modules/ui/button';
 import { alert } from 'tns-core-modules/ui/dialogs';
 import { EventData, Page } from 'tns-core-modules/ui/page';
-import { TextField } from 'tns-core-modules/ui/text-field/text-field';
+import { TextField } from 'tns-core-modules/ui/text-field';
 import { isIosSimulator, setMarginForIosSafeArea } from '../../utils';
+
+declare const com;
 
 @Component({
   selector: 'Login',
   moduleId: module.id,
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  templateUrl: 'login.component.html',
+  styleUrls: ['login.component.scss']
 })
 export class LoginComponent implements OnInit {
   private static LOG_TAG = 'login.component ';
@@ -159,7 +161,7 @@ export class LoginComponent implements OnInit {
   onEmailTextFieldLoaded(args: EventData) {
     if (isAndroid) {
       const tf = (args.object as TextField).android as android.widget.EditText;
-      tf.setId((com as any).permobil.smarteval.R.id.login_email_textfield);
+      tf.setId(com.permobil.smarteval.R.id.login_email_textfield);
     } else if (isIOS) {
       const btn = (args.object as Button).ios as UIButton;
       btn.tag = 542561567;
@@ -169,7 +171,7 @@ export class LoginComponent implements OnInit {
   onPasswordTextFieldLoaded(args: EventData) {
     if (isAndroid) {
       const tf = (args.object as TextField).android as android.widget.EditText;
-      tf.setId((com as any).permobil.smarteval.R.id.login_password_textfield);
+      tf.setId(com.permobil.smarteval.R.id.login_password_textfield);
     } else if (isIOS) {
       const btn = (args.object as Button).ios as UIButton;
       btn.tag = 542561573;
@@ -179,7 +181,7 @@ export class LoginComponent implements OnInit {
   onSubmitButtonLoaded(args: EventData) {
     if (isAndroid) {
       const btn = (args.object as Button).android as android.widget.Button;
-      btn.setId((com as any).permobil.smarteval.R.id.login_submit_button);
+      btn.setId(com.permobil.smarteval.R.id.login_submit_button);
     } else if (isIOS) {
       const btn = (args.object as Button).ios as UIButton;
       btn.tag = 542561588;

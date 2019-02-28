@@ -13,8 +13,8 @@ import { Page } from 'tns-core-modules/ui/page';
 @Component({
   selector: 'Summary',
   moduleId: module.id,
-  templateUrl: './summary.component.html',
-  styleUrls: ['./summary.component.css']
+  templateUrl: 'summary.component.html',
+  styleUrls: ['summary.component.scss']
 })
 export class SummaryComponent {
   private static LOG_TAG = 'summary.component ';

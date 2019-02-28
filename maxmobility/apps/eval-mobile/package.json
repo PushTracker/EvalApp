@@ -6,10 +6,10 @@
   "repository": "<fill-your-repository-here>",
   "nativescript": {
     "id": "com.permobil.smarteval",
-    "tns-ios": {
-      "version": "5.2.0"
-    },
     "tns-android": {
+      "version": "5.2.1"
+    },
+    "tns-ios": {
       "version": "5.2.0"
     }
   },
@@ -33,7 +33,8 @@
     "build-ios-bundle": "npm run ns-bundle --ios --build-app",
     "start": "tns run ios --emulator --syncAllFiles",
     "make-changelog": "github_changelog_generator -u PushTracker -p EvalApp",
-    "postinstall": "node ./tools/xplat-postinstall.js"
+    "postinstall": "node ./tools/xplat-postinstall.js",
+    "start.android.brad": ""
   },
   "dependencies": {
     "@_/nativescript-swift-fix": "file:./plugins/swift-fix",
@@ -61,7 +62,7 @@
     "nativescript-angular": "file:../../node_modules/nativescript-angular",
     "nativescript-appversion": "file:../../node_modules/nativescript-appversion",
     "nativescript-barcodescanner": "file:../../node_modules/nativescript-barcodescanner",
-    "nativescript-bluetooth": "file:../../nativescript-bluetooth",
+    "nativescript-bluetooth": "file:../../bluetooth",
     "nativescript-camera": "file:../../node_modules/nativescript-camera",
     "nativescript-carousel": "file:../../node_modules/nativescript-carousel",
     "nativescript-drop-down": "file:../../node_modules/nativescript-drop-down",
@@ -101,7 +102,7 @@
     "@angular/language-service": "file:../../node_modules/@angular/language-service",
     "@ngtools/webpack": "file:../../node_modules/@ngtools/webpack",
     "nativescript-dev-sass": "~1.6.1",
-    "nativescript-dev-webpack": "~0.20.0",
+    "nativescript-dev-webpack": "~0.20.2",
     "nativescript-dev-typescript": "~0.8.0",
     "terser-webpack-plugin": "file:../../node_modules/terser-webpack-plugin",
     "tns-platform-declarations": "file:../../node_modules/tns-platform-declarations",

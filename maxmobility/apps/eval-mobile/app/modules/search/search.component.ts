@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'Search',
   moduleId: module.id,
-  templateUrl: './search.component.html',
+  templateUrl: 'search.component.html',
   styles: [
     `
       image {
@@ -43,37 +43,44 @@ export class SearchComponent {
     {
       Image: '~/assets/images/PowerOn.jpg',
       Label: 'Powering SmartDrive',
-      Description: 'It is important to learn how to do a proper tapping technique.'
+      Description:
+        'It is important to learn how to do a proper tapping technique.'
     },
     {
       Image: '~/assets/images/BandPower.jpg',
       Label: 'Powering PushTracker',
-      Description: 'It is important to learn how to do a proper tapping technique.'
+      Description:
+        'It is important to learn how to do a proper tapping technique.'
     },
     {
       Image: '~/assets/images/Tapping.jpg',
       Label: 'Tap Gesture',
-      Description: 'It is important to learn how to do a proper tapping technique.'
+      Description:
+        'It is important to learn how to do a proper tapping technique.'
     },
     {
       Image: '~/assets/images/Steer.jpg',
       Label: 'Steering',
-      Description: 'It is important to learn how to do a proper tapping technique.'
+      Description:
+        'It is important to learn how to do a proper tapping technique.'
     },
     {
       Image: '~/assets/images/turn.jpg',
       Label: 'Turning',
-      Description: 'It is important to learn how to do a proper tapping technique.'
+      Description:
+        'It is important to learn how to do a proper tapping technique.'
     },
     {
       Image: '~/assets/images/Stop.jpg',
       Label: 'Stopping',
-      Description: 'It is important to learn how to do a proper tapping technique.'
+      Description:
+        'It is important to learn how to do a proper tapping technique.'
     },
     {
       Image: '~/assets/images/Stop2.jpg',
       Label: 'More Stopping',
-      Description: 'It is important to learn how to do a proper tapping technique.'
+      Description:
+        'It is important to learn how to do a proper tapping technique.'
     }
   ];
 }

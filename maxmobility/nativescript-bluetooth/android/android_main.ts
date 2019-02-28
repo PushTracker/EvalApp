@@ -1,30 +1,28 @@
-/// <reference path="../node_modules/tns-platform-declarations/android-27.d.ts" />
+/// <reference path="../node_modules/tns-platform-declarations/android-23.d.ts" />
 
-import * as utils from 'tns-core-modules/utils/utils';
 import * as application from 'tns-core-modules/application';
+import * as utils from 'tns-core-modules/utils/utils';
 import {
-  Central,
-  Peripheral,
-  BondState,
-  ConnectionState,
   BluetoothCommon,
+  Central,
   CLog,
   CLogTypes,
-  StopNotifyingOptions,
-  StartNotifyingOptions,
   ConnectOptions,
-  StartScanningOptions,
-  StartAdvertisingOptions,
   DisconnectOptions,
-  WriteOptions,
-  ReadOptions,
+  MakeCharacteristicOptions,
   MakeServiceOptions,
-  MakeCharacteristicOptions
+  Peripheral,
+  ReadOptions,
+  StartAdvertisingOptions,
+  StartNotifyingOptions,
+  StartScanningOptions,
+  StopNotifyingOptions,
+  WriteOptions
 } from '../common';
 import { TNS_AdvertiseCallback } from './TNS_AdvertiseCallback';
-import { TNS_BroadcastReceiver } from './TNS_BroadcastReceiver';
 import { TNS_BluetoothGattCallback } from './TNS_BluetoothGattCallback';
 import { TNS_BluetoothGattServerCallback } from './TNS_BluetoothGattServerCallback';
+import { TNS_BroadcastReceiver } from './TNS_BroadcastReceiver';
 import { TNS_LeScanCallback } from './TNS_LeScanCallback';
 import { TNS_ScanCallback } from './TNS_ScanCallback';
 
@@ -68,7 +66,7 @@ export function deviceToPeripheral(
   };
 }
 
-export { Central, Peripheral, BondState, ConnectionState } from '../common';
+export { BondState, Central, ConnectionState, Peripheral } from '../common';
 
 export class Bluetooth extends BluetoothCommon {
   // @link - https://developer.android.com/reference/android/content/Context.html#BLUETOOTH_SERVICE
@@ -305,7 +303,7 @@ export class Bluetooth extends BluetoothCommon {
     });
   }
 
-  public isBluetoothEnabled() {
+  public isBluetoothEnabled(): Promise<boolean> {
     return new Promise((resolve, reject) => {
       try {
         resolve(this._isEnabled());
