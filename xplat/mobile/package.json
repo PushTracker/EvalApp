@@ -2,5 +2,8 @@
   "name": "@maxmobility/mobile",
   "version": "1.0.0",
   "main": "index",
-  "typings": "index.d.ts"
+  "typings": "index.d.ts",
+  "dependencies": {
+    "nativescript-bluetooth": "file:../../nativescript-bluetooth"
+  }
 }
