@@ -112,7 +112,7 @@ nativescript-bluetooth/**/*.js
 
 !tools/**/*.js
 !apps/smart-eval-app/tools/**/*.js
-!libs/core/packet_bindings.js
+!libs/core/packet/packet_bindings.js
 
 !apps/smart-eval-app/plugins/swift-fix/**
 !apps/smart-eval-app/webpack.config.js
