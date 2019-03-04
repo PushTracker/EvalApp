@@ -116,6 +116,7 @@ nativescript-bluetooth/**/*.js
 
 !apps/smart-eval-app/plugins/swift-fix/**
 !apps/smart-eval-app/webpack.config.js
+!apps/smart-eval-app/plugins/bluetooth/**
 
 # keystore, certs, executables
 *.jks
