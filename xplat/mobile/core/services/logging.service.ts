@@ -45,11 +45,20 @@ export class LoggingService {
     category: LoggingCategory = LoggingCategory.Info,
     level: Level = Level.Info
   ) {
+    console.log(
+      '\n\n ***************************   BREADCRUMB   *********************************' +
+        '\n\n' +
+        message +
+        '\n\n' +
+        '***************************************************************************** \n\n'
+    );
+
     const breadcrumb: BreadCrumb = {
       message,
       category,
       level
     };
+
     Sentry.captureBreadcrumb(breadcrumb);
   }
 }
