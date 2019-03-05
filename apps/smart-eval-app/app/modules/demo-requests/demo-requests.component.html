@@ -1,4 +1,8 @@
-<MaxActionBar [title]="'menu.demo-requests' | translate"> </MaxActionBar>
+<MaxActionBar [title]="'menu.demo-requests' | translate">
+  <!-- <ActionItem (tap)="onFilterListTap($event)">
+    <Button class="" text="Right" class="action-item"></Button>
+  </ActionItem> -->
+</MaxActionBar>
 
 <GridLayout margin-top="30" rows="*, auto" iosOverflowSafeArea="false">
   // Loading View to show when initially querying for DemoRequests
@@ -48,78 +52,66 @@
     (loadMoreItems)="loadMoreItems($event)"
   >
     <ng-template let-item="item" let-index="index">
-      <GridLayout rows="auto, auto, auto" columns="auto, *, auto" padding="10">
-        // Requesting User Email
-        <Label
-          [text]="item.user"
-          row="0"
-          colSpan="2"
-          class="user"
-          textWrap="true"
-        ></Label>
+      <GridLayout rows="*" columns="*, auto" padding="10">
+        <StackLayout col="0">
+          // Requesting User Email
+          <Label [text]="item.user" class="user" textWrap="true"></Label>
 
-        // Entity Created
-        <Label
-          [text]="item._kmd?.ect | date: 'medium'"
-          row="1"
-          colSpan="2"
-          class="date"
-          textWrap="true"
-        ></Label>
+          // Entity Created
+          <Label
+            [text]="item._kmd?.ect | date: 'medium'"
+            class="date"
+            textWrap="true"
+          ></Label>
 
-        // Contact_Info
-        <Label
-          row="2"
-          colSpan="2"
-          [text]="item.contact_info"
-          class="contact-info"
-          textWrap="true"
-          [visibility]="item.contact_info ? 'visible' : 'collapsed'"
-        ></Label>
+          // Contact_Info
+          <Label
+            [text]="item.contact_info"
+            class="contact-info"
+            textWrap="true"
+            [visibility]="item.contact_info ? 'visible' : 'collapsed'"
+          ></Label>
+        </StackLayout>
 
-        <!-- // Action Buttons -->
-        // Claim demo button
-        <Button
-          row="0"
-          col="2"
-          [text]="'demo-requests.claim' | translate"
-          (tap)="onClaimDemoRequestTap(index)"
-          class="orange-btn"
+        // Demo Request Actions
+        <StackLayout
+          col="1"
           horizontalAlignment="right"
           verticalAlignment="middle"
-          [visibility]="!item.claimed_user ? 'visible' : 'collapsed'"
-        ></Button>
+        >
+          // Claim demo button
+          <Button
+            [text]="'demo-requests.claim' | translate"
+            (tap)="onClaimDemoRequestTap(index)"
+            class="orange-btn"
+            [visibility]="!item.claimed_user ? 'visible' : 'collapsed'"
+          ></Button>
 
-        // Complete request button - if demo has been claimed by the user they
-        can mark it complete when the demo has been dropped off
-        <Button
-          row="0"
-          col="2"
-          [text]="'demo-requests.complete' | translate"
-          (tap)="onCompleteDemoRequestTap(index)"
-          class="permobil-ocean-btn"
-          horizontalAlignment="right"
-          verticalAlignment="middle"
-          [visibility]="
-            item.claimed_user == userId && !item.complete
-              ? 'visible'
-              : 'collapsed'
-          "
-        ></Button>
+          // Complete request button - if demo has been claimed by the user they
+          can mark it complete when the demo has been dropped off
+          <Button
+            [text]="'demo-requests.complete' | translate"
+            (tap)="onCompleteDemoRequestTap(index)"
+            class="permobil-ocean-btn"
+            [visibility]="
+              item.claimed_user == userId && !item.complete
+                ? 'visible'
+                : 'collapsed'
+            "
+          ></Button>
 
-        // check mark icon to indicate demo request is COMPLETE
-        <label
-          rowSpan="3"
-          col="2"
-          text="&#xf12c;"
-          class="completed-check"
-          horizontalAlignment="right"
-          verticalAlignment="middle"
-          [visibility]="
-            item.claimed_user && item.complete == true ? 'visible' : 'collapsed'
-          "
-          (tap)="onDemoRequestItemTap(index)"
-        ></label>
+          // check mark icon to indicate demo request is COMPLETE
+          <label
+            text="&#xf12c;"
+            class="completed-check"
+            [visibility]="
+              item.claimed_user && item.complete == true
+                ? 'visible'
+                : 'collapsed'
+            "
+            (tap)="onDemoRequestItemTap(index)"
+          ></label>
+        </StackLayout>
       </GridLayout>
     </ng-template>
   </ListView>
