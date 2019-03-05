@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { DemoRequest, User } from '@maxmobility/core';
-import { LoggingService } from '@maxmobility/mobile';
+import { LoggingService, ProgressService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 import { ToastDuration, ToastPosition, Toasty } from 'nativescript-toasty';
 import { confirm } from 'tns-core-modules/ui/dialogs/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
-import { SnackBar } from 'nativescript-snackbar';
 import { EventData } from 'tns-core-modules/data/observable';
-import { ItemEventData, ListView } from 'tns-core-modules/ui/list-view';
+import { ListView } from 'tns-core-modules/ui/list-view';
 import { isIOS } from 'tns-core-modules/platform';
 
 @Component({
@@ -27,11 +26,11 @@ export class DemoRequestsComponent implements OnInit {
   currentUserId: string;
 
   private _datastore = Kinvey.DataStore.collection<DemoRequest>('DemoRequests');
-  private _snackBar = new SnackBar();
 
   constructor(
     private _page: Page,
     private _translateService: TranslateService,
+    private _progressService: ProgressService,
     private _logService: LoggingService
   ) {
     this._page.className = 'blue-gradient-down';
@@ -120,6 +119,10 @@ export class DemoRequestsComponent implements OnInit {
     });
 
     if (confirmResult === true) {
+      this._progressService.show(
+        `${this._translateService.instant('general.updating')}...`
+      );
+
       this._logService.logBreadCrumb(
         DemoRequestsComponent.LOG_TAG +
           `onClaimDemoRequestTap() confirmed claim demo: ${JSON.stringify(dr)}`
@@ -133,18 +136,14 @@ export class DemoRequestsComponent implements OnInit {
       this._datastore
         .save(dr)
         .then(entity => {
-          console.log('updated entity', { entity });
           this._logService.logBreadCrumb(
             DemoRequestsComponent.LOG_TAG +
               `onClaimDemoRequestTap() updated demo: ${JSON.stringify(entity)}`
           );
-          new Toasty(
-            this._translateService.instant('demo-requests.claimed'),
-            ToastDuration.LONG,
-            ToastPosition.CENTER
-          ).show();
+          this._progressService.hide();
         })
         .catch(error => {
+          this._progressService.hide();
           this._logService.logException(error);
           console.log('error saving modified demo request', { dr }, error);
         });
@@ -161,6 +160,10 @@ export class DemoRequestsComponent implements OnInit {
     });
 
     if (confirmResult === true) {
+      this._progressService.show(
+        `${this._translateService.instant('general.updating')}...`
+      );
+
       this._logService.logBreadCrumb(
         DemoRequestsComponent.LOG_TAG +
           `onCompleteDemoRequestTap() confirmed completed demo: ${JSON.stringify(
@@ -176,21 +179,18 @@ export class DemoRequestsComponent implements OnInit {
       this._datastore
         .save(dr)
         .then(entity => {
-          console.log('updated entity', { entity });
           this._logService.logBreadCrumb(
             DemoRequestsComponent.LOG_TAG +
               `onCompleteDemoRequestTap() updated demo: ${JSON.stringify(
                 entity
               )}`
           );
-          new Toasty(
-            this._translateService.instant('demo-requests.completed'),
-            ToastDuration.LONG,
-            ToastPosition.CENTER
-          ).show();
+          this._progressService.hide();
         })
         .catch(error => {
+          this._progressService.hide();
           this._logService.logException(error);
+          dr.complete = false; // setting to false in case an error occurs
           console.log('error saving modified demo request', { dr }, error);
         });
     }
@@ -200,13 +200,23 @@ export class DemoRequestsComponent implements OnInit {
     const dr = this.items[index];
     console.log({ dr });
     if (dr.complete) {
-      this._snackBar.simple(
-        this._translateService.instant('demo-requests.demo_is_complete_msg')
-      );
+      new Toasty(
+        this._translateService.instant('demo-requests.demo_is_complete_msg'),
+        ToastDuration.SHORT,
+        ToastPosition.BOTTOM
+      ).show();
     }
     // else if (dr.claimed_user !== this.userId) {
     //   console.log('claimed by another user');
-    //   this._snackBar.simple('demo-requests.claimed_by_other');
+    // new Toasty(
+    //   this._translateService.instant('demo-requests.claimed_by_other'),
+    //   ToastDuration.SHORT,
+    //   ToastPosition.BOTTOM
+    // ).show();
     // }
+  }
+
+  onFilterListTap(args) {
+    console.log('onFilterListTap');
   }
 }
