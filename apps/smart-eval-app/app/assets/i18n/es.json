@@ -217,6 +217,8 @@
     "picture": "Imagen",
     "profile": "Perfil",
     "save": "Salvar",
+    "saving": "Ahorro",
+    "updating": "Actualizando",
     "serial": "De serie",
     "submit": "Enviar",
     "tip": "Propina",
@@ -621,7 +623,7 @@
         "Presione cualquiera de los botones en el PushTracker para encenderlo.",
         "Mantenga presionado el botón elevado izquierdo durante 3 segundos para ingresar al modo de suspensión 'zzz' y apague el PushTracker."
       ],
-      "Image": "~/assets/images/gifs/PT-POWER.gif",
+      "Image": "~/assets/images/gifs/PT-ON-OFF.gif",
       "Label": "Encendiendo PushTracker"
     },
     {

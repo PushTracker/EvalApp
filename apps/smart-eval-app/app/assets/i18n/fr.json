@@ -215,6 +215,8 @@
     "picture": "Image",
     "profile": "Profil",
     "save": "Sauvegarder",
+    "saving": "Économie",
+    "updating": "Mise à jour",
     "serial": "En série",
     "submit": "Soumettre",
     "tip": "Pointe",
@@ -619,7 +621,7 @@
         "Appuyez sur l'un des boutons du PushTracker pour l'allumer.",
         "Appuyez sur le bouton de gauche surélevé et maintenez-le enfoncé pendant 3 secondes pour passer en mode veille 'zzz' et éteindre le PushTracker."
       ],
-      "Image": "~/assets/images/gifs/PT-POWER.gif",
+      "Image": "~/assets/images/gifs/PT-ON-OFF.gif",
       "Label": "Mise sous tension de PushTracker"
     },
     {

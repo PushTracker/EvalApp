@@ -217,6 +217,8 @@
     "picture": "afbeelding",
     "profile": "Profiel",
     "save": "Opslaan",
+    "saving": "Besparing",
+    "updating": "Updaten",
     "serial": "serie-",
     "submit": "voorleggen",
     "tip": "Tip",
@@ -621,7 +623,7 @@
         "Druk op de knop op de PushTracker om in te schakelen.",
         "Houd de linker omhoog-knop 3 seconden ingedrukt om de slaapstand 'zzz' in te schakelen en de PushTracker uit te schakelen."
       ],
-      "Image": "~/assets/images/gifs/PT-POWER.gif",
+      "Image": "~/assets/images/gifs/PT-ON-OFF.gif",
       "Label": "Aansturen van PushTracker"
     },
     {

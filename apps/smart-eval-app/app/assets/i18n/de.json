@@ -217,7 +217,8 @@
     "picture": "Bild",
     "profile": "Profil",
     "serial": "Seriennummer",
-    "save": "Sparen",
+    "saving": "Speichern",
+    "updating": "Aktualisierung",
     "submit": "einreichen",
     "tip": "Spitze",
     "title": "Intelligente Bewertung",
@@ -621,7 +622,7 @@
         "Drücken Sie eine der beiden Tasten am PushTracker, um das Gerät einzuschalten.",
         "Halten Sie die linke erhöhte Taste 3 Sekunden lang gedrückt, um den Schlafmodus 'zzz' zu aktivieren und den PushTracker auszuschalten."
       ],
-      "Image": "~/assets/images/gifs/PT-POWER.gif",
+      "Image": "~/assets/images/gifs/PT-ON-OFF.gif",
       "Label": "PushTracker einschalten"
     },
     {

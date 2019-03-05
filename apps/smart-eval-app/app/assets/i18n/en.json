@@ -185,7 +185,12 @@
       ]
     },
     {
-      "Image": "~/assets/images/gifs/PT-POWER.gif",
+      "Image": "~/assets/images/gifs/SD-POWER.gif",
+      "Label": "SmartDrive On/Off",
+      "Bullets": ["A red light will illuminate upon successful tap."]
+    },
+    {
+      "Image": "~/assets/images/gifs/PT-ON-OFF.gif",
       "Label": "Powering PushTracker",
       "Bullets": [
         "Press either button on the PushTracker to power on.",
@@ -328,6 +333,8 @@
     "photo-album-tle": "Photo Album",
     "edit": "Edit",
     "save": "Save",
+    "saving": "Saving",
+    "updating": "Updating",
     "update": "Update",
     "profile": "Profile",
     "serial": "Serial",
