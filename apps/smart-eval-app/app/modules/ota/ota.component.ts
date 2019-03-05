@@ -204,12 +204,13 @@ export class OTAComponent implements OnInit {
       this._translateService.instant('bluetooth.searching')
     );
     return this._bluetoothService
-      .scanForSmartDrive()
+      .scanForSmartDrive(8)
       .then(() => {
         this._progressService.hide();
         return BluetoothService.SmartDrives;
       })
       .catch(e => {
+        console.log('error finding smartdrives', e);
         this._progressService.hide();
         this._loggingService.logException(e);
       });
