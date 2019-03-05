@@ -45,11 +45,12 @@
     [items]="items"
     *ngIf="items.length && itemsLoaded"
     (loadMoreItems)="loadMoreItems($event)"
+    (itemTap)="onDemoRequestItemTap($event)"
   >
     <ng-template let-item="item" let-index="index">
       <GridLayout
         rows="auto, auto, auto, *"
-        columns="auto, *, auto"
+        columns="auto, *, *, auto"
         padding="10"
       >
         // Requesting User Email
@@ -80,7 +81,8 @@
           [visibility]="item.contact_info ? 'visible' : 'collapsed'"
         ></Label>
 
-        // Action Buttons
+        <!-- // Action Buttons -->
+        // Claim demo button
         <Button
           row="3"
           col="2"
@@ -94,6 +96,38 @@
               : 'collapsed'
           "
         ></Button>
+
+        // Complete request button - if demo has been claimed by the user they
+        can mark it complete when the demo has been dropped off
+        <Button
+          row="3"
+          col="2"
+          [text]="'demo-requests.complete' | translate"
+          (tap)="onCompleteDemoRequestTap(index)"
+          class="permobil-ocean-btn"
+          horizontalAlignment="right"
+          [visibility]="
+            item.claimed_user != null &&
+            item.claimed_user == userId &&
+            item.complete == null
+              ? 'visible'
+              : 'collapsed'
+          "
+        ></Button>
+        // check mark icon to indicate demo request is COMPLETE
+        <label
+          rowSpan="4"
+          col="3"
+          text="&#xf12c;"
+          class="mdi icon text-green h2"
+          horizontalAlignment="right"
+          verticalAlignment="middle"
+          [visibility]="
+            item.claimed_user != null && item.complete == true
+              ? 'visible'
+              : 'collapsed'
+          "
+        ></label>
       </GridLayout>
     </ng-template>
   </ListView>

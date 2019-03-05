@@ -6,6 +6,8 @@ import { Kinvey } from 'kinvey-nativescript-sdk';
 import { ToastDuration, ToastPosition, Toasty } from 'nativescript-toasty';
 import { confirm } from 'tns-core-modules/ui/dialogs/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
+import { SnackBar } from 'nativescript-snackbar';
+import { ItemEventData } from 'tns-core-modules/ui/list-view';
 
 @Component({
   selector: 'demo-requests',
@@ -19,9 +21,11 @@ export class DemoRequestsComponent implements OnInit {
   itemsLoaded = false;
   isFetchingData = false;
   userType: number;
+  userId: string;
   currentUserId: string;
 
   private _datastore = Kinvey.DataStore.collection<DemoRequest>('DemoRequests');
+  private _snackBar = new SnackBar();
 
   constructor(
     private _page: Page,
@@ -35,6 +39,7 @@ export class DemoRequestsComponent implements OnInit {
     this._logService.logBreadCrumb(DemoRequestsComponent.LOG_TAG + `ngOnInit`);
 
     const activeUser = Kinvey.User.getActiveUser();
+    this.userId = activeUser._id as string;
     this.userType = (activeUser.data as User).type as number;
     this.currentUserId = activeUser._id;
     this._datastore.clearSync();
@@ -107,7 +112,7 @@ export class DemoRequestsComponent implements OnInit {
     if (confirmResult === true) {
       this._logService.logBreadCrumb(
         DemoRequestsComponent.LOG_TAG +
-          `onClaimDemoRequestTap() confirmed claim demo index: ${index}`
+          `onClaimDemoRequestTap() confirmed claim demo: ${JSON.stringify(dr)}`
       );
 
       // set the claimed_user to the current user since they confirmed to claim this demo
@@ -120,7 +125,7 @@ export class DemoRequestsComponent implements OnInit {
         .then(entity => {
           console.log('updated entity', { entity });
           new Toasty(
-            'Demo Request Claimed.',
+            this._translateService.instant('demo-requests.claimed'),
             ToastDuration.LONG,
             ToastPosition.CENTER
           ).show();
@@ -129,6 +134,59 @@ export class DemoRequestsComponent implements OnInit {
           this._logService.logException(error);
           console.log('error saving modified demo request', { dr }, error);
         });
+    }
+  }
+
+  async onCompleteDemoRequestTap(index) {
+    const dr = this.items[index];
+    const confirmResult = await confirm({
+      title: this._translateService.instant('demo-requests.complete'),
+      message: this._translateService.instant('demo-requests.complete_confirm'),
+      okButtonText: this._translateService.instant('dialogs.yes'),
+      cancelButtonText: this._translateService.instant('dialogs.no')
+    });
+
+    if (confirmResult === true) {
+      this._logService.logBreadCrumb(
+        DemoRequestsComponent.LOG_TAG +
+          `onCompleteDemoRequestTap() confirmed completed demo: ${JSON.stringify(
+            dr
+          )}`
+      );
+
+      // set the completed flag to true to mark the request as complete to filter it out of current requests
+      dr.complete = true;
+
+      console.log('Modified DemoRequest', { dr });
+
+      this._datastore
+        .save(dr)
+        .then(entity => {
+          console.log('updated entity', { entity });
+          new Toasty(
+            this._translateService.instant('demo-requests.completed'),
+            ToastDuration.LONG,
+            ToastPosition.CENTER
+          ).show();
+        })
+        .catch(error => {
+          this._logService.logException(error);
+          console.log('error saving modified demo request', { dr }, error);
+        });
+    }
+  }
+
+  onDemoRequestItemTap(args: ItemEventData) {
+    const dr = this.items[args.index];
+    console.log({ dr });
+    if (dr.claimed_user !== this.userId) {
+      console.log('claimed by another user');
+      this._snackBar.simple('demo-requests.claimed_by_other');
+    } else if (dr.complete) {
+      console.log('demo request is complete');
+      this._snackBar.simple(
+        this._translateService.instant('demo-requests.demo_is_complete_msg')
+      );
     }
   }
 }
