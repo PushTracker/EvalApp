@@ -21,3 +21,27 @@
 .activity-indicator {
   color: $white;
 }
+
+.claimed-check {
+  background-color: $black;
+  font-family: $material-icon;
+  color: $red;
+  font-size: 22;
+  font-weight: bold;
+  text-align: center;
+  height: 40;
+  width: 40;
+  border-radius: 20;
+}
+
+.completed-check {
+  background-color: $black;
+  font-family: $material-icon;
+  color: $green;
+  font-size: 22;
+  font-weight: bold;
+  text-align: center;
+  height: 40;
+  width: 40;
+  border-radius: 20;
+}

@@ -7,7 +7,9 @@ import { ToastDuration, ToastPosition, Toasty } from 'nativescript-toasty';
 import { confirm } from 'tns-core-modules/ui/dialogs/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
 import { SnackBar } from 'nativescript-snackbar';
-import { ItemEventData } from 'tns-core-modules/ui/list-view';
+import { EventData } from 'tns-core-modules/data/observable';
+import { ItemEventData, ListView } from 'tns-core-modules/ui/list-view';
+import { isIOS } from 'tns-core-modules/platform';
 
 @Component({
   selector: 'demo-requests',
@@ -52,6 +54,14 @@ export class DemoRequestsComponent implements OnInit {
         this._logService.logException(error);
         this.itemsLoaded = false;
       });
+  }
+
+  listviewLoaded(args: EventData) {
+    console.log(args.object);
+    const lv = args.object as ListView;
+    if (isIOS && lv.ios) {
+      lv.ios.allowsSelection = false;
+    }
   }
 
   loadDemoRequests() {
@@ -124,6 +134,10 @@ export class DemoRequestsComponent implements OnInit {
         .save(dr)
         .then(entity => {
           console.log('updated entity', { entity });
+          this._logService.logBreadCrumb(
+            DemoRequestsComponent.LOG_TAG +
+              `onClaimDemoRequestTap() updated demo: ${JSON.stringify(entity)}`
+          );
           new Toasty(
             this._translateService.instant('demo-requests.claimed'),
             ToastDuration.LONG,
@@ -163,6 +177,12 @@ export class DemoRequestsComponent implements OnInit {
         .save(dr)
         .then(entity => {
           console.log('updated entity', { entity });
+          this._logService.logBreadCrumb(
+            DemoRequestsComponent.LOG_TAG +
+              `onCompleteDemoRequestTap() updated demo: ${JSON.stringify(
+                entity
+              )}`
+          );
           new Toasty(
             this._translateService.instant('demo-requests.completed'),
             ToastDuration.LONG,
@@ -176,17 +196,17 @@ export class DemoRequestsComponent implements OnInit {
     }
   }
 
-  onDemoRequestItemTap(args: ItemEventData) {
-    const dr = this.items[args.index];
+  onDemoRequestItemTap(index) {
+    const dr = this.items[index];
     console.log({ dr });
-    if (dr.claimed_user !== this.userId) {
-      console.log('claimed by another user');
-      this._snackBar.simple('demo-requests.claimed_by_other');
-    } else if (dr.complete) {
-      console.log('demo request is complete');
+    if (dr.complete) {
       this._snackBar.simple(
         this._translateService.instant('demo-requests.demo_is_complete_msg')
       );
     }
+    // else if (dr.claimed_user !== this.userId) {
+    //   console.log('claimed by another user');
+    //   this._snackBar.simple('demo-requests.claimed_by_other');
+    // }
   }
 }
