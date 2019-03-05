@@ -65,7 +65,13 @@
     "no-demo-requests": "Geen actieve demo-aanvragen gevonden.",
     "loading": "Demo-aanvragen laden ...",
     "claim": "Vordering",
-    "claim_confirm": "Wil je dit Demo-verzoek claimen?"
+    "claim_confirm": "Wil je dit Demo-verzoek claimen?",
+    "claimed": "Forwarded draai",
+    "complete": "Compleet",
+    "complete_confirm": "Wilt u deze aanvraag als voltooid markeren?",
+    "completed": "Demo-aanvraag voltooid",
+    "demo_is_complete_msg": "Demomelding is voltooid.",
+    "claimed_by_other": "Deze demo is geclaimd door een andere gebruiker."
   },
   "dialogs": {
     "camera": "Camera",

@@ -65,7 +65,13 @@
     "no-demo-requests": "Keine aktiven Demoanfragen gefunden.",
     "loading": "Demoanfragen werden geladen ...",
     "claim": "Anspruch",
-    "claim_confirm": "Möchten Sie diese Demo-Anfrage beantragen?"
+    "claim_confirm": "Möchten Sie diese Demo-Anfrage beantragen?",
+    "claimed": "Demoanforderung beanstandet",
+    "complete": "Komplett",
+    "complete_confirm": "Möchten Sie diese Anfrage als Abgeschlossen markieren?",
+    "completed": "Demo-Anfrage abgeschlossen",
+    "demo_is_complete_msg": "Demo-Anfrage ist abgeschlossen.",
+    "claimed_by_other": "Diese Demo wurde von einem anderen Benutzer beansprucht."
   },
   "dialogs": {
     "camera": "Kamera",

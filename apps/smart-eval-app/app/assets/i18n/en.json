@@ -380,7 +380,13 @@
     "no-demo-requests": "No active demo requests found.",
     "loading": "Loading Demo Requests...",
     "claim": "Claim",
-    "claim_confirm": "Do you want to claim this Demo Request?"
+    "claim_confirm": "Do you want to claim this Demo Request?",
+    "claimed": "Demo Request Claimed",
+    "complete": "Complete",
+    "complete_confirm": "Do you want to mark this request as Completed?",
+    "completed": "Demo Request Completed",
+    "demo_is_complete_msg": "Demo request is complete.",
+    "claimed_by_other": "This demo has been claimed by another user."
   },
   "pairing": [
     {

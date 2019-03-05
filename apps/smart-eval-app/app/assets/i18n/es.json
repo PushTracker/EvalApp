@@ -65,7 +65,13 @@
     "no-demo-requests": "No se han encontrado solicitudes de demostración activas.",
     "loading": "Cargando solicitudes de demostración ...",
     "claim": "Reclamación",
-    "claim_confirm": "¿Quieres reclamar esta Demo Request?"
+    "claim_confirm": "¿Quieres reclamar esta Demo Request?",
+    "claimed": "Solicitud de demostración reclamada",
+    "complete": "Completar",
+    "complete_confirm": "¿Quieres marcar esta solicitud como completada?",
+    "completed": "Solicitud de demostración completada",
+    "demo_is_complete_msg": "La solicitud de demostración está completa.",
+    "claimed_by_other": "Esta demo ha sido reclamada por otro usuario."
   },
   "dialogs": {
     "camera": "Cámara",
