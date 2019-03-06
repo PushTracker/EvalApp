@@ -40,10 +40,11 @@
   ></label>
 
   // listview for demo requests
-  <ListView
+  <RadListView
     #listview
     row="0"
     height="100%"
+    pullToRefresh="true"
     backgroundColor="transparent"
     separatorColor="white"
     [items]="items"
@@ -114,7 +115,7 @@
         </StackLayout>
       </GridLayout>
     </ng-template>
-  </ListView>
+  </RadListView>
   <!-- <ActivityIndicator
     row="1"
     width="50"
