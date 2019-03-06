@@ -22,9 +22,12 @@
     "update:skip": "./node_modules/.bin/nx update skip",
     "postinstall": "./node_modules/.bin/nx postinstall",
     "ns.setup": "npm uninstall -g nativescript && npm install -g nativescript",
+    "// CLEAN SECTION": "----------------------------------------------------------------------------------------------------------",
     "clean": "rm -rf hooks node_modules package-lock.json && npm i",
-    "nuke": "npm run clean && npm run sea.clean",
-    "nuki": "npm run nuke && npm i && cd xplat/mobile && npm i && cd ../..",
+    "clean.nativescript.bluetooth": "cd nativescript-bluetooth && rm -rf hooks node_modules && npm i",
+    "clean.xplat.mobile": "cd xplat/mobile && rm -rf hooks node_modules && npm i",
+    "// end CLEAN SECTION": "----------------------------------------------------------------------------------------------------------",
+    "nuki": "npm run clean && npm run clean.nativescript.bluetooth && npm run clean.xplat.mobile && npm run sea.clean && npm run tslint",
     "start.web": "ng serve --app=web",
     "// Smart.Eval.App.Section": "----------------------------------------------------------------------------------------------------------",
     "sea.clean": "cd apps/smart-eval-app && rm -rf hooks node_modules platforms package-lock.json && npm i",
@@ -142,6 +145,7 @@
   },
   "lint-staged": {
     "*.{ts, js, json, css, scss, md}": [
+      "tslint",
       "prettier --write",
       "git add"
     ]
