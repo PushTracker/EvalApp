@@ -8,6 +8,9 @@
     "id": "com.permobil.smarteval",
     "tns-android": {
       "version": "5.2.1"
+    },
+    "tns-ios": {
+      "version": "5.2.0"
     }
   },
   "scripts": {
