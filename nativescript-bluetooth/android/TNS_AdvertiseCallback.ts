@@ -2,6 +2,7 @@ import { CLog, CLogTypes } from '../common';
 import { Bluetooth } from './android_main';
 
 @JavaProxy('com.nativescript.TNS_AdvertiseCallback')
+// tslint:disable-next-line:class-name
 export class TNS_AdvertiseCallback extends android.bluetooth.le
   .AdvertiseCallback {
   private _owner: WeakRef<Bluetooth>;

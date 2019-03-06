@@ -2,18 +2,18 @@ const Packet = require('../packet/packet');
 
 export class DailyInfo {
   // public members
-  public year: number = 2017;
-  public month: number = 1;
-  public day: number = 1;
-  public pushesWith: number = 0;
-  public pushesWithout: number = 0;
-  public coastWith: number = 0;
-  public coastWithout: number = 0;
-  public distance: number = 0;
-  public speed: number = 0;
-  public ptBattery: number = 0;
-  public sdBattery: number = 0;
-  public date: Date = null;
+  year = 2017;
+  month = 1;
+  day = 1;
+  pushesWith = 0;
+  pushesWithout = 0;
+  coastWith = 0;
+  coastWithout = 0;
+  distance = 0;
+  speed = 0;
+  ptBattery = 0;
+  sdBattery = 0;
+  date: Date = null;
 
   // private members
 
@@ -29,7 +29,7 @@ export class DailyInfo {
     }
   }
 
-  public data(): any {
+  data(): any {
     return {
       year: this.year,
       month: this.month,
@@ -46,7 +46,7 @@ export class DailyInfo {
     };
   }
 
-  public add(di): void {
+  add(di): void {
     this.pushesWith += (di && di.pushesWith) || 0;
     this.pushesWithout += (di && di.pushesWithout) || 0;
     this.coastWith += (di && di.coastWith) || 0;
@@ -54,7 +54,7 @@ export class DailyInfo {
     this.distance += (di && di.distance) || 0;
   }
 
-  public getDate(): Date {
+  getDate(): Date {
     return new Date(
       this.year,
       this.month - 1, // their month is zero indexed
@@ -62,7 +62,7 @@ export class DailyInfo {
     );
   }
 
-  public sameAsDate(date): boolean {
+  sameAsDate(date): boolean {
     const d = this.getDate();
     return (
       d.getFullYear() === date.getFullYear() &&
@@ -71,13 +71,13 @@ export class DailyInfo {
     );
   }
 
-  public sameAsDailyInfo(di): boolean {
+  sameAsDailyInfo(di): boolean {
     return (
       this.year === di.year && this.month === di.month && this.day === di.day
     );
   }
 
-  public fromObject(obj: any): void {
+  fromObject(obj: any): void {
     this.year = (obj && obj.year) || 2017;
     this.month = (obj && obj.month) || 1;
     this.day = (obj && obj.day) || 1;
@@ -93,13 +93,13 @@ export class DailyInfo {
     this.date = this.getDate();
   }
 
-  public fromUint8Array(arr: Uint8Array): void {
+  fromUint8Array(arr: Uint8Array): void {
     const p = new Packet.Packet(arr);
     this.fromPacket(p);
     p.destroy();
   }
 
-  public fromPacket(p): void {
+  fromPacket(p): void {
     const di = p.data('dailyInfo');
     this.year = di.year;
     this.month = di.month;

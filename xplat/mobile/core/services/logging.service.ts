@@ -6,6 +6,11 @@ export class LoggingUtil {
   static debug = true;
 }
 
+export enum LoggingCategory {
+  Info = 'Info',
+  Warning = 'Warning'
+}
+
 @Injectable()
 export class LoggingService {
   constructor(private _userService: UserService) {}
@@ -61,9 +66,4 @@ export class LoggingService {
 
     Sentry.captureBreadcrumb(breadcrumb);
   }
-}
-
-export enum LoggingCategory {
-  Info = 'Info',
-  Warning = 'Warning'
 }

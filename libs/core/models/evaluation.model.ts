@@ -2,6 +2,11 @@ import { Observable } from 'tns-core-modules/data/observable';
 import { ObservableArray } from 'tns-core-modules/data/observable-array';
 import { Trial } from './trial.model';
 
+export enum EvaluationStatus {
+  'Incomplete',
+  'Complete'
+}
+
 export class Evaluation extends Observable {
   // public members
   _id = null;
@@ -56,9 +61,4 @@ export class Evaluation extends Observable {
     });
     return obj;
   }
-}
-
-export enum EvaluationStatus {
-  'Incomplete',
-  'Complete'
 }

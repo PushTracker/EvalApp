@@ -2,6 +2,7 @@ import { BondState, CLog, CLogTypes } from '../common';
 import { Bluetooth, deviceToCentral } from './android_main';
 
 @JavaProxy('com.nativescript.TNS_BroadcastReceiver')
+// tslint:disable-next-line:class-name
 export class TNS_BroadcastReceiver extends android.content.BroadcastReceiver {
   private _owner: WeakRef<Bluetooth>;
   constructor() {
@@ -76,7 +77,7 @@ export class TNS_BroadcastReceiver extends android.content.BroadcastReceiver {
       });
     } else if (action === android.bluetooth.BluetoothDevice.ACTION_UUID) {
       // TODO: uuidExtra in this is always null!
-      let uuidExtra = intent.getParcelableArrayExtra(
+      const uuidExtra = intent.getParcelableArrayExtra(
         android.bluetooth.BluetoothDevice.EXTRA_UUID
       );
       const uuids = [];

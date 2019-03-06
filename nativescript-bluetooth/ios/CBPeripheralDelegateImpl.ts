@@ -9,14 +9,14 @@ import { Bluetooth } from './ios_main';
  */
 export class CBPeripheralDelegateImpl extends NSObject
   implements CBPeripheralDelegate {
-  public static ObjCProtocols = [CBPeripheralDelegate];
-  public _onWritePromise;
-  public _onWriteReject;
-  public _onWriteTimeout;
-  public _onReadPromise;
-  public _onReadReject;
-  public _onReadTimeout;
-  public _onNotifyCallback;
+  static ObjCProtocols = [CBPeripheralDelegate];
+  _onWritePromise;
+  _onWriteReject;
+  _onWriteTimeout;
+  _onReadPromise;
+  _onReadReject;
+  _onReadTimeout;
+  _onNotifyCallback;
   private _servicesWithCharacteristics;
   private _services;
   private _owner: WeakRef<Bluetooth>;
@@ -26,7 +26,7 @@ export class CBPeripheralDelegateImpl extends NSObject
     return <CBPeripheralDelegateImpl>super.new();
   }
 
-  public initWithCallback(
+  initWithCallback(
     owner: WeakRef<Bluetooth>,
     callback: (result?) => void
   ): CBPeripheralDelegateImpl {
@@ -42,7 +42,7 @@ export class CBPeripheralDelegateImpl extends NSObject
     return this;
   }
 
-  public peripheralDidReadRSSIError(
+  peripheralDidReadRSSIError(
     peripheral: CBPeripheral,
     RSSI: number,
     error: NSError
@@ -62,10 +62,7 @@ export class CBPeripheralDelegateImpl extends NSObject
    * @param peripheral [CBPeripheral] - The peripheral that the services belong to.
    * @param error [NSError] - If an error occurred, the cause of the failure.
    */
-  public peripheralDidDiscoverServices(
-    peripheral: CBPeripheral,
-    error?: NSError
-  ) {
+  peripheralDidDiscoverServices(peripheral: CBPeripheral, error?: NSError) {
     CLog(
       CLogTypes.info,
       `CBPeripheralDelegateImpl.peripheralDidDiscoverServices ---- peripheral: ${peripheral}, ${error}`
@@ -89,7 +86,7 @@ export class CBPeripheralDelegateImpl extends NSObject
    * @param service [CBService] - The CBService object containing the included service.
    * @param error [NSError] - If an error occurred, the cause of the failure.
    */
-  public peripheralDidDiscoverIncludedServicesForServiceError(
+  peripheralDidDiscoverIncludedServicesForServiceError(
     peripheral: CBPeripheral,
     service: CBService,
     error?: NSError
@@ -106,7 +103,7 @@ export class CBPeripheralDelegateImpl extends NSObject
    * @param service [CBService] - The CBService object containing the included service.
    * @param error [NSError] - If an error occurred, the cause of the failure.
    */
-  public peripheralDidDiscoverCharacteristicsForServiceError(
+  peripheralDidDiscoverCharacteristicsForServiceError(
     peripheral: CBPeripheral,
     service: CBService,
     error?: NSError
@@ -171,7 +168,7 @@ export class CBPeripheralDelegateImpl extends NSObject
    * @param characteristic [CBCharacteristic] - The characteristic that the characteristic descriptors belong to.
    * @param error [NSError] - If an error occurred, the cause of the failure.
    */
-  public peripheralDidDiscoverDescriptorsForCharacteristicError(
+  peripheralDidDiscoverDescriptorsForCharacteristicError(
     peripheral: CBPeripheral,
     characteristic: CBCharacteristic,
     error?: NSError
@@ -218,7 +215,7 @@ export class CBPeripheralDelegateImpl extends NSObject
    * the peripheral device notifies your app that the characteristic’s
    * value has changed.
    */
-  public peripheralDidUpdateValueForCharacteristicError(
+  peripheralDidUpdateValueForCharacteristicError(
     peripheral: CBPeripheral,
     characteristic: CBCharacteristic,
     error?: NSError
@@ -265,7 +262,7 @@ export class CBPeripheralDelegateImpl extends NSObject
   /**
    * Invoked when you retrieve a specified characteristic descriptor’s value.
    */
-  public peripheralDidUpdateValueForDescriptorError(
+  peripheralDidUpdateValueForDescriptorError(
     peripheral: CBPeripheral,
     descriptor: CBDescriptor,
     error?: NSError
@@ -279,7 +276,7 @@ export class CBPeripheralDelegateImpl extends NSObject
   /**
    * Invoked when you write data to a characteristic’s value.
    */
-  public peripheralDidWriteValueForCharacteristicError(
+  peripheralDidWriteValueForCharacteristicError(
     peripheral: CBPeripheral,
     characteristic: CBCharacteristic,
     error?: NSError
@@ -310,7 +307,7 @@ export class CBPeripheralDelegateImpl extends NSObject
    * Invoked when the peripheral receives a request to start or stop
    * providing notifications for a specified characteristic’s value.
    */
-  public peripheralDidUpdateNotificationStateForCharacteristicError(
+  peripheralDidUpdateNotificationStateForCharacteristicError(
     peripheral: CBPeripheral,
     characteristic: CBCharacteristic,
     error?: NSError
@@ -343,7 +340,7 @@ export class CBPeripheralDelegateImpl extends NSObject
   /**
    * IInvoked when you write data to a characteristic descriptor’s value.
    */
-  public peripheralDidWriteValueForDescriptorError(
+  peripheralDidWriteValueForDescriptorError(
     peripheral: CBPeripheral,
     descriptor: CBDescriptor,
     error?: NSError

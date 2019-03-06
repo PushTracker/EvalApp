@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 export interface IAnalyticsProperties {
@@ -26,7 +26,7 @@ export interface IAnalyticsProperties {
  */
 @Injectable()
 export class AnalyticsService {
-  private _devMode: boolean = false;
+  private _devMode = false;
 
   constructor(private _router: Router) {
     this.devMode(false);
@@ -35,7 +35,7 @@ export class AnalyticsService {
   /**
    * Track actions, events, etc.
    **/
-  public track(action: string, properties: any | IAnalyticsProperties): void {
+  track(action: string, properties: any | IAnalyticsProperties): void {
     if (!this.devMode()) {
       // send some analytics to db/service
     }
@@ -46,7 +46,7 @@ export class AnalyticsService {
    * true: dev mode on, therefore do not track anything
    * false: dev mode off, track everything
    **/
-  public devMode(enable?: boolean): boolean {
+  devMode(enable?: boolean): boolean {
     if (typeof enable !== 'undefined') {
       this._devMode = enable;
     }
@@ -59,9 +59,9 @@ export class AnalyticsService {
  * Standardizes tracking actions and categorization
  */
 export class Analytics {
-  public analytics: AnalyticsService;
+  analytics: AnalyticsService;
   // sub-classes should define their category
-  public category: string;
+  category: string;
 
   /**
    * Track actions, events, etc.

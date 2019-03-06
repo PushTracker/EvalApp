@@ -57,9 +57,9 @@ export class Bluetooth extends BluetoothCommon {
   private readonly _peripheralManager: CBPeripheralManager = null;
 
   private _data_service: CBMutableService;
-  public _connectCallbacks = {};
-  public _disconnectCallbacks = {};
-  public _onDiscovered = null;
+  _connectCallbacks = {};
+  _disconnectCallbacks = {};
+  _onDiscovered = null;
 
   // private _centralDelegate = CBCentralManagerDelegateImpl.new().initWithCallback(new WeakRef(this), obj => {
   //   CLog(CLogTypes.info, `---- centralDelegate ---- obj: ${obj}`);
@@ -165,16 +165,16 @@ export class Bluetooth extends BluetoothCommon {
     }
   }
 
-  public removePeripheral(peripheral) {
+  removePeripheral(peripheral) {
     const foundAt = peripheralArray.indexOfObject(peripheral);
     peripheralArray.removeObject(foundAt);
   }
 
-  public addPeripheral(peripheral) {
+  addPeripheral(peripheral) {
     peripheralArray.addObject(peripheral);
   }
 
-  public _getState(state: CBPeripheralState) {
+  _getState(state: CBPeripheralState) {
     if (state === CBPeripheralState.Connecting) {
       return 'connecting';
     } else if (state === CBPeripheralState.Connected) {
@@ -190,7 +190,7 @@ export class Bluetooth extends BluetoothCommon {
     }
   }
 
-  public isBluetoothEnabled(): Promise<boolean> {
+  isBluetoothEnabled(): Promise<boolean> {
     return new Promise((resolve, reject) => {
       try {
         const isEnabled = this._isEnabled();
@@ -202,7 +202,7 @@ export class Bluetooth extends BluetoothCommon {
     });
   }
 
-  public startScanning(arg: StartScanningOptions) {
+  startScanning(arg: StartScanningOptions) {
     return new Promise((resolve, reject) => {
       try {
         if (!this._isEnabled()) {
@@ -250,7 +250,7 @@ export class Bluetooth extends BluetoothCommon {
     });
   }
 
-  public toArrayBuffer(value) {
+  toArrayBuffer(value) {
     if (value === null) {
       return null;
     }
@@ -260,7 +260,7 @@ export class Bluetooth extends BluetoothCommon {
     return this.base64ToArrayBuffer(b);
   }
 
-  public removeBond(device) {
+  removeBond(device) {
     /*
     try {
   let m = device.getClass();
@@ -276,7 +276,7 @@ export class Bluetooth extends BluetoothCommon {
     */
   }
 
-  public fetchUuidsWithSdp(device) {
+  fetchUuidsWithSdp(device) {
     /*
     try {
   let m = device.getClass();
@@ -292,35 +292,35 @@ export class Bluetooth extends BluetoothCommon {
     */
   }
 
-  public stopGattServer() {
+  stopGattServer() {
     return;
   }
 
-  public startGattServer() {
+  startGattServer() {
     // TODO: see if there is more to this but from the doc https://developer.apple.com/documentation/corebluetooth/cbperipheralmanager
     // it appears as long as the CBPeripheralManager has been initialized, that is for managing the GATT DB.
     return;
   }
 
-  public setDiscoverable() {
+  setDiscoverable() {
     return new Promise((resolve, reject) => {
       resolve();
     });
   }
 
-  public getAdvertiser() {
+  getAdvertiser() {
     // return adapter.getBluetoothAdvertiser();
     return null;
   }
 
-  public makeService(opts: MakeServiceOptions) {
+  makeService(opts: MakeServiceOptions) {
     const primary = opts && opts.primary === true ? true : false;
     const uuid = CBUUID.UUIDWithString(opts.UUID);
     const service = CBMutableService.alloc().initWithTypePrimary(uuid, primary);
     return service;
   }
 
-  public makeCharacteristic(opts: MakeCharacteristicOptions) {
+  makeCharacteristic(opts: MakeCharacteristicOptions) {
     const uuid = CBUUID.UUIDWithString(opts.UUID);
 
     // let props;
@@ -349,7 +349,7 @@ export class Bluetooth extends BluetoothCommon {
     return characteristic;
   }
 
-  public makeDescriptor(options) {
+  makeDescriptor(options) {
     const uuid = this._stringToUuid(options.UUID);
     // const perms = (opts && opts.perms) ||
     const descriptor = CBMutableDescriptor.alloc().init();
@@ -361,35 +361,35 @@ export class Bluetooth extends BluetoothCommon {
   /**
    * https://developer.apple.com/documentation/corebluetooth/cbperipheralmanager/1393255-addservice
    */
-  public addService(service) {
+  addService(service) {
     if (service && this._peripheralManager) {
       // create a CBMutableService - https://developer.apple.com/documentation/corebluetooth/cbmutableservice?language=objc
       this._peripheralManager.addService(service);
     }
   }
 
-  public getServerService(uuidString) {
+  getServerService(uuidString) {
     // TODO: figure out how to query services from the peripheral
     //       manager or other BT subsystem
     return null;
   }
 
-  public offersService(uuidString) {
+  offersService(uuidString) {
     return this.getServerService(uuidString) !== null;
   }
 
-  public clearServices() {
+  clearServices() {
     this._peripheralManager.removeAllServices();
   }
 
-  public cancelServerConnection(device) {
+  cancelServerConnection(device) {
     // TODO: figure out if this is possible on ios
   }
 
   /**
    * https://developer.apple.com/documentation/corebluetooth/cbperipheralmanager/1393281-updatevalue?changes=_2&language=objc
    */
-  public notifyCentrals(value: any, characteristic: any, centrals: any) {
+  notifyCentrals(value: any, characteristic: any, centrals: any) {
     return new Promise((resolve, reject) => {
       let resendTimeoutID = null;
       let readyToUpdate = null;
@@ -455,29 +455,29 @@ export class Bluetooth extends BluetoothCommon {
    * Requires the BLUETOOTH permission.
    * @returns - List of Bluetooth devices. The list will be empty on error.
    */
-  public getConnectedDevices() {
+  getConnectedDevices() {
     return peripheralArray;
   }
 
-  public getServerConnectedDevices() {
+  getServerConnectedDevices() {
     if (peripheralArray) {
       return peripheralArray;
     }
   }
 
-  public getServerConnectedDeviceState(device) {
+  getServerConnectedDeviceState(device) {
     // TODO: figure out if we can query centrals that are connected
     //       or their state
   }
 
-  public getServerConnectedDevicesMatchingState(state) {
+  getServerConnectedDevicesMatchingState(state) {
     // TODO: figure out if we can query attached cdntrals
   }
 
   /**
    * https://developer.apple.com/documentation/corebluetooth/cbperipheralmanager/1393252-startadvertising?language=objc
    */
-  public startAdvertising(args: StartAdvertisingOptions) {
+  startAdvertising(args: StartAdvertisingOptions) {
     return new Promise((resolve, reject) => {
       try {
         if (!this._peripheralManager) {
@@ -529,7 +529,7 @@ export class Bluetooth extends BluetoothCommon {
   /**
    * https://developer.apple.com/documentation/corebluetooth/cbperipheralmanager/1393275-stopadvertising?language=objc
    */
-  public stopAdvertising() {
+  stopAdvertising() {
     return new Promise((resolve, reject) => {
       if (!this._peripheralManager) {
         reject('Bluetooth not properly initialized.');
@@ -546,7 +546,7 @@ export class Bluetooth extends BluetoothCommon {
     });
   }
 
-  public isPeripheralModeSupported() {
+  isPeripheralModeSupported() {
     return new Promise((resolve, reject) => {
       try {
         const newPM = CBPeripheralManager.new().initWithDelegateQueue(
@@ -569,7 +569,7 @@ export class Bluetooth extends BluetoothCommon {
   }
   /* * * * * * END BLUETOOTH PERIPHERAL CODE  * * * * */
 
-  public enable() {
+  enable() {
     return new Promise((resolve, reject) => {
       CLog(CLogTypes.info, 'Bluetooth.enable ---- Not possible on iOS');
       reject(
@@ -582,7 +582,7 @@ export class Bluetooth extends BluetoothCommon {
    * Disabled Bluetooth on iOS is only available via a private API which will get any app rejected.
    * So the plugin is not going to be exposing such functionality.
    */
-  public disable() {
+  disable() {
     return new Promise((resolve, reject) => {
       CLog(
         CLogTypes.info,
@@ -592,7 +592,7 @@ export class Bluetooth extends BluetoothCommon {
     });
   }
 
-  public stopScanning(arg?) {
+  stopScanning(arg?) {
     return new Promise((resolve, reject) => {
       try {
         if (!this._isEnabled()) {
@@ -609,7 +609,7 @@ export class Bluetooth extends BluetoothCommon {
   }
 
   // note that this doesn't make much sense without scanning first
-  public connect(args: ConnectOptions) {
+  connect(args: ConnectOptions) {
     return new Promise((resolve, reject) => {
       try {
         if (!this._isEnabled()) {
@@ -648,7 +648,7 @@ export class Bluetooth extends BluetoothCommon {
     });
   }
 
-  public disconnect(arg) {
+  disconnect(arg) {
     return new Promise((resolve, reject) => {
       try {
         if (!this._isEnabled()) {
@@ -684,7 +684,7 @@ export class Bluetooth extends BluetoothCommon {
     });
   }
 
-  public isConnected(arg) {
+  isConnected(arg) {
     return new Promise((resolve, reject) => {
       try {
         if (!this._isEnabled()) {
@@ -714,7 +714,7 @@ export class Bluetooth extends BluetoothCommon {
     });
   }
 
-  public findPeripheral(UUID): CBPeripheral {
+  findPeripheral(UUID): CBPeripheral {
     // for (let i = 0; i < this._peripheralArray.count; i++) {
     //   const peripheral = this._peripheralArray.objectAtIndex(i);
     //   if (UUID === peripheral.identifier.UUIDString) {
@@ -730,7 +730,7 @@ export class Bluetooth extends BluetoothCommon {
     return null;
   }
 
-  public read(arg) {
+  read(arg) {
     return new Promise((resolve, reject) => {
       try {
         const wrapper = this._getWrapper(
@@ -754,7 +754,7 @@ export class Bluetooth extends BluetoothCommon {
     });
   }
 
-  public write(arg) {
+  write(arg) {
     return new Promise((resolve, reject) => {
       try {
         if (!arg.value) {
@@ -806,7 +806,7 @@ export class Bluetooth extends BluetoothCommon {
     });
   }
 
-  public writeWithoutResponse(arg) {
+  writeWithoutResponse(arg) {
     return new Promise((resolve, reject) => {
       try {
         if (!arg.value) {
@@ -850,7 +850,7 @@ export class Bluetooth extends BluetoothCommon {
     });
   }
 
-  public startNotifying(args: StartNotifyingOptions) {
+  startNotifying(args: StartNotifyingOptions) {
     return new Promise((resolve, reject) => {
       try {
         const wrapper = this._getWrapper(
@@ -892,7 +892,7 @@ export class Bluetooth extends BluetoothCommon {
     });
   }
 
-  public stopNotifying(args: StopNotifyingOptions) {
+  stopNotifying(args: StopNotifyingOptions) {
     return new Promise((resolve, reject) => {
       try {
         const wrapper = this._getWrapper(
@@ -1140,7 +1140,7 @@ export class Bluetooth extends BluetoothCommon {
     return result.buffer;
   }
 
-  public _getManagerStateString(state: CBManagerState): string {
+  _getManagerStateString(state: CBManagerState): string {
     let result: string;
     switch (state) {
       case CBManagerState.Unknown: // 0

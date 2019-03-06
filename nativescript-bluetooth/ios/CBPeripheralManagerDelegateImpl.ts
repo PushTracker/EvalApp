@@ -1,5 +1,5 @@
 import { CLog, CLogTypes, ConnectionState } from '../common';
-import { Bluetooth, deviceToCentral, deviceToPeripheral } from './ios_main';
+import { Bluetooth, deviceToCentral } from './ios_main';
 
 /**
  * @link - https://developer.apple.com/documentation/corebluetooth/cbperipheralmanagerdelegate
@@ -9,7 +9,7 @@ import { Bluetooth, deviceToCentral, deviceToPeripheral } from './ios_main';
  */
 export class CBPeripheralManagerDelegateImpl extends NSObject
   implements CBPeripheralManagerDelegate {
-  public static ObjCProtocols = [CBPeripheralManagerDelegate];
+  static ObjCProtocols = [CBPeripheralManagerDelegate];
   private _owner: WeakRef<Bluetooth>;
   private _central?: CBCentral;
   private _isConnected = false;
@@ -25,9 +25,7 @@ export class CBPeripheralManagerDelegateImpl extends NSObject
     return <CBPeripheralManagerDelegateImpl>super.new();
   }
 
-  public initWithOwner(
-    owner: WeakRef<Bluetooth>
-  ): CBPeripheralManagerDelegateImpl {
+  initWithOwner(owner: WeakRef<Bluetooth>): CBPeripheralManagerDelegateImpl {
     this._owner = owner;
     CLog(
       CLogTypes.info,
@@ -38,7 +36,7 @@ export class CBPeripheralManagerDelegateImpl extends NSObject
     return this;
   }
 
-  public initWithCallback(
+  initWithCallback(
     owner: WeakRef<Bluetooth>,
     callback: (result?) => void
   ): CBPeripheralManagerDelegateImpl {
@@ -56,7 +54,7 @@ export class CBPeripheralManagerDelegateImpl extends NSObject
    * Invoked when the peripheral manager's state is updated.
    * @param mgr [CBPeripheralManager] - The peripheral manager whose state has changed.
    */
-  public peripheralManagerDidUpdateState(mgr: CBPeripheralManager) {
+  peripheralManagerDidUpdateState(mgr: CBPeripheralManager) {
     CLog(CLogTypes.info, 'peripheralManagerDidUpdateState');
 
     const owner = this._owner.get();
@@ -81,7 +79,7 @@ export class CBPeripheralManagerDelegateImpl extends NSObject
    * @param dict [NSDictionary<string, any>] - A dictionary containing information about the peripheral manager that was preserved by the system at the time the app was terminated. For the available keys to this dictionary.
    * @link - Peripheral Manager State Restoration Options @ https://developer.apple.com/documentation/corebluetooth/cbperipheralmanagerdelegate/peripheral_manager_state_restoration_options.
    */
-  public peripheralManagerWillRestoreState(
+  peripheralManagerWillRestoreState(
     peripheral: CBPeripheralManager,
     dict?: NSDictionary<string, any>
   ) {
@@ -110,7 +108,7 @@ export class CBPeripheralManagerDelegateImpl extends NSObject
    * @param service [CBService] - The service that was added to the local GATT database.
    * @param error? [NSError] - If an error occurred, the cause of the failure.
    */
-  public peripheralManagerDidAddError(
+  peripheralManagerDidAddError(
     peripheral: CBPeripheralManager,
     service: CBService,
     error?: NSError
@@ -139,7 +137,7 @@ export class CBPeripheralManagerDelegateImpl extends NSObject
    * @param peripheralMgr [CBPeripheralManager] - The peripheral manager providing this information.
    * @param error? [NSError] - If an error occurred, the cause of the failure.
    */
-  public peripheralManagerDidStartAdvertisingError(
+  peripheralManagerDidStartAdvertisingError(
     peripheralMgr: CBPeripheralManager,
     error?: NSError
   ) {
@@ -176,7 +174,7 @@ export class CBPeripheralManagerDelegateImpl extends NSObject
    * @param central [CBCentral] - The remote central device that subscribed to the characteristic’s value.
    * @param characteristic [CBCharacteristic] - The characteristic whose value has been subscribed to.
    */
-  public peripheralManagerCentralDidSubscribeToCharacteristic(
+  peripheralManagerCentralDidSubscribeToCharacteristic(
     peripheral: CBPeripheralManager,
     central: CBCentral,
     characteristic: CBCharacteristic
@@ -245,7 +243,7 @@ export class CBPeripheralManagerDelegateImpl extends NSObject
    * @param central [CBCentral] - The remote central device that subscribed to the characteristic’s value.
    * @param characteristic [CBCharacteristic] - The characteristic whose value has been unsubscribed from.
    */
-  public peripheralManagerCentralDidUnsubscribeFromCharacteristic(
+  peripheralManagerCentralDidUnsubscribeFromCharacteristic(
     peripheral: CBPeripheralManager,
     central: CBCentral,
     characteristic: CBCharacteristic
@@ -297,7 +295,7 @@ export class CBPeripheralManagerDelegateImpl extends NSObject
    * @param service - The service that was added to the local GATT database.
    * @param error - If an error occurred, the cause of the failure.
    */
-  public peripheralManagerDidAddServiceError(
+  peripheralManagerDidAddServiceError(
     peripheral: CBPeripheralManager,
     service: CBService,
     error: NSError
@@ -317,9 +315,7 @@ export class CBPeripheralManagerDelegateImpl extends NSObject
    * You can then implement this delegate method to resend the value.
    * @param peripheral [CBPeripheralManager] - The peripheral manager providing this information.
    */
-  public peripheralManagerIsReadyToUpdateSubscribers(
-    peripheral: CBPeripheralManager
-  ) {
+  peripheralManagerIsReadyToUpdateSubscribers(peripheral: CBPeripheralManager) {
     CLog(
       CLogTypes.info,
       'CBPeripheralManagerDelegateImpl.peripheralManagerIsReadyToUpdateSubscribers ----',
@@ -344,7 +340,7 @@ export class CBPeripheralManagerDelegateImpl extends NSObject
    * @param peripheral [CBPeripheralManager] - The peripheral manager providing this information.
    * @param request [CBATTRequest] - A CBATTRequest object that represents a request to read a characteristic’s value.
    */
-  public peripheralManagerDidReceiveReadRequest(
+  peripheralManagerDidReceiveReadRequest(
     peripheral: CBPeripheralManager,
     request: CBATTRequest
   ) {
@@ -385,7 +381,7 @@ export class CBPeripheralManagerDelegateImpl extends NSObject
    * @param peripheral [CBPeripheralManager] - The peripheral manager providing this information.
    * @param requests CBATTRequest[] - A list of one or more CBATTRequest objects, each representing a request to write the value of a characteristic.
    */
-  public peripheralManagerDidReceiveWriteRequests(
+  peripheralManagerDidReceiveWriteRequests(
     peripheral: CBPeripheralManager,
     requests
   ) {

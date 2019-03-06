@@ -5,7 +5,7 @@ declare var require;
 require('./base64');
 
 export class BluetoothUtil {
-  public static debug = false;
+  static debug = false;
 }
 
 export enum CLogTypes {
@@ -33,139 +33,137 @@ export class BluetoothCommon extends Observable {
     super();
   }
 
-  public set debug(value: boolean) {
+  set debug(value: boolean) {
     BluetoothUtil.debug = value;
   }
 
   /*
    * String value for hooking into the error_event. This event fires when an error is emitted from CameraPlus.
    */
-  public static error_event = 'error_event';
+  static error_event = 'error_event';
 
   /*
    * String value for hooking into the peripheral_connected_event. This event fires when a peripheral is connected to Bluetooth.
    */
-  public static peripheral_connected_event = 'peripheral_connected_event';
+  static peripheral_connected_event = 'peripheral_connected_event';
 
   /*
    * String value for hooking into the peripheral_connected_event. This event fires when a peripheral is disconnected
    */
-  public static peripheral_disconnected_event = 'peripheral_disconnected_event';
+  static peripheral_disconnected_event = 'peripheral_disconnected_event';
 
   /*
    * String value for hooking into the peripheral_failed_to_connect_event
    */
-  public static peripheral_failed_to_connect_event =
+  static peripheral_failed_to_connect_event =
     'peripheral_failed_to_connect_event';
 
-  public static centralmanager_updated_state_event =
+  static centralmanager_updated_state_event =
     'centralmanager_updated_state_event';
-  public static centralmanager_restore_state_event =
+  static centralmanager_restore_state_event =
     'centralmanager_restore_state_event';
-  public static peripheralmanager_restore_state_event =
+  static peripheralmanager_restore_state_event =
     'peripheralmanager_restore_state_event';
-  public static peripheralmanager_update_state_event =
+  static peripheralmanager_update_state_event =
     'peripheralmanager_update_state_event';
-  public static peripheralmanager_did_add_event =
-    'peripheralmanager_did_add_event';
-  public static peripheralmanager_subscribe_characteristic_event =
+  static peripheralmanager_did_add_event = 'peripheralmanager_did_add_event';
+  static peripheralmanager_subscribe_characteristic_event =
     'peripheralmanager_subscribe_characteristic_event';
-  public static peripheralmanager_unsubscribe_characteristic_event =
+  static peripheralmanager_unsubscribe_characteristic_event =
     'peripheralmanager_unsubscribe_characteristic_event';
-  public static peripheralmanager_ready_update_subscribers_event =
+  static peripheralmanager_ready_update_subscribers_event =
     'peripheralmanager_ready_update_subscribers_event';
-  public static peripheralmanager_read_request_event =
+  static peripheralmanager_read_request_event =
     'peripheralmanager_read_request_event';
-  public static peripheralmanager_write_request_event =
+  static peripheralmanager_write_request_event =
     'peripheralmanager_write_request_event';
 
   /*
    * String value for hooking into the bluetooth_enabled_event. This event fires when the bluetooth is enabled.
    */
-  public static bluetooth_enabled_event = 'bluetooth_enabled_event';
+  static bluetooth_enabled_event = 'bluetooth_enabled_event';
 
   /*
    * String value for hooking into the bluetooth_discoverable_event. This event fires when the bluetooth is discoverable.
    */
-  public static bluetooth_discoverable_event = 'bluetooth_discoverable_event';
+  static bluetooth_discoverable_event = 'bluetooth_discoverable_event';
 
   /*
    * String value for hooking into the bluetooth_advertise_success_event. This event fires when the bluetooth advertising is successful.
    */
-  public static bluetooth_advertise_success_event =
+  static bluetooth_advertise_success_event =
     'bluetooth_advertise_success_event';
 
   /*
    * String value for hooking into the bluetooth_advertise_error. This event fires when the bluetooth advertising throws and error.
    */
-  public static bluetooth_advertise_failure_event =
+  static bluetooth_advertise_failure_event =
     'bluetooth_advertise_failure_event';
 
   /*
    * String value for hooking into the server_connection_state_changed. This event fires when the server connection state changes.
    */
-  public static server_connection_state_changed_event =
+  static server_connection_state_changed_event =
     'server_connection_state_changed_event';
 
   /*
    * String value for hooking into the bond_status_change_event. This event fires when the bonding status changes.
    */
-  public static bond_status_change_event = 'bond_status_change_event';
+  static bond_status_change_event = 'bond_status_change_event';
 
   /*
    * String value for hooking into the device_discovered_event. This event fires when a device is discovered when scanning.
    */
-  public static device_discovered_event = 'device_discovered_event';
+  static device_discovered_event = 'device_discovered_event';
 
   /*
    * String value for hooking into the device_name_change_event. This event fires when the device name changes.
    */
-  public static device_name_change_event = 'device_name_change_event';
+  static device_name_change_event = 'device_name_change_event';
 
   /*
    * String value for hooking into the device_uuid_change. This event fires when the device uuid changes.
    */
-  public static device_uuid_change_event = 'device_uuid_change_event';
+  static device_uuid_change_event = 'device_uuid_change_event';
 
   /*
    * String value for hooking into the device_acl_disconnected. This event fires when the device acl disconnects.
    */
-  public static device_acl_disconnected_event = 'device_acl_disconnected_event';
+  static device_acl_disconnected_event = 'device_acl_disconnected_event';
 
   /*
    * String value for hooking into the characteristic_write_request. This event fires when a characteristic requests to write.
    */
-  public static characteristic_write_request_event =
+  static characteristic_write_request_event =
     'characteristic_write_request_event';
 
   /*
    * String value for hooking into the characteristic_read_request_event. This event fires when a characteristic requests to read.
    */
-  public static characteristic_read_request_event =
+  static characteristic_read_request_event =
     'characteristic_read_request_event';
 
   /*
    * String value for hooking into the descriptor_write_request_event. This event fires when a descriptor requests to write.
    */
-  public static descriptor_write_request_event =
-    'descriptor_write_request_event';
+  static descriptor_write_request_event = 'descriptor_write_request_event';
 
   /*
    * String value for hooking into the descriptor_read_request_event. This event fires when a descriptor requests to read.
    */
-  public static descriptor_read_request_event = 'descriptor_read_request_event';
+  static descriptor_read_request_event = 'descriptor_read_request_event';
 
   /**
    * String value for hooking into the execute_write_event. This event fires when the Gatt Server executes a write command.
    */
-  public static execute_write_event = 'execute_write_event';
+  static execute_write_event = 'execute_write_event';
 
   /**
    * String value for hooking into the notification_sent_event. This event fires when the Gatt Server has sent a notification to a remote device.
    */
-  public static notification_sent_event = 'notification_sent_event';
+  static notification_sent_event = 'notification_sent_event';
 
-  public events: IBluetoothEvents;
+  events: IBluetoothEvents;
 
   /**
    * Property to determine if bluetooth is enabled.
@@ -375,7 +373,7 @@ export interface Central {
   /**
    * The UUIDs of the Central.
    */
-  UUIDs: Array<string>;
+  UUIDs: string[];
 
   /**
    * The MAC Address of the Central

@@ -30,9 +30,7 @@ export class CBCentralManagerDelegateImpl extends NSObject
   //   return this;
   // }
 
-  public initWithOwner(
-    owner: WeakRef<Bluetooth>
-  ): CBCentralManagerDelegateImpl {
+  initWithOwner(owner: WeakRef<Bluetooth>): CBCentralManagerDelegateImpl {
     this._owner = owner;
     CLog(
       CLogTypes.info,
@@ -51,7 +49,7 @@ export class CBCentralManagerDelegateImpl extends NSObject
    * @param central [CBCentralManager] - The central manager providing this information.
    * @param peripheral [CBPeripheral] - The peripheral that has been connected to the system.
    */
-  public centralManagerDidConnectPeripheral(
+  centralManagerDidConnectPeripheral(
     central: CBCentralManager,
     peripheral: CBPeripheral
   ) {
@@ -108,7 +106,7 @@ export class CBCentralManagerDelegateImpl extends NSObject
    * @param peripheral [CBPeripheral] - The peripheral that has been disconnected.
    * @param error? [NSError] - If an error occurred, the cause of the failure.
    */
-  public centralManagerDidDisconnectPeripheralError(
+  centralManagerDidDisconnectPeripheralError(
     central: CBCentralManager,
     peripheral: CBPeripheral,
     error?: NSError
@@ -152,7 +150,7 @@ export class CBCentralManagerDelegateImpl extends NSObject
    * @param peripheral [CBPeripheral] - The peripheral that failed to connect.
    * @param error? [NSError] - The cause of the failure.
    */
-  public centralManagerDidFailToConnectPeripheralError(
+  centralManagerDidFailToConnectPeripheralError(
     central: CBCentralManager,
     peripheral: CBPeripheral,
     error?: NSError
@@ -192,7 +190,7 @@ export class CBCentralManagerDelegateImpl extends NSObject
    * @param advData [NSDictionary<string, any>] - A dictionary containing any advertisement data.
    * @param RSSI [NSNumber] - The current received signal strength indicator (RSSI) of the peripheral, in decibels.
    */
-  public centralManagerDidDiscoverPeripheralAdvertisementDataRSSI(
+  centralManagerDidDiscoverPeripheralAdvertisementDataRSSI(
     central: CBCentralManager,
     peripheral: CBPeripheral,
     advData: NSDictionary<string, any>,
@@ -273,7 +271,7 @@ export class CBCentralManagerDelegateImpl extends NSObject
    * For a complete list and discussion of the possible values representing the state of the central manager, see the CBCentralManagerState enumeration in CBCentralManager.
    * @param central [CBCentralManager] - The central manager providing this information.
    */
-  public centralManagerDidUpdateState(central: CBCentralManager) {
+  centralManagerDidUpdateState(central: CBCentralManager) {
     if (central.state === CBManagerState.Unsupported) {
       CLog(
         CLogTypes.warning,
@@ -295,7 +293,7 @@ export class CBCentralManagerDelegateImpl extends NSObject
    * For the available keys to this dictionary, see Central Manager State Restoration Options.
    * @link - https://developer.apple.com/documentation/corebluetooth/cbcentralmanagerdelegate/central_manager_state_restoration_options
    */
-  public centralManagerWillRestoreState(
+  centralManagerWillRestoreState(
     central: CBCentralManager,
     dict: NSDictionary<string, any>
   ) {
