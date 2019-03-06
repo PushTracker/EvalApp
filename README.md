@@ -7,15 +7,17 @@ Execute `npm run nuki`
 ## Running the Smart Evaluation mobile app
 
 Execute - `npm run sea.start.android` for Android
+Execute - `npm run sea.start.android.hmr` for Android [HMR](https://docs.nativescript.org/performance-optimizations/bundling-with-webpack?_ga=2.194425965.1312035776.1551802855-226918736.1498689363#hot-module-replacement)
 Execute - `npm run sea.start.ios` for iOS
+Execute - `npm run sea.start.ios.hmr` for iOS [HMR](https://docs.nativescript.org/performance-optimizations/bundling-with-webpack?_ga=2.194425965.1312035776.1551802855-226918736.1498689363#hot-module-replacement)
 
 - _This should path down to the `apps/smart-eval-app` directory and exec the `tns run android --bundle --env.aot` cmd to start the mobile app._
 
-### Creating release builds for Smart Evaluation (smart-eval-app)
+### Release builds for publishing Smart Evaluation (smart-eval-app)
 
 #### Android
 
-Important: you need the .keystore file, this is kept internally. Without it, you cannot create a signed release build.
+**Important Android Release Note**: The release .keystore file, this is kept internally so only Permobil can publish. Without it, you cannot create a signed release build.
 For the build to work successfully, the script will look for the keystore in the `apps/smart-eval-app/tools/` directory. Image below shows where it should be for the script to work properly.
 
 ![keystore](./apps/smart-eval-app/tools/keystore_directory.png)
