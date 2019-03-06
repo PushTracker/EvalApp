@@ -106,7 +106,19 @@ e2e/*.map
 .DS_Store
 Thumbs.db
 
+# keystore, certs, executables
+*.jks
+*.keystore
+*.apk
+*.ipa
+*.cer
+
+# project specifics
+## ignore
 nativescript-bluetooth/**/*.js
+apps/**/report/
+
+## dont ignore
 !nativescript-bluetooth/base64.js
 !**/typings/*.d.ts
 
@@ -117,10 +129,3 @@ nativescript-bluetooth/**/*.js
 !apps/smart-eval-app/plugins/swift-fix/**
 !apps/smart-eval-app/webpack.config.js
 !apps/smart-eval-app/plugins/bluetooth/**
-
-# keystore, certs, executables
-*.jks
-*.keystore
-*.apk
-*.ipa
-*.cer
