@@ -16,6 +16,20 @@
       "category": "Processing"
     }
   },
+  "snapshot": {
+    "android": {
+      "tns-java-classes": {
+        "modules": [
+          "nativescript-bluetooth/android/TNS_AdvertiseCallback",
+          "nativescript-bluetooth/android/TNS_BluetoothGattCallback",
+          "nativescript-bluetooth/android/TNS_BluetoothGattServerCallback",
+          "nativescript-bluetooth/android/TNS_BroadcastReceiver",
+          "nativescript-bluetooth/android/TNS_LeScanCallback",
+          "nativescript-bluetooth/android/TNS_ScanCallback"
+        ]
+      }
+    }
+  },
   "scripts": {
     "build": "tsc"
   },
