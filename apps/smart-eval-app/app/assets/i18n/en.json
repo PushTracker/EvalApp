@@ -256,35 +256,48 @@
       "Url": "8fn26J59WJ4",
       "Description": "This video is an overview of SmartDrive being used by people of varying ages and circumstances in a variety of environments.",
       "Title": "SmartDrive Introduction",
-      "Thumb": "~/assets/images/overview-thumb.jpg",
       "Route": "/video"
     },
     {
       "Url": "uhA3-svjQFg",
       "Description": "This video covers the basic operation and functionality of the SmartDrive and PushTracker.",
       "Title": "SmartDrive MX2+ Basic Operation",
-      "Thumb": "~/assets/images/sd-basic-op-thumb.jpg",
       "Route": "/video"
     },
     {
       "Url": "6_M1J8HZXIk",
       "Description": "This video covers the basic operation and functionality of the PushTracker.",
       "Title": "PushTracker Basic Operation",
-      "Thumb": "~/assets/images/pt-basic-op-thumb.jpg",
+      "Route": "/video"
+    },
+    {
+      "Url": "fY0mW2ClyL0",
+      "Description": "This video covers the installation of the axle clamp for the SmartDrive.",
+      "Title": "Axle Clamp Installation",
+      "Route": "/video"
+    },
+    {
+      "Url": "FpzxivBfeeU",
+      "Description": "This video covers the installation of the folding wheelchair attachment for the SmartDrive.",
+      "Title": "Folder Adapter Installation",
+      "Route": "/video"
+    },
+    {
+      "Url": "bwYoHNKLjmE",
+      "Description": "This video covers the basic operation and functionality of the SmartDrive MX2+ thumb throttle buttons.",
+      "Title": "Thumb Throttle Buttons",
       "Route": "/video"
     },
     {
       "Url": "45Kj7zJpDcM",
       "Description": "This video covers the steps to perform when doing a SmartDrive Evaluation or Training.",
       "Title": "SmartDrive Evaluation and Training",
-      "Thumb": "~/assets/images/eval-thumb.jpg",
       "Route": "/video"
     },
     {
       "Url": "hFid9ks551A",
       "Description": "In this video, Chels and Steph are interviewed about the many aspects of their lives, and how they have been impacted by SmartDrive.",
       "Title": "Interview with Chels and Steph",
-      "Thumb": "~/assets/images/interview-thumb.jpg",
       "Route": "/video"
     }
   ],
