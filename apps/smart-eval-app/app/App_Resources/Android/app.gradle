@@ -14,6 +14,8 @@ android {
     applicationId = "com.permobil.smarteval"  
     minSdkVersion 21
     targetSdkVersion 28
+    versionCode 10001
+    versionName "1.0.04"
   }  
   aaptOptions {  
     additionalParameters "--no-version-vectors"  
