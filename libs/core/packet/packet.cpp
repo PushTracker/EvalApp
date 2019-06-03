@@ -74,7 +74,7 @@ public:
 
   struct ThrottleSettings {
     ThrottleMode throttleMode; /** Bitmask of boolean settings.      */
-    uint8_t[3]   padding;
+    uint8_t      padding[3];
     float        maxSpeed;     /** Slider setting, range: [0.1, 1.0] */
   };
   static const int throttleSettingsLength = sizeof(ThrottleSettings);
