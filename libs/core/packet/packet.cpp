@@ -21,6 +21,7 @@ public:
   enum class ControlMode   : uint8_t;
   enum class Units         : uint8_t;
   enum class AttendantMode : uint8_t;
+  enum class ThrottleMode  : uint8_t;
 
   enum class Error: uint8_t {
     NoError,
@@ -32,14 +33,12 @@ public:
     OTAUnavailable,
     BLEDisconnect
   };
-
   enum class ControlMode : uint8_t {
     Beginner,
     Intermediate,
     Advanced,
     Off
   };
-
   enum class Units : uint8_t {
     English,
     Metric
@@ -50,8 +49,12 @@ public:
     OnePressed,
     TwoPressed
   };
+  enum class ThrottleMode : uint8_t {
+    Active,
+    Latching
+  };
 
-  // settings flags values are the bit numbers 
+  // settings flags values are the bit numbers
   enum class BoolSettingFlag  : uint8_t { EZMODE = 0 };
 
   struct Settings {
@@ -68,6 +71,13 @@ public:
   static bool getBoolSetting  ( const Settings* s, BoolSettingFlag boolSetting ) {
     return (bool)((s->settingsFlags1 >> (uint8_t)boolSetting) & 0x01);
   }
+
+  struct ThrottleSettings {
+    ThrottleMode throttleMode; /** Bitmask of boolean settings.      */
+    uint8_t[3]   padding;
+    float        maxSpeed;     /** Slider setting, range: [0.1, 1.0] */
+  };
+  static const int throttleSettingsLength = sizeof(ThrottleSettings);
 };
 
 /*** Packet ***/
@@ -127,7 +137,8 @@ public:
     ConnectMPGame,
     DisconnectMPGame,
     SetPushSettings,
-    SetLEDColor
+	  SetLEDColor,
+	  SetThrottleSettings
   };
 
   enum class OTA : uint8_t {
@@ -275,6 +286,7 @@ public:
   // The actual data contained in the packet
   union {
     SmartDrive::Settings settings;
+    SmartDrive::ThrottleSettings throttleSettings;
 	PushSettings         pushSettings;
     VersionInfo          versionInfo;
     DailyInfo            dailyInfo;
@@ -482,6 +494,9 @@ public:
       case Packet::Command::SetLEDColor:
 		// TODO: need to flesh out this packet def.
         break;
+      case Packet::Command::SetThrottleSettings:
+        dataLen = sizeof(throttleSettings);
+        break;
       default:
         break;
       }
@@ -564,6 +579,13 @@ EMSCRIPTEN_BINDINGS(packet_bindings) {
     .value("Off", SmartDrive::ControlMode::Off)
     ;
 
+  emscripten::enum_<SmartDrive::ThrottleMode>("ThrottleMode")
+    .value("Beginner", SmartDrive::ThrottleMode::Beginner)
+    .value("Intermediate", SmartDrive::ThrottleMode::Intermediate)
+    .value("Advanced", SmartDrive::ThrottleMode::Advanced)
+    .value("Off", SmartDrive::ThrottleMode::Off)
+    ;
+
   emscripten::value_object<SmartDrive::Settings>("SmartDriveSettings")
     .field("ControlMode", &SmartDrive::Settings::controlMode)
     .field("Units", &SmartDrive::Settings::units)
@@ -572,6 +594,12 @@ EMSCRIPTEN_BINDINGS(packet_bindings) {
     .field("TapSensitivity", &SmartDrive::Settings::tapSensitivity)
     .field("Acceleration", &SmartDrive::Settings::acceleration)
     .field("MaxSpeed", &SmartDrive::Settings::maxSpeed)
+    ;
+
+  emscripten::value_object<SmartDrive::ThrottleSettings>("ThrottleSettings")
+    .field("ThrottleMode", &SmartDrive::ThrottleSettings::throttleMode)
+    .field("Padding", &SmartDrive::ThrottleSettings::padding)
+    .field("MaxSpeed", &SmartDrive::ThrottleSettings::maxSpeed)
     ;
 
   // PACKET BINDINGS
@@ -698,6 +726,7 @@ EMSCRIPTEN_BINDINGS(packet_bindings) {
     .value("DisconnectMPGame", Packet::Command::DisconnectMPGame)
     .value("SetPushSettings", Packet::Command::SetPushSettings)
     .value("SetLEDColor", Packet::Command::SetLEDColor)
+    .value("SetThrottleSettings", Packet::Command::SetThrottleSettings)
     ;
 
   emscripten::enum_<Packet::OTA>("PacketOTAType")
@@ -738,6 +767,7 @@ EMSCRIPTEN_BINDINGS(packet_bindings) {
 
     // Actual payload info
     .property("settings", &Packet::settings)
+    .property("throttleSettings", &Packet::throttleSettings)
     .property("pushSettings", &Packet::pushSettings)
     .property("versionInfo", &Packet::versionInfo)
     .property("dailyInfo", &Packet::dailyInfo)
