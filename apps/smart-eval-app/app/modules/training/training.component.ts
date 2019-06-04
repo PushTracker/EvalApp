@@ -24,7 +24,7 @@ import { Page } from 'tns-core-modules/ui/page';
 export class TrainingComponent implements AfterViewInit, OnInit {
   private static LOG_TAG = 'training.component ';
 
-  @ViewChild('carousel')
+  @ViewChild('carousel', { static: false })
   carousel: ElementRef;
   slides = this.translateService.instant('training');
 

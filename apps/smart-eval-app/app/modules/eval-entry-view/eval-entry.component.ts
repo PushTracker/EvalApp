@@ -17,11 +17,11 @@ import { Page } from 'tns-core-modules/ui/page';
 export class EvalEntryComponent {
   private static LOG_TAG = 'eval-entry.component ';
 
-  @ViewChild('yearDropdown')
+  @ViewChild('yearDropdown', { static: false })
   yearDropdown: ElementRef;
-  @ViewChild('chairDropdown')
+  @ViewChild('chairDropdown', { static: false })
   chairDropdown: ElementRef;
-  @ViewChild('chairTypeDropdown')
+  @ViewChild('chairTypeDropdown', { static: false })
   chairTypeDropdown: ElementRef;
   hasPushingPain = false;
   hasPushingFatigue = false;

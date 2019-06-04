@@ -42,28 +42,28 @@ import { TextField } from 'tns-core-modules/ui/text-field';
 export class TrialComponent implements OnInit {
   private static LOG_TAG = 'trial.component ';
 
-  @ViewChild('startWith')
+  @ViewChild('startWith', { static: false })
   startWithView: ElementRef;
-  @ViewChild('stopWith')
+  @ViewChild('stopWith', { static: false })
   stopWithView: ElementRef;
-  @ViewChild('cannotCompleteWith')
+  @ViewChild('cannotCompleteWith', { static: false })
   cannotCompleteWithView: ElementRef;
-  @ViewChild('nextWith')
+  @ViewChild('nextWith', { static: false })
   nextWithView: ElementRef;
-  @ViewChild('startWithout')
+  @ViewChild('startWithout', { static: false })
   startWithoutView: ElementRef;
-  @ViewChild('stopWithout')
+  @ViewChild('stopWithout', { static: false })
   stopWithoutView: ElementRef;
-  @ViewChild('cannotCompleteWithout')
+  @ViewChild('cannotCompleteWithout', { static: false })
   cannotCompleteWithoutView: ElementRef;
-  @ViewChild('nextWithout')
+  @ViewChild('nextWithout', { static: false })
   nextWithoutView: ElementRef;
-  @ViewChild('carousel')
+  @ViewChild('carousel', { static: false })
   carousel: ElementRef;
   // for settings
-  @ViewChild('controlModeDropDown')
+  @ViewChild('controlModeDropDown', { static: false })
   controlModeDropDown: ElementRef;
-  @ViewChild('unitsDropDown')
+  @ViewChild('unitsDropDown', { static: false })
   unitsDropDown: ElementRef;
   // displaying trial info
   distanceDisplay = '--';
