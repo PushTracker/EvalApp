@@ -7,10 +7,7 @@
   "nativescript": {
     "id": "com.permobil.smarteval",
     "tns-android": {
-      "version": "5.2.1"
-    },
-    "tns-ios": {
-      "version": "5.2.0"
+      "version": "5.4.0"
     }
   },
   "scripts": {
@@ -88,16 +85,16 @@
     "rxjs": "file:../../node_modules/rxjs",
     "rxjs-compat": "file:../../node_modules/rxjs-compat",
     "smart-eval-kinvey": "git+https://github.com/autochair/SmartEvalKinvey.git#master",
-    "tns-core-modules": "file:../../node_modules/tns-core-modules",
+    "tns-core-modules": "5.4.1",
     "zone.js": "file:../../node_modules/zone.js"
   },
   "devDependencies": {
-    "@angular/compiler-cli": "~7.2.0",
+    "@angular/compiler-cli": "~8.0.0",
     "@angular/language-service": "file:../../node_modules/@angular/language-service",
     "@ngtools/webpack": "file:../../node_modules/@ngtools/webpack",
-    "nativescript-dev-sass": "~1.6.1",
-    "nativescript-dev-webpack": "~0.20.2",
-    "nativescript-dev-typescript": "~0.8.0",
+    "nativescript-dev-sass": "~1.7.0",
+    "nativescript-dev-webpack": "~0.24.0",
+    "nativescript-dev-typescript": "~0.10.0",
     "terser-webpack-plugin": "file:../../node_modules/terser-webpack-plugin",
     "tns-platform-declarations": "file:../../node_modules/tns-platform-declarations",
     "typescript": "file:../../node_modules/typescript"
