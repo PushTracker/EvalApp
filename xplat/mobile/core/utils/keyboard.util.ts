@@ -1,5 +1,6 @@
 import * as app from 'tns-core-modules/application';
 import { isAndroid } from 'tns-core-modules/platform';
+import { ad as androidUtils } from 'tns-core-modules/utils/utils';
 
 /**
  * Hide the device keyboard from screen when executed.
@@ -9,7 +10,7 @@ export function hideKeyboard() {
   if (isAndroid) {
     try {
       const activity = app.android.foregroundActivity;
-      const context = app.android.currentContext;
+      const context = androidUtils.getApplicationContext();
       const inputManager = context.getSystemService(
         android.content.Context.INPUT_METHOD_SERVICE
       );

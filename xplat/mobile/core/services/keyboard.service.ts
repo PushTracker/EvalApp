@@ -6,7 +6,7 @@ import { isIOS } from 'tns-core-modules/platform';
 @Injectable()
 export class KeyboardService {
   private callBack: android.view.ViewTreeObserver.OnGlobalLayoutListener;
-  private activity: android.app.Activity;
+  private activity;
   private keyboardActive: boolean;
   events: Observable;
 
@@ -16,7 +16,7 @@ export class KeyboardService {
         'Currently no implementation for iOS; should only be constructed for Android.'
       );
     }
-    this.activity = app.android.currentContext;
+    this.activity = app.android.startActivity | app.android.foregroundActivity;
     this.events = fromObject({});
   }
 
