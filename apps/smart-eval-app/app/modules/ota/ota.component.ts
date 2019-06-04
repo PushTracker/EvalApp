@@ -34,7 +34,7 @@ import { ScrollView } from 'tns-core-modules/ui/scroll-view';
 export class OTAComponent implements OnInit {
   private static LOG_TAG = 'ota.component ';
 
-  @ViewChild('carousel')
+  @ViewChild('carousel', { static: false })
   carousel: ElementRef;
   selectedPage = 0;
   connected = false;

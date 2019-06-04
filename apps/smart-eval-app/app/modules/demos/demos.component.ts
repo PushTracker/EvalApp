@@ -36,13 +36,13 @@ import { APP_KEY, HOST_URL } from '../../utils/kinvey-keys';
 export class DemosComponent implements OnInit {
   private static LOG_TAG = 'demos.component ';
 
-  @ViewChild('demoRequestForm')
+  @ViewChild('demoRequestForm', { static: false })
   demoRequestForm: ElementRef;
 
-  @ViewChild('requestDemoBtn')
+  @ViewChild('requestDemoBtn', { static: false })
   requestDemoBtn: ElementRef;
 
-  @ViewChild('demoListView')
+  @ViewChild('demoListView', { static: false })
   demoListView: ElementRef;
 
   get Demos(): ObservableArray<Demo> {
