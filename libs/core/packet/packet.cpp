@@ -33,22 +33,27 @@ public:
     OTAUnavailable,
     BLEDisconnect
   };
+
   enum class ControlMode : uint8_t {
     Beginner,
     Intermediate,
     Advanced,
     Off
   };
+
   enum class Units : uint8_t {
     English,
     Metric
   };
+
   enum class AttendantMode : uint8_t {
     Off,
     Inactive,
     OnePressed,
-    TwoPressed
+	  TwoPressed,
+	  Latching
   };
+
   enum class ThrottleMode : uint8_t {
     Active,
     Latching
@@ -118,7 +123,8 @@ public:
   enum class Command : uint8_t {
     SetAcceleration,
     SetMaxSpeed,
-    Tap, DoubleTap,
+    Tap,
+	  DoubleTap,
     SetControlMode,
     SetSettings,
     TurnOffMotor,
@@ -552,6 +558,13 @@ public:
     return (int)distanceInfo.caseDistance;
   }
 
+  void setErrorId(int e) {
+    errorId = (uint64_t)e;
+  }
+  int getErrorId() const {
+    return (int)errorId;
+  }
+
 private:
   bool              _valid;
 };
@@ -580,10 +593,8 @@ EMSCRIPTEN_BINDINGS(packet_bindings) {
     ;
 
   emscripten::enum_<SmartDrive::ThrottleMode>("ThrottleMode")
-    .value("Beginner", SmartDrive::ThrottleMode::Beginner)
-    .value("Intermediate", SmartDrive::ThrottleMode::Intermediate)
-    .value("Advanced", SmartDrive::ThrottleMode::Advanced)
-    .value("Off", SmartDrive::ThrottleMode::Off)
+    .value("Active", SmartDrive::ThrottleMode::Latching)
+    .value("Latching", SmartDrive::ThrottleMode::Latching)
     ;
 
   emscripten::value_object<SmartDrive::Settings>("SmartDriveSettings")
@@ -778,6 +789,8 @@ EMSCRIPTEN_BINDINGS(packet_bindings) {
     .property("errorInfo", &Packet::errorInfo)
     .property("batteryInfo", &Packet::batteryInfo)
     .property("distanceInfo", &Packet::distanceInfo)
+
+	.property("errorId", &Packet::getErrorId, &Packet::setErrorId)
 
     .property("OTADevice", &Packet::otaDevice)
 
