@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/observable';
+import { Observable } from 'rxjs';
 import { Observer } from 'rxjs/Observer';
 import { File, Folder, knownFolders, path } from 'tns-core-modules/file-system';
 
