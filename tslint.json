@@ -15,7 +15,6 @@
       "severity": "warn"
     },
     "component-selector": false,
-    "import-blacklist": [true, "rxjs", "rxjs/Rx"],
     "interface-over-type-literal": true,
     "adjacent-overload-signatures": true,
     "no-this-assignment": true,
