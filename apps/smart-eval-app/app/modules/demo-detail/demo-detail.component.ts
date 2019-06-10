@@ -1,13 +1,6 @@
-import { Component, NgZone } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { Demo, PushTracker } from '@maxmobility/core';
-import {
-  BluetoothService,
-  DemoService,
-  FirmwareService,
-  LocationService,
-  LoggingService,
-  ProgressService
-} from '@maxmobility/mobile';
+import { BluetoothService, DemoService, FirmwareService, LocationService, LoggingService, ProgressService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 import { PageRoute, RouterExtensions } from 'nativescript-angular/router';
@@ -15,10 +8,7 @@ import { BarcodeScanner } from 'nativescript-barcodescanner';
 import * as camera from 'nativescript-camera';
 import { Feedback } from 'nativescript-feedback';
 import * as geolocation from 'nativescript-geolocation';
-import {
-  ImageCropper,
-  Result as ImageCropperResult
-} from 'nativescript-imagecropper';
+import { ImageCropper, Result as ImageCropperResult } from 'nativescript-imagecropper';
 import * as LS from 'nativescript-localstorage';
 import { Mapbox } from 'nativescript-mapbox';
 import { Toasty } from 'nativescript-toasty';
@@ -26,10 +16,7 @@ import { switchMap } from 'rxjs/operators';
 import { SmartEvalKeys } from 'smart-eval-kinvey';
 import * as app from 'tns-core-modules/application';
 import { ImageAsset } from 'tns-core-modules/image-asset/image-asset';
-import {
-  fromBase64,
-  ImageSource
-} from 'tns-core-modules/image-source/image-source';
+import { fromBase64, ImageSource } from 'tns-core-modules/image-source/image-source';
 import { isAndroid, isIOS } from 'tns-core-modules/platform';
 import { setTimeout } from 'tns-core-modules/timer';
 import { View } from 'tns-core-modules/ui/core/view';
@@ -43,7 +30,7 @@ import * as utils from 'tns-core-modules/utils/utils';
   templateUrl: 'demo-detail.component.html',
   styleUrls: ['demo-detail.component.scss']
 })
-export class DemoDetailComponent {
+export class DemoDetailComponent implements OnInit {
   private static LOG_TAG = 'demo-detail.component ';
   mapboxToken = SmartEvalKeys.MAPBOX_TOKEN;
   demo: Demo;
@@ -87,8 +74,6 @@ export class DemoDetailComponent {
     );
     this._page.className = 'blue-gradient-down';
     this.demo = new Demo();
-    this._imageCropper = new ImageCropper();
-    this._feedback = new Feedback();
     this._pageRoute.activatedRoute
       .pipe(switchMap(activatedRoute => activatedRoute.queryParams))
       .forEach(params => {
@@ -110,6 +95,11 @@ export class DemoDetailComponent {
           this._setBackNav(false);
         }
       });
+  }
+
+  ngOnInit() {
+    this._imageCropper = new ImageCropper();
+    this._feedback = new Feedback();
   }
 
   get sd_serial_label(): string {
