@@ -35,12 +35,12 @@ import { Page } from 'tns-core-modules/ui/page';
 })
 export class PairingComponent implements OnInit {
   private static LOG_TAG = 'pairing.component ';
-  @ViewChild('controlModeDropDown', { static: false })
+  @ViewChild('controlModeDropDown', { static: true })
   controlModeDropDown: ElementRef;
-  @ViewChild('unitsDropDown', { static: false })
+  @ViewChild('unitsDropDown', { static: true })
   unitsDropDown: ElementRef;
 
-  @ViewChild('carousel', { static: false })
+  @ViewChild('carousel', { static: true })
   carousel: ElementRef;
 
   selectedPage = 0;
