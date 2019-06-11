@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { isAndroid, isIOS } from 'tns-core-modules/platform';
 import { LoadingIndicator } from 'nativescript-loading-indicator';
+import { isAndroid, isIOS } from 'tns-core-modules/platform';
 
 /**
  * Reactive progress indicator
@@ -12,12 +12,13 @@ export class ProgressService {
   // default options
   private _defaultOptions: any = {
     android: {
+      dimBackground: true,
       indeterminate: true,
       cancelable: false,
       progressStyle: 0
     },
     ios: {
-      background: ''
+      dimBackground: true
     }
   };
 
