@@ -7,6 +7,7 @@ import { NativeScriptCommonModule } from 'nativescript-angular/common';
 import { NativeScriptHttpClientModule } from 'nativescript-angular/http-client';
 import { ModalDialogService } from 'nativescript-angular/modal-dialog';
 import { NativeScriptModule } from 'nativescript-angular/nativescript.module';
+import { BarcodeScanner } from 'nativescript-barcodescanner';
 import { DropDownModule } from 'nativescript-drop-down/angular';
 import { NativeScriptUIListViewModule } from 'nativescript-ui-listview/angular';
 import { YoutubePlayerModule } from 'nativescript-youtubeplayer/angular';
@@ -16,6 +17,10 @@ import { CoreModule } from './modules/core/core.module';
 import { SharedModule } from './modules/shared/shared.module';
 import { PrivacyPolicyComponent } from './privacy-policy';
 import { TNSTranslateLoader } from './utils';
+
+export function createBarcodeScanner() {
+  return new BarcodeScanner();
+}
 
 // factories
 export function createTranslateLoader() {
@@ -45,7 +50,11 @@ export function createTranslateLoader() {
     })
   ],
   declarations: [AppComponent, PrivacyPolicyComponent],
-  providers: [...CORE_PROVIDERS, ModalDialogService],
+  providers: [
+    ...CORE_PROVIDERS,
+    ModalDialogService,
+    { provide: BarcodeScanner, useFactory: createBarcodeScanner }
+  ],
   schemas: [NO_ERRORS_SCHEMA]
 })
 export class AppModule {}
