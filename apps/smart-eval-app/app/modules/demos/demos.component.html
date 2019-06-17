@@ -5,7 +5,7 @@
     [visibility]="userType == 1 || userType == 2 ? 'visible' : 'collapsed'"
     ios.systemIcon="4"
     ios.position="right"
-    text="Add"
+    [text]="'demos.add' | translate"
     color="#fff"
   >
   </ActionItem>
@@ -14,7 +14,7 @@
     (tap)="loadDemoUnits()"
     ios.systemIcon="13"
     ios.position="right"
-    text="Refresh"
+    [text]="'demos.refresh' | translate"
     color="#fff"
   >
   </ActionItem>
@@ -50,8 +50,10 @@
     verticalAlignment="center"
     *ngIf="!Demos.length && demoUnitsLoaded"
     horizontalAlignment="center"
+    marginLeft="10"
     [text]="'demos.no-demos' | translate"
     class="text-white"
+    textWrap="true"
   ></label>
 
   <ListView

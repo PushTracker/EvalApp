@@ -1,0 +1,896 @@
+{
+    "account": {
+        "build": "짓다",
+        "database": "데이터 베이스",
+        "version": "번역"
+    },
+    "bluetooth": {
+        "connection-success": "PushTracker와 성공적으로 연결되었습니다!",
+        "enable-bluetooth": "Smart Evaluation에서 장치에서 Bluetooth가 활성화되어 있지 않음을 감지했습니다. OTA를 수행하고 평가를 수행하려면 Bluetooth를 활성화하십시오.",
+        "errors": {
+            "unavailable": {
+                "message": "블루투스 서비스를 사용할 수 없음 - 다시 초기화하십시오!",
+                "title": "블루투스 사용 불가"
+            }
+        },
+        "pairing-success": "PushTracker와 성공적으로 페어링되었습니다!",
+        "pt_app_conn_instructions": "PushTracker를 Smart Evaluation 응용 프로그램에 연결하려면 휴대 전화에서 응용 프로그램을 연 상태로 PushTracker에서 오른쪽 버튼을 눌렀다가 놓아야합니다. 이렇게하면 PushTracker가 앱에 연결되거나 PushTracker의 페어링 설정으로 연결됩니다. 페어링 한 후 설정 메뉴를 종료 한 다음 오른쪽 버튼을 눌러 앱에 연결해야합니다. 문제가 있으면 PushTracker를 SLEEP에 넣고 켭니다.",
+        "sd_app_conn_instructions": "스마트 평가 응용 프로그램이 SmartDrive를보고 연결할 수 있으려면 SmartDrive가 켜져 있고 전원 보조가 꺼져 있거나 'SD 꺼짐'상태 여야합니다. 문제가 있으면 SmartDrive를 껐다가 켜십시오.",
+        "searching": "장치 검색",
+        "service-failure": "블루투스 서비스 실패",
+        "waiting": "블루투스가 초기화되기를 기다리는 중"
+    },
+    "buttons": {
+        "back": "뒤로",
+        "more-info": "더 많은 정보",
+        "next": "다음 것"
+    },
+    "demo-detail": {
+        "cancel-scan": "스캔 취소",
+        "connect-pt": "PushTracker를 연결하십시오.",
+        "enter-pt-serial": "PushTracker 또는 Wristband 일련 번호를 입력하십시오.",
+        "enter-serial-message": "SmartDrive 일련 번호를 입력하십시오.",
+        "enter-serial-title": "일련 번호 입력",
+        "geolocation-disabled": "위치가 사용 중지되었을 수 있습니다. 스마트 평가 앱의 위치를 사용하려면 기기에서 설정을 열시겠습니까?",
+        "invalid-pt-serial": "유효한 PushTracker 또는 Wristband 일련 번호가 아닙니다.",
+        "invalid-sd-serial": "유효한 SmartDrive 일련 번호가 아닙니다.",
+        "leaving-new-demo": "경고 : 저장하지 않은 데모 단위가 있습니다. 저장하지 않고 종료 하시겠습니까?",
+        "saving-demo": "데모 저장 중 ...",
+        "scan-msg": "스캔",
+        "scan-pt": "PT : 스캔 또는 편집 버튼 누르기",
+        "scan-sd": "SD : 스캔 또는 편집 버튼을 누릅니다.",
+        "sd-or-pt": "SmartDrive 또는 PushTracker",
+        "sd-serial-required": "SmartDrive 일련 번호가 필요합니다."
+    },
+    "demo-requests": {
+        "claim": "청구",
+        "claim_confirm": "이 데모 요청을 받고 싶습니까?",
+        "claimed": "데모 요청이 제기 됨",
+        "claimed_by_other": "이 데모는 다른 사용자가 요청한 것입니다.",
+        "complete": "완전한",
+        "complete_confirm": "이 요청을 완료로 표시 하시겠습니까?",
+        "completed": "데모 요청 완료",
+        "demo_is_complete_msg": "데모 요청이 완료되었습니다.",
+        "loading": "데모 요청로드 중 ...",
+        "no-demo-requests": "활성 데모 요청을 찾을 수 없습니다."
+    },
+    "demos": {
+        "add": "더하다",
+        "demo-change-owner-location-required": "데모 유닛 소유권을 이전하려면 위치가 필요합니다. 이를 통해 Smart Eval은 인벤토리에 대한 데모 단위의 마지막 위치를 추적 할 수 있습니다.",
+        "demo-request-error": "데모 요청 중 오류가 발생했습니다. 계속 시도하고 문제가 지속되면 의견을 보내주십시오.",
+        "demo-request-location-is-required": "귀하의 위치는 데모 단위 요청서를 제출해야합니다. 귀하의 위치는 데모 요청을 위해 귀하의 지역 근처에있는 대표들과 연락하는 데 사용됩니다.",
+        "demo-request-success": "데모 단위 요청이 성공했습니다.",
+        "demo-to-clinician-action": "임상의에게 데모 나눠주기",
+        "demos-title": "시민",
+        "firmware-string": "펌웨어",
+        "loading": "데모로드 중 ...",
+        "location-calculating": "위치를 계산 중입니다 ...",
+        "location-confirm-message": "데모 위치를로 업데이트 하시겠습니까?",
+        "new-demo-request": "새로운 데모 요청",
+        "no-demos": "현재 사용자의 데모가 없습니다.",
+        "owner-color-explanation": "주황색 일련 번호가있는 항목은 사용자 소유입니다. 주황색 일련 번호가없는 항목은 임상의가 소유해야합니다.",
+        "refresh": "새롭게 하다",
+        "request": {
+            "contact_info": "연락처 정보",
+            "distance": "거리 (마일)"
+        },
+        "request-demo-action": "담당자에게 데모 요청",
+        "request-demo-distance": "담당자의 데모를 요청할 위치에서 최대 거리 (마일)를 설정하십시오.",
+        "retrieve-from-clinician-action": "임상의에서 데모 검색",
+        "saving-request": "데모 요청 저장 중 ...",
+        "submit-btn": "제출"
+    },
+    "dialogs": {
+        "camera": "카메라",
+        "cancel": "취소",
+        "close": "닫기",
+        "confirm": "확인",
+        "confirm-photo-delete": "이 사진을 삭제 하시겠습니까?",
+        "no": "아니",
+        "ok": "승인",
+        "sms": "문자 메세지",
+        "success": "성공!",
+        "warning": "경고",
+        "yes": "예",
+        "yes-delete": "예, 삭제하십시오.",
+        "yes-login": "예, 로그인하십시오!"
+    },
+    "error": {
+        "email": "죄송합니다. 해당 사진을 업로드하는 중에 오류가 발생했습니다."
+    },
+    "eval-entry": {
+        "chair-label": "의자 제작",
+        "chair-options": [
+            "Colours",
+            "Invacare / Küschall",
+            "Karman",
+            "Ki",
+            "Motion Composites",
+            "Panthera",
+            "Quickie / Sopur / RGK",
+            "TiLite",
+            "Top End",
+            "다른"
+        ],
+        "chair-question": "수동 휠체어 란 무엇입니까?",
+        "chair-type": {
+            "label": "의자 형",
+            "options": [
+                "접이식 프레임",
+                "리지드 프레임"
+            ],
+            "question": "수동 휠체어는 어떤 유형입니까?"
+        },
+        "fatigue-label": "최악의 피로도 경험자 :",
+        "fatigue-question": "당신이 밀고 피곤하니?",
+        "heading": "질문 사항",
+        "independence-label": "독립에 대한 최악의 영향 :",
+        "independence-question": "그것은 당신의 독립에 영향을 줍니까?",
+        "pain-label": "최악의 통증 수준 경험자 :",
+        "pain-question": "밀어 넣기에 고통이 있습니까?",
+        "title": "평가 수행",
+        "years-label": "연령",
+        "years-options": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5+",
+            "10+",
+            "20+",
+            "30+"
+        ],
+        "years-question": "몇 년 동안 수동 의자에 있었습니까?"
+    },
+    "evals": {
+        "confirm-lmn-email-message": "평가를 이메일로 보내시겠습니까?",
+        "confirm-lmn-email-title": "이메일",
+        "evals-loading-error": "평가를로드하는 중 오류가 발생했습니다.",
+        "incomplete-dialog": {
+            "message": "완료되지 않은 평가가 있습니다. 계속 작업 하시겠습니까?",
+            "title": "평가 재개?"
+        },
+        "loading": "Evals로드 중 ...",
+        "no-evals-message": "평가가 없습니다.",
+        "no-evals-search-result": "날짜에 대한 평가가 없습니다.",
+        "reset-btn": "다시 놓기",
+        "search-btn": "수색",
+        "select-date": "평가 날짜 선택",
+        "title": "평가",
+        "with-smartdrive": "SmartDrive 사용 :",
+        "without-smartdrive": "SmartDrive가없는 경우 :"
+    },
+    "faqs": [
+        {
+            "answer": "일반적으로 다음 사항을 확인해야합니다. 1) SmartDrive의 전원이 켜져 있는지, 2) PushTracker가 'SD On'모드에 있는지, 파란색 표시등이 깜박이고 있는지, 3) MX2+ 모드에 있는지 등을 확인해야합니다. 두 번 두드리면 모터가 작동합니다.",
+            "question": "내 SmartDrive가 매력적이지 않은 이유는 무엇입니까?"
+        },
+        {
+            "answer": "불행히도, 아니 - SmartDrive 귀하의 의자에 대한 제동을 제공 할 수 없습니다. 즉, 모터를 끈 후에 수동으로 손 림을 잡고 의자를 들러야합니다. 이것은 또한 SmartDrive가 경사로 또는 언덕을 내려가는 속도를 늦출 수 없다는 것을 의미합니다.",
+            "question": "내 SmartDrive가 나를 늦출 수 있습니까?"
+        },
+        {
+            "answer": "아니요, OTA (over-the-air) 업데이트를 수행 한 후에 PushTracker를 SmartDrive와 다시 페어링해야합니다. 그렇게하면 PushTracker가 'SD On'을 연결하거나 켜려 할 때 자동으로 페어링 모드로 들어갑니다.",
+            "question": "PushTracker를 내 SmartDrive에 다시 연결해야합니까?"
+        },
+        {
+            "answer": "Android를 사용하는 경우 전화가 페어링 정보를 저장했기 때문일 수 있습니다. 그러면 PushTracker가 단단한 연결을 설정하지 못하게됩니다. 이 문제를 해결하려면 휴대 전화의 블루투스 설정 메뉴를 열고 해당 메뉴에 표시된 PushTracker에서 '잊어 버리기'를 클릭하기 만하면됩니다. 일단 스마트 앱을 다시 시작하면 휴대 전화와 다시 연결할 필요없이 PushTracker가 안정적으로 연결할 수 있어야합니다!",
+            "question": "PushTracker가 내 전화에 연결되지 않는 이유는 무엇입니까?"
+        },
+        {
+            "answer": "SmartDrive는 어린이가 사용하기에 안전합니다. 그러나 적절한 태핑 및 제동 기술을 훈련시키는 것이 안전을 보장하는 최선의 방법을 권장합니다. 또한 SmartDrive의 가속뿐만 아니라 SmartDrive의 최대 속도 (시간당 0.5 마일에서 시간당 5.5 마일까지)를 제한하는 기능을 포함 시켰습니다. SmartDrive를 밀거나 사용하는 법을 배우는 사람은 매우 낮게 설정하는 것이 좋습니다.",
+            "question": "SmartDrive를 어린이를 위해 안전하게 만들려면 어떻게해야합니까?"
+        },
+        {
+            "answer": "당신은 적극적이어야하며 세상으로 나가야합니다! 그러나 걷는 일반적인 조언 (사람들이 너무 많이 걸을 수없는 곳)과 달리 사람들은 너무 많이 밀 수 있습니다! 너무 많이 밀면 팔과 어깨에 통증과 부상을 입을 확률이 높아지므로 이동성과 독립성이 제한 될 수 있습니다. SmartDrive를 사용하면 평소와 같이 의자에서 계속 밀어 낼 수 있습니다. 이제는 더 빠르고 더 적은 노력으로 이동할 수 있습니다! 당신이 어딘가에 큰 언덕을 올라갈 필요가있을 때 그것을 사용하십시오 -하지 않아도 어깨를 죽이지 마십시오! SmartDrive로 여정을 즐기십시오!",
+            "question": "왜 SmartDrive가 필요합니까?"
+        },
+        {
+            "answer": "휴대 전화에 PushTracker 및 스마트 평가 응용 프로그램이 모두있는 경우 PushTracker를 연결하려는 응용 프로그램 만 실행 중인지 확인해야합니다. 그렇지 않으면 PushTracker가 의도 한 응용 프로그램과 다른 응용 프로그램에 연결할 수 있습니다!",
+            "question": "PushTracker App 및 Smart Evaluation App"
+        }
+    ],
+    "firmware": {
+        "1.2": [
+            "PushTracker, SmartDrive Bluetooth (BLE) 및 SmartDrive Microcontroller (MCU)의 펌웨어 버전을 보여주는 PushTracker 'Settings'메뉴에 'About'을 추가했습니다. 또한 가장 최근의 오류 코드와 정보를 보여줍니다."
+        ],
+        "1.3": [
+            "PushTracker에 'EZ-ON'모드 추가 - 이제 전원 보조 기능을 ON / OFF / 'SD On'& 'SD Off'로 설정할 수 있습니다!"
+        ],
+        "1.4": [
+            "PushTracker에 'EZ-ON'모드 추가 - 이제 전원 보조 기능을 ON / OFF / 'SD On'& 'SD Off'로 설정할 수 있습니다!"
+        ],
+        "1.5": [
+            "PushTracker를 잠자기에서 부팅 할 때 회사 로고 브랜딩이 업데이트되었습니다.",
+            "이제 DisplayInfo 배터리 상태 화면의 PushTracker에서 예상 드라이브 범위를 표시하십시오.",
+            "PushTracker OTA를 수행 할 때 PushTracker에 OTA 상태 표시 줄과 백분율을 표시하십시오.",
+            "SD가 페어링 (예 : OTA 후)되고 왼쪽 버튼이 눌러져 'SD On'으로 설정되면 PushTracker는 곧바로 SD 모드로 페어링됩니다.",
+            "PushTracker가 휴대 전화와 페어링되지 않았거나 (예 : OTA 이후) 오른쪽 버튼을 눌러 휴대 전화에 연결하면 PushTracker가 직접 전화 모드로 페어링됩니다.",
+            "여러 장치를 처리하기위한 페어링 프로세스가 수정되었습니다."
+        ],
+        "1.6": [
+            "PushTracker는 이제 스마트 폰 앱에서 푸시 감지 설정을 수신 할 수 있습니다.",
+            "이제 PushTracker는 앱 연결 초기화시 현재 푸시 감지 설정을 보냅니다.",
+            "PushTracker의 기본 누름 감지 설정을 조정했습니다.",
+            "PushTracker는 사용자가 연결을 시작할 때 전화기에 성공적으로 연결되었거나 이미 전화기에 연결되어 있으면 전화 연결 표시 중에 확인 표시를 표시합니다."
+        ],
+        "not-found": [
+            "최신 펌웨어에 대한 설명을 찾을 수 없었습니다!"
+        ]
+    },
+    "general": {
+        "back": "뒤로",
+        "camera-permission": "카메라 권한",
+        "complete": "완전한",
+        "demo": "데모",
+        "edit": "편집하다",
+        "email-us": "info@sketchpoints.io로 전자 메일을 보내주십시오.",
+        "error": "오류가 발생하여 죄송합니다.",
+        "export": "수출",
+        "help": "도움",
+        "need-help": "도움이 필요하다?",
+        "no-camera-permission-android": "스마트 평가에는 카메라를 열 수있는 권한이 없습니다. 장치의 설정에서 응용 프로그램의 카메라 권한을 활성화 할 수 있습니다.",
+        "no-camera-permission-ios-confirm": "스마트 평가에는 카메라를 열 수있는 권한이 없습니다. 카메라를 사용하도록 앱 설정을 열시겠습니까?",
+        "no-connection": "인터넷 연결을 잃어 버렸을 수 있습니다. 스마트 평가는 최신 데이터가 서버와 동기화되도록 인터넷에 연결될 때 가장 잘 작동합니다.",
+        "photo-album-tle": "사진 앨범",
+        "picture": "그림",
+        "profile": "윤곽",
+        "save": "구하다",
+        "saving": "절약",
+        "serial": "연속물",
+        "submit": "제출",
+        "tip": "팁",
+        "title": "스마트 한 평가",
+        "tweet-us": "우리에게 짹짹",
+        "twitter-unknown": "트위터 알 수 없음! 미안해!",
+        "update": "최신 정보",
+        "updating": "업데이트 중",
+        "version": "번역"
+    },
+    "hints": {
+        "email": "이메일...",
+        "password": "암호..."
+    },
+    "home": {
+        "quick-actions": {
+            "demo-requests": "데모 요청",
+            "learn": "SmartDrive / PushTracker 사용법 배우기",
+            "register-demo": "데모 등록",
+            "request-demo": "데모 신청",
+            "start-eval": "평가 시작",
+            "update": "SmartDrive / PushTracker 업데이트"
+        }
+    },
+    "item": {
+        "delete-lbl": "지우다"
+    },
+    "languages": {
+        "de": "Deutsche",
+        "en": "English",
+        "es": "español",
+        "fr": "français",
+        "it": "이탈리아 사람",
+        "ja": "日本語",
+        "ko": "한국어",
+        "nl": "Nederlands",
+        "ru": "러시아인",
+        "sv": "스웨덴어",
+        "zh": "中文"
+    },
+    "menu": {
+        "clinical-tools": "임상 도구",
+        "clinical-tools-desc": "SmartDrive 사용법 교육",
+        "con-desc": "PushTracker 및 SmartDrive 사용 방법",
+        "connect-app": "Pushtracker를 Smart Eval 앱에 연결",
+        "connectivity": "장치 개요",
+        "demo-refresh": "데모 새로 고침",
+        "demo-requests": "데모 요청",
+        "demos": "시민",
+        "demos-desc": "데모 위치 및 관리",
+        "eval": "SmartDrive 평가 시작",
+        "eval-history": "과거 평가보기",
+        "eval-title": "SmartDrive 평가 시작",
+        "faq": "FAQs",
+        "faq-desc": "자주 묻는 질문",
+        "home": "SmartDrive",
+        "new-demo": "귀하의 계정에 등록 된 데모가 없습니다. 위 이미지를 탭하면 계정에 새로운 데모 유닛을 등록 할 수 있습니다.",
+        "ota": "PushTracker 및 SmartDrive 업데이트",
+        "pair-pt-app": "PushTracker를 Smart Eval 앱과 페어링하십시오.",
+        "pair-pt-sd": "PushTracker와 SmartDrive 페어링",
+        "ptsettings": "PushTracker 설정",
+        "summary": "개요",
+        "training": "SmartDrive 교육",
+        "trial": "SmartDrive 평가판을 시작하십시오.",
+        "trial-title": "SmartDrive 평가판을 시작하십시오.",
+        "videos-description": "SmartDrive 및 PushTracker에 대한 교육 및 사용 비디오",
+        "videos-title": "비디오"
+    },
+    "ota": {
+        "action": {
+            "cancel": "취소",
+            "force": "힘",
+            "pause": "중지",
+            "resume": "이력서",
+            "retry": "다시 해 보다",
+            "start": "스타트"
+        },
+        "begin": "업데이트 시작",
+        "cancel": "모든 펌웨어 업데이트 취소",
+        "check_firmware_error": "최신 펌웨어를 다운로드하는 중 오류가 발생했습니다. 문제가 계속되면 의견을 보내주십시오. 다시 시도하십시오.",
+        "check_new_firmware": "새 펌웨어 확인",
+        "check_new_firmware_message": "새 펌웨어를 확인하고 다운로드 하시겠습니까?",
+        "downloading": "서버에서 최신 펌웨어 데이터 가져 오기",
+        "errors": {
+            "devices": {
+                "message": "PushTrackers 또는 SmartDrive가 없습니다!",
+                "title": "장치 없음"
+            },
+            "sd_connection": {
+                "message": "SmartDrive와의 연결이 잘못되었습니다. 주소가있는 SmartDrive의 전원을 껐다가 켜십시오.",
+                "title": "SmartDrive 연결 오류!"
+            }
+        },
+        "pt": {
+            "state": {
+                "awaiting-ready": "PushTracker에서 대기 중",
+                "awaiting-version": "버전 대기 중",
+                "canceled": "취소 된",
+                "canceling": "취소 중",
+                "complete": "완전한",
+                "failed": "실패한",
+                "not-started": "시작되지 않음",
+                "rebooting": "다시 부팅하십시오. PushTracker를 다시 연결하고 다시 연결하십시오.",
+                "timeout": "시간 초과",
+                "updating": "업데이트 중",
+                "verifying-update": "확인 중"
+            }
+        },
+        "refresh": "SmartDrives 검색",
+        "sd": {
+            "state": {
+                "awaiting-ble-ready": "대기중인 BLE",
+                "awaiting-mcu-ready": "MCU에서 대기 중",
+                "awaiting-versions": "버전 대기 중",
+                "canceled": "취소 된",
+                "canceling": "취소 중",
+                "comm-failure": "통신 오류입니다. SmartDrive를 재부팅하십시오.",
+                "complete": "완전한",
+                "failed": "실패한",
+                "not-started": "시작되지 않음",
+                "rebooting-ble": "BLE 재부팅",
+                "rebooting-mcu": "MCU 재부팅",
+                "timeout": "시간 초과",
+                "updating-ble": "BLE 업데이트 중",
+                "updating-mcu": "MCU 업데이트",
+                "verifying-update": "확인 중"
+            }
+        },
+        "title": "펌웨어 업데이트",
+        "up-to-date": "(최신 정보)",
+        "version": "번역",
+        "warnings": {
+            "leaving": {
+                "message": "경고 : OTA 동안 OTA 페이지를 떠난다 - 이것은 진행중인 모든 OTA를 취소 할 것이다! 떠나시겠습니까?",
+                "title": "경고"
+            },
+            "multiple-devices": {
+                "message": "경고 : 한 번에 한 장치에서 OTA를 수행하는 것이 좋습니다. 추가 OTA를 시작하기 전에 장치 업데이트를 완료하도록하십시오.",
+                "title": "여러 장치"
+            },
+            "starting": {
+                "message": "경고 : SmartDrive 또는 PushTracker의 OTA 펌웨어 업데이트를 수행하는 동안이 페이지를 떠나면 안됩니다. 이 페이지를 떠나거나 앱을 종료하면 OTA가 취소되거나 실패 할 수 있습니다.",
+                "title": "OTA 시작하기"
+            }
+        }
+    },
+    "pairing": [
+        {
+            "Bullets": [
+                "PushTracker의 오른쪽 평면 버튼을 3 초 동안 누르고 있으면 설정 메뉴로 들어갑니다.",
+                "오른쪽 버튼을 눌러 전화 / PT 아이콘으로 스크롤하십시오.",
+                "페어링을 시작하려면 왼쪽으로 들어간 단추를 누릅니다.",
+                "참고 : 일부 Android 기기에서는 페어링하는 동안 '잘못된 핀 또는 패스 키'에 대한 메시지가 표시 될 수 있습니다. PushTracker가 연결되었음을 알리는 한 이것을 무시할 수 있습니다."
+            ],
+            "Image": "~/assets/images/gifs/PT-APP-CONNECT2.gif",
+            "Label": "PushTracker를 스마트 평가 응용 프로그램과 페어링"
+        },
+        {
+            "Bullets": [
+                "스마트 평가 응용 프로그램을 연 상태에서 PushTracker의 오른쪽 평면 버튼을 누릅니다.",
+                "Smart Evaluation 앱에 'Success (성공)'알림이 표시됩니다.",
+                "참고 : 스마트 평가 응용 프로그램에서 '성공'알림이 표시되지 않으면 PushTracker를 다시 페어링해야 할 수 있습니다."
+            ],
+            "Image": "~/assets/images/gifs/PT-APP-CONNECTION1.gif",
+            "Label": "PushTracker를 스마트 평가 응용 프로그램에 연결"
+        },
+        {
+            "Bullets": [
+                "이 작업을 수행 할 때 주변에 다른 SmartDrive가 없는지 확인하십시오!",
+                "SmartDrive와 페어링되지 않은 PushTracker의 경우 왼쪽 버튼을 누르면 PT (Bt symobol) SD 아이콘이 즉시 표시됩니다.",
+                "그런 다음 왼쪽 버튼을 다시 눌러 페어링을 시작하십시오.",
+                "성공하면 PushTracker에 확인 표시가 나타납니다.",
+                "모든 SmartDrive와 다시 페어링해야하는 PushTracker의 경우 :",
+                "PushTracker의 오른쪽 평면 버튼을 3 초 동안 누르고 있으면 설정 메뉴로 들어갑니다.",
+                "오른쪽 버튼을 눌러 PT-SD 아이콘으로 스크롤하십시오.",
+                "왼쪽 제기 버튼을 눌러 PushTracker와 SmartDrive를 페어링합니다."
+            ],
+            "Image": "~/assets/images/gifs/PT-SD-CONNECT2.gif",
+            "Label": "PushTracker를 SmartDrive와 페어링하기"
+        }
+    ],
+    "pushtracker": {
+        "push-settings": {
+            "clear-counter": "클리어 카운터",
+            "copy-dialog": {
+                "message": "PushTracker의 푸시 설정은 저장된 푸시 설정과 다르므로 저장된 푸시 설정을 PushTracker의 푸시 설정으로 덮어 쓰시겠습니까?",
+                "title": "PushTracker에서 복사 하시겠습니까?"
+            },
+            "label": "푸시 설정",
+            "out-of-date-dialog": {
+                "message": "PushSettings를 받으려면 PushTracker가 버전 1.6 이상이어야합니다. PushSettings는 무시됩니다.",
+                "title": "PushTracker가 최신 버전이 아닙니다."
+            },
+            "threshold": "문지방",
+            "time-window": "시간 창"
+        },
+        "settings": {
+            "acceleration": "가속",
+            "control-mode": {
+                "label": "제어 모드"
+            },
+            "copy-dialog": {
+                "message": "PushTracker의 설정이 저장된 설정과 다르므로 저장된 설정을 PushTracker의 설정으로 덮어 쓰시겠습니까?",
+                "title": "PushTracker에서 복사 하시겠습니까?"
+            },
+            "ez-on": "EZ-On",
+            "label": "설정",
+            "max-speed": "최대 속도",
+            "save-button": "PushTracker에 저장",
+            "save-dialogs": {
+                "failed": {
+                    "message": "PushTracker 설정을 PushTracker에 저장할 수 없습니다.",
+                    "title": "설정 저장 실패"
+                }
+            },
+            "saving": "PushTracker 설정 저장",
+            "tap-sensitivity": "탭 감도",
+            "units": {
+                "english": "영어",
+                "label": "단위",
+                "metric": "미터법"
+            }
+        },
+        "state": {
+            "connected": {
+                "msg": "PushTrackers가 성공적으로 연결되었습니다.",
+                "title": "연결됨"
+            },
+            "connecting": {
+                "msg": "PushTracker가 연결 / 연결되었지만 버전 정보를받지 못했습니다. 버전 정보를 얻으려면 PushTracker를 분리했다가 다시 연결해야 할 수 있습니다.",
+                "title": "연결 중"
+            },
+            "disconnected": {
+                "msg": "PushTracker는 페어링되었지만 연결되지 않았습니다. 오른쪽 버튼을 눌렀다가 놓으면 PushTracker를 연결하십시오. 성공적으로 연결할 수없는 경우 PushTracker의 설정 메뉴를 사용하여 PushTracker를 휴대폰에 다시 연결해야 할 수 있습니다.",
+                "title": "연결이 끊어짐"
+            },
+            "paired": {
+                "msg": "PushTracker는 페어링되었지만 연결되지 않았습니다. 오른쪽 버튼을 눌렀다가 놓으면 PushTracker를 연결하십시오. 성공적으로 연결할 수없는 경우 PushTracker의 설정 메뉴를 사용하여 PushTracker를 휴대폰에 다시 연결해야 할 수 있습니다.",
+                "title": "쌍을 이루어"
+            },
+            "unknown": {
+                "msg": "PushTracker가 지금까지 페어링되거나 연결되어 있지 않습니다. PushTracker의 설정 메뉴로 이동하여 PushTracker를 페어링하십시오.",
+                "title": "알려진 PushTrackers 없음"
+            }
+        }
+    },
+    "sign-up": {
+        "not-permobil-email-error": "현재 전자 메일은 대표로 등록 할 수 없습니다.",
+        "user-exists": "이 이메일에 대한 계정이 이미 있습니다.",
+        "user-type-clinician": "임상의 / ATP",
+        "user-type-end-user": "최종 사용자",
+        "user-type-rep": "대리인"
+    },
+    "summary": {
+        "add-trial": "평가판 추가",
+        "at": "...에서",
+        "average-speed": "평균 속도 (이전)",
+        "cadence": " 분당 푸시, 사용자의 종지는 매우 높습니다. 후방 휠 배치 및 효율적인 푸시 기술을 고려하십시오.",
+        "coast-time": "평균 연안 시간 :",
+        "complete": "완전한 평가?",
+        "confirm": "평가를 완료 했습니까?",
+        "difficulty-flat": "평평한 표면에서의 어려움?",
+        "difficulty-incline": "경사에 어려움이 있습니까?",
+        "difficulty-other": "다른 표면의 어려움?",
+        "difficulty-ramp": "램프에 어려움이 있습니까?",
+        "difficulty-ramp-incline": "경사로 / 경사로에서의 어려움?",
+        "email-subject": "스마트 평가 요약",
+        "errors": {
+            "save-failed": {
+                "message": "평가를 데이터베이스에 저장할 수 없습니다. 오류 :",
+                "title": "오류 저장 평가"
+            }
+        },
+        "fewer": "적은",
+        "flat-surface-difficulty": "평평한 표면 난이도",
+        "higher": "더 높은",
+        "incline-difficulty": "경사 어려움",
+        "lmnTemplate": [
+            "이 이메일은 스마트 평가 App에서 생성 및 전송되었습니다.",
+            "",
+            "사용자의 통증 : {{#evaluation.pushing_pain}}{{round}}{{/evaluation.pushing_pain}}{{^evaluation.pushing_pain}}0{{/evaluation.pushing_pain}} / 10",
+            "사용자의 피로감 : {{#evaluation.pushing_fatigue}}{{round}}{{/evaluation.pushing_fatigue}}{{^evaluation.pushing_fatigue}}0{{/evaluation.pushing_fatigue}} / 10",
+            "사용자의 독립성에 미치는 영향 : {{#evaluation.impact_on_independence}}{{round}}{{/evaluation.impact_on_independence}}{{^evaluation.impact_on_independence}}0{{/evaluation.impact_on_independence}} / 10",
+            "",
+            "{{#trials._array}}",
+            "평가판 '{{name}}':",
+            "  Had Flats : {{#flat}}예{{/flat}}{{^flat}}아니요{{/flat}}",
+            "  램프 / 경사 : {{#rampIncline}}예{{/rampIncline}}{{^rampIncline}}아니요{{/rampIncline}}",
+            "{{#other}} 기타 있음 : '{{other_description}}'{{/other}}",
+            "  거리 : {{#distance}}{{toFixed}}{{/distance}}{{^distance}}0.00{{/distance}} m",
+            "{{#finishedWith}}",
+            "  SD 사용 :",
+            "    푸시 : {{with_pushes}}",
+            "    해안 : {{#with_coast}}{{toFixed}}{{/with_coast}}{{^with_coast}}0{{/with_coast}} s",
+            "    시간 : {{#with_elapsed}}{{toTimeString}}{{/with_elapsed}}",
+            "{{#unableToCompleteWith}}",
+            "    사용자가 SmartDrive를 사용하여 평가판을 완료하지 못했습니다.",
+            "{{/unableToCompleteWith}}",
+            "{{/finishedWith}}",
+            "{{^finishedWith}}",
+            "  SD로 시험을 완료하지 못했습니다!",
+            "{{/finishedWith}}",
+            "{{#finishedWithout}}",
+            "  SD가없는 경우 :",
+            "    푸시 : {{without_pushes}}",
+            "    해안 : {{#without_coast}}{{toFixed}}{{/without_coast}}{{^without_coast}}0{{/without_coast}} s",
+            "    시간 : {{#without_elapsed}}{{toTimeString}}{{/without_elapsed}}",
+            "{{#unableToCompleteWithout}}",
+            "    사용자가 SmartDrive없이 평가판을 완료 할 수 없습니다.",
+            "{{/unableToCompleteWithout}}",
+            "{{/finishedWithout}}",
+            "{{^finishedWithout}}",
+            "  SD없이 시험을 완료하지 못했습니다!",
+            "{{/finishedWithout}}",
+            "{{/trials._array}}",
+            "{{^trials._array}}",
+            "{{#trials}}",
+            "평가판 '{{name}}':",
+            "  Had Flats : {{#flat}}예{{/flat}}{{^flat}}아니요{{/flat}}",
+            "  램프 / 경사 : {{#rampIncline}}예{{/rampIncline}}{{^rampIncline}}아니요{{/rampIncline}}",
+            "{{#other}} 기타 있음 : '{{other_description}}'{{/other}}",
+            "  거리 : {{#distance}}{{toFixed}}{{/distance}}{{^distance}}0.00{{/distance}} m",
+            "{{#finishedWith}}",
+            "  SD 사용 :",
+            "    푸시 : {{with_pushes}}",
+            "    해안 : {{#with_coast}}{{toFixed}}{{/with_coast}}{{^with_coast}}0{{/with_coast}} s",
+            "    시간 : {{#with_elapsed}}{{toTimeString}}{{/with_elapsed}}",
+            "{{#unableToCompleteWith}}",
+            "    사용자가 SmartDrive를 사용하여 평가판을 완료하지 못했습니다.",
+            "{{/unableToCompleteWith}}",
+            "{{/finishedWith}}",
+            "{{^finishedWith}}",
+            "  SD로 시험을 완료하지 못했습니다!",
+            "{{/finishedWith}}",
+            "{{#finishedWithout}}",
+            "  SD가없는 경우 :",
+            "    푸시 : {{without_pushes}}",
+            "    해안 : {{#without_coast}}{{toFixed}}{{/without_coast}}{{^without_coast}}0{{/without_coast}} s",
+            "    시간 : {{#without_elapsed}}{{toTimeString}}{{/without_elapsed}}",
+            "{{#unableToCompleteWithout}}",
+            "    사용자가 SmartDrive없이 평가판을 완료 할 수 없습니다.",
+            "{{/unableToCompleteWithout}}",
+            "{{/finishedWithout}}",
+            "{{^finishedWithout}}",
+            "  SD없이 시험을 완료하지 못했습니다!",
+            "{{/finishedWithout}}",
+            "{{/trials}}",
+            "{{/trials._array}}",
+            "",
+            "{{#evaluation.flat_difficulty}}",
+            "아파트의 사용자 어려움 : {{round}} / 10",
+            "{{#evaluation.unableToCompleteFlat}}",
+            "  - 참고 : 사용자가 평가의 평평한 부분을 완료하지 못했습니다.",
+            "{{/evaluation.unableToCompleteFlat}}",
+            "{{/evaluation.flat_difficulty}}",
+            "{{#evaluation.ramp_incline_difficulty}}",
+            "경사로 / 경사면을 가진 사용자의 어려움 : {{round}} / 10",
+            "{{#evaluation.unableToCompleteRampIncline}}",
+            "  - 참고 : 사용자가 평가의 경사 / 경사 부분을 완료하지 못했습니다.",
+            "{{/evaluation.unableToCompleteRampIncline}}",
+            "{{/evaluation.ramp_incline_difficulty}}",
+            "{{#evaluation.other_difficulty}}",
+            "다른 사용자의 어려움 : {{round}} / 10",
+            "{{#evaluation.unableToCompleteOther}}",
+            "  - 참고 : 사용자가 평가의 다른 부분을 완료하지 못했습니다.",
+            "{{/evaluation.unableToCompleteOther}}",
+            "{{/evaluation.other_difficulty}}",
+            "",
+            "사용자가 {{pushDiff}}% {{pushComparison}} 을 (를) 수행하면 SmartDrive가 푸시됩니다.",
+            "",
+            "평균 해안 시간은 SmartDrive로 {{coastDiff}} 회 {{coastComparison}} 회였습니다.",
+            "",
+            "SmartDrive를 사용하여 평균 속도가 {{speedDiff}} 회 {{speedComparison}} 회 발생했습니다.",
+            ""
+        ],
+        "lower": "보다 낮은",
+        "more": "더",
+        "other-surface-difficulty": "기타 표면 난이도",
+        "pushes": " SmartDrive로 푸시합니다.",
+        "ramp-difficulty": "램프 난이도",
+        "ramp-incline-difficulty": "경사로 / 경사로 난이도",
+        "unable-flat": "평면을 완료 할 수 없습니까?",
+        "unable-other": "다른 표면을 완료 할 수 없습니까?",
+        "unable-ramp-incline": "경사로 / 경사면을 완료 할 수 없습니까?",
+        "user-performed": "사용자가 수행 한",
+        "with-sd": " SmartDrive로."
+    },
+    "training": [
+        {
+            "Bullets": [
+                "로커 스위치를 뒤로 밀면 SmartDrive의 전원이 켜지고 전원이 꺼집니다.",
+                "SmartDrive는 클램프의 플랫을 SmartDrive의 수납 슬롯에 맞추어 의자에 부착합니다",
+                "SmartDrive와 평면을 정렬 한 후, SmartDrive를 클램프로드 위로 내려 놓고 SmartDrive를 아래쪽으로 회전시켜 SmartDrive를 클램프에 연결하여 휠체어에 연결하십시오.",
+                "이 위치에서 SmartDrive의 무게는지면에 있습니다.",
+                "의자에서 SmartDrive를 분리하려면 핸들로 들어서서 SmartDrive를 클램프에서 분리하십시오 - 부착 절차의 역순."
+            ],
+            "Image": "~/assets/images/gifs/SD-POWER.gif",
+            "Label": "SmartDrive 전원 켜기"
+        },
+        {
+            "Bullets": [
+                "PushTracker의 버튼을 눌러 전원을 켭니다.",
+                "왼쪽 제기 버튼을 3 초 동안 누르면 절전 모드 'zzz'가 시작되고 PushTracker의 전원이 꺼집니다."
+            ],
+            "Image": "~/assets/images/gifs/PT-ON-OFF.gif",
+            "Label": "PushTracker 전원 켜기"
+        },
+        {
+            "Bullets": [
+                "손목을 똑바로 세우고 손바닥으로 푸시 림에 접촉하십시오.",
+                "탭이 성공적으로되면 빨간색 표시등이 켜집니다.",
+                "팁 : PushTracker 밴드와 접촉 할 필요가 없습니다.",
+                "팁 : 움직임과 같은 '낚싯줄'로 손을 움직이지 마십시오. 이로 인해 일치하지 않는 탭 인식이 발생합니다."
+            ],
+            "Image": "~/assets/images/Stop.png",
+            "Label": "탭 제스처"
+        },
+        {
+            "Bullets": [
+                "두 번 살짝 눌러 SmartDrive를 시작하십시오. 그런 다음 가속화 될 것입니다.",
+                "그런 다음 원하는 속도로 설정하려면 한 번 탭하십시오.",
+                "속도를 높이려면 빠른 속도로 누른 다음 원하는 속도로 설정하려면 한 번 누릅니다.",
+                "탭하지 않으면 SmartDrive가 PushTracker의 최대 속도 설정에 의해 제어되는 최대 속도로 가속됩니다."
+            ],
+            "Image": "~/assets/images/start-coast.png",
+            "Label": "시작 및 설정 속도"
+        },
+        {
+            "Bullets": [
+                "두 번 살짝 눌러 SmartDrive를 분리하십시오.",
+                "그런 다음 손으로 해안을 제동하십시오.",
+                "팁 : 신속하게 중지하려면 한 번 탭한 다음 빠르게 결합한 탭과 잡기를 수행하십시오.",
+                "참고 : SmartDrive를 분리하면 SmartDrive 모터 만 멈추고 의자를 멈추게하려면 손으로 제동해야합니다."
+            ],
+            "Image": "~/assets/images/Stop2.png",
+            "Label": "멎는"
+        },
+        {
+            "Bullets": [
+                "조종하려면 가려는 방향의 푸시 - 림을 조심스럽게 잡으십시오.",
+                "가벼운 그립을 사용하면 방향을 바꿀 수 있습니다.",
+                "푸시 림이 손을 통과 할 수있게하십시오."
+            ],
+            "Image": "~/assets/images/Steer.png",
+            "Label": "조타"
+        },
+        {
+            "Bullets": [
+                "방향을 바꾸려면 푸시 림을 단단히 잡으십시오.",
+                "확고한 그립은 당신이 돌 수있게합니다.",
+                "당신이 꽉 잡을수록 날이 더 선명해질 것입니다.",
+                "팁 : 후방 휠의 최적 무게 중심 위치는 날카로운 방향을 돌리는 데 필요한 그립을 줄여줍니다.",
+                "참고 : SmartDrive를 너무 세게 돌리려고 할 때 해제해야 할 수도 있습니다."
+            ],
+            "Image": "~/assets/images/turn.png",
+            "Label": "선회"
+        }
+    ],
+    "training_component": {
+        "swipe-left-message": "슬라이드를 더 보려면 왼쪽으로 스 와이프합니다."
+    },
+    "trial": {
+        "accelleration": "가속",
+        "average-speed": "평균 속도:",
+        "coast-time": "해안 시간 :",
+        "complete": "평가판 완료",
+        "connect_pushtracker_more_info": "통신하려면 PushTracker가 스마트 평가 응용 프로그램에 연결되어 있어야합니다. 홈 화면의 연결 섹션을 보거나 오른쪽 상단의 연결 아이콘을 누르십시오.",
+        "description": "코스 또는 장애물 설명",
+        "distance": "거리:",
+        "errors": {
+            "failed-start": {
+                "message": "평가판을 시작할 수 없습니다. 오류 :",
+                "title": "평가판을 시작할 수 없습니다."
+            },
+            "failed-stop": {
+                "message": "평가판을 중지 할 수 없습니다. 오류 :",
+                "title": "재판을 그만 둘 수 없었다."
+            },
+            "pt-reconnect": {
+                "message": "귀하의 PushTracker가 버전을 보내지 않았습니다. 버전 정보를 Smart Evaluation 응용 프로그램에 다시 보내려면 PushTracker를 분리했다가 다시 연결하십시오.",
+                "title": "알 수없는 PushTracker 버전"
+            },
+            "pt-same-distance": {
+                "message": "PushTracker가 SmartDrive에서 업데이트 된 거리 정보를받지 못했습니다. 시험을 중지하기 전에 모터가 연결되어 있지 않은 상태에서 연결되어 있는지 확인하십시오.",
+                "title": "거리가 잘못되었습니다."
+            },
+            "pt-unknown-distance": {
+                "message": "PushTracker가 SmartDrive에서 거리 정보를 얻지 못했습니다. 시험을 시작하기 전에 모터가 연결되어 있지 않은 상태에서 연결되어 있는지 확인하십시오.",
+                "title": "알 수없는 거리"
+            },
+            "pt-version": {
+                "message": "PushTracker 버전이 오래되었습니다. OTA를 수행하십시오! 현재 버전 :",
+                "title": "PushTracker 버전 오류"
+            },
+            "timeout": "시간 초과",
+            "too-many-pts": "PushTracker가 너무 많습니다. 하나만 연결하십시오!"
+        },
+        "evaluator-range": "참고 : PushTracker는이 단계에서 전화기에 연결되어있을 필요가 없습니다. 시작과 끝에서만 연결하면됩니다.",
+        "flat-surfaces": "평평한 표면",
+        "inclines": "경사",
+        "max-speed": "최대 속도",
+        "name": "평가판 이름 입력",
+        "other": "다른",
+        "phase-1": "1 단계",
+        "phase-1-desc": "SmartDrive를 사용하여 시험 과정을 시작하십시오 - 시작하려면 시작을 누르십시오.",
+        "phase-2": "2 단계",
+        "phase-2-desc": "이제 SmartDrive없이 똑같은 시험 과정을 다시 시작하십시오. 시작하려면 시작을 누르십시오.",
+        "please-connect-pt": "PushTracker를 연결하십시오.",
+        "push_accuracy_disclaimer": "푸시 추적기는 푸시를 감지하기 위해 움직임을 사용합니다. 이로 인해 사용자가 푸시 추적기를 착용하고 이동하는 방식에 따라 다양한 정도의 정확도가 발생할 수 있습니다. 평가를위한 더 나은 측정 기준은 SmartDrive가있는 경우와 SmartDrive가없는 경우의 상대적인 차이입니다.",
+        "pushes": "푸시 :",
+        "ramp": "비탈길",
+        "ramp-incline": "램프 / 경사",
+        "recommendation": "참고 : 시운전은 경사로, 여러 표면 유형을 포함하는 것이 좋으며 적어도 몇 분 또는 100 야드 / 100 미터 이상 지속되어야합니다.",
+        "select-options": "SmartDrive 평가판의 옵션 및 설정을 선택하십시오.",
+        "set-up": "시범 준비",
+        "smartdrive-connection": "참고 :이 평가판을 시작하기 전에 PushTracker에 최신 거리 정보가 있는지 확인하기 위해 PushTracker 및 SmartDrive가 / SD On으로 연결되어 있는지 확인하십시오.",
+        "start": "스타트",
+        "starting-trial": "시험 시작 - 최대 10 초가 소요될 수 있습니다.",
+        "stop": "중지",
+        "stopping-trial": "시험 사용 중지 - 최대 10 초가 소요될 수 있습니다.",
+        "summary": "개요",
+        "time": "시각:",
+        "title": "시도",
+        "unable": "완료 할 수 없음",
+        "with-sd": "SmartDrive 사용",
+        "without-sd": "SmartDrive없이"
+    },
+    "user": {
+        "accept": {
+            "accept-error": {
+                "message": "계정을 등록하려면 계약 및 개인 정보 보호 정책을 읽고 동의해야합니다!",
+                "title": "계약 오류"
+            },
+            "agreement-button": "최종 사용자 동의서보기",
+            "header": "스마트 평가판을 활성화하고 사용하려면 최종 사용자 계약에 동의하고 개인 정보 보호 정책 고지를 읽어야합니다.",
+            "privacy-button": "개인 정보 보호 정책보기",
+            "privacy-policy": "개인 정보 취급 방침을 읽고 이해했습니다.",
+            "privacy-policy-title": "개인 정보 보호 정책 수락",
+            "user-agreement": "본인은 최종 사용자 계약서를 읽고 이해했으며 동의합니다.",
+            "user-agreement-title": "최종 사용자 동의서 수락"
+        },
+        "account": "계정",
+        "account-creating": "계정 생성 중 ...",
+        "account-error": "계정 정보를 가져 오는 중에 오류가 발생했습니다. 나중에 다시 시도하십시오.",
+        "account-reset": "계정 재설정?",
+        "account-reset-confirm": "계정을 재설정 하시겠습니까? (모든 데이터 / 설정을 삭제하십시오)?",
+        "account-update": "사용자 계정을 업데이트 하시겠습니까?",
+        "account-update-complete": "당신의 프로필이 업데이트되었습니다.",
+        "account-update-confirm": "이 설정을 서버로 보내시겠습니까?",
+        "account-update-error": "프로필을 업데이트하는 중에 오류가 발생했습니다. 다시 시도하십시오.",
+        "back-to-login": "로그인으로 돌아 가기",
+        "change-pass": "비밀번호 변경",
+        "check-email": "이메일 재설정을위한 지침을 확인하십시오.",
+        "company": "회사",
+        "consent": {
+            "beta-test": "펌웨어 베타 테스트를 선택하고 관련 위험을 이해합니다.",
+            "header": "응용 프로그램의 '계정'페이지로 이동하여 서비스 사용 중 언제든지 동의를 제공하거나 철회 할 수 있습니다.",
+            "product-development": "개인 정보 취급 방침에 명시된대로 연구 데이터를 사용하는 것에 동의합니다.",
+            "research": "개인 정보 보호 정책에 명시된대로 제품 개발을위한 데이터 사용에 동의합니다."
+        },
+        "consent-form-title": "개인 정보 보호 정책 동의서",
+        "email": "이메일",
+        "email-error": "유효한 이메일 주소가 아닙니다.",
+        "email-invalid": "이메일이 잘못되었습니다.",
+        "email-required": "이메일이 필요합니다.",
+        "email-sent": "보낸 이메일",
+        "end-user-agreement-site": "https://privacy.permobil.com/our-products.html#collapseEight",
+        "error": "오류",
+        "feedback-email-subject": "스마트 평가 피드백",
+        "first-name": "이름",
+        "first-name-error": "이름이 필요합니다.",
+        "forgot-password": "비밀번호를 잊으 셨나요",
+        "form-invalid": "양식이 유효하지 않습니다. 모든 칸을 채워주세요.",
+        "language": "언어",
+        "last-name": "성",
+        "last-name-error": "성이 필요합니다.",
+        "logged-in": "지금 로그인하셨습니다.",
+        "login": "로그인",
+        "logout": "로그 아웃",
+        "ok": "승인",
+        "password": "암호",
+        "password-change": "암호 변경?",
+        "password-change-confirm": "암호를 변경 하시겠습니까?",
+        "password-error": "암호는 필수 항목입니다.",
+        "phone": "전화",
+        "privacy-policy-site": "https://privacy.permobil.com",
+        "provide-feedback-btn": "의견 보내기",
+        "provide-feedback-confirm-message": "구성된 전자 메일 클라이언트를 통해 의견을 보내시겠습니까?",
+        "provide-feedback-confirm-title": "피드백을 제공하다?",
+        "reset-acct": "계정 재설정",
+        "reset-pass-desc": "비밀번호를 재설정하려면 계정 이메일을 입력하십시오. 비밀번호 재설정 안내 이메일이 전송됩니다.",
+        "sign-in": "로그인",
+        "sign-in-error-1": "로그인하는 중에 오류가 발생했습니다. 이메일과 비밀번호를 확인하십시오.",
+        "sign-in-error-2": "이메일 및 / 또는 비밀번호가 잘못되었습니다. 다시 시도하십시오.",
+        "sign-out": "로그 아웃",
+        "sign-out-confirm": "로그 아웃 하시겠습니까?",
+        "sign-up": "가입",
+        "sign-up-error": "가입 할 수 없음 :",
+        "sign-up-success": "귀하의 사용자 이름 :",
+        "signing-in": "로그인...",
+        "submitting": "제출 중 ...",
+        "success": "성공",
+        "type": "사용자 유형",
+        "unsaved": "변경 사항을 저장하지 않았습니다. 저장하지 않고 종료 하시겠습니까?",
+        "updated": "귀하의 프로필이 성공적으로 업데이트되었습니다!"
+    },
+    "videos": [
+        {
+            "Description": "이 비디오는 다양한 환경에서 다양한 연령대의 사람들이 사용하는 SmartDrive에 대한 개요입니다.",
+            "Route": "/video",
+            "Title": "SmartDrive 소개",
+            "Url": "8fn26J59WJ4"
+        },
+        {
+            "Description": "이 비디오는 SmartDrive 및 PushTracker의 기본 작동 및 기능에 대해 설명합니다.",
+            "Route": "/video",
+            "Title": "SmartDrive MX2+ 기본 작동",
+            "Url": "uhA3-svjQFg"
+        },
+        {
+            "Description": "이 비디오에서는 PushTracker의 기본 작동 및 기능에 대해 설명합니다.",
+            "Route": "/video",
+            "Title": "PushTracker 기본 작동",
+            "Url": "6_M1J8HZXIk"
+        },
+        {
+            "Description": "이 비디오는 SmartDrive 용 리니어 프레임 수동 휠체어에 액슬 클램프를 설치하는 방법을 다룹니다.",
+            "Route": "/video",
+            "Title": "액슬 클램프 설치",
+            "Url": "fY0mW2ClyL0"
+        },
+        {
+            "Description": "이 비디오는 SmartDrive 용 접이식 프레임 수동 휠체어 부착 하드웨어 설치에 대해 설명합니다.",
+            "Route": "/video",
+            "Title": "폴더 어댑터 설치",
+            "Url": "FpzxivBfeeU"
+        },
+        {
+            "Description": "이 비디오는 SmartDrive MX2+ 썸 스로틀 버튼의 기본 작동 및 기능에 대해 설명합니다.",
+            "Route": "/video",
+            "Title": "엄지 스로틀 버튼",
+            "Url": "bwYoHNKLjmE"
+        },
+        {
+            "Description": "이 비디오에서는 SmartDrive 평가 또는 교육을 수행 할 때 수행 할 단계에 대해 설명합니다.",
+            "Route": "/video",
+            "Title": "SmartDrive 평가 및 교육",
+            "Url": "45Kj7zJpDcM"
+        },
+        {
+            "Description": "이 비디오에서 Chels & Steph은 삶의 여러 측면과 SmartDrive의 영향을 인터뷰했습니다.",
+            "Route": "/video",
+            "Title": "Chels와 Steph와의 인터뷰",
+            "Url": "hFid9ks551A"
+        }
+    ]
+}

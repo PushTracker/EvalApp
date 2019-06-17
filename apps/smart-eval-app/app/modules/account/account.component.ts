@@ -550,6 +550,12 @@ export class AccountComponent implements OnInit {
         return '~/assets/images/flags/france-flag.png';
       case 'nl':
         return '~/assets/images/flags/netherlands-flag.png';
+      case 'zh':
+        return '~/assets/images/flags/tradchinese-flag.png';
+      case 'ja':
+        return '~/assets/images/flags/japan-flag.png';
+      case 'ko':
+        return '~/assets/images/flags/korea-flag.jpg';
     }
   }
 }

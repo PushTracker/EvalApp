@@ -49,7 +49,7 @@ export class HomeComponent {
       Image: '~/assets/images/pt-connect-home.png',
       Description: 'menu.connect-app',
       Directive: 1,
-      Route: 'pairing'
+      Route: '/pairing'
     },
     {
       Image: '~/assets/images/pt-sd-pairing-home.png',
@@ -59,7 +59,7 @@ export class HomeComponent {
     },
     {
       Image: '~/assets/images/pt-settings-gear.png',
-      Description: 'PushTracker Settings',
+      Description: 'menu.ptsettings',
       Directive: 3,
       Route: '/pairing'
     },
@@ -375,7 +375,7 @@ export class HomeComponent {
       value ===
       this._translateService.instant('home.quick-actions.register-demo')
     ) {
-      this._routerExtensions.navigate(['/demos']);
+      this._routerExtensions.navigate(['/demo-detail']);
     } else if (
       value === this._translateService.instant('home.quick-actions.learn')
     ) {

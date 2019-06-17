@@ -25,7 +25,7 @@ import { Page } from 'tns-core-modules/ui/page';
 import * as utils from 'tns-core-modules/utils/utils';
 
 @Component({
-  selector: 'demo',
+  selector: 'demo-detail',
   moduleId: module.id,
   templateUrl: 'demo-detail.component.html',
   styleUrls: ['demo-detail.component.scss']
@@ -55,13 +55,14 @@ export class DemoDetailComponent implements OnInit {
    * If new, show a prompt to the user when they are leaving the page.
    */
   private _isNewDemoUnit = false;
+  private _barcodeScanner: BarcodeScanner;
 
   constructor(
     private _page: Page,
     private _routerExtensions: RouterExtensions,
     private _pageRoute: PageRoute,
     private _zone: NgZone,
-    private _barcodeScanner: BarcodeScanner,
+    //private _barcodeScanner: BarcodeScanner,
     private _progressService: ProgressService,
     private _demoService: DemoService,
     private _bluetoothService: BluetoothService,
@@ -72,6 +73,7 @@ export class DemoDetailComponent implements OnInit {
     this._loggingService.logBreadCrumb(
       DemoDetailComponent.LOG_TAG + `constructor.`
     );
+    this._barcodeScanner = new BarcodeScanner;
     this._page.className = 'blue-gradient-down';
     this.demo = new Demo();
     this._pageRoute.activatedRoute
