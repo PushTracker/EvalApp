@@ -46,7 +46,7 @@ export class EvalEntryComponent {
     this.evaluation = this._evaluationService.evaluation;
     this._logService.logBreadCrumb(
       EvalEntryComponent.LOG_TAG +
-        `this.evaluation: ${JSON.stringify(this.evaluation)}`
+        `this.evaluation:`// ${JSON.stringify(this.evaluation)}`
     );
 
     // if the evaluation from the service is not null then ask the user if they want to continue or start new eval
