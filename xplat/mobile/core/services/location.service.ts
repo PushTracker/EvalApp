@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
+import { MapboxKeys } from '@maxmobility/private-keys';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 import * as geolocation from 'nativescript-geolocation';
 import * as httpModule from 'tns-core-modules/http';
-import { SmartEvalKeys } from 'smart-eval-kinvey';
 import { Accuracy } from 'tns-core-modules/ui/enums'; // used to describe at what accuracy the location should be get
 
 // see https://www.mapbox.com/api-documentation/?language=cURL#retrieve-places-near-a-location
@@ -46,7 +46,7 @@ export class LocationService {
         'https://api.mapbox.com/geocoding/v5/mapbox.places/' +
         userLoc +
         '.json?access_token=' +
-        SmartEvalKeys.MAPBOX_TOKEN +
+        MapboxKeys.MAPBOX_TOKEN +
         lang;
 
       // TODO: might also add '&types=postcode' to the query to only get postcode

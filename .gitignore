@@ -123,9 +123,9 @@ apps/**/report/
 !**/typings/*.d.ts
 
 !tools/**/*.js
-!apps/smart-eval-app/tools/**/*.js
+!apps/smart-eval/tools/**/*.js
 !libs/core/packet/packet_bindings.js
 
-!apps/smart-eval-app/plugins/swift-fix/**
-!apps/smart-eval-app/webpack.config.js
-!apps/smart-eval-app/plugins/bluetooth/**
+!apps/smart-eval/plugins/swift-fix/**
+!apps/smart-eval/webpack.config.js
+!apps/smart-eval/plugins/bluetooth/**
