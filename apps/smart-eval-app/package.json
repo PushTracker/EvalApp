@@ -85,15 +85,15 @@
     "rxjs": "file:../../node_modules/rxjs",
     "rxjs-compat": "file:../../node_modules/rxjs-compat",
     "smart-eval-kinvey": "git+https://github.com/autochair/SmartEvalKinvey.git#master",
-    "tns-core-modules": "5.4.1",
+    "tns-core-modules": "5.4.2",
     "zone.js": "file:../../node_modules/zone.js"
   },
   "devDependencies": {
-    "@angular/compiler-cli": "~8.0.0",
+    "@angular/compiler-cli": "~8.0.1",
     "@angular/language-service": "file:../../node_modules/@angular/language-service",
     "@ngtools/webpack": "file:../../node_modules/@ngtools/webpack",
     "nativescript-dev-sass": "~1.7.0",
-    "nativescript-dev-webpack": "~0.24.0",
+    "nativescript-dev-webpack": "~0.24.1",
     "nativescript-dev-typescript": "~0.10.0",
     "terser-webpack-plugin": "file:../../node_modules/terser-webpack-plugin",
     "tns-platform-declarations": "file:../../node_modules/tns-platform-declarations",

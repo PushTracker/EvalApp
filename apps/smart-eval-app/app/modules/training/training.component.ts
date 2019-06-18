@@ -1,10 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import { RouterExtService } from '@maxmobility/core';
 import { LoggingService } from '@maxmobility/mobile';
@@ -98,10 +92,12 @@ export class TrainingComponent implements AfterViewInit, OnInit {
 
   ngAfterViewInit() {
     this.toastTimeoutID = setTimeout(() => {
-      new Toasty(
-        this.translateService.instant('training_component.swipe-left-message'),
-        ToastDuration.LONG
-      ).show();
+      new Toasty({
+        text: this.translateService.instant(
+          'training_component.swipe-left-message'
+        ),
+        duration: ToastDuration.LONG
+      }).show();
     }, 1000);
 
     this.routeSub = this._router.events.subscribe(event => {

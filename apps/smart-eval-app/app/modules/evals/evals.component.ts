@@ -5,10 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 import * as mustache from 'mustache';
 import * as email from 'nativescript-email';
-import {
-  DateResponse,
-  ModalDatetimepicker
-} from 'nativescript-modal-datetimepicker';
+import { DateResponse, ModalDatetimepicker } from 'nativescript-modal-datetimepicker';
 import { Toasty } from 'nativescript-toasty';
 import { isIOS } from 'tns-core-modules/platform';
 import { alert, confirm } from 'tns-core-modules/ui/dialogs/dialogs';
@@ -144,11 +141,11 @@ export class EvalsComponent implements OnInit {
       const data = await stream.toPromise();
 
       if (!data || data.length <= 0) {
-        new Toasty(
-          `${this._translateService.instant('evals.no-evals-search-result')} ${
-            dateResult.month
-          }/${dateResult.day}/${dateResult.year}`
-        ).show();
+        new Toasty({
+          text: `${this._translateService.instant(
+            'evals.no-evals-search-result'
+          )} ${dateResult.month}/${dateResult.day}/${dateResult.year}`
+        }).show();
         this._zone.run(() => {
           this.evals = this._initialEvals;
         });

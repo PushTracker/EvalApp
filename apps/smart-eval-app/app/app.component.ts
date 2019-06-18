@@ -14,11 +14,7 @@ import { Sentry } from 'nativescript-sentry';
 import { ToastDuration, ToastPosition, Toasty } from 'nativescript-toasty';
 import { SmartEvalKeys } from 'smart-eval-kinvey';
 import * as application from 'tns-core-modules/application';
-import {
-  connectionType,
-  startMonitoring,
-  stopMonitoring
-} from 'tns-core-modules/connectivity';
+import { connectionType, startMonitoring, stopMonitoring } from 'tns-core-modules/connectivity';
 import { APP_KEY, APP_SECRET } from './utils/kinvey-keys';
 
 // Register Custom Elements for Angular
@@ -70,7 +66,7 @@ export class AppComponent {
     // wrapping this in try/catch due to https://github.com/PushTracker/EvalApp/issues/43
     try {
       this._translateService.setDefaultLang('en');
-      this._translateService.addLangs(['en', 'es', 'de', 'fr', 'nl']);
+      this._translateService.addLangs(['en', 'es', 'de', 'fr', 'nl', 'zh']);
     } catch (error) {
       this._logService.logException(error);
     }
@@ -151,11 +147,11 @@ export class AppComponent {
       switch (newConnectionType) {
         case connectionType.none:
           // show a toast with network info
-          new Toasty(
-            this._translateService.instant('general.no-connection'),
-            ToastDuration.LONG,
-            ToastPosition.CENTER
-          ).show();
+          new Toasty({
+            text: this._translateService.instant('general.no-connection'),
+            duration: ToastDuration.LONG,
+            position: ToastPosition.CENTER
+          }).show();
           break;
         case connectionType.wifi:
           return;

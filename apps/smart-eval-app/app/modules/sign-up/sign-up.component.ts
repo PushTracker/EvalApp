@@ -1,20 +1,12 @@
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { User, UserTypes } from '@maxmobility/core';
-import {
-  LoggingService,
-  preventKeyboardFromShowing,
-  ProgressService,
-  UserService
-} from '@maxmobility/mobile';
+import { LoggingService, preventKeyboardFromShowing, ProgressService, UserService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { validate } from 'email-validator';
 import { User as KinveyUser } from 'kinvey-nativescript-sdk';
 import { ModalDialogService } from 'nativescript-angular/directives/dialogs';
 import { RouterExtensions } from 'nativescript-angular/router';
-import {
-  SelectedIndexChangedEventData,
-  ValueList
-} from 'nativescript-drop-down';
+import { SelectedIndexChangedEventData, ValueList } from 'nativescript-drop-down';
 import { ToastDuration, ToastPosition, Toasty } from 'nativescript-toasty';
 import { alert } from 'tns-core-modules/ui/dialogs';
 import { Page } from 'tns-core-modules/ui/page';
@@ -205,11 +197,11 @@ export class SignUpComponent implements OnInit {
 
         // if username is taken tell user and exit so they can correct
         if (res === true) {
-          new Toasty(
-            this._translateService.instant('sign-up.user-exists'),
-            ToastDuration.SHORT,
-            ToastPosition.CENTER
-          ).show();
+          new Toasty({
+            text: this._translateService.instant('sign-up.user-exists'),
+            duration: ToastDuration.SHORT,
+            position: ToastPosition.CENTER
+          }).show();
           this._progressService.hide();
           return;
         }

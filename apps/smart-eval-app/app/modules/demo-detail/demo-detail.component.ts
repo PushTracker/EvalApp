@@ -381,7 +381,7 @@ export class DemoDetailComponent implements OnInit {
         // if more than 750ms pass then show a toasty that location is being calculated...
         processTimeout = setTimeout(() => {
           new Toasty(
-            this._translateService.instant('demos.location-calculating')
+            {text: this._translateService.instant('demos.location-calculating')}
           ).show();
         }, 750);
       } else {

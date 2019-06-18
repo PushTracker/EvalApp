@@ -4,11 +4,11 @@ import { LoggingService, ProgressService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 import { ToastDuration, ToastPosition, Toasty } from 'nativescript-toasty';
-import { confirm } from 'tns-core-modules/ui/dialogs/dialogs';
-import { Page } from 'tns-core-modules/ui/page';
 import { EventData } from 'tns-core-modules/data/observable';
-import { ListView } from 'tns-core-modules/ui/list-view';
 import { isIOS } from 'tns-core-modules/platform';
+import { confirm } from 'tns-core-modules/ui/dialogs/dialogs';
+import { ListView } from 'tns-core-modules/ui/list-view';
+import { Page } from 'tns-core-modules/ui/page';
 
 @Component({
   selector: 'demo-requests',
@@ -200,18 +200,20 @@ export class DemoRequestsComponent implements OnInit {
     const dr = this.items[index];
     console.log({ dr });
     if (dr.complete) {
-      new Toasty(
-        this._translateService.instant('demo-requests.demo_is_complete_msg'),
-        ToastDuration.SHORT,
-        ToastPosition.BOTTOM
-      ).show();
+      new Toasty({
+        text: this._translateService.instant(
+          'demo-requests.demo_is_complete_msg'
+        ),
+        duration: ToastDuration.SHORT,
+        position: ToastPosition.BOTTOM
+      }).show();
     }
     // else if (dr.claimed_user !== this.userId) {
     //   console.log('claimed by another user');
     // new Toasty(
-    //   this._translateService.instant('demo-requests.claimed_by_other'),
-    //   ToastDuration.SHORT,
-    //   ToastPosition.BOTTOM
+    //   {text: this._translateService.instant('demo-requests.claimed_by_other'),
+    //   duration: ToastDuration.SHORT,
+    //   position: ToastPosition.BOTTOM}
     // ).show();
     // }
   }

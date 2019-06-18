@@ -1,10 +1,5 @@
 import { Component, NgZone, OnInit } from '@angular/core';
-import {
-  LoggingService,
-  preventKeyboardFromShowing,
-  ProgressService,
-  UserService
-} from '@maxmobility/mobile';
+import { LoggingService, preventKeyboardFromShowing, ProgressService, UserService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { validate } from 'email-validator';
 import { Kinvey } from 'kinvey-nativescript-sdk';
@@ -122,9 +117,9 @@ export class LoginComponent implements OnInit {
         // Brad - changing this to show a Toast to not block user and not logging the exception
         // see: https://sentry.io/share/issue/d48735572d9641678348f451a9d00e78/
         new Toasty(
-          errorMessage,
-          ToastDuration.SHORT,
-          ToastPosition.CENTER
+          {text: errorMessage,
+          duration: ToastDuration.SHORT,
+          position: ToastPosition.CENTER}
         ).show();
       } else {
         alert({

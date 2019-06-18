@@ -1,13 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Demo, DemoRequest, User } from '@maxmobility/core';
-import {
-  DemoService,
-  FirmwareService,
-  LocationService,
-  LoggingService,
-  ProgressService,
-  UserService
-} from '@maxmobility/mobile';
+import { DemoService, FirmwareService, LocationService, LoggingService, ProgressService, UserService } from '@maxmobility/mobile';
 import { TranslateService } from '@ngx-translate/core';
 import { Kinvey } from 'kinvey-nativescript-sdk';
 import { RouterExtensions } from 'nativescript-angular/router';
@@ -81,10 +74,10 @@ export class DemosComponent implements OnInit {
   ngOnInit() {
     this._logService.logBreadCrumb(DemosComponent.LOG_TAG + 'ngOnInit');
 
-    new Toasty(
-      this._translateService.instant('demos.owner-color-explanation'),
-      ToastDuration.LONG
-    ).show();
+    new Toasty({
+      text: this._translateService.instant('demos.owner-color-explanation'),
+      duration: ToastDuration.LONG
+    }).show();
     const activeUser = Kinvey.User.getActiveUser();
     this.userType = (activeUser.data as User).type as number;
     this.currentUserId = activeUser._id;
@@ -152,9 +145,9 @@ export class DemosComponent implements OnInit {
       if (isEnabled) {
         // if more than 750ms pass then show a toasty that location is being calculated...
         processTimeout = setTimeout(() => {
-          new Toasty(
-            this._translateService.instant('demos.location-calculating')
-          ).show();
+          new Toasty({
+            text: this._translateService.instant('demos.location-calculating')
+          }).show();
         }, 750);
       } else {
         // location might not be enabled or permission not granted
@@ -341,11 +334,11 @@ export class DemosComponent implements OnInit {
     this._progressService.hide();
 
     if (response.statusCode === 200) {
-      new Toasty(
-        this._translateService.instant('demos.demo-request-success'),
-        ToastDuration.LONG,
-        ToastPosition.CENTER
-      ).show();
+      new Toasty({
+        text: this._translateService.instant('demos.demo-request-success'),
+        duration: ToastDuration.LONG,
+        position: ToastPosition.CENTER
+      }).show();
     } else {
       this._logService.logException(
         new Error(
