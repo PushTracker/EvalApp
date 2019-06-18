@@ -42,28 +42,28 @@ import { TextField } from 'tns-core-modules/ui/text-field';
 export class TrialComponent implements OnInit {
   private static LOG_TAG = 'trial.component ';
 
-  @ViewChild('startWith', { static: false })
+  @ViewChild('startWith', { static: true })
   startWithView: ElementRef;
-  @ViewChild('stopWith', { static: false })
+  @ViewChild('stopWith', { static: true })
   stopWithView: ElementRef;
-  @ViewChild('cannotCompleteWith', { static: false })
+  @ViewChild('cannotCompleteWith', { static: true })
   cannotCompleteWithView: ElementRef;
-  @ViewChild('nextWith', { static: false })
+  @ViewChild('nextWith', { static: true })
   nextWithView: ElementRef;
-  @ViewChild('startWithout', { static: false })
+  @ViewChild('startWithout', { static: true })
   startWithoutView: ElementRef;
-  @ViewChild('stopWithout', { static: false })
+  @ViewChild('stopWithout', { static: true })
   stopWithoutView: ElementRef;
-  @ViewChild('cannotCompleteWithout', { static: false })
+  @ViewChild('cannotCompleteWithout', { static: true })
   cannotCompleteWithoutView: ElementRef;
-  @ViewChild('nextWithout', { static: false })
+  @ViewChild('nextWithout', { static: true })
   nextWithoutView: ElementRef;
-  @ViewChild('carousel', { static: false })
+  @ViewChild('carousel', { static: true })
   carousel: ElementRef;
   // for settings
-  @ViewChild('controlModeDropDown', { static: false })
+  @ViewChild('controlModeDropDown', { static: true })
   controlModeDropDown: ElementRef;
-  @ViewChild('unitsDropDown', { static: false })
+  @ViewChild('unitsDropDown', { static: true })
   unitsDropDown: ElementRef;
   // displaying trial info
   distanceDisplay = '--';
