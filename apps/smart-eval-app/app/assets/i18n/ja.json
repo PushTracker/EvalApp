@@ -633,7 +633,7 @@
                 "この位置では、SmartDriveの重さは地面にあります。",
                 "SmartDriveを椅子から取り外すには、ハンドルを持ち上げてSmartDriveをクランプから外します - 取り付け手順の逆。"
             ],
-            "Image": "〜/アセット/画像/ GIF / SD-POWER.gif",
+            "Image": "~/assets/images/gifs/SD-POWER.gif",
             "Label": "SmartDriveへの電力供給"
         },
         {
