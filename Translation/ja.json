@@ -1,0 +1,896 @@
+{
+	"account": {
+		"build": "ビルド",
+		"database": "データベース",
+		"version": "バージョン"
+	},
+	"bluetooth": {
+		"connection-success": "PushTrackerとの接続に成功しました！",
+		"enable-bluetooth": "Smart Evaluationが、お使いのデバイスでBluetoothが有効になっていないことを検出しました。 Bluetoothを有効にしてOTAを実行し、評価を実行してください。",
+		"errors": {
+			"unavailable": {
+				"message": "Bluetoothサービスを利用できません - 再初期化中です。",
+				"title": "Bluetooth利用不可"
+			}
+		},
+		"pairing-success": "PushTrackerと正常にペアリングされました。",
+		"pt_app_conn_instructions": "PushTrackerをSmart Evaluationアプリに接続するには、携帯でアプリを開いてから、PushTrackerの右ボタンを押して放します。これはあなたのPushTrackerをあなたのアプリに接続するか、またはPushTrackerのペアリング設定にあなたを連れて行きます。ペアリングしたら、設定メニューを終了して右ボタンを押してアプリに接続する必要があります。問題がある場合は、PushTrackerをSLEEPにしてからONにします。",
+		"sd_app_conn_instructions": "Smart EvaluationアプリでSmartDriveを表示して接続できるようにするには、SmartDriveをオンにし、パワーアシストをオフ/「SDオフ」にする必要があります。問題がある場合は、SmartDriveの電源を入れ直してください。",
+		"searching": "デバイスの検索",
+		"service-failure": "Bluetoothサービスの失敗",
+		"waiting": "Bluetoothの初期化を待っています"
+	},
+	"buttons": {
+		"back": "バック",
+		"more-info": "より多くの情報",
+		"next": "次"
+	},
+	"demo-detail": {
+		"cancel-scan": "スキャンをキャンセル",
+		"connect-pt": "PushTrackerを接続してください。",
+		"enter-pt-serial": "PushTrackerまたはリストバンドのシリアル番号を入力してください。",
+		"enter-serial-message": "SmartDriveのシリアル番号を入力してください",
+		"enter-serial-title": "シリアル番号を入力",
+		"geolocation-disabled": "場所が無効になっている可能性があります。スマート評価アプリの場所を有効にするには、デバイスの[設定]を開きますか？",
+		"invalid-pt-serial": "有効なPushTrackerまたはリストバンドのシリアル番号ではありません。",
+		"invalid-sd-serial": "有効なSmartDriveシリアル番号ではありません。",
+		"leaving-new-demo": "警告：あなたは未保存のデモユニットを持っています。保存せずに終了してよろしいですか？",
+		"saving-demo": "デモを保存しています...",
+		"scan-msg": "スキャンする",
+		"scan-pt": "PT：スキャンまたは編集ボタンを押す",
+		"scan-sd": "SD：スキャンまたは編集ボタンを押す",
+		"sd-or-pt": "SmartDriveまたはPushTracker",
+		"sd-serial-required": "SmartDriveのシリアル番号が必要です。"
+	},
+	"demo-requests": {
+		"claim": "請求",
+		"claim_confirm": "このデモ依頼を申し立てますか？",
+		"claimed": "デモ依頼の申し立て",
+		"claimed_by_other": "このデモは他のユーザーによって主張されています。",
+		"complete": "コンプリート",
+		"complete_confirm": "このリクエストを「完了」としてマークしますか？",
+		"completed": "デモ依頼完了",
+		"demo_is_complete_msg": "デモ依頼は完了です。",
+		"loading": "デモリクエストを読み込んでいます...",
+		"no-demo-requests": "アクティブなデモリクエストは見つかりませんでした。"
+	},
+	"demos": {
+		"add": "追加",
+		"demo-change-owner-location-required": "あなたの所在地は、デモユニットの所有権を譲渡するために必要です。これにより、Smart Evalは、在庫のためにデモ・ユニットの最新の既知の場所を追跡できます。",
+		"demo-request-error": "デモの要求中にエラーが発生しました。問題が解決しない場合は、もう一度やり直してフィードバックを報告してください。",
+		"demo-request-location-is-required": "あなたの所在地は、デモユニットのリクエストを送信するために必要です。あなたの場所はデモ要求のためにあなたの場所の近くの担当者に連絡するために使用されます。",
+		"demo-request-success": "デモ装置の要求は成功しました。",
+		"demo-to-clinician-action": "臨床医にデモを渡す",
+		"demos-title": "デモ",
+		"firmware-string": "ファームウェア",
+		"loading": "デモを読み込んでいます...",
+		"location-calculating": "ロケーションは計算中です...",
+		"location-confirm-message": "デモの場所をに更新しますか？",
+		"new-demo-request": "新しいデモ依頼",
+		"no-demos": "現在のユーザーのデモは見つかりませんでした。",
+		"owner-color-explanation": "オレンジのシリアル番号を持つアイテムはあなたの所持品です。オレンジのシリアル番号が付いていない品目は、臨床医が所有しているはずです。",
+		"refresh": "リフレッシュ",
+		"request": {
+			"contact_info": "連絡先",
+			"distance": "距離（マイル）"
+		},
+		"request-demo-action": "担当者にデモを依頼してください。",
+		"request-demo-distance": "担当者にデモを依頼する場所からの最大距離をマイルで設定します。",
+		"retrieve-from-clinician-action": "臨床医からデモを取得する",
+		"saving-request": "デモリクエストを保存しています...",
+		"submit-btn": "提出する"
+	},
+	"dialogs": {
+		"camera": "カメラ",
+		"cancel": "キャンセル",
+		"close": "閉じる",
+		"confirm": "確認",
+		"confirm-photo-delete": "この写真を削除してもよろしいですか？",
+		"no": "いいえ",
+		"ok": "OK",
+		"sms": "メール",
+		"success": "成功！",
+		"warning": "警告",
+		"yes": "はい",
+		"yes-delete": "はい、削除します",
+		"yes-login": "はい、ログインしました。"
+	},
+	"error": {
+		"email": "その写真のアップロード中にエラーが発生しました。"
+	},
+	"eval-entry": {
+		"chair-label": "チェアメーク",
+		"chair-options": [
+			"Colours",
+			"Invacare / Küschall",
+			"Karman",
+			"Ki",
+			"Motion Composites",
+			"Panthera",
+			"Quickie / Sopur / RGK",
+			"TiLite",
+			"Top End",
+			"その他"
+		],
+		"chair-question": "あなたの手動車椅子は何ですか？",
+		"chair-type": {
+			"label": "椅子の種類",
+			"options": [
+				"折りたたみフレーム",
+				"リジッドフレーム"
+			],
+			"question": "あなたの手動車椅子は何タイプですか？"
+		},
+		"fatigue-label": "経験した最悪の疲労レベル：",
+		"fatigue-question": "あなたはプッシュによる疲労感がありますか？",
+		"heading": "アンケート",
+		"independence-label": "独立への最悪の影響：",
+		"independence-question": "それはあなたの独立性に影響を与えますか？",
+		"pain-label": "経験した最悪の痛みレベル：",
+		"pain-question": "あなたは押して痛みがありますか？",
+		"title": "評価を実行する",
+		"years-label": "年",
+		"years-options": [
+			"1",
+			"2",
+			"3",
+			"4",
+			"5+",
+			"10+",
+			"20+",
+			"30+"
+		],
+		"years-question": "手動椅子に何年いましたか。"
+	},
+	"evals": {
+		"confirm-lmn-email-message": "この評価をメールで送信しますか？",
+		"confirm-lmn-email-title": "Eメール",
+		"evals-loading-error": "評価を読み込もうとしてエラーが発生しました。",
+		"incomplete-dialog": {
+			"message": "まだ評価が完了していません。あなたはそれに取り組み続けますか？",
+			"title": "評価を再開しますか？"
+		},
+		"loading": "評価を読み込み中...",
+		"no-evals-message": "評価は見つかりませんでした。",
+		"no-evals-search-result": "日付に対する評価が見つかりません",
+		"reset-btn": "リセット",
+		"search-btn": "サーチ",
+		"select-date": "評価日を選択",
+		"title": "評価",
+		"with-smartdrive": "SmartDriveを使って：",
+		"without-smartdrive": "SmartDriveがなければ："
+	},
+	"faqs": {
+		"0": {
+			"answer": "1）SmartDriveの電源が入っていること、2）PushTrackerが「SDオン」モードになっていること - 青いライトが点滅していること、3）MX2+モードになっていること - ダブルタップするとモーターがかかります。",
+			"question": "SmartDriveが魅力的ではないのはなぜですか？"
+		},
+		"1": {
+			"answer": "残念ながら、いいえ -  SmartDriveは椅子にブレーキをかけることはできません。つまり、モーターをオフにした後は、手動でハンドリムをつかみ、椅子を停止させる必要があります。これはまた、SmartDriveがスロープや丘を下るのを遅くすることができないことを意味します。",
+			"question": "私のSmartDriveは私を遅くすることができますか？"
+		},
+		"2": {
+			"answer": "いいえ、PushTrackerをSmartDriveに再度ペアリングする必要があるのは、無線（OTA）アップデートを実行した後だけです。それをした後、あなたが接続しようとするか、または「SDオン」を試みるとき、PushTrackerは自動的にペアリングモードに入ります。",
+			"question": "PushTrackerをSmartDriveに再度ペアリングする必要がありますか？"
+		},
+		"3": {
+			"answer": "あなたがAndroidを使用しているならば、それは電話がペアリング情報を保存したからかもしれません - それはPushTrackerが安定した接続を確立するのを妨げるでしょう。これを修正するには、単にあなたの携帯電話のBluetooth設定メニューを開き、そのメニューに表示されるPushTrackerの「忘れる」をクリックしてください。それが完了したら、Smart Evaluationアプリを再起動すると、PushTrackerは確実に接続できるはずです。電話に再ペアリングする必要はありません。",
+			"question": "PushTrackerが電話に接続できないのはなぜですか？"
+		},
+		"4": {
+			"answer": "SmartDriveは子供が安全に使用できます - しかし、安全を確保するための最善の方法は、適切なタッピングとブレーキングのテクニックを学ぶことです。さらに、SmartDriveの最大速度を制限する機能（時速0.5マイルから時速5.5マイルまで）とSmartDriveの加速を含めました。 SmartDriveをプッシュまたは使用する方法を学んでいるだけの人には、両方とも非常に低い値に設定することをお勧めします。",
+			"question": "SmartDriveを子供用に安全にするにはどうすればよいですか。"
+		},
+		"5": {
+			"answer": "あなたはアクティブになって世界に出て行くべきです！しかし、プッシュすることで、ウォーキングに関する一般的なアドバイス（人々が実際にはあまり多く歩くことができない）とは異なり、 - 人々はプッシュしすぎることができます。あなたがあまりにも多くプッシュした場合、あなたはあなたの腕や肩に痛みや怪我をする可能性が高くなります - これはあなたの機動性と自立を制限するかもしれません。 SmartDriveを使用しても、通常どおり椅子に押し込むことができます - これまで以上に速く、少ない労力で進むことができます。あなたがどこか速い所にいるか大きな丘を登る必要があるときそれを使ってください - あなたがする必要がないならばあなたの肩を殺さないでください！あなたのSmartDriveであなたの旅を楽しんでください！",
+			"question": "SmartDriveが必要なのはなぜですか？"
+		},
+		"6": {
+			"answer": "PushTrackerとSmart Evaluationの両方のアプリが携帯電話にある場合は、PushTrackerを接続するものだけが実行されていることを確認する必要があります。",
+			"question": "PushTrackerアプリとスマート評価アプリ"
+		}
+	},
+	"firmware": {
+		"1.2": [
+			"PushTracker、SmartDrive Bluetooth（BLE）、およびSmartDrive Microcontroller（MCU）のファームウェアバージョンを表示する「About」をPushTrackerの「設定」メニューに追加しました。最新のエラーコードと情報も表示します。"
+		],
+		"1.3": [
+			"PushTrackerのための 'EZ-ON'モードの追加 - あなたは今タップすることによってパワーアシストをON＆OFF / 'SD On'＆ 'SD Off'にすることができます！"
+		],
+		"1.4": [
+			"PushTrackerのための 'EZ-ON'モードの追加 - あなたは今タップすることによってパワーアシストをON＆OFF / 'SD On'＆ 'SD Off'にすることができます！"
+		],
+		"1.5": [
+			"PushTrackerをスリープ状態から起動するときの会社のロゴブランドを更新しました。",
+			"DisplayInfoのバッテリーステータス画面のPushTrackerに推定走行距離を表示します。",
+			"PushTracker OTAを実行するときに、PushTrackerにOTAステータスバーとパーセンテージを表示するようになりました。",
+			"SDがペアリングされていないとき（OTAの後など）、左ボタンを押して「SDオン」をオンにすると、PushTrackerは直接SDモードへのペアリングに入ります。",
+			"ＰｕｓｈＴｒａｃｋｅｒが電話とペアリングされていないとき（例えばＯＴＡの後）、電話に接続するために右ボタンが押されると、ＰｕｓｈＴｒａｃｋｅｒは直接電話モードへのペアリングに入る。",
+			"複数のデバイスを処理するためのペアリングプロセスのバグ修正。"
+		],
+		"1.6": [
+			"PushTrackerはスマートフォンアプリからプッシュ検出設定を受け取ることができます。",
+			"PushTrackerは現在、アプリ接続の初期化時に現在のプッシュ検出設定を送信します。",
+			"PushTrackerのデフォルトのプッシュ検出設定を調整しました。",
+			"ユーザーが接続を開始したときにPushTrackerが電話に正常に接続した場合、またはすでに接続されている場合は、PushTrackerは電話接続の表示中にチェックマークを表示するようになりました。"
+		],
+		"not-found": [
+			"最新のファームウェアの説明が見つかりませんでした。"
+		]
+	},
+	"general": {
+		"back": "バック",
+		"camera-permission": "カメラ許可",
+		"complete": "コンプリート",
+		"demo": "デモ",
+		"edit": "編集",
+		"email-us": "info@sketchpoints.ioに電子メールを送りなさい",
+		"error": "エラーが発生して申し訳ありません。",
+		"export": "輸出する",
+		"help": "助けて",
+		"need-help": "助けが必要？",
+		"no-camera-permission-android": "Smart Evaluationには、カメラを開く許可がありません。あなたはあなたのデバイス上の設定でアプリケーションの下でカメラの許可を有効にすることができます。",
+		"no-camera-permission-ios-confirm": "Smart Evaluationには、カメラを開く許可がありません。カメラを有効にするためにアプリの設定を開きますか？",
+		"no-connection": "あなたはあなたのインターネット接続を失ったかもしれません。スマート評価は、インターネットに接続したときに最新のデータがサーバーと同期していることを確認するのに最適です。",
+		"photo-album-tle": "フォトアルバム",
+		"picture": "画像",
+		"profile": "プロフィール",
+		"save": "保存する",
+		"saving": "保存中",
+		"serial": "シリアル",
+		"submit": "提出する",
+		"tip": "先端",
+		"title": "スマート評価",
+		"tweet-us": "私たちにツイート",
+		"twitter-unknown": "Twitterは不明です。ごめんなさい！",
+		"update": "更新",
+		"updating": "更新中",
+		"version": "バージョン"
+	},
+	"hints": {
+		"email": "Eメール...",
+		"password": "パスワード..."
+	},
+	"home": {
+		"quick-actions": {
+			"demo-requests": "デモ依頼",
+			"learn": "SmartDrive / PushTrackerの使い方を学ぶ",
+			"register-demo": "デモを登録する",
+			"request-demo": "デモ依頼",
+			"start-eval": "評価を開始",
+			"update": "SmartDrive / PushTrackerを更新する"
+		}
+	},
+	"item": {
+		"delete-lbl": "削除"
+	},
+	"languages": {
+		"de": "Deutsche",
+		"en": "English",
+		"es": "español",
+		"fr": "français",
+		"it": "イタリアの",
+		"ja": "日本語",
+		"ko": "한국어",
+		"nl": "Nederlands",
+		"ru": "ロシア",
+		"sv": "スウェーデンの",
+		"zh": "中文"
+	},
+	"menu": {
+		"clinical-tools": "臨床用具",
+		"clinical-tools-desc": "SmartDriveの使い方のトレーニング",
+		"con-desc": "PushTrackerとSmartDriveの使い方",
+		"connect-app": "プッシュトラッカーをSmart Eval Appに接続する",
+		"connectivity": "デバイス概要",
+		"demo-refresh": "デモを更新",
+		"demo-requests": "デモ依頼",
+		"demos": "デモ",
+		"demos-desc": "デモの場所と管理",
+		"eval": "SmartDrive評価を始める",
+		"eval-history": "過去の評価を見る",
+		"eval-title": "SmartDrive評価を始める",
+		"faq": "よくある質問",
+		"faq-desc": "よくある質問",
+		"home": "SmartDrive",
+		"new-demo": "アカウントにデモを登録していません。アカウントに新しいデモユニットを登録するには、上の画像をタップしてください。",
+		"ota": "PushTrackerとSmartDriveをアップデートする",
+		"pair-pt-app": "PushTrackerをSmart Eval Appにペアリングする",
+		"pair-pt-sd": "PushTrackerをSmartDriveにペアリングする",
+		"ptsettings": "PushTracker設定",
+		"summary": "概要",
+		"training": "SmartDriveトレーニング",
+		"trial": "SmartDriveトライアルを始めます。",
+		"trial-title": "SmartDriveトライアルを始めます。",
+		"videos-description": "SmartDriveとPushTrackerのトレーニングと使用方法のビデオ",
+		"videos-title": "動画"
+	},
+	"ota": {
+		"action": {
+			"cancel": "キャンセル",
+			"force": "力",
+			"pause": "一時停止",
+			"resume": "履歴書",
+			"retry": "リトライ",
+			"start": "開始"
+		},
+		"begin": "更新を開始",
+		"cancel": "すべてのファームウェアアップデートをキャンセルする",
+		"check_firmware_error": "最新のファームウェアのダウンロード中にエラーが発生しました。問題が解決しない場合は、もう一度お試しください。フィードバックをお寄せください。",
+		"check_new_firmware": "新しいファームウェアを確認する",
+		"check_new_firmware_message": "新しいファームウェアを確認してダウンロードしますか？",
+		"downloading": "サーバーから最新のファームウェアデータを取得する",
+		"errors": {
+			"devices": {
+				"message": "PushTrackersやSmartDriveが見つかりません。",
+				"title": "デバイスなし"
+			},
+			"sd_connection": {
+				"message": "SmartDriveとの接続が不良です。アドレスを指定してSmartDriveの電源を入れ直してください。",
+				"title": "SmartDrive接続エラーです。"
+			}
+		},
+		"pt": {
+			"state": {
+				"awaiting-ready": "PushTrackerを待っています",
+				"awaiting-version": "待っているバージョン",
+				"canceled": "キャンセル",
+				"canceling": "キャンセル中",
+				"complete": "コンプリート",
+				"failed": "失敗",
+				"not-started": "始まっていない",
+				"rebooting": "再起動して、PushTrackerを再ペアリングして再接続してください。",
+				"timeout": "タイムアウト",
+				"updating": "更新中",
+				"verifying-update": "確認中"
+			}
+		},
+		"refresh": "SmartDrivesを検索する",
+		"sd": {
+			"state": {
+				"awaiting-ble-ready": "BLEを待っています",
+				"awaiting-mcu-ready": "MCUを待っています",
+				"awaiting-versions": "バージョン待ち",
+				"canceled": "キャンセル",
+				"canceling": "キャンセル中",
+				"comm-failure": "通信エラー、SmartDriveを再起動してください",
+				"complete": "コンプリート",
+				"failed": "失敗",
+				"not-started": "始まっていない",
+				"rebooting-ble": "再起動BLE",
+				"rebooting-mcu": "再起動MCU",
+				"timeout": "タイムアウト",
+				"updating-ble": "BLEを更新する",
+				"updating-mcu": "MCUのアップデート",
+				"verifying-update": "確認中"
+			}
+		},
+		"title": "ファームウェアアップデート",
+		"up-to-date": "（最新の）",
+		"version": "バージョン",
+		"warnings": {
+			"leaving": {
+				"message": "警告：あなたはOTAの間にOTAページを離れています - これは進行中のすべてのOTAをキャンセルします！よろしいですか？",
+				"title": "警告"
+			},
+			"multiple-devices": {
+				"message": "警告：一度に1つのデバイスでOTAを実行することをお勧めします。追加のOTAを開始する前に、デバイスが更新を完了できるようにしてください。",
+				"title": "複数の機器"
+			},
+			"starting": {
+				"message": "警告：SmartDriveまたはPushTrackerのOTAファームウェアアップデートを実行している間は、このページを離れないでください。このページを離れるかアプリを終了すると、OTAはキャンセルされるか失敗する可能性があります。",
+				"title": "OTAを始める"
+			}
+		}
+	},
+	"pairing": {
+		"0": {
+			"Bullets": [
+				"PushTrackerの右フラットボタンを3秒間押し続けて設定メニューに入ります",
+				"右ボタンを押して電話/ PTアイコンにスクロールします。",
+				"ペアリングを開始するには、左の上げボタンを押します。",
+				"注：Androidデバイスによっては、ペアリング中に「ピンまたはパスキーが正しくありません」というメッセージが表示される場合があります。 PushTrackerがそれが接続されていることを示している限り、あなたはこれを無視することができます。"
+			],
+			"Image": "~/assets/images/gifs/PT-APP-CONNECT2.gif",
+			"Label": "PushTrackerをスマート評価アプリにペアリングする"
+		},
+		"1": {
+			"Bullets": [
+				"Smart Evaluationアプリを開いた状態で、PushTrackerの右側の平らなボタンを押します。",
+				"スマート評価アプリに「成功」という通知が表示されます。",
+				"注：Smart Evaluationアプリに「成功」の通知が表示されない場合は、PushTrackerを再度ペアリングする必要があります。"
+			],
+			"Image": "~/assets/images/gifs/PT-APP-CONNECTION1.gif",
+			"Label": "PushTrackerをスマート評価アプリに接続する"
+		},
+		"2": {
+			"Bullets": [
+				"このとき、近くに他のSmartDriveがないことを確認してください。",
+				"SmartDriveとペアリングされていないPushTrackerの場合は、左ボタンを押すとすぐにPT（Bt symobol）SDアイコンが表示されます。",
+				"次に、もう一度左ボタンを押すとペアリングが始まります。",
+				"成功するとPushTrackerにチェックマークが表示されます。",
+				"どのSmartDriveにもペアを組む必要があるPushTrackerの場合：",
+				"PushTrackerの右フラットボタンを3秒間押し続けて設定メニューに入ります",
+				"右ボタンを押してPT-SDアイコンまでスクロールします。",
+				"PushTrackerをSmartDriveにペアリングするには、左上のボタンを押します。"
+			],
+			"Image": "~/assets/images/gifs/PT-SD-CONNECT2.gif",
+			"Label": "PushTrackerをSmartDriveにペアリングする"
+		}
+	},
+	"pushtracker": {
+		"push-settings": {
+			"clear-counter": "クリアカウンター",
+			"copy-dialog": {
+				"message": "PushTrackerのプッシュ設定は保存されているプッシュ設定と異なります。保存されているプッシュ設定をPushTrackerのプッシュ設定で上書きしますか？",
+				"title": "PushTrackerからコピーしますか？"
+			},
+			"label": "プッシュ設定",
+			"out-of-date-dialog": {
+				"message": "PushSettingsを受け取るには、PushTrackerは少なくともバージョン1.6である必要があります。 PushSettingsは無視されます。",
+				"title": "PushTrackerが古くなっています"
+			},
+			"threshold": "しきい値",
+			"time-window": "タイムウィンドウ"
+		},
+		"settings": {
+			"acceleration": "加速度",
+			"control-mode": {
+				"label": "制御モード"
+			},
+			"copy-dialog": {
+				"message": "PushTrackerの設定は保存された設定と異なります。保存された設定をPushTrackerの設定で上書きしますか？",
+				"title": "PushTrackerからコピーしますか？"
+			},
+			"ez-on": "EZ-On",
+			"label": "設定",
+			"max-speed": "マックス・スピード",
+			"save-button": "PushTrackerに保存",
+			"save-dialogs": {
+				"failed": {
+					"message": "PushTrackerの設定をあなたのPushTrackerに保存できませんでした。",
+					"title": "設定の保存に失敗しました"
+				}
+			},
+			"saving": "PushTracker設定を保存する",
+			"tap-sensitivity": "タップ感度",
+			"units": {
+				"english": "英語",
+				"label": "単位",
+				"metric": "メトリック"
+			}
+		},
+		"state": {
+			"connected": {
+				"msg": "PushTrackersは正常に接続されています。",
+				"title": "接続済み"
+			},
+			"connecting": {
+				"msg": "PushTrackersは接続中/接続中ですが、バージョン情報を受け取っていません。バージョン情報を取得するには、PushTrackerを切断して再接続する必要があります。",
+				"title": "接続中"
+			},
+			"disconnected": {
+				"msg": "PushTrackersはペアになっていますが、接続されていません。右のボタンを押して放して、PushTrackerを接続してください。正常に接続できない場合は、PushTrackerの設定メニューを使用して、PushTrackerを電話機に再度ペアリングする必要があります。",
+				"title": "切断されました"
+			},
+			"paired": {
+				"msg": "PushTrackersはペアになっていますが、接続されていません。右のボタンを押して放して、PushTrackerを接続してください。正常に接続できない場合は、PushTrackerの設定メニューを使用して、PushTrackerを電話機に再度ペアリングする必要があります。",
+				"title": "ペアになった"
+			},
+			"unknown": {
+				"msg": "PushTrackersはこれまでペアリングも接続もされていません。 PushTrackerの設定メニューに入って、PushTrackerをペアリングしてください。",
+				"title": "既知のPushTrackersはありません"
+			}
+		}
+	},
+	"sign-up": {
+		"not-permobil-email-error": "現在のメールアドレスは代表者として登録できません。",
+		"user-exists": "このメールのアカウントは既に存在します。",
+		"user-type-clinician": "臨床医/ ATP",
+		"user-type-end-user": "エンドユーザー",
+		"user-type-rep": "代表"
+	},
+	"summary": {
+		"add-trial": "トライアルを追加",
+		"at": "で",
+		"average-speed": "平均速度は",
+		"cadence": " 1分あたりプッシュ、ユーザーのケイデンスは非常に高いです。後輪の配置と効率的なプッシュ技術を検討することを検討してください。",
+		"coast-time": "平均海岸時間は",
+		"complete": "完全な評価？",
+		"confirm": "評価は完了しましたか？",
+		"difficulty-flat": "平らな面で難しいですか？",
+		"difficulty-incline": "傾斜が難しい？",
+		"difficulty-other": "他の面では難しいですか？",
+		"difficulty-ramp": "ランプの難しさ？",
+		"difficulty-ramp-incline": "傾斜/傾斜が難しいですか？",
+		"email-subject": "スマート評価のまとめ",
+		"errors": {
+			"save-failed": {
+				"message": "評価をデータベースに保存できませんでした、エラー：",
+				"title": "エラー保存評価"
+			}
+		},
+		"fewer": "少ない",
+		"flat-surface-difficulty": "平面の難しさ",
+		"higher": "高い",
+		"incline-difficulty": "傾斜の難しさ",
+		"lmnTemplate": [
+			"このEメールはSmart Evaluation Appによって生成され送信されました。",
+			"",
+			"ユーザーのプッシュの痛み： {{#evaluation.pushing_pain}}{{round}}{{/evaluation.pushing_pain}}{{^evaluation.pushing_pain}}0{{/evaluation.pushing_pain}} / 10",
+			"ユーザーの押す疲労： {{#evaluation.pushing_fatigue}}{{round}}{{/evaluation.pushing_fatigue}}{{^evaluation.pushing_fatigue}}0{{/evaluation.pushing_fatigue}} / 10",
+			"ユーザーの自立への影響： {{#evaluation.impact_on_independence}}{{round}}{{/evaluation.impact_on_independence}}{{^evaluation.impact_on_independence}}0{{/evaluation.impact_on_independence}} / 10",
+			"",
+			"{{#trials._array}}",
+			"試行 '{{name}}'：",
+			"  フラッド： {{#flat}}はい{{/flat}}{{^flat}}いいえ{{/flat}}",
+			"  ランプ/傾斜がありました： {{#rampIncline}}はい{{/rampIncline}}{{^rampIncline}}いいえ{{/rampIncline}}",
+			"{{#other}} その他がありました： '{{other_description}}'{{/other}}",
+			"  距離： {{#distance}}{{toFixed}}{{/distance}}{{^distance}}0.00{{/distance}} m",
+			"{{#finishedWith}}",
+			"  SDの場合",
+			"    プッシュします： {{with_pushes}}",
+			"    海岸： {{#with_coast}}{{toFixed}}{{/with_coast}}{{^with_coast}}0{{/with_coast}} s",
+			"    時間： {{#with_elapsed}}{{toTimeString}}{{/with_elapsed}}",
+			"{{#unableToCompleteWith}}",
+			"    ユーザーはSmartDriveで試用を完了できませんでした。",
+			"{{/unableToCompleteWith}}",
+			"{{/finishedWith}}",
+			"{{^finishedWith}}",
+			"  SDで裁判を完了しませんでした！",
+			"{{/finishedWith}}",
+			"{{#finishedWithout}}",
+			"  SDなし",
+			"    プッシュします： {{without_pushes}}",
+			"    海岸： {{#without_coast}}{{toFixed}}{{/without_coast}}{{^without_coast}}0{{/without_coast}} s",
+			"    時間： {{#without_elapsed}}{{toTimeString}}{{/without_elapsed}}",
+			"{{#unableToCompleteWithout}}",
+			"    SmartDriveがないとユーザーは試用を完了できませんでした。",
+			"{{/unableToCompleteWithout}}",
+			"{{/finishedWithout}}",
+			"{{^finishedWithout}}",
+			"  SDなしで裁判を完了しませんでした！",
+			"{{/finishedWithout}}",
+			"{{/trials._array}}",
+			"{{^trials._array}}",
+			"{{#trials}}",
+			"試行 '{{name}}'：",
+			"  フラッド： {{#flat}}はい{{/flat}}{{^flat}}いいえ{{/flat}}",
+			"  ランプ/傾斜がありました： {{#rampIncline}}はい{{/rampIncline}}{{^rampIncline}}いいえ{{/rampIncline}}",
+			"{{#other}} その他がありました： '{{other_description}}'{{/other}}",
+			"  距離： {{#distance}}{{toFixed}}{{/distance}}{{^distance}}0.00{{/distance}} m",
+			"{{#finishedWith}}",
+			"  SDの場合",
+			"    プッシュします： {{with_pushes}}",
+			"    海岸： {{#with_coast}}{{toFixed}}{{/with_coast}}{{^with_coast}}0{{/with_coast}} s",
+			"    時間： {{#with_elapsed}}{{toTimeString}}{{/with_elapsed}}",
+			"{{#unableToCompleteWith}}",
+			"    ユーザーはSmartDriveで試用を完了できませんでした。",
+			"{{/unableToCompleteWith}}",
+			"{{/finishedWith}}",
+			"{{^finishedWith}}",
+			"  SDで裁判を完了しませんでした！",
+			"{{/finishedWith}}",
+			"{{#finishedWithout}}",
+			"  SDなし",
+			"    プッシュします： {{without_pushes}}",
+			"    海岸： {{#without_coast}}{{toFixed}}{{/without_coast}}{{^without_coast}}0{{/without_coast}} s",
+			"    時間： {{#without_elapsed}}{{toTimeString}}{{/without_elapsed}}",
+			"{{#unableToCompleteWithout}}",
+			"    SmartDriveがないとユーザーは試用を完了できませんでした。",
+			"{{/unableToCompleteWithout}}",
+			"{{/finishedWithout}}",
+			"{{^finishedWithout}}",
+			"  SDなしで裁判を完了しませんでした！",
+			"{{/finishedWithout}}",
+			"{{/trials}}",
+			"{{/trials._array}}",
+			"",
+			"{{#evaluation.flat_difficulty}}",
+			"ユーザーによるアパートの難しさ： {{round}} / 10",
+			"{{#evaluation.unableToCompleteFlat}}",
+			"   - 注：ユーザーは評価の平坦部分を完成できませんでした。",
+			"{{/evaluation.unableToCompleteFlat}}",
+			"{{/evaluation.flat_difficulty}}",
+			"{{#evaluation.ramp_incline_difficulty}}",
+			"ランプ/傾斜のあるユーザーの問題： {{round}} / 10",
+			"{{#evaluation.unableToCompleteRampIncline}}",
+			"   - 注：ユーザーは評価の傾斜/傾斜部分を完了できませんでした。",
+			"{{/evaluation.unableToCompleteRampIncline}}",
+			"{{/evaluation.ramp_incline_difficulty}}",
+			"{{#evaluation.other_difficulty}}",
+			"他のユーザーとの問題： {{round}} / 10",
+			"{{#evaluation.unableToCompleteOther}}",
+			"   - 注：ユーザーは評価の他の部分を完了できませんでした。",
+			"{{/evaluation.unableToCompleteOther}}",
+			"{{/evaluation.other_difficulty}}",
+			"",
+			"ユーザーがSmartDriveで {{pushDiff}}% {{pushComparison}} プッシュを実行しました。",
+			"",
+			"SmartDriveで平均海岸時間は {{coastDiff}} × {{coastComparison}} でした",
+			"",
+			"SmartDriveの平均速度は {{speedDiff}} 倍 {{speedComparison}} でした",
+			""
+		],
+		"lower": "下",
+		"more": "もっと",
+		"other-surface-difficulty": "他の表面の難しさ",
+		"pushes": " SmartDriveでプッシュします。",
+		"ramp-difficulty": "ランプの難しさ",
+		"ramp-incline-difficulty": "ランプ/傾斜の難しさ",
+		"unable-flat": "Flatを完成できませんか？",
+		"unable-other": "他のサーフェスを完成できませんか？",
+		"unable-ramp-incline": "ランプ/インクラインを完成できませんか？",
+		"user-performed": "ユーザーが実行した",
+		"with-sd": " SmartDriveを使って。"
+	},
+	"training": {
+		"0": {
+			"Bullets": [
+				"ロッカースイッチをもう一度押すとSmartDriveの電源が入り、前方に進むと電源が切れます。",
+				"SmartDriveは、クランプの平らな部分をSmartDriveの受け側のスロットに合わせることによって、椅子に取り付けます。",
+				"SmartDriveとフラットの位置を合わせた後、SmartDriveをクランプロッドの上に下ろし、SmartDriveを下方に回転させてSmartDriveをクランプ、したがって車椅子にピボットで取り付けます。",
+				"この位置では、SmartDriveの重さは地面にあります。",
+				"SmartDriveを椅子から取り外すには、ハンドルを持ち上げてSmartDriveをクランプから外します - 取り付け手順の逆。"
+			],
+			"Image": "~/assets/images/gifs/SD-POWER.gif",
+			"Label": "SmartDriveへの電力供給"
+		},
+		"1": {
+			"Bullets": [
+				"PushTrackerのいずれかのボタンを押して電源を入れます。",
+				"左上ボタンを3秒間押したままにしてスリープモード「zzz」に入り、PushTrackerの電源を切ります。"
+			],
+			"Image": "~/assets/images/gifs/PT-ON-OFF.gif",
+			"Label": "PushTrackerへの電力供給"
+		},
+		"2": {
+			"Bullets": [
+				"手首をまっすぐに保ちながら、手のひらでプッシュリムを触ります。",
+				"タップすると赤いライトが点灯します。",
+				"ヒント：PushTrackerバンドと連絡を取る必要はありません。",
+				"ヒント：「魚の尾」のような動きで手を動かさないでください。これは矛盾するタップ認識につながります。"
+			],
+			"Image": "~/assets/images/Stop.png",
+			"Label": "タップジェスチャー"
+		},
+		"3": {
+			"Bullets": [
+				"ダブルタップしてSmartDriveを起動します。それはそれから加速し始めるでしょう。",
+				"次に、シングルタップして希望の速度を設定します。",
+				"スピードを上げるには、速く押してからシングルタップして希望のスピードを設定します。",
+				"タップしないと、SmartDriveはPushTrackerの最大速度設定で制御される最大速度まで加速します。"
+			],
+			"Image": "~/assets/images/start-coast.png",
+			"Label": "起動速度と設定速度"
+		},
+		"4": {
+			"Bullets": [
+				"ダブルタップしてSmartDriveを外します。",
+				"それから惰性で手でブレーキをかけます。",
+				"ヒント：すばやく停止するには、シングルタップを実行した後、すばやく組み合わせたタップとグラブを実行します。",
+				"注：SmartDriveを解除してもSmartDriveモーターは停止しますが、それでも椅子を停止させるには手でブレーキをかける必要があります。"
+			],
+			"Image": "~/assets/images/Stop2.png",
+			"Label": "停止中"
+		},
+		"5": {
+			"Bullets": [
+				"操縦するには、目的の方向のプッシュリムをゆっくりと握ります。",
+				"軽いグリップであなたは導きます。",
+				"プッシュリムを両手でスライドさせます。"
+			],
+			"Image": "~/assets/images/Steer.png",
+			"Label": "操舵"
+		},
+		"6": {
+			"Bullets": [
+				"曲がるには、行きたい方向のプッシュリムをしっかりと握ります。",
+				"しっかりした握り方であなたは向きを変えることができます。",
+				"強く握るほど、鋭くなります。",
+				"ヒント：後輪の重心位置を最適にすると、急な方向転換に必要なグリップが減少します。",
+				"注意：急な方向転換をしたい場合は、SmartDriveを外す必要があります。"
+			],
+			"Image": "~/assets/images/turn.png",
+			"Label": "旋回"
+		}
+	},
+	"training_component": {
+		"swipe-left-message": "スライドをもっと見るには、左にスワイプします。"
+	},
+	"trial": {
+		"accelleration": "加速度",
+		"average-speed": "平均速度：",
+		"coast-time": "コーストタイム：",
+		"complete": "お試し完了",
+		"connect_pushtracker_more_info": "通信するには、PushTrackerがSmart Evaluationアプリに接続されている必要があります。ホーム画面の[接続]セクションを参照するか、右上の接続アイコンを押してください。",
+		"description": "コースまたは障害の説明",
+		"distance": "距離：",
+		"errors": {
+			"failed-start": {
+				"message": "試用を開始できませんでした、エラー：",
+				"title": "試用できませんでした"
+			},
+			"failed-stop": {
+				"message": "試用を中止できませんでした、エラー：",
+				"title": "裁判を止められなかった"
+			},
+			"pt-reconnect": {
+				"message": "あなたのPushTrackerはそのバージョンを送信していません。PushTrackerを切断して再接続して、バージョン情報をSmart Evaluationアプリに再送信してください。",
+				"title": "未知のPushTrackerのバージョン"
+			},
+			"pt-same-distance": {
+				"message": "あなたのPushTrackerはあなたのSmartDriveから更新された距離情報を受け取っていません - トライアルを止める前にそれらが接続されていることを確かめてください/モーター運転なしで「SDオン」。",
+				"title": "無効な距離"
+			},
+			"pt-unknown-distance": {
+				"message": "あなたのPushTrackerはSmartDriveから距離情報を得ていません - 試運転を始める前にそれらが接続されていることを確認してください/モーター運転なしで「SDオン」。",
+				"title": "未知の距離"
+			},
+			"pt-version": {
+				"message": "PushTrackerのバージョンが古くなっています。OTAを実行してください。現行版：",
+				"title": "PushTrackerバージョンエラー"
+			},
+			"timeout": "タイムアウト",
+			"too-many-pts": "接続されているPushTrackerが多すぎます -  1つだけ接続してください。"
+		},
+		"evaluator-range": "注意：PushTrackerは、このフェーズを通して電話に接続したままにする必要はありません - 開始時と終了時にのみ接続する必要があります。",
+		"flat-surfaces": "平らな面",
+		"inclines": "傾斜",
+		"max-speed": "マックス・スピード",
+		"name": "お試し名を入力",
+		"other": "その他",
+		"phase-1": "フェーズ1",
+		"phase-1-desc": "SmartDriveを使用してトライアルコースを通過します - 開始するには[スタート]ボタンを押します。",
+		"phase-2": "フェーズ2",
+		"phase-2-desc": "今SmartDriveなしで同じトライアルコースをやり直す - 始めに押してください。",
+		"please-connect-pt": "PushTrackerを接続してください",
+		"push_accuracy_disclaimer": "プッシュトラッカーはプッシュを検出するために動きを使います。これは、ユーザーがプッシュトラッカーを装着して移動する方法に応じて、さまざまな程度の正確さをもたらします。評価のためのより良い測定基準は、SmartDriveのあるプッシュとSmartDriveのないプッシュの間の相対的な違いです。",
+		"pushes": "プッシュ：",
+		"ramp": "ランプ",
+		"ramp-incline": "ランプ/傾斜",
+		"recommendation": "注：試験は傾斜路、複数の表面タイプを含むことが推奨され、少なくとも数分または100ヤード/ 100メートル続くべきです。",
+		"select-options": "SmartDriveトライアルのオプションと設定を選択してください。",
+		"set-up": "お試し設定",
+		"smartdrive-connection": "注：このトライアルを開始する前に、PushTrackerとSmartDriveが接続されていること、または「SDオン」であることを確認して、PushTrackerに最新の距離情報があることを確認してください。",
+		"start": "開始",
+		"starting-trial": "試用開始 - 最大10秒かかります。",
+		"stop": "やめる",
+		"stopping-trial": "試験停止 - 最大10秒かかります。",
+		"summary": "概要",
+		"time": "時間：",
+		"title": "お試し",
+		"unable": "完了できません",
+		"with-sd": "SmartDriveを使って",
+		"without-sd": "SmartDriveなし"
+	},
+	"user": {
+		"accept": {
+			"accept-error": {
+				"message": "アカウントを登録するには、契約とプライバシーポリシーを読んで同意する必要があります。",
+				"title": "契約エラー"
+			},
+			"agreement-button": "エンドユーザー契約書を見る",
+			"header": "スマート評価を有効にして使用するには、エンドユーザー契約に同意し、プライバシーに関する通知を読む必要があります。",
+			"privacy-button": "プライバシーポリシーを見る",
+			"privacy-policy": "プライバシーポリシーを読み、理解しました",
+			"privacy-policy-title": "プライバシーポリシーに同意する",
+			"user-agreement": "使用許諾契約書を読み、理解し、同意します",
+			"user-agreement-title": "エンドユーザー契約に同意する"
+		},
+		"account": "アカウント",
+		"account-creating": "アカウントを作成しています...",
+		"account-error": "アカウント情報を取得しようとしてエラーが発生しました。あとでもう一度試してみてください。",
+		"account-reset": "アカウントをリセットしますか？",
+		"account-reset-confirm": "アカウントをリセットしてよろしいですか（データ/設定をすべて削除しますか）。",
+		"account-update": "ユーザーアカウントを更新しますか？",
+		"account-update-complete": "あなたのプロフィールが更新されました。",
+		"account-update-confirm": "これらの設定をサーバーに送信しますか？",
+		"account-update-error": "プロフィールの更新中にエラーが発生しました。もう一度やり直してください。",
+		"back-to-login": "ログインに戻る",
+		"change-pass": "パスワードを変更する",
+		"check-email": "パスワードを再設定する手順については、メールを確認してください。",
+		"company": "会社",
+		"consent": {
+			"beta-test": "ファームウェアのベータテストを選択し、関連するリスクを理解しています。",
+			"header": "あなたは、アプリケーションの「アカウント」ページに行くことによって、サービスの使用中いつでもあなたの同意のいずれかを与えるか、または撤回することができます。",
+			"product-development": "私は、プライバシーポリシーに記載されているように、研究のために私のデータを使用することに同意します。",
+			"research": "個人情報保護方針に記載されているとおり、製品開発のためのデータの使用に同意します。"
+		},
+		"consent-form-title": "プライバシーポリシー同意書",
+		"email": "Eメール",
+		"email-error": "有効なメールアドレスではありません。",
+		"email-invalid": "メールが無効です",
+		"email-required": "電子メールが必要です。",
+		"email-sent": "送信されたメール",
+		"end-user-agreement-site": "https://privacy.permobil.com/our-products.html#collapseEight",
+		"error": "エラー",
+		"feedback-email-subject": "スマート評価フィードバック",
+		"first-name": "ファーストネーム",
+		"first-name-error": "名は必須です",
+		"forgot-password": "パスワードをお忘れですか",
+		"form-invalid": "フォームが無効です。すべてのフィールドに記入してください。",
+		"language": "言語",
+		"last-name": "苗字",
+		"last-name-error": "姓は必須です",
+		"logged-in": "あなたは今ログインしています",
+		"login": "ログイン",
+		"logout": "ログアウト",
+		"ok": "OK",
+		"password": "パスワード",
+		"password-change": "パスワードを変更する？",
+		"password-change-confirm": "パスワードを変更してよろしいですか？",
+		"password-error": "パスワードが必要です。",
+		"phone": "電話",
+		"privacy-policy-site": "https://privacy.permobil.com",
+		"provide-feedback-btn": "フィードバックを送る",
+		"provide-feedback-confirm-message": "設定したメールクライアントを介してフィードバックを送信しますか？",
+		"provide-feedback-confirm-title": "フィードバックを提供します？",
+		"reset-acct": "アカウントをリセット",
+		"reset-pass-desc": "パスワードを再設定するには、アカウントのメールアドレスを入力してください。パスワードを再設定する手順を記載した電子メールが届きます。",
+		"sign-in": "サインイン",
+		"sign-in-error-1": "サインイン中にエラーが発生しました。メールアドレスとパスワードを確認してください。",
+		"sign-in-error-2": "無効なメールアドレスおよび/またはパスワード。もう一度やり直してください。",
+		"sign-out": "サインアウト",
+		"sign-out-confirm": "ログアウトしてもよろしいですか？",
+		"sign-up": "サインアップ",
+		"sign-up-error": "登録できませんでした。",
+		"sign-up-success": "あなたのユーザー名は：",
+		"signing-in": "サインイン...",
+		"submitting": "送信しています...",
+		"success": "成功",
+		"type": "ユーザータイプ",
+		"unsaved": "未保存の変更があります。保存せずに終了してよろしいですか？",
+		"updated": "あなたのプロフィールは正常に更新されました。"
+	},
+	"videos": {
+		"0": {
+			"Description": "このビデオは、さまざまな環境でさまざまな年齢や環境の人々によって使用されているSmartDriveの概要です。",
+			"Route": "/video",
+			"Title": "SmartDriveの紹介",
+			"Url": "8fn26J59WJ4"
+		},
+		"1": {
+			"Description": "このビデオでは、SmartDriveとPushTrackerの基本的な操作と機能について説明しています。",
+			"Route": "/video",
+			"Title": "SmartDrive MX2+基本操作",
+			"Url": "uhA3-svjQFg"
+		},
+		"2": {
+			"Description": "このビデオでは、PushTrackerの基本操作と機能について説明しています。",
+			"Route": "/video",
+			"Title": "PushTrackerの基本操作",
+			"Url": "6_M1J8HZXIk"
+		},
+		"3": {
+			"Description": "このビデオでは、SmartDrive用の固定式手動車椅子へのアクスルクランプの取り付けについて説明します。",
+			"Route": "/video",
+			"Title": "アクスルクランプの取り付け",
+			"Url": "fY0mW2ClyL0"
+		},
+		"4": {
+			"Description": "このビデオでは、SmartDrive用の折りたたみ式手動車椅子取り付け金具の取り付けについて説明します。",
+			"Route": "/video",
+			"Title": "フォルダアダプタのインストール",
+			"Url": "FpzxivBfeeU"
+		},
+		"5": {
+			"Description": "このビデオでは、SmartDrive MX2+サムスロットルボタンの基本的な操作と機能について説明しています。",
+			"Route": "/video",
+			"Title": "サムスロットルボタン",
+			"Url": "bwYoHNKLjmE"
+		},
+		"6": {
+			"Description": "このビデオでは、SmartDriveの評価またはトレーニングを行うときに実行する手順について説明します。",
+			"Route": "/video",
+			"Title": "SmartDriveの評価とトレーニング",
+			"Url": "45Kj7zJpDcM"
+		},
+		"7": {
+			"Description": "このビデオでは、ChelsとStephが、自分たちの生活のさまざまな側面と、SmartDriveの影響を受けたことについてインタビューされています。",
+			"Route": "/video",
+			"Title": "ChelsとStephへのインタビュー",
+			"Url": "hFid9ks551A"
+		}
+	}
+}

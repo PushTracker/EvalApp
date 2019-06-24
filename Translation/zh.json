@@ -1,0 +1,896 @@
+{
+	"account": {
+		"build": "建立",
+		"database": "數據庫",
+		"version": "版"
+	},
+	"bluetooth": {
+		"connection-success": "與PushTracker成功連接！",
+		"enable-bluetooth": "Smart Evaluation檢測到您的設備未啟用藍牙。請啟用藍牙以執行OTA並執行評估。",
+		"errors": {
+			"unavailable": {
+				"message": "藍牙服務不可用 - 重新初始化！",
+				"title": "藍牙不可用"
+			}
+		},
+		"pairing-success": "成功搭配PushTracker！",
+		"pt_app_conn_instructions": "要將PushTracker連接到Smart Evaluation應用程序，您必須在手機上打開應用程序，然後按下並釋放PushTracker上的右鍵。這會將您的PushTracker連接到您的應用程序或帶您進入PushTracker的配對設置。配對後，您需要退出設置菜單，然後按右鍵以連接到應用程序。如果遇到問題，請將PushTracker置於SLEEP，然後將其打開。",
+		"sd_app_conn_instructions": "要使智能評估應用程序能夠查看並連接到SmartDrive，您必須打開SmartDrive並關閉電源幫助/“關閉SD”。如果遇到問題，請關閉SmartDrive然後再打開。",
+		"searching": "搜索設備",
+		"service-failure": "藍牙服務失敗",
+		"waiting": "正在等待藍牙初始化"
+	},
+	"buttons": {
+		"back": "背部",
+		"more-info": "更多信息",
+		"next": "下一個"
+	},
+	"demo-detail": {
+		"cancel-scan": "取消掃描",
+		"connect-pt": "請連接PushTracker。",
+		"enter-pt-serial": "請輸入PushTracker或Wristband序列號。",
+		"enter-serial-message": "請輸入SmartDrive序列號",
+		"enter-serial-title": "輸入序列號",
+		"geolocation-disabled": "位置可能已停用，您是否要在設備上打開“設置”以啟用智能評估應用的位置？",
+		"invalid-pt-serial": "不是有效的PushTracker或Wristband序列號。",
+		"invalid-sd-serial": "不是有效的SmartDrive序列號。",
+		"leaving-new-demo": "警告：您有一個未保存的演示單元。你確定要退出而不保存嗎？",
+		"saving-demo": "保存演示......",
+		"scan-msg": "掃描一個",
+		"scan-pt": "PT：按掃描或編輯按鈕",
+		"scan-sd": "SD：按掃描或編輯按鈕",
+		"sd-or-pt": "SmartDrive或PushTracker",
+		"sd-serial-required": "需要SmartDrive序列號。"
+	},
+	"demo-requests": {
+		"claim": "要求",
+		"claim_confirm": "您想申請此演示申請嗎？",
+		"claimed": "聲明的演示請求",
+		"claimed_by_other": "此演示已被其他用戶聲明。",
+		"complete": "完成",
+		"complete_confirm": "您要將此請求標記為已完成嗎？",
+		"completed": "演示請求已完成",
+		"demo_is_complete_msg": "演示請求已完成。",
+		"loading": "加載演示請求...",
+		"no-demo-requests": "未找到有效的演示請求。"
+	},
+	"demos": {
+		"add": "添加",
+		"demo-change-owner-location-required": "您的位置是轉移演示單元所有權所必需的。這允許Smart Eval跟踪庫存的演示單元的最後已知位置。",
+		"demo-request-error": "請求演示時發生錯誤。如果問題仍然存在，請重試並報告問題的反饋。",
+		"demo-request-location-is-required": "您的位置需要提交演示單元請求。您的位置用於聯繫您所在地附近的代表以獲取演示請求。",
+		"demo-request-success": "演示單元請求成功。",
+		"demo-to-clinician-action": "將演示交給臨床醫生",
+		"demos-title": "演示",
+		"firmware-string": "固件",
+		"loading": "正在加載演示......",
+		"location-calculating": "正在計算位置......",
+		"location-confirm-message": "您想要將演示的位置更新為",
+		"new-demo-request": "新的演示請求",
+		"no-demos": "找不到您當前用戶的演示。",
+		"owner-color-explanation": "您擁有橙色序列號的物品。沒有橙色序列號的物品應由臨床醫生擁有。",
+		"refresh": "刷新",
+		"request": {
+			"contact_info": "聯繫信息",
+			"distance": "距離（英里）"
+		},
+		"request-demo-action": "請求代表演示。",
+		"request-demo-distance": "從您想要從Rep請求演示的位置設置最大距離（英里）。",
+		"retrieve-from-clinician-action": "從臨床醫生處獲取演示",
+		"saving-request": "保存演示請求...",
+		"submit-btn": "提交"
+	},
+	"dialogs": {
+		"camera": "相機",
+		"cancel": "取消",
+		"close": "關",
+		"confirm": "確認",
+		"confirm-photo-delete": "您確定要刪除此照片嗎？",
+		"no": "沒有",
+		"ok": "好",
+		"sms": "短信",
+		"success": "成功！",
+		"warning": "警告",
+		"yes": "是",
+		"yes-delete": "是的，刪除",
+		"yes-login": "是的，登錄！"
+	},
+	"error": {
+		"email": "抱歉，上傳該照片時出錯。"
+	},
+	"eval-entry": {
+		"chair-label": "椅子製作",
+		"chair-options": [
+			"Colours",
+			"Invacare /Küschall",
+			"Karman",
+			"Ki",
+			"Motion Composites",
+			"Panthera",
+			"Quickie / Sopur / RGK",
+			"TiLite",
+			"Top End",
+			"其他"
+		],
+		"chair-question": "你的手動輪椅是什麼？",
+		"chair-type": {
+			"label": "椅子類型",
+			"options": [
+				"折疊框架",
+				"剛架"
+			],
+			"question": "你的手動輪椅是什麼類型的？"
+		},
+		"fatigue-label": "經歷的最差疲勞程度：",
+		"fatigue-question": "你推著疲勞嗎？",
+		"heading": "調查問卷",
+		"independence-label": "對獨立的最大影響：",
+		"independence-question": "它會影響你的獨立性嗎？",
+		"pain-label": "經歷的最差疼痛水平：",
+		"pain-question": "你有推動的痛苦嗎？",
+		"title": "進行評估",
+		"years-label": "年份",
+		"years-options": [
+			"1",
+			"2",
+			"3",
+			"4",
+			"5+",
+			"10+",
+			"20+",
+			"30+"
+		],
+		"years-question": "你在手動椅上待了多少年？"
+	},
+	"evals": {
+		"confirm-lmn-email-message": "您想通過電子郵件發送此評估嗎？",
+		"confirm-lmn-email-title": "電子郵件",
+		"evals-loading-error": "嘗試加載評估時發生錯誤。",
+		"incomplete-dialog": {
+			"message": "您的評估尚未完成。你想繼續努力嗎？",
+			"title": "簡歷評估？"
+		},
+		"loading": "正在加載Evals ......",
+		"no-evals-message": "未找到評估。",
+		"no-evals-search-result": "沒有找到日期評估",
+		"reset-btn": "重啟",
+		"search-btn": "搜索",
+		"select-date": "選擇評估日期",
+		"title": "評估",
+		"with-smartdrive": "使用SmartDrive：",
+		"without-smartdrive": "沒有SmartDrive："
+	},
+	"faqs": {
+		"0": {
+			"answer": "通常，您應該檢查以下事項：1）您的SmartDrive已啟動，2）您的PushTracker處於“SD開啟”模式 - 藍燈應該閃爍，以及3）您處於MX2+模式 - 其中雙擊將接合電機。",
+			"question": "為什麼我的SmartDrive不參與？"
+		},
+		"1": {
+			"answer": "不幸的是，沒有 -  SmartDrive無法為您的椅子提供任何制動。這意味著在關閉電機後，您需要手動抓住手圈並讓您的座椅停下來。這也意味著您的SmartDrive不會讓您在斜坡或山坡上減速。",
+			"question": "我的SmartDrive可以減慢我的速度嗎？"
+		},
+		"2": {
+			"answer": "不，您需要將PushTracker重新配對到SmartDrive是在執行無線（OTA）更新之後。完成後，當您嘗試連接或打開“SD On”時，PushTracker將自動進入配對模式。",
+			"question": "我需要將PushTracker重新配對到我的SmartDrive嗎？"
+		},
+		"3": {
+			"answer": "如果您使用的是Android，那可能是因為手機已經保存了配對信息 - 這將阻止PushTracker建立穩固的連接。要解決此問題，只需打開手機的藍牙設置菜單，然後點擊該菜單中顯示的PushTracker上的“忘記”。完成後，重新啟動智能評估應用程序，PushTracker應能夠可靠地連接 - 無需重新配對手機！",
+			"question": "為什麼我的PushTracker不會連接到我的手機？"
+		},
+		"4": {
+			"answer": "SmartDrive對兒童來說是安全的 - 但我們建議最好的方法是確保安全，以培訓他們正確的攻絲和製動技術。此外，我們還包括限制SmartDrive最高速度的能力（從每小時0.5英里一直到每小時5.5英里）以及SmartDrive的加速。對於剛剛學習推動或使用SmartDrive的人，我們建議將它們設置得非常低。",
+			"question": "如何讓SmartDrive對兒童安全？"
+		},
+		"5": {
+			"answer": "你應該活躍並走向世界！然而，隨著推動，不像一般的走路建議（人們真的不能走太多） - 人們可以推得太多！如果你推得太多，那麼你的手臂和肩膀就會更容易受到疼痛和傷害 - 這可能會限制你的行動能力和獨立性。使用SmartDrive，您仍然可以像往常一樣在椅子上四處走動 - 現在您可以更快，更輕鬆地走得更遠！當你需要快速到達某個大山坡時使用它 - 如果你不需要，就不要甩掉你的肩膀！使用SmartDrive享受您的旅程！",
+			"question": "我為什麼要SmartDrive？"
+		},
+		"6": {
+			"answer": "如果您的手機上同時擁有PushTracker和Smart Evaluation應用程序，則應確保只有您要連接PushTracker的應用程序正在運行 - 否則PushTracker可能會連接到您想要的其他應用程序！",
+			"question": "PushTracker應用程序和智能評估應用程序"
+		}
+	},
+	"firmware": {
+		"1.2": [
+			"添加了“關於”PushTracker'設置'菜單，其中顯示了PushTracker，SmartDrive藍牙（BLE）和SmartDrive微控制器（MCU）的固件版本。還顯示最新的錯誤代碼和信息。"
+		],
+		"1.3": [
+			"為PushTracker添加'EZ-ON'模式 - 您現在可以通過點擊打開和關閉電源輔助/'SD開'和'SD關'！"
+		],
+		"1.4": [
+			"為PushTracker添加'EZ-ON'模式 - 您現在可以通過點擊打開和關閉電源輔助/'SD開'和'SD關'！"
+		],
+		"1.5": [
+			"從睡眠狀態啟動PushTracker時更新了公司徽標品牌。",
+			"現在在DisplayInfo電池狀態屏幕上顯示PushTracker的估計驅動範圍。",
+			"現在，在執行PushTracker OTA時，在PushTracker上顯示OTA狀態欄和百分比。",
+			"當SD未配對時（例如在OTA之後）並且按下左按鈕以打開'SD On'，PushTracker將直接進入與SD模式配對。",
+			"當PushTracker未與電話配對時（例如在OTA之後）並且按下右鍵以連接到電話，PushTracker將直接進入與電話模式的配對。",
+			"處理多個設備的配對過程的錯誤修正。"
+		],
+		"1.6": [
+			"PushTracker現在可以從智能手機應用程序接收推送檢測設置。",
+			"PushTracker現在在app連接初始化時發送當前的推送檢測設置。",
+			"PushTracker上調整的默認推送檢測設置。",
+			"PushTracker現在在電話連接指示期間顯示複選標記，如果它成功連接或在用戶啟動連接時已連接到電話。"
+		],
+		"not-found": [
+			"我們無法找到最新固件的說明！"
+		]
+	},
+	"general": {
+		"back": "背部",
+		"camera-permission": "相機許可",
+		"complete": "完成",
+		"demo": "演示",
+		"edit": "編輯",
+		"email-us": "發送電子郵件至info@sketchpoints.io",
+		"error": "很抱歉發生了錯誤。",
+		"export": "出口",
+		"help": "救命",
+		"need-help": "需要幫忙？",
+		"no-camera-permission-android": "Smart Evaluation無權打開相機。您可以在設備的“設置”中的應用程序下啟用相機權限。",
+		"no-camera-permission-ios-confirm": "Smart Evaluation無權打開相機。是否要打開應用程序設置以啟用相機？",
+		"no-connection": "您可能丟失了互聯網連接。連接到互聯網時，智能評估效果最佳，以確保最新數據與服務器同步。",
+		"photo-album-tle": "相片集",
+		"picture": "圖片",
+		"profile": "輪廓",
+		"save": "保存",
+		"saving": "保存",
+		"serial": "串行",
+		"submit": "提交",
+		"tip": "小費",
+		"title": "智能評估",
+		"tweet-us": "發推特給我們",
+		"twitter-unknown": "Twitter未知！非常抱歉！",
+		"update": "更新",
+		"updating": "更新",
+		"version": "版"
+	},
+	"hints": {
+		"email": "電子郵件...",
+		"password": "密碼..."
+	},
+	"home": {
+		"quick-actions": {
+			"demo-requests": "演示請求",
+			"learn": "學習使用SmartDrive / PushTracker",
+			"register-demo": "註冊演示",
+			"request-demo": "請求演示",
+			"start-eval": "開始評估",
+			"update": "更新SmartDrive / PushTracker"
+		}
+	},
+	"item": {
+		"delete-lbl": "刪除"
+	},
+	"languages": {
+		"de": "Deutsche",
+		"en": "English",
+		"es": "Español",
+		"fr": "Français",
+		"it": "意大利",
+		"ja": "",
+		"ko": "",
+		"nl": "Nederlands",
+		"ru": "俄語",
+		"sv": "瑞典",
+		"zh": "中文"
+	},
+	"menu": {
+		"clinical-tools": "臨床工具",
+		"clinical-tools-desc": "培訓如何使用SmartDrive",
+		"con-desc": "如何使用PushTracker和SmartDrive",
+		"connect-app": "將Pushtracker連接到Smart Eval應用程序",
+		"connectivity": "設備概述",
+		"demo-refresh": "刷新演示",
+		"demo-requests": "演示請求",
+		"demos": "演示",
+		"demos-desc": "演示位置和管理",
+		"eval": "開始SmartDrive評估",
+		"eval-history": "查看過去的評估",
+		"eval-title": "開始SmartDrive評估",
+		"faq": "常見問題解答",
+		"faq-desc": "一些常見問題",
+		"home": "SmartDrive",
+		"new-demo": "您沒有在您的帳戶中註冊的演示。點按上面的圖片，在您的帳戶中註冊一個新的演示裝置。",
+		"ota": "更新PushTracker和SmartDrive",
+		"pair-pt-app": "將PushTracker與Smart Eval應用程序配對",
+		"pair-pt-sd": "將PushTracker與SmartDrive配對",
+		"ptsettings": "PushTracker設置",
+		"summary": "摘要",
+		"training": "SmartDrive培訓",
+		"trial": "開始SmartDrive試用版。",
+		"trial-title": "開始SmartDrive試用版。",
+		"videos-description": "SmartDrive和PushTracker的培訓和使用視頻",
+		"videos-title": "影片"
+	},
+	"ota": {
+		"action": {
+			"cancel": "取消",
+			"force": "力",
+			"pause": "暫停",
+			"resume": "恢復",
+			"retry": "重試",
+			"start": "開始"
+		},
+		"begin": "開始更新",
+		"cancel": "取消所有固件更新",
+		"check_firmware_error": "下載最新固件時出錯。如果問題仍然存在，請再試一次，請報告反饋。",
+		"check_new_firmware": "檢查新固件",
+		"check_new_firmware_message": "您想檢查並下載新固件嗎？",
+		"downloading": "從服務器獲取最新的固件數據",
+		"errors": {
+			"devices": {
+				"message": "找不到PushTrackers或SmartDrives！",
+				"title": "沒有設備"
+			},
+			"sd_connection": {
+				"message": "與SmartDrive連接不良，請使用以下地址重啟SmartDrive：",
+				"title": "SmartDrive連接錯誤！"
+			}
+		},
+		"pt": {
+			"state": {
+				"awaiting-ready": "等待PushTracker",
+				"awaiting-version": "等待版本",
+				"canceled": "取消",
+				"canceling": "取消",
+				"complete": "完成",
+				"failed": "失敗",
+				"not-started": "沒有開始",
+				"rebooting": "重新啟動，請重新配對並重新連接PushTracker",
+				"timeout": "超時",
+				"updating": "更新",
+				"verifying-update": "驗證"
+			}
+		},
+		"refresh": "搜索SmartDrives",
+		"sd": {
+			"state": {
+				"awaiting-ble-ready": "等待BLE",
+				"awaiting-mcu-ready": "等待MCU",
+				"awaiting-versions": "等待版本",
+				"canceled": "取消",
+				"canceling": "取消",
+				"comm-failure": "通訊錯誤，請重啟SmartDrive",
+				"complete": "完成",
+				"failed": "失敗",
+				"not-started": "沒有開始",
+				"rebooting-ble": "重啟BLE",
+				"rebooting-mcu": "重啟MCU",
+				"timeout": "超時",
+				"updating-ble": "更新BLE",
+				"updating-mcu": "更新MCU",
+				"verifying-update": "驗證"
+			}
+		},
+		"title": "固件更新",
+		"up-to-date": "（最新）",
+		"version": "版",
+		"warnings": {
+			"leaving": {
+				"message": "警告：您在OTA期間離開OTA頁面 - 這將取消所有正在進行的OTA！你確定要離開嗎？",
+				"title": "警告"
+			},
+			"multiple-devices": {
+				"message": "警告：建議一次在一台設備上執行OTA。在開始任何其他OTA之前，請允許設備完成更新。",
+				"title": "多個設備"
+			},
+			"starting": {
+				"message": "警告：在執行SmartDrive或PushTracker的OTA固件更新時，不應離開此頁面。如果您離開此頁面或終止應用程序，OTA將被取消或可能失敗。",
+				"title": "開始OTA"
+			}
+		}
+	},
+	"pairing": {
+		"0": {
+			"Bullets": [
+				"按住PushTracker上的右側平面按鈕三秒鐘，進入設置菜單",
+				"按右按鈕滾動到手機/ PT圖標。",
+				"按左側凸起按鈕開始配對。",
+				"注意：在某些Android設備上，配對時，您可能會收到有關“錯誤的PIN或密鑰”的消息。只要PushTracker顯示它已連接，您就可以忽略它。"
+			],
+			"Image": "~/assets/images/gifs/PT-APP-CONNECT2.gif",
+			"Label": "將PushTracker與智能評估應用程序配對"
+		},
+		"1": {
+			"Bullets": [
+				"打開智能評估應用程序後，按下PushTracker上的右側平面按鈕",
+				"您將在Smart Evaluation應用中看到“成功”通知。",
+				"注意：如果您在智能評估應用中未看到“成功”通知，則可能需要重新配對PushTracker"
+			],
+			"Image": "~/assets/images/gifs/PT-APP-CONNECTION1.gif",
+			"Label": "將PushTracker連接到智能評估應用程序"
+		},
+		"2": {
+			"Bullets": [
+				"這樣做時，確保附近沒有任何其他SmartDrives！",
+				"對於尚未與SmartDrive配對的PushTracker，按左按鈕，您將立即看到PT（Bt symobol）SD圖標。",
+				"然後再次按左按鈕開始配對。",
+				"成功後，您會看到PushTracker上的複選標記",
+				"對於需要與任何SmartDrive重新配對的PushTracker：",
+				"按住PushTracker上的右側平面按鈕三秒鐘，進入設置菜單",
+				"按右按鈕滾動到PT-SD圖標。",
+				"按左側凸起按鈕開始將PushTracker與SmartDrive配對。"
+			],
+			"Image": "~/assets/images/gifs/PT-SD-CONNECT2.gif",
+			"Label": "將PushTracker與SmartDrive配對"
+		}
+	},
+	"pushtracker": {
+		"push-settings": {
+			"clear-counter": "清除櫃檯",
+			"copy-dialog": {
+				"message": "PushTracker的推送設置與保存的推送設置不同，您是否要使用PushTracker的推送設置覆蓋保存的推送設置？",
+				"title": "從PushTracker複製？"
+			},
+			"label": "推送設置",
+			"out-of-date-dialog": {
+				"message": "PushTracker至少需要1.6版才能接收PushSettings。 PushSettings將被忽略。",
+				"title": "PushTracker過時了"
+			},
+			"threshold": "閾",
+			"time-window": "時間窗口"
+		},
+		"settings": {
+			"acceleration": "促進",
+			"control-mode": {
+				"label": "控制模式"
+			},
+			"copy-dialog": {
+				"message": "PushTracker的設置與保存的設置不同，您是否要使用PushTracker的設置覆蓋保存的設置？",
+				"title": "從PushTracker複製？"
+			},
+			"ez-on": "EZ-ON",
+			"label": "設置",
+			"max-speed": "最大速度",
+			"save-button": "保存到PushTracker",
+			"save-dialogs": {
+				"failed": {
+					"message": "我們無法將PushTracker設置保存到PushTracker。",
+					"title": "保存設置失敗"
+				}
+			},
+			"saving": "保存PushTracker設置",
+			"tap-sensitivity": "點擊靈敏度",
+			"units": {
+				"english": "英語",
+				"label": "單位",
+				"metric": "公"
+			}
+		},
+		"state": {
+			"connected": {
+				"msg": "PushTrackers已成功連接：",
+				"title": "連接的"
+			},
+			"connecting": {
+				"msg": "PushTrackers正在連接/連接，但未收到任何版本信息。您可能必須斷開連接並重新連接PushTracker才能獲取版本信息。",
+				"title": "連"
+			},
+			"disconnected": {
+				"msg": "PushTrackers已配對但未連接。請按下並釋放右鍵來連接PushTracker。如果您無法成功連接，可能需要使用PushTracker的設置菜單將PushTracker與手機重新配對。",
+				"title": "斷開的"
+			},
+			"paired": {
+				"msg": "PushTrackers已配對但未連接。請按下並釋放右鍵來連接PushTracker。如果您無法成功連接，可能需要使用PushTracker的設置菜單將PushTracker與手機重新配對。",
+				"title": "配對"
+			},
+			"unknown": {
+				"msg": "到目前為止，沒有PushTrackers配對或連接。請進入PushTracker的設置菜單，將PushTracker配對。",
+				"title": "沒有已知的PushTrackers"
+			}
+		}
+	},
+	"sign-up": {
+		"not-permobil-email-error": "當前的電子郵件無法註冊為代表。",
+		"user-exists": "此電子郵件已存在帳戶。",
+		"user-type-clinician": "臨床醫生/ ATP",
+		"user-type-end-user": "最終用戶",
+		"user-type-rep": "代表"
+	},
+	"summary": {
+		"add-trial": "添加試用版",
+		"at": "在",
+		"average-speed": "平均速度是",
+		"cadence": " 每分鐘推送，用戶的節奏非常高。考慮一下後輪放置和高效推動技術。",
+		"coast-time": "平均海岸時間是",
+		"complete": "完成評估？",
+		"confirm": "你確定你完成了評估嗎？",
+		"difficulty-flat": "平面難度？",
+		"difficulty-incline": "傾斜難度？",
+		"difficulty-other": "其他表面難度？",
+		"difficulty-ramp": "斜坡難度？",
+		"difficulty-ramp-incline": "斜坡/傾斜難度？",
+		"email-subject": "智能評估摘要",
+		"errors": {
+			"save-failed": {
+				"message": "無法將評估保存到數據庫中，錯誤：",
+				"title": "保存評估時出錯"
+			}
+		},
+		"fewer": "少",
+		"flat-surface-difficulty": "平面難度",
+		"higher": "更高",
+		"incline-difficulty": "傾斜難度",
+		"lmnTemplate": [
+			"此電子郵件由Smart Evaluation App生成並發送。",
+			"",
+			"用戶的痛苦： {{#evaluation.pushing_pain}}{{round}}{{/evaluation.pushing_pain}}{{^evaluation.pushing_pain}}0{{/evaluation.pushing_pain}} / 10",
+			"用戶推動疲勞： {{#evaluation.pushing_fatigue}}{{round}}{{/evaluation.pushing_fatigue}}{{^evaluation.pushing_fatigue}}0{{/evaluation.pushing_fatigue}} / 10",
+			"對用戶獨立性的影響： {{#evaluation.impact_on_independence}}{{round}}{{/evaluation.impact_on_independence}}{{^evaluation.impact_on_independence}}0{{/evaluation.impact_on_independence}} / 10",
+			"",
+			"{{#trials._array}}",
+			"試用'{{name}}'：",
+			"  有平面： {{#flat}}是{{/flat}}{{^flat}}否{{/flat}}",
+			"  有坡道/傾斜： {{#rampIncline}}是{{/rampIncline}}{{^rampIncline}}否{{/rampIncline}}",
+			"{{#other}} 還有其他：'{{other_description}}'{{/other}}",
+			"  距離： {{#distance}}{{toFixed}}{{/distance}}{{^distance}}0.00{{/distance}} m",
+			"{{#finishedWith}}",
+			"  使用SD：",
+			"    推送： {{with_pushes}}",
+			"    海岸： {{#with_coast}}{{toFixed}}{{/with_coast}}{{^with_coast}}0{{/with_coast}} s",
+			"    時間： {{#with_elapsed}}{{toTimeString}}{{/with_elapsed}}",
+			"{{#unableToCompleteWith}}",
+			"    用戶無法使用SmartDrive完成試用。",
+			"{{/unableToCompleteWith}}",
+			"{{/finishedWith}}",
+			"{{^finishedWith}}",
+			"  沒用SD完成試用！",
+			"{{/finishedWith}}",
+			"{{#finishedWithout}}",
+			"  沒有SD：",
+			"    推送： {{without_pushes}}",
+			"    海岸： {{#without_coast}}{{toFixed}}{{/without_coast}}{{^without_coast}}0{{/without_coast}} s",
+			"    時間： {{#without_elapsed}}{{toTimeString}}{{/without_elapsed}}",
+			"{{#unableToCompleteWithout}}",
+			"    沒有SmartDrive，用戶無法完成試用。",
+			"{{/unableToCompleteWithout}}",
+			"{{/finishedWithout}}",
+			"{{^finishedWithout}}",
+			"  沒有SD沒有完成試驗！",
+			"{{/finishedWithout}}",
+			"{{/trials._array}}",
+			"{{^trials._array}}",
+			"{{#trials}}",
+			"試用'{{name}}'：",
+			"  有平面： {{#flat}}是{{/flat}}{{^flat}}否{{/flat}}",
+			"  有坡道/傾斜： {{#rampIncline}}是{{/rampIncline}}{{^rampIncline}}否{{/rampIncline}}",
+			"{{#other}} 還有其他：'{{other_description}}'{{/other}}",
+			"  距離： {{#distance}}{{toFixed}}{{/distance}}{{^distance}}0.00{{/distance}} m",
+			"{{#finishedWith}}",
+			"  使用SD：",
+			"    推送： {{with_pushes}}",
+			"    海岸： {{#with_coast}}{{toFixed}}{{/with_coast}}{{^with_coast}}0{{/with_coast}} s",
+			"    時間： {{#with_elapsed}}{{toTimeString}}{{/with_elapsed}}",
+			"{{#unableToCompleteWith}}",
+			"    用戶無法使用SmartDrive完成試用。",
+			"{{/unableToCompleteWith}}",
+			"{{/finishedWith}}",
+			"{{^finishedWith}}",
+			"  沒用SD完成試用！",
+			"{{/finishedWith}}",
+			"{{#finishedWithout}}",
+			"  沒有SD：",
+			"    推送： {{without_pushes}}",
+			"    海岸： {{#without_coast}}{{toFixed}}{{/without_coast}}{{^without_coast}}0{{/without_coast}} s",
+			"    時間： {{#without_elapsed}}{{toTimeString}}{{/without_elapsed}}",
+			"{{#unableToCompleteWithout}}",
+			"    沒有SmartDrive，用戶無法完成試用。",
+			"{{/unableToCompleteWithout}}",
+			"{{/finishedWithout}}",
+			"{{^finishedWithout}}",
+			"  沒有SD沒有完成試驗！",
+			"{{/finishedWithout}}",
+			"{{/trials}}",
+			"{{/trials._array}}",
+			"",
+			"{{#evaluation.flat_difficulty}}",
+			"用戶對單位的困難： {{round}} / 10",
+			"{{#evaluation.unableToCompleteFlat}}",
+			"   - 注意：用戶無法完成評估的平坦部分。",
+			"{{/evaluation.unableToCompleteFlat}}",
+			"{{/evaluation.flat_difficulty}}",
+			"{{#evaluation.ramp_incline_difficulty}}",
+			"用戶在坡道/斜坡上的困難： {{round}} / 10",
+			"{{#evaluation.unableToCompleteRampIncline}}",
+			"   - 注意：用戶無法完成評估的斜坡/傾斜部分。",
+			"{{/evaluation.unableToCompleteRampIncline}}",
+			"{{/evaluation.ramp_incline_difficulty}}",
+			"{{#evaluation.other_difficulty}}",
+			"用戶對其他人的困難： {{round}} / 10",
+			"{{#evaluation.unableToCompleteOther}}",
+			"   - 注意：用戶無法完成評估的其他部分。",
+			"{{/evaluation.unableToCompleteOther}}",
+			"{{/evaluation.other_difficulty}}",
+			"",
+			"用戶使用SmartDrive執行了 {{pushDiff}}% {{pushComparison}} 次推送。",
+			"",
+			"SmartDrive的平均滑行時間為 {{coastDiff}} 次 {{coastComparison}} ",
+			"",
+			"使用SmartDrive，平均速度為 {{speedDiff}} 次 {{speedComparison}} ",
+			""
+		],
+		"lower": "降低",
+		"more": "更多",
+		"other-surface-difficulty": "其他表面難度",
+		"pushes": " 推動SmartDrive。",
+		"ramp-difficulty": "斜坡難度",
+		"ramp-incline-difficulty": "斜坡/斜坡難度",
+		"unable-flat": "無法完成Flat？",
+		"unable-other": "無法完成其他表面？",
+		"unable-ramp-incline": "無法完成斜坡/斜坡？",
+		"user-performed": "用戶執行",
+		"with-sd": " 使用SmartDrive。"
+	},
+	"training": {
+		"0": {
+			"Bullets": [
+				"向後按搖臂開關以打開SmartDrive的電源，然後轉至關閉電源。",
+				"通過將夾具中的平面與SmartDrive上的接收槽對齊，SmartDrive連接到椅子上",
+				"在對齊SmartDrive和平面後，將SmartDrive降低到夾桿上並向下旋轉SmartDrive，將SmartDrive可樞轉地連接到夾具上，從而將輪椅連接到輪椅上。",
+				"在這個位置，SmartDrive的重量在於地面。",
+				"要將SmartDrive從椅子上拆下，請用手柄抬起，使SmartDrive與夾子脫離 - 與安裝程序相反。"
+			],
+			"Image": "~/assets/images/gifs/SD-POWER.gif",
+			"Label": "為SmartDrive供電"
+		},
+		"1": {
+			"Bullets": [
+				"按下PushTracker上的任一按鈕即可開機。",
+				"按住左側凸起按鈕3秒鐘進入睡眠模式'zzz'並關閉PushTracker電源。"
+			],
+			"Image": "~/assets/images/gifs/PT-ON-OFF.gif",
+			"Label": "為PushTracker供電"
+		},
+		"2": {
+			"Bullets": [
+				"保持手腕伸直，用手掌接觸推桿。",
+				"成功敲擊後，紅燈會亮起。",
+				"提示：您無需與PushTracker頻段建立聯繫。",
+				"提示：避免將手移動成“魚尾”狀動作。這將導致敲擊識別不一致。"
+			],
+			"Image": "~/assets/images/Stop.png",
+			"Label": "點擊手勢"
+		},
+		"3": {
+			"Bullets": [
+				"雙擊以啟動SmartDrive。然後它會開始加速。",
+				"然後，單擊以設置所需的速度。",
+				"要提高速度，請快速按下然後單擊以設置所需的速度。",
+				"如果不點擊，SmartDrive將加速到PushTracker的最大速度設置控制的最大速度。"
+			],
+			"Image": "~/assets/images/start-coast.png",
+			"Label": "開始和設定速度"
+		},
+		"4": {
+			"Bullets": [
+				"雙擊即可解除SmartDrive的連接。",
+				"然後用雙手滑行並剎車。",
+				"提示：要快速停止，請執行單擊，然後快速組合點擊並抓取。",
+				"注意：鬆開SmartDrive只會停止SmartDrive電機，您仍然需要用手剎車才能讓您的座椅停下來。"
+			],
+			"Image": "~/assets/images/Stop2.png",
+			"Label": "停止"
+		},
+		"5": {
+			"Bullets": [
+				"要轉向，輕輕地抓住你想要去的方向的推桿。",
+				"輕握將讓您轉向。",
+				"讓推桿滑過你的手。"
+			],
+			"Image": "~/assets/images/Steer.png",
+			"Label": "操舵"
+		},
+		"6": {
+			"Bullets": [
+				"轉動時，牢牢抓住你想去的方向的推桿。",
+				"堅固的握把可以讓你轉動。",
+				"握緊越緊，你就會越鋒利。",
+				"提示：後輪的最佳重心位置將減少急轉彎所需的抓地力。",
+				"注意：當您希望轉彎非常急轉時，可能需要鬆開SmartDrive。"
+			],
+			"Image": "~/assets/images/turn.png",
+			"Label": "車削"
+		}
+	},
+	"training_component": {
+		"swipe-left-message": "向左滑動即可查看更多幻燈片。"
+	},
+	"trial": {
+		"accelleration": "促進",
+		"average-speed": "平均速度：",
+		"coast-time": "海岸時間：",
+		"complete": "試用完成",
+		"connect_pushtracker_more_info": "必須將PushTracker連接到Smart Evaluation應用程序才能進行通信。請參閱主屏幕上的“連接”部分或按右上角的連接圖標。",
+		"description": "課程或障礙描述",
+		"distance": "距離：",
+		"errors": {
+			"failed-start": {
+				"message": "無法啟動試用，錯誤：",
+				"title": "無法開始試用"
+			},
+			"failed-stop": {
+				"message": "無法停止試用，錯誤：",
+				"title": "無法停止審判"
+			},
+			"pt-reconnect": {
+				"message": "您的PushTracker尚未發送其版本，請斷開連接並重新連接PushTracker以將版本信息重新發送至Smart Evaluation應用程序。",
+				"title": "未知的PushTracker版本"
+			},
+			"pt-same-distance": {
+				"message": "您的PushTracker尚未從SmartDrive接收到更新的距離信息 - 請確保它們已連接/'SD開'而沒有電機驅動，然後才能停止試用。",
+				"title": "距離無效"
+			},
+			"pt-unknown-distance": {
+				"message": "您的PushTracker沒有從SmartDrive獲取距離信息 - 在開始試用之前，請確保它們沒有電機驅動連接/'SD開'。",
+				"title": "未知距離"
+			},
+			"pt-version": {
+				"message": "您的PushTracker版本已過期，請執行OTA！當前版本：",
+				"title": "PushTracker版本錯誤"
+			},
+			"timeout": "超時",
+			"too-many-pts": "連接的PushTrackers太多 - 請只連接一個！"
+		},
+		"evaluator-range": "注意：PushTracker在此階段不需要保持與手機的連接 - 它只需要在開始和結束時連接。",
+		"flat-surfaces": "平面",
+		"inclines": "傾斜",
+		"max-speed": "最大速度",
+		"name": "輸入試用名稱",
+		"other": "其他",
+		"phase-1": "階段1",
+		"phase-1-desc": "使用SmartDrive完成試用課程 - 按開始開始。",
+		"phase-2": "階段2",
+		"phase-2-desc": "現在重做相同的試用課程而不使用SmartDrive  - 按開始開始。",
+		"please-connect-pt": "請連接您的PushTracker",
+		"push_accuracy_disclaimer": "推動跟踪器使用移動來檢測推動。這可以導致不同程度的準確性，這取決於用戶如何佩戴和隨推動跟踪器移動。更好的評估指標是SmartDrive與SmartDrive之間的相對差異。",
+		"pushes": "推：",
+		"ramp": "斜坡",
+		"ramp-incline": "斜坡/斜坡",
+		"recommendation": "注意：建議試驗包含坡道，多種表麵類型，並且應至少持續幾分鐘或100碼/ 100米。",
+		"select-options": "選擇SmartDrive試用版的選項和設置。",
+		"set-up": "試用設置",
+		"smartdrive-connection": "注意：在開始此試用之前，請確保已連接PushTracker和SmartDrive /'SD On'以確保PushTracker具有最新的距離信息。",
+		"start": "開始",
+		"starting-trial": "開始試用 - 最多可能需要10秒鐘。",
+		"stop": "停止",
+		"stopping-trial": "停止審判 - 最多可能需要10秒鐘。",
+		"summary": "摘要",
+		"time": "時間：",
+		"title": "審訊",
+		"unable": "無法完成",
+		"with-sd": "使用SmartDrive",
+		"without-sd": "沒有SmartDrive"
+	},
+	"user": {
+		"accept": {
+			"accept-error": {
+				"message": "您必須閱讀並接受協議和隱私政策才能註冊帳戶！",
+				"title": "協議錯誤"
+			},
+			"agreement-button": "查看最終用戶協議",
+			"header": "您必須接受最終用戶協議並閱讀隱私聲明才能激活和使用智能評估",
+			"privacy-button": "查看隱私政策",
+			"privacy-policy": "我已閱讀並理解隱私政策",
+			"privacy-policy-title": "接受隱私政策",
+			"user-agreement": "我已閱讀，理解並同意最終用戶協議",
+			"user-agreement-title": "接受最終用戶協議"
+		},
+		"account": "帳戶",
+		"account-creating": "創建帳戶...",
+		"account-error": "嘗試檢索您的帳戶信息時出錯。稍後再試。",
+		"account-reset": "重置帳戶？",
+		"account-reset-confirm": "您確定要重置帳戶（刪除所有數據/設置）嗎？",
+		"account-update": "更新用戶帳戶？",
+		"account-update-complete": "你的個人資料已經更新。",
+		"account-update-confirm": "將這些設置發送到服務器？",
+		"account-update-error": "更新個人資料時出錯。請再試一次。",
+		"back-to-login": "回到登入",
+		"change-pass": "更改密碼",
+		"check-email": "查看您的電子郵件，了解有關重置密碼的說明。",
+		"company": "公司",
+		"consent": {
+			"beta-test": "我選擇進行固件beta測試並了解相關風險。",
+			"header": "您可以在使用服務期間隨時通過申請的“帳戶”頁面提出或撤銷任何同意書。",
+			"product-development": "我同意我的數據用於隱私政策中描述的研究",
+			"research": "我同意按照隱私政策中的說明使用我的數據進行產品開發"
+		},
+		"consent-form-title": "隱私政策同意書",
+		"email": "電子郵件",
+		"email-error": "不是有效的電子郵件地址。",
+		"email-invalid": "電子郵件無效",
+		"email-required": "需要電子郵件。",
+		"email-sent": "郵件已發送",
+		"end-user-agreement-site": "https://privacy.permobil.com/our-products.html#collapseEight",
+		"error": "錯誤",
+		"feedback-email-subject": "智能評估反饋",
+		"first-name": "名字",
+		"first-name-error": "名字是必需的",
+		"forgot-password": "忘記密碼",
+		"form-invalid": "表格無效。請填寫所有字段。",
+		"language": "語言",
+		"last-name": "姓",
+		"last-name-error": "姓氏是必需的",
+		"logged-in": "您現在已登錄",
+		"login": "登錄",
+		"logout": "登出",
+		"ok": "好",
+		"password": "密碼",
+		"password-change": "更改密碼？",
+		"password-change-confirm": "您確定要更改密碼嗎？",
+		"password-error": "密碼是必需的。",
+		"phone": "電話",
+		"privacy-policy-site": "https://privacy.permobil.com",
+		"provide-feedback-btn": "發送反饋",
+		"provide-feedback-confirm-message": "您想通過配置的電子郵件客戶端發送反饋嗎？",
+		"provide-feedback-confirm-title": "提供反饋意見？",
+		"reset-acct": "重置帳戶",
+		"reset-pass-desc": "要重置密碼，請輸入您帳戶的電子郵件。您將收到一封電子郵件，其中包含重置密碼的說明。",
+		"sign-in": "登入",
+		"sign-in-error-1": "登錄時出錯。請檢查您的電子郵件和密碼。",
+		"sign-in-error-2": "無效的電子郵件和/或密碼。請再試一次。",
+		"sign-out": "登出",
+		"sign-out-confirm": "您確定要退出嗎？",
+		"sign-up": "註冊",
+		"sign-up-error": "無法註冊：",
+		"sign-up-success": "您的用戶名是：",
+		"signing-in": "登錄中...",
+		"submitting": "提交......",
+		"success": "成功",
+		"type": "用戶類型",
+		"unsaved": "您有未保存的更改。你確定要退出而不保存嗎？",
+		"updated": "您的個人資料已成功更新！"
+	},
+	"videos": {
+		"0": {
+			"Description": "該視頻概述了在各種環境中不同年齡和環境的人們使用的SmartDrive。",
+			"Route": "/video",
+			"Title": "SmartDrive簡介",
+			"Url": "8fn26J59WJ4"
+		},
+		"1": {
+			"Description": "本視頻介紹了SmartDrive和PushTracker的基本操作和功能。",
+			"Route": "/video",
+			"Title": "SmartDrive MX2+基本操作",
+			"Url": "uhA3-svjQFg"
+		},
+		"2": {
+			"Description": "本視頻介紹了PushTracker的基本操作和功能。",
+			"Route": "/video",
+			"Title": "PushTracker基本操作",
+			"Url": "6_M1J8HZXIk"
+		},
+		"3": {
+			"Description": "本視頻介紹了SmartDrive剛架手動輪椅上的軸夾安裝。",
+			"Route": "/video",
+			"Title": "軸夾安裝",
+			"Url": "fY0mW2ClyL0"
+		},
+		"4": {
+			"Description": "本視頻介紹了SmartDrive折疊式手動輪椅附件硬件的安裝。",
+			"Route": "/video",
+			"Title": "Folder Adapter安裝",
+			"Url": "FpzxivBfeeU"
+		},
+		"5": {
+			"Description": "本視頻介紹了SmartDrive MX2+拇指油門按鈕的基本操作和功能。",
+			"Route": "/video",
+			"Title": "拇指油門按鈕",
+			"Url": "bwYoHNKLjmE"
+		},
+		"6": {
+			"Description": "本視頻介紹了執行SmartDrive評估或培訓時要執行的步驟。",
+			"Route": "/video",
+			"Title": "SmartDrive評估和培訓",
+			"Url": "45Kj7zJpDcM"
+		},
+		"7": {
+			"Description": "在這段視頻中，Chels和Steph接受了有關他們生活的許多方面的採訪，以及他們如何受到SmartDrive的影響。",
+			"Route": "/video",
+			"Title": "採訪Chels和Steph",
+			"Url": "hFid9ks551A"
+		}
+	}
+}
